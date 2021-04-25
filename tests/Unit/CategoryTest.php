@@ -4,37 +4,33 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\{User, Category};
+use App\Models\{User, Category, Role};
 
 class CategoryTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function a_category_can_be_deleted() {
-        $user = $this->create_fake_user();
-        $user->save();
+    public function a_category_column_is_required() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\Illuminate\Database\QueryException::class);
 
-        Category::create([
-            'category'=>'Foo',
-            'created_by'=>1
+        $user = $this->create_user();
+        $moderator_role = Role::create(['role'=>'moderator']);
+        $user->roles()->attach($moderator_role, ['assigned_by'=>$user->id]);
+
+        $category = Category::create([
+            'created_by'=>$user->id
         ]);
-
-        $this->assertCount(1, Category::all());
-        
-        $category = Category::first();
-        $category->delete();
-        
-        $this->assertCount(0, Category::all());
     }
 
-    private function create_fake_user() {
+    private function create_user() {
         $faker = \Faker\Factory::create();
-
-        return new User([
+        $user = User::create([
             'name'=>$faker->name,
             'email'=>$faker->email,
             'password'=>$faker->password,
         ]);
+        return $user;
     }
 }

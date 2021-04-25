@@ -8,49 +8,54 @@ use App\Models\{Category, User};
 
 class CategoryController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
+    /**
+     * Notice: 
+     * The user needs to be authenticated, as well as a moderator if he needs to perform the following tasks
+     */
+
     public function create() {
-        $user = User::find(request()->created_by)->first();
-    
-        if($this->is_moderator($user)) {
-            Category::create([
-                'category'=>request()->category,
-                'created_by'=>request()->created_by
-            ]);
-        } else {
-            throw new \Exception('This user has no permision to create a category');
+        $user = Auth::user();
+        if(!$this->is_moderator($user)) {
+            throw new \Exception('This user has no permission to perform this action');
         }
+
+        $data = request()->validate([
+            'category'=>'required|min:2|max:400|unique:categories',
+        ]);
+        $data['created_by'] = $user->id;
+
+        Category::create($data);
     }
 
     public function update(Category $category) {
-        
-        // In case of update we need first to grab the authenticated user to see if it is a moderator
         $user = Auth::user();
-
         if(!$this->is_moderator($user)) {
-            throw new \Exception('This user has no permision to create a category');
+            throw new \Exception('This user has no permission to perform this action');
         }
-    
+
         $data = request()->validate([
-            'category'=>'required',
-            'created_by'=>'required'
+            'category'=>'required|min:2|max:400|unique:categories',
         ]);
 
-        $c = Category::find($category->id)->update($data);
+        $category->update($data);
     }
 
     public function destroy(Category $category) {
         $user = Auth::user();
-
         if(!$this->is_moderator($user)) {
-            throw new \Exception('This user has no permissions to do this action');
-        } else {
-            $category->delete();        
+            throw new \Exception('This user has no permission to perform this action');
         }
+
+        $category->delete();
     }
 
     private function is_moderator($user) {
         foreach($user->roles as $role) {
-            if($role->role == 'Moderator') {
+            if(strtolower($role->role) == 'moderator') {
                 return true;
             }
         }

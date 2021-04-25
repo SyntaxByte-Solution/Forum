@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User, Role, Category};
+use App\Models\{User, Role, Category, SubCategory};
 use Illuminate\Support\Facades\Auth;
 
 class CategoryTest extends TestCase
@@ -13,156 +13,117 @@ class CategoryTest extends TestCase
     use RefreshDatabase;
     
     /** @test */
-    public function a_category_can_be_created() {
-        // Moderator
-        $moderator = $this->create_fake_user();
-        $moderator->save();
-        $this->assertCount(1, User::all());
+    public function category_could_be_created() {
+        $user = $this->create_user();
+        $moderator_role = Role::create(['role'=>'moderator']);
+        $user->roles()->attach($moderator_role, ['assigned_by'=>$user->id]);
+        $this->actingAs($user);
 
-        // Create a moderator role
-        $moderator_role = Role::create([
-            'role'=>'Moderator'
+        $this->post('/categories', [
+            'category'=>'Body Building',
         ]);
-        
-        /**
-         * Attach a normal user and add assigned by to specify who give this normal user theis role 
-         * Notice that the assigned_by user MUST be a moderator and that will be covered in the next test
-         * Notice here the user who assign moderator moderator role to that new user is not a moderator bit IT MUST be a moderator as well
-         * but for now let's keep it as it is because we only need to know that the final user if a moderator
-         */
-        $moderator->roles()->attach($moderator_role, ['assigned_by'=>$moderator->id]);
-
-        $response = $this->post('/category', [
-            'category'=>'Body building',
-            'created_by'=>$moderator->id
-        ]);
-
         $this->assertCount(1, Category::all());
     }
-
     /** @test */
-    public function only_moderator_could_create_categories() {
-        /**
-         * IMPORTANT: When you expect an exception to be thrown from your controller, you must
-         * disable exception handling in order to catch the exception by expectException assertion
-         */
+    public function only_moderator_could_create_catgeory() {
         $this->withoutExceptionHandling();
         $this->expectException(\Exception::class);
 
-        $user = $this->create_fake_user();
-        $user->save();
-        
-        // Create a moderator role
-        $role = Role::create([
-            'role'=>'Normal User'
-        ]);
-        $this->assertCount(1, Role::all());
-        
-        $user->roles()->attach($role, ['assigned_by'=>$user->id]);
+        $user = $this->create_user();
+        $moderator_role = Role::create(['role'=>'Normal User']);
+        $user->roles()->attach($moderator_role, ['assigned_by'=>$user->id]);
+        $this->actingAs($user);
 
-        $response = $this->post('/category', [
-            'category'=>'Body building',
-            'created_by'=>$user->id
+        /**
+         * Notice that the created_by field is filled with the current user
+         */
+        $this->post('/categories', [
+            'category'=>'Body Building',
         ]);
     }
-
     /** @test */
-    public function only_moderators_could_update_categories() {
+    public function category_could_be_updated() {
+        $user = $this->create_user();
+        $normal_user_role = Role::create(['role'=>'Moderator']);
+        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->actingAs($user);
+
+        $category = Category::create([
+            'category'=>'FAQs',
+            'created_by'=>1
+        ]);
+
+        $this->patch('/categories/'.$category->id, [
+            'category'=>'Fitness FAQs'
+        ]);
+        $this->assertEquals('Fitness FAQs', Category::first()->category);
+    }
+    /** @test */
+    public function only_moderator_could_update_a_category() {
         $this->withoutExceptionHandling();
         $this->expectException(\Exception::class);
 
+        $user = $this->create_user();
+        $normal_user_role = Role::create(['role'=>'Normal User']);
+        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->actingAs($user);
         /**
-         * Here we temporarily create a moderator to allow the category to be created
-         * because our aim in this test is to make sure of update feature that generate 
-         * an exception when the user who want to update it is a normal user
-         * Hint: we create a fresh user after that to test update
-         * Hint: Notice we can detach the roles from the user and then assign normal user role to him again
-         * But this will fail because when we tend to assign role to a user this user should be a moderator :(
+         * Notice we're loging in with a normal user and he can't create a category so an exception is thrown
+         * when this user create a category
          */
-        $user = $this->create_fake_user();
-        $user->save();
 
-        // Create a moderator role
-        $role = Role::create([
-            'role'=>'Moderator'
-        ]);
-
-        $user->roles()->attach($role, ['assigned_by'=>$user->id]);
-
-        // First create a category
-        $this->post('/category', [
-            'category'=>'Body building',
-            'created_by'=>$user->id
+        // First create a category (Notice we don't have to hit the endpoint because we need to do so in update part)
+        $category = Category::create([
+            'category'=>'FAQs',
+            'created_by'=>1
         ]);
         $this->assertCount(1, Category::all());
 
-        $normal_user = $this->create_fake_user();
-        $normal_user->save();
-        
-        // Create a moderator role
-        $role = Role::create([
-            'role'=>'Normal User'
-        ]);
-
-        $normal_user->roles()->attach($role, ['assigned_by'=>$user->id]);
-
-        $this->actingAs($normal_user);
-
-        // Fetch it
-        $category = Category::first();
-
-        // Then update it
-        $this->patch('/category/'. $category->id, [
-            'category'=>'Calisthenics',
-            'created_by'=>$normal_user->id
+        $this->patch('/categories/'.$category->id, [
+            'category'=>'Fitness FAQs'
         ]);
     }
+    /** @test */
+    public function category_could_be_deleted() {
+        $user = $this->create_user();
+        $normal_user_role = Role::create(['role'=>'Moderator']);
+        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->actingAs($user);
 
-    /** 
-     * @test 
-    */
-    public function only_moderators_can_delete_a_category() {
+        $category = Category::create([
+            'category'=>'FAQs',
+            'created_by'=>1
+        ]);
+        $this->assertCount(1, Category::all());
+
+        $this->delete('/categories/'.$category->id);
+        $this->assertCount(0, Category::all());
+    }
+    /** @test */
+    public function only_moderator_could_delete_a_category() {
         $this->withoutExceptionHandling();
         $this->expectException(\Exception::class);
 
-        $user = $this->create_fake_user();
-        $user->save();
+        $user = $this->create_user();
+        $normal_user_role = Role::create(['role'=>'Normal User']);
+        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->actingAs($user);
 
-        $role = Role::create([
-            'role'=>'Moderator'
-        ]);
-        $user->roles()->attach($role, ['assigned_by'=>$user->id]);
-
-        $this->post('/category', [
-            'category'=>'Body building',
-            'created_by'=>$user->id
+        $category = Category::create([
+            'category'=>'FAQs',
+            'created_by'=>1
         ]);
 
-        $normal_user = $this->create_fake_user();
-        $normal_user->save();
-
-        $role = Role::create([
-            'role'=>'Normal User'
-        ]);
-        $normal_user->roles()->attach($role, ['assigned_by'=>$user->id]);
-        $this->actingAs($normal_user);
-
-        $category = Category::first();
-
-        $this->delete('/category/'. $category->id);
-
-        $this->assertCount(1, Category::all());
-
+        $this->delete('/categories/'.$category->id);
     }
 
-
-    private function create_fake_user() {
+    private function create_user() {
         $faker = \Faker\Factory::create();
-
-        return new User([
+        $user = User::create([
             'name'=>$faker->name,
             'email'=>$faker->email,
             'password'=>$faker->password,
         ]);
+        return $user;
     }
 }

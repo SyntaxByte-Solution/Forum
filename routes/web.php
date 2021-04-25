@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\{CategoryController, SubCategoryController};
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/category', [CategoryController::class, 'create']);
-Route::patch('/category/{category}', [CategoryController::class, 'update']);
-Route::delete('/category/{category}', [CategoryController::class, 'destroy']);
+Route::post('/categories', [CategoryController::class, 'create']);
+Route::patch('/categories/{category}', [CategoryController::class, 'update']);
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);

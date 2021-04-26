@@ -18,11 +18,8 @@ class CategoryController extends Controller
      */
 
     public function create() {
-        $user = Auth::user();
-        if(!$this->is_moderator($user)) {
-            throw new \Exception('This user has no permission to perform this action');
-        }
-
+        $user = $this->check_moderator();
+        
         $data = request()->validate([
             'category'=>'required|min:2|max:400|unique:categories',
         ]);
@@ -32,34 +29,27 @@ class CategoryController extends Controller
     }
 
     public function update(Category $category) {
-        $user = Auth::user();
-        if(!$this->is_moderator($user)) {
-            throw new \Exception('This user has no permission to perform this action');
-        }
+        $this->check_moderator();
 
         $data = request()->validate([
             'category'=>'required|min:2|max:400|unique:categories',
         ]);
-
         $category->update($data);
     }
 
     public function destroy(Category $category) {
-        $user = Auth::user();
-        if(!$this->is_moderator($user)) {
-            throw new \Exception('This user has no permission to perform this action');
-        }
-
+        $this->check_moderator();
         $category->delete();
     }
 
-    private function is_moderator($user) {
+    private function check_moderator() {
+        $user = Auth::user();
         foreach($user->roles as $role) {
             if(strtolower($role->role) == 'moderator') {
-                return true;
+                return $user;
             }
         }
 
-        return false;
+        throw new \Exception('This user has no permission to perform this action');
     }
 }

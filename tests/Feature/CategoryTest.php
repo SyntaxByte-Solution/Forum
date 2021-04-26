@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\{User, Role, Category, SubCategory};
-use Illuminate\Support\Facades\Auth;
 
 class CategoryTest extends TestCase
 {
@@ -15,8 +14,7 @@ class CategoryTest extends TestCase
     /** @test */
     public function category_could_be_created() {
         $user = $this->create_user();
-        $moderator_role = Role::create(['role'=>'moderator']);
-        $user->roles()->attach($moderator_role, ['assigned_by'=>$user->id]);
+        $this->assign_role($user, 'moderator');
         $this->actingAs($user);
 
         $this->post('/categories', [
@@ -30,8 +28,7 @@ class CategoryTest extends TestCase
         $this->expectException(\Exception::class);
 
         $user = $this->create_user();
-        $moderator_role = Role::create(['role'=>'Normal User']);
-        $user->roles()->attach($moderator_role, ['assigned_by'=>$user->id]);
+        $this->assign_role($user, 'Normal User');
         $this->actingAs($user);
 
         /**
@@ -44,8 +41,7 @@ class CategoryTest extends TestCase
     /** @test */
     public function category_could_be_updated() {
         $user = $this->create_user();
-        $normal_user_role = Role::create(['role'=>'Moderator']);
-        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->assign_role($user, 'moderator');
         $this->actingAs($user);
 
         $category = Category::create([
@@ -64,8 +60,7 @@ class CategoryTest extends TestCase
         $this->expectException(\Exception::class);
 
         $user = $this->create_user();
-        $normal_user_role = Role::create(['role'=>'Normal User']);
-        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->assign_role($user, 'Normal User');
         $this->actingAs($user);
         /**
          * Notice we're loging in with a normal user and he can't create a category so an exception is thrown
@@ -86,8 +81,7 @@ class CategoryTest extends TestCase
     /** @test */
     public function category_could_be_deleted() {
         $user = $this->create_user();
-        $normal_user_role = Role::create(['role'=>'Moderator']);
-        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->assign_role($user, 'moderator');
         $this->actingAs($user);
 
         $category = Category::create([
@@ -105,8 +99,7 @@ class CategoryTest extends TestCase
         $this->expectException(\Exception::class);
 
         $user = $this->create_user();
-        $normal_user_role = Role::create(['role'=>'Normal User']);
-        $user->roles()->attach($normal_user_role, ["assigned_by"=>$user->id]);
+        $this->assign_role($user, 'Normal User');
         $this->actingAs($user);
 
         $category = Category::create([
@@ -117,6 +110,127 @@ class CategoryTest extends TestCase
         $this->delete('/categories/'.$category->id);
     }
 
+    // ---------------------- SUB-CATEGORIES ----------------------
+
+    /** @test */
+    public function a_subcategory_could_be_created() {
+        $user = $this->create_user();
+        $this->assign_role($user, 'moderator');
+        $this->actingAs($user);
+
+        $category = Category::create([
+            'category'=>'Body building',
+            'created_by'=>1
+        ]);
+
+        $this->post('/subcategories', [
+            'subcategory'=>'street workout',
+            'created_by'=>$user->id,
+            'category_id'=>$category->id,
+        ]);
+
+        $this->assertCount(1, SubCategory::all());
+    }
+    /** @test */
+    public function only_moderators_could_add_subcategories() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\Exception::class);
+
+        $user = $this->create_user();
+        $this->assign_role($user, 'normal user');
+        $this->actingAs($user);
+
+        $category = Category::create([
+            'category'=>'Body building',
+            'created_by'=>1
+        ]);
+
+        $this->post('/subcategories', [
+            'subcategory'=>'street workout',
+            'created_by'=>$user->id,
+            'category_id'=>$category->id,
+        ]);
+    }
+    /** @test */
+    public function a_subcategory_could_be_updated() {
+        $user = $this->create_user();
+        $this->assign_role($user, 'moderator');
+        $this->actingAs($user);
+
+        $category = Category::create([
+            'category'=>'Body building',
+            'created_by'=>1
+        ]);
+
+        $this->post('/subcategories', [
+            'subcategory'=>'street workout',
+            'created_by'=>$user->id,
+            'category_id'=>$category->id,
+        ]);
+
+        $subcategory = SubCategory::first();
+        
+        $this->patch('/subcategories/'.$subcategory->id, [
+            'subcategory'=>'gym workout',
+            'created_by'=>$user->id,
+            'category_id'=>$category->id,
+        ]);
+        $this->assertEquals('gym workout', $subcategory->fresh()->subcategory);
+    }
+    /** @test */
+    public function only_moderators_could_update_subcategories() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\Exception::class);
+
+        $user = $this->create_user();
+        $this->assign_role($user, 'normal user');
+        $this->actingAs($user);
+
+        $category = Category::create([
+            'category'=>'Body building',
+            'created_by'=>1
+        ]);
+
+        $this->post('/subcategories', [
+            'subcategory'=>'street workout',
+            'created_by'=>$user->id,
+            'category_id'=>$category->id,
+        ]);
+
+        $subcategory = SubCategory::first();
+        
+        $this->patch('/subcategories/'.$subcategory->id, [
+            'subcategory'=>'gym workout',
+            'created_by'=>$user->id,
+            'category_id'=>$category->id,
+        ]);
+    }
+    /** @test */
+    public function a_subcategory_could_be_deleted() {
+        $this->withoutExceptionHandling();
+
+        $user = $this->create_user();
+        $this->assign_role($user, 'moderator');
+        $this->actingAs($user);
+
+        $category = Category::create([
+            'category'=>'FAQs',
+            'created_by'=>1
+        ]);
+
+        $this->post('/subcategories', [
+            'subcategory'=>'street workout',
+            'created_by'=>$user->id,
+            'category_id'=>$category->id,
+        ]);
+
+        $subcategory = SubCategory::first();
+
+        $this->assertCount(1, SubCategory::all());
+        $this->delete('/subcategories/'.$subcategory->id);
+        $this->assertCount(0, SubCategory::all());
+    }
+
     private function create_user() {
         $faker = \Faker\Factory::create();
         $user = User::create([
@@ -125,5 +239,13 @@ class CategoryTest extends TestCase
             'password'=>$faker->password,
         ]);
         return $user;
+    }
+    private function assign_role($user, $role) {
+        /**
+         * Notice that the user who assign the moderator role to the passed user is that passed user itself
+         * but in reality it should be another moderator
+         */
+        $moderator_role = Role::create(['role'=>$role]);
+        $user->roles()->attach($moderator_role, ['assigned_by'=>$user->id]);
     }
 }

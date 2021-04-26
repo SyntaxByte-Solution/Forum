@@ -21,3 +21,7 @@ Route::get('/', function () {
 Route::post('/categories', [CategoryController::class, 'create']);
 Route::patch('/categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
+Route::post('/subcategories', [SubCategoryController::class, 'create']);
+Route::patch('/subcategories/{subcategory}', [SubCategoryController::class, 'update']);
+Route::delete('/subcategories/{subcategory}', [SubCategoryController::class, 'destroy']);

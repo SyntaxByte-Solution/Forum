@@ -51,4 +51,14 @@ class User extends Authenticatable
 
         $this->attributes['role'] = $role->id;
     }
+
+    public function is_moderator() {
+        foreach($this->roles as $role) {
+            if(strtolower($role->role) == 'moderator') {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

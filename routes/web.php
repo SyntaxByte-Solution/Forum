@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{CategoryController, SubCategoryController};
+use App\Http\Controllers\{CategoryController, SubCategoryController, RoleController};
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +25,5 @@ Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 Route::post('/subcategories', [SubCategoryController::class, 'create']);
 Route::patch('/subcategories/{subcategory}', [SubCategoryController::class, 'update']);
 Route::delete('/subcategories/{subcategory}', [SubCategoryController::class, 'destroy']);
+
+Route::post('/roles', [RoleController::class, 'create']);

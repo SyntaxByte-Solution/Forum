@@ -9,12 +9,10 @@ use Illuminate\Support\Facades\Auth;
 class SubCategoryController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware(['auth','moderator']);
     }
 
     public function create() {
-        $this->check_moderator();
-
         $data = request()->validate([
             'subcategory'=>'required|min:2|max:400|unique:subcategories',
             'created_by'=>'required',
@@ -25,8 +23,6 @@ class SubCategoryController extends Controller
     }
 
     public function update(SubCategory $subcategory) {
-        $this->check_moderator();
-
         $data = request()->validate([
             'subcategory'=>'required|min:2|max:400|unique:subcategories',
             'created_by'=>'required',
@@ -37,20 +33,6 @@ class SubCategoryController extends Controller
     }
 
     public function destroy(SubCategory $subcategory) {
-        $this->check_moderator();
-
         $subcategory->delete();
-    }
-
-    private function check_moderator() {
-        $user = Auth::user();
-
-        foreach($user->roles as $role) {
-            if(strtolower($role->role) == 'moderator') {
-                return true;
-            }
-        }
-
-        throw new \Exception('This is user has no permission to do this action');
     }
 }

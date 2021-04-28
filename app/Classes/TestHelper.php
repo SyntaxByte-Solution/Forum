@@ -6,13 +6,15 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\{User, Role};
 
 class TestHelper {
-    /** Insider is a moderator created by itself and assign moderator role to itself :) */
-    public static function create_insider() {
+
+    public static function create_moderator() {
         $user = self::create_user();
 
         $role = Role::create(['role'=>'moderator']);
-
+        
         $user->roles()->attach($role, ['assigned_by'=>$user->id]);
+        // When a moderator get moderator role, we need to delete normal user role
+        $user->roles()->detach(1);
 
         return $user;
     }
@@ -34,20 +36,15 @@ class TestHelper {
         /**
          * Notice that the role_assigner must be a moderator
          */
-        $found = false;
-        foreach($moderator->roles as $r) {
-            if(strtolower($r->role) == 'moderator') {
-                $found = true;
-                break;
-            }
-        }
 
-        if(!$found) {
+        if(!$moderator->is_moderator()) {
             throw new \Exception('Only moderators could assign roles to others !');
         }
         
         $role = Role::create(['role'=>$role]);
 
         $user->roles()->attach($role, ['assigned_by'=>$moderator->id]);
+
+        return $role;
     }
 }

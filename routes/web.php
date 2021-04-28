@@ -27,3 +27,5 @@ Route::patch('/subcategories/{subcategory}', [SubCategoryController::class, 'upd
 Route::delete('/subcategories/{subcategory}', [SubCategoryController::class, 'destroy']);
 
 Route::post('/roles', [RoleController::class, 'create']);
+
+Route::delete('/users/{user}/roles/{role}', [RoleController::class, 'destroy']);

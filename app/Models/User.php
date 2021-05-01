@@ -37,28 +37,26 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
     }
 
-    public function setRoleAttribute($role) {
-        /**
-         * This mutator will fetch the moderator string and it will return a role id if this role string exists.
-         * Notice: If the string doesn't exists, we return the id of role:Normal User
-         */
-        
-        $role = Role::where('role', $role)->first();
-
-        if(is_null($role)) {
-            $role = Role::where('role', 'Normal User')->first();
-        }
-
-        $this->attributes['role'] = $role->id;
+    public function attach_role(Role $role) {
+        $this->roles()->attach($role);
     }
 
-    public function is_moderator() {
-        foreach($this->roles as $role) {
-            if(strtolower($role->role) == 'moderator') {
+    public function has_role($role) {
+        $role = ($role instanceof Role) ? $role->role : $role;
+        foreach($this->roles as $r) {
+            if($r->role == $role) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    public function detach_role(Role $role) {
+        if($this->has_role($role)) {
+            $this->roles()->detach($role);
+        }else {
+            throw new \Exception("This user doesn't have " . $role->role . " role.");
+        }
     }
 }

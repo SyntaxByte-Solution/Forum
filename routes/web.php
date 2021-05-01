@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{CategoryController, SubCategoryController, RoleController};
+use App\Http\Controllers\{RolesController};
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/categories', [CategoryController::class, 'create']);
-Route::patch('/categories/{category}', [CategoryController::class, 'update']);
-Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
-
-Route::post('/subcategories', [SubCategoryController::class, 'create']);
-Route::patch('/subcategories/{subcategory}', [SubCategoryController::class, 'update']);
-Route::delete('/subcategories/{subcategory}', [SubCategoryController::class, 'destroy']);
-
-Route::post('/roles', [RoleController::class, 'create']);
-
-Route::delete('/users/{user}/roles/{role}', [RoleController::class, 'destroy']);
+Route::post('/roles', [RolesController::class, 'create']);
+Route::patch('/roles/{role}', [RolesController::class, 'update']);
+Route::delete('/roles/{role}', [RolesController::class, 'destroy']);
+Route::post('/roles/attach', [RolesController::class, 'attach']);
+Route::delete('/users/{user}/roles/{role}/detach', [RolesController::class, 'detach']);

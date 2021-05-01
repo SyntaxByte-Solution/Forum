@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class Moderator
+class EnsureUserHasRole
 {
     /**
      * Handle an incoming request.
@@ -14,10 +14,10 @@ class Moderator
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $role)
     {
-        if(!$request->user()->is_moderator()) {
-            throw new \Exception('Only moderators could perform this action.');
+        if (!$request->user()->has_role($role)) {
+            throw new \Exception("Access denied.");
         }
 
         return $next($request);

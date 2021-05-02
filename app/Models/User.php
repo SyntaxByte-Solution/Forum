@@ -38,7 +38,11 @@ class User extends Authenticatable
     }
 
     public function attach_role(Role $role) {
-        $this->roles()->attach($role);
+        if(!$this->has_role($role)) {
+            $this->roles()->attach($role);
+        }else {
+            throw new \Exception("This user already has " . $role->role . " role.");
+        }
     }
 
     public function has_role($role) {

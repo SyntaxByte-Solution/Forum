@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{RolesController};
+use App\Http\Controllers\{RolesController, PermissionsController};
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +23,9 @@ Route::patch('/roles/{role}', [RolesController::class, 'update']);
 Route::delete('/roles/{role}', [RolesController::class, 'destroy']);
 Route::post('/roles/attach', [RolesController::class, 'attach']);
 Route::delete('/users/{user}/roles/{role}/detach', [RolesController::class, 'detach']);
+
+Route::post('/permissions', [PermissionsController::class, 'create']);
+Route::patch('/permissions/{permission}', [PermissionsController::class, 'update']);
+Route::delete('/permissions/{permission}', [PermissionsController::class, 'destroy']);
+
+Route::post('roles/permissions/attach', [PermissionsController::class, 'attach_permission_to_role']);

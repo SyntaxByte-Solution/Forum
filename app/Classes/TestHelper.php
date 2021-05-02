@@ -3,7 +3,7 @@
 namespace App\Classes;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use App\Models\{User, Role};
+use App\Models\{User, Role, Permission};
 
 class TestHelper {
 
@@ -53,6 +53,12 @@ class TestHelper {
         return count(Role::where('role', $role)->get());
     }
 
+    public static function permission_exists($permission) {
+        $permission = ($permission instanceof Permission) ? $permission->permission : $permission;
+
+        return count(Permission::where('permission', $permission)->get());
+    }
+
     public static function create_role($role) {
         if(!self::role_exists($role)) {
             return Role::create([
@@ -63,4 +69,14 @@ class TestHelper {
         }
     }
 
+    public static function create_permission($permission) {
+        if(!self::permission_exists($permission)) {
+            return Permission::create([
+                'permission'=>$permission,
+                'description'=>'find yourself'
+            ]);
+        } else {
+            Permission::where('permission', $permission)->first();
+        }
+    }
 }

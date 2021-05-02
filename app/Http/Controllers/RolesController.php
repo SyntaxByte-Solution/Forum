@@ -34,7 +34,9 @@ class RolesController extends Controller
     }
 
     public function detach(Request $request, User $user, Role $role) {
-        $user->roles()->detach($role);
+        if($user->has_role($role)) {
+            $user->roles()->detach($role);
+        }
     }
 
     public function update(Request $request, Role $role) {

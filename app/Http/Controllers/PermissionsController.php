@@ -9,7 +9,7 @@ class PermissionsController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
-        $this->middleware('role:owner')->only(['create', 'update', 'delete', 'attach_permission_to_role']);
+        $this->middleware('role:owner')->only(['create', 'update', 'delete', 'attach_permission_to_role', 'detach_permission_from_role']);
     }
 
     public function create(Request $request) {
@@ -42,6 +42,17 @@ class PermissionsController extends Controller
             $role->permissions()->attach($permission);
         } else {
             throw new \Exception($role->role . " role already has " . $permission->permission . " permission.");
+        }
+    }
+
+    public function detach_permission_from_role(Request $request) {
+        $role = Role::find($request->role);
+        $permission = Permission::find($request->permission);
+
+        if($role->has_permission($permission)) {
+            $role->permissions()->detach($permission);
+        } else {
+            throw new \Exception($role->role . " role doesn't have " . $permission->permission . " permission.");
         }
     }
 }

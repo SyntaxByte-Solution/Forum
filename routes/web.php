@@ -29,3 +29,4 @@ Route::patch('/permissions/{permission}', [PermissionsController::class, 'update
 Route::delete('/permissions/{permission}', [PermissionsController::class, 'destroy']);
 
 Route::post('roles/permissions/attach', [PermissionsController::class, 'attach_permission_to_role']);
+Route::post('roles/permissions/detach', [PermissionsController::class, 'detach_permission_from_role']);

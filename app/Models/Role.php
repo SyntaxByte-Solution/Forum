@@ -22,7 +22,7 @@ class Role extends Model
     }
 
     public function has_permission($permission) {
-        $permission = ($permission instanceof Role) ? $permission->permission : $permission;
+        $permission = ($permission instanceof Permission) ? $permission->permission : $permission;
         foreach($this->permissions as $p) {
             if($p->permission == $permission) {
                 return true;

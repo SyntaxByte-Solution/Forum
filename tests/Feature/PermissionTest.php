@@ -30,7 +30,6 @@ class PermissionTest extends TestCase
         // Because permission must be unique
         $response->assertSessionHasErrors();
     }
-
     /** @test */
     public function only_owner_could_create_permission() {
         $this->withoutExceptionHandling();
@@ -55,7 +54,6 @@ class PermissionTest extends TestCase
             'description'=>'Update users permission'
         ]);
     }
-
     /** @test */
     public function only_owner_could_update_permission() {
         $this->withoutExceptionHandling();
@@ -82,7 +80,6 @@ class PermissionTest extends TestCase
             'description'=>'old_description'
         ]);
     }
-
     /** @test */
     public function only_owner_could_delete_permissions() {
         $this->withoutExceptionHandling();
@@ -102,7 +99,6 @@ class PermissionTest extends TestCase
         $this->actingAs($user);
         $this->delete("/permissions/$permission->id");
     }
-
     /** @test */
     public function permissions_could_be_attached_to_roles() {
         $permission0 = TestHelper::create_permission('foo0');
@@ -114,7 +110,6 @@ class PermissionTest extends TestCase
         $role->permissions()->attach($permission1);
         $this->assertCount(2, $role->permissions);
     }
-
     /** @test */
     public function only_owners_could_attach_permissions_to_roles() {
         $this->withoutExceptionHandling();
@@ -142,5 +137,52 @@ class PermissionTest extends TestCase
             'role'=>$role->id,
             'permission'=>$permission->id
         ]);
+    }
+    /** @test */
+    public function only_owners_could_dettach_permissions_from_roles() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\Exception::class);
+
+        $owner = TestHelper::create_owner();
+        $user = TestHelper::create_user();
+
+        $role = TestHelper::create_role('admin');
+        $permission = TestHelper::create_permission('update.post');
+
+        $role->permissions()->attach($permission);
+
+        $this->actingAs($owner);
+
+        $this->assertCount(1, $role->permissions);
+        $this->post("roles/permissions/detach", [
+            'role'=>$role->id,
+            'permission'=>$permission->id
+        ]);
+        $role->load('permissions');
+        $this->assertCount(0, $role->permissions);
+
+        $role->permissions()->attach($permission);
+        $this->actingAs($user);
+        $this->post("roles/permissions/detach", [
+            'role'=>$role->id,
+            'permission'=>$permission->id
+        ]);
+
+    }
+    /** @test */
+    public function foo() {
+        $role = TestHelper::create_role('Moderator');
+
+        $permission0 = TestHelper::create_permission('create.user');
+        $permission1 = TestHelper::create_permission('update.user');
+        $permission2 = TestHelper::create_permission('delete.user');
+
+        $role->permissions()->attach($permission0);
+        $role->permissions()->attach($permission1);
+        $role->permissions()->attach($permission2);
+
+        $user = TestHelper::create_user();
+
+        $user->roles()->attach($role);
     }
 }

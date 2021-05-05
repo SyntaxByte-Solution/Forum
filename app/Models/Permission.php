@@ -21,4 +21,8 @@ class Permission extends Model
     public function users() {
         return $this->belongsToMany(User::class);
     }
+
+    public function __toString() {
+        return $this->permission;
+    }
 }

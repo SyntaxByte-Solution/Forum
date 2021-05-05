@@ -41,12 +41,49 @@ class User extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-    public function attach_role(Role $role) {
-        if(!$this->has_role($role)) {
-            $this->roles()->attach($role);
-        }else {
-            throw new \Exception("This user already has " . $role->role . " role.");
+    public function has_permission($permission) {
+        $permission = ($permission instanceof Permission) ? $permission->permission : $permission;
+
+        foreach($this->roles as $role) {
+            foreach($role->permissions as $p) {
+                if($p->permission == $permission) {
+                    return true;
+                }
+            }
         }
+
+        return false;
+    }
+
+    /**
+     * Notice we have permissions relationship between user and permissions directly, where the user get permissions directly
+     * from the owner
+     * But default_permissions() method get permissions from this user's roles 
+     * (Each role has some default permissions attached along with it)
+     * 
+     * Hint: Notice we check if the permission exists before insert it to the array because some roles has some common permissions.
+     */
+    public function default_permissions() {
+        $permissions = [];
+        $roles = $this->roles;
+
+        foreach($roles as $role) {
+            foreach($role->permissions as $permission) {
+                $permissions[] = $permission;
+            }
+        }
+
+        return array_unique($permissions);
+    }
+
+    public function all_permissions() {
+        // $permissions = $this->user_roles_permissions();
+
+        // foreach($this->permissions as $permission) {
+        //     $permissions[] = $permission;
+        // }
+
+        // return $permissions;
     }
 
     public function has_role($role) {
@@ -58,6 +95,14 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    public function attach_role(Role $role) {
+        if(!$this->has_role($role)) {
+            $this->roles()->attach($role);
+        }else {
+            throw new \Exception("This user already has " . $role->role . " role.");
+        }
     }
 
     public function detach_role(Role $role) {

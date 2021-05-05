@@ -172,17 +172,38 @@ class PermissionTest extends TestCase
     /** @test */
     public function foo() {
         $role = TestHelper::create_role('Moderator');
+        $role1 = TestHelper::create_role('Admin');
 
         $permission0 = TestHelper::create_permission('create.user');
         $permission1 = TestHelper::create_permission('update.user');
         $permission2 = TestHelper::create_permission('delete.user');
+        $permission3 = TestHelper::create_permission('delete.post');
 
         $role->permissions()->attach($permission0);
         $role->permissions()->attach($permission1);
         $role->permissions()->attach($permission2);
 
-        $user = TestHelper::create_user();
+        $role1->permissions()->attach($permission0);
+        $role1->permissions()->attach($permission1);
+        $role1->permissions()->attach($permission1);
 
+        $user = TestHelper::create_user();
+        //$this->assertCount(0, $user->all_permissions());
         $user->roles()->attach($role);
+        $user->roles()->attach($role1);
+        $user->permissions()->attach($permission3);
+        
+        $role->load('permissions');
+        $role1->load('permissions');
+        $user->load('roles');
+        $user->load('permissions');
+        
+        foreach($user->default_permissions() as $p) {
+            echo $p->permission . PHP_EOL;
+        }
+
+        $this->assertTrue(true);
+        // $this->assertCount(3, $user->user_roles_permissions());
+        // $this->assertCount(4, $user->all_permissions());
     }
 }

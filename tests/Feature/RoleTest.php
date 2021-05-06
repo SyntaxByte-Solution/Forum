@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Exceptions\AccessDeniedException;
 use App\Models\{Role, User};
 use App\Classes\TestHelper;
 
@@ -12,167 +13,120 @@ class RoleTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * For role management - Only owners could perform role CRUD operations and attaching permissions to roles.
+     * But for assigning roles to users or assigning permissions to users we allow moderator and admins to do so
+     * but in restricted scenarios.
+     * For example, a moderator could assign admin role to some user, but he can't assign moderator role. The same thing with 
+     * admin, he could assign only permissions or roles with lower priority to his own permissions and roles
+     */
+
     /** @test */
     public function a_role_should_be_unique() {
         $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
 
-        $owner = TestHelper::create_owner();
+        $owner = TestHelper::create_user_with_role('owner');
 
         $this->actingAs($owner);
         
         $this->post('/roles', [
-            'role'=>'moderator',
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
 
         $this->post('/roles', [
-            'role'=>'moderator',
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
-
     }
 
     /** @test */
     public function only_owner_could_create_roles() {
         $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
+        $this->expectException(AccessDeniedException::class);
 
-        $owner = TestHelper::create_owner();
+        $owner = TestHelper::create_user_with_role('owner');
         $user = TestHelper::create_user();
-
+        
         $this->actingAs($owner);
-        // 2: owner & user
-        $this->assertCount(2, Role::all());
+
+        $this->assertCount(1, Role::all());
         $this->post('/roles', [
-            'role'=>'admin',
+            'role'=>'Admin',
+            'slug'=>'admin'
         ]);
-        $this->assertCount(3, Role::all());
+        $this->assertCount(2, Role::all());
 
         /** Now it should fail because normal user could not create roles */
 
         $this->actingAs($user);
         $this->post('/roles', [
-            'role'=>'admin',
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
     }
 
     /** @test */
     public function only_owner_could_update_roles() {
         $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
+        $this->expectException(AccessDeniedException::class);
 
-        $owner = TestHelper::create_owner();
         $user = TestHelper::create_user();
-
         $dump_role = TestHelper::create_role('DUMP');
-
-        $this->actingAs($owner);
-        
-        $this->patch("/roles/$dump_role->id", [
-            'role'=>'new_role_title'
-        ]);
-        $this->assertSame('new_role_title', $dump_role->refresh()->role);
 
         $this->actingAs($user);
         
         $this->patch("/roles/$dump_role->id", [
-            'role'=>'old_title'
+            'role'=>'new_role_title',
+            'slug'=>'role.test'
         ]);
     }
 
     /** @test */
     public function only_owner_could_delete_roles() {
         $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
+        $this->expectException(AccessDeniedException::class);
 
-        $owner = TestHelper::create_owner();
         $user = TestHelper::create_user();
-
         $dump_role = TestHelper::create_role('DUMP');
-
-        $this->actingAs($owner);
-        
-        $this->assertCount(3, Role::all());
-        $this->delete("/roles/$dump_role->id");
-        $this->assertCount(2, Role::all());
 
         $this->actingAs($user);
-        $dump_role = TestHelper::create_role('DUMP');
+        
+        $this->assertCount(1, Role::all());
         $this->delete("/roles/$dump_role->id");
-    }
-
-    /** @test */
-    public function owner_could_attach_roles() {
-        $owner = TestHelper::create_owner();
-        $user = TestHelper::create_user();
-
-        $user_role = Role::create([
-            'role'=>'moderator'
-        ]);
-        
-        $this->actingAs($owner);
-
-        $this->post('/roles/attach', [
-            'role'=>'moderator',
-            'user_id'=>$user->id
-        ]);
-        
-        $this->assertCount(2, $user->roles);
+        $this->assertCount(0, Role::all());
     }
 
     /** @test */
     public function only_owner_could_attach_roles_to_users() {
         $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
+        $this->expectException(AccessDeniedException::class);
 
-        $user_1 = TestHelper::create_user();
-        $user_2 = TestHelper::create_user();
+        $user1 = TestHelper::create_user();
+        $user2 = TestHelper::create_user();
 
-        $user_role = Role::create([
-            'role'=>'moderator'
+        $role = Role::create([
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
         
-        $this->actingAs($user_1);
+        $this->actingAs($user1);
 
         $this->post('/roles/attach', [
-            'role'=>'moderator',
-            'user_id'=>$user_2->id
+            'role_id'=>$role->id,
+            'user_id'=>$user2->id
         ]);
-        
-        $this->assertCount(2, $user_2->roles);
-    }
-
-    /** @test */
-    public function owner_could_detach_roles_from_users() {
-        $this->withoutExceptionHandling();
-
-        $owner_role = Role::create([
-            'role'=>'owner'
-        ]);
-        $moderator_role = Role::create([
-            'role'=>'moderator'
-        ]);
-
-        $user_1 = TestHelper::create_user();
-        $user_1->roles()->attach($owner_role);
-
-        $user_2 = TestHelper::create_user();
-        $user_2->roles()->attach($moderator_role);
-
-        $this->actingAs($user_1);
-
-        $this->assertCount(2, $user_2->roles);
-        $this->delete("/users/$user_2->id/roles/$moderator_role->id/detach");
-        $user_2->load('roles');
-        $this->assertCount(1, $user_2->roles);
     }
 
     /** @test */
     public function only_owners_could_detach_roles_from_users() {
         $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
+        $this->expectException(AccessDeniedException::class);
 
         $moderator_role = Role::create([
-            'role'=>'moderator'
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
 
         $user_1 = TestHelper::create_user();

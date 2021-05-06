@@ -12,19 +12,21 @@ class RoleTest extends TestCase
 
     /** @test */
     public function a_role_could_be_created() {
+        $count = count(Role::all());
+
         Role::create([
-            'role'=>'Admin'
+            'role'=>'Admin',
+            'slug'=>'admin'
         ]);
-        $this->assertCount(1, Role::all());
+        $this->assertCount($count+1, Role::all());
     }
 
     /** @test */
     public function a_role_could_be_updated() {
-        Role::create([
-            'role'=>'Moderator'
+        $role = Role::create([
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
-
-        $role = Role::first();
 
         $role->update([
             'role'=>'Normal User'
@@ -34,12 +36,17 @@ class RoleTest extends TestCase
 
     /** @test */
     public function a_role_could_be_deleted() {
-        Role::create([
-            'role'=>'Moderator'
+        
+        $role = Role::create([
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
-        $this->assertCount(1, Role::all());
+
+        $count = count(Role::all());
+
+        $this->assertCount($count, Role::all());
         Role::first()->delete();
-        $this->assertCount(0, Role::all());
+        $this->assertCount($count-1, Role::all());
     }
 
     /** @test */
@@ -47,7 +54,8 @@ class RoleTest extends TestCase
         $this->withoutExceptionHandling();
 
         $role = Role::create([
-            'role'=>'Moderator'
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
 
         $user = User::create([
@@ -57,10 +65,8 @@ class RoleTest extends TestCase
         ]);
 
         $this->assertCount(0, $user->roles);
-
-        $user->attach_role($role);
+        $user->roles()->attach($role);
         $user->load('roles');
-
         $this->assertCount(1, $user->roles);
     }
 
@@ -69,7 +75,8 @@ class RoleTest extends TestCase
         $this->withoutExceptionHandling();
 
         $role = Role::create([
-            'role'=>'Moderator'
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
 
         $user = User::create([
@@ -77,35 +84,13 @@ class RoleTest extends TestCase
             'email'=>'mouad@gmail.com',
             'password'=>'laremuranium'
         ]);
-        $user->attach_role($role);
-        $user->load('roles');
 
+        $user->roles()->attach($role);
+        $user->load('roles');
         $this->assertCount(1, $user->roles);
 
-        $user->detach_role($role);
+        $user->roles()->detach($role);
         $user->load('roles');
-
-        $this->assertCount(0, $user->roles);
-    }
-
-    /** @test */
-    public function an_exception_is_thrown_if_the_owner_try_to_detach_a_role_that_is_not_exist_in_user_roles() {
-        $this->withoutExceptionHandling();
-        $this->expectException(\Exception::class);
-
-        $role = Role::create([
-            'role'=>'Moderator'
-        ]);
-
-        $user = User::create([
-            'name'=>'Mouad Nassri',
-            'email'=>'mouad@gmail.com',
-            'password'=>'laremuranium'
-        ]);
-
-        $user->detach_role($role);
-        $user->load('roles');
-
         $this->assertCount(0, $user->roles);
     }
 }

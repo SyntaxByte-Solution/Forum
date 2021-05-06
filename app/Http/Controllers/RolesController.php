@@ -14,6 +14,7 @@ class RolesController extends Controller
     public function create(Request $request) {
         $data = $request->validate([
             'role'=>'required|unique:roles,role',
+            'slug'=>'required|unique:roles,slug'
         ]);
 
         Role::create($data);
@@ -21,21 +22,21 @@ class RolesController extends Controller
 
     public function attach(Request $request) {
         $data = $request->validate([
-            'role'=>'required|exists:roles',
+            'role_id'=>'required|exists:roles,id',
             'user_id'=>'required'
         ]);
 
         $user = User::find($data['user_id']);
-        $role = Role::where('role', $data['role'])->first();
+        $role = Role::find($data['role_id']);
 
         if(!$user->has_role($role)) {
-            $user->roles()->attach($role);
+            $user->roles()->attach($role->id);
         }
     }
 
     public function detach(Request $request, User $user, Role $role) {
         if($user->has_role($role)) {
-            $user->roles()->detach($role);
+            $user->roles()->detach($role->id);
         }
     }
 

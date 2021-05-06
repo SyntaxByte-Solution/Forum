@@ -48,21 +48,22 @@ class TestHelper {
         return (bool) count(Permission::where('permission', $permission)->get());
     }
 
-    public static function create_role($role) {
+    public static function create_role($role, $slug) {
         if(!self::role_exists($role)) {
             return Role::create([
                 'role'=>$role,
-                'slug'=>'slave'
+                'slug'=>$slug
             ]);
         }
         
         return Role::where('role', $role)->first();
     }
 
-    public static function create_permission($permission) {
+    public static function create_permission($permission, $slug) {
         if(!self::permission_exists($permission)) {
             return Permission::create([
                 'permission'=>$permission,
+                'slug'=>$slug,
                 'description'=>'To find yourself, think for yourself - socrates'
             ]);
         }

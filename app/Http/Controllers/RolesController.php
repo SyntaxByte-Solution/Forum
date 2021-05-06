@@ -43,6 +43,7 @@ class RolesController extends Controller
     public function update(Request $request, Role $role) {
         $data = $request->validate([
             'role'=>'required|unique:roles',
+            'slug'=>'required|unique:roles,slug'
         ]);
 
         $role->update($data);

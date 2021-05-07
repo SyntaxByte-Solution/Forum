@@ -34,6 +34,7 @@ class RoleTest extends TestCase
             'role'=>'Moderator',
             'slug'=>'moderator'
         ]);
+        $this->assertCount(2, Role::all());
 
         $this->post('/roles', [
             'role'=>'Moderator',
@@ -76,7 +77,6 @@ class RoleTest extends TestCase
         $this->assertEquals('owner', Role::first()->role);
         $this->patch("/roles/1", [
             'role'=>'new_role_title',
-            'slug'=>'role.test'
         ]);
         $this->assertEquals('new_role_title', Role::first()->role);
     }
@@ -93,7 +93,6 @@ class RoleTest extends TestCase
         
         $this->patch("/roles/$role->id", [
             'role'=>'new_role_title',
-            'slug'=>'role.test'
         ]);
     }
 
@@ -109,7 +108,20 @@ class RoleTest extends TestCase
         
         $this->assertCount(1, Role::all());
         $this->delete("/roles/$role->id");
-        $this->assertCount(0, Role::all());
+    }
+
+    /** @test */
+    public function owner_could_delete_roles() {
+        $this->withoutExceptionHandling();
+
+        $owner = TestHelper::create_user_with_role('Owner', 'owner');
+        $role = TestHelper::create_role('Update a post', 'update.post');
+
+        $this->actingAs($owner);
+        
+        $this->assertCount(2, Role::all());
+        $this->delete("/roles/$role->id");
+        $this->assertCount(1, Role::all());
     }
 
     /** @test */

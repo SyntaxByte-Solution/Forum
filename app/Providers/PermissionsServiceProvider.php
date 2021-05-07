@@ -29,5 +29,13 @@ class PermissionsServiceProvider extends ServiceProvider
         Gate::define('update.permissions', function (User $user) {
             return $user->has_role('owner');
         });
+
+        Gate::define('role.permission.attach', function (User $user) {
+            return $user->has_role('owner');
+        });
+
+        Gate::define('role.permission.detach', function (User $user) {
+            return $user->has_role('owner');
+        });
     }
 }

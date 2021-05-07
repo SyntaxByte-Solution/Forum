@@ -26,7 +26,7 @@ class RoleTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
-        $owner = TestHelper::create_user_with_role('owner');
+        $owner = TestHelper::create_user_with_role('owner', 'owner');
 
         $this->actingAs($owner);
         
@@ -46,7 +46,7 @@ class RoleTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(AccessDeniedException::class);
 
-        $owner = TestHelper::create_user_with_role('owner');
+        $owner = TestHelper::create_user_with_role('owner', 'owner');
         $user = TestHelper::create_user();
         
         $this->actingAs($owner);
@@ -69,7 +69,7 @@ class RoleTest extends TestCase
 
     /** @test */
     public function owner_could_update_roles() {
-        $owner = TestHelper::create_user_with_role('owner');
+        $owner = TestHelper::create_user_with_role('owner', 'owner');
 
         $this->actingAs($owner);
         

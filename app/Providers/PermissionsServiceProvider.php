@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 class PermissionsServiceProvider extends ServiceProvider
 {
@@ -24,5 +26,8 @@ class PermissionsServiceProvider extends ServiceProvider
     public function boot()
     {
         // Registering gates
+        Gate::define('update.permissions', function (User $user) {
+            return $user->has_role('owner');
+        });
     }
 }

@@ -19,16 +19,16 @@ class TestHelper {
         return $user;
     }
 
-    public static function create_user_with_role($role) {
+    public static function create_user_with_role($role, $slug) {
         $user = self::create_user();
 
-        if(!self::role_exists($role)) {
+        if(!self::role_exists($slug)) {
             $role = Role::create([
                 'role'=>$role,
-                'slug'=>'slave'
+                'slug'=>$slug
             ]);
         } else {
-            $role = Role::where('role', $role)->first();
+            $role = Role::where('slug', $slug)->first();
         }
 
         $user->roles()->attach($role);
@@ -36,16 +36,12 @@ class TestHelper {
         return $user;
     }
 
-    public static function role_exists($role) {
-        $role = ($role instanceof Role) ? $role->role : $role;
-
-        return (bool) count(Role::where('role', $role)->get());
+    public static function role_exists($slug) {
+        return (bool) count(Role::where('slug', $slug)->get());
     }
 
-    public static function permission_exists($permission) {
-        $permission = ($permission instanceof Permission) ? $permission->permission : $permission;
-
-        return (bool) count(Permission::where('permission', $permission)->get());
+    public static function permission_exists($slug) {
+        return (bool) count(Permission::where('slug', $slug)->get());
     }
 
     public static function create_role($role, $slug) {

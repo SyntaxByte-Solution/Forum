@@ -24,7 +24,6 @@ Route::delete('/roles/{role}', [RolesController::class, 'destroy']);
 Route::post('/roles/attach', [RolesController::class, 'attach']);
 Route::delete('/users/{user}/roles/{role}/detach', [RolesController::class, 'detach']);
 
-Route::post('/permissions', [PermissionsController::class, 'create']);
 Route::patch('/permissions/{permission}', [PermissionsController::class, 'update']);
 Route::delete('/permissions/{permission}', [PermissionsController::class, 'destroy']);
 

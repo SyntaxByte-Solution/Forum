@@ -19,6 +19,7 @@ class CreatePermissionUserTable extends Migration
             $table->unsignedBigInteger('permission_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('permission_id')->references('id')->on('permissions');
+            $table->unique(['user_id', 'permission_id']);
         });
     }
 

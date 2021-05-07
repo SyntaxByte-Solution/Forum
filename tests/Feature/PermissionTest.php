@@ -13,28 +13,20 @@ class PermissionTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function boo() {
-        
+    public function a_permission_title_could_be_updated_only_by_owner() {
+        $this->withoutExceptionHandling();
+
         $user = TestHelper::create_user();
+        $owner = TestHelper::create_user_with_role('Owner', 'owner');
 
-        $role = TestHelper::create_role('author', 'author');
+        $permission = TestHelper::create_permission('Create a post', 'create.post');
 
-        $permission0 = TestHelper::create_permission('Create Post', 'create.post');
-        $permission1 = TestHelper::create_permission('Update Post', 'update.post');
-        $permission2 = TestHelper::create_permission('Delete Post', 'delete.post');
+        $this->actingAs($owner);
 
-        $permission3 = TestHelper::create_permission('Add Article', 'add.artice');
+        $this->patch('/permissions/' .$permission->id, [
+            'permission'=>'New permission title',
+        ]);
 
-        $role->permissions()->attach($permission0);
-        $role->permissions()->attach($permission1);
-        $role->permissions()->attach($permission2);
-
-        $user->roles()->attach($role);
-
-        $user->permissions()->attach($permission3);
-
-        // Till now, this user should have 4 permissions
-        $this->assertCount(4, $user->all_permissions());
-
+        $this->assertEquals('New permission title', $permission->refresh()->permission);
     }
 }

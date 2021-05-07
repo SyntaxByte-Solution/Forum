@@ -46,9 +46,9 @@ trait HasPermissionsTrait {
         return $all_permissions;
     }
 
-    public function has_permission($permission) {
+    public function has_permission($slug) {
         // We need permission as model to search for it later.
-        $perm = ($permission instanceof Permission) ? $permission : Permission::find($permission);
+        $perm = ($slug instanceof Permission) ? $slug : Permission::where('slug', $slug)->first();
 
         $all_permissions = $this->all_permissions();
 
@@ -60,11 +60,8 @@ trait HasPermissionsTrait {
         return false;
     }
 
-    public function has_role($role) {
-        // Besically the following line allows you to pass either a role id or a Role object
-        $role_id = ($role instanceof Role) ? $role->id : $role;
-
-        return $this->roles()->find($role_id) ? true : false;
+    public function has_role($slug) {
+        return (bool) $this->roles()->where('slug', $slug)->first();
     }
 
     public function givePermissionsTo(...$permissions) {

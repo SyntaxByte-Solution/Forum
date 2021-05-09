@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Route::get('/home', function () {
     dd($user = Auth::user());
-});
+})->middleware(['auth', 'verified']);
 
 Route::post('/roles', [RolesController::class, 'create']);
 Route::patch('/roles/{role}', [RolesController::class, 'update']);

@@ -10,7 +10,7 @@ use App\Models\{User, Role};
 class RolesController extends Controller
 {
     public function __construct() {
-        $this->middleware(['auth', 'role:owner']);
+        $this->middleware(['auth', 'role:admin']);
     }
 
     public function create(Request $request) {

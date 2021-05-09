@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\{RolesController, PermissionsController};
 
 /*
@@ -15,7 +16,11 @@ use App\Http\Controllers\{RolesController, PermissionsController};
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    dd($user = Auth::user());
+});
+
+Route::get('/home', function () {
+    dd($user = Auth::user());
 });
 
 Route::post('/roles', [RolesController::class, 'create']);

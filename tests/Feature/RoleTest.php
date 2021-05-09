@@ -26,7 +26,7 @@ class RoleTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(\Illuminate\Validation\ValidationException::class);
 
-        $owner = TestHelper::create_user_with_role('owner', 'owner');
+        $owner = TestHelper::create_user_with_role('Admin', 'admin');
 
         $this->actingAs($owner);
         
@@ -43,19 +43,19 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function only_owner_could_create_roles() {
+    public function only_admin_could_create_roles() {
         $this->withoutExceptionHandling();
         $this->expectException(AccessDeniedException::class);
 
-        $owner = TestHelper::create_user_with_role('owner', 'owner');
+        $admin = TestHelper::create_user_with_role('Admin', 'admin');
         $user = TestHelper::create_user();
         
-        $this->actingAs($owner);
+        $this->actingAs($admin);
 
         $this->assertCount(1, Role::all());
         $this->post('/roles', [
-            'role'=>'Admin',
-            'slug'=>'admin'
+            'role'=>'Moderator',
+            'slug'=>'moderator'
         ]);
         $this->assertCount(2, Role::all());
 
@@ -69,12 +69,12 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function owner_could_update_roles() {
-        $owner = TestHelper::create_user_with_role('owner', 'owner');
+    public function admin_could_update_roles() {
+        $owner = TestHelper::create_user_with_role('Admin', 'admin');
 
         $this->actingAs($owner);
         
-        $this->assertEquals('owner', Role::first()->role);
+        $this->assertEquals('Admin', Role::first()->role);
         $this->patch("/roles/1", [
             'role'=>'new_role_title',
         ]);
@@ -82,7 +82,7 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function only_owner_could_update_roles() {
+    public function only_admins_could_update_roles() {
         $this->withoutExceptionHandling();
         $this->expectException(AccessDeniedException::class);
 
@@ -97,7 +97,7 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function only_owner_could_delete_roles() {
+    public function only_admins_could_delete_roles() {
         $this->withoutExceptionHandling();
         $this->expectException(AccessDeniedException::class);
 
@@ -111,13 +111,13 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function owner_could_delete_roles() {
+    public function admin_could_delete_roles() {
         $this->withoutExceptionHandling();
 
-        $owner = TestHelper::create_user_with_role('Owner', 'owner');
+        $admin = TestHelper::create_user_with_role('Admin', 'admin');
         $role = TestHelper::create_role('Update a post', 'update.post');
 
-        $this->actingAs($owner);
+        $this->actingAs($admin);
         
         $this->assertCount(2, Role::all());
         $this->delete("/roles/$role->id");
@@ -125,7 +125,7 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function only_owner_could_attach_roles_to_users() {
+    public function only_admin_could_attach_roles_to_users() {
         $this->withoutExceptionHandling();
         $this->expectException(AccessDeniedException::class);
 
@@ -146,7 +146,7 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function only_owners_could_detach_roles_from_users() {
+    public function only_admins_could_detach_roles_from_users() {
         $this->withoutExceptionHandling();
         $this->expectException(AccessDeniedException::class);
 

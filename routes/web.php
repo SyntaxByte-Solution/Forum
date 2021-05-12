@@ -16,12 +16,12 @@ use App\Http\Controllers\{RolesController, PermissionsController};
 */
 
 Route::get('/', function () {
-    dd($user = Auth::user());
+    return view('index');
 });
 
 Route::get('/home', function () {
-    dd($user = Auth::user());
-})->middleware(['auth', 'verified']);
+    return view('index');
+})->middleware();
 
 Route::post('/roles', [RolesController::class, 'create']);
 Route::patch('/roles/{role}', [RolesController::class, 'update']);

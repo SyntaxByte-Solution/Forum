@@ -1,0 +1,169 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #49516a12;
+}
+
+a, input, textarea {
+    outline: none;
+}
+
+header {
+    background-color: #363945;
+}
+
+#forum-header {
+    border-top: 2px solid #23252c;
+    background-color: #363945;
+    padding: 6px 12px;
+}
+
+#header {
+    height: 65px;
+    display: flex;
+    align-items: center;
+}
+
+.fs14 {
+    font-size: 14px;
+}
+
+.relative {
+    position: relative;
+}
+
+.flex {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.move-to-right {
+    margin-left: auto;
+}
+
+#header-logo-container {
+    margin-right: 14px;
+}   
+
+#header-logo {
+    display: flex;
+    margin: 0 8px;
+    height: 50px;
+}
+
+.h-menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu-link-button {
+    display: flex;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    color:#dadada;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 1s background-color;
+}
+
+.menu-link-button:hover {
+    color: white;
+    background-color: rgba(245, 245, 245, 0.226);
+}
+
+.menu-separator {
+    color: white;
+    margin: 0 6px;
+}
+
+.menu-separator2 {
+    color: white;
+    font-size: 13px;
+    margin: 0 3px;
+}
+
+.white {
+    color: white;
+}
+
+.search-forum {
+    display: flex;
+    margin: 0 10px
+}
+
+.search-field {
+    padding: 8px 12px;
+    padding-left: 32px;
+    
+    min-width: 260px;
+    border-radius: 6px;
+    border: none;
+
+    background-image: url(../assets/images/icons/black-search.png);
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+
+.search-button {
+    display: flex;
+    cursor: pointer;
+    border: none;
+    background-color: rgb(58, 186, 236);
+    color: white;
+    font-weight: bold;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+
+    transition: 1s ease background-color;
+}
+
+.search-button:hover {
+    background-color: rgb(44, 154, 197);
+}
+
+#search-and-login {
+    margin-right: 16px;
+}
+
+#login-signin-button {
+    padding-left: 24px;
+    background-image: url(../assets/images/icons/login.png);
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: 4px center;
+}
+
+.vmenu-icon {
+    padding-left: 20px;
+    background-image: url(../assets/images/icons/vmenuw.png);
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: 4px center;
+}
+
+.edit-icon {
+    padding-left: 28px;
+    background-image: url(../assets/images/icons/edit.png);
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: 6px center;
+}
+
+.suboptions-container {
+    display: none;
+    position: absolute;
+    top: 20px;
+    width: 400px;
+    height: 140px;
+    border-radius: 6px;
+    background-color: #23252c;
+}

@@ -1,7 +1,6 @@
 $(".button-with-suboptions").on({
-    'mouseenter': function() {
+    'click': function() {
         let container = $(this).parent().find(".suboptions-container");
-        console.log(container);
         if(container.css("display") == "none") {
             $(".suboptions-container").css("display", "none");
             container.css("display", "block");
@@ -9,8 +8,17 @@ $(".button-with-suboptions").on({
             container.css("display", "none");
         }
         return false;
-    },
-    'mouseleave': function() {
-        $(this).parent().find(".suboptions-container").css('display', 'none');
     }
 });
+
+document.addEventListener("click", function(event) {
+    $(".suboptions-container").css("display", "none");
+}, false);
+
+let subContainers = document.querySelectorAll('.suboptions-container');
+for(let i = 0;i<subContainers.length;i++) {
+    subContainers[i].addEventListener("click", function(evt) {
+        $(this).css("display", "block");
+        evt.stopPropagation();
+    }, false);
+}

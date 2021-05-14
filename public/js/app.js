@@ -22,3 +22,16 @@ for(let i = 0;i<subContainers.length;i++) {
         evt.stopPropagation();
     }, false);
 }
+
+$('.close-shadowed-view').click(function() {
+    $(this).parent().css('display', 'none');
+
+    return false;
+});
+
+$('#login-signin-button').click(function() {
+    $('#login-view').parent().css('display', 'block');
+    $('#login-view').parent().css('opacity', '1');
+
+    return false;
+});

@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
     background-color: #49516a12;
 }
@@ -28,12 +29,26 @@ header {
     font-size: 14px;
 }
 
+.fs13 {
+    font-size: 13px;
+}
+
 .fs11 {
     font-size: 11px;
 }
 
+.error {
+    color: rgb(228, 48, 48);
+    margin: 0;
+    font-size: 13px;
+}
+
 .relative {
     position: relative;
+}
+
+.absolute {
+    position: absolute;
 }
 
 .flex {
@@ -50,6 +65,15 @@ header {
 
 .move-to-right {
     margin-left: auto;
+}
+
+.full-width {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.move-to-middle {
+    margin: 0 auto;
 }
 
 #header-logo-container {
@@ -81,6 +105,20 @@ header {
 .menu-link-button:hover {
     color: white;
     background-color: rgba(245, 245, 245, 0.226);
+}
+
+.suboption-style-1 {
+    display: flex;
+    padding: 10px 12px;
+    font-weight: 600;
+    color:#dadada;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 1s background-color;
+}
+
+.suboption-style-1:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .menu-separator {
@@ -197,6 +235,29 @@ header {
     border-bottom-right-radius: 4px;
 }
 
+.suboptions-account-style {
+    display: none;
+    position: absolute;
+    top: 46px;
+    right: 0;
+    width: 240px;
+    background-color: #62687e;
+    border: 1px solid #282b38;
+}
+
+.triangle {
+    z-index: 0;
+    top: -14px;
+    right: 15px;
+    position: absolute;
+    border-color: transparent transparent #62687e transparent;
+    border-style: solid;
+    border-width: 8px 8px 8px 8px;
+    height: 0px;
+    width: 0px;
+    display: inline-block;
+}
+
 main {
     width: 80%;
     height: 400px;
@@ -204,4 +265,133 @@ main {
     margin-top: 16px;
 
     background-color: rgb(250, 250, 250);
+}
+
+.full-shadowed {
+    display: none;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.58);
+
+    transition: 1s ease opacity;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+.line-separator {
+    margin: 10px 0;
+    height: 1px;
+    background-color: #d3d3d3;
+}
+
+.block {
+    display: block;
+}
+
+.close-shadowed-view {
+    position: absolute;
+    display: block;
+
+    top: 30px;
+    right: 30px;
+
+    height: 36px;
+    width: 36px;
+
+    border-radius: 50%;
+
+    background-image: url(../assets/images/icons/wx.png);
+    background-size: 16px;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    transition: 1s ease background-color;
+}
+
+.close-shadowed-view:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.header-profile-button {
+    display: flex;
+    height: 40px;
+    width: 40px;
+    margin: 0 4px;
+
+    border-radius: 50%;
+    background-color: #181a22;
+}
+
+.header-profile-picture {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.rounded-style-1 {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.first-profile-container-part {
+    padding: 10px 10px 0 10px;
+}
+
+/* login */
+
+#login-top-logo {
+    display: block;
+    width: 60%;
+}
+
+#login-view {
+    box-sizing: border-box;
+    padding: 30px 46px;
+    width: 36%;
+    border-radius: 6px;
+    margin: 0 auto;
+    margin-top: 26px;
+
+    background-color: whitesmoke;
+}
+
+.input-style {
+    padding: 8px 10px;
+    border: 1px solid gray;
+    font-size: 14px;
+    border-radius: 4px;
+    min-width: 300px;
+}
+
+.label-style {
+    display: flex;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.link-style {
+    color: rgb(55, 101, 255);
+}
+
+.button-style {
+    border-radius: 4px;
+    padding: 12px 16px;
+    color: white;
+    background-color: #1e2027;
+    cursor: pointer;
+    border: none;
+}
+
+.button-style:hover {
+    background-color: #353946;
+}
+
+.input-container {
+    margin: 8px 0;
 }

@@ -32,20 +32,61 @@
             @auth
                 <div class="flex">
                     <div class="relative">
+                        <a href="" class="header-profile-button button-with-suboptions notifications-icon background-partial-2"></a>    
+                        <div class="suboptions-container suboptions-account-style">
+                            <div class="triangle"></div>
+                            
+                            <div class="flex align-center first-profile-container-part">
+                                <img src="avatar.jpg" alt="profile picture" class="rounded-style-1" style="margin-right: 6px">
+                                <h2>Mouad Nassri</h2>
+                            </div>
+                            <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
+                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>
+                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Help</a>
+                            <a href="" class="suboption-style-1 bsettings-icon background-partial-1">Settings</a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 logout-icon background-partial-1">Logout</a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                            </form>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <a href="" class="header-profile-button button-with-suboptions feedback-icon background-partial-2"></a>
+                        <div class="suboptions-container suboptions-account-style">
+                            <div class="triangle"></div>
+                            
+                            <div class="flex align-center first-profile-container-part">
+                                <img src="avatar.jpg" alt="profile picture" class="rounded-style-1" style="margin-right: 6px">
+                                <h2>Mouad Nassri</h2>
+                            </div>
+                            <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
+                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>
+                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Help</a>
+                            <a href="" class="suboption-style-1 bsettings-icon background-partial-1">Settings</a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 logout-icon background-partial-1">Logout</a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                            </form>
+                        </div>
+                    </div>
+                    <div class="relative">
                         <a href="" class="header-profile-button button-with-suboptions">
                             <img src="avatar.jpg" alt="profile picture" class="header-profile-picture">
                         </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
                             
-                            <div class="flex first-profile-container-part">
-                                <img src="avatar.jpg" alt="profile picture" class="rounded-style-1">
+                            <div class="flex align-center first-profile-container-part">
+                                <img src="avatar.jpg" alt="profile picture" class="rounded-style-1" style="margin-right: 6px">
                                 <h2>Mouad Nassri</h2>
                             </div>
-                            <a href="" class="suboption-style-1 calendar-icon background-partial">Profile</a>
-                            <a href="" class="suboption-style-1 calendar-icon background-partial">Your questions</a>
-                            <a href="" class="suboption-style-1 calendar-icon background-partial">Settings</a>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 calendar-icon background-partial">Logout</a>
+                            <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
+                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>
+                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Help</a>
+                            <a href="" class="suboption-style-1 bsettings-icon background-partial-1">Settings</a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 logout-icon background-partial-1">Logout</a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                 @csrf
@@ -95,7 +136,7 @@
 
     <div class="absolute full-shadowed zi12">
         <a href="" class="close-shadowed-view"></a>
-        <div id="login-view">
+        <div id="login-view" class="auth-card">
             <div>
                 <img id="login-top-logo" class="move-to-middle" src="assets/images/logos/b-large-logo.png" alt="logo">
             </div>
@@ -106,7 +147,7 @@
                 <div class="input-container">
                     <label for="email" class="label-style">{{ __('Email address') }} @error('email') <span class="error">*</span> @enderror</label>
 
-                    <input type="email" name="email" class="full-width input-style @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" placeholder="{{ __('Email address') }}">
+                    <input type="email" id="email" name="email" class="full-width input-style @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" placeholder="{{ __('Email address') }}">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <p class="error">{{ $message }}</p>
@@ -117,7 +158,7 @@
                 <div class="input-container">
                     <label for="password" class="label-style">{{ __('Password') }} </label>
 
-                    <input type="password" name="password" class="full-width input-style" required placeholder="{{ __('Password') }}" autocomplete="current-password">
+                    <input type="password" id="password" name="password" class="full-width input-style" required placeholder="{{ __('Password') }}" autocomplete="current-password">
                     @error('password')
                         <p class="error">{{ $message }}</p>
                     @enderror

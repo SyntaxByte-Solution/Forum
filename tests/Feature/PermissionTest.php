@@ -103,7 +103,7 @@ class PermissionTest extends TestCase
     public function when_a_role_is_deleted_all_related_records_in_pivot_tables_are_deleted_as_well() {
         $this->withoutExceptionHandling();
 
-        $owner = TestHelper::create_user_with_role('Owner', 'owner');
+        $owner = TestHelper::create_user_with_role('Admin', 'admin');
         $role = TestHelper::create_role('Update a post', 'update.post');
         $permission = TestHelper::create_permission('Update a post', 'update.post');
 

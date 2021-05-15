@@ -11,7 +11,9 @@ class TestHelper {
         $faker = \Faker\Factory::create();
 
         $user = User::create([
-            'name'=>$faker->name,
+            'firstname'=>$faker->firstname,
+            'lastname'=>$faker->lastname,
+            'username'=>$faker->username,
             'email'=>$faker->email,
             'password'=>$faker->password,
         ]);

@@ -59,7 +59,9 @@ class RoleTest extends TestCase
         ]);
 
         $user = User::create([
-            'name'=>'Mouad Nassri',
+            'firstname'=>'Mouad',
+            'lastname'=>'Nassri',
+            'username'=>'Grotto',
             'email'=>'mouad@gmail.com',
             'password'=>'laremuranium'
         ]);
@@ -80,7 +82,9 @@ class RoleTest extends TestCase
         ]);
 
         $user = User::create([
-            'name'=>'Mouad Nassri',
+            'firstname'=>'Mouad',
+            'lastname'=>'Nassri',
+            'username'=>'Grotto',
             'email'=>'mouad@gmail.com',
             'password'=>'laremuranium'
         ]);

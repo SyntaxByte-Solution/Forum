@@ -17,11 +17,12 @@ use App\Http\Controllers\{RolesController, PermissionsController};
 
 Route::get('/', function () {
     return view('index');
-});
+    // Here I use verified middleware just for testing
+})->middleware(['verified']);
 
 Route::get('/home', function () {
     return view('index');
-})->middleware();
+})->middleware(['verified']);
 
 Route::post('/roles', [RolesController::class, 'create']);
 Route::patch('/roles/{role}', [RolesController::class, 'update']);

@@ -14,7 +14,7 @@ header {
 }
 
 #forum-header {
-    border-top: 2px solid #23252c;
+    border-top: 2px solid #292a31;
     background-color: #363945;
     padding: 6px 12px;
 }
@@ -53,6 +53,10 @@ header {
 
 .flex {
     display: flex;
+}
+
+.space-between {
+    justify-content: space;
 }
 
 .align-center {
@@ -255,6 +259,22 @@ header {
     background-image: url(../assets/images/icons/feather.png);
 }
 
+.qst-icon {
+    background-image: url(../assets/images/icons/qst.png);
+}
+
+.popular-icon {
+    background-image: url(../assets/images/icons/popular.png);
+}
+
+.users-icon {
+    background-image: url(../assets/images/icons/users.png);
+}
+
+.suboptions-container {
+    z-index: 1;
+}
+
 .suboptions-buttons-style {
     display: none;
     align-items: center;
@@ -291,14 +311,15 @@ header {
     display: inline-block;
 }
 
-/* main {
-    width: 80%;
-    height: 400px;
+main {
+    position: relative;
+    display: flex;
+    height: 800px;
     margin: 0 auto;
-    margin-top: 16px;
+    padding-left: 260px;
 
     background-color: rgb(250, 250, 250);
-} */
+}
 
 .full-shadowed {
     display: none;
@@ -405,6 +426,80 @@ header {
     position: absolute;
     right: 16px;
     top: 16px;
+}
+
+/* Left-panel */
+#left-panel {
+    position: absolute;
+    left: 0;
+
+    padding: 30px 0 0 30px;
+    color: white;
+    overflow-y: scroll;
+    min-width: 260px;
+    box-sizing: border-box;
+
+    background-color: #5d6275;
+}
+
+.lp-padding {
+    padding: 8px 8px 8px 28px;
+}
+
+.lp-wpadding {
+    padding: 8px;
+}
+
+.left-panel-item {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    color: rgb(238, 238, 238);
+    text-decoration: none;
+}
+
+.left-panel-item:hover {
+    color: white;
+}
+
+.left-panel-label {
+    font-weight: bold;
+    font-size: 11px;
+    color: rgb(190, 190, 190);
+}
+
+.lp-selected, .lp-sub-selected {
+    background-color: #4d5264;
+}
+
+.selected-colored-slice {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 6px;
+    background-color: rgb(58, 186, 236);
+}
+
+.left-panel-sub-items {
+    padding-left: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #79809b;
+}
+
+.lp-sub-item {
+    font-size: 12px;
+    padding: 4px 8px;
+}
+
+.line-bootstraper {
+    font-size: 10px;
+    color: white;
+    margin-right: 6px;
+}
+
+.simple-link {
+    color: white;
+    font-size: 13px;
 }
 
 /* login */

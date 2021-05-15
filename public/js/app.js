@@ -35,3 +35,12 @@ $('#login-signin-button').click(function() {
 
     return false;
 });
+
+console.log($(window).height());
+
+$('#left-panel').height($(window).height() - $('header').height() - 30);
+
+window.onresize = function(event) {
+    console.log($(window).height() - $('header').height());
+    $('#left-panel').height($(window).height() - $('header').height() - 30);
+};

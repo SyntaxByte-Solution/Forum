@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-    
+    @include('partials.left-panel', ['page' => 'home'])
 @endsection

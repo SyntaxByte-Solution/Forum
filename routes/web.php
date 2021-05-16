@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\{RolesController, PermissionsController};
+use App\Http\Controllers\{RolesController, PermissionsController, CategoryController};
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +35,7 @@ Route::delete('/permissions/{permission}', [PermissionsController::class, 'destr
 
 Route::post('roles/{role}/permissions/attach', [PermissionsController::class, 'attach_permission_to_role']);
 Route::post('roles/{role}/permissions/{permission}/detach', [PermissionsController::class, 'detach_permission_from_role']);
+
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::patch('/categories/{category}', [CategoryController::class, 'update']);
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);

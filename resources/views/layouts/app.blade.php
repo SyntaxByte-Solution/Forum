@@ -26,7 +26,7 @@
     <div id="app">
         <!-- IMPORT HEADER FROM PARTIALS LATER -->
         @yield('header')
-        <main class="flex">
+        <main class="relative">
             @yield('content')
         </main>
     </div>

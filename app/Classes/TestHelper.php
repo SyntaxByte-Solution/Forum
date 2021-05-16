@@ -3,7 +3,7 @@
 namespace App\Classes;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use App\Models\{User, Role, Permission};
+use App\Models\{User, Role, Permission, Category};
 
 class TestHelper {
 
@@ -46,6 +46,10 @@ class TestHelper {
         return (bool) count(Permission::where('slug', $slug)->get());
     }
 
+    public static function category_exists($slug) {
+        return (bool) count(Category::where('slug', $slug)->get());
+    }
+
     public static function create_role($role, $slug) {
         if(!self::role_exists($role)) {
             return Role::create([
@@ -58,7 +62,7 @@ class TestHelper {
     }
 
     public static function create_permission($permission, $slug) {
-        if(!self::permission_exists($permission)) {
+        if(!self::permission_exists($slug)) {
             return Permission::create([
                 'permission'=>$permission,
                 'slug'=>$slug,
@@ -67,5 +71,18 @@ class TestHelper {
         }
 
         return Permission::where('permission', $permission)->first();
+    }
+
+    public static function create_category($category, $slug, $desc, $status) {
+        if(!self::category_exists($slug)) {
+            return Category::create([
+                'category'=>$category,
+                'slug'=>$slug,
+                'description'=>$desc,
+                'status'=>$status
+            ]);
+        }
+
+        return Category::where('slug', $slug)->first();
     }
 }

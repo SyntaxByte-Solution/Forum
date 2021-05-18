@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\{Category, CStatus};
+use App\Models\{Category, CategoryStatus};
 use App\Classes\TestHelper;
 
 class CategoryTest extends TestCase
@@ -14,7 +14,7 @@ class CategoryTest extends TestCase
     /** @test */
     public function category_could_be_created() {
         
-        CStatus::create([
+        CategoryStatus::create([
             'status'=>'TEMPORARILTY CLOSED',
             'slug'=>'temp.closed'
         ]);

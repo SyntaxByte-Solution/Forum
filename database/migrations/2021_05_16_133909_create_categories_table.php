@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug')->unique();
             $table->string('description')->nullable();
 
-            $table->unsignedBigInteger('status');
+            $table->unsignedBigInteger('status')->default('1');
             
             $table
                 ->foreign('status')

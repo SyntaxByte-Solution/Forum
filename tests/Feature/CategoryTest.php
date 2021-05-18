@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Exceptions\UnauthorizedActionException;
-use App\Models\{Category, CStatus};
+use App\Models\{Category, CategoryStatus};
 use App\Classes\TestHelper;
 
 class CategoryTest extends TestCase
@@ -20,7 +20,7 @@ class CategoryTest extends TestCase
         $user = TestHelper::create_user_with_role('admin', 'admin');
         $this->actingAs($user);
 
-        CStatus::create([
+        CategoryStatus::create([
             'status'=>'TEMPORARILTY CLOSED',
             'slug'=>'temp.closed'
         ]);
@@ -53,7 +53,7 @@ class CategoryTest extends TestCase
         $user = TestHelper::create_user_with_role('admin', 'admin');
         $this->actingAs($user);
 
-        CStatus::create([
+        CategoryStatus::create([
             'status'=>'TEMPORARILTY CLOSED',
             'slug'=>'temp.closed'
         ]);
@@ -85,7 +85,7 @@ class CategoryTest extends TestCase
         $user = TestHelper::create_user_with_role('admin', 'admin');
         $this->actingAs($user);
 
-        CStatus::create([
+        CategoryStatus::create([
             'status'=>'TEMPORARILTY CLOSED',
             'slug'=>'temp.closed'
         ]);

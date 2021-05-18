@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\{RolesController, PermissionsController, CategoryController};
+use App\Http\Controllers\
+    {RolesController, PermissionsController, 
+     CategoryController, ThreadController};
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +26,8 @@ Route::get('/home', function () {
     return view('index');
 })->middleware(['verified']);
 
+
+
 Route::post('/roles', [RolesController::class, 'create']);
 Route::patch('/roles/{role}', [RolesController::class, 'update']);
 Route::delete('/roles/{role}', [RolesController::class, 'destroy']);
@@ -39,3 +43,7 @@ Route::post('roles/{role}/permissions/{permission}/detach', [PermissionsControll
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::patch('/categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/thread', [ThreadController::class, 'store']);
+});

@@ -19,9 +19,14 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->string('username')->unique();
             $table->string('avatar')->nullable();
+            $table->unsignedBigInteger('reputation')->default('1');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            
+            $table->unsignedBigInteger('status_id')->default('1');
+            $table->foreign('status_id')->references('id')->on('user_status');
+
             $table->rememberToken();
             $table->timestamps();
         });

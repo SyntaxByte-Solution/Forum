@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\{Role, User};
+use App\Classes\TestHelper;
 
 class RoleTest extends TestCase
 {
@@ -58,13 +59,7 @@ class RoleTest extends TestCase
             'slug'=>'moderator'
         ]);
 
-        $user = User::create([
-            'firstname'=>'Mouad',
-            'lastname'=>'Nassri',
-            'username'=>'Grotto',
-            'email'=>'mouad@gmail.com',
-            'password'=>'laremuranium'
-        ]);
+        $user = TestHelper::create_user();
 
         $this->assertCount(0, $user->roles);
         $user->roles()->attach($role);
@@ -81,13 +76,7 @@ class RoleTest extends TestCase
             'slug'=>'moderator'
         ]);
 
-        $user = User::create([
-            'firstname'=>'Mouad',
-            'lastname'=>'Nassri',
-            'username'=>'Grotto',
-            'email'=>'mouad@gmail.com',
-            'password'=>'laremuranium'
-        ]);
+        $user = TestHelper::create_user();
 
         $user->roles()->attach($role);
         $user->load('roles');

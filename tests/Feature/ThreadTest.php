@@ -42,7 +42,5 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, Thread::all());
-
-        dd(Thread::first());
     }
 }

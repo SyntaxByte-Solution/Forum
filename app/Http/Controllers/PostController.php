@@ -22,6 +22,8 @@ class PostController extends Controller
     }
 
     public function update(Post $post) {
+        $this->authorize('update', $post);
+
         $data = request()->validate([
             'title'=>'sometimes|min:2|max:1000',
             'content'=>'sometimes|min:2|max:40000',
@@ -31,6 +33,8 @@ class PostController extends Controller
     }
 
     public function destroy(Post $post) {
+        $this->authorize('destroy', $post);
+
         $post->delete();
     }
 }

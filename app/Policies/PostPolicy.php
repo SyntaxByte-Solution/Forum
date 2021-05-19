@@ -30,7 +30,11 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        //
+        if($user->isBanned()) {
+            throw new UserBannedException();
+        }
+
+        return $post->user_id == $user->id;
     }
 
     /**
@@ -40,8 +44,12 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return mixed
      */
-    public function delete(User $user, Post $post)
+    public function destroy(User $user, Post $post)
     {
-        //
+        if($user->isBanned()) {
+            throw new UserBannedException();
+        }
+
+        return $post->user_id == $user->id;
     }
 }

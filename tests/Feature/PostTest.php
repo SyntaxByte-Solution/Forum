@@ -161,5 +161,43 @@ class PostTest extends TestCase
         $this->assertTrue(true);
     }
 
+    /** @test */
+    public function only_post_owner_could_edit_the_current_post() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+
+        $post = Post::create([
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>1,
+            'user_id'=>1
+        ]);
+
+        $other_user = TestHelper::create_user();
+        $this->actingAs($other_user);
+
+        $this->patch('/post/'.$post->id, [
+            'title'=>'Re: This is the editable version of the subject of our post',
+            'content'=>"Hello guys, Never mind, I think I was drunk right !",
+        ]);
+    }
+
+    /** @test */
+    public function only_post_owner_could_delete_the_dcurrent_post() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+
+        $post = Post::create([
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>1,
+            'user_id'=>1
+        ]);
+
+        $other_user = TestHelper::create_user();
+        $this->actingAs($other_user);
+
+        $this->delete('/post/'.$post->id);
+    }
 
 }

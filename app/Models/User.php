@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\{Role, Permission, UserStatus};
+use App\Models\{Role, Permission, UserStatus, Thread};
 use App\Permissions\HasPermissionsTrait;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -33,6 +33,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function threads() {
+        return $this->hasMany(Thread::class);
+    }
 
     public function isBanned() {
         return $this->has_status('banned');

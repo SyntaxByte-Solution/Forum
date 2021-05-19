@@ -12,42 +12,21 @@ class ThreadPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
-    {
-        //
-    }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Thread  $thread
-     * @return mixed
-     */
-    public function view(User $user, Thread $thread)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
+     * Determine whether the user can store models.
      *
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function store(User $user)
     {
         if($user->isBanned()) {
             throw new UserBannedException();
         }
 
-        return true;
+        // The user should be: authenticated, not banned and post less than 60 threads per day.
+        return $user->threads()->today()->count() < 60;
     }
 
     /**
@@ -59,7 +38,11 @@ class ThreadPolicy
      */
     public function update(User $user, Thread $thread)
     {
-        //
+        if($user->isBanned()) {
+            throw new UserBannedException();
+        }
+
+        return $thread->user_id == $user->id;
     }
 
     /**
@@ -69,9 +52,13 @@ class ThreadPolicy
      * @param  \App\Models\Thread  $thread
      * @return mixed
      */
-    public function delete(User $user, Thread $thread)
+    public function destroy(User $user, Thread $thread)
     {
-        //
+        if($user->isBanned()) {
+            throw new UserBannedException();
+        }
+
+        return $thread->user_id == $user->id;
     }
 
     /**

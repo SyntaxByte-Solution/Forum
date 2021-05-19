@@ -45,5 +45,7 @@ Route::patch('/categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
 Route::middleware(['auth'])->group(function () {
+
     Route::post('/thread', [ThreadController::class, 'store']);
+    
 });

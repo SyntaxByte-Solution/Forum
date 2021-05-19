@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Exceptions\AccessDeniedException;
+use App\Exceptions\{AccessDeniedException, UserBannedException};
 use App\Classes\TestHelper;
 use App\Models\{Thread, CategoryStatus, ThreadStatus};
 
@@ -42,5 +42,30 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, Thread::all());
+    }
+
+    /** @test */
+    public function a_banned_user_could_not_post_threads() {
+        $this->withoutExceptionHandling();
+        $this->expectException(UserBannedException::class);
+
+        $user = TestHelper::create_user_with_status('banned', 'banned');
+        $this->actingAs($user);
+
+        CategoryStatus::create([
+            'status'=>'LIVE',
+            'slug'=>'live'
+        ]);
+
+        ThreadStatus::create([
+            'status'=>'LIVE'
+        ]);
+
+        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
+
+        $this->post('/thread', [
+            'subject'=>'The side effects of using steroids',
+            'category_id'=>1,
+        ]);
     }
 }

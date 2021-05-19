@@ -24,6 +24,23 @@ class TestHelper {
         return $user;
     }
 
+    public static function create_user_with_status($status, $slug) {
+        $faker = \Faker\Factory::create();
+
+        $status = self::create_user_status($status, $slug)->id;
+
+        $user = User::create([
+            'firstname'=>$faker->firstname,
+            'lastname'=>$faker->lastname,
+            'username'=>$faker->username,
+            'status_id'=>$status,
+            'email'=>$faker->email,
+            'password'=>$faker->password,
+        ]);
+
+        return $user;
+    }
+
     public static function create_user_with_role($role, $slug) {
         $user = self::create_user();
 

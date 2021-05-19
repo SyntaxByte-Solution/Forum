@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\{Role, Permission, UserStatus, Thread};
 use App\Permissions\HasPermissionsTrait;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -44,5 +45,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin() {
         return $this->has_role('admin');
+    }
+
+    public function today_posts_count() {
+        $count = 0;
+        foreach($this->threads as $thread) {
+            $count += $thread->posts()->whereDate('created_at', Carbon::today())->count();
+        }
+
+        return $count;
     }
 }

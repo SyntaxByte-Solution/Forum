@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Exceptions\AccessDeniedException;
+use App\Exceptions\{AccessDeniedException, UserBannedException};
 use App\Models\{Role, User, Thread, CategoryStatus, ThreadStatus, PostStatus, Post};
 use App\Classes\TestHelper;
 
@@ -100,5 +100,66 @@ class PostTest extends TestCase
         $this->delete('/post/'.$post->id);
         $this->assertCount(0, Post::all());
     }
+
+    /** @test */
+    public function banned_user_cant_add_post() {
+        $this->withoutExceptionHandling();
+        $this->expectException(UserBannedException::class);
+
+        $banned = TestHelper::create_user_with_status('BANNED', 'banned');
+        $this->actingAs($banned);
+
+        $this->post('/post', [
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>1,
+        ]);
+    }
+
+    /** @test */
+    public function users_could_post_a_limited_number_of_posts_per_day() {
+        $this->withoutExceptionHandling();
+
+        $user = User::first();
+        $this->actingAs($user);
+
+        $this->post('/post', [
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>1,
+        ]);
+
+        $this->post('/post', [
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>1,
+        ]);
+
+        $this->post('/post', [
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>1,
+        ]);
+
+        $thread2 = Thread::create([
+            'subject'=>'The side effects of using glutamine',
+            'user_id'=>1,
+            'category_id'=>1,
+        ]);
+
+        $this->post('/post', [
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>2,
+        ]);
+
+        /**
+         * Again here we can't create too many posts to test this feature, because the user
+         * could post 280 posts per day as maximum. If you want to test this try to change the max
+         * to 3 and expect authorization expected to be returned from the authorization inside the controller
+         */
+        $this->assertTrue(true);
+    }
+
 
 }

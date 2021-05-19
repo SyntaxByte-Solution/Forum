@@ -8,6 +8,8 @@ use App\Models\Post;
 class PostController extends Controller
 {
     public function store() {
+        $this->authorize('store', Post::class);
+
         $data = request()->validate([
             'title'=>'required|min:2|max:1000',
             'content'=>'required|min:2|max:40000',

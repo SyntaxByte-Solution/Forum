@@ -31,7 +31,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -58,7 +59,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -82,7 +84,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -117,7 +120,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -156,7 +160,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -190,7 +195,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -219,7 +225,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -254,7 +261,8 @@ class ThreadTest extends TestCase
         ]);
 
         ThreadStatus::create([
-            'status'=>'LIVE'
+            'status'=>'LIVE',
+            'slug'=>'live'
         ]);
 
         $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
@@ -263,7 +271,6 @@ class ThreadTest extends TestCase
             'subject'=>'The side effects of using steroids',
             'category_id'=>1,
         ]);
-
         $this->post('/thread', [
             'subject'=>'The side effects of using proteins',
             'category_id'=>1,

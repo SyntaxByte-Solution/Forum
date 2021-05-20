@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{SCategory, CStatus};
+use App\Models\{SCategory, CStatus, Subcategory};
 
 class Category extends Model
 {
@@ -14,5 +14,9 @@ class Category extends Model
 
     public function getStatusAttribute($value) {
         return CStatus::find($value);
+    }
+
+    public function subcategories() {
+        return $this->hasMany(Subcategory::class);
     }
 }

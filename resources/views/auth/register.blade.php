@@ -16,7 +16,7 @@
 
 @section('content')
     <div class="auth-card relative">
-        <a href="/login" class="back-to-login link-style">< Back to login</a>
+        <a href="/login" class="back-to-login link-style">{{ __('< Back to login') }}</a>
         <div>
             <a href="../"><img id="login-top-logo" class="move-to-middle" src="/assets/images/logos/b-large-logo.png" alt="logo"></a>
         </div>

@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
     {RolesController, PermissionsController, 
-     CategoryController, ThreadController, PostController};
+     CategoryController, ThreadController, PostController,
+     SubcategoryController};
 
 /*
 |--------------------------------------------------------------------------
@@ -55,3 +56,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
 
 });
+
+/** 
+ * The routes that are accessible for only admins should be placed in a group
+ * with authorization defined as middleware.
+ */
+
+Route::post('/subcategory', [SubcategoryController::class, 'store']);
+Route::patch('/subcategory/{subcategory}', [SubcategoryController::class, 'update']);
+Route::delete('/subcategory/{subcategory}', [SubcategoryController::class, 'destroy']);

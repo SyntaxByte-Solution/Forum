@@ -29,20 +29,86 @@ class SubcategoryTest extends TestCase
     }
 
     /** @test */
-    public function foo() {
-        $category = Category::first();
+    public function a_subcategory_could_be_added() {
+        $this->withoutExceptionHandling();
 
-        $subdirectory = Subcategory::create([
-            'subcategory'=>'pull up section',
-            'description'=>'This section, is for pull ups exercices and challenges',
+        $this->assertCount(0, Subcategory::all());
+        $this->post('/subcategory', [
+            'subcategory'=>'Pull ups section',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
             'category_id'=>1
         ]);
-        $subdirectory = Subcategory::create([
-            'subcategory'=>'pull up section',
-            'description'=>'This section, is for pull ups exercices and challenges',
+        $this->assertCount(1, Subcategory::all());
+    }
+
+    /** @test */
+    public function subcategories_are_unique_relative_to_category() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\App\Exceptions\DuplicateSubcategoryException::class);
+
+        Subcategory::create([
+            'subcategory'=>'Pull ups section',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
             'category_id'=>1
         ]);
 
-        dd($subdirectory->category);
+        $this->post('/subcategory', [
+            'subcategory'=>'Pull ups section',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
+            'category_id'=>1
+        ]);
+    }
+
+    /** @test */
+    public function subcategory_could_be_edited() {
+        $this->withoutExceptionHandling();
+
+        $subcategory = Subcategory::create([
+            'subcategory'=>'Pull ups section',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
+            'category_id'=>1
+        ]);
+
+        $this->patch('/subcategory/'.$subcategory->id, [
+            'subcategory'=>'Pull ups gate',
+        ]);
+
+        $this->assertEquals('Pull ups gate', $subcategory->refresh()->subcategory);
+    }
+
+    /** @test */
+    public function duplicate_subdirectories_titles_are_not_allowed_while_editing() {
+        $this->withoutExceptionHandling();
+        $this->expectException(\App\Exceptions\DuplicateSubcategoryException::class);
+
+        Subcategory::create([
+            'subcategory'=>'Pull ups section',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
+            'category_id'=>1
+        ]);
+        $subcategory = Subcategory::create([
+            'subcategory'=>'Pull ups gate',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
+            'category_id'=>1
+        ]);
+
+        $this->patch('/subcategory/'.$subcategory->id, [
+            'subcategory'=>'Pull ups section',
+        ]);
+    }
+
+    /** @test */
+    public function subdirectory_could_be_deleted() {
+        $this->withoutExceptionHandling();
+
+        $subcategory = Subcategory::create([
+            'subcategory'=>'Pull ups section',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
+            'category_id'=>1
+        ]);
+        
+        $this->assertCount(1, Subcategory::all());
+        $this->delete('/subcategory/'.$subcategory->id);
+        $this->assertCount(0, Subcategory::all());
     }
 }

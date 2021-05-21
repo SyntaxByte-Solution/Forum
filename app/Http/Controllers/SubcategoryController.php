@@ -8,6 +8,10 @@ use App\Exceptions\DuplicateSubcategoryException;
 
 class SubcategoryController extends Controller
 {
+    public function __construct() {
+        $this->middleware(['auth', 'role:admin']);
+    }
+    
     public function store() {
         $data = request()->validate([
             'subcategory'=>'required|min:2|max:800',

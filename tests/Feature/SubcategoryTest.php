@@ -15,6 +15,9 @@ class SubcategoryTest extends TestCase
     public function setUp():void {
         parent::setUp();
 
+        $admin = TestHelper::create_user_with_role('Admin', 'admin');
+        $this->actingAs($admin);
+
         CategoryStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'

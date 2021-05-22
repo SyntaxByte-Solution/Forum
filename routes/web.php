@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
-     CategoryController, ThreadController, PostController};
+     CategoryController, ThreadController, PostController,
+     IndexController};
+use App\Models\Forum;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +19,8 @@ use App\Http\Controllers\
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-    // Here I use verified middleware just for testing
-})->middleware(['verified']);
-
-Route::get('/home', function () {
-    return view('index');
-})->middleware(['verified']);
+Route::get('/', [IndexController::class, 'index'])->middleware(['verified']);
+Route::get('/home', [IndexController::class, 'index'])->middleware(['verified']);
 
 /** 
  * The routes that are accessible for only admins should be placed in a group

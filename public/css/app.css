@@ -141,13 +141,13 @@ a, input, textarea {
 }
 
 .search-field {
-    padding: 12px 16px;
+    padding: 10px 16px;
     padding-left: 32px;
 
-    font-size: 15px;
+    font-size: 13px;
     
     min-width: 270px;
-    border-radius: 10px;
+    border-radius: 6px;
     border: none;
 
     background-image: url(../assets/images/icons/black-search.png);
@@ -162,7 +162,6 @@ a, input, textarea {
     border: none;
     background-color: rgb(58, 186, 236);
     color: white;
-    font-weight: bold;
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
 
@@ -599,6 +598,14 @@ th {
 
 td {
     padding: 12px 14px;
+}
+
+tr:first-child {
+    background-color: white;
+    border-bottom: 2px solid rgb(34, 34, 34);
+}
+tr:nth-child(2n) {
+    background-color: rgb(246, 246, 246);
 }
 
 .table-numbered-column {

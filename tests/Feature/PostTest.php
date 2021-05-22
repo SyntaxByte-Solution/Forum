@@ -3,10 +3,9 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Exceptions\{AccessDeniedException, UserBannedException};
-use App\Models\{Role, User, Thread, CategoryStatus, ThreadStatus, PostStatus, Post};
+use App\Exceptions\{UserBannedException};
+use App\Models\{User, ForumStatus, ThreadStatus, PostStatus, CategoryStatus, Thread, Post};
 use App\Classes\TestHelper;
 
 class PostTest extends TestCase
@@ -18,26 +17,28 @@ class PostTest extends TestCase
 
         $user = TestHelper::create_user();
         /**
-         * Notice that thread schema use both category and thread default value to 1 
-         * which is th first item in the database (LIVE)
+         * Notice that thread schema use both category and thread status default value to 1 
+         * which is the first item in the database (LIVE)
          */
-
+        ForumStatus::create([
+            'status'=>'LIVE',
+            'slug'=>'live'
+        ]);
         CategoryStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
-
         ThreadStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
-
         PostStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
 
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
+        $forum = TestHelper::create_forum('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
+        $catgeory = TestHelper::create_category('freestyle category', 'freestyle', 'This is freestyle category', 1, 1);
 
         $thread = Thread::create([
             'subject'=>'The side effects of using steroids',
@@ -49,7 +50,6 @@ class PostTest extends TestCase
     /** @test */
     public function post_could_be_created() {
         $this->withoutExceptionHandling();
-
         $this->actingAs(User::first());
 
         $this->assertCount(0, Post::all());

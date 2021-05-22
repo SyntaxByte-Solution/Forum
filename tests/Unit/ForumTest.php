@@ -4,28 +4,28 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\{Category, CategoryStatus};
+use App\Models\{Forum, ForumStatus};
 use App\Classes\TestHelper;
 
-class CategoryTest extends TestCase
+class ForumTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function category_could_be_created() {
+    public function forum_could_be_created() {
         
-        CategoryStatus::create([
+        ForumStatus::create([
             'status'=>'TEMPORARILTY CLOSED',
             'slug'=>'temp.closed'
         ]);
 
-        Category::create([
-            'category'=>'Calisthenics',
+        Forum::create([
+            'forum'=>'Calisthenics',
             'description'=>'This section is for calisthenics athletes only.',
             'slug'=>'calisthenics',
             'status'=>1,
         ]);
 
-        $this->assertCount(1, Category::all());
+        $this->assertCount(1, Forum::all());
     }
 }

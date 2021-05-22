@@ -7,35 +7,46 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Exceptions\{AccessDeniedException, UserBannedException, DuplicateThreadException};
 use App\Classes\TestHelper;
-use App\Models\{Thread, CategoryStatus, ThreadStatus};
+use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus};
 
 class ThreadTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function a_thread_could_be_created() {
-        $this->withoutExceptionHandling();
+    public function setUp():void {
+        parent::setUp();
 
         $user = TestHelper::create_user();
         $this->actingAs($user);
-
         /**
-         * Notice that thread schema use both category and thread default value to 1 
-         * which is th first item in the database (LIVE)
+         * Notice that thread schema use both category and thread status default value to 1 
+         * which is the first item in the database (LIVE)
          */
-
+        ForumStatus::create([
+            'status'=>'LIVE',
+            'slug'=>'live'
+        ]);
         CategoryStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
-
         ThreadStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
+        PostStatus::create([
+            'status'=>'LIVE',
+            'slug'=>'live'
+        ]);
 
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
+        $forum = TestHelper::create_forum('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
+        $catgeory = TestHelper::create_category('freestyle category', 'freestyle', 'This is freestyle category', 1, 1);
+
+    }
+
+    /** @test */
+    public function a_thread_could_be_created() {
+        $this->withoutExceptionHandling();
 
         $this->post('/thread', [
             'subject'=>'The side effects of using steroids',
@@ -53,18 +64,6 @@ class ThreadTest extends TestCase
         $user = TestHelper::create_user_with_status('banned', 'banned');
         $this->actingAs($user);
 
-        CategoryStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
-
         $this->post('/thread', [
             'subject'=>'The side effects of using steroids',
             'category_id'=>1,
@@ -75,21 +74,7 @@ class ThreadTest extends TestCase
     public function a_thread_could_be_updated() {
         $this->withoutExceptionHandling();
 
-        $user = TestHelper::create_user();
-        $this->actingAs($user);
-
-        CategoryStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
-        $category_2 = TestHelper::create_category('Workout', 'workout', 'This section is for workout athletes only.', 1);
+        TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1, 1);
 
         $thread = Thread::create([
             'subject'=>'The side effects of using steroids',
@@ -111,21 +96,7 @@ class ThreadTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(DuplicateThreadException::class);
 
-        $user = TestHelper::create_user();
-        $this->actingAs($user);
-
-        CategoryStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
-        $category_2 = TestHelper::create_category('Workout', 'workout', 'This section is for workout athletes only.', 1);
+        TestHelper::create_category('Workout', 'workout', 'This section is for workout athletes only.', 1, 1);
 
         $thread = Thread::create([
             'subject'=>'The side effects of using steroids',
@@ -152,20 +123,6 @@ class ThreadTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
 
-        $user1 = TestHelper::create_user();
-
-        CategoryStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
-
         // We create the thread with user1
         $thread = Thread::create([
             'subject'=>'The side effects of using steroids',
@@ -186,21 +143,6 @@ class ThreadTest extends TestCase
     public function a_thread_could_be_deleted() {
         $this->withoutExceptionHandling();
 
-        $user = TestHelper::create_user();
-        $this->actingAs($user);
-
-        CategoryStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
-
         $thread = Thread::create([
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
@@ -217,20 +159,6 @@ class ThreadTest extends TestCase
         $this->withoutExceptionHandling();
         $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
 
-        $user = TestHelper::create_user();
-
-        CategoryStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
-
         $thread = Thread::create([
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
@@ -246,49 +174,30 @@ class ThreadTest extends TestCase
     /** @test */
     public function user_could_create_a_limited_number_of_threads_per_day() {
         $this->withoutExceptionHandling();
+        /*
+            $this->post('/thread', [
+                'subject'=>'The side effects of using steroids',
+                'category_id'=>1,
+            ]);
+            $this->post('/thread', [
+                'subject'=>'The side effects of using proteins',
+                'category_id'=>1,
+            ]);
+            $this->post('/thread', [
+                'subject'=>'The side effects of using glutamine',
+                'category_id'=>1,
+            ]);
+            $this->post('/thread', [
+                'subject'=>'The side effects of using tea after training haha lol !',
+                'category_id'=>1,
+            ]);
 
-        $user = TestHelper::create_user();
-        $this->actingAs($user);
+            In the policy we limit the peak of potential thread creation to 60 thread/day
+            we can't create 61 thread to test this feature but you can change the peak in the policy to 3 and 
+            test the endpoint and you'll get unauthorized action
+            
+        */
 
-        /**
-         * Notice that thread schema use both category and thread default value to 1 
-         * which is th first item in the database (LIVE)
-         */
-
-        CategoryStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-
-        $category = TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
-
-        $this->post('/thread', [
-            'subject'=>'The side effects of using steroids',
-            'category_id'=>1,
-        ]);
-        $this->post('/thread', [
-            'subject'=>'The side effects of using proteins',
-            'category_id'=>1,
-        ]);
-        $this->post('/thread', [
-            'subject'=>'The side effects of using glutamine',
-            'category_id'=>1,
-        ]);
-        $this->post('/thread', [
-            'subject'=>'The side effects of using tea after training haha lol !',
-            'category_id'=>1,
-        ]);
-
-        /**
-         * In the policy we limit the peak of potential thread creation to 60 thread/day
-         * we can't create 61 thread to test this feature but you can change the peak in the policy to 3 and 
-         * test the endpoint and you'll get unauthorized action
-         */
         $this->assertTrue(true);
     }
 }

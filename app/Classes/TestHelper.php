@@ -3,7 +3,7 @@
 namespace App\Classes;
 
 use Illuminate\Foundation\Testing\WithFaker;
-use App\Models\{User, Role, Permission, Category, UserStatus};
+use App\Models\{User, Role, Permission, Forum, UserStatus, Category};
 
 class TestHelper {
 
@@ -66,6 +66,10 @@ class TestHelper {
         return (bool) count(Permission::where('slug', $slug)->get());
     }
 
+    public static function forum_exists($slug) {
+        return (bool) count(Forum::where('slug', $slug)->get());
+    }
+
     public static function category_exists($slug) {
         return (bool) count(Category::where('slug', $slug)->get());
     }
@@ -97,12 +101,26 @@ class TestHelper {
         return Permission::where('permission', $permission)->first();
     }
 
-    public static function create_category($category, $slug, $desc, $status) {
+    public static function create_forum($forum, $slug, $desc, $status) {
+        if(!self::forum_exists($slug)) {
+            return Forum::create([
+                'forum'=>$forum,
+                'slug'=>$slug,
+                'description'=>$desc,
+                'status'=>$status
+            ]);
+        }
+
+        return Forum::where('slug', $slug)->first();
+    }
+
+    public static function create_category($category, $slug, $desc, $forum, $status) {
         if(!self::category_exists($slug)) {
             return Category::create([
                 'category'=>$category,
                 'slug'=>$slug,
                 'description'=>$desc,
+                'forum_id'=>$forum,
                 'status'=>$status
             ]);
         }

@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
-    {RolesController, PermissionsController, 
-     CategoryController, ThreadController, PostController,
-     SubcategoryController};
+    {RolesController, PermissionsController, ForumController,
+     CategoryController, ThreadController, PostController};
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +26,10 @@ Route::get('/home', function () {
     return view('index');
 })->middleware(['verified']);
 
-
+/** 
+ * The routes that are accessible for only admins should be placed in a group
+ * with authorization defined as middleware.
+ */
 
 Route::post('/roles', [RolesController::class, 'create']);
 Route::patch('/roles/{role}', [RolesController::class, 'update']);
@@ -40,6 +42,10 @@ Route::delete('/permissions/{permission}', [PermissionsController::class, 'destr
 
 Route::post('roles/{role}/permissions/attach', [PermissionsController::class, 'attach_permission_to_role']);
 Route::post('roles/{role}/permissions/{permission}/detach', [PermissionsController::class, 'detach_permission_from_role']);
+
+Route::post('/forums', [ForumController::class, 'store']);
+Route::patch('/forums/{forum}', [ForumController::class, 'update']);
+Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);
 
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::patch('/categories/{category}', [CategoryController::class, 'update']);
@@ -56,12 +62,3 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
 
 });
-
-/** 
- * The routes that are accessible for only admins should be placed in a group
- * with authorization defined as middleware.
- */
-
-Route::post('/subcategory', [SubcategoryController::class, 'store']);
-Route::patch('/subcategory/{subcategory}', [SubcategoryController::class, 'update']);
-Route::delete('/subcategory/{subcategory}', [SubcategoryController::class, 'destroy']);

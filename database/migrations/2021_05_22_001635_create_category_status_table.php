@@ -15,8 +15,8 @@ class CreateCategoryStatusTable extends Migration
     {
         Schema::create('category_status', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->unique();
-            $table->string('slug')->unique();
+            $table->string('status');
+            $table->string('slug');
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Exceptions\{AccessDeniedException, UserBannedException, DuplicateThreadException};
+use App\Exceptions\{AccessDeniedException, UserBannedException, DuplicateThreadException, CategoryClosedException};
 use App\Classes\TestHelper;
 use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus};
 
@@ -31,10 +31,6 @@ class ThreadTest extends TestCase
             'slug'=>'live'
         ]);
         ThreadStatus::create([
-            'status'=>'LIVE',
-            'slug'=>'live'
-        ]);
-        PostStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
@@ -195,9 +191,29 @@ class ThreadTest extends TestCase
             In the policy we limit the peak of potential thread creation to 60 thread/day
             we can't create 61 thread to test this feature but you can change the peak in the policy to 3 and 
             test the endpoint and you'll get unauthorized action
-            
+
         */
 
         $this->assertTrue(true);
+    }
+
+    /** @test */
+    public function thread_could_not_be_added_on_closed_category() {
+        $this->withoutExceptionHandling();
+        $this->expectException(CategoryClosedException::class);
+
+        $closed = CategoryStatus::create([
+            'status'=>'Closed',
+            'slug'=>'closed'
+        ]);
+
+        $catgeory = TestHelper::create_category('another category', 'another', 'This is another category', 1, $closed->id);
+
+        $this->post('/thread', [
+            'subject'=>'The side effects of using steroids',
+            'category_id'=>$catgeory->id,
+        ]);
+
+        $this->assertCount(1, Thread::all());
     }
 }

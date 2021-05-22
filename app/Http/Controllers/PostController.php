@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;
+use App\Exceptions\ThreadClosedException;
+use App\Models\{Post, ThreadStatus, Thread};
 
 class PostController extends Controller
 {
@@ -15,6 +16,16 @@ class PostController extends Controller
             'content'=>'required|min:2|max:40000',
             'thread_id'=>'required|exists:threads,id',
         ]);
+
+        $thread_status_slug = ThreadStatus::find(Thread::find($data['thread_id'])->status_id)->slug;
+
+        if($thread_status_slug == 'closed') {
+            throw new ThreadClosedException("You can't share posts on a closed thread");
+        }
+
+        if($thread_status_slug == 'temp.closed') {
+            throw new ThreadClosedException("You can't share posts on a temporarily closed thread");
+        }
 
         $data['user_id'] = auth()->user()->id;
         

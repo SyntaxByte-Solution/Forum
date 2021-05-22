@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Exceptions\{UserBannedException};
+use App\Exceptions\{UserBannedException, ThreadClosedException};
 use App\Models\{User, ForumStatus, ThreadStatus, PostStatus, CategoryStatus, Thread, Post};
 use App\Classes\TestHelper;
 
@@ -200,4 +200,29 @@ class PostTest extends TestCase
         $this->delete('/post/'.$post->id);
     }
 
+    /** @test */
+    public function users_cant_share_posts_on_closed_threads() {
+        $this->withoutExceptionHandling();
+        $this->expectException(ThreadClosedException::class);
+
+        $this->actingAs(User::first());
+
+        $closed = ThreadStatus::create([
+            'status'=>'Closed',
+            'slug'=>'closed'
+        ]);
+
+        $thread = Thread::create([
+            'subject'=>'This thread is closed',
+            'user_id'=>1,
+            'category_id'=>1,
+            'status_id'=>$closed->id
+        ]);
+
+        $this->post('/post', [
+            'title'=>'Re: This is the subject of our post',
+            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+            'thread_id'=>$thread->id,
+        ]);
+    }
 }

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Exceptions\{UnauthorizedActionException, DuplicateCategoryException};
+use App\Exceptions\{UnauthorizedActionException, DuplicateCategoryException, ForumClosedException};
 use App\Models\{Forum, Category, ForumStatus, CategoryStatus};
 use App\Classes\TestHelper;
 
@@ -131,5 +131,31 @@ class CategoryTest extends TestCase
         $this->assertCount(1, Category::all());
         $this->delete('/categories/'.$category->id);
         $this->assertCount(0, Category::all());
+    }
+
+    /** @test */
+    public function category_could_not_be_added_on_closed_forum() {
+        $this->withoutExceptionHandling();
+        $this->expectException(ForumClosedException::class);
+
+        $closed_forum_status = ForumStatus::create([
+            'status'=>'Closed',
+            'slug'=>'closed'
+        ]);
+
+        $closed_forum = Forum::create([
+            'forum'=>'Other',
+            'description'=>'This forum is for other athletes only.',
+            'slug'=>'other',
+            'status'=>$closed_forum_status->id,
+        ]);
+
+        $this->post('/categories', [
+            'category'=>'Pull ups section',
+            'slug'=>'pull-ups-section',
+            'description'=>'Pull ups section contains pull up challenges, questions and discussions',
+            'forum_id'=>$closed_forum->id,
+            'status'=>1
+        ]);
     }
 }

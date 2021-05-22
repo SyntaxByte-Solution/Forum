@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Category, Forum};
-use App\Exceptions\DuplicateCategoryException;
+use App\Models\{Category, Forum, ForumStatus};
+use App\Exceptions\{DuplicateCategoryException, ForumClosedException};
 
 class CategoryController extends Controller
 {
@@ -31,6 +31,15 @@ class CategoryController extends Controller
             ->count())
         {
             throw new DuplicateCategoryException("You can't create two categories with the same title in the same forum");
+        }
+
+        $forum_status_slug = ForumStatus::find(Forum::find($data['forum_id'])->id)->slug;
+
+        if($forum_status_slug == 'closed') {
+            throw new ForumClosedException("You can't add categories on a closed forum");
+        }
+        if($forum_status_slug == 'temp.closed') {
+            throw new ForumClosedException("You can't add categories on a temporarily closed forum");
         }
 
         Category::create($data);

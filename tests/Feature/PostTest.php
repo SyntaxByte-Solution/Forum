@@ -54,7 +54,6 @@ class PostTest extends TestCase
 
         $this->assertCount(0, Post::all());
         $this->post('/post', [
-            'title'=>'Re: This is the subject of our post',
             'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
             'thread_id'=>1,
         ]);
@@ -68,18 +67,15 @@ class PostTest extends TestCase
         $this->actingAs(User::first());
 
         $post = Post::create([
-            'title'=>'Re: This is the subject of our post',
             'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
             'thread_id'=>1,
             'user_id'=>1
         ]);
 
         $this->patch('/post/'.$post->id, [
-            'title'=>'Re: This is the editable version of the subject of our post',
             'content'=>"Hello guys, Never mind, I think I was drunk right !",
         ]);
         
-        $this->assertEquals('Re: This is the editable version of the subject of our post', $post->refresh()->title);
         $this->assertEquals('Hello guys, Never mind, I think I was drunk right !', $post->refresh()->content);
     }
 
@@ -90,7 +86,6 @@ class PostTest extends TestCase
         $this->actingAs(User::first());
 
         $post = Post::create([
-            'title'=>'Re: This is the subject of our post',
             'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
             'thread_id'=>1,
             'user_id'=>1
@@ -110,7 +105,6 @@ class PostTest extends TestCase
         $this->actingAs($banned);
 
         $this->post('/post', [
-            'title'=>'Re: This is the subject of our post',
             'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
             'thread_id'=>1,
         ]);
@@ -118,40 +112,34 @@ class PostTest extends TestCase
 
     /** @test */
     public function users_could_post_a_limited_number_of_posts_per_day() {
-        $this->withoutExceptionHandling();
+        // $user = User::first();
+        // $this->actingAs($user);
 
-        $user = User::first();
-        $this->actingAs($user);
+        // $this->post('/post', [
+        //     'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+        //     'thread_id'=>1,
+        // ]);
 
-        $this->post('/post', [
-            'title'=>'Re: This is the subject of our post',
-            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
-            'thread_id'=>1,
-        ]);
+        // $this->post('/post', [
+        //     'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+        //     'thread_id'=>1,
+        // ]);
 
-        $this->post('/post', [
-            'title'=>'Re: This is the subject of our post',
-            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
-            'thread_id'=>1,
-        ]);
+        // $this->post('/post', [
+        //     'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+        //     'thread_id'=>1,
+        // ]);
 
-        $this->post('/post', [
-            'title'=>'Re: This is the subject of our post',
-            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
-            'thread_id'=>1,
-        ]);
+        // $thread2 = Thread::create([
+        //     'subject'=>'The side effects of using glutamine',
+        //     'user_id'=>1,
+        //     'category_id'=>1,
+        // ]);
 
-        $thread2 = Thread::create([
-            'subject'=>'The side effects of using glutamine',
-            'user_id'=>1,
-            'category_id'=>1,
-        ]);
-
-        $this->post('/post', [
-            'title'=>'Re: This is the subject of our post',
-            'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
-            'thread_id'=>2,
-        ]);
+        // $this->post('/post', [
+        //     'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
+        //     'thread_id'=>2,
+        // ]);
 
         /**
          * Again here we can't create too many posts to test this feature, because the user
@@ -167,7 +155,6 @@ class PostTest extends TestCase
         $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
 
         $post = Post::create([
-            'title'=>'Re: This is the subject of our post',
             'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
             'thread_id'=>1,
             'user_id'=>1
@@ -177,7 +164,6 @@ class PostTest extends TestCase
         $this->actingAs($other_user);
 
         $this->patch('/post/'.$post->id, [
-            'title'=>'Re: This is the editable version of the subject of our post',
             'content'=>"Hello guys, Never mind, I think I was drunk right !",
         ]);
     }
@@ -188,7 +174,6 @@ class PostTest extends TestCase
         $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
 
         $post = Post::create([
-            'title'=>'Re: This is the subject of our post',
             'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
             'thread_id'=>1,
             'user_id'=>1
@@ -220,7 +205,6 @@ class PostTest extends TestCase
         ]);
 
         $this->post('/post', [
-            'title'=>'Re: This is the subject of our post',
             'content'=>"Hello guys, I'm confusing these days about something and I need help if you don't mind ?",
             'thread_id'=>$thread->id,
         ]);

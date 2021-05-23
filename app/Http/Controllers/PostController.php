@@ -12,7 +12,6 @@ class PostController extends Controller
         $this->authorize('store', Post::class);
 
         $data = request()->validate([
-            'title'=>'required|min:2|max:1000',
             'content'=>'required|min:2|max:40000',
             'thread_id'=>'required|exists:threads,id',
         ]);
@@ -36,7 +35,6 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         $data = request()->validate([
-            'title'=>'sometimes|min:2|max:1000',
             'content'=>'sometimes|min:2|max:40000',
         ]);
         

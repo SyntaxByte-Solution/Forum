@@ -11,7 +11,7 @@
             </a>
         </div>
         <div class="h-menu">
-            <a href="" class="menu-link-button">Home</a>
+            <a href="/" class="menu-link-button">Home</a>
             <div class="menu-separator">〡</div>
             <a href="" class="menu-link-button">Annoucemenets</a>
             <div class="menu-separator">〡</div>

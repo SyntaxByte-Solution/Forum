@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
      CategoryController, ThreadController, PostController,
-     IndexController};
+     IndexController, DiscussionController};
 use App\Models\Forum;
 
 /*
@@ -48,7 +48,7 @@ Route::patch('/categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
 Route::middleware(['auth'])->group(function () {
-
+    
     Route::post('/thread', [ThreadController::class, 'store']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'destroy']);
@@ -56,5 +56,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/post', [PostController::class, 'store']);
     Route::patch('/post/{post}', [PostController::class, 'update']);
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
+
+    Route::get('/{forum:slug}/discussions/add', [DiscussionController::class, 'create']);
+    Route::post('/{forum:slug}/discussions', [DiscussionController::class, 'store']);
 
 });

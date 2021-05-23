@@ -12,15 +12,17 @@
 
 @section('content')
     @include('partials.left-panel', ['page' => 'home'])
-    <div id="middle-container">
+    <div id="middle-container" class="middle-padding">
         <div class="flex space-between full-width">
             <div>
                 <a href="" class="link-path">{{ __('Board index') }}</a>
                 <!--<span class="current-link-path">The side effects of using glutamin</span>-->
             </div>
-            <div>
-                <a href="" class="button-style">{{ __('Start Discussion') }}</a>
-            </div>
+            @auth
+                <div>
+                    <a href="/general/discussions/add" class="button-style">{{ __('Start Discussion') }}</a>
+                </div>
+            @endauth
         </div>
         <div id="forums-section">
             <table class="forums-table">

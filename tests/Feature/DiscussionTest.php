@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Classes\TestHelper;
 use App\Exceptions\UserBannedException;
-use App\Models\{Discussion, ThreadStatus, ForumStatus, CategoryStatus, PostStatus};
+use App\Models\{Discussion, ThreadStatus, ForumStatus, CategoryStatus, PostStatus, Post, Thread};
 
 class DiscussionTest extends TestCase
 {
@@ -87,5 +87,62 @@ class DiscussionTest extends TestCase
 
         $this->delete('/general/discussions/'.$discussion->id);
         $this->assertCount(0, Discussion::all());
+    }
+
+    /** @test */
+    public function only_discussion_creator_could_delete_it() {
+        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        $this->withoutExceptionHandling();
+
+        $this->post('/general/discussions', [
+            'subject'=>'How to gain more muscle',
+            'category_id'=>1,
+            'content'=>"You need to train everyday and maintain a solid consistency with a perfect diet and program, and you'll see the difference",
+            'thread_id'=>1
+        ]);
+
+        $other_user = TestHelper::create_user();
+        $this->actingAs($other_user);
+
+        $discussion = Discussion::first();
+        $this->delete('/general/discussions/'.$discussion->id);
+    }
+
+    /** @test */
+    public function when_discussion_deleted_the_thread_and_its_associated_posts_get_deleted_as_well() {
+        $this->withoutExceptionHandling();
+
+        $this->post('/general/discussions', [
+            'subject'=>'How to gain more muscle',
+            'category_id'=>1,
+            'content'=>"You need to train everyday and maintain a solid consistency with a perfect diet and program, and you'll see the difference",
+            'thread_id'=>1
+        ]);
+
+        $this->post('/post', [
+            'content'=>"post 1 on thread 1",
+            'thread_id'=>1,
+        ]);
+        $this->post('/post', [
+            'content'=>"post 1 on thread 2",
+            'thread_id'=>1,
+        ]);
+        $this->post('/post', [
+            'content'=>"post 1 on thread 3",
+            'thread_id'=>1,
+        ]);
+
+        $discussion = Discussion::first();
+        $thread = Thread::find($discussion->thread_id);
+
+        $this->assertCount(1, Discussion::all());
+        $this->assertCount(1, Thread::all());
+        $this->assertCount(4, Post::all());
+
+        $this->delete('/general/discussions/'.$discussion->id);
+
+        $this->assertCount(0, Discussion::all());
+        $this->assertCount(0, Thread::all());
+        $this->assertCount(0, Post::all());
     }
 }

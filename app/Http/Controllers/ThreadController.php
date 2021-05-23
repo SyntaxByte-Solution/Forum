@@ -32,7 +32,7 @@ class ThreadController extends Controller
 
         $data['user_id'] = auth()->user()->id;
 
-        Thread::create($data);
+        return Thread::create($data);
     }
 
     public function update(Thread $thread) {

@@ -59,5 +59,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/{forum:slug}/discussions/add', [DiscussionController::class, 'create']);
     Route::post('/{forum:slug}/discussions', [DiscussionController::class, 'store']);
+    Route::delete('/{forum:slug}/discussions/{discussion}', [DiscussionController::class, 'destroy']);
 
 });

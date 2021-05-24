@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
      CategoryController, ThreadController, PostController,
-     IndexController, DiscussionController};
+     IndexController};
 use App\Models\Forum;
 
 /*
@@ -19,8 +19,8 @@ use App\Models\Forum;
 |
 */
 
-Route::get('/', [IndexController::class, 'index'])->middleware(['verified']);
-Route::get('/home', [IndexController::class, 'index'])->middleware(['verified']);
+Route::get('/', [IndexController::class, 'index']);
+Route::get('/home', [IndexController::class, 'index']);
 
 /** 
  * The routes that are accessible for only admins should be placed in a group
@@ -39,16 +39,21 @@ Route::delete('/permissions/{permission}', [PermissionsController::class, 'destr
 Route::post('roles/{role}/permissions/attach', [PermissionsController::class, 'attach_permission_to_role']);
 Route::post('roles/{role}/permissions/{permission}/detach', [PermissionsController::class, 'detach_permission_from_role']);
 
-Route::post('/forums', [ForumController::class, 'store']);
-Route::patch('/forums/{forum}', [ForumController::class, 'update']);
-Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);
-
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::patch('/categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
+Route::get('/forum/{forum:slug}/discussions', [ThreadController::class, 'all_discussions']);
+Route::get('/forum/{forum:slug}/questions', [ThreadController::class, 'all_questions']);
+
 Route::middleware(['auth'])->group(function () {
     
+    Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create']);
+
+    Route::post('/forums', [ForumController::class, 'store']);
+    Route::patch('/forums/{forum}', [ForumController::class, 'update']);
+    Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);
+
     Route::post('/thread', [ThreadController::class, 'store']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'destroy']);
@@ -56,9 +61,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/post', [PostController::class, 'store']);
     Route::patch('/post/{post}', [PostController::class, 'update']);
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
-
-    Route::get('/{forum:slug}/discussions/add', [DiscussionController::class, 'create']);
-    Route::post('/{forum:slug}/discussions', [DiscussionController::class, 'store']);
-    Route::delete('/{forum:slug}/discussions/{discussion}', [DiscussionController::class, 'destroy']);
 
 });

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Exceptions\{AccessDeniedException, UserBannedException, DuplicateThreadException, CategoryClosedException};
 use App\Classes\TestHelper;
-use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus};
+use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus, ThreadType};
 
 class ThreadTest extends TestCase
 {
@@ -34,6 +34,10 @@ class ThreadTest extends TestCase
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
+        ThreadType::create([
+            'type'=>'Question',
+            'slug'=>'question',
+        ]);
 
         $forum = TestHelper::create_forum('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
         $catgeory = TestHelper::create_category('freestyle category', 'freestyle', 'This is freestyle category', 1, 1);
@@ -47,6 +51,7 @@ class ThreadTest extends TestCase
         $this->post('/thread', [
             'subject'=>'The side effects of using steroids',
             'category_id'=>1,
+            'thread_type'=>1
         ]);
 
         $this->assertCount(1, Thread::all());
@@ -63,6 +68,7 @@ class ThreadTest extends TestCase
         $this->post('/thread', [
             'subject'=>'The side effects of using steroids',
             'category_id'=>1,
+            'thread_type'=>1
         ]);
     }
 
@@ -212,6 +218,7 @@ class ThreadTest extends TestCase
         $this->post('/thread', [
             'subject'=>'The side effects of using steroids',
             'category_id'=>$catgeory->id,
+            'thread_type'=>1
         ]);
 
         $this->assertCount(1, Thread::all());

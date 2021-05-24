@@ -6,7 +6,7 @@
             </div>
             <div>
                 <h2 class="forum-category-link-header"><a href="/forum/{{ $forum->slug }}/discussions" class="forum-style-link">{{ $forum->forum }}</a></h2>
-                <p class="forum-category-description">{{ $forum->description }}</p>
+                <p class="forum-category-description">{{  }}</p>
             </div>
         </div>
     </td>

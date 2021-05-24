@@ -7,12 +7,13 @@
 @endpush
 
 @section('header')
+    @include('partials.hidden-login-viewer')
     @include('partials.header')
 @endsection
-
 @section('content')
+    @include('partials.hidden-login-viewer')
     @include('partials.left-panel', ['page' => 'home'])
-    <div id="middle-container" class="middle-padding">
+    <div id="middle-container" class="middle-padding-1">
         <div class="flex space-between full-width">
             <div>
                 <a href="" class="link-path">{{ __('Board index') }}</a>

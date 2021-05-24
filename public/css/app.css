@@ -101,6 +101,11 @@ a, input, textarea {
     background-color: rgba(245, 245, 245, 0.226);
 }
 
+.mx4 {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
 .suboption-style-1 {
     display: flex;
     padding: 10px 12px;
@@ -305,6 +310,7 @@ a, input, textarea {
 }
 
 .full-shadowed {
+    z-index: 80;
     display: none;
     opacity: 0;
     top: 0;
@@ -377,9 +383,17 @@ a, input, textarea {
 }
 
 .rounded-style-1 {
-    border-radius: 50%;
     height: 50px;
     width: 50px;
+}
+
+.rounded {
+    border-radius: 50%;
+}
+
+.rounded-style-1 {
+    height: 30px;
+    width: 30px;
 }
 
 .first-profile-container-part {
@@ -554,6 +568,34 @@ a, input, textarea {
     outline: 4px solid rgba(33, 192, 255, 0.19);
 }
 
+.input-style-2 {
+    padding: 6px 8px;
+    border: 1px solid rgb(145, 145, 145);
+    font-size: 13px;
+    border-radius: 4px;
+    min-width: 220px;
+}
+
+.search-forum-button {
+    width: 40px;
+    height: 30px;
+    border: none;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+
+    cursor: pointer;
+
+    background-color: #353946;
+    background-image: url(../assets/images/icons/search.png);
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: center;
+}
+
+.search-forum-button:hover {
+    background-color: #181a22;
+}
+
 .middle-padding-1 {
     padding: 30px;
 }
@@ -594,6 +636,20 @@ a, input, textarea {
 }
 
 .button-style:hover {
+    background-color: #1e2027;
+}
+
+.button-style-1 {
+    border-radius: 4px;
+    padding: 7px 12px;
+    color: white;
+    background-color: #353946;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+}
+
+.button-style-1:hover {
     background-color: #1e2027;
 }
 
@@ -692,7 +748,28 @@ tr:nth-child(2n) {
 }
 
 #page-title {
-    margin: 6px 0 10px 0;
+    margin: 6px 0 18px 0;
 
     color: #1e2027;
+}
+
+.background-style {
+    background-repeat: no-repeat;
+    background-size: 24px;
+    background-position: center;
+}
+
+.adv-search-button {
+    height: 26px;
+    width: 26px;
+}
+
+.pagination-item {
+    display: flex;
+    margin: 0 3px;
+    padding: 6px 10px;
+    background-color: #353946;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
 }

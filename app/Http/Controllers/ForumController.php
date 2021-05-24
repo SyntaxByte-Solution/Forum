@@ -5,14 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Gate;
 use App\Exceptions\UnauthorizedActionException;
 use Illuminate\Http\Request;
-use App\Models\Forum;
+use App\Models\{Forum};
 
 class ForumController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth');
-    }
-
     public function store() {
         if (! Gate::allows('add.forum')) {
             throw new UnauthorizedActionException("Unauthorized action due to missing role or permission.");

@@ -17,7 +17,7 @@
             <h1 id="page-title">Start a discussion</h1>
         </div>
         
-        <form action="/{{ request('forum')->slug }}/discussions" method="POST" class="block">
+        <form action="/thread" method="POST" class="block">
             @csrf
             <div class="input-container">
                 <label for="title" class="label-style-1">{{ __('Title') }} @error('subject') <span class="error">*</span> @enderror</label>
@@ -45,7 +45,7 @@
                 <p class="mini-label">Include all the information someone would need to answer your question</p>
                 <textarea name="content" id="content" required></textarea>
             </div>
-
+            <input type="hidden" name="thread_type" value="1">
             <div class="input-container">
                 <input type="submit" class="button-style block" style="margin-bottom: 8px" value="{{ __('Share') }}">
             </div>

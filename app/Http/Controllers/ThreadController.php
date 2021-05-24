@@ -4,16 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException};
-use App\Models\{Thread, Category, CategoryStatus};
+use App\Models\{Forum, Thread, Category, CategoryStatus};
+use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
 {
+    public function create(Forum $forum) {
+        $categories = $forum->categories;
+
+        return view('discussion.create')
+        ->with(compact('categories'));
+    }
+
     public function store() {
         $this->authorize('store', Thread::class);
 
         $data = request()->validate([
             'subject'=>'required|min:2|max:1000',
-            'category_id'=>'required|exists:categories,id'
+            'category_id'=>'required|exists:categories,id',
+            'thread_type'=>'required|exists:thread_types,id',
+            'content'=>'required|min:2|max:40000',
         ]);
 
         if(auth()->user()->threads->where('subject', $data['subject'])->count()) {
@@ -32,7 +42,10 @@ class ThreadController extends Controller
 
         $data['user_id'] = auth()->user()->id;
 
-        return Thread::create($data);
+        $thread = Thread::create($data);
+        request()->request->add(['thread_id'=>$thread->id]);
+        (new PostController)->store();
+
     }
 
     public function update(Thread $thread) {
@@ -48,7 +61,8 @@ class ThreadController extends Controller
 
         $data = request()->validate([
             'subject'=>'sometimes|min:2|max:1000',
-            'category_id'=>'sometimes|exists:categories,id'
+            'category_id'=>'sometimes|exists:categories,id',
+            'thread_type'=>'sometimes|exists:thread_types,id',
         ]);
 
         $thread->update($data);
@@ -58,5 +72,18 @@ class ThreadController extends Controller
         $this->authorize('destroy', $thread);
 
         $thread->delete();
+    }
+
+    public function all_discussions(Forum $forum) {
+        // First get all forum's categories
+        $ids = $forum->categories->pluck('id');
+        // Then we fetch all threads in those categories
+        $discussions = Thread::whereIn('category_id', $ids);
+        
+        return view('forum.category.all-discussions')
+        ->with(compact('discussions'));
+    }
+    public function all_questions(Forum $forum) {
+        return view('forum.category.all-qestions');
     }
 }

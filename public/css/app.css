@@ -528,6 +528,15 @@ a, input, textarea {
     color: rgb(44, 87, 204);
 }
 
+.black-link {
+    text-decoration: none;
+    color: rgb(49, 49, 49);
+}
+
+.black-link:hover {
+    color: #437c59;
+}
+
 /* login */
 
 #login-top-logo {
@@ -772,4 +781,10 @@ tr:nth-child(2n) {
     color: white;
     text-decoration: none;
     border-radius: 3px;
+}
+
+.table-row-title {
+    font-size: 17px;
+    margin: 0;
+    color: #353946;
 }

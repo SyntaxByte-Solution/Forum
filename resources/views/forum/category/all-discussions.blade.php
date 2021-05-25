@@ -21,7 +21,7 @@
         <h1 id="page-title">Discussions & Questions</h1>
         <div class="flex align-center space-between" style="margin-bottom: 10px">
             <div class="flex align-center">
-                <a href="" class="button-style-1 mx4">New Topic</a>
+                <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="button-style-1 mx4">New Discussion</a>
                 <form action="">
                     <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
@@ -48,7 +48,7 @@
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
             @foreach($discussions as $discussion)
-                <x-forum-resource-table-row :discussion="$discussion"/>
+                <x-discussion-table-row :discussion="$discussion"/>
             @endforeach
         </table>
     </div>

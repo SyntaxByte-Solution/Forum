@@ -21,7 +21,7 @@
             </div>
             @auth
                 <div>
-                    <a href="/general/discussions/add" class="button-style">{{ __('Start Discussion') }}</a>
+                    <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style">{{ __('Start Discussion') }}</a>
                 </div>
             @endauth
         </div>

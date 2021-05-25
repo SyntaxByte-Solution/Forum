@@ -5,13 +5,15 @@
                 <img src="" class="forum-category-icon" alt="">
             </div>
             <div>
-                <h2 class="forum-category-link-header"><a href="/forum/{{ $forum->slug }}/discussions" class="forum-style-link">{{ $forum->forum }}</a></h2>
-                <p class="forum-category-description">{{ $forum->description }}</p>
+                <h2 class="table-row-title"><a href="" class="forum-style-link">{{ $discussion_title }}</a></h2>
+                <div class="flex align-center">
+                    <a href="" class="flex fs13 black-link">{{ $thread_owner }}</a>
+                </div>
             </div>
         </div>
     </td>
-    <td class="fs13">15488</td>
-    <td class="fs13">98555</td>
+    <td class="fs13">{{ $replies }}</td>
+    <td class="fs13">{{ $views }}</td>
     <td>
         <div>
             <a href="" class="block forum-style-link fs12 bold">Re: Recording Automation in A…</a>

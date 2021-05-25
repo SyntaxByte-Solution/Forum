@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Exceptions\{UserBannedException, ThreadClosedException};
-use App\Models\{User, ForumStatus, ThreadStatus, PostStatus, CategoryStatus, Thread, Post};
+use App\Models\{User, ForumStatus, ThreadStatus, ThreadType, PostStatus, CategoryStatus, Thread, Post};
 use App\Classes\TestHelper;
 
 class PostTest extends TestCase
@@ -36,14 +36,20 @@ class PostTest extends TestCase
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
+        ThreadType::create([
+            'type'=>'Question',
+            'slug'=>'question',
+        ]);
 
         $forum = TestHelper::create_forum('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1);
         $catgeory = TestHelper::create_category('freestyle category', 'freestyle', 'This is freestyle category', 1, 1);
 
         $thread = Thread::create([
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
             'category_id'=>1,
+            'thread_type'=>1
         ]);
     }
 
@@ -198,10 +204,12 @@ class PostTest extends TestCase
         ]);
 
         $thread = Thread::create([
+            'content'=>'This is the content',
             'subject'=>'This thread is closed',
             'user_id'=>1,
             'category_id'=>1,
-            'status_id'=>$closed->id
+            'status_id'=>$closed->id,
+            'thread_type'=>1
         ]);
 
         $this->post('/post', [

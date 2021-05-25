@@ -49,6 +49,7 @@ class ThreadTest extends TestCase
         $this->withoutExceptionHandling();
 
         $this->post('/thread', [
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'category_id'=>1,
             'thread_type'=>1
@@ -66,6 +67,7 @@ class ThreadTest extends TestCase
         $this->actingAs($user);
 
         $this->post('/thread', [
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'category_id'=>1,
             'thread_type'=>1
@@ -79,9 +81,11 @@ class ThreadTest extends TestCase
         TestHelper::create_category('Calisthenics Workout', 'calisthenics', 'This section is for calisthenics athletes only.', 1, 1);
 
         $thread = Thread::create([
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
             'category_id'=>1,
+            'thread_type'=>1
         ]);
 
         $this->patch('/thread/'.$thread->id, [
@@ -101,14 +105,18 @@ class ThreadTest extends TestCase
         TestHelper::create_category('Workout', 'workout', 'This section is for workout athletes only.', 1, 1);
 
         $thread = Thread::create([
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
             'category_id'=>1,
+            'thread_type'=>1
         ]);
         $thread1 = Thread::create([
+            'content'=>'This is the content #2',
             'subject'=>'The side effects of using protein',
             'user_id'=>1,
             'category_id'=>1,
+            'thread_type'=>1
         ]);
 
         // Here we try to edit the first thread with a new subject but already taken by the same user in the second thread
@@ -127,9 +135,11 @@ class ThreadTest extends TestCase
 
         // We create the thread with user1
         $thread = Thread::create([
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
             'category_id'=>1,
+            'thread_type'=>1
         ]);
 
         // Then we want to update the thread using user2
@@ -146,9 +156,11 @@ class ThreadTest extends TestCase
         $this->withoutExceptionHandling();
 
         $thread = Thread::create([
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
             'category_id'=>1,
+            'thread_type'=>1
         ]);
 
         $this->assertCount(1, Thread::all());
@@ -162,9 +174,11 @@ class ThreadTest extends TestCase
         $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
 
         $thread = Thread::create([
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'user_id'=>1,
             'category_id'=>1,
+            'thread_type'=>1
         ]);
 
         $user1 = TestHelper::create_user();
@@ -216,6 +230,7 @@ class ThreadTest extends TestCase
         $catgeory = TestHelper::create_category('another category', 'another', 'This is another category', 1, $closed->id);
 
         $this->post('/thread', [
+            'content'=>'This is the content',
             'subject'=>'The side effects of using steroids',
             'category_id'=>$catgeory->id,
             'thread_type'=>1

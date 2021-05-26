@@ -688,16 +688,16 @@ a, input, textarea {
 
 .button-with-icon {
     border-radius: 4px;
-    padding: 7px 12px 7px 28px;
+    padding: 8px 12px 8px 28px;
     color: white;
     background-color: #353946;
     cursor: pointer;
     text-decoration: none;
     border: none;
     
-    background-size: 16px;
+    background-size: 14px;
     background-repeat: no-repeat;
-    background-position: 6px center;
+    background-position: 10px center;
 }
 
 .button-with-icon:hover {
@@ -908,4 +908,13 @@ tr:nth-child(2n) {
     width: 100%;
     box-sizing: border-box;
     padding: 0 20px;
+}
+
+.frt-error {
+    display: none;
+    margin: 2px 4px;
+}
+
+.inline-block {
+    display: inline-block;
 }

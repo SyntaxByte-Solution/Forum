@@ -31,12 +31,23 @@
         <x-thread/>
         <!-- listing related posts -->
         <div>
-            <p class="fs17">Your reply</p>
-            <form action="" method="POST">
+            <div class="share-post-form">
                 @csrf
-                <textarea name="" id=""></textarea>
-                <input type="submit" value="Post your reply">
-            </form>
+                <div class="input-container">
+                    <p class="fs17" style="margin: 4px 0">
+                        <label for="reply-content" class="flex">Your reply 
+                            <span class="error frt-error reply-content-error">  *</span>
+                        </label>
+                    </p>
+                    @error('subject')
+                        <p class="error frt-error" role="alert">{{ $message }}</p>
+                    @enderror
+                    <p class="error frt-error reply-content-error" role="alert">Reply field is required</p>
+                    <textarea name="subject" class="reply-content"></textarea>
+                </div>
+                <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
+                <a class="inline-block button-style share-post" href="">Post your reply</a>
+            </div>
         </div>
     </div>
 @endsection

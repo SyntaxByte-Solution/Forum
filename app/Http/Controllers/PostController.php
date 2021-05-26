@@ -28,7 +28,7 @@ class PostController extends Controller
 
         $data['user_id'] = auth()->user()->id;
         
-        Post::create($data);
+        return Post::create($data);
     }
 
     public function update(Post $post) {

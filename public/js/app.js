@@ -1,3 +1,5 @@
+let csrf = document.querySelector('meta[name="csrf-token"]').content;
+
 $(".button-with-suboptions").on({
     'click': function() {
         let container = $(this).parent().find(".suboptions-container");
@@ -41,3 +43,28 @@ $('#left-panel').height($(window).height() - $('header').height() - 30);
 window.onresize = function(event) {
     $('#left-panel').height($(window).height() - $('header').height() - 30);
 };
+
+$('.share-post').click(function() {
+    let form = $(this).parent();
+    let data = {
+        '_token':csrf,
+        'thread_id': form.find('.thread_id').val()
+    };
+
+    if(form.find('.reply-content').val() == "") {
+        form.find('.reply-content-error').css('display', 'flex');
+    } else {
+        form.find('.reply-content-error').css('display', 'none');
+        data.content = form.find('.reply-content').val();
+
+        $.ajax({
+            type: 'post',
+            data: data,
+            url: '/post',
+            success: function(response) {
+                console.log(response);
+            }
+        })
+    }
+    return false;
+});

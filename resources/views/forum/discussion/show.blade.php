@@ -28,7 +28,7 @@
             </div>
             @endauth
         </div>
-        <x-thread/>
+        <x-thread-component :thread="request()->thread"/>
         <!-- listing related posts -->
         <div>
             <div class="share-post-form">

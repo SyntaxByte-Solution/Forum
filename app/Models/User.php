@@ -55,4 +55,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return $count;
     }
+
+    public function posts_count() {
+        $count = 0;
+        foreach($this->threads as $thread) {
+            $count += $thread->posts->count();
+        }
+
+        return $count;
+    }
 }

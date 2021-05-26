@@ -225,6 +225,10 @@ a, input, textarea {
     background-image: url(../assets/images/icons/reply.png);
 }
 
+.discussion-icon {
+    background-image: url(../assets/images/icons/disc.png);
+}
+
 .feedback-icon {
     background-image: url(../assets/images/icons/feedback.png);
 }
@@ -917,4 +921,11 @@ tr:nth-child(2n) {
 
 .inline-block {
     display: inline-block;
+}
+
+.page-title-icon {
+    padding-left: 46px;
+    background-repeat: no-repeat;
+    background-position: 4px center;
+    background-size: 30px;
 }

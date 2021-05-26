@@ -7,6 +7,7 @@
 @endpush
 
 @section('header')
+@include('partials.hidden-login-viewer')
     @include('partials.header')
 @endsection
 

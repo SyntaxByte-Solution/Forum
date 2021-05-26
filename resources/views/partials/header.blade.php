@@ -7,13 +7,13 @@
     <div id="header" class="relative">
         <div id="header-logo-container">
             <a href="">
-                <img src="assets/images/logos/large-logo.png" alt="header logo" id="header-logo">
+                <img src='{{ asset("assets/images/logos/large-logo.png") }}' alt="header logo" id="header-logo">
             </a>
         </div>
         <div class="h-menu">
             <a href="/" class="menu-link-button">Home</a>
             <div class="menu-separator">〡</div>
-            <a href="" class="menu-link-button">Annoucemenets</a>
+            <a href="" class="menu-link-button">Announcements</a>
             <div class="menu-separator">〡</div>
             <a href="" class="menu-link-button">About Us</a>
             <div class="menu-separator">〡</div>

@@ -3,10 +3,10 @@
 @push('styles')
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
 @endpush
 
 @section('header')
+    @include('partials.hidden-login-viewer')
     @include('partials.header')
 @endsection
 
@@ -15,7 +15,7 @@
     <div id="middle-container" class="middle-padding-1">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
-            <a href="/forum/{{ request()->forum->slug }}" class="link-path">{{ __(request()->forum->forum) }}</a>
+            <a href="/{{ request()->forum->slug }}/discussions" class="link-path">{{ __(request()->forum->forum) }}</a>
             <!--<span class="current-link-path">The side effects of using glutamin</span>-->
         </div>
         <h1 id="page-title">Discussions & Questions</h1>

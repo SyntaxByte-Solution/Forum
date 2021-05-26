@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #49516a12;
+    background-color: rgb(250, 250, 250);
 }
 
 main {
@@ -11,6 +11,10 @@ main {
 
 a, input, textarea {
     outline: none;
+}
+
+.fs17 {
+    font-size: 17px;
 }
 
 .fs14 {
@@ -53,6 +57,14 @@ a, input, textarea {
 
 .flex {
     display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .space-between {
@@ -199,6 +211,18 @@ a, input, textarea {
 
 #login-signin-button {
     background-image: url(../assets/images/icons/login.png);
+}
+
+.report-icon {
+    background-image: url(../assets/images/icons/report.png);
+}
+
+.report-icon:hover {
+    background-image: url(../assets/images/icons/report-red.png);
+}
+
+.reply-icon {
+    background-image: url(../assets/images/icons/reply.png);
 }
 
 .feedback-icon {
@@ -518,7 +542,7 @@ a, input, textarea {
     margin: 0;
 }
 .link-path {
-    color: #383e53;
+    color: #2ca0ff;
     font-weight: bold;
     font-size: 13px;
     text-decoration: none;
@@ -662,6 +686,34 @@ a, input, textarea {
     background-color: #1e2027;
 }
 
+.button-with-icon {
+    border-radius: 4px;
+    padding: 7px 12px 7px 28px;
+    color: white;
+    background-color: #353946;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: 6px center;
+}
+
+.button-with-icon:hover {
+    background-color: #1e2027;
+}
+
+.button-with-only-icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: 0 4px;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: 6px center;
+}
+
 .input-container {
     margin: 8px 0;
 }
@@ -675,6 +727,12 @@ a, input, textarea {
     font-weight: bold;
     border-collapse: collapse;
     color: rgba(0, 0, 0, 0.5);
+}
+
+.table-row-title {
+    font-size: 17px;
+    margin: 0;
+    color: #353946;
 }
 
 .forums-table {
@@ -714,11 +772,9 @@ tr:nth-child(2n) {
     width: 160px;
 }
 
-.forum-category-icon {
+.forum-table-row-image {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
-    background-color: rgb(54, 54, 54);
 }
 
 .forum-category-link-header {
@@ -783,8 +839,73 @@ tr:nth-child(2n) {
     border-radius: 3px;
 }
 
-.table-row-title {
-    font-size: 17px;
-    margin: 0;
+.thread-container {
+    margin-top: 26px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.thread-title {
+    border-radius: 6px 6px 0 0;
+    padding: 14px;
+    color: white;
+    font-size: 13px;
+}
+
+.thread-owner-section {
+    min-width: 166px;
+    max-width: 166px;
+    padding: 8px;
+    border-right: 1px solid #ccc;
+}
+
+.thread-owner-picture {
+    width: 166px;
+    height: 166px;
+    margin: 0 auto;
+}
+
+.thread-owner-username {
+    margin: 4px 0;
+    font-size: 20px;
+    font-weight: bold;
     color: #353946;
+}
+
+.thread-owner-infos-container {
+    background-color: #5d6275;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+.thread-owner-info {
+    margin: 5px 0;
+    font-size: 12px;
+    color: white;
+}
+
+.thread-content-container {
+    padding: 16px;
+    padding-bottom: 40px;
+}
+
+.thread-content {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.thread-l-sep {
+    height: 2px;
+    width: 90px;
+    background-color: rgb(224, 224, 224);
+}
+
+.thread-bottom-strip {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 40px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px;
 }

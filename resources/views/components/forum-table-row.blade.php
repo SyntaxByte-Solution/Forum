@@ -5,7 +5,7 @@
                 <img src="" class="forum-category-icon" alt="">
             </div>
             <div>
-                <h2 class="forum-category-link-header"><a href="/forum/{{ $forum->slug }}/discussions" class="forum-style-link">{{ $forum->forum }}</a></h2>
+                <h2 class="forum-category-link-header"><a href="/{{ $forum->slug }}/discussions" class="forum-style-link">{{ $forum->forum }}</a></h2>
                 <p class="forum-category-description">{{ $forum->description }}</p>
             </div>
         </div>

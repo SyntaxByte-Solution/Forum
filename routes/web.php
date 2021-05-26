@@ -43,12 +43,13 @@ Route::post('/categories', [CategoryController::class, 'store']);
 Route::patch('/categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
-Route::get('/forum/{forum:slug}/discussions', [ThreadController::class, 'all_discussions']);
-Route::get('/forum/{forum:slug}/questions', [ThreadController::class, 'all_questions']);
+Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussions']);
+Route::get('/{forum:slug}/questions', [ThreadController::class, 'all_questions']);
 
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
+    Route::get('/{forum:slug}/discussions/{thread}', [ThreadController::class, 'show']);
     Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussions']);
 
     Route::post('/forums', [ForumController::class, 'store']);

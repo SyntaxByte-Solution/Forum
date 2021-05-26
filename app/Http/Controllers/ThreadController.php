@@ -9,6 +9,17 @@ use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
 {
+    public function show(Forum $forum, Thread $thread) {
+        $forum_url = "/$forum->slug/discussions";
+        $forum_name = $forum->forum;
+        $thread_subject = $thread->subject;
+
+        return view('forum.discussion.show')
+            ->with(compact('forum_name'))
+            ->with(compact('forum_url'))
+            ->with(compact('thread_subject'));
+    }
+
     public function create(Forum $forum) {
         $categories = $forum->categories;
 

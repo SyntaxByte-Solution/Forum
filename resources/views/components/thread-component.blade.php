@@ -15,8 +15,17 @@
             </div>
         </div>
         <div class="full-width thread-content-container relative">
-            <p class="no-margin fs12 pd4">posted at >> {{ $thread_created_at }}</p>
-            <p class="no-margin fs12 pd4">viewed >> {{ $thread_view_counter }} times</p>
+            <div class="flex">
+                <div class="thread-vote-container">
+                    <a href="" class="up-icon thread-vote-button thread-up-vote"></a>
+                    <p class="bold fs17 no-margin text-center">0</p>
+                    <a href="" class="down-icon thread-vote-button thread-down-vote"></a>
+                </div>
+                <div>
+                    <p class="no-margin fs12 pd4">posted at >> {{ $thread_created_at }}</p>
+                    <p class="no-margin fs12 pd4">viewed >> {{ $thread_view_counter }} times</p>
+                </div>
+            </div>
 
             <p class="thread-content">
                 {{ $thread_content }}

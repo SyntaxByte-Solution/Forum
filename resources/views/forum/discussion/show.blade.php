@@ -29,7 +29,13 @@
             @endauth
         </div>
         <x-thread-component :thread="request()->thread"/>
-        <!-- listing related posts -->
+        
+        <p class="bold fs17">2 Replies</p>
+
+        @foreach($posts as $post)
+            <x-discussion-post :post="$post"/>
+        @endforeach
+
         <div>
             <div class="share-post-form">
                 @csrf

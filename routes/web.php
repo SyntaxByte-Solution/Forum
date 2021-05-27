@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
     Route::get('/{forum:slug}/discussions/{thread}', [ThreadController::class, 'show']);
-    Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussions']);
+    Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussions'])->name('forum.discussions');
 
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);

@@ -51,12 +51,11 @@ $('.share-post').click(function() {
         'thread_id': form.find('.thread_id').val()
     };
 
-    if(form.find('.reply-content').val() == "") {
+    if(simplemde.value() == "") {
         form.find('.reply-content-error').css('display', 'flex');
     } else {
         form.find('.reply-content-error').css('display', 'none');
-        data.content = form.find('.reply-content').val();
-
+        data.content = simplemde.value();
         $.ajax({
             type: 'post',
             data: data,

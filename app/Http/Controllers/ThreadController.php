@@ -10,14 +10,14 @@ use App\Http\Controllers\PostController;
 class ThreadController extends Controller
 {
     public function show(Forum $forum, Thread $thread) {
-        $forum_url = "/$forum->slug/discussions";
+        $forum_slug = $forum->slug;
         $forum_name = $forum->forum;
         $thread_subject = $thread->subject;
         $posts = $thread->posts;
 
         return view('forum.discussion.show')
             ->with(compact('forum_name'))
-            ->with(compact('forum_url'))
+            ->with(compact('forum_slug'))
             ->with(compact('posts'))
             ->with(compact('thread_subject'));
     }

@@ -3,17 +3,30 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
+use App\Models\{Post, User};
+use Carbon\Carbon;
 
 class DiscussionPost extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct()
+
+    public $post_votes;
+    public $post_content;
+    public $post_created_at;
+
+    public $post_owner_avatar;
+    public $post_owner_username;
+    public $post_owner_reputation;
+
+    public function __construct(Post $post)
     {
-        //
+        $post_owner = User::find(Post::find($post->user_id))->first();
+
+        $this->post_content = $post->content;
+        $this->post_created_at = (new Carbon($post->created_at))->toDayDateTimeString();
+
+        $this->post_owner_avatar = $post_owner->avatar;
+        $this->post_owner_username = $post_owner->username;
+        $this->post_owner_reputation = $post_owner->reputation;
     }
 
     /**

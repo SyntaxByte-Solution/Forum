@@ -17,8 +17,9 @@ class DiscussionPost extends Component
     public $post_owner_username;
     public $post_owner_reputation;
 
-    public function __construct(Post $post)
+    public function __construct($post)
     {
+        $post = Post::find($post);
         $post_owner = User::find(Post::find($post->user_id))->first();
 
         $this->post_content = $post->content;
@@ -34,8 +35,8 @@ class DiscussionPost extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.discussion-post');
+        return view('components.discussion-post', $data);
     }
 }

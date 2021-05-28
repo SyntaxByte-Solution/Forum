@@ -61,7 +61,7 @@ class ThreadController extends Controller
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
         $thread_type_slug = ThreadType::find($data['thread_type'])->slug;
 
-        return redirect("/forum/$forum_slug/$thread_type_slug");
+        return route('forum.discussions', [$forum_slug]);
     }
 
     public function update(Thread $thread) {

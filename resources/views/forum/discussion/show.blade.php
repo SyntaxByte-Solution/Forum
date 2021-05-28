@@ -32,24 +32,22 @@
         </div>
         <x-thread-component :thread="request()->thread"/>
         
-        <p class="bold fs17">2 Replies</p>
-
-        @foreach($posts as $post)
-            <x-discussion-post :post="$post"/>
-        @endforeach
+        <p class="bold fs20">{{ $posts->count() }} Replies</p>
+        <div id="replies-container">
+            @foreach($posts as $post)
+                <x-discussion-post :post="$post->id"/>
+            @endforeach
+        </div>
 
         <div>
             <div class="share-post-form">
                 @csrf
                 <div class="input-container">
-                    <p class="fs17" style="margin: 4px 0">
-                        <label for="reply-content" class="flex">Your reply 
+                    <p class="fs20" style="margin: 20px 0">
+                        <label for="reply-content" class="flex" id="reply-site">Your reply 
                             <span class="error frt-error reply-content-error">  *</span>
                         </label>
                     </p>
-                    @error('subject')
-                        <p class="error frt-error" role="alert">{{ $message }}</p>
-                    @enderror
                     <p class="error frt-error reply-content-error" role="alert">Reply field is required</p>
                     <textarea name="subject" class="reply-content" id="post-reply"></textarea>
                     <script>

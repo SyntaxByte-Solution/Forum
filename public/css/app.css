@@ -670,6 +670,7 @@ a, input, textarea {
 .mini-label {
     font-size: 12px;
     margin: 0;
+    margin-bottom: 2px;
     color: #1e2027;
 }
 

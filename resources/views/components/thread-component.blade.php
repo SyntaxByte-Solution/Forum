@@ -35,7 +35,7 @@
                 <div class="flex">
                     <a href="" class="link-path" class="block" style="margin: 4px">Direct Link</a>
                     <div class="move-to-right flex">
-                        <a href="" class="button-with-icon reply-icon">reply</a>
+                        <a href="" class="button-with-icon reply-icon reply-to-thread">reply</a>
                         <a href="" class="button-with-only-icon report-icon"></a>
                     </div>
                 </div>

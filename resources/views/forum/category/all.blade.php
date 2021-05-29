@@ -19,10 +19,10 @@
             <!--<span class="current-link-path">The side effects of using glutamin</span>-->
         </div>
         <div class="flex space-between">
-            <h1 id="page-title">Discussions</h1>
+            <h1 id="page-title">Discussions & questions</h1>
             <div>
-                <a href="{{ route('forum.all', [request('forum')->slug]) }}" class="page-section-button">ALL</a>
-                <a href="{{ route('forum.discussions', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
+                <a href="{{ route('forum.all', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">ALL</a>
+                <a href="{{ route('forum.discussions', [request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
                 <a href="{{ route('forum.questions', [request('forum')->slug]) }}" class="page-section-button">QUESTIONS</a>
             </div>
         </div>
@@ -38,7 +38,13 @@
         </div>
         <div class="flex align-center space-between" style="margin-bottom: 10px">
             <div class="flex align-center">
-                <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="button-style-1 mx4">New Discussion</a>
+                <div class="relative">
+                    <a href="" class="mr4 button-right-icon more-icon button-with-suboptions">Add Thread</a>
+                    <div class="suboptions-container suboptions-buttons-b-style">
+                        <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Discussion</a>
+                        <a href="" class="suboption-b-style">Add Question</a>
+                    </div>
+                </div>
                 <form action="">
                     <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
@@ -55,8 +61,7 @@
                 <a href="" class="pagination-item">6</a>
             </div>
         </div>
-
-        <!-- main -->
+        @if($announcements->count() != 0)
         <table class="forums-table">
             <tr>
                 <th class="table-col-header">{{ __('ANNOUNCEMENTS') }}</th>
@@ -68,18 +73,17 @@
                 <x-discussion-table-row :discussion="$announcement"/>
             @endforeach
         </table>
-        @if($announcements->count() == 0)
-            <p class="no-margin fs12 bold" style="padding:4px 12px">{{ __('NO ANNOUNCEMENTS AT THE MOMENT') }}</p>
         @endif
         <table class="forums-table">
             <tr>
-                <th class="table-col-header">{{ __('DISCUSSIONS') }}</th>
+                <th class="table-col-header">{{ __('THREAD') }}</th>
+                <th class="table-col-header">{{ __('CATEGORY') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
-            @foreach($discussions as $discussion)
-                <x-discussion-table-row :discussion="$discussion"/>
+            @foreach($threads as $thread)
+                <x-resource-table-row :thread="$thread"/>
             @endforeach
         </table>
     </div>

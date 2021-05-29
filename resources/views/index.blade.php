@@ -13,6 +13,7 @@
 @section('content')
     @include('partials.hidden-login-viewer')
     @include('partials.left-panel', ['page' => 'home'])
+    @include('partials.basic-right-panel', ['page' => 'home'])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex space-between full-width">
             <div>
@@ -20,12 +21,16 @@
                 <!--<span class="current-link-path">The side effects of using glutamin</span>-->
             </div>
             @auth
-                <div>
-                    <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style">{{ __('Start Discussion') }}</a>
+                <div class="flex align-center">
+                    <p class="mr8 fs13 gray">Add: </p>
+                    <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style-1 flex">{{ __('Discussion') }}</a>
+                    <div class="button1-separator"></div>
+                    <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style-1 flex">{{ __('Question') }}</a>
                 </div>
             @endauth
         </div>
         <div id="forums-section">
+            <h1 id="page-title">❝ WELCOME TO MOROCCAN BEAST FORUMS ❞</h1>
             <table class="forums-table">
                 <tr>
                     <th class="table-col-header">{{ __('MB FORUMS') }}</th>

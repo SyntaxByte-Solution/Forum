@@ -6,7 +6,7 @@
 <header>
     <div id="header" class="relative">
         <div id="header-logo-container">
-            <a href="">
+            <a href="/">
                 <img src='{{ asset("assets/images/logos/large-logo.png") }}' alt="header logo" id="header-logo">
             </a>
         </div>

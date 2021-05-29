@@ -2,7 +2,7 @@
     <td>
         <div class="flex">
             <div class="forum-category-icon-container">
-                <img src='{{ asset("assets/images/icns/discussions.png") }}' class="forum-table-row-image" alt="">
+                <img src='{{ asset($discussion_icon) }}' class="forum-table-row-image" alt="">
             </div>
             <div>
                 <h2 class="table-row-title"><a href="/{{ request('forum')->slug }}/discussions/{{ $discussion_id }}" class="forum-style-link">{{ $discussion_title }}</a></h2>

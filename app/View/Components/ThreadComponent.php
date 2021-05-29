@@ -48,6 +48,6 @@ class ThreadComponent extends Component
      */
     public function render()
     {
-        return view('components.thread-component');
+        return view('components.thread.thread-component');
     }
 }

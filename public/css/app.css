@@ -13,6 +13,12 @@ a, input, textarea {
     outline: none;
 }
 
+.full-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .fs17 {
     font-size: 17px;
 }
@@ -39,6 +45,18 @@ a, input, textarea {
 
 .fs10 {
     font-size: 10px;
+}
+
+.mr8 {
+    margin-right: 8px;
+}
+
+.mr4 {
+    margin-right: 4px;
+}
+
+.ml8 {
+    margin-left: 8px;
 }
 
 .error {
@@ -120,6 +138,18 @@ a, input, textarea {
 .mx4 {
     margin-left: 4px;
     margin-right: 4px;
+}
+
+.my8 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.basic-dropdown {
+    padding: 3px;
+    font-size: 13px;
+    border-radius: 3px;
+    border: 1px solid rgb(175, 175, 175);
 }
 
 .suboption-style-1 {
@@ -210,6 +240,24 @@ a, input, textarea {
     background-position: 6px center;
 }
 
+.button-right-icon {
+    padding: 7px 24px 7px 12px;
+    color: white;
+    background-color: #353946;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+
+    background-size: 22px;
+    background-repeat: no-repeat;
+    background-position: right 3px center;
+}
+
+.button-right-icon:hover {
+    background-color: #202020;
+}
+
 .background-partial-1 {
     padding-left: 42px;
     background-size: 24px;
@@ -219,6 +267,10 @@ a, input, textarea {
 
 #login-signin-button {
     background-image: url(../assets/images/icons/login.png);
+}
+
+.more-icon {
+    background-image: url(../assets/images/icons/more.png);
 }
 
 .report-icon {
@@ -305,6 +357,11 @@ a, input, textarea {
     background-image: url(../assets/images/icons/qst.png);
 }
 
+.bqst-icon {
+    background-size: 14px;
+    background-image: url(../assets/images/icons/bqst.png);
+}
+
 .popular-icon {
     background-image: url(../assets/images/icons/popular.png);
 }
@@ -315,10 +372,36 @@ a, input, textarea {
 
 .suboptions-container {
     z-index: 1;
+    display: none;
+}
+
+.suboptions-buttons-b-style {
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    padding: 4px;
+    min-width: 160px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: #363945;
+}
+
+.suboption-b-style {
+    display: flex;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 4px;
+    padding: 10px 10px;
+    transition: 0.6s ease background-color;
+}
+
+.suboption-b-style:hover {
+    background-color: #4d5264;
 }
 
 .suboptions-buttons-style {
-    display: none;
     align-items: center;
     position: absolute;
     top: 37px;
@@ -552,7 +635,7 @@ a, input, textarea {
 }
 
 .middle-padding {
-    padding: 30px 12px 12px 12px;
+    padding: 12px 12px 12px 12px;
 }
 
 .current-link-path {
@@ -650,7 +733,7 @@ a, input, textarea {
 }
 
 .middle-padding-1 {
-    padding: 30px;
+    padding: 24px;
 }
 
 .label-style {
@@ -664,6 +747,14 @@ a, input, textarea {
     font-weight: bold;
     font-size: 15px;
     margin-bottom: 4px;
+    color: #1e2027;
+}
+
+.label-style-2 {
+    display: flex;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0 5px 0 0;
     color: #1e2027;
 }
 
@@ -758,6 +849,7 @@ a, input, textarea {
 
 .forums-table {
     width: 100%;
+    position: relative;
     border-spacing: 0px;
 }
   
@@ -772,6 +864,10 @@ table td, table td * {
 
 th {
     padding: 8px;
+    position: sticky;
+    top: 109px; /* Don't forget this, required for the stickiness */
+    box-shadow: 0 5px 6px -1px rgba(159, 159, 159, 0.2);
+    background-color: rgb(250, 250, 250);
 }
 
 td {
@@ -782,7 +878,7 @@ tr:first-child {
     
 }
 tr:nth-child(2n) {
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(246, 246, 246);
 }
 
 .table-numbered-column {
@@ -794,8 +890,9 @@ tr:nth-child(2n) {
 }
 
 .forum-table-row-image {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
 }
 
 .forum-category-link-header {
@@ -810,10 +907,6 @@ tr:nth-child(2n) {
 
 .forum-style-link:hover {
     color: rgb(48, 132, 201);
-}
-
-.forum-category-icon-container {
-    margin-right: 10px;
 }
 
 .forum-category-description {
@@ -836,6 +929,12 @@ tr:nth-child(2n) {
 #page-title {
     margin: 6px 0 18px 0;
 
+    color: #1e2027;
+}
+
+.page-subtitle {
+    margin: 6px 0 18px 0;
+    font-size: 20px;
     color: #1e2027;
 }
 
@@ -1024,4 +1123,31 @@ tr:nth-child(2n) {
 .post-reply-by-ach {
     font-size: 12px;
     margin: -2px 0 0 6px;
+}
+
+.button1-separator {
+    margin: 0 6px;
+    height: 8px;
+    width: 2px;
+    background-color: rgb(129, 129, 129);
+}
+
+.page-section-button {
+    color: #393d4e;
+    border: 1px solid #666d8a;
+    text-decoration: none;
+    font-size: 11px;
+    border-radius: 4px;
+    font-weight: bold;
+    padding: 10px 8px;
+}
+
+.page-section-button:hover {
+    background-color: #666d8a;
+    color: white;
+}
+
+.page-section-button-selected {
+    background-color: #666d8a;
+    color: white;
 }

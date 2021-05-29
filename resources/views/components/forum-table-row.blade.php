@@ -1,12 +1,17 @@
 <tr>
     <td>
         <div class="flex">
-            <div class="forum-category-icon-container">
-                <img src="" class="forum-category-icon" alt="">
-            </div>
             <div>
-                <h2 class="forum-category-link-header"><a href="/{{ $forum->slug }}/discussions" class="forum-style-link">{{ $forum->forum }}</a></h2>
-                <p class="forum-category-description">{{ $forum->description }}</p>
+                <img src="{{ asset($forum->icon) }}" class="forum-table-row-image" alt="forum icon">
+            </div>
+            <div class="flex">
+                <div class="forum-category-icon-container">
+                    <img src="" class="forum-category-icon" alt="">
+                </div>
+                <div>
+                    <h2 class="forum-category-link-header"><a href="{{ route('forum.all', ['forum'=>$forum->slug]) }}" class="forum-style-link">{{ $forum->forum }}</a></h2>
+                    <p class="forum-category-description">{{ $forum->description }}</p>
+                </div>
             </div>
         </div>
     </td>

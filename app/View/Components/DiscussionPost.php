@@ -37,6 +37,6 @@ class DiscussionPost extends Component
      */
     public function render($data=[])
     {
-        return view('components.discussion-post', $data);
+        return view('components.discussion.discussion-post', $data);
     }
 }

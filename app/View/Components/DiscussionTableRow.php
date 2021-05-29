@@ -3,12 +3,13 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
-use App\Models\{Thread, User};
+use App\Models\{Thread, User, Category};
 use Carbon\Carbon;
 
 class DiscussionTableRow extends Component
 {
     public $discussion_id;
+    public $discussion_icon;
     public $discussion_title;
     public $views;
     public $thread_owner;
@@ -18,6 +19,12 @@ class DiscussionTableRow extends Component
 
     public function __construct(Thread $discussion)
     {
+        if(Category::find($discussion->category_id)->slug == 'announcements') {
+            $this->discussion_icon = 'assets/images/icns/announcements.png';
+        } else {
+            $this->discussion_icon = 'assets/images/icns/discussions.png';
+        }
+
         $this->discussion_id = $discussion->id;
         if(strlen($discussion->subject) > 80) {
             $this->discussion_title = substr($discussion->subject, 0, 80) . '..';
@@ -37,6 +44,6 @@ class DiscussionTableRow extends Component
      */
     public function render()
     {
-        return view('components.discussion-table-row');
+        return view('components.discussion.discussion-table-row');
     }
 }

@@ -4,13 +4,12 @@ main {
 
 .right-panel {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 250px;
-    background-color: #5d6275;
+    top: 0px;
+    right: 0px;
+    width: 260px;
+    border-left: 1px solid #b9b9b9;
+    border-bottom: 1px solid #b9b9b9;
     height: 500px;
-    border-radius: 8px;
-    padding: 10px;
 }
 
 .rp-title {
@@ -39,4 +38,43 @@ main {
     height: 100%;
     width: 6px;
     background-color: rgb(58, 186, 236);
+}
+
+.panel-section-heading-container {
+    height: 46px;
+    background-color: #585d6f;
+}
+
+.panel-section-title {
+    color: white;
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.panel-section-content {
+    padding: 8px;
+}
+
+.panel-section-link {
+    color: black;
+    display: block;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 6px 0;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #ddd;
+}
+
+.panel-section-link:hover {
+    text-decoration: underline;
+    color: rgb(58, 186, 236);
+}
+
+.panel-section-item-icon {
+    display: flex;
+    height: 14px;
+    width: 14px;
+    padding-top: 8px;
+    margin-right: 8px;
 }

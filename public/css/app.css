@@ -1151,3 +1151,10 @@ tr:nth-child(2n) {
     background-color: #666d8a;
     color: white;
 }
+
+.form-column-line-separator {
+    height: 1px;
+    background-color: rgb(177, 177, 177);
+    width: 60px;
+    margin: 3px 0;
+}

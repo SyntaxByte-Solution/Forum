@@ -25,18 +25,24 @@
                     <p class="mr8 fs13 gray">Add: </p>
                     <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style-1 flex">{{ __('Discussion') }}</a>
                     <div class="button1-separator"></div>
-                    <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style-1 flex">{{ __('Question') }}</a>
+                    <a href="{{ route('question.add', ['forum'=>'general']) }}" class="button-style-1 flex">{{ __('Question') }}</a>
                 </div>
             @endauth
         </div>
         <div id="forums-section">
-            <h1 id="page-title">❝ WELCOME TO MOROCCAN BEAST FORUMS ❞</h1>
+            <div>
+                <h1 id="page-title">❝ {{__('THE ONLY PERSON WHO CAN STOP YOU FROM REACHING YOUR GOALS IS YOU.') }} ❞</h1>
+                <div class="flex">
+                    <p class="move-to-right gray bold" style="margin-top: -14px">~ Jackie Joyner-Kersee</p>
+                </div>
+            </div>
+
             <table class="forums-table">
                 <tr>
                     <th class="table-col-header">{{ __('MB FORUMS') }}</th>
-                    <th class="table-col-header table-numbered-column">{{ __('DISCUSSIONS & QUESTIONS') }}</th>
+                    <th class="table-col-header table-numbered-column">{{ __('THREADS') }}</th>
                     <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
-                    <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
+                    <th class="table-col-header table-last-post">{{ __('LAST THREAD') }}</th>
                 </tr>
                 @foreach($forums as $forum)
                     <x-forum-table-row :forum="$forum"/>

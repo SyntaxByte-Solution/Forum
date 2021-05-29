@@ -24,9 +24,13 @@ class ThreadController extends Controller
 
     public function create(Forum $forum) {
         $categories = $forum->categories;
-
-        return view('forum.discussion.create')
-        ->with(compact('categories'));
+        if(strpos(url()->current(), 'discussions')) {
+            return view('forum.discussion.create')
+            ->with(compact('categories'));
+        } else if(strpos(url()->current(), 'questions')) {
+            return view('forum.question.create')
+            ->with(compact('categories'));
+        }
     }
 
     public function store(Request $request) {
@@ -92,13 +96,15 @@ class ThreadController extends Controller
     }
 
     public function all_discussions(Forum $forum) {
-        $categories = $forum->categories->where('slug', '<>', 'announcements');
+        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+
+        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
+        $announcements = Thread::where('category_id', $anoun_id)->where('thread_type', 1)->get();
 
         // First get all forum's categories
-        $ids = $forum->categories->pluck('id');
+        $ids = $categories->pluck('id');
         // Then we fetch all threads in those categories
         $discussions = Thread::whereIn('category_id', $ids)->where('thread_type', 1)->get();
-        $announcements = Thread::where('category_id', 'announcements')->get();
         
         return view('forum.category.all-discussions')
         ->with(compact('categories'))
@@ -110,10 +116,10 @@ class ThreadController extends Controller
     }
 
     public function all(Forum $forum) {
-        $categories = $forum->categories->where('slug', '<>', 'announcements');
+        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
 
         // First get all forum's categories
-        $ids = $forum->categories->pluck('id');
+        $ids = $categories->pluck('id');
         // Then we fetch all threads in those categories
         $threads = Thread::whereIn('category_id', $ids)->get();
         $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;

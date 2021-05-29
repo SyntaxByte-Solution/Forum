@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class DiscussionPost extends Component
 {
 
+    public $post_id;
     public $post_votes;
     public $post_content;
     public $post_created_at;
@@ -22,6 +23,7 @@ class DiscussionPost extends Component
         $post = Post::find($post);
         $post_owner = User::find(Post::find($post->user_id))->first();
 
+        $this->post_id = $post->id;
         $this->post_content = $post->content;
         $this->post_created_at = (new Carbon($post->created_at))->toDayDateTimeString();
 

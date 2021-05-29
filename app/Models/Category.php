@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Forum;
+use App\Models\{Forum, Thread};
 
 class Category extends Model
 {
@@ -13,8 +13,11 @@ class Category extends Model
     protected $table = 'categories';
     protected $guarded = [];
     
-    public function category() {
+    public function forum() {
         return $this->belongsTo(Forum::class);
     }
 
+    public function threads() {
+        return $this->hasMany(Thread::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use App\Models\{Post, User};
 use Carbon\Carbon;
+use Markdown;
 
 class DiscussionPost extends Component
 {
@@ -24,7 +25,7 @@ class DiscussionPost extends Component
         $post_owner = User::find(Post::find($post->user_id))->first();
 
         $this->post_id = $post->id;
-        $this->post_content = $post->content;
+        $this->post_content = Markdown::parse($post->content);
         $this->post_created_at = (new Carbon($post->created_at))->toDayDateTimeString();
 
         $this->post_owner_avatar = $post_owner->avatar;

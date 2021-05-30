@@ -42,6 +42,7 @@ class DiscussionTableRow extends Component
             $this->discussion_title = $discussion->subject;
         }
         $this->at = (new Carbon($discussion->created_at))->toDayDateTimeString();
+        $this->thread_date = (new Carbon($discussion->created_at))->toDayDateTimeString();
         $this->views = $discussion->view_count;
         $this->thread_owner = User::find($discussion->user_id)->username;
         $this->replies = $discussion->posts->count();

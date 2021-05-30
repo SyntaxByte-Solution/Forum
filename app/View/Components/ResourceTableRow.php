@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class ResourceTableRow extends Component
 {
     public $thread_id;
+    public $thread_icon;
     public $thread_url;
     public $category;
     public $thread_title;
@@ -26,7 +27,8 @@ class ResourceTableRow extends Component
     public function __construct(Thread $thread)
     {
         $forum = Forum::find($thread->category->forum_id)->slug;
-
+        $this->thread_owner = User::find($thread->user_id)->username;
+        
         $this->thread_id = $thread->id;
         if(strlen($thread->subject) > 80) {
             $this->thread_title = substr($thread->subject, 0, 80) . '..';
@@ -40,6 +42,12 @@ class ResourceTableRow extends Component
         $this->replies = $thread->posts->count();
 
         $this->hasLastPost = $last_post = $thread->posts->last();
+
+        if($thread->thread_type == 1) {
+            $this->thread_icon = 'assets/images/icns/discussions.png';
+        } else if($thread->thread_type == 2) {
+            $this->thread_icon = 'assets/images/icns/questions.png';
+        }
 
         if($last_post) {
             $lpc = $last_post->content;

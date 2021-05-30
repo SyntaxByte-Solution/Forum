@@ -15,15 +15,15 @@
     <div id="middle-container" class="middle-padding-1">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
-            <a href="/{{ request()->forum->slug }}/discussions" class="link-path">{{ __(request()->forum->forum) }}</a>
-            <!--<span class="current-link-path">The side effects of using glutamin</span>-->
+            <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }} > </a>
+            <span class="current-link-path">Questions</span>
         </div>
         <div class="flex space-between">
-            <h1 id="page-title">Discussions</h1>
+            <h1 id="page-title">Questions</h1>
             <div>
-                <a href="{{ route('forum.all', [request('forum')->slug]) }}" class="page-section-button">ALL</a>
-                <a href="{{ route('forum.discussions', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
-                <a href="{{ route('forum.questions', [request('forum')->slug]) }}" class="page-section-button">QUESTIONS</a>
+                <a href="{{ route('forum.misc', ['forum'=>request('forum')->slug]) }}" class="page-section-button">ALL</a>
+                <a href="{{ route('get.all.forum.questions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
+                <a href="{{ route('get.all.forum.questions', ['forum'=>request('forum')->slug]) }}" class="page-section-button page-section-button-selected">QUESTIONS</a>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
         </div>
         <div class="flex align-center space-between" style="margin-bottom: 10px">
             <div class="flex align-center">
-                <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="button-style-1 mx4">New Discussion</a>
+                <a href="{{ route('question.add', ['forum'=>request()->forum->slug]) }}" class="button-style-1 mx4">New Question</a>
                 <form action="">
                     <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
@@ -57,6 +57,7 @@
         </div>
 
         <!-- main -->
+        @if($announcements->count())
         <table class="forums-table">
             <tr>
                 <th class="table-col-header">{{ __('ANNOUNCEMENTS') }}</th>
@@ -68,18 +69,16 @@
                 <x-discussion-table-row :discussion="$announcement"/>
             @endforeach
         </table>
-        @if($announcements->count() == 0)
-            <p class="no-margin fs12 bold" style="padding:4px 12px">{{ __('NO ANNOUNCEMENTS AT THE MOMENT') }}</p>
         @endif
         <table class="forums-table">
             <tr>
-                <th class="table-col-header">{{ __('DISCUSSIONS') }}</th>
+                <th class="table-col-header">{{ __('QUESTIONS') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
-            @foreach($discussions as $discussion)
-                <x-discussion-table-row :discussion="$discussion"/>
+            @foreach($questions as $question)
+                <x-discussion-table-row :discussion="$question"/>
             @endforeach
         </table>
     </div>

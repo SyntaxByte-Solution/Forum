@@ -9,7 +9,7 @@
                     <img src="" class="forum-category-icon" alt="">
                 </div>
                 <div>
-                    <h2 class="forum-category-link-header"><a href="{{ route('forum.all', ['forum'=>$forum_slug]) }}" class="forum-style-link">{{ $forum_forum }}</a></h2>
+                    <h2 class="forum-category-link-header"><a href="{{ route('forum.misc', ['forum'=>$forum_slug]) }}" class="forum-style-link">{{ $forum_forum }}</a></h2>
                     <p class="forum-category-description">{{ $forum_description }}</p>
                 </div>
             </div>

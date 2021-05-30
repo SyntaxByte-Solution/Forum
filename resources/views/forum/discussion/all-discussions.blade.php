@@ -16,13 +16,13 @@
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
             <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }}</a>
-            <!--<span class="current-link-path">The side effects of using glutamin</span>-->
+            <span class="current-link-path">Discussions</span>
         </div>
         <div class="flex space-between">
-            <h1 id="page-title">Discussions & questions</h1>
+            <h1 id="page-title">Discussions</h1>
             <div>
-                <a href="{{ route('forum.misc', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">ALL</a>
-                <a href="{{ route('get.all.forum.discussions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
+                <a href="{{ route('forum.misc', [request('forum')->slug]) }}" class="page-section-button">ALL</a>
+                <a href="{{ route('get.all.forum.discussions', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
                 <a href="{{ route('get.all.forum.questions', [request('forum')->slug]) }}" class="page-section-button">QUESTIONS</a>
             </div>
         </div>
@@ -38,13 +38,7 @@
         </div>
         <div class="flex align-center space-between" style="margin-bottom: 10px">
             <div class="flex align-center">
-                <div class="relative">
-                    <a href="" class="mr4 button-right-icon more-icon button-with-suboptions">Add Thread</a>
-                    <div class="suboptions-container suboptions-buttons-b-style">
-                        <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Discussion</a>
-                        <a href="{{ route('question.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Question</a>
-                    </div>
-                </div>
+                <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="button-style-1 mx4">New Discussion</a>
                 <form action="">
                     <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
@@ -61,7 +55,9 @@
                 <a href="" class="pagination-item">6</a>
             </div>
         </div>
-        @if($announcements->count() != 0)
+
+        <!-- main -->
+        @if($announcements->count())
         <table class="forums-table">
             <tr>
                 <th class="table-col-header">{{ __('ANNOUNCEMENTS') }}</th>
@@ -76,14 +72,13 @@
         @endif
         <table class="forums-table">
             <tr>
-                <th class="table-col-header">{{ __('THREAD') }}</th>
-                <th class="table-col-header">{{ __('CATEGORY') }}</th>
+                <th class="table-col-header">{{ __('DISCUSSIONS') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
-            @foreach($threads as $thread)
-                <x-resource-table-row :thread="$thread"/>
+            @foreach($discussions as $discussion)
+                <x-discussion-table-row :discussion="$discussion"/>
             @endforeach
         </table>
     </div>

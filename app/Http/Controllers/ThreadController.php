@@ -23,7 +23,7 @@ class ThreadController extends Controller
     }
 
     public function create(Forum $forum) {
-        $categories = $forum->categories;
+        $categories = $forum->categories->where('slug', '<>', 'announcements');
         if(strpos(url()->current(), 'discussions')) {
             return view('forum.discussion.create')
             ->with(compact('categories'));
@@ -65,7 +65,11 @@ class ThreadController extends Controller
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
         $thread_type_slug = ThreadType::find($data['thread_type'])->slug;
 
-        return route('forum.discussions', [$forum_slug]);
+        if($data['thread_type'] == 1) {
+            return route('forum.discussions', [$forum_slug]);
+        } else if($data['thread_type'] == 2) {
+            return route('forum.questions', [$forum_slug]);
+        }
     }
 
     public function update(Thread $thread) {
@@ -106,23 +110,37 @@ class ThreadController extends Controller
         // Then we fetch all threads in those categories
         $discussions = Thread::whereIn('category_id', $ids)->where('thread_type', 1)->get();
         
-        return view('forum.category.all-discussions')
+        return view('forum.discussion.all-discussions')
         ->with(compact('categories'))
         ->with(compact('announcements'))
         ->with(compact('discussions'));
     }
     public function all_questions(Forum $forum) {
-        return view('forum.category.all-qestions');
+        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+
+        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
+        $announcements = Thread::where('category_id', $anoun_id)->where('thread_type', 1)->get();
+
+        // First get all forum's categories
+        $ids = $categories->pluck('id');
+        // Then we fetch all threads in those categories
+        $questions = Thread::whereIn('category_id', $ids)->where('thread_type', 2)->get();
+        
+        return view('forum.question.all-questions')
+        ->with(compact('categories'))
+        ->with(compact('announcements'))
+        ->with(compact('questions'));
     }
 
-    public function all(Forum $forum) {
+    public function forum_all_threads(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
 
         // First get all forum's categories
         $ids = $categories->pluck('id');
         // Then we fetch all threads in those categories
-        $threads = Thread::whereIn('category_id', $ids)->get();
-        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
+        $threads = Thread::whereIn('category_id', $ids)->orderBy('created_at', 'desc')->get();
+        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first();
+        $anoun_id = $anoun_id->id;
         $announcements = Thread::where('category_id', $anoun_id)->get();
         
         return view('forum.category.all')

@@ -11,34 +11,42 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'discussions'])
+    @include('partials.left-panel', ['page' => 'misc'])
     <div id="middle-container" class="middle-padding-1">
+        <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
-            <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }}</a>
-            <span class="current-link-path">Discussions</span>
+            <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }} ></a>
+            <a href="{{ route('category.misc', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ __($category->category) }}</a>
+            <!--<span class="current-link-path">The side effects of using glutamin</span>-->
         </div>
         <div class="flex space-between">
-            <h1 id="page-title">Discussions</h1>
+            <h1 id="page-title">Discussions & questions</h1>
             <div>
-                <a href="{{ route('forum.misc', [request('forum')->slug]) }}" class="page-section-button">ALL</a>
-                <a href="{{ route('get.all.forum.discussions', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
+                <a href="{{ route('forum.misc', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">ALL</a>
+                <a href="{{ route('get.all.forum.discussions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
                 <a href="{{ route('get.all.forum.questions', [request('forum')->slug]) }}" class="page-section-button">QUESTIONS</a>
             </div>
         </div>
 
         <div class="flex align-center my8 mr4">
-            <label class="label-style-2">Select Category: </label>
-            <select name="category" id="" class="basic-dropdown">
-                <option value="0">{{ __('All') }}</option>
-                @foreach($categories as $category)
-                    <option value="">{{ $category->category }}</option>
+            <label class="label-style-2 category-dropdown">Select Category: </label>
+            <select name="category" id="category-dropdown" class="basic-dropdown">
+                <option value="all">{{ __('All') }}</option>
+                @foreach($categories as $c)
+                    <option value="{{ $c->slug }}" @if($c->category == $category->category) selected @endif>{{ $c->category }}</option>
                 @endforeach
             </select>
         </div>
         <div class="flex align-center space-between" style="margin-bottom: 10px">
             <div class="flex align-center">
-                <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="button-style-1 mx4">New Discussion</a>
+                <div class="relative">
+                    <a href="" class="mr4 button-right-icon more-icon button-with-suboptions">Add Thread</a>
+                    <div class="suboptions-container suboptions-buttons-b-style">
+                        <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Discussion</a>
+                        <a href="{{ route('question.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Question</a>
+                    </div>
+                </div>
                 <form action="">
                     <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
@@ -55,30 +63,16 @@
                 <a href="" class="pagination-item">6</a>
             </div>
         </div>
-
-        <!-- main -->
-        @if($announcements->count())
         <table class="forums-table">
             <tr>
-                <th class="table-col-header">{{ __('ANNOUNCEMENTS') }}</th>
+                <th class="table-col-header">{{ __('THREAD') }}</th>
+                <th class="table-col-header">{{ __('CATEGORY') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
-            @foreach($announcements as $announcement)
-                <x-discussion-table-row :discussion="$announcement"/>
-            @endforeach
-        </table>
-        @endif
-        <table class="forums-table">
-            <tr>
-                <th class="table-col-header">{{ __('DISCUSSIONS') }}</th>
-                <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
-                <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
-                <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
-            </tr>
-            @foreach($discussions as $discussion)
-                <x-discussion-table-row :discussion="$discussion"/>
+            @foreach($threads as $thread)
+                <x-resource-table-row :thread="$thread"/>
             @endforeach
         </table>
     </div>

@@ -131,7 +131,6 @@ class ThreadController extends Controller
         ->with(compact('announcements'))
         ->with(compact('questions'));
     }
-
     public function forum_all_threads(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
 
@@ -143,9 +142,20 @@ class ThreadController extends Controller
         $anoun_id = $anoun_id->id;
         $announcements = Thread::where('category_id', $anoun_id)->get();
         
-        return view('forum.category.all')
+        return view('forum.category.misc')
         ->with(compact('categories'))
         ->with(compact('announcements'))
+        ->with(compact('threads'));
+    }
+
+    public function category_misc(Forum $forum, Category $category) {
+        $category = $category;
+        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+        $threads = Thread::where('category_id', $category->id)->get();
+
+        return view('forum.category.category-misc')
+        ->with(compact('category'))
+        ->with(compact('categories'))
         ->with(compact('threads'));
     }
 }

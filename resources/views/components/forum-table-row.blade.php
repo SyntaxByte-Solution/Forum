@@ -2,7 +2,7 @@
     <td>
         <div class="flex">
             <div>
-                <img src="{{ asset($forum_icon) }}" class="forum-table-row-image" alt="forum icon">
+                <div class="black-sprite-icon sprite-size-2 {{ $forum_icon }} mx4"></div>
             </div>
             <div class="flex">
                 <div class="forum-category-icon-container">

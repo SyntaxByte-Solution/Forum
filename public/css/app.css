@@ -73,6 +73,10 @@ a, input, textarea {
     position: absolute;
 }
 
+.left8 {
+    left: 8px;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -114,6 +118,10 @@ a, input, textarea {
     margin: 0 auto;
 }
 
+.left0 {
+    left: 0px;
+}
+
 .h-menu {
     display: flex;
     align-items: center;
@@ -140,6 +148,11 @@ a, input, textarea {
     margin-right: 4px;
 }
 
+.mx8 {
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
 .my8 {
     margin-top: 8px;
     margin-bottom: 8px;
@@ -154,7 +167,7 @@ a, input, textarea {
 
 .suboption-style-1 {
     display: flex;
-    padding: 10px 12px;
+    padding: 10px 10px 10px 36px;
     font-weight: 600;
     color:#202020;
     font-size: 14px;
@@ -164,12 +177,12 @@ a, input, textarea {
 }
 
 .suboption-style-1:hover {
-    background-color: rgb(221, 221, 221);
+    background-color: rgb(236, 236, 236);
 }
 
 .menu-separator {
     color: white;
-    margin: 0 6px;
+    margin: 0 4px;
 }
 
 .menu-separator2 {
@@ -265,8 +278,36 @@ a, input, textarea {
     background-position: 10px center;
 }
 
-#login-signin-button {
-    background-image: url(../assets/images/icons/login.png);
+.white-sprite {
+    background-image: url(../assets/images/icons/white-sprite.png);
+}
+
+.black-sprite-icon {
+    background-image: url(../assets/images/icons/sprite.png);
+}
+
+.login-icon {
+    background-position: 0px -138px;
+}
+
+.general-icon {
+    background-position: 0px -480px;
+}
+
+.bb-icon {
+    background-position: -0px -384px;
+}
+
+.calisthenics-icon {
+    background-position: -0px -320px;
+}
+
+.tennis-icon {
+    background-position: -0px -416px;
+}
+
+.football-icon {
+    background-position: -0px -512px;
 }
 
 .more-icon {
@@ -297,24 +338,28 @@ a, input, textarea {
     background-image: url(../assets/images/icons/disc.png);
 }
 
-.feedback-icon {
-    background-image: url(../assets/images/icons/feedback.png);
+.right-arrow-icon {
+    background-position: -0px -319px;
 }
 
 .notifications-icon {
-    background-image: url(../assets/images/icons/notification.png);
+    background-position: -0px -239px;
+}
+
+.wdiscussion-icon {
+    background-position: -0px -359px;
 }
 
 .profile-icon {
-    background-image: url(../assets/images/icons/profile.png);
+    background-position: -0px -169px;
 }
 
 .bquestion-icon {
-    background-image: url(../assets/images/icons/questions.png);
+    background-position: -0px -215px;
 }
 
 .logout-icon {
-    background-image: url(../assets/images/icons/logout.png);
+    background-position: -0px -193px;
 }
 
 .wmenu-icon {
@@ -326,7 +371,7 @@ a, input, textarea {
 }
 
 .question-icon {
-    background-image: url(../assets/images/icons/question.png);
+    background-position: -0px -198px;
 }
 
 .fire-icon {
@@ -342,7 +387,7 @@ a, input, textarea {
 }
 
 .bsettings-icon {
-    background-image: url(../assets/images/icons/bsettings.png);
+    background-position: -0px -97px;
 }
 
 .calendar-icon {
@@ -358,16 +403,15 @@ a, input, textarea {
 }
 
 .bqst-icon {
-    background-size: 14px;
-    background-image: url(../assets/images/icons/bqst.png);
+    background-position: -0px -359px;
 }
 
 .popular-icon {
-    background-image: url(../assets/images/icons/popular.png);
+    background-position: -0px -298px;
 }
 
 .users-icon {
-    background-image: url(../assets/images/icons/users.png);
+    background-position: 0 0;
 }
 
 .suboptions-container {
@@ -487,22 +531,6 @@ a, input, textarea {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
-.header-profile-button {
-    display: flex;
-    height: 40px;
-    width: 40px;
-    margin: 0 4px;
-
-    border-radius: 50%;
-    background-color: #181a22;
-}
-
-.header-profile-picture {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-
 .background-partial-2 {
     background-size: 20px;
     background-position: center;
@@ -550,69 +578,6 @@ a, input, textarea {
     position: absolute;
     right: 16px;
     top: 16px;
-}
-
-/* Left-panel */
-#left-panel {
-    position: fixed;
-    left: 0;
-
-    padding: 30px 0 0 30px;
-    color: white;
-    overflow-y: scroll;
-    min-width: 250px;
-    box-sizing: border-box;
-
-    background-color: #5d6275;
-}
-
-.lp-padding {
-    padding: 8px 8px 8px 28px;
-}
-
-.lp-wpadding {
-    padding: 8px;
-}
-
-.left-panel-item {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    color: rgb(225, 225, 225);
-    text-decoration: none;
-}
-
-.left-panel-item:hover {
-    color: white;
-}
-
-.left-panel-label {
-    font-weight: bold;
-    font-size: 11px;
-    color: rgb(190, 190, 190);
-}
-
-.lp-selected, .lp-sub-selected {
-    background-color: #4d5264;
-}
-
-.selected-colored-slice {
-    position: absolute;
-    right: 0;
-    height: 100%;
-    width: 6px;
-    background-color: rgb(58, 186, 236);
-}
-
-.left-panel-sub-items {
-    padding-left: 20px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #79809b;
-}
-
-.lp-sub-item {
-    font-size: 12px;
-    padding: 4px 8px;
 }
 
 .line-bootstraper {
@@ -865,7 +830,7 @@ table td, table td * {
 th {
     padding: 8px;
     position: sticky;
-    top: 109px; /* Don't forget this, required for the stickiness */
+    top: 65px; /* Don't forget this, required for the stickiness */
     box-shadow: 0 5px 6px -1px rgba(159, 159, 159, 0.2);
     background-color: rgb(250, 250, 250);
 }
@@ -874,9 +839,6 @@ td {
     padding: 12px 14px;
 }
 
-tr:first-child {
-    
-}
 tr:nth-child(2n) {
     background-color: rgb(246, 246, 246);
 }
@@ -1157,4 +1119,45 @@ tr:nth-child(2n) {
     background-color: rgb(177, 177, 177);
     width: 60px;
     margin: 3px 0;
+}
+
+.sprite-size {
+    min-width: 20px;
+    height: 20px;
+    
+    background-size: 20px;
+}
+
+.sprite-size-2 {
+    min-width: 32px;
+    height: 32px;
+    
+    background-size: 32px;
+}
+
+.sprite-size-3 {
+    min-width: 24px;
+    height: 24px;
+    
+    background-size: 24px;
+}
+
+.sprite-size-1 {
+    min-width: 16px;
+    height: 16px;
+    
+    background-size: 16px;
+}
+
+.sprite-icon {
+    min-width: 20px;
+    height: 20px;
+
+    background-image: url(../assets/images/icons/white-sprite.png);
+    background-size: 20px;
+}
+
+.sprite-icon-small {
+    display: flex;
+    background-size: 159px 159px;
 }

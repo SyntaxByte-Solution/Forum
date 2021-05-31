@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'home'])
+    @include('partials.left-panel', ['page' => 'questions'])
     <div id="middle-container" class="middle-padding-1">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>

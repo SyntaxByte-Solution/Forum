@@ -11,8 +11,9 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'home'])
+    @include('partials.left-panel', ['page' => 'misc'])
     <div id="middle-container" class="middle-padding-1">
+        <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
             <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }}</a>
@@ -28,11 +29,11 @@
         </div>
 
         <div class="flex align-center my8 mr4">
-            <label class="label-style-2">Select Category: </label>
-            <select name="category" id="" class="basic-dropdown">
-                <option value="0">{{ __('All') }}</option>
+            <label class="label-style-2" for="category-dd">Select Category: </label>
+            <select name="category" id="category-dropdown" class="basic-dropdown">
+                <option value="all">{{ __('All') }}</option>
                 @foreach($categories as $category)
-                    <option value="">{{ $category->category }}</option>
+                    <option value="{{ $category->slug }}">{{ $category->category }}</option>
                 @endforeach
             </select>
         </div>

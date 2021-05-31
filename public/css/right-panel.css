@@ -61,8 +61,6 @@ main {
     display: block;
     font-size: 13px;
     text-decoration: none;
-    margin: 6px 0;
-    padding-bottom: 3px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -77,4 +75,8 @@ main {
     width: 14px;
     padding-top: 8px;
     margin-right: 8px;
+}
+
+.panel-section-link-container {
+    margin-bottom: 10px;
 }

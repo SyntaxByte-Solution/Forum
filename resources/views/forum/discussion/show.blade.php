@@ -16,12 +16,12 @@
 @endsection
 @section('content')
     @include('partials.hidden-login-viewer')
-    @include('partials.left-panel', ['page' => 'home'])
+    @include('partials.left-panel', ['page' => 'discussions'])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex space-between full-width">
             <div>
                 <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                <a href="{{ route('forum.discussions', ['forum'=>$forum_slug]) }}" class="link-path">{{ $forum_name }} > </a>
+                <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum_slug]) }}" class="link-path">{{ $forum_name }} > </a>
                 <span class="current-link-path">{{ $thread_subject }}</span>
             </div>
             @auth

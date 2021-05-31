@@ -18,7 +18,7 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'home'])
+    @include('partials.left-panel', ['page' => 'questions'])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex space-between align-center">
             <h1 id="page-title">Start a question</h1>

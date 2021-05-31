@@ -52,19 +52,6 @@ Route::get('/{forum:slug}/all', [ThreadController::class, 'forum_all_threads'])-
 Route::get('/{forum:slug}/discussions/all', [ThreadController::class, 'all_discussions'])->name('get.all.forum.discussions');
 Route::get('/{forum:slug}/questions/all', [ThreadController::class, 'all_questions'])->name('get.all.forum.questions');
 
-/**
- * 1. get all discussions & questions of the specified category of the forum in the url 
- * (all in the first route means all thread types [Discussions, questions, advices ..])
- * 2. get all discussions of the specified category of the forum in the url
- * 1. get all questions of the specified category of the forum in the url
- */
-// Route::get('/{forum:slug}/all/{category}', [ThreadController::class, 'all'])->name('forum.misc.by.category');
-// Route::get('/{forum:slug}/discussions/{category}', [ThreadController::class, 'discussions_by_category'])->name('get.discussions.by.category');
-// Route::get('/{forum:slug}/questions/{category}', [ThreadController::class, 'questions_by_category'])->name('get.questions.by.category');
-
-Route::get('/{forum:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
-Route::get('/{forum:slug}/questions/{thread}', [ThreadController::class, 'show'])->name('question.show');
-
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
@@ -83,3 +70,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
 
 });
+
+Route::get('/{forum:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
+Route::get('/{forum:slug}/questions/{thread}', [ThreadController::class, 'show'])->name('question.show');
+
+/**
+ * 1. get all discussions & questions of the specified category of the forum in the url 
+ * (all in the first route means all thread types [Discussions, questions, advices ..])
+ * 2. get all discussions of the specified category of the forum in the url
+ * 1. get all questions of the specified category of the forum in the url
+ */
+Route::get('/{forum:slug}/{category:slug}/all', [ThreadController::class, 'category_misc'])->name('category.misc');
+Route::get('/{forum:slug}/{category:slug}/discussions', [ThreadController::class, 'category_discussions'])->name('category.discussions');
+Route::get('/{forum:slug}/{category:slug}/questions', [ThreadController::class, 'category_questions'])->name('category.questions');

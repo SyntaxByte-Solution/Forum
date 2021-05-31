@@ -32,27 +32,18 @@
             @auth
                 <div class="flex">
                     <div class="relative">
-                        <a href="" class="header-profile-button button-with-suboptions notifications-icon background-partial-2"></a>    
+                        <a href="" class="header-profile-button button-with-suboptions">
+                            <div class="notifications-icon sprite-icon"></div>
+                        </a>    
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
                             
-                            <div class="flex align-center first-profile-container-part">
-                                <img src="avatar.jpg" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
-                                <h2>Mouad Nassri</h2>
-                            </div>
-                            <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
-                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>
-                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Help</a>
-                            <a href="" class="suboption-style-1 bsettings-icon background-partial-1">Settings</a>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 logout-icon background-partial-1">Logout</a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                @csrf
-                            </form>
                         </div>
                     </div>
                     <div class="relative">
-                        <a href="" class="header-profile-button button-with-suboptions feedback-icon background-partial-2"></a>
+                        <a href="" class="header-profile-button button-with-suboptions">
+                            <div class="feedback-icon sprite-icon"></div>
+                        </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
                             
@@ -60,12 +51,23 @@
                                 <img src="avatar.jpg" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
                                 <h2>Mouad Nassri</h2>
                             </div>
-                            <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
-                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>
-                            <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Help</a>
-                            <a href="" class="suboption-style-1 bsettings-icon background-partial-1">Settings</a>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 logout-icon background-partial-1">Logout</a>
-
+                            <div class="flex align-center relative">
+                                <div class="profile-icon black-sprite-icon sprite-size-3 absolute left8"></div>
+                                <a href="" class="suboption-style-1 full-width">Profile</a>
+                            </div>
+                            <div class="flex align-center">
+                                <div class="bquestion-icon black-sprite-icon sprite-size-3 absolute left8"></div>
+                                <a href="" class="suboption-style-1 full-width">Help</a>
+                            </div>
+                            <div class="flex align-center">
+                                <div class="bsettings-icon black-sprite-icon sprite-size-3 absolute left8"></div>
+                                <a href="" class="suboption-style-1 full-width">Settings</a>
+                            </div>
+                            <div class="flex align-center">
+                                <div class="logout-icon black-sprite-icon sprite-size-3 absolute left8"></div>
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 full-width">Logout</a>
+                            </div>
+                            
                             <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                 @csrf
                             </form>
@@ -97,13 +99,14 @@
             @endauth
 
             @guest
-            <div id="login">
-                <a href="" id="login-signin-button" class="white background-partial">Register / Login</a>
+            <div id="login" class="flex align-center">
+                <div class="sprite-icon white-sprite login-icon mr4"></div>
+                <a href="" id="login-signin-button" class="white">Register / Login</a>
             </div>
             @endguest
         </div>
     </div>
-    <div id="second-header">
+    <!-- <div id="second-header">
         <div id="forum-header" class="flex">
             <div class="h-menu">
                 <div class="relative">
@@ -132,5 +135,5 @@
                 <a href="" class="menu-link-button edit-icon background-partial">Add Question</a>
             </div>
         </div>
-    </div>
+    </div> -->
 </header>

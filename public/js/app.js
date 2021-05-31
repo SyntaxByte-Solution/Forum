@@ -116,3 +116,17 @@ $('.share-thread').click(function() {
     
     return false;
 });
+
+$('#category-dropdown').change(function() {
+    let forum_slug = $('#forum-slug').val();
+    let category_slug = $('#category-dropdown').val();
+
+    let sector = window.location.href.split("/").pop();
+    if(category_slug == 'all') {
+        url = '/'+forum_slug+'/all';
+    } else {
+        url = '/'+forum_slug+'/'+category_slug+'/'+sector;
+    }
+
+    document.location.href = url;
+}); 

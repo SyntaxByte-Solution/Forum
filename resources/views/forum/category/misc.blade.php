@@ -16,7 +16,7 @@
         <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
-            <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }}</a>
+            <a href="" class="link-path">{{ __(request()->forum->forum) }}</a>
             <!--<span class="current-link-path">The side effects of using glutamin</span>-->
         </div>
         <div class="flex space-between">

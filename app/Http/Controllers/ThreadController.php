@@ -23,14 +23,18 @@ class ThreadController extends Controller
     }
 
     public function create(Forum $forum) {
+        $forums = Forum::where('id', '<>', $forum->id)->get();
         $categories = $forum->categories->where('slug', '<>', 'announcements');
+        $view = '';
         if(strpos(url()->current(), 'discussions')) {
-            return view('forum.discussion.create')
-            ->with(compact('categories'));
+            $view = 'forum.discussion.create';
         } else if(strpos(url()->current(), 'questions')) {
-            return view('forum.question.create')
-            ->with(compact('categories'));
+            $view = 'forum.question.create';
         }
+
+        return view($view)
+            ->with(compact('forums'))
+            ->with(compact('categories'));
     }
 
     public function store(Request $request) {
@@ -154,6 +158,28 @@ class ThreadController extends Controller
         $threads = Thread::where('category_id', $category->id)->get();
 
         return view('forum.category.category-misc')
+        ->with(compact('category'))
+        ->with(compact('categories'))
+        ->with(compact('threads'));
+    }
+
+    public function category_discussions(Forum $forum, Category $category) {
+        $category = $category;
+        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+        $threads = Thread::where('category_id', $category->id)->where('thread_type', 1)->get();
+
+        return view('forum.category.category-discussions')
+        ->with(compact('category'))
+        ->with(compact('categories'))
+        ->with(compact('threads'));
+    }
+
+    public function category_questions(Forum $forum, Category $category) {
+        $category = $category;
+        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+        $threads = Thread::where('category_id', $category->id)->where('thread_type', 2)->get();
+
+        return view('forum.category.category-questions')
         ->with(compact('category'))
         ->with(compact('categories'))
         ->with(compact('threads'));

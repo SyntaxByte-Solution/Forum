@@ -16,13 +16,13 @@
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
             <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }} > </a>
-            <span class="current-link-path">Questions</span>
+            <span class="current-link-path">All Forum Questions</span>
         </div>
         <div class="flex space-between">
             <h1 id="page-title">Questions</h1>
             <div>
                 <a href="{{ route('forum.misc', ['forum'=>request('forum')->slug]) }}" class="page-section-button">ALL</a>
-                <a href="{{ route('get.all.forum.questions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
+                <a href="{{ route('get.all.forum.discussions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
                 <a href="{{ route('get.all.forum.questions', ['forum'=>request('forum')->slug]) }}" class="page-section-button page-section-button-selected">QUESTIONS</a>
             </div>
         </div>
@@ -78,7 +78,7 @@
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
             @foreach($questions as $question)
-                <x-discussion-table-row :discussion="$question"/>
+                <x-resource-table-row :thread="$question"/>
             @endforeach
         </table>
     </div>

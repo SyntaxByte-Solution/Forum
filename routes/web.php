@@ -49,8 +49,8 @@ Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
  * 1. get all questions of all categories in the specified forum in the url
  */
 Route::get('/{forum:slug}/all', [ThreadController::class, 'forum_all_threads'])->name('forum.misc');
-Route::get('/{forum:slug}/discussions/all', [ThreadController::class, 'all_discussions'])->name('get.all.forum.discussions');
-Route::get('/{forum:slug}/questions/all', [ThreadController::class, 'all_questions'])->name('get.all.forum.questions');
+Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussions'])->name('get.all.forum.discussions');
+Route::get('/{forum:slug}/questions', [ThreadController::class, 'all_questions'])->name('get.all.forum.questions');
 
 Route::middleware(['auth'])->group(function () {
     

@@ -20,6 +20,26 @@
 @section('content')
     @include('partials.left-panel', ['page' => 'questions'])
     <div id="middle-container" class="middle-padding-1">
+    <div class="flex space-between align-center">
+            <div>
+                <a href="/" class="link-path">{{ __('Board index') }} > </a>
+                <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }}</a>
+            </div>
+            <div>
+                <p class="no-margin fs11">{{ __('Do you want to begin a discussion ?') }} <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __('click here') }}</a></p>
+                <div class="flex align-center">
+                    <p class="mr4 fs12">Change forum: </p>
+                    <div class="relative">
+                        <a href="" class="mr4 button-right-icon more-icon button-with-suboptions">{{ request()->forum->forum }}</a>
+                        <div class="suboptions-container suboptions-buttons-b-style">
+                            @foreach($forums as $forum)
+                                <a href="{{ route(Illuminate\Support\Facades\Route::currentRouteName(), ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="flex space-between align-center">
             <h1 id="page-title">Start a question</h1>
         </div>

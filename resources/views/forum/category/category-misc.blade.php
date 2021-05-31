@@ -23,9 +23,9 @@
         <div class="flex space-between">
             <h1 id="page-title">Discussions & questions</h1>
             <div>
-                <a href="{{ route('forum.misc', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">ALL</a>
-                <a href="{{ route('get.all.forum.discussions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
-                <a href="{{ route('get.all.forum.questions', [request('forum')->slug]) }}" class="page-section-button">QUESTIONS</a>
+                <a href="" class="page-section-button page-section-button-selected">ALL</a>
+                <a href="{{ route('category.discussions', ['forum'=>request('forum')->slug, 'category'=>$category->slug]) }}" class="page-section-button">DISCUSSIONS</a>
+                <a href="{{ route('category.questions', ['forum'=>request('forum')->slug, 'category'=>$category->slug]) }}" class="page-section-button">QUESTIONS</a>
             </div>
         </div>
 

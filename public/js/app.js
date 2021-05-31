@@ -120,7 +120,6 @@ $('.share-thread').click(function() {
 $('#category-dropdown').change(function() {
     let forum_slug = $('#forum-slug').val();
     let category_slug = $('#category-dropdown').val();
-
     let sector = window.location.href.split("/").pop();
     if(category_slug == 'all') {
         url = '/'+forum_slug+'/all';

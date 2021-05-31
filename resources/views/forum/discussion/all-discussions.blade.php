@@ -13,10 +13,11 @@
 @section('content')
     @include('partials.left-panel', ['page' => 'discussions'])
     <div id="middle-container" class="middle-padding-1">
+        <input type="hidden" id="forum-slug" value="{{ request()->forum->slug }}">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
-            <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }}</a>
-            <span class="current-link-path">Discussions</span>
+            <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }} > </a>
+            <span class="current-link-path">All Forum Discussions</span>
         </div>
         <div class="flex space-between">
             <h1 id="page-title">Discussions</h1>
@@ -29,10 +30,10 @@
 
         <div class="flex align-center my8 mr4">
             <label class="label-style-2">Select Category: </label>
-            <select name="category" id="" class="basic-dropdown">
-                <option value="0">{{ __('All') }}</option>
-                @foreach($categories as $category)
-                    <option value="">{{ $category->category }}</option>
+            <select name="category" id="category-dropdown" class="basic-dropdown">
+                <option value="all" selected>{{ __('All') }}</option>
+                @foreach($categories as $c)
+                    <option value="{{ $c->slug }}">{{ $c->category }}</option>
                 @endforeach
             </select>
         </div>

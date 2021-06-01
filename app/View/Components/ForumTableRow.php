@@ -36,11 +36,12 @@ class ForumTableRow extends Component
         $last_thread = Thread::whereIn('category_id', $categories)->orderBy('created_at', 'desc')->first();
 
         if($last_thread) {
+            $category = Category::find($last_thread->category_id);
             $this->last_thread_title = strlen($last_thread->subject) > 80 ? substr($last_thread->subject, 0, 80) : $last_thread->subject;
             $this->last_thread_owner_username = User::find($last_thread->user_id)->username;
             $this->last_thread_date = $last_thread->created_at;
             if($last_thread->thread_type == 1) {
-                $this->last_thread_link = route('discussion.show', ['forum'=>$forum->slug, 'thread'=>$last_thread->id]);
+                $this->last_thread_link = route('discussion.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$last_thread->id]);
             } else if($last_thread->thread_type == 2) {
 
             }

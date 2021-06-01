@@ -57,6 +57,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
     Route::get('/{forum:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
 
+    Route::get('/{user:username}/discussions/{thread}/edit', [ThreadController::class, 'edit'])->name('discussion.edit');
+    Route::get('/{user:username}/questions/{thread}/edit', [ThreadController::class, 'edit'])->name('question.edit');
+
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);
     Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);
@@ -71,8 +74,8 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::get('/{forum:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
-Route::get('/{forum:slug}/questions/{thread}', [ThreadController::class, 'show'])->name('question.show');
+Route::get('/{forum:slug}/{category:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
+Route::get('/{forum:slug}/{category:slug}/questions/{thread}', [ThreadController::class, 'show'])->name('question.show');
 
 /**
  * 1. get all discussions & questions of the specified category of the forum in the url 

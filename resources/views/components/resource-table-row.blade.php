@@ -1,15 +1,27 @@
-<tr>
+<tr @can('update', $resource) style="background-color: rgb(232, 246, 255)" @endcan >
     <td>
-        <div class="flex">
-            <div class="forum-category-icon-container">
-                <img src='{{ asset($thread_icon) }}' class="forum-table-row-image" alt="">
-            </div>
-            <div>
-                <h2 class="table-row-title"><a href="/{{ request('forum')->slug }}/discussions/{{ $thread_id }}" class="forum-style-link">{{ $thread_title }}</a></h2>
-                <div class="flex align-center">
-                    <p class="no-margin fs11 flex align-center">by [<a href="" class="fs12 black-link">{{ $thread_owner }}</a>] <span class="fs11" style="margin: 0 5px">>></span> {{ $at }}</p>
+        <div class="flex space-between">
+            <div class="flex">
+                <div class="forum-category-icon-container">
+                    <img src='{{ asset($thread_icon) }}' class="forum-table-row-image" alt="">
                 </div>
+                <div>
+                    <h2 class="table-row-title"><a href="{{ $thread_url }}" class="forum-style-link">{{ $thread_title }}</a></h2>
+                    <div class="flex align-center">
+                        <p class="no-margin fs11 flex align-center">by [<a href="" class="fs12 black-link">{{ $thread_owner }}</a>] <span class="fs11" style="margin: 0 5px">>></span> {{ $at }}</p>
+                    </div>
+                </div>    
             </div>
+            @can('update', $resource)
+                <div>
+                    <div>
+                        <a href="{{ $edit_link }}" target="_blank" class="table-row-button black-sprite-icon sprite-size bedit-icon"></a>
+                    </div>
+                    <div>
+                        <a href="" class="table-row-button black-sprite-icon sprite-size bdelete-icon"></a>
+                    </div>
+                </div>
+            @endcan
         </div>
     </td>
     <td class="fs13">{{ $category }}</td>
@@ -18,7 +30,7 @@
     <td>
         @if($hasLastPost)
         <div>
-            <a href="{{ $thread_url }}" class="block forum-style-link fs11 bold">{{ $last_post_content }}</a>
+            <a href="{{ $last_post_url }}" class="block forum-style-link fs11 bold">{{ $last_post_content }}</a>
             <div class="form-column-line-separator"></div>
             <p class="no-margin fs11">by <a href="" class="bold forum-style-link fs11">{{ $last_post_owner_username }}</a></p>
             <p class="fs11 no-margin" style="margin-top: 3px">{{ $last_post_date }} </p>

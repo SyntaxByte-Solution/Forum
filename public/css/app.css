@@ -370,6 +370,14 @@ a, input, textarea {
     background-image: url(../assets/images/icons/edit.png);
 }
 
+.bedit-icon {
+    background-position: 0 -339.9px;
+}
+
+.bdelete-icon {
+    background-position: 0 -359.9px;
+}
+
 .question-icon {
     background-position: -0px -198px;
 }
@@ -927,6 +935,10 @@ tr:nth-child(2n) {
     border-radius: 6px;
 }
 
+.owner-thread-style {
+    background-color: rgb(232, 246, 255);
+}
+
 .thread-title {
     border-radius: 6px 6px 0 0;
     padding: 14px;
@@ -1141,13 +1153,14 @@ tr:nth-child(2n) {
     min-width: 24px;
     height: 24px;
     
+    background-repeat: no-repeat;
     background-size: 24px;
 }
 
 .sprite-size-1 {
     min-width: 16px;
     height: 16px;
-    
+    background-repeat: no-repeat;
     background-size: 16px;
 }
 
@@ -1162,4 +1175,12 @@ tr:nth-child(2n) {
 .sprite-icon-small {
     display: flex;
     background-size: 159px 159px;
+}
+
+.table-row-button {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 2px 0;
+    border-radius: 50%;
 }

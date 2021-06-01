@@ -91,6 +91,7 @@ class ThreadTest extends TestCase
         $this->patch('/thread/'.$thread->id, [
             'subject'=>'Why using steroids is dangerous ?',
             'category_id'=>2,
+            'thread_type'=>1
         ]);
 
         $this->assertEquals('Why using steroids is dangerous ?', $thread->refresh()->subject);

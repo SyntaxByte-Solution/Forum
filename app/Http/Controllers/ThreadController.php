@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException};
-use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus};
+use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
 {
-    public function show(Forum $forum, Thread $thread) {
+    public function show(Forum $forum, Category $category, Thread $thread) {
         $forum_slug = $forum->slug;
         $forum_name = $forum->forum;
         $thread_subject = $thread->subject;
@@ -23,6 +24,8 @@ class ThreadController extends Controller
     }
 
     public function create(Forum $forum) {
+        $this->authorize('create', Thread::class);
+
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $categories = $forum->categories->where('slug', '<>', 'announcements');
         $view = '';
@@ -67,7 +70,6 @@ class ThreadController extends Controller
         Thread::create($data);
 
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
-        $thread_type_slug = ThreadType::find($data['thread_type'])->slug;
 
         if($data['thread_type'] == 1) {
             return route('get.all.forum.discussions', [$forum_slug]);
@@ -76,15 +78,71 @@ class ThreadController extends Controller
         }
     }
 
+    public function edit(User $user, Thread $thread) {
+        $this->authorize('edit', $thread);
+
+        $category = Category::find($thread->category_id);
+        $forum = Forum::find($category->forum_id);
+        $forums = Forum::where('id', '<>', $forum->id)->get();
+        $categories = $forum->categories->where('slug', '<>', 'announcements');
+
+        $view = '';
+        if($thread->thread_type == 1) {
+            $view = 'forum.discussion.edit';
+        } else if($thread->thread_type == 2) {
+            $view = 'forum.question.edit';
+        }
+
+        return view($view)
+            ->with(compact('forums'))
+            ->with(compact('forum'))
+            ->with(compact('category'))
+            ->with(compact('categories'))
+            ->with(compact('thread'));
+    }
+
     public function update(Thread $thread) {
 
         $this->authorize('update', $thread);
+
+        $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;
+        $category = Category::find($thread->category_id)->slug;
+        $duplicated_thread;
         /**
          * Notice here we need to verify if that user has already a thread with the submitted subject.
          * If so we need to reject the changes and tell that user that he has already a thread with that subject
          */
-        if(auth()->user()->threads->where('subject', request()->subject)->count()) {
-            throw new DuplicateThreadException();
+        try {
+
+            /**
+             * Notice that here we need to manage a special situation
+             * two threads could have the same subject(title) but they have to have different thread_type
+             */
+            if(auth()->user()->threads
+                ->where('subject', request()->subject)
+                ->where('thread_type', request()->thread_type)
+                ->where('id', '<>', $thread->id)->count()) {
+                $duplicated_thread = auth()->user()->threads
+                    ->where('subject', request()->subject)
+                    ->where('thread_type', request()->thread_type)
+                    ->where('id', '<>', $thread->id)->first();
+                throw new DuplicateThreadException();
+            }
+        } catch(DuplicateThreadException $exception) {
+            \Session::flash('type', 'error');
+            /**
+             * If the edited thread is a discussion and there's a duplicate subjects we need to 
+             * reload the page by passing flash message to inform the user
+             */ 
+            if(request()->thread_type == 1) {
+                $duplicate_thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+                \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
+                return route('discussion.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
+            } else if(request()->thread_type == 2) {
+                $duplicate_thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+                \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
+                return route('question.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
+            }
         }
 
         $data = request()->validate([
@@ -95,6 +153,14 @@ class ThreadController extends Controller
         ]);
 
         $thread->update($data);
+
+        $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
+
+        if($data['thread_type'] == 1) {
+            return route('discussion.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
+        } else if($data['thread_type'] == 2) {
+            return route('question.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
+        }
     }
 
     public function destroy(Thread $thread) {

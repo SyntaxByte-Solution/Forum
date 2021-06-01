@@ -118,6 +118,50 @@ $('.share-thread').click(function() {
     return false;
 });
 
+$('.edit-thread').click(function() {
+
+    let thread_id = $(this).parent().find('.thread_id').val();
+    let data = {
+        '_token':csrf,
+        'subject': $('#subject').val(),
+        'category_id': $('#category').val(),
+        'content':simplemde.value(),
+        'thread_type': $('#thread_type').val(),
+        '_method': $(this).parent().find('._method').val()
+    };
+
+    if(data.subject == '') {
+        $('#subject').parent().find('.frt-error').css('display', 'flex');
+        return;
+    } else {
+        $('#subject').parent().find('.frt-error').css('display', 'none');
+    }
+
+    if(data.category_id == '' || data.category_id == 0) {
+        $('#category').parent().find('.frt-error').css('display', 'flex');
+        return;
+    } else {
+        $('#category').parent().find('.frt-error').css('display', 'none');
+    }
+
+    if(data.content == '') {
+        $('#content').parent().find('.frt-error').css('display', 'flex');
+        return;
+    } else {
+        $.ajax({
+            type: 'post',
+            data: data,
+            url: '/thread/'+thread_id,
+            success: function(response) {
+                console.log(response);
+                document.location.href = response;
+            }
+        })
+    }
+    
+    return false;
+})
+
 $('#category-dropdown').change(function() {
     let forum_slug = $('#forum-slug').val();
     let category_slug = $('#category-dropdown').val();
@@ -138,4 +182,4 @@ $('#category-dropdown').change(function() {
     }
 
     document.location.href = url;
-}); 
+});

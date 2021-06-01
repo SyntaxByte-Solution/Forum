@@ -12,6 +12,21 @@ class ThreadPolicy
 {
     use HandlesAuthorization;
 
+    public function create(User $user) {
+        if($user->isBanned()) {
+            throw new UserBannedException();
+        }
+
+        return true;
+    }
+
+    public function edit(User $user, Thread $thread) {
+        if($user->isBanned()) {
+            throw new UserBannedException();
+        }
+
+        return $thread->user_id == $user->id;
+    }
 
     /**
      * Determine whether the user can store models.

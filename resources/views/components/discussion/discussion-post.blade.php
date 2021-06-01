@@ -1,4 +1,7 @@
-<div class="flex post-container" id="{{ $post_id }}">
+<div class="flex post-container relative">
+    <div id="{{ $post_id }}" class="absolute" style="top: -65px">
+
+    </div>
     <div class="post-vote-container">
         <a href="" class="up-icon post-vote-button post-up-vote"></a>
         <p class="bold fs20 no-margin text-center">0</p>

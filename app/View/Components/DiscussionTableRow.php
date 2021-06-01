@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use App\Models\{Thread, User, Category, Forum};
 use Carbon\Carbon;
+use Markdown;
 
 class DiscussionTableRow extends Component
 {
@@ -54,7 +55,7 @@ class DiscussionTableRow extends Component
         $forum = Forum::find($thread->category->forum_id)->slug;
         $last_post = $thread->posts->last();
         if($last_post) {
-            $this->last_post_content = strlen($last_post->content) > 80 ? substr($last_post->content, 0, 80) : $last_post->content;
+            $this->last_post_content = strlen(strip_tags(Markdown::parse($last_post->content))) > 80 ? strip_tags(Markdown::parse(substr($last_post->content, 0, 80))) . '..' : strip_tags(Markdown::parse($last_post->content));
             $this->last_post_owner_username = User::find($last_post->user_id)->username;
             $this->last_post_date = (new Carbon($last_post->created_at))->toDayDateTimeString();
 

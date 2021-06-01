@@ -109,6 +109,7 @@ $('.share-thread').click(function() {
             data: data,
             url: '/thread',
             success: function(response) {
+                console.log(response);
                 document.location.href = response;
             }
         })
@@ -122,7 +123,16 @@ $('#category-dropdown').change(function() {
     let category_slug = $('#category-dropdown').val();
     let sector = window.location.href.split("/").pop();
     if(category_slug == 'all') {
-        url = '/'+forum_slug+'/all';
+        if(window.location.href.indexOf('discussions') >= 0) {
+            console.log('discussions');
+            url = '/'+forum_slug+'/discussions';
+        } else if(window.location.href.indexOf('questions') >= 0) {
+            console.log('questions');
+            url = '/'+forum_slug+'/questions';
+        } else {
+            console.log('all');
+            url = '/'+forum_slug+'/all';
+        }
     } else {
         url = '/'+forum_slug+'/'+category_slug+'/'+sector;
     }

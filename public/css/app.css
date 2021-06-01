@@ -149,8 +149,8 @@ a, input, textarea {
 }
 
 .mx8 {
-    margin-left: 4px;
-    margin-right: 4px;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 .my8 {
@@ -796,7 +796,7 @@ a, input, textarea {
 }
 
 #forums-section {
-    padding: 36px 0;
+    padding: 20px 0;
 }
 
 .table-col-header {
@@ -1095,6 +1095,7 @@ tr:nth-child(2n) {
 }
 
 .page-section-button {
+    display: flex;
     color: #393d4e;
     border: 1px solid #666d8a;
     text-decoration: none;
@@ -1102,6 +1103,7 @@ tr:nth-child(2n) {
     border-radius: 4px;
     font-weight: bold;
     padding: 10px 8px;
+    margin: 0 3px;
 }
 
 .page-section-button:hover {

@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use App\Models\{Thread, User, Category, Forum};
 use Carbon\Carbon;
+use Markdown;
 
 class ResourceTableRow extends Component
 {
@@ -50,8 +51,8 @@ class ResourceTableRow extends Component
         }
 
         if($last_post) {
-            $lpc = $last_post->content;
-            $this->last_post_content = strlen($lpc) > 80 ? substr($lpc, 0, 80) : $lpc;
+            $lpc = strip_tags(Markdown::parse($last_post->content));
+            $this->last_post_content = strlen($lpc) > 80 ? substr($lpc, 0, 80) . '..' : $lpc;
             $this->last_post_owner_username = User::find($last_post->user_id)->username;
             $this->last_post_date = $last_post->created_at;
 

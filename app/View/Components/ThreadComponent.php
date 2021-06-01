@@ -5,6 +5,7 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use Carbon\Carbon;
 use App\Models\{Thread, User};
+use Markdown;
 
 class ThreadComponent extends Component
 {
@@ -38,7 +39,7 @@ class ThreadComponent extends Component
         $this->thread_subject = $thread->subject;
         $this->thread_created_at = (new Carbon($thread->created_at))->toDayDateTimeString();
         $this->thread_view_counter = $thread->view_count;
-        $this->thread_content = $thread->content;
+        $this->thread_content = strip_tags(Markdown::parse($thread->content));
     }
 
     /**

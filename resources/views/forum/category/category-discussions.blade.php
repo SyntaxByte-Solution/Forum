@@ -23,9 +23,22 @@
         <div class="flex space-between">
             <h1 id="page-title">Discussions</h1>
             <div>
-                <a href="{{ route('category.misc', ['forum'=>request('forum')->slug, 'category'=>$category->slug]) }}" class="page-section-button">ALL</a>
-                <a href="" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
-                <a href="{{ route('category.questions', ['forum'=>request('forum')->slug, 'category'=>$category->slug]) }}" class="page-section-button">QUESTIONS</a>
+                <div class="flex align-center">
+                    <a href="{{ route('category.misc', ['forum'=>request('forum')->slug, 'category'=>$category->slug]) }}" class="page-section-button">ALL</a>
+                    <a href="" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
+                    <a href="{{ route('category.questions', ['forum'=>request('forum')->slug, 'category'=>$category->slug]) }}" class="page-section-button">QUESTIONS</a>
+                </div>
+                <div class="flex align-center" style="margin-top: 8px">
+                    <p class="gray fs12 mr8">Forum: </p>
+                    <div class="relative">
+                        <a href="request('forum')->slug" class="mr4 button-right-icon more-icon button-with-suboptions">{{ request('forum')->forum }}</a>
+                        <div class="suboptions-container suboptions-buttons-b-style">
+                            @foreach($forums as $forum)
+                                <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

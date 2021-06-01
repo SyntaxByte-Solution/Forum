@@ -13,6 +13,7 @@
 @section('content')
     @include('partials.left-panel', ['page' => 'questions'])
     <div id="middle-container" class="middle-padding-1">
+        <input type="hidden" id="forum-slug" value="{{ request()->forum->slug }}">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
             <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }} > </a>
@@ -21,18 +22,31 @@
         <div class="flex space-between">
             <h1 id="page-title">Questions</h1>
             <div>
-                <a href="{{ route('forum.misc', ['forum'=>request('forum')->slug]) }}" class="page-section-button">ALL</a>
-                <a href="{{ route('get.all.forum.discussions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
-                <a href="{{ route('get.all.forum.questions', ['forum'=>request('forum')->slug]) }}" class="page-section-button page-section-button-selected">QUESTIONS</a>
+                <div class="flex">
+                    <a href="{{ route('forum.misc', ['forum'=>request('forum')->slug]) }}" class="page-section-button">ALL</a>
+                    <a href="{{ route('get.all.forum.discussions', ['forum'=>request('forum')->slug]) }}" class="page-section-button">DISCUSSIONS</a>
+                    <a href="{{ route('get.all.forum.questions', ['forum'=>request('forum')->slug]) }}" class="page-section-button page-section-button-selected">QUESTIONS</a>
+                </div>
+                <div class="flex align-center" style="margin-top: 8px">
+                    <p class="gray fs12 mr8">Forum: </p>
+                    <div class="relative">
+                        <a href="request('forum')->slug" class="mr4 button-right-icon more-icon button-with-suboptions">{{ request('forum')->forum }}</a>
+                        <div class="suboptions-container suboptions-buttons-b-style">
+                            @foreach($forums as $forum)
+                                <a href="{{ route(Illuminate\Support\Facades\Route::currentRouteName(), ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="flex align-center my8 mr4">
             <label class="label-style-2">Select Category: </label>
-            <select name="category" id="" class="basic-dropdown">
-                <option value="0">{{ __('All') }}</option>
+            <select name="category" id="category-dropdown" class="basic-dropdown">
+                <option value="all">{{ __('All') }}</option>
                 @foreach($categories as $category)
-                    <option value="">{{ $category->category }}</option>
+                    <option value="{{ $category->slug }}">{{ $category->category }}</option>
                 @endforeach
             </select>
         </div>
@@ -73,6 +87,7 @@
         <table class="forums-table">
             <tr>
                 <th class="table-col-header">{{ __('QUESTIONS') }}</th>
+                <th class="table-col-header">{{ __('CATEGORY') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>

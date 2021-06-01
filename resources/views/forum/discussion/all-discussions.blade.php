@@ -22,9 +22,22 @@
         <div class="flex space-between">
             <h1 id="page-title">Discussions</h1>
             <div>
-                <a href="{{ route('forum.misc', [request('forum')->slug]) }}" class="page-section-button">ALL</a>
-                <a href="{{ route('get.all.forum.discussions', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
-                <a href="{{ route('get.all.forum.questions', [request('forum')->slug]) }}" class="page-section-button">QUESTIONS</a>
+                <div class="flex">
+                    <a href="{{ route('forum.misc', [request('forum')->slug]) }}" class="page-section-button">ALL</a>
+                    <a href="{{ route('get.all.forum.discussions', [request('forum')->slug]) }}" class="page-section-button page-section-button-selected">DISCUSSIONS</a>
+                    <a href="{{ route('get.all.forum.questions', [request('forum')->slug]) }}" class="page-section-button">QUESTIONS</a>
+                </div>
+                <div class="flex align-center" style="margin-top: 8px">
+                    <p class="gray fs12 mr8">Forum: </p>
+                    <div class="relative">
+                        <a href="request('forum')->slug" class="mr4 button-right-icon more-icon button-with-suboptions">{{ request('forum')->forum }}</a>
+                        <div class="suboptions-container suboptions-buttons-b-style">
+                            @foreach($forums as $forum)
+                                <a href="{{ route(Illuminate\Support\Facades\Route::currentRouteName(), ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -74,12 +87,13 @@
         <table class="forums-table">
             <tr>
                 <th class="table-col-header">{{ __('DISCUSSIONS') }}</th>
+                <th class="table-col-header">{{ __('CATEGORY') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
             @foreach($discussions as $discussion)
-                <x-discussion-table-row :discussion="$discussion"/>
+                <x-resource-table-row :thread="$discussion"/>
             @endforeach
         </table>
     </div>

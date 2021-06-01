@@ -67,7 +67,7 @@
             
         <div class="input-container" style='margin-top: 20px'>
             <label for="content" class="label-style-1">{{ __('Body') }} @error('content') <span class="error">*</span> @enderror <span class="error frt-error">* This field is required</span></label>
-            <p class="mini-label">Include all the information someone would need to answer your question</p>
+            <p class="mini-label" style='margin-bottom: 6px'>Include all the information someone would need to answer your question</p>
             <textarea name="content" id="content"></textarea>
             <script>
                 var simplemde = new SimpleMDE();

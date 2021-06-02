@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Carbon\Carbon;
-use App\Models\{Thread, User};
+use App\Models\{Forum, Category, Thread, User};
 use Markdown;
 
 class ThreadComponent extends Component
@@ -16,10 +16,12 @@ class ThreadComponent extends Component
     public $thread_owner_threads_number;
     public $thread_owner_joined_at;
 
+    public $thread_url;
     public $thread_subject;
     public $thread_created_at;
     public $thread_view_counter;
     public $thread_content;
+    public $thread_replies_num;
 
     public function __construct(Thread $thread)
     {
@@ -28,6 +30,16 @@ class ThreadComponent extends Component
             'view_count'=>$thread->view_count+1
         ]);
 
+        $forum = Forum::find($thread->category->forum_id)->slug;
+        $category = Category::find($thread->category_id);
+
+        if($thread->thread_type == 1) {
+            $this->thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category->slug,'thread'=>$thread->id]);
+        } else if($thread->thread_type == 2) {
+            $this->thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category->slug, 'thread'=>$thread->id]);
+        }
+        
+        $this->thread_replies_num = $thread->posts->count();
         $thread_owner = User::find($thread->user_id);
         $this->thread_owner_avatar = $thread_owner->avatar;
         $this->thread_owner_username = $thread_owner->username;

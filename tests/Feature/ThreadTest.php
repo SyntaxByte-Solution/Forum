@@ -101,7 +101,6 @@ class ThreadTest extends TestCase
     /** @test */
     public function a_user_could_not_create_two_threads_with_the_same_subject() {
         $this->withoutExceptionHandling();
-        $this->expectException(DuplicateThreadException::class);
 
         TestHelper::create_category('Workout', 'workout', 'This section is for workout athletes only.', 1, 1);
 
@@ -121,12 +120,16 @@ class ThreadTest extends TestCase
         ]);
 
         // Here we try to edit the first thread with a new subject but already taken by the same user in the second thread
-        $this->patch('/thread/'.$thread->id, [
+        $response = $this->patch('/thread/'.$thread->id, [
             'subject'=>'The side effects of using protein',
             'category_id'=>2,
+            'thread_type'=>1
         ]);
         // Assert that the subject is not updated because there's duplicates
         $this->assertEquals('The side effects of using steroids', $thread->refresh()->subject);
+
+        // Assert that the response is returnned with a session error
+        $response->assertSessionHas('type', 'error');
     }
 
     /** @test */

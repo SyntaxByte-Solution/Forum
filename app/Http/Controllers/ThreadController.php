@@ -13,14 +13,30 @@ class ThreadController extends Controller
     public function show(Forum $forum, Category $category, Thread $thread) {
         $forum_slug = $forum->slug;
         $forum_name = $forum->forum;
-        $thread_subject = $thread->subject;
+
+        $category_name = $category->category;
+        $category_slug = $category->slug;
+
+        $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
         $posts = $thread->posts;
 
-        return view('forum.discussion.show')
-            ->with(compact('forum_name'))
-            ->with(compact('forum_slug'))
-            ->with(compact('posts'))
-            ->with(compact('thread_subject'));
+        if($thread->thread_type == 1) {
+            return view('forum.discussion.show')
+                ->with(compact('forum_name'))
+                ->with(compact('forum_slug'))
+                ->with(compact('category_name'))
+                ->with(compact('category_slug'))
+                ->with(compact('posts'))
+                ->with(compact('thread_subject'));
+            } else if($thread->thread_type == 2) {
+            return view('forum.question.show')
+                ->with(compact('forum_name'))
+                ->with(compact('forum_slug'))
+                ->with(compact('category_name'))
+                ->with(compact('category_slug'))
+                ->with(compact('posts'))
+                ->with(compact('thread_subject'));
+        }
     }
 
     public function create(Forum $forum) {
@@ -51,8 +67,44 @@ class ThreadController extends Controller
             'content'=>'required|min:2|max:40000',
         ]);
 
-        if(auth()->user()->threads->where('subject', $data['subject'])->count()) {
-            throw new DuplicateThreadException();
+        $duplicated_thread;        
+        $duplicated_thread_url;        
+        try {
+
+            /**
+             * Notice that here we need to manage a special situation
+             * two threads could have the same subject(title) but they 
+             * have to have different thread_type or same thread_type but different category
+             */
+            if(auth()->user()->threads
+                ->where('subject', $data['subject'])
+                ->where('thread_type', $data['thread_type'])
+                ->where('category_id', $data['category_id'])->count()) {
+
+                $duplicated_thread = auth()->user()->threads
+                ->where('subject', $data['subject'])
+                ->where('thread_type', $data['thread_type'])
+                ->where('category_id', $data['category_id'])->first();
+                throw new DuplicateThreadException();
+            }
+        } catch(DuplicateThreadException $exception) {
+            \Session::flash('type', 'error');
+            /**
+             * If the edited thread is a discussion and there's a duplicate subjects we need to 
+             * reload the page by passing flash message to inform the user
+             */ 
+            $forum = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
+            $category = Category::find($data['category_id'])->slug;
+
+            if(request()->thread_type == 1) {
+                $duplicate_thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+                \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
+                return redirect()->back();
+            } else if(request()->thread_type == 2) {
+                $duplicate_thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+                \Session::flash('message', "This question subject is already exists in your questions list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
+                return redirect()->back();
+            }
         }
 
         $category_status_slug = CategoryStatus::
@@ -72,9 +124,9 @@ class ThreadController extends Controller
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
 
         if($data['thread_type'] == 1) {
-            return route('get.all.forum.discussions', [$forum_slug]);
+            return redirect(route('get.all.forum.discussions', [$forum_slug]));
         } else if($data['thread_type'] == 2) {
-            return route('get.all.forum.questions', [$forum_slug]);
+            return redirect(route('get.all.forum.questions', [$forum_slug]));
         }
     }
 
@@ -116,15 +168,18 @@ class ThreadController extends Controller
 
             /**
              * Notice that here we need to manage a special situation
-             * two threads could have the same subject(title) but they have to have different thread_type
+             * two threads could have the same subject(title) but they 
+             * have to have different thread_type or same thread_type but different category
              */
             if(auth()->user()->threads
                 ->where('subject', request()->subject)
                 ->where('thread_type', request()->thread_type)
+                ->where('category_id', request()->category_id)
                 ->where('id', '<>', $thread->id)->count()) {
                 $duplicated_thread = auth()->user()->threads
                     ->where('subject', request()->subject)
                     ->where('thread_type', request()->thread_type)
+                    ->where('category_id', request()->category_id)
                     ->where('id', '<>', $thread->id)->first();
                 throw new DuplicateThreadException();
             }

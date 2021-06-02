@@ -21,7 +21,7 @@
 @endsection
 @section('content')
     @include('partials.hidden-login-viewer')
-    @include('partials.left-panel', ['page' => 'discussions'])
+    @include('partials.left-panel', ['page' => 'questions'])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex space-between full-width">
             <div>
@@ -31,7 +31,7 @@
             </div>
             @auth
             <div>
-                <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style">{{ __('Start Discussion') }}</a>
+                <a href="{{ route('question.add', ['forum'=>'general']) }}" class="button-style">{{ __('Ask Question') }}</a>
             </div>
             @endauth
         </div>

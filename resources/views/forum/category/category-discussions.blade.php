@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'misc'])
+    @include('partials.left-panel', ['page' => 'discussions'])
     <div id="middle-container" class="middle-padding-1">
         <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
         <div>

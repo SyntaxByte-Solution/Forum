@@ -45,9 +45,8 @@ window.onresize = function(event) {
 };
 
 $('.reply-to-thread').click(function() {
+    setTimeout(function(){$('textarea').focus();}, 200);
     location.hash = "#reply-site";
-    // $(simplemde).focus();
-    setTimeout(function(){$('textarea').focus();}, 50);
     return false;
 });
 
@@ -76,7 +75,9 @@ $('.share-post').click(function() {
     return false;
 });
 
-$('.share-thread').click(function() {
+$('.share-thread').click(function(event) {
+    event.preventDefault();
+
     let data = {
         '_token':csrf,
         'subject': $('#subject').val(),
@@ -94,7 +95,6 @@ $('.share-thread').click(function() {
 
     if(data.category_id == '' || data.category_id == 0) {
         $('#category').parent().find('.frt-error').css('display', 'flex');
-        console.log('here categ!');
         return;
     } else {
         $('#category').parent().find('.frt-error').css('display', 'none');
@@ -104,22 +104,14 @@ $('.share-thread').click(function() {
         $('#content').parent().find('.frt-error').css('display', 'flex');
         return;
     } else {
-        $.ajax({
-            type: 'post',
-            data: data,
-            url: '/thread',
-            success: function(response) {
-                console.log(response);
-                document.location.href = response;
-            }
-        })
+        $('#thread-creation-forum').submit();
     }
     
     return false;
 });
 
 $('.edit-thread').click(function() {
-
+    
     let thread_id = $(this).parent().find('.thread_id').val();
     let data = {
         '_token':csrf,
@@ -182,4 +174,16 @@ $('#category-dropdown').change(function() {
     }
 
     document.location.href = url;
+});
+
+$('.copy-container-button').click(function() {
+    $(this).parent().find('input').select();
+    return false;
+});
+
+$('.copy-button').click(function() {
+    $(this).parent().find('input').select();
+    document.execCommand("copy");
+
+    return false;
 });

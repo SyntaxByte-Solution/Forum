@@ -9,6 +9,51 @@
             <div class="selected-colored-slice"></div>
         @endif
     </div>
+    @auth
+    <div class="relative">
+        <a href="" class="left-panel-item simple-suboption-button lp-wpadding @if($page == 'home') {{ 'lp-selected' }} @endif">My Space ▾</a>
+        <div class="simple-suboptions-container">
+            <div class="relative">
+                <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">My Questions</a>
+                @if($page == 'users')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
+            <div class="relative">
+                <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">My Discussions</a>
+                @if($page == 'users')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
+            <div class="relative">
+                <a href="" class="left-panel-item simple-suboption-button lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Add Thread</a>
+                <div class="simple-suboptions-container">
+                    <div class="relative">
+                        <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Add question</a>
+                        @if($page == 'users')
+                            <div class="selected-colored-slice"></div>
+                        @endif
+                    </div>
+                    <div class="relative">
+                        <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Add discussion</a>
+                        @if($page == 'users')
+                            <div class="selected-colored-slice"></div>
+                        @endif
+                    </div>
+                    <div class="relative">
+                        <a href="" class="left-panel-item simple-suboption-button lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Etc..</a>
+                        @if($page == 'users')
+                            <div class="selected-colored-slice"></div>
+                        @endif
+                    </div>
+                </div>
+                @if($page == 'users')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
+        </div>
+    </div>
+    @endauth
     <div>
         <p class="left-panel-label">PUBLIC</p>
         <div class="flex relative">
@@ -50,12 +95,6 @@
     </div>
     <div>
         <p class="left-panel-label">MORE</p>
-        <div class="relative">
-            <a href="" class="left-panel-item lp-wpadding @if($page == 'users') {{ 'lp-selected' }} @endif"><span class="line-bootstraper">●</span>{{ __('Today threads') }}</a>
-            @if($page == 'users')
-                <div class="selected-colored-slice"></div>
-            @endif
-        </div>
         <div class="relative">
             <a href="" class="left-panel-item lp-wpadding @if($page == 'misc') {{ 'lp-selected' }} @endif"><span class="line-bootstraper">●</span>{{ __('Miscellaneous') }}</a>
             @if($page == 'misc')

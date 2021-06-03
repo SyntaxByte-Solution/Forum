@@ -16,7 +16,7 @@
     @guest
         @include('partials.hidden-login-viewer')
     @endguest
-    <div class="absolute full-shadowed zi12 thread-deletion-viewer">
+    <div class="fixed full-shadowed zi12 thread-deletion-viewer">
         <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
         <div class="shadowed-view-section-style">
             <h2>{{ __('Please make sure you want to delete the thread !') }}</h2>
@@ -74,7 +74,7 @@
                             <span class="error frt-error reply-content-error">  *</span>
                         </label>
                     </div>
-                    <p class="error frt-error reply-content-error" role="alert">Reply field is required</p>
+                    <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
                     <textarea name="subject" class="reply-content" id="post-reply"></textarea>
                     <script>
                         var simplemde = new SimpleMDE();
@@ -88,15 +88,23 @@
                     </style>
                 </div>
                 <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
-                <a class="inline-block button-style share-post" href="">Post your reply</a>
+                <input type='button' class="inline-block button-style share-post" value="Post your reply">
             </div>
         </div>
         
-        <p class="bold fs20" style="margin-top: 30px">{{ $posts->count() }} Replies</p>
+        <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
         <div id="replies-container">
             @foreach($posts as $post)
                 <x-discussion-post :post="$post->id"/>
             @endforeach
         </div>
+        <script>
+            $('textarea').each(function() {
+                var simplemde = new SimpleMDE({
+                    element: this,
+                });
+                simplemde.render(); 
+            })
+        </script>
     </div>
 @endsection

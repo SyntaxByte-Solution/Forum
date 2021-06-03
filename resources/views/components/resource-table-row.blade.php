@@ -18,7 +18,7 @@
                         <a href="{{ $edit_link }}" target="_blank" class="table-row-button black-sprite-icon sprite-size bedit-icon"></a>
                     </div>
                     <div>
-                        <a href="" class="table-row-button black-sprite-icon sprite-size bdelete-icon"></a>
+                        <a href="{{ $thread_url }}?action=thread-delete" target="_blank" class="table-row-button black-sprite-icon sprite-size bdelete-icon"></a>
                     </div>
                 </div>
             @endcan

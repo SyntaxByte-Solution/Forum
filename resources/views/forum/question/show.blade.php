@@ -16,7 +16,33 @@
     @guest
         @include('partials.hidden-login-viewer')
     @endguest
-    
+    <div class="fixed full-shadowed zi12 thread-deletion-viewer">
+        <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
+        <div class="shadowed-view-section-style">
+            <h2>{{ __('Please make sure you want to delete the thread !') }}</h2>
+            <div class="flex">
+                <div class="half-width my8 mx4">
+                    <form action="{{ route('thread.delete', ['thread'=>request()->thread->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" class="button-style mr8" value='DELETE'>
+                    </form>
+                    <p class="fs12">{{ __('This will throw the thread to the trash. However It will not be deleted completely, you can restore it later if you want by going to your archive and select the thread to restore it !') }}</p>
+                </div>
+                <div class="half-width my8 mx4">
+                    <form action="{{ route('thread.destroy', ['thread'=>request()->thread->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" class="button-style mr8" value='FORCE DELETE'>
+                    </form>
+                    <p class="fs12">{{ __('This will remove the thread completely from our system. If you choose this option the thread will be removed permanently as well as all related replies') }}</p>
+                </div>
+            </div>
+            <div>
+                <a href="" class="button-style close-shadowed-view-button move-to-right" style="display: block; text-align: center; width: 60px">Exit</a>
+            </div>
+        </div>
+    </div>
     @include('partials.header')
 @endsection
 @section('content')
@@ -48,7 +74,7 @@
                             <span class="error frt-error reply-content-error">  *</span>
                         </label>
                     </div>
-                    <p class="error frt-error reply-content-error" role="alert">Reply field is required</p>
+                    <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
                     <textarea name="subject" class="reply-content" id="post-reply"></textarea>
                     <script>
                         var simplemde = new SimpleMDE();
@@ -62,15 +88,24 @@
                     </style>
                 </div>
                 <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
-                <a class="inline-block button-style share-post" href="">Post your reply</a>
+                <input type='button' class="inline-block button-style share-post" value="Post your reply">
             </div>
         </div>
         
-        <p class="bold fs20" style="margin-top: 30px">{{ $posts->count() }} Replies</p>
+        <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
         <div id="replies-container">
             @foreach($posts as $post)
                 <x-discussion-post :post="$post->id"/>
             @endforeach
+            <script>
+                let data = $("textarea");
+                $('textarea:not(:first)').each(function() {
+                    var simplemde = new SimpleMDE({
+                        element: this,
+                    });
+                    simplemde.render();
+                });
+            </script>
         </div>
     </div>
 @endsection

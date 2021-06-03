@@ -1,4 +1,20 @@
+let urlParams = new URLSearchParams(window.location.search);
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
+
+// the following section is for displaying viewers based on the value of query strings
+// -------------------------------
+
+if(urlParams.has('action')) {
+    if(urlParams.get('action') == 'thread-delete') {
+        $('.thread-deletion-viewer').css('display', 'block');
+        $('.thread-deletion-viewer').css('opacity', '1');
+    }
+}
+
+
+// -------------------------------
+
+
 
 $(".button-with-suboptions").on({
     'click': function() {
@@ -57,6 +73,9 @@ $('.reply-to-thread').click(function() {
 });
 
 $('.share-post').click(function() {
+    let btn = $(this);
+    $(this).attr("disabled","disabled");
+
     let form = $(this).parent();
     let data = {
         '_token':csrf,
@@ -64,17 +83,47 @@ $('.share-post').click(function() {
     };
 
     if(simplemde.value() == "") {
-        form.find('.reply-content-error').css('display', 'flex');
-    } else {
-        form.find('.reply-content-error').css('display', 'none');
+        $('#global-error').text('Reply field is required');
+        $('#global-error').css('display', 'flex');
+        $(this).prop("disabled", false);
+        location.hash = "#reply-site";
+    } else if(simplemde.value().length < 2) {
+        $('#global-error').text('Reply should have at least 2 characters');
+        $('#global-error').css('display', 'flex');
+        $(this).prop("disabled", false);
+        location.hash = "#reply-site";
+    }
+    else {
+        $(this).val('Posting your reply ..');
+        form.find('#global-error').css('display', 'none');
         data.content = simplemde.value();
         $.ajax({
             type: 'post',
             data: data,
             url: '/post',
             success: function(response) {
+                $('#global-error').css('display', 'none');
                 $('#replies-container').append(response);
+                btn.val('Post your reply');
+                btn.prop("disabled", false);
                 simplemde.value('');
+
+                $('.thread-replies-number').text(parseInt($('.thread-replies-number').text(), 10)+1);
+
+            },
+            error: function(response) {
+                // Here we get the errors of the response as an object
+                let errors = JSON.parse(response.responseText).errors;
+
+                // The errors object hold errors keys as well as error values in form of array of errors
+                // because a field could have multiple validation constraints and then it could have multiple errors
+                // strings. In this case we only need the first error of the first validation
+                let error = errors[Object.keys(errors)[0]][0];
+                $('#global-error').text(error);
+                $('#global-error').css('display', 'block');
+                btn.val('Post your reply');
+                btn.prop("disabled", false);
+                location.hash = "#reply-site";
             }
         })
     }
@@ -201,5 +250,111 @@ $('.action-verification').click(function() {
         $('.thread-deletion-viewer').css('display', 'block');
         $('.thread-deletion-viewer').css('opacity', '1');
     }
+    return false;
+});
+
+$('.tooltip-section').on({
+    'mouseenter': function() {
+        $(this).parent().find('.tooltip').css('display', 'block');
+    },
+    'mouseleave': function() {
+        $(this).parent().find('.tooltip').css('display', 'none');
+    }
+})
+
+let mouse_over_button = false;
+let mouse_over_container = false;
+
+$('.button-with-container').on({
+    'mouseenter': function() {
+        mouse_over_button = true;
+        $(this).parent().find('.button-container').css('display', 'block');
+        $(this).parent().find('.button-container').css('opacity', '1');
+    },
+    'mouseleave': function() {
+        /*
+            Here we need to check whether the mouse is over the button or container before closing the container as well
+        */
+        mouse_over_button = false;
+        if(!mouse_over_container) {
+            $(this).parent().find('.button-container').css('display', 'none');
+            $(this).parent().find('.button-container').css('opacity', '0');
+        }
+    }
+})
+$('.button-container').on({
+    mouseenter: function(event) {
+        mouse_over_container = true;
+        $(this).css('display', 'block');
+        $(this).css('opacity', '1');
+        event.stopPropagation();
+    },
+    mouseleave: function(event) {
+        /*
+            Here we need to check whether the mouse is over the button or container before closing the container as well
+        */
+        mouse_over_container = false;
+        if(!mouse_over_button) {
+            $(this).parent().find('.button-container').css('display', 'none');
+            $(this).parent().find('.button-container').css('opacity', '0');
+        }
+    }
+}); 
+
+$('.hide-post').click(function() {
+    let post = $(this);
+    while(!post.hasClass('post-container')) {
+        post = post.parent();
+    }
+
+    $('.thread-replies-number').text(parseInt($('.thread-replies-number').text(), 10)-1);
+
+    post.css('display', 'none');
+    post.parent().find('.show-post-container').css('display', 'block');
+    $(this).parent().css('display', 'none');
+    
+    return false;
+});
+
+$('.show-post').click(function() {
+    $(this).parent().css('display', 'none');
+    $(this).parent().parent().find('.post-container').css('display', 'flex');
+    $('.thread-replies-number').text(parseInt($('.thread-replies-number').text(), 10)+1);
+
+    return false;
+});
+
+$('.edit-post').click(function() {
+    $(this).parent().css('display', 'none');
+    let post = $(this);
+    while(!post.hasClass('post-container')) {
+        post = post.parent();
+    }
+
+    post.find('.post-content').css('display', 'none');
+    post.find('.post-edit-container').css('display', 'block');
+
+    return false;
+});
+
+$('.delete-post').click(function() {
+    $(this).parent().css('display', 'none');
+    let post = $(this);
+    while(!post.hasClass('post-container')) {
+        post = post.parent();
+    }
+
+    return false;
+});
+
+$('.exit-edit-post').click(function() {
+    $(this).parent().css('display', 'none');
+    let post = $(this);
+    while(!post.hasClass('post-container')) {
+        post = post.parent();
+    }
+
+    post.find('.post-content').css('display', 'flex');
+
     return false;
 });

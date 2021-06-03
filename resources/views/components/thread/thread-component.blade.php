@@ -42,7 +42,7 @@
         </div>
     </div> -->
     <div class="thread-container flex">
-        <div class="thread-vote-section">
+        <div class="vote-section thread-vs">
             <a href="" class="up-icon thread-vote-button thread-up-vote"></a>
             <p class="bold fs17 no-margin text-center">0</p>
             <a href="" class="down-icon thread-vote-button thread-down-vote"></a>

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Exceptions\{AccessDeniedException, UserBannedException, DuplicateThreadException, CategoryClosedException};
 use App\Classes\TestHelper;
-use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus, ThreadType};
+use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus, ThreadType, Post};
 
 class ThreadTest extends TestCase
 {
@@ -27,6 +27,10 @@ class ThreadTest extends TestCase
             'slug'=>'live'
         ]);
         CategoryStatus::create([
+            'status'=>'LIVE',
+            'slug'=>'live'
+        ]);
+        PostStatus::create([
             'status'=>'LIVE',
             'slug'=>'live'
         ]);
@@ -120,9 +124,14 @@ class ThreadTest extends TestCase
         ]);
 
         // Here we try to edit the first thread with a new subject but already taken by the same user in the second thread
+        /**
+         * Notice that we edit the constraint to allow user to post two threads with the same subject
+         * but in different categories
+         * Now for this case we need to have the same category and the same subject in order to get the error
+         */
         $response = $this->patch('/thread/'.$thread->id, [
             'subject'=>'The side effects of using protein',
-            'category_id'=>2,
+            'category_id'=>1,
             'thread_type'=>1
         ]);
         // Assert that the subject is not updated because there's duplicates
@@ -189,6 +198,39 @@ class ThreadTest extends TestCase
         $this->actingAs($user1);
 
         $this->delete('/thread/'.$thread->id);
+    }
+
+    /** @test */
+    public function when_a_thread_is_force_deleted_all_related_replies_and_must_be_deleted_as_well() {
+        $this->withoutExceptionHandling();
+
+        $thread = Thread::create([
+            'content'=>'This is the content',
+            'subject'=>'The side effects of using steroids',
+            'user_id'=>1,
+            'category_id'=>1,
+            'thread_type'=>1
+        ]);
+
+        Post::create([
+            'content'=>'Post #1',
+            'thread_id'=>$thread->id,
+            'user_id'=>1
+        ]);
+
+        Post::create([
+            'content'=>'Post #2',
+            'thread_id'=>1,
+            'user_id'=>1
+        ]);
+
+        $this->assertCount(2, $thread->posts);
+        $this->assertCount(1, Thread::all());
+        $this->delete('/thread/'.$thread->id.'/force');
+        $this->assertCount(0, Thread::all());
+
+        $thread->load('posts');
+        $this->assertCount(0, $thread->posts);
     }
 
     /** @test */

@@ -230,11 +230,10 @@ class ThreadController extends Controller
         }
 
         /**
-         * Before deleting the thread, we need to clear all posts related to this thread
+         * Notice here we don't have to delete the related resource because we used soft
+         * deleting so the user could restore the post later. But we need to clean up when the
+         * use choose to permanently delete the thread !
          */
-        // foreach($thread->posts as $post) {
-        //     $post->delete();
-        // }
 
         $thread->delete();
         return redirect($url);
@@ -254,9 +253,9 @@ class ThreadController extends Controller
         /**
          * Before deleting the thread, we need to clear all posts related to this thread
          */
-        // foreach($thread->posts as $post) {
-        //     $post->delete();
-        // }
+        foreach($thread->posts as $post) {
+            $post->delete();
+        }
 
         $thread->forceDelete();
         return redirect($url);

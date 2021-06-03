@@ -25,8 +25,14 @@ for(let i = 0;i<subContainers.length;i++) {
     }, false);
 }
 
-$('.close-shadowed-view').click(function() {
-    $(this).parent().css('display', 'none');
+$('.close-shadowed-view-button').click(function() {
+    let shadowed_container = $(this);
+
+    while(!shadowed_container.hasClass('full-shadowed')) {
+        shadowed_container = shadowed_container.parent();
+    }
+    shadowed_container.css('display', 'none');
+    $('.suboptions-container').css('display', 'none');
 
     return false;
 });
@@ -185,5 +191,15 @@ $('.copy-button').click(function() {
     $(this).parent().find('input').select();
     document.execCommand("copy");
 
+    return false;
+});
+
+$('.action-verification').click(function() {
+    let action_type = $('.verification-action-type').val();
+
+    if(action_type == 'thread.destroy') {
+        $('.thread-deletion-viewer').css('display', 'block');
+        $('.thread-deletion-viewer').css('opacity', '1');
+    }
     return false;
 });

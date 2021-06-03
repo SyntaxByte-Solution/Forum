@@ -11,8 +11,6 @@
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 
-
-
 @section('header')
     @include('partials.header')
 @endsection

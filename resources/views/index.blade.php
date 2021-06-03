@@ -7,11 +7,14 @@
 @endpush
 
 @section('header')
-    @include('partials.hidden-login-viewer')
+    @guest
+        @include('partials.hidden-login-viewer')
+    @endguest
+    
     @include('partials.header')
 @endsection
+
 @section('content')
-    @include('partials.hidden-login-viewer')
     @include('partials.left-panel', ['page' => 'home'])
     @include('partials.basic-right-panel', ['page' => 'home'])
     <div id="middle-container" class="middle-padding-1">

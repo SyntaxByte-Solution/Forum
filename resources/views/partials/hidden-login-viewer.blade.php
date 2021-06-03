@@ -1,5 +1,5 @@
 <div class="absolute full-shadowed zi12">
-        <a href="" class="close-shadowed-view"></a>
+        <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
         <div id="login-view" class="auth-card">
             <div>
                 <img id="login-top-logo" class="move-to-middle" src="assets/images/logos/b-large-logo.png" alt="logo">

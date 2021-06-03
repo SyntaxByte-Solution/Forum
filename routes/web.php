@@ -66,7 +66,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/thread', [ThreadController::class, 'store']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
-    Route::delete('/thread/{thread}', [ThreadController::class, 'destroy']);
+    Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
+    Route::delete('/thread/{thread}/force', [ThreadController::class, 'destroy'])->name('thread.destroy');
 
     Route::post('/post', [PostController::class, 'store']);
     Route::patch('/post/{post}', [PostController::class, 'update']);

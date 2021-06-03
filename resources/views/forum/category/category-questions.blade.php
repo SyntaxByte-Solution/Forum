@@ -6,7 +6,10 @@
 @endpush
 
 @section('header')
-    @include('partials.hidden-login-viewer')
+    @guest
+        @include('partials.hidden-login-viewer')
+    @endguest
+    
     @include('partials.header')
 @endsection
 

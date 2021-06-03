@@ -218,10 +218,48 @@ class ThreadController extends Controller
         }
     }
 
+    public function delete(Thread $thread) {
+        $this->authorize('delete', $thread);
+
+        $forum_slug = Forum::find(Category::find($thread['category_id'])->forum_id)->slug;
+
+        if($thread->thread_type == 1) {
+            $url = route('get.all.forum.discussions', [$forum_slug]);
+        } else if($thread->thread_type == 2) {
+            $url = route('get.all.forum.questions', [$forum_slug]);
+        }
+
+        /**
+         * Before deleting the thread, we need to clear all posts related to this thread
+         */
+        // foreach($thread->posts as $post) {
+        //     $post->delete();
+        // }
+
+        $thread->delete();
+        return redirect($url);
+    }
+
     public function destroy(Thread $thread) {
         $this->authorize('destroy', $thread);
 
-        $thread->delete();
+        $forum_slug = Forum::find(Category::find($thread['category_id'])->forum_id)->slug;
+
+        if($thread->thread_type == 1) {
+            $url = route('get.all.forum.discussions', [$forum_slug]);
+        } else if($thread->thread_type == 2) {
+            $url = route('get.all.forum.questions', [$forum_slug]);
+        }
+
+        /**
+         * Before deleting the thread, we need to clear all posts related to this thread
+         */
+        // foreach($thread->posts as $post) {
+        //     $post->delete();
+        // }
+
+        $thread->forceDelete();
+        return redirect($url);
     }
 
     public function all_discussions(Forum $forum) {

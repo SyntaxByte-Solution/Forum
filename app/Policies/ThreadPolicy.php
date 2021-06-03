@@ -67,6 +67,15 @@ class ThreadPolicy
      * @param  \App\Models\Thread  $thread
      * @return mixed
      */
+    public function delete(User $user, Thread $thread)
+    {
+        if($user->isBanned()) {
+            throw new UserBannedException();
+        }
+
+        return $thread->user_id == $user->id;
+    }
+
     public function destroy(User $user, Thread $thread)
     {
         if($user->isBanned()) {

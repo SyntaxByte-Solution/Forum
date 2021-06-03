@@ -1,4 +1,4 @@
-<div style="margin: 20px 0">
+<div style="margin: 14px 0">
     <!-- <div class="thread-container flex">
         <div class="thread-owner-section">
             <img src="{{ asset('avatar.jpg') }}" class="thread-owner-picture block" alt="{{ __('thread owner profile picture') }}">
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="no-margin fs12">13 hours ago</span>
+                        <span class="no-margin fs12">{{ $thread_created_at }}</span>
                         <p class="no-margin fs12">viewes >> {{ $thread_view_counter }} times</p>
                     </div>
                     <div class="flex">
@@ -102,11 +102,18 @@
                                 <p class="gray no-margin fs13">Follow</p>
                             </div>
                         </a>
-                        <a href="" class="black-link">
-                            <div class="flex align-center">
+                        <div class="relative">
+                            <a href="" class="black-link button-with-suboptions">
                                 <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
+                            </a>
+                            <div class="absolute suboptions-container suboption-style-left">
+                                <a href="{{ $thread_edit_url }}" class="button-style">Edit Thread</a>
+                                <div>
+                                    <a href="" class="button-style action-verification">Delete Thread</a>
+                                    <input type="hidden" value="thread.destroy" class="verification-action-type">
+                                </div>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
                 <p class="thread-title">{{ $thread_subject }}</p>    

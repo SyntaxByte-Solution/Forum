@@ -17,6 +17,8 @@ class ThreadComponent extends Component
     public $thread_owner_joined_at;
 
     public $thread_url;
+    public $thread_edit_url;
+    public $thread_delete_endpoint;
     public $thread_subject;
     public $thread_created_at;
     public $thread_view_counter;
@@ -34,10 +36,17 @@ class ThreadComponent extends Component
         $category = Category::find($thread->category_id);
 
         if($thread->thread_type == 1) {
+
+            $this->thread_edit_url = route('discussion.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
             $this->thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category->slug,'thread'=>$thread->id]);
+
         } else if($thread->thread_type == 2) {
+
+            $this->thread_edit_url = route('question.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
             $this->thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category->slug, 'thread'=>$thread->id]);
+
         }
+        $this->thread_delete_endpoint = route('thread.destroy', ['thread'=>$thread->id]);
         
         $this->thread_replies_num = $thread->posts->count();
         $thread_owner = User::find($thread->user_id);
@@ -49,7 +58,7 @@ class ThreadComponent extends Component
         $this->thread_owner_joined_at = (new Carbon($thread_owner->created_at))->toDayDateTimeString();
         
         $this->thread_subject = $thread->subject;
-        $this->thread_created_at = (new Carbon($thread->created_at))->toDayDateTimeString();
+        $this->thread_created_at = (new Carbon($thread->created_at))->diffForHumans();
         $this->thread_view_counter = $thread->view_count;
         $this->thread_content = strip_tags(Markdown::parse($thread->content));
     }

@@ -490,7 +490,7 @@ a, input, textarea {
     height: 24px;
     display: flex;
     border-radius: 0 4px 4px 0;
-    padding: 2px;
+    padding: 2px 5px;
     background-color: white;
     color: black;
     border: 1px solid gray;
@@ -576,20 +576,6 @@ a, input, textarea {
     transition: 1s ease opacity;
 }
 
-.no-underline {
-    text-decoration: none;
-}
-
-.line-separator {
-    margin: 10px 0;
-    height: 1px;
-    background-color: #d3d3d3;
-}
-
-.block {
-    display: block;
-}
-
 .close-shadowed-view {
     position: absolute;
     display: block;
@@ -612,6 +598,28 @@ a, input, textarea {
 
 .close-shadowed-view:hover {
     background-color: rgba(255, 255, 255, 0.3);
+}
+
+.shadowed-view-section-style {
+    margin: 20px auto 0 auto;
+    width: 50%;
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+.line-separator {
+    margin: 10px 0;
+    height: 1px;
+    background-color: #d3d3d3;
+}
+
+.block {
+    display: block;
 }
 
 .background-partial-2 {
@@ -832,6 +840,7 @@ a, input, textarea {
 }
 
 .button-style {
+    display: flex;
     border-radius: 4px;
     padding: 8px 12px;
     color: white;
@@ -1261,3 +1270,15 @@ tr:nth-child(2n) {
 .simple-suboptions-container {
     padding-left: 18px;
 }
+
+.suboption-style-left {
+    right: 0;
+    align-items: center;
+    top: 100%;
+    width: max-content;
+    padding: 4px;
+    border-radius: 4px;
+    color: white;
+    background-color: #363945;
+}
+

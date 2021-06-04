@@ -76,9 +76,6 @@
                     </div>
                     <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
                     <textarea name="subject" class="reply-content" id="post-reply"></textarea>
-                    <script>
-                        var simplemde = new SimpleMDE();
-                    </script>
                     <style>
                         .CodeMirror,
                         .CodeMirror-scroll {
@@ -93,7 +90,7 @@
         </div>
         
         <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
-        <div id="replies-container">
+        <div id="replies-container" style="margin-bottom: 30px">
             @foreach($posts as $post)
                 <x-discussion-post :post="$post->id"/>
             @endforeach
@@ -103,8 +100,8 @@
                 var simplemde = new SimpleMDE({
                     element: this,
                 });
-                simplemde.render(); 
-            })
+                simplemde.render();
+            });
         </script>
     </div>
 @endsection

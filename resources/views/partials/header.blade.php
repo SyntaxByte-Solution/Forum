@@ -48,7 +48,7 @@
                             <div class="triangle"></div>
                             
                             <div class="flex align-center first-profile-container-part">
-                                <img src="avatar.jpg" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
+                                <img src="{{ asset('avatar.jpg') }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
                                 <h2>Mouad Nassri</h2>
                             </div>
                             <div class="flex align-center relative">
@@ -75,13 +75,13 @@
                     </div>
                     <div class="relative">
                         <a href="" class="header-profile-button button-with-suboptions">
-                            <img src="avatar.jpg" alt="profile picture" class="header-profile-picture">
+                            <img src="{{ asset('avatar.jpg') }}" alt="profile picture" class="header-profile-picture">
                         </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
                             
                             <div class="flex align-center first-profile-container-part">
-                                <img src="avatar.jpg" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
+                                <img src="{{ asset('avatar.jpg') }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
                                 <h2>Mouad Nassri</h2>
                             </div>
                             <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>

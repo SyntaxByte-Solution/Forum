@@ -14,8 +14,11 @@ class DiscussionPost extends Component
     public $post_id;
     public $post_votes;
     public $post_content;
+
     public $post_created_at;
     public $post_date;
+    public $post_updated_at;
+    public $post_update_date;
 
     public $post_owner_avatar;
     public $post_owner_username;
@@ -24,11 +27,15 @@ class DiscussionPost extends Component
     public function __construct($post)
     {
         $post = $this->post = Post::find($post);
-        $post_owner = User::find(Post::find($post->user_id))->first();
+        $post_owner = User::find($post->user_id);
 
         $this->post_id = $post->id;
         $this->post_content = Markdown::parse($post->content);
         $this->post_created_at = (new Carbon($post->created_at))->toDayDateTimeString();
+        if($post->created_at != $post->updated_at) {
+            $this->post_updated_at = (new Carbon($post->updated_at))->toDayDateTimeString();
+            $this->post_update_date = (new Carbon($post->updated_at))->diffForHumans();
+        }
         $this->post_date = (new Carbon($post->created_at))->diffForHumans();
 
         $this->post_owner_avatar = $post_owner->avatar;

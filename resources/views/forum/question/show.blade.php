@@ -76,9 +76,6 @@
                     </div>
                     <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
                     <textarea name="subject" class="reply-content" id="post-reply"></textarea>
-                    <script>
-                        var simplemde = new SimpleMDE();
-                    </script>
                     <style>
                         .CodeMirror,
                         .CodeMirror-scroll {
@@ -98,8 +95,7 @@
                 <x-discussion-post :post="$post->id"/>
             @endforeach
             <script>
-                let data = $("textarea");
-                $('textarea:not(:first)').each(function() {
+                $('textarea').each(function() {
                     var simplemde = new SimpleMDE({
                         element: this,
                     });

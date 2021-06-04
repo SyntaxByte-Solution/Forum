@@ -1,4 +1,13 @@
-<div>
+<div class="relative">
+    <div class="absolute full-shadowed br6" style="z-index: 1">
+        <div class="full-center full-width full-height">
+            <div class="flex align-center">
+                <input type="button" class="simple-white-button pointer delete-post" value="Delete">
+                <a href="" class="simple-link close-shadowed-view-button" style="text-decoration: none; margin-left: 6px; font-size: 10px">CANCEL</a>
+                <input type="hidden" class="post-id" value="{{ $post_id }}">
+            </div>
+        </div>
+    </div>
     <div class="show-post-container fs11">
         <div class="line-separator"></div>
         Reply hidden (<a href="" class="show-post black-link bold">click here to show it</a>)
@@ -23,6 +32,12 @@
                             <span class="tooltip-section">- {{ $post_date }}</span>
                             <span class="tooltip">{{ $post_created_at }}</span>
                         </span>
+                        @if($post_updated_at)
+                            <span class="relative" style="margin-left: 8px">
+                                <span class="tooltip-section post-updated-date">(upated {{ $post_update_date }})</span>
+                                <span class="tooltip post-updated-date-human">{{ $post_updated_at }}</span>
+                            </span>
+                        @endif
                 </div>
 
 
@@ -33,12 +48,10 @@
                     <div class="absolute suboptions-container suboption-style-left" style="margin-top: 8px">
                         <a href="" class="button-style hide-post">Hide Post</a>
                         @can('update', $post)
-                            <a href="" class="button-style edit-post">Edit Post</a>
+                        <a href="" class="button-style edit-post">Edit Post</a>
                         @endcan
                         @can('destroy', $post)
-                            <div>
-                                <a href="" class="button-style delete-post">Delete Post</a>
-                            </div>
+                        <a href="" class="button-style delete-post-button">Delete Post</a>
                         @endcan
                     </div>
                 </div>
@@ -46,10 +59,11 @@
             <div class="post-content">{{ $post_content }}</div>
             @can('update', $post)
             <div class="post-edit-container none">
-                <p class="bold my4">{{ __('EDIT YOUR POST') }}</p>
+                <p class="bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
                 <textarea name="content" class="reply-content" id="post-edit-content-{{ $post_id }}"></textarea>
-                <a href="" class="button-style inline-block exit-edit-post">{{ __('Exit') }}</a>
+                <a href="" class="button-style inline-block exit-edit-post">{{ __('Discard') }}</a>
                 <a href="" class="button-style inline-block save-edit-post">{{ __('Save Changes') }}</a>
+                <input type="hidden" class="post_id" value="{{ $post_id }}">
             </div>
             @endcan
         </div>

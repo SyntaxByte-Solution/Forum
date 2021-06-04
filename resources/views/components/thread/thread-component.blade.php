@@ -127,7 +127,7 @@
                     <div class="flex">
                         <div class="flex" style="margin-right: 6px">
                             <img src="{{ asset('assets/images/icons/gray-reply.png') }}" class="small-image mr4" alt="">
-                            <p class="gray no-margin fs13" class="block" style="margin: 4px; font-size: 12px">{{ $thread_replies_num }} Replies</p>
+                            <p class="gray no-margin fs13" class="block" style="margin: 4px; font-size: 12px"><span class="thread-replies-number">{{ $thread_replies_num }}</span> Replies</p>
                         </div>
                         <div class="flex" style="margin-right: 6px">
                             <a href=""><img src="{{ asset('assets/images/icons/gray-like.png') }}" class="small-image mr4" alt=""></a>

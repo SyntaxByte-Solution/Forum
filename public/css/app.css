@@ -6,7 +6,7 @@ body {
 }
 
 main {
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(252, 252, 252);
 }
 
 a, input, textarea {
@@ -17,6 +17,10 @@ a, input, textarea {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.br6 {
+    border-radius: 6px;
 }
 
 .fs17 {
@@ -121,6 +125,11 @@ a, input, textarea {
     margin-left: auto;
 }
 
+.full-height {
+    height: 100%;
+    box-sizing: border-box;
+}
+
 .full-width {
     width: 100%;
     box-sizing: border-box;
@@ -178,6 +187,26 @@ a, input, textarea {
 .my8 {
     margin-top: 8px;
     margin-bottom: 8px;
+}
+
+.px4 {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.py4 {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.px8 {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.py8 {
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .black {
@@ -602,9 +631,10 @@ a, input, textarea {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.58);
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.70);
 
-    transition: 1s ease opacity;
+    transition: opacity 1s;
 }
 
 .close-shadowed-view {
@@ -751,6 +781,10 @@ a, input, textarea {
     color: #2ca0ff;
 }
 
+.pointer{
+    cursor: pointer;
+}
+
 /* login */
 
 #login-top-logo {
@@ -868,6 +902,23 @@ a, input, textarea {
     color: #2ca0ff;
     text-decoration: none;
     font-size: 13px;
+}
+
+.simple-white-button {
+    border: none;
+    display: block;
+    color: black;
+    background-color: white;
+    border-radius: 4px;
+    padding: 6px;
+    margin: 0 2px;
+
+    text-decoration: none;
+    font-size: 11px;
+}
+
+.simple-white-button:hover {
+    background-color: #a8d8ff;
 }
 
 .button-style {
@@ -1156,7 +1207,7 @@ tr:nth-child(2n) {
     position: absolute;
     width: max-content;
     bottom: 120%;
-    left: -50%;
+    left: 0%;
     padding: 8px 10px;
     font-size: 13px;
     font-weight: bold;

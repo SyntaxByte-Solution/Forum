@@ -68,6 +68,7 @@ window.onresize = function(event) {
 
 $('.reply-to-thread').click(function() {
     setTimeout(function(){$('textarea').focus();}, 200);
+    
     location.hash = "#reply-site";
     return false;
 });
@@ -75,6 +76,9 @@ $('.reply-to-thread').click(function() {
 $('.share-post').click(function() {
     let btn = $(this);
     $(this).attr("disabled","disabled");
+    
+    const $codemirror = $('#post-reply').nextAll('.CodeMirror')[0].CodeMirror;
+    let post_content = $codemirror.getDoc().getValue();
 
     let form = $(this).parent();
     let data = {
@@ -82,12 +86,12 @@ $('.share-post').click(function() {
         'thread_id': form.find('.thread_id').val()
     };
 
-    if(simplemde.value() == "") {
+    if(post_content == "") {
         $('#global-error').text('Reply field is required');
         $('#global-error').css('display', 'flex');
         $(this).prop("disabled", false);
         location.hash = "#reply-site";
-    } else if(simplemde.value().length < 2) {
+    } else if(post_content.length < 2) {
         $('#global-error').text('Reply should have at least 2 characters');
         $('#global-error').css('display', 'flex');
         $(this).prop("disabled", false);
@@ -96,7 +100,7 @@ $('.share-post').click(function() {
     else {
         $(this).val('Posting your reply ..');
         form.find('#global-error').css('display', 'none');
-        data.content = simplemde.value();
+        data.content = post_content;
         $.ajax({
             type: 'post',
             data: data,
@@ -106,9 +110,9 @@ $('.share-post').click(function() {
                 $('#replies-container').append(response);
                 btn.val('Post your reply');
                 btn.prop("disabled", false);
-                simplemde.value('');
+                $codemirror.getDoc().setValue('');
 
-                $('.thread-replies-number').text(parseInt($('.thread-replies-number').text(), 10)+1);
+                $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
 
             },
             error: function(response) {
@@ -325,6 +329,9 @@ $('.show-post').click(function() {
 });
 
 $('.edit-post').click(function() {
+    $('.post-content').css('display', 'block');
+    $('.post-edit-container').css('display', 'none');
+
     $(this).parent().css('display', 'none');
     let post = $(this);
     while(!post.hasClass('post-container')) {
@@ -334,14 +341,115 @@ $('.edit-post').click(function() {
     post.find('.post-content').css('display', 'none');
     post.find('.post-edit-container').css('display', 'block');
 
+    let old_value = post.find('.post-content').text();
+
+    const $codemirror = $(post).find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
+    $codemirror.getDoc().setValue(old_value);
+
     return false;
 });
 
-$('.delete-post').click(function() {
+$('.delete-post-button').click(function() {
     $(this).parent().css('display', 'none');
     let post = $(this);
     while(!post.hasClass('post-container')) {
         post = post.parent();
+    }
+
+    post.parent().find('.full-shadowed').css("display", "block");
+    post.parent().find('.full-shadowed').css("opacity", "1");
+    return false;
+});
+
+$('.delete-post').click(function() {
+    $(this).attr("disabled","disabled");
+    $(this).val('Deleting ..');
+
+    let container = $(this);
+    while(!container.hasClass('full-shadowed')) {
+        container = container.parent();
+    }
+    container = container.parent();
+
+    let pid = $(this).parent().find('.post-id').val();
+
+    $.ajax({
+        url: '/post/'+pid,
+        type: 'delete',
+        data: {
+            '_token':csrf,
+        },
+        success: function(response) {
+            container.remove();
+            $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)-1);
+        },
+        error: function(response) {
+            $(this).attr("disabled","");
+        }
+    });
+
+    return false;
+});
+
+$('.save-edit-post').click(function() {
+    let btn = $(this);
+
+    let error = $(this).parent().find('.error');
+
+    let post = $(this);
+    while(!post.hasClass('post-container')) {
+        post = post.parent();
+    }
+
+    let old_value = post.find('.post-content').text();
+
+    const $codemirror = $(post).find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
+    let v = $codemirror.getDoc().getValue();
+
+    console.log(v);
+    // Check for the value before submit it
+    if(v == '') {
+        error.html('* This field is required.');
+    } else if(old_value == v){
+        post.find('.post-edit-container').css('display', 'none');
+        post.find('.post-content').css('display', 'block');
+    } else {
+        btn.attr("disabled","disabled");
+        btn.text('Saving Changes ..');
+        error.text('');
+
+        let post_id = $(this).parent().find('.post_id').val();
+        $.ajax({
+            url: '/post/'+post_id,
+            type:"patch",
+            data: {
+                '_token': csrf,
+                'content': v
+            },
+            success: function(response) {
+                btn.text('Save Changes');
+                btn.prop("disabled", false);
+                post.find('.post-content').html('<p>'+v+'</p>');
+                post.find('.post-edit-container').css('display', 'none');
+                post.find('.post-content').css('display', 'block');
+
+                post.find('.post-updated-date').text('updated 1s ago');
+                post.find('.post-updated-date-human').text('Now');
+            },
+            error: function(response) {
+                btn.text('Save Changes');
+                btn.prop("disabled", false);
+
+                // Here we get the errors of the response as an object
+                let errors = JSON.parse(response.responseText).errors;
+
+                // The errors object hold errors keys as well as error values in form of array of errors
+                // because a field could have multiple validation constraints and then it could have multiple errors
+                // strings. In this case we only need the first error of the first validation
+                let er = errors[Object.keys(errors)[0]][0];
+                error.text('*' + er);
+            }
+        });
     }
 
     return false;
@@ -358,3 +466,13 @@ $('.exit-edit-post').click(function() {
 
     return false;
 });
+
+$('.hide-parent').click(function() {
+    $(this).parent().css('display', 'none');
+
+    return false;
+});
+
+function handle_post_events(post) {
+    
+}

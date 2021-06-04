@@ -295,6 +295,7 @@ a, input, textarea {
     color: white;
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
+    padding: 0 10px;
 
     margin-left: -10px;
 

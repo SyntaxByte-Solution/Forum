@@ -8,6 +8,7 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('js/post.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 

@@ -1,5 +1,6 @@
-let urlParams = new URLSearchParams(window.location.search);
+
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
+let urlParams = new URLSearchParams(window.location.search);
 
 // the following section is for displaying viewers based on the value of query strings
 // -------------------------------
@@ -14,20 +15,34 @@ if(urlParams.has('action')) {
 
 // -------------------------------
 
-
-
-$(".button-with-suboptions").on({
-    'click': function() {
-        let container = $(this).parent().find(".suboptions-container");
-        if(container.css("display") == "none") {
-            $(".suboptions-container").css("display", "none");
-            container.css("display", "block");
-        } else {
-            container.css("display", "none");
-        }
-        return false;
-    }
+$(".button-with-suboptions").each(function() {
+    handle_suboptions_container($(this));
 });
+
+function handle_suboptions_container(button) {
+    button.on({
+        'click': function(event) {
+            let container = $(this).parent().find(".suboptions-container");
+            if(container.css("display") == "none") {
+                $(".suboptions-container").css("display", "none");
+                container.css("display", "block");
+            } else {
+                container.css("display", "none");
+            }
+            return false;
+        }
+    });
+}
+
+function handle_element_suboption_containers(container) {
+    if(!container.hasClass('button-with-suboptions')) {
+        container.find('.button-with-suboptions').each(function() {
+            handle_suboptions_container($(this));
+        })
+    } else {
+        handle_suboptions_container(container);
+    }
+}
 
 document.addEventListener("click", function(event) {
     $(".suboptions-container").css("display", "none");
@@ -70,67 +85,6 @@ $('.reply-to-thread').click(function() {
     setTimeout(function(){$('textarea').focus();}, 200);
     
     location.hash = "#reply-site";
-    return false;
-});
-
-$('.share-post').click(function() {
-    let btn = $(this);
-    $(this).attr("disabled","disabled");
-    
-    const $codemirror = $('#post-reply').nextAll('.CodeMirror')[0].CodeMirror;
-    let post_content = $codemirror.getDoc().getValue();
-
-    let form = $(this).parent();
-    let data = {
-        '_token':csrf,
-        'thread_id': form.find('.thread_id').val()
-    };
-
-    if(post_content == "") {
-        $('#global-error').text('Reply field is required');
-        $('#global-error').css('display', 'flex');
-        $(this).prop("disabled", false);
-        location.hash = "#reply-site";
-    } else if(post_content.length < 2) {
-        $('#global-error').text('Reply should have at least 2 characters');
-        $('#global-error').css('display', 'flex');
-        $(this).prop("disabled", false);
-        location.hash = "#reply-site";
-    }
-    else {
-        $(this).val('Posting your reply ..');
-        form.find('#global-error').css('display', 'none');
-        data.content = post_content;
-        $.ajax({
-            type: 'post',
-            data: data,
-            url: '/post',
-            success: function(response) {
-                $('#global-error').css('display', 'none');
-                $('#replies-container').append(response);
-                btn.val('Post your reply');
-                btn.prop("disabled", false);
-                $codemirror.getDoc().setValue('');
-
-                $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
-
-            },
-            error: function(response) {
-                // Here we get the errors of the response as an object
-                let errors = JSON.parse(response.responseText).errors;
-
-                // The errors object hold errors keys as well as error values in form of array of errors
-                // because a field could have multiple validation constraints and then it could have multiple errors
-                // strings. In this case we only need the first error of the first validation
-                let error = errors[Object.keys(errors)[0]][0];
-                $('#global-error').text(error);
-                $('#global-error').css('display', 'block');
-                btn.val('Post your reply');
-                btn.prop("disabled", false);
-                location.hash = "#reply-site";
-            }
-        })
-    }
     return false;
 });
 
@@ -303,176 +257,64 @@ $('.button-container').on({
             $(this).parent().find('.button-container').css('opacity', '0');
         }
     }
-}); 
-
-$('.hide-post').click(function() {
-    let post = $(this);
-    while(!post.hasClass('post-container')) {
-        post = post.parent();
-    }
-
-    $('.thread-replies-number').text(parseInt($('.thread-replies-number').text(), 10)-1);
-
-    post.css('display', 'none');
-    post.parent().find('.show-post-container').css('display', 'block');
-    $(this).parent().css('display', 'none');
-    
-    return false;
 });
 
-$('.show-post').click(function() {
-    $(this).parent().css('display', 'none');
-    $(this).parent().parent().find('.post-container').css('display', 'flex');
-    $('.thread-replies-number').text(parseInt($('.thread-replies-number').text(), 10)+1);
-
-    return false;
-});
-
-$('.edit-post').click(function() {
-    $('.post-content').css('display', 'block');
-    $('.post-edit-container').css('display', 'none');
-
-    $(this).parent().css('display', 'none');
-    let post = $(this);
-    while(!post.hasClass('post-container')) {
-        post = post.parent();
-    }
-
-    post.find('.post-content').css('display', 'none');
-    post.find('.post-edit-container').css('display', 'block');
-
-    let old_value = post.find('.post-content').text();
-
-    const $codemirror = $(post).find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
-    $codemirror.getDoc().setValue(old_value);
-
-    return false;
-});
-
-$('.delete-post-button').click(function() {
-    $(this).parent().css('display', 'none');
-    let post = $(this);
-    while(!post.hasClass('post-container')) {
-        post = post.parent();
-    }
-
-    post.parent().find('.full-shadowed').css("display", "block");
-    post.parent().find('.full-shadowed').css("opacity", "1");
-    return false;
-});
-
-$('.delete-post').click(function() {
-    $(this).attr("disabled","disabled");
-    $(this).val('Deleting ..');
-
-    let container = $(this);
-    while(!container.hasClass('full-shadowed')) {
-        container = container.parent();
-    }
-    container = container.parent();
-
-    let pid = $(this).parent().find('.post-id').val();
-
-    $.ajax({
-        url: '/post/'+pid,
-        type: 'delete',
-        data: {
-            '_token':csrf,
+function handle_button_container(element) {
+    element.find('.button-with-container').on({
+        'mouseenter': function() {
+            mouse_over_button = true;
+            $(this).parent().find('.button-container').css('display', 'block');
+            $(this).parent().find('.button-container').css('opacity', '1');
         },
-        success: function(response) {
-            container.remove();
-            $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)-1);
-        },
-        error: function(response) {
-            $(this).attr("disabled","");
+        'mouseleave': function() {
+            /*
+                Here we need to check whether the mouse is over the button or container before closing the container as well
+            */
+            mouse_over_button = false;
+            if(!mouse_over_container) {
+                $(this).parent().find('.button-container').css('display', 'none');
+                $(this).parent().find('.button-container').css('opacity', '0');
+            }
         }
     });
 
-    return false;
-});
-
-$('.save-edit-post').click(function() {
-    let btn = $(this);
-
-    let error = $(this).parent().find('.error');
-
-    let post = $(this);
-    while(!post.hasClass('post-container')) {
-        post = post.parent();
-    }
-
-    let old_value = post.find('.post-content').text();
-
-    const $codemirror = $(post).find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
-    let v = $codemirror.getDoc().getValue();
-
-    console.log(v);
-    // Check for the value before submit it
-    if(v == '') {
-        error.html('* This field is required.');
-    } else if(old_value == v){
-        post.find('.post-edit-container').css('display', 'none');
-        post.find('.post-content').css('display', 'block');
-    } else {
-        btn.attr("disabled","disabled");
-        btn.text('Saving Changes ..');
-        error.text('');
-
-        let post_id = $(this).parent().find('.post_id').val();
-        $.ajax({
-            url: '/post/'+post_id,
-            type:"patch",
-            data: {
-                '_token': csrf,
-                'content': v
-            },
-            success: function(response) {
-                btn.text('Save Changes');
-                btn.prop("disabled", false);
-                post.find('.post-content').html('<p>'+v+'</p>');
-                post.find('.post-edit-container').css('display', 'none');
-                post.find('.post-content').css('display', 'block');
-
-                post.find('.post-updated-date').text('updated 1s ago');
-                post.find('.post-updated-date-human').text('Now');
-            },
-            error: function(response) {
-                btn.text('Save Changes');
-                btn.prop("disabled", false);
-
-                // Here we get the errors of the response as an object
-                let errors = JSON.parse(response.responseText).errors;
-
-                // The errors object hold errors keys as well as error values in form of array of errors
-                // because a field could have multiple validation constraints and then it could have multiple errors
-                // strings. In this case we only need the first error of the first validation
-                let er = errors[Object.keys(errors)[0]][0];
-                error.text('*' + er);
+    element.find('.button-container').on({
+        mouseenter: function(event) {
+            mouse_over_container = true;
+            $(this).css('display', 'block');
+            $(this).css('opacity', '1');
+            event.stopPropagation();
+        },
+        mouseleave: function(event) {
+            /*
+                Here we need to check whether the mouse is over the button or container before closing the container as well
+            */
+            mouse_over_container = false;
+            if(!mouse_over_button) {
+                $(this).parent().find('.button-container').css('display', 'none');
+                $(this).parent().find('.button-container').css('opacity', '0');
             }
-        });
-    }
+        }
+    });
+}
 
-    return false;
-});
+function handle_close_shadowed_view(element) {
+    element.click(function() {
 
-$('.exit-edit-post').click(function() {
-    $(this).parent().css('display', 'none');
-    let post = $(this);
-    while(!post.hasClass('post-container')) {
-        post = post.parent();
-    }
+        let shadowed_container = $(this);
 
-    post.find('.post-content').css('display', 'flex');
+        while(!shadowed_container.hasClass('full-shadowed')) {
+            shadowed_container = shadowed_container.parent();
+        }
+        shadowed_container.css('display', 'none');
+        $('.suboptions-container').css('display', 'none');
 
-    return false;
-});
+        return false;
+    });
+}
 
 $('.hide-parent').click(function() {
     $(this).parent().css('display', 'none');
 
     return false;
 });
-
-function handle_post_events(post) {
-    
-}

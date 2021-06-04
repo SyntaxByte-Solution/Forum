@@ -8,6 +8,7 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('js/post.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 
@@ -62,6 +63,13 @@
             @endauth
         </div>
         <x-thread-component :thread="request()->thread"/>
+        
+        <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
+        <div id="replies-container" style="margin-bottom: 30px">
+            @foreach($posts as $post)
+                <x-discussion-post :post="$post->id"/>
+            @endforeach
+        </div>
         <div>
             <div class="share-post-form">
                 @csrf
@@ -87,13 +95,6 @@
                 <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
                 <input type='button' class="inline-block button-style share-post" value="Post your reply">
             </div>
-        </div>
-        
-        <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
-        <div id="replies-container" style="margin-bottom: 30px">
-            @foreach($posts as $post)
-                <x-discussion-post :post="$post->id"/>
-            @endforeach
         </div>
         <script>
             $('textarea').each(function() {

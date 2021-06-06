@@ -30,7 +30,9 @@
                 <div class="flex space-between">
                     <h2 class="my8 fs20">My Activities</h2>
                     <div class="mr8">
-                        {{ $threads->onEachSide(0)->links() }}
+                        @unless($all)
+                            {{ $threads->onEachSide(0)->links() }}
+                        @endunless
                     </div>
                 </div>
                 <table class="forums-table">
@@ -38,7 +40,7 @@
                         <th class="table-col-header">
                             <div class="flex space-between align-center">
                                 <div>
-                                    {{ __('MY THREADS') }}
+                                    {{ __('MY THREADS') }}@if($all) ({{$threads->count()}}) @endif
                                 </div>
                                 <div>
                                     <div class="mx4 inline-block">
@@ -68,6 +70,14 @@
                         <x-ms-resource-table-row :thread="$thread"/>
                     @endforeach
                 </table>
+                    @if(!$threads->count())
+                        <div class="full-center">
+                            <div>
+                                <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
+                                <p class="my4 text-center">{{ __("Try to create a ") }} <a href="" class="link-path">discussion</a> / <a href="" class="link-path">discussion</a></p>
+                            </div>
+                        </div>
+                    @endif
             </div>
             <div>
                 <div class="ms-right-panel">
@@ -109,6 +119,16 @@
                                 <div class="flex align-center">
                                     <img src="{{ asset('assets/images/icons/bqst.png') }}" class="small-image-2 mr4" alt="">
                                     <p class="inline-block my4 fs13">Questions: </p><span class="fs15 bold ml8">988</span>
+                                </div>
+                                <div class="fill-thin-line"></div>
+                                <span class="move-to-right">[<a href="" class="fs11 black-link">SEE</a>]</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex align-center">
+                                <div class="flex align-center">
+                                    <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
+                                    <p class="inline-block my4 fs13">Replies: </p><span class="fs15 bold ml8">11</span>
                                 </div>
                                 <div class="fill-thin-line"></div>
                                 <span class="move-to-right">[<a href="" class="fs11 black-link">SEE</a>]</span>

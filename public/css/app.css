@@ -1171,11 +1171,15 @@ tr:nth-child(2n) {
 }
 
 .pag-active:hover {
-    background-color: #a8d8ff;
+    background-color: #4d5264;
+    border-color: #4d5264;
+    color: white;
 }
 
 .pagination-item-selected {
-    background-color: #a8d8ff;
+    background-color: #4d5264 !important;
+    border-color: #4d5264 !important;
+    color: white !important;
 }
 
 .pagination-item {
@@ -1184,7 +1188,8 @@ tr:nth-child(2n) {
     text-decoration: none;
     border: 1px solid #ccc;
     color: black;
-    margin-left: -1px;
+    margin: 0 1px;
+    border-radius: 4px;
 }
 
 .thread-container {

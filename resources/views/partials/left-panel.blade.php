@@ -4,52 +4,46 @@
     </div>
 
     <div class="flex relative">
-        <a href="" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected' }} @endif">Home</a>
+        <a href="/" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected' }} @endif">Home</a>
         @if($page == 'home')
             <div class="selected-colored-slice"></div>
         @endif
     </div>
     @auth
     <div class="relative">
-        <a href="" class="left-panel-item simple-suboption-button lp-wpadding @if($page == 'home') {{ 'lp-selected' }} @endif">My Space ▾</a>
-        <div class="simple-suboptions-container">
+        <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'myspace') {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'myspace') ▾ @else ▸ @endif</span></a>
+        <div class="toggle-container" @isset($subpage) style="display: block" @endisset>
             <div class="relative">
-                <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">My Questions</a>
-                @if($page == 'users')
-                    <div class="selected-colored-slice"></div>
-                @endif
+                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.index') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Index</a>
+                @isset($subpage)
+                    @if($subpage == 'myspace.index')
+                        <div class="selected-colored-slice"></div>
+                    @endif
+                @endisset
             </div>
             <div class="relative">
-                <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">My Discussions</a>
-                @if($page == 'users')
-                    <div class="selected-colored-slice"></div>
-                @endif
+                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.profile') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Profile</a>
+                @isset($subpage)
+                    @if($subpage == 'myspace.profile')
+                        <div class="selected-colored-slice"></div>
+                    @endif
+                @endisset
             </div>
             <div class="relative">
-                <a href="" class="left-panel-item simple-suboption-button lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Add Thread</a>
-                <div class="simple-suboptions-container">
-                    <div class="relative">
-                        <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Add question</a>
-                        @if($page == 'users')
-                            <div class="selected-colored-slice"></div>
-                        @endif
-                    </div>
-                    <div class="relative">
-                        <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Add discussion</a>
-                        @if($page == 'users')
-                            <div class="selected-colored-slice"></div>
-                        @endif
-                    </div>
-                    <div class="relative">
-                        <a href="" class="left-panel-item simple-suboption-button lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Etc..</a>
-                        @if($page == 'users')
-                            <div class="selected-colored-slice"></div>
-                        @endif
-                    </div>
-                </div>
-                @if($page == 'users')
-                    <div class="selected-colored-slice"></div>
-                @endif
+                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.activities') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Activities</a>
+                @isset($subpage)
+                    @if($subpage == 'myspace.activities')
+                        <div class="selected-colored-slice"></div>
+                    @endif
+                @endisset
+            </div>
+            <div class="relative">
+                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.settings') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Settings</a>
+                @isset($subpage)
+                    @if($subpage == 'myspace.settings')
+                        <div class="selected-colored-slice"></div>
+                    @endif
+                @endisset
             </div>
         </div>
     </div>
@@ -59,7 +53,7 @@
         <div class="flex relative">
             <div class="flex align-center full-width relative">
                 <div class="sprite-icon wdiscussion-icon mx8 absolute left0"></div>
-                <a href="" class="left-panel-item lp-padding @if($page == 'discussions') {{ 'lp-selected' }} @endif">Discussions</a>
+                <a href="{{ route('category.discussions', ['forum'=>'general', 'category'=>'general-infos']) }}" class="left-panel-item lp-padding @if($page == 'discussions') {{ 'lp-selected' }} @endif">Discussions</a>
             </div>
             @if($page == 'discussions')
                 <div class="selected-colored-slice"></div>
@@ -68,7 +62,7 @@
         <div class="flex relative">
             <div class="flex align-center full-width relative">
                 <div class="sprite-icon question-icon mx8 absolute left0"></div>
-                <a href="" class="left-panel-item lp-padding @if($page == 'questions') {{ 'lp-selected' }} @endif">Questions</a>
+                <a href="{{ route('category.questions', ['forum'=>'general', 'category'=>'general-infos']) }}" class="left-panel-item lp-padding @if($page == 'questions') {{ 'lp-selected' }} @endif">Questions</a>
             </div>
             @if($page == 'questions')
                 <div class="selected-colored-slice"></div>
@@ -137,12 +131,6 @@
             </div>
             <div class="flex">
                 <a href="" class="block simple-link move-to-right" style="margin: 8px 8px 8px auto">See all</a>
-            </div>
-            <div class="relative">
-                <a href="" class="left-panel-item lp-wpadding @if($page == 'settings') {{ 'lp-selected' }} @endif"><span class="line-bootstraper">●</span>{{ __('Settings') }}</a>
-                @if($page == 'settings')
-                    <div class="selected-colored-slice"></div>
-                @endif
             </div>
         </div>
     </div>

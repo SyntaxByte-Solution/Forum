@@ -23,12 +23,32 @@ a, input, textarea {
     border-radius: 6px;
 }
 
-.fs17 {
-    font-size: 17px;
+.br4 {
+    border-radius: 6px;
+}
+
+.br4-first {
+    border-radius: 4px 0 0 4px;
+}
+
+.br4-last {
+    border-radius: 0 4px 4px 0;
 }
 
 .fs20 {
     font-size: 20px;
+}
+
+.fs17 {
+    font-size: 17px;
+}
+
+.fs16 {
+    font-size: 16px;
+}
+
+.fs15 {
+    font-size: 15px;
 }
 
 .fs14 {
@@ -57,6 +77,10 @@ a, input, textarea {
 
 .mr4 {
     margin-right: 4px;
+}
+
+.ml4 {
+    margin-left: 4px;
 }
 
 .ml8 {
@@ -148,9 +172,33 @@ a, input, textarea {
     left: 0px;
 }
 
+.right0 {
+    right: 0px;
+}
+
 .h-menu {
     display: flex;
     align-items: center;
+}
+
+.rmb-selected {
+    background-color: #daeeff;
+    font-weight: bold;
+}
+
+.regular-menu-button {
+    display: block;
+    margin: 0 2px;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: black;
+    font-size: 14px;
+
+}
+
+.regular-menu-button:hover {
+    background-color: rgb(233, 233, 233);
 }
 
 .menu-link-button {
@@ -167,6 +215,13 @@ a, input, textarea {
 .menu-link-button:hover {
     color: white;
     background-color: rgba(245, 245, 245, 0.226);
+}
+
+.fill-thin-line {
+    width: 100%;
+    height: 1px;
+    margin: 0 2px;
+    background-color: #e3e3e3;
 }
 
 .mx4 {
@@ -211,6 +266,13 @@ a, input, textarea {
 
 .black {
     color: black;
+}
+
+.small-dropdown {
+    font-size: 12px;   
+    padding: 2px;
+    border-radius: 4px;
+    border: 1px solid rgb(175, 175, 175);
 }
 
 .basic-dropdown {
@@ -677,7 +739,12 @@ a, input, textarea {
 .line-separator {
     margin: 10px 0;
     height: 1px;
-    background-color: #d3d3d3;
+    background-color: #e1e1e1;
+}
+
+.simple-line-separator {
+    height: 1px;
+    background-color: #e1e1e1;
 }
 
 .block {
@@ -1036,7 +1103,7 @@ tr:nth-child(2n) {
 }
 
 .table-last-post {
-    width: 160px;
+    min-width: 160px;
 }
 
 .forum-table-row-image {
@@ -1099,14 +1166,25 @@ tr:nth-child(2n) {
     width: 26px;
 }
 
+.pagination-disabled {
+    cursor: default;
+}
+
+.pag-active:hover {
+    background-color: #a8d8ff;
+}
+
+.pagination-item-selected {
+    background-color: #a8d8ff;
+}
+
 .pagination-item {
     display: flex;
-    margin: 0 3px;
     padding: 6px 10px;
-    background-color: #353946;
-    color: white;
     text-decoration: none;
-    border-radius: 3px;
+    border: 1px solid #ccc;
+    color: black;
+    margin-left: -1px;
 }
 
 .thread-container {
@@ -1124,7 +1202,7 @@ tr:nth-child(2n) {
 
 
 .owner-thread-style {
-    background-color: rgb(232, 246, 255);
+    background-color: rgb(243, 250, 255);
 }
 
 /* .thread-title {
@@ -1206,6 +1284,9 @@ tr:nth-child(2n) {
 .tooltip {
     display: none;
     position: absolute;
+}
+
+.tooltip-style-1 {
     width: max-content;
     bottom: 120%;
     left: 0%;
@@ -1216,8 +1297,19 @@ tr:nth-child(2n) {
     color: white;
     margin: 0;
     border-radius: 4px;
-
 }
+.tooltip-style-2 {
+    max-width: 160px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #000000bb;
+    color: white;
+    margin: 0;
+    border-radius: 4px;
+}
+
+
 
 .post-container {
     margin: 10px 0;
@@ -1299,10 +1391,28 @@ tr:nth-child(2n) {
     margin: 3px 0;
 }
 
+.image-size-1 {
+    display: flex;
+    width: 80px;
+    height: 80px;
+}
+
 .small-image {
     display: flex;
     width: 20px;
     height: 20px;
+}
+
+.small-image-1 {
+    display: flex;
+    width: 36px;
+    height: 36px;
+}
+
+.small-image-2 {
+    display: flex;
+    width: 17px;
+    height: 17px;
 }
 
 .small-image-size {
@@ -1361,20 +1471,12 @@ tr:nth-child(2n) {
     background-size: 159px 159px;
 }
 
-.small-image {
-
-}
-
 .table-row-button {
     display: block;
     width: 20px;
     height: 20px;
     margin: 2px 0;
     border-radius: 50%;
-}
-
-.simple-suboptions-container {
-    padding-left: 18px;
 }
 
 .suboption-style-left {
@@ -1388,3 +1490,35 @@ tr:nth-child(2n) {
     background-color: #363945;
 }
 
+.toggle-container {
+    display: none;
+}
+
+.ms-table-small-button {
+    padding: 2px 6px;
+    margin-left: -4px;
+    color: gray;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    text-decoration: none;
+}
+
+.ms-table-small-button:hover {
+    background-color: gray;
+    color: white;
+}
+
+.mstsb-selected {
+    background-color: gray;
+    color: white;
+}
+
+.ms-right-panel {
+    padding: 10px;
+    border-radius: 4px;
+    margin-left: 8px;
+    min-width: 280px;
+    height: max-content;
+    background-color: rgb(250, 250, 250);
+    border: 1px solid;
+    border-color: rgb(215, 215, 215);
+}

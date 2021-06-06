@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
      CategoryController, ThreadController, PostController,
-     IndexController};
+     IndexController, MySpaceController};
 use App\Models\Forum;
 
 /*
@@ -54,6 +54,8 @@ Route::get('/{forum:slug}/questions', [ThreadController::class, 'all_questions']
 
 Route::middleware(['auth'])->group(function () {
     
+    Route::get('/myspace', [MySpaceController::class, 'index'])->name('myspace.index');
+
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
     Route::get('/{forum:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
 

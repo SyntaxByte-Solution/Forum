@@ -63,7 +63,11 @@ main {
 
 .lp-sub-item {
     font-size: 12px;
-    padding: 4px 8px;
+    padding: 4px 8px 4px 16px;
+}
+
+.simple-suboptions-container {
+    display: none;
 }
 
 .quick-links-button {

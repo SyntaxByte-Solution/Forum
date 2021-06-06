@@ -318,3 +318,105 @@ $('.hide-parent').click(function() {
 
     return false;
 });
+
+$('.toggle-container-button').click(function() {
+    let container = $(this).parent().find('.toggle-container');
+    if(container.css('display') == 'none') {
+        container.css('display', 'block');
+        $(this).find('.toggle-arrow').text('▾');
+    } else {
+        container.css('display', 'none');
+        $(this).find('.toggle-arrow').text('▸');
+    }
+    
+    return false;
+});
+
+$('.all-table-threads-changer').click(function() {
+    if($(this).hasClass('mstsb-selected')) {
+        return false;
+    }
+
+    $('.ms-table-small-button').removeClass('mstsb-selected');
+    $(this).addClass('mstsb-selected');
+
+    let table = $(this);
+    while(!table.is('table')) {
+        table = table.parent();
+    }
+
+    table.find('tr').each(function() {
+        $(this).css('display', '');
+    });
+    return false;
+});
+
+$('.all-table-discussions-changer').click(function() {
+    if($(this).hasClass('mstsb-selected')) {
+        return false;
+    }
+
+    $('.ms-table-small-button').removeClass('mstsb-selected');
+    $(this).addClass('mstsb-selected');
+
+    let table = $(this);
+    while(!table.is('table')) {
+        table = table.parent();
+    }
+
+    let first = true;
+    table.find('tr').each(function() {
+        if(first) {
+            first = false;
+        }
+        else {
+            if($(this).find('.thread-type').val() == 1) {
+                $(this).css('display', '');
+            } else {
+                $(this).css('display', 'none');
+            }
+        }
+    });
+    return false;
+});
+
+$('.all-table-questions-changer').click(function() {
+    if($(this).hasClass('mstsb-selected')) {
+        return false;
+    }
+
+    $('.ms-table-small-button').removeClass('mstsb-selected');
+    $(this).addClass('mstsb-selected');
+
+    let table = $(this);
+    while(!table.is('table')) {
+        table = table.parent();
+    }
+
+    let first = true;
+    table.find('tr').each(function() {
+        if(first) {
+            first = false;
+        }
+        else {
+            if($(this).find('.thread-type').val() == 2) {
+                $(this).css('display', '');
+            } else {
+                $(this).css('display', 'none');
+            }
+        }
+    });
+    return false;
+});
+
+$('.row-num-changer').change(function() {
+    let page_size = $(this).val();
+    
+    let urlObj = new URL(window.location.href.split('?')[0]);
+    let url = '';
+    
+    urlObj.searchParams.set('pagesize', page_size);
+    url = urlObj.href;
+
+    window.location.href = url;
+});

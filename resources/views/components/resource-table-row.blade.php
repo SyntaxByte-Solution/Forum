@@ -1,4 +1,4 @@
-<tr @can('update', $resource) style="background-color: rgb(232, 246, 255)" @endcan >
+<tr @can('update', $resource) style="background-color: rgb(240, 250, 255)" @endcan >
     <td>
         <div class="flex space-between">
             <div class="flex">

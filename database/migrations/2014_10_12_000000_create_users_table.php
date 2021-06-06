@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->string('username')->unique();
             $table->string('avatar')->nullable();
+            $table->unsignedBigInteger('reach')->default('0');
             $table->unsignedBigInteger('reputation')->default('0');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

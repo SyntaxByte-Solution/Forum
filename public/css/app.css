@@ -1046,6 +1046,30 @@ a, input, textarea {
     background-position: 6px center;
 }
 
+.auth-buton-left-icon {
+    left: 12px;
+}
+
+.button-with-left-icon {
+    padding: 10px 10px 10px 44px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 1px 1px 5px 1px #eaeaea;
+}
+
+.google-auth-button {
+    background-color: white;
+    color: rgb(85, 85, 85);
+    border: 1px solid #ddd
+}
+
+.google-auth-button:hover {
+    border-color: #b8e4ff;
+    box-shadow: 1px 1px 5px 1px #ccebff;
+}
+
 .input-container {
     margin: 8px 0;
 }

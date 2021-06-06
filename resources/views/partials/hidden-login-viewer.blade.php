@@ -45,6 +45,11 @@
                 </div>
             </form>
             <div class="line-separator"></div>
+            <div class="relative flex align-center">
+                <embed src="{{ asset('assets/images/icons/google.svg') }}" class="small-image absolute auth-buton-left-icon" type="image/svg+xml" />
+                <a href="{{ url('/login/google') }}" class="google-auth-button button-with-left-icon full-width">Login With google</a>
+            </div>
+            <div class="line-separator"></div>
             <div>
                 <div><strong>Not a member?</strong> <a href="{{ route('register') }}" class="link-style no-underline">{{ __('Signup now') }}</a></div>
             </div>

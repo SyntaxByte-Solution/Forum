@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
      CategoryController, ThreadController, PostController,
-     IndexController, MySpaceController};
+     IndexController, MySpaceController, OAuthController};
 use App\Models\Forum;
 
 /*
@@ -89,3 +89,6 @@ Route::get('/{forum:slug}/{category:slug}/questions/{thread}', [ThreadController
 Route::get('/{forum:slug}/{category:slug}/all', [ThreadController::class, 'category_misc'])->name('category.misc');
 Route::get('/{forum:slug}/{category:slug}/discussions', [ThreadController::class, 'category_discussions'])->name('category.discussions');
 Route::get('/{forum:slug}/{category:slug}/questions', [ThreadController::class, 'category_questions'])->name('category.questions');
+
+Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
+Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);

@@ -74,7 +74,7 @@
                         <div class="full-center">
                             <div>
                                 <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
-                                <p class="my4 text-center">{{ __("Try to create a ") }} <a href="" class="link-path">discussion</a> / <a href="" class="link-path">discussion</a></p>
+                                <p class="my4 text-center">{{ __("Try to create a ") }} <a href="" class="link-path">discussion</a> / <a href="" class="link-path">question</a></p>
                             </div>
                         </div>
                     @endif

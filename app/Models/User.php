@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\{Role, Permission, UserStatus, Thread};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends UserAuthenticatable implements Authenticatable
 {
     use HasFactory, Notifiable, HasPermissionsTrait;
 

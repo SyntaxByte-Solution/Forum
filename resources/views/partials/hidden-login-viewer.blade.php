@@ -1,4 +1,4 @@
-<div class="absolute full-shadowed zi12">
+<div class="fixed full-shadowed zi12">
         <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
         <div id="login-view" class="auth-card">
             <div>
@@ -45,13 +45,28 @@
                 </div>
             </form>
             <div class="line-separator"></div>
-            <div class="relative flex align-center">
-                <embed src="{{ asset('assets/images/icons/google.svg') }}" class="small-image absolute auth-buton-left-icon" type="image/svg+xml" />
-                <a href="{{ url('/login/google') }}" class="google-auth-button button-with-left-icon full-width">Login With google</a>
+            <div>
+                <div class="my8 flex">
+                    <a href="{{ url('/login/google') }}" class="google-auth-button btn-style half-width full-center mr4">
+                        <embed src="{{ asset('assets/images/icons/google.svg') }}" class="small-image auth-buton-left-icon mx8" type="image/svg+xml" />
+                        Google
+                    </a>
+                    <a href="{{ url('/login/facebook') }}" class="facebook-auth-button btn-style half-width full-center ml4">
+                        <img src="{{ asset('assets/images/icons/fb.png') }}" class="small-image auth-buton-left-icon mx8"/>
+                        Facebook
+                    </a>
+                </div>
+                <a href="{{ url('/login/twitter') }}" class="twitter-auth-button btn-style full-width full-center ">
+                    <img src="{{ asset('assets/images/icons/twitter.png') }}" class="small-image auth-buton-left-icon mx8"/>
+                    Twitter
+                </a>
             </div>
             <div class="line-separator"></div>
             <div>
-                <div><strong>Not a member?</strong> <a href="{{ route('register') }}" class="link-style no-underline">{{ __('Signup now') }}</a></div>
+                <div class="flex">
+                    <strong>Not a member?</strong>
+                    <a href="{{ route('register') }}" class="link-style no-underline ml4">{{ __('Signup now') }}</a>
+                </div>
             </div>
         </div>
     </div>

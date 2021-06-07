@@ -75,7 +75,12 @@
                     </div>
                     <div class="relative">
                         <a href="" class="header-profile-button button-with-suboptions">
+                        @auth
+                            <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture">
+                        @endauth
+                        @guest
                             <img src="{{ asset('avatar.jpg') }}" alt="profile picture" class="header-profile-picture">
+                        @endguest
                         </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>

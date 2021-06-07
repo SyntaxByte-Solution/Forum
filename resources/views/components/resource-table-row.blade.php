@@ -1,4 +1,5 @@
 <tr @can('update', $resource) style="background-color: rgb(240, 250, 255)" @endcan >
+    <input type="hidden" class="thread-type" value="{{ $thread_type }}">
     <td>
         <div class="flex space-between">
             <div class="flex">
@@ -8,7 +9,7 @@
                 <div>
                     <h2 class="table-row-title"><a href="{{ $thread_url }}" class="forum-style-link">{{ $thread_title }}</a></h2>
                     <div class="flex align-center">
-                        <p class="no-margin fs11 flex align-center">by [<a href="" class="fs12 black-link">{{ $thread_owner }}</a>] <span class="fs11" style="margin: 0 5px">>></span> {{ $at }}</p>
+                        <p class="no-margin fs11 flex align-center">by [<a href="" class="fs12 black-link bold">{{ $thread_owner }}</a>] <span class="fs11" style="margin: 0 5px">>></span> {{ $at }} [{{ $at_full }}]</p>
                     </div>
                 </div>    
             </div>
@@ -24,7 +25,7 @@
             @endcan
         </div>
     </td>
-    <td class="fs13">{{ $category }}</td>
+    <td class="fs13"><a href="" class="link-without-underline-style">{{ $category }}</a></td>
     <td class="fs13">{{ $replies }}</td>
     <td class="fs13">{{ $views }}</td>
     <td>

@@ -95,43 +95,5 @@
                 <div class="selected-colored-slice"></div>
             @endif
         </div>
-        <div>
-            <a href="" class="left-panel-item lp-wpadding @if($page == 'users') {{ 'lp-selected' }} @endif"><span class="line-bootstraper">●</span>Forums</a>
-            <div class="left-panel-sub-items">
-                <div class="relative">
-                    <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Gneral Forum</a>
-                    @if($page == 'users')
-                        <div class="selected-colored-slice"></div>
-                    @endif
-                </div>
-                <div class="relative">
-                    <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Body Building</a>
-                    @if($page == 'users')
-                        <div class="selected-colored-slice"></div>
-                    @endif
-                </div>
-                <div class="relative">
-                    <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Calisthenics</a>
-                    @if($page == 'users')
-                        <div class="selected-colored-slice"></div>
-                    @endif
-                </div>
-                <div class="relative">
-                    <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Tennis</a>
-                    @if($page == 'users')
-                        <div class="selected-colored-slice"></div>
-                    @endif
-                </div>
-                <div class="relative">
-                    <a href="" class="left-panel-item lp-sub-item @if($page == 'users') {{ 'lp-selected' }} @endif">Football</a>
-                    @if($page == 'users')
-                        <div class="selected-colored-slice"></div>
-                    @endif
-                </div>
-            </div>
-            <div class="flex">
-                <a href="" class="block simple-link move-to-right" style="margin: 8px 8px 8px auto">See all</a>
-            </div>
-        </div>
     </div>
 </div>

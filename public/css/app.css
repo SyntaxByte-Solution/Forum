@@ -146,7 +146,7 @@ a, input, textarea {
 }
 
 .move-to-right {
-    margin-left: auto;
+    margin-left: auto !important;
 }
 
 .full-height {

@@ -269,15 +269,26 @@ class ThreadController extends Controller
 
         // First get all forum's categories
         $ids = $categories->pluck('id');
-        // Then we fetch all threads in those categories
-        $discussions = Thread::whereIn('category_id', $ids)->where('thread_type', 1)->get();
         
+        $pagesize = 10;
+        $pagesize_exists = false;
+        
+        if(request()->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = request()->input('pagesize');
+        }
+
+        // Then we fetch all threads in those categories
+        $discussions = Thread::whereIn('category_id', $ids)->where('thread_type', 1)->orderBy('created_at', 'desc')->paginate($pagesize);
+
         return view('forum.discussion.all-discussions')
         ->with(compact('categories'))
         ->with(compact('forums'))
         ->with(compact('announcements'))
-        ->with(compact('discussions'));
+        ->with(compact('discussions'))
+        ->with(compact('pagesize'));
     }
+
     public function all_questions(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $forums = Forum::where('id', '<>', $forum->id)->get();
@@ -286,70 +297,123 @@ class ThreadController extends Controller
 
         // First get all forum's categories
         $ids = $categories->pluck('id');
+        
+        $pagesize = 10;
+        $pagesize_exists = false;
+        
+        if(request()->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = request()->input('pagesize');
+        }
+
         // Then we fetch all threads in those categories
-        $questions = Thread::whereIn('category_id', $ids)->where('thread_type', 2)->get();
+        $questions = Thread::whereIn('category_id', $ids)->where('thread_type', 2)->orderBy('created_at', 'desc')->paginate($pagesize);
         
         return view('forum.question.all-questions')
         ->with(compact('categories'))
         ->with(compact('forums'))
         ->with(compact('announcements'))
-        ->with(compact('questions'));
+        ->with(compact('questions'))
+        ->with(compact('pagesize'));
     }
+
     public function forum_all_threads(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $forums = Forum::where('id', '<>', $forum->id)->get();
 
         // First get all forum's categories
-        $ids = $categories->pluck('id');
-        // Then we fetch all threads in those categories
-        $threads = Thread::whereIn('category_id', $ids)->orderBy('created_at', 'desc')->get();
-        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first();
-        $anoun_id = $anoun_id->id;
+        $categories_ids = $categories->pluck('id');
+
+        // Fetching announcements
+        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
         $announcements = Thread::where('category_id', $anoun_id)->get();
+
+        $pagesize = 10;
+        $pagesize_exists = false;
+        
+        if(request()->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = request()->input('pagesize');
+        }
+
+        // Then we fetch all threads in those categories
+        $threads = Thread::whereIn('category_id', $categories_ids)->orderBy('created_at', 'desc')->paginate($pagesize);
         
         return view('forum.category.misc')
         ->with(compact('forums'))
         ->with(compact('categories'))
         ->with(compact('announcements'))
-        ->with(compact('threads'));
+        ->with(compact('threads'))
+        ->with(compact('pagesize'));
     }
 
     public function category_misc(Forum $forum, Category $category) {
         $category = $category;
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-        $threads = Thread::where('category_id', $category->id)->get();
         $forums = Forum::where('id', '<>', $forum->id)->get();
+
+        $pagesize = 10;
+        $pagesize_exists = false;
+        
+        if(request()->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = request()->input('pagesize');
+        }
+
+        $threads = Thread::where('category_id', $category->id)->orderBy('created_at', 'desc')->paginate($pagesize);
 
         return view('forum.category.category-misc')
         ->with(compact('forums'))
         ->with(compact('category'))
         ->with(compact('categories'))
-        ->with(compact('threads'));
+        ->with(compact('threads'))
+        ->with(compact('pagesize'));
     }
 
     public function category_discussions(Forum $forum, Category $category) {
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $category = $category;
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-        $threads = Thread::where('category_id', $category->id)->where('thread_type', 1)->get();
+
+        $pagesize = 10;
+        $pagesize_exists = false;
+        
+        if(request()->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = request()->input('pagesize');
+        }
+
+        $threads = Thread::where('category_id', $category->id)
+        ->where('thread_type', 1)->orderBy('created_at')->paginate($pagesize);
 
         return view('forum.category.category-discussions')
         ->with(compact('forums'))
         ->with(compact('category'))
         ->with(compact('categories'))
-        ->with(compact('threads'));
+        ->with(compact('threads'))
+        ->with(compact('pagesize'));
     }
 
     public function category_questions(Forum $forum, Category $category) {
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $category = $category;
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-        $threads = Thread::where('category_id', $category->id)->where('thread_type', 2)->get();
+
+        $pagesize = 10;
+        $pagesize_exists = false;
+        
+        if(request()->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = request()->input('pagesize');
+        }
+
+        $threads = Thread::where('category_id', $category->id)->where('thread_type', 2)->orderBy('created_at', 'desc')->paginate($pagesize);
 
         return view('forum.category.category-questions')
         ->with(compact('forums'))
         ->with(compact('category'))
         ->with(compact('categories'))
-        ->with(compact('threads'));
+        ->with(compact('threads'))
+        ->with(compact('pagesize'));
     }
 }

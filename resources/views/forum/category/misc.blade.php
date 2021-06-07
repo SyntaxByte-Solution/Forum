@@ -19,8 +19,8 @@
         <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
-            <a href="" class="link-path">{{ __(request()->forum->forum) }}</a>
-            <!--<span class="current-link-path">The side effects of using glutamin</span>-->
+            <a href="" class="link-path">{{ __(request()->forum->forum) }} > </a>
+            <span class="current-link-path">{{ __('All Categories Threads') }}</span>
         </div>
         <div class="flex space-between">
             <h1 id="page-title">Discussions & questions</h1>
@@ -68,14 +68,8 @@
                 </form>
                 <a href="/advanced/search" class="bsettings-icon background-style" style="width: 26px; height: 26px"></a>
             </div>
-            <div class="flex align-center">
-                <div class="fs-13" style="margin-right: 6px">1540 Topics</div>
-                <a href="" class="pagination-item">1</a>
-                <a href="" class="pagination-item">2</a>
-                <a href="" class="pagination-item">3</a>
-                <a href="" class="pagination-item">4</a>
-                <div>...</div>
-                <a href="" class="pagination-item">6</a>
+            <div class="mr8">
+                {{ $threads->onEachSide(0)->links() }}
             </div>
         </div>
         @if($announcements->count() != 0)
@@ -93,7 +87,30 @@
         @endif
         <table class="forums-table">
             <tr>
-                <th class="table-col-header">{{ __('THREAD') }}</th>
+                <th class="table-col-header">
+                    <div class="flex space-between align-center">
+                        <div>
+                            {{ __('THREADS') }} ({{$threads->total()}} in total)
+                        </div>
+                        <div>
+                            <div class="mx4 inline-block">
+                                <div class="flex align-center">
+                                    <span>rows: </span>
+                                    <select name="" class="small-dropdown row-num-changer">
+                                        <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                        <option value="20" @if($pagesize == 20) selected @endif>20</option>
+                                        <option value="50" @if($pagesize == 50) selected @endif>50</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="inline-block">
+                                <a href="" class="ms-table-small-button mstsb-selected all-table-threads-changer">all</a>
+                                <a href="" class="ms-table-small-button all-table-discussions-changer">discussions</a>
+                                <a href="" class="ms-table-small-button all-table-questions-changer">questions</a>
+                            </div>
+                        </div>
+                    </div>
+                </th>
                 <th class="table-col-header">{{ __('CATEGORY') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                 <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>

@@ -13,6 +13,7 @@ class ResourceTableRow extends Component
     public $edit_link;
 
     public $thread_id;
+    public $thread_type;
     public $thread_icon;
     public $thread_url;
     public $category;
@@ -21,6 +22,7 @@ class ResourceTableRow extends Component
     public $thread_owner;
     public $replies;
     public $at;
+    public $at_full;
 
     public $last_post_url;
     public $last_post_content;
@@ -37,6 +39,7 @@ class ResourceTableRow extends Component
         $this->thread_owner = User::find($thread->user_id)->username;
         
         $this->thread_id = $thread->id;
+        $this->thread_type = $thread->thread_type;
         if(strlen($thread->subject) > 80) {
             $this->thread_title = substr($thread->subject, 0, 80) . '..';
         } else {
@@ -44,7 +47,8 @@ class ResourceTableRow extends Component
         }
 
         $this->category = Category::find($thread->category_id)->category;
-        $this->at = (new Carbon($thread->created_at))->toDayDateTimeString();
+        $this->at = (new Carbon($thread->created_at))->diffForHumans();
+        $this->at_full = (new Carbon($thread->created_at))->toDayDateTimeString();
         $this->views = $thread->view_count;
         $this->replies = $thread->posts->count();
 

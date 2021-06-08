@@ -60,8 +60,14 @@ class UserController extends Controller
     }
 
     public function settings(Request $request, User $user) {
-        $a = '';
+        $firstname = $user->firstname;
+        $lastname = $user->lastname;
+        $username = $user->username;
+
         return view('user.settings.settings')
+            ->with(compact('firstname'))
+            ->with(compact('lastname'))
+            ->with(compact('username'))
             ->with(compact('user'));
     }
 }

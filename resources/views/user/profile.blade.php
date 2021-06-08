@@ -23,12 +23,14 @@
                 <div class="relative us-user-media-container">
                     <div class="us-cover-container full-center">
                         @if(!$user->cover)
-                            <a href="" class="no-underline change-cover full-center full-width full-height">
+                            @if($user->id == auth()->user()->id)
+                            <a href="{{ route('user.settings', ['user'=>$user->username]) }}" class="no-underline change-cover full-center full-width full-height">
                                 <div class="flex align-center">
                                     <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
-                                    <p class="fs17 white">Upload a cover</p>
+                                    <p class="fs17 white">Add a cover image</p>
                                 </div>
                             </a>
+                            @endif
                         @else
                             <img src="{{ $user->cover }}"  class="us-cover" alt="">
                         @endif
@@ -36,8 +38,8 @@
                     <div class="us-after-cover-section flex">
                         <div>
                             <a href="{{ route('user.activities', ['user'=>$user->username]) }}">
-                                <div class="us-profile-picture-container full-center">
-                                    <img src="{{ $user->avatar }}" class="us-profile-picture" alt="">
+                                <div class="us-profile-picture-container full-center rounded">
+                                    <img src="{{ $user->avatar }}" class="us-profile-picture rounded" alt="">
                                 </div>
                             </a>
                         </div>

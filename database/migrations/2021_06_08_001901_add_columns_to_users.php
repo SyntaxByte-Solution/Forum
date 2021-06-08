@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCoverToUsers extends Migration
+class AddColumnsToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class AddCoverToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->text('cover')->nullable();
+            $table->text('bio')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddCoverToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('cover');
+            $table->dropColumn('bio');
         });
     }
 }

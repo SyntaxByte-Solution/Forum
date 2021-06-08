@@ -27,6 +27,14 @@ a, input, textarea {
     justify-content: center;
 }
 
+.opacity0 {
+    opacity: 0;
+}
+
+.half-opcaity {
+    opacity: 0.5;
+}
+
 .br6 {
     border-radius: 6px;
 }
@@ -171,6 +179,11 @@ a, input, textarea {
     box-sizing: border-box;
 }
 
+.full-dimensions {
+    height: 100%;
+    width: 100%;
+}
+
 .half-width {
     width: 50%;
     box-sizing: border-box;
@@ -190,6 +203,10 @@ a, input, textarea {
 
 .top0 {
     top: 0;
+}
+
+.bottom0 {
+    bottom: 0;
 }
 
 .h-menu {
@@ -338,7 +355,7 @@ a, input, textarea {
 }
 
 .gray {
-    color: rgb(78, 78, 78);
+    color: rgb(78, 78, 78) !important;
 }
 
 .no-margin {
@@ -784,7 +801,7 @@ a, input, textarea {
 }
 
 .rounded {
-    border-radius: 50%;
+    border-radius: 50% !important;
 }
 
 .rounded-style-1 {
@@ -872,6 +889,10 @@ a, input, textarea {
 
 .pointer{
     cursor: pointer;
+}
+
+.hidden-overflow {
+    overflow: hidden;
 }
 
 /* login */
@@ -1458,6 +1479,18 @@ tr:nth-child(2n) {
     color: white;
 }
 
+.simple-button {
+    width: max-content;
+    display: flex;
+    padding: 4px 6px;
+    font-size: 13px;
+    background-color: #393d4e;
+    color: white;
+    font-size: bold;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
 .form-column-line-separator {
     height: 1px;
     background-color: rgb(177, 177, 177);
@@ -1607,7 +1640,18 @@ tr:nth-child(2n) {
     width: 100%;
     height: 160px;
     background-color: #666d8a;
+    overflow: hidden;
 }
+
+.us-settings-cover-container {
+    border-radius: 6px;
+    width: 100%;
+    height: 120px;
+    background-color: #666d8a;
+    overflow: hidden;
+}
+
+
 
 .us-cover {
     max-width: 100%;
@@ -1622,12 +1666,24 @@ tr:nth-child(2n) {
     width: 144px;
     height: 144px;
     border-radius: 8px;
-    background-color: #666d8a;
+    background-color: white;
+}
+
+.us-settings-profile-picture-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
 }
 
 .us-profile-picture {
     width: 136px;
     height: 136px;
+    border-radius: 8px;
+}
+
+.us-settings-profile-picture {
+    width: 100px;
+    height: 100px;
     border-radius: 8px;
 }
 
@@ -1641,5 +1697,30 @@ tr:nth-child(2n) {
     margin-top: 20px;
     border: 1px solid #e1e1e1;
     border-radius: 4px;
+}
+
+.update-avatar-bottom-section {
+    opacity: 0.3;
+    background-color: #181a22;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 0;
+
+    padding: 10px 0;
+
+    width: 100%;
+}
+
+.update-avatar-bottom-section:hover {
+    opacity: 1;
+}
+
+.change-cover-cont {
+    border-radius: 6px;
+    background-color: #ffffff24;
+}
+
+.change-cover-cont:hover {
+    background-color: #ffffff3f;
 }
 

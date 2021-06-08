@@ -36,8 +36,36 @@ class User extends UserAuthenticatable implements Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getAvatarAttribute($value) {
+        if(!$value) {
+            if($this->provider_avatar) {
+                return $this->provider_avatar;
+            } else {
+                return asset('storage/users/defaults/avatar-default.png');
+            }
+        }
+
+        return asset('storage/users/' . $this->id . '/avatars/' . $value);
+    }
+
+    public function getCoverAttribute($value) {
+        if($value) {
+            return asset('storage/users/' . $this->id . '/covers/' . $value);
+        }
+
+        return $value;
+    }
+
     public function threads() {
         return $this->hasMany(Thread::class);
+    }
+
+    public function discussions() {
+        return $this->threads()->where('thread_type', 1);
+    }
+
+    public function questions() {
+        return $this->threads()->where('thread_type', 2);
     }
 
     public function isBanned() {
@@ -64,5 +92,17 @@ class User extends UserAuthenticatable implements Authenticatable
         }
 
         return $count;
+    }
+
+    public function threads_count() {
+        return $this->threads()->count();
+    }
+
+    public function discussions_count() {
+        return $this->discussions()->count();
+    }
+
+    public function questions_count() {
+        return $this->questions()->count();
     }
 }

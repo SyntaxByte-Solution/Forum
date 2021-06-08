@@ -20,8 +20,8 @@
         <div>
             <a href="/" class="link-path">{{ __('Board index') }} > </a>
             <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }} ></a>
-            <a href="{{ route('category.misc', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ __($category->category) }}</a>
-            <!--<span class="current-link-path">The side effects of using glutamin</span>-->
+            <a href="{{ route('category.misc', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ __($category->category) }} > </a>
+            <span class="current-link-path">{{ __('All Category Threads') }}</span>
         </div>
         <div class="flex space-between">
             <h1 id="page-title">Discussions & questions</h1>
@@ -75,23 +75,25 @@
         </div>
         <table class="forums-table">
             <tr>
-                <th class="table-col-header flex align-center">
-                    {{ __('THREAD') }}
-                    <div class="move-to-right">
-                        <div class="mx4 inline-block">
-                            <div class="flex align-center">
-                                <span>rows: </span>
-                                <select name="" class="small-dropdown row-num-changer">
-                                    <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                    <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                    <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                                </select>
+                <th class="table-col-header">
+                    <div class="flex align-center">
+                        {{ __('THREAD') }}
+                        <div class="move-to-right">
+                            <div class="mx4 inline-block">
+                                <div class="flex align-center">
+                                    <span>rows: </span>
+                                    <select name="" class="small-dropdown row-num-changer">
+                                        <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                        <option value="20" @if($pagesize == 20) selected @endif>20</option>
+                                        <option value="50" @if($pagesize == 50) selected @endif>50</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="inline-block">
-                            <a href="" class="ms-table-small-button mstsb-selected all-table-threads-changer">all</a>
-                            <a href="" class="ms-table-small-button all-table-discussions-changer">discussions</a>
-                            <a href="" class="ms-table-small-button all-table-questions-changer">questions</a>
+                            <div class="inline-block">
+                                <a href="" class="ms-table-small-button mstsb-selected all-table-threads-changer">all</a>
+                                <a href="" class="ms-table-small-button all-table-discussions-changer">discussions</a>
+                                <a href="" class="ms-table-small-button all-table-questions-changer">questions</a>
+                            </div>
                         </div>
                     </div>
                 </th>

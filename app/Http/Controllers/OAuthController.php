@@ -25,9 +25,16 @@ class OAuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback(Request $request, $provider)
     {
-        $u = Socialite::driver($provider)->stateless()->user();
+        $state = $request->get('state');
+        $request->session()->put('state',$state);
+
+        if(Auth::check()==false){
+            session()->regenerate();
+        }
+        
+        $u = Socialite::driver($provider)->user();
         $user = User::where('email', $u->email)->first();
 
         if($user){
@@ -46,7 +53,7 @@ class OAuthController extends Controller
             $user->email = $u->email;
             $user->provider_id = $u->id;
             $user->provider = $provider;
-            $user->avatar = $u->avatar;
+            $user->avatar = NULL;
             $user->provider_avatar = $u->avatar_original;
 
             $user->save();

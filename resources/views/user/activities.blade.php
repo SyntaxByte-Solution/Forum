@@ -14,19 +14,11 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'myspace', 'subpage'=>'myspace.index'])
+    @include('partials.left-panel', ['page' => 'user', 'subpage'=>'user.activities'])
     <div id="middle-container" class="middle-padding-1">
-        <h1 id="page-title">Beast Space</h1>
         <div class="flex">
             <div class="full-width">
-                <div class="flex align-center space-between" style="margin-bottom: 10px">
-                    <div class="flex align-center">
-                        <!-- {{ __('') }} -->
-                        <a href="" class="regular-menu-button">{{ __('Profile') }}</a>
-                        <a href="" class="regular-menu-button rmb-selected">{{ __('Activities') }}</a>
-                    </div>
-                    <a href="" class="regular-menu-button move-to-right">{{ __('Edit profile and settings') }}</a>
-                </div>
+                @include('partials.user-space.basic-header', ['page'=>'activities'])
                 <div class="flex space-between">
                     <h2 class="my8 fs20">My Activities</h2>
                     <div class="mr8">
@@ -74,7 +66,7 @@
                         <div class="full-center">
                             <div>
                                 <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
-                                <p class="my4 text-center">{{ __("Try to create a ") }} <a href="" class="link-path">discussion</a> / <a href="" class="link-path">question</a></p>
+                                <p class="my4 text-center">{{ __("Try to create a ") }} <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="link-path">{{__('discussion')}}</a> / <a href="{{ route('question.add', ['forum'=>'general']) }}" class="link-path">{{__('question')}}</a></p>
                             </div>
                         </div>
                     @endif
@@ -83,18 +75,18 @@
                 <div class="ms-right-panel">
                     <div class="flex px8 py8">
                         <div>
-                            <img src="{{asset('avatar.jpg')}}" class="small-image-1 br6 mr8" alt="">
+                            <img src="{{ $user->avatar }}" class="small-image-1 br6 mr8" alt="">
                         </div>
                         <div class="mr8">
-                            <h2 class="no-margin">Mouad Nassri</h2>
-                            <p class="fs12 no-margin gray">Joined Tue, May 25, 2021 1:17 AM</p>
+                            <h2 class="no-margin">{{ $user->firstname . ' ' . $user->lastname }}</h2>
+                            <p class="fs12 no-margin gray">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
                         </div>
                     </div>
                     <div>
                         <div>
                             <p class="bold fs12 gray my8" style="margin-bottom: 0">{{ __('IMPACT') }}</p>
                             <div class="relative">
-                                <p class="fs17 bold inline-block my4 tooltip-section">~ 2.4K</p>
+                                <p class="fs17 bold inline-block my4 tooltip-section">~ {{ $user->reach }}</p>
                                 <div class="tooltip tooltip-style-2 left0">
                                     Estimated number of times people viewed your helpful posts
                                     (based on page views of your questions
@@ -104,37 +96,51 @@
                             </div>
                         </div>
                         <div class="simple-line-separator my8"></div>
-                        <div>
-                            <div class="flex align-center">
-                                <div class="flex align-center">
-                                    <img src="{{ asset('assets/images/icons/discussions.png') }}" class="small-image-2 mr4" alt="">
-                                    <p class="inline-block my4 fs13">Discussions: </p><span class="fs15 bold ml8">541</span>
-                                </div>
-                                <div class="fill-thin-line"></div>
-                                <span class="move-to-right">[<a href="" class="fs11 black-link">SEE</a>]</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex align-center">
-                                <div class="flex align-center">
-                                    <img src="{{ asset('assets/images/icons/bqst.png') }}" class="small-image-2 mr4" alt="">
-                                    <p class="inline-block my4 fs13">Questions: </p><span class="fs15 bold ml8">988</span>
-                                </div>
-                                <div class="fill-thin-line"></div>
-                                <span class="move-to-right">[<a href="" class="fs11 black-link">SEE</a>]</span>
-                            </div>
-                        </div>
-                        <div>
+                        <div class="my4">
                             <div class="flex align-center">
                                 <div class="flex align-center">
                                     <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
-                                    <p class="inline-block my4 fs13">Replies: </p><span class="fs15 bold ml8">11</span>
+                                    <p class="inline-block my4 fs13">Discussions: </p><span class="fs15 bold ml8">{{ $discussions_count }}</span>
                                 </div>
+                                @if($discussions_count)
                                 <div class="fill-thin-line"></div>
                                 <span class="move-to-right">[<a href="" class="fs11 black-link">SEE</a>]</span>
+                                @endif
                             </div>
                         </div>
-                        <div>
+                        <div class="my4">
+                            <div class="flex align-center">
+                                <div class="flex align-center">
+                                    <img src="{{ asset('assets/images/icons/bqst.png') }}" class="small-image-2 mr4" alt="">
+                                    <p class="inline-block my4 fs13">Questions: </p><span class="fs15 bold ml8">{{ $questions_count }}</span>
+                                </div>
+                                @if($questions_count)
+                                <div class="fill-thin-line"></div>
+                                <span class="move-to-right">[<a href="" class="fs11 black-link">SEE</a>]</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="my4">
+                            <div class="flex align-center">
+                                <div class="flex align-center">
+                                <img src="{{ asset('assets/images/icons/discussions.png') }}" class="small-image-2 mr4" alt="">
+                                    <p class="inline-block my4 fs13">Replies: </p><span class="fs15 bold ml8">{{ $posts_count }}</span>
+                                </div>
+                                @if($posts_count)
+                                <div class="fill-thin-line"></div>
+                                <span class="move-to-right">[<a href="" class="fs11 black-link">SEE</a>]</span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="my4">
+                            <div class="flex align-center">
+                                <div class="flex align-center">
+                                    <img src="{{ asset('assets/images/icons/eye.png') }}" class="small-image-2 mr4" alt="">
+                                    <p class="inline-block my4 fs13">Profile views: </p><span class="fs15 bold ml8">{{ $user->profile_views }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my4">
                             <div class="flex align-center">
                                 <div class="flex align-center">
                                     <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-2 mr4" alt="">

@@ -62,8 +62,8 @@
                         <a href="{{ route('question.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Question</a>
                     </div>
                 </div>
-                <form action="">
-                    <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
+                <form action="{{ route('forum.thread.search', ['forum'=>request()->forum]) }}" method='get'>
+                    <input type="text" name="k" class="input-style-2" placeholder="Search this forum .." required>
                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                 </form>
                 <a href="/advanced/search" class="bsettings-icon background-style" style="width: 26px; height: 26px"></a>

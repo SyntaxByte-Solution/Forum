@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
-     CategoryController, ThreadController, PostController,
-     IndexController, MySpaceController, OAuthController};
+    CategoryController, ThreadController, PostController,
+    IndexController, UserController, OAuthController,
+    SearchController};
 use App\Models\Forum;
 
 /*
@@ -43,6 +44,12 @@ Route::post('/categories', [CategoryController::class, 'store']);
 Route::patch('/categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
+
+/**
+ * Search routes
+ */
+Route::get('/{forum:slug}/search', [SearchController::class, 'forum_search'])->name('forum.thread.search');
+
 /**
  * 1. get all discussions & questions of all categories in the specified forum in the url
  * 2. get all discussions of all categories in the specified forum in the url
@@ -53,8 +60,6 @@ Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussio
 Route::get('/{forum:slug}/questions', [ThreadController::class, 'all_questions'])->name('get.all.forum.questions');
 
 Route::middleware(['auth'])->group(function () {
-    
-    Route::get('/myspace', [MySpaceController::class, 'index'])->name('myspace.index');
 
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
     Route::get('/{forum:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
@@ -92,3 +97,7 @@ Route::get('/{forum:slug}/{category:slug}/questions', [ThreadController::class, 
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
+
+Route::get('/users/{user:username}/activities', [UserController::class, 'activities'])->name('user.activities');
+Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
+Route::get('/users/{user:username}/settings', [UserController::class, 'settings'])->name('user.settings');

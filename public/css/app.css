@@ -13,6 +13,14 @@ a, input, textarea {
     outline: none;
 }
 
+.italic {
+    font-style: italic;
+}
+
+.forum-color {
+    color: #202020;
+}
+
 .full-center {
     display: flex;
     align-items: center;
@@ -85,6 +93,10 @@ a, input, textarea {
 
 .ml8 {
     margin-left: 8px;
+}
+
+.m4 {
+    margin: 4px;
 }
 
 .error {
@@ -176,14 +188,23 @@ a, input, textarea {
     right: 0px;
 }
 
+.top0 {
+    top: 0;
+}
+
 .h-menu {
     display: flex;
     align-items: center;
 }
 
 .rmb-selected {
-    background-color: #daeeff;
+    background-color: #009fffad !important;
+    color: white !important;
     font-weight: bold;
+}
+
+.rmb-selected:hover {
+    background-color: #009fffad !important;
 }
 
 .regular-menu-button {
@@ -194,7 +215,7 @@ a, input, textarea {
     border-radius: 5px;
     color: black;
     font-size: 14px;
-
+    background-color: rgb(240, 240, 240);
 }
 
 .regular-menu-button:hover {
@@ -898,7 +919,7 @@ a, input, textarea {
     border: 1px solid rgb(145, 145, 145);
     font-size: 13px;
     border-radius: 4px;
-    min-width: 220px;
+    min-width: 260px;
 }
 
 .search-forum-button {
@@ -1149,6 +1170,11 @@ tr:nth-child(2n) {
     min-width: 160px;
 }
 
+.table-resource-last-post {
+    min-width: 160px;
+    max-width: 160px;
+}
+
 .forum-table-row-image {
     width: 32px;
     height: 32px;
@@ -1351,7 +1377,7 @@ tr:nth-child(2n) {
     padding: 8px 10px;
     font-size: 13px;
     font-weight: bold;
-    background-color: #000000bb;
+    background-color: #000000e6;
     color: white;
     margin: 0;
     border-radius: 4px;
@@ -1570,3 +1596,50 @@ tr:nth-child(2n) {
     border: 1px solid;
     border-color: rgb(215, 215, 215);
 }
+
+.us-user-media-container {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.us-cover-container {
+    border-radius: 6px;
+    width: 100%;
+    height: 160px;
+    background-color: #666d8a;
+}
+
+.us-cover {
+    max-width: 100%;
+}
+
+.us-after-cover-section {
+    margin-top: -78px;
+    margin-left: 40px;
+}
+
+.us-profile-picture-container {
+    width: 144px;
+    height: 144px;
+    border-radius: 8px;
+    background-color: #666d8a;
+}
+
+.us-profile-picture {
+    width: 136px;
+    height: 136px;
+    border-radius: 8px;
+}
+
+.ms-profile-infos-container {
+    margin-left: 10px;
+    margin-top: 88px;
+}
+
+.us-user-info-container {
+    padding: 14px;
+    margin-top: 20px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}
+

@@ -12,6 +12,9 @@ class ResourceTableRow extends Component
     public $resource;
     public $edit_link;
 
+    public $forum_slug;
+    public $category_slug;
+
     public $thread_id;
     public $thread_type;
     public $thread_icon;
@@ -35,7 +38,8 @@ class ResourceTableRow extends Component
     {
         $category_model = Category::find($thread->category_id);
         $this->resource = $thread;
-        $forum = Forum::find($thread->category->forum_id)->slug;
+        $this->forum_slug = $forum = Forum::find($thread->category->forum_id)->slug;
+        $this->category_slug = $category_model->slug;
         $this->thread_owner = User::find($thread->user_id)->username;
         
         $this->thread_id = $thread->id;

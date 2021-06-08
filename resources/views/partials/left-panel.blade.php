@@ -11,34 +11,26 @@
     </div>
     @auth
     <div class="relative">
-        <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'myspace') {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'myspace') ▾ @else ▸ @endif</span></a>
+        <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user') {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'user') ▾ @else ▸ @endif</span></a>
         <div class="toggle-container" @isset($subpage) style="display: block" @endisset>
             <div class="relative">
-                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.index') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Index</a>
+                <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'users.activities') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">Index</a>
                 @isset($subpage)
-                    @if($subpage == 'myspace.index')
+                    @if($subpage == 'user.activities')
                         <div class="selected-colored-slice"></div>
                     @endif
                 @endisset
             </div>
             <div class="relative">
-                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.profile') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Profile</a>
+                <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.profile') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">Profile</a>
                 @isset($subpage)
-                    @if($subpage == 'myspace.profile')
+                    @if($subpage == 'user.profile')
                         <div class="selected-colored-slice"></div>
                     @endif
                 @endisset
             </div>
             <div class="relative">
-                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.activities') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Activities</a>
-                @isset($subpage)
-                    @if($subpage == 'myspace.activities')
-                        <div class="selected-colored-slice"></div>
-                    @endif
-                @endisset
-            </div>
-            <div class="relative">
-                <a href="{{ route('myspace.index') }}" @isset($subpage) @if($subpage == 'myspace.settings') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'myspace') {{ 'lp-selected' }} @endif">Settings</a>
+                <a href="" @isset($subpage) @if($subpage == 'myspace.settings') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">Settings</a>
                 @isset($subpage)
                     @if($subpage == 'myspace.settings')
                         <div class="selected-colored-slice"></div>

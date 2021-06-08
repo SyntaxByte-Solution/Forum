@@ -25,10 +25,10 @@
             @endcan
         </div>
     </td>
-    <td class="fs13"><a href="" class="link-without-underline-style">{{ $category }}</a></td>
+    <td class="fs13"><a href="{{ route('category.misc', ['forum'=>$forum_slug, 'category'=>$category_slug]) }}" class="link-without-underline-style">{{ $category }}</a></td>
     <td class="fs13">{{ $replies }}</td>
     <td class="fs13">{{ $views }}</td>
-    <td>
+    <td class="table-resource-last-post">
         @if($hasLastPost)
         <div>
             <a href="{{ $last_post_url }}" class="block forum-style-link fs11 bold">{{ $last_post_content }}</a>

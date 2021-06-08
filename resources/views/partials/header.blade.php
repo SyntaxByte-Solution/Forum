@@ -48,7 +48,7 @@
                             <div class="triangle"></div>
                             
                             <div class="flex align-center first-profile-container-part">
-                                <img src="{{ asset('avatar.jpg') }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
+                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
                                 <h2>Mouad Nassri</h2>
                             </div>
                             <div class="flex align-center relative">
@@ -79,15 +79,15 @@
                             <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture">
                         @endauth
                         @guest
-                            <img src="{{ asset('avatar.jpg') }}" alt="profile picture" class="header-profile-picture">
+                            <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture">
                         @endguest
                         </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
                             
                             <div class="flex align-center first-profile-container-part">
-                                <img src="{{ asset('avatar.jpg') }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
-                                <h2>Mouad Nassri</h2>
+                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
+                                <h2>{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</h2>
                             </div>
                             <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
                             <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>

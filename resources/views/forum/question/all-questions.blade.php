@@ -83,16 +83,18 @@
         @endif
         <table class="forums-table">
             <tr>
-                <th class="table-col-header flex align-center">
-                    {{ __('QUESTIONS') }} ({{$questions->total()}} {{__('in total')}})
-                    <div class="mx4 inline-block move-to-right">
-                        <div class="flex align-center">
-                            <span>rows: </span>
-                            <select name="" class="small-dropdown row-num-changer">
-                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                            </select>
+                <th class="table-col-header">
+                    <div class="flex align-center">
+                        {{ __('QUESTIONS') }} ({{$questions->total()}} {{__('in total')}})
+                        <div class="mx4 inline-block move-to-right">
+                            <div class="flex align-center">
+                                <span>rows: </span>
+                                <select name="" class="small-dropdown row-num-changer">
+                                    <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                    <option value="20" @if($pagesize == 20) selected @endif>20</option>
+                                    <option value="50" @if($pagesize == 50) selected @endif>50</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </th>

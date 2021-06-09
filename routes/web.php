@@ -80,6 +80,9 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/post/{post}', [PostController::class, 'update']);
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
 
+    Route::get('/users/{user:username}/settings', [UserController::class, 'edit'])->name('user.settings');
+    Route::patch('/users/{user:username}/settings', [UserController::class, 'update'])->name('change.user.settings');
+
 });
 
 Route::get('/{forum:slug}/{category:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
@@ -100,4 +103,4 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 
 Route::get('/users/{user:username}/activities', [UserController::class, 'activities'])->name('user.activities');
 Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
-Route::get('/users/{user:username}/settings', [UserController::class, 'settings'])->name('user.settings');
+Route::post('/users/username/check', [UserController::class, 'username_check']);

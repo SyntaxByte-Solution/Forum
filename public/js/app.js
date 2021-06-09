@@ -420,3 +420,52 @@ $('.row-num-changer').change(function() {
 
     window.location.href = url;
 });
+
+$('.check-username').click(function() {
+    let button = $(this);
+    let username = $('#username').val();
+    
+    button.val('checking..')
+    button.attr("disabled","disabled");
+    button.attr('style', 'background-color: #acacac; cursor: default');
+
+    $.ajax({
+        url: '/users/username/check',
+        type: 'post',
+        data: {
+            'username': username,
+            '_token': csrf
+        },
+        success: function(response) {
+            button.val('check');
+            button.attr('style', '');
+            button.prop("disabled", false);
+            button.parent().find('.red-box').css('display', 'none');
+            button.parent().find('.green-box').css('display', 'flex');
+
+            if(response.valid) {
+                button.parent().find('.green').text(response.message);
+            } else {
+                button.parent().find('.green-box').css('display', 'none');
+                button.parent().find('.red-box').css('display', 'flex');
+
+                button.parent().find('.error').text(response.message);
+            }
+        },
+        error: function(response) {
+            button.val('check');
+            button.attr('style', '');
+            button.prop("disabled", false);
+
+            button.parent().find('.green-box').css('display', 'none');
+            button.parent().find('.red-box').css('display', 'flex');
+
+            let errorObject = JSON.parse(response.responseText).errors;
+            let er = errorObject[Object.keys(errorObject)][0]; //returns the first error from laravel validator bag
+
+            button.parent().find('.error').text(er);
+        }
+    })
+
+    return false;
+});

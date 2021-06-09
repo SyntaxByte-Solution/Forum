@@ -15,7 +15,7 @@ class AddColumnsToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->text('cover')->nullable();
-            $table->text('bio')->nullable();
+            $table->text('about')->nullable();
         });
     }
 
@@ -28,7 +28,7 @@ class AddColumnsToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('cover');
-            $table->dropColumn('bio');
+            $table->dropColumn('about');
         });
     }
 }

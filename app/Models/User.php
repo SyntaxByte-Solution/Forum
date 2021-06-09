@@ -45,14 +45,6 @@ class User extends UserAuthenticatable implements Authenticatable
             }
         }
 
-        return asset('storage/users/' . $this->id . '/avatars/' . $value);
-    }
-
-    public function getCoverAttribute($value) {
-        if($value) {
-            return asset('storage/users/' . $this->id . '/covers/' . $value);
-        }
-
         return $value;
     }
 

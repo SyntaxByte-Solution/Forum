@@ -17,6 +17,7 @@
                     </div>
                 </div>    
             </div>
+            @can('update', $thread)
             <div style="margin: 0 4px">
                 <div>
                     <a href="{{ $edit_link }}" target="_blank" class="table-row-button black-sprite-icon sprite-size bedit-icon"></a>
@@ -25,6 +26,7 @@
                     <a href="{{ $thread_url }}?action=thread-delete" target="_blank" class="table-row-button black-sprite-icon sprite-size bdelete-icon"></a>
                 </div>
             </div>
+            @endcan
         </div>
     </td>
     <td class="fs13">{{ $replies }}</td>

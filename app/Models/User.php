@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\{Role, Permission, UserStatus, Thread};
+use App\Models\{Role, Permission, UserStatus, Thread, UserPersonalInfos};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 
@@ -45,7 +45,19 @@ class User extends UserAuthenticatable implements Authenticatable
             }
         }
 
+        return asset('storage') . '/' . $value;
+    }
+
+    public function getCoverAttribute($value) {
+        if($value) {
+            return asset('storage') . '/' . $value;
+        }
+
         return $value;
+    }
+
+    public function personal() {
+        return $this->hasOne(UserPersonalInfos::class, 'user');
     }
 
     public function threads() {

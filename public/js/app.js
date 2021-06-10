@@ -331,10 +331,12 @@ $('.hide-parent').click(function() {
 $('.toggle-container-button').click(function() {
     let container = $(this).parent().find('.toggle-container');
     if(container.css('display') == 'none') {
-        container.css('display', 'block');
+        container.removeClass('none');
+        container.addClass('block');
         $(this).find('.toggle-arrow').text('▾');
     } else {
-        container.css('display', 'none');
+        container.removeClass('block');
+        container.addClass('none');
         $(this).find('.toggle-arrow').text('▸');
     }
     
@@ -449,13 +451,15 @@ $('.check-username').click(function() {
             button.val('check');
             button.attr('style', '');
             button.prop("disabled", false);
-            button.parent().find('.red-box').css('display', 'none');
+            button.parent().find('.red-box').addClass('none');
+            button.parent().find('.green-box').removeClass('none');
             button.parent().find('.green-box').css('display', 'flex');
 
             if(response.valid) {
                 button.parent().find('.green').text(response.message);
             } else {
-                button.parent().find('.green-box').css('display', 'none');
+                button.parent().find('.green-box').addClass('none');
+                button.parent().find('.red-box').removeClass('none');
                 button.parent().find('.red-box').css('display', 'flex');
 
                 button.parent().find('.error').text(response.message);
@@ -466,11 +470,14 @@ $('.check-username').click(function() {
             button.attr('style', '');
             button.prop("disabled", false);
 
-            button.parent().find('.green-box').css('display', 'none');
+            button.parent().find('.green-box').addClass('none');;
+            button.parent().find('.red-box').removeClass('none');;
             button.parent().find('.red-box').css('display', 'flex');
 
             let errorObject = JSON.parse(response.responseText).errors;
             let er = errorObject[Object.keys(errorObject)][0]; //returns the first error from laravel validator bag
+
+            console.log(er);
 
             button.parent().find('.error').text(er);
         }
@@ -496,10 +503,12 @@ $('.remove-avatar-button').click(function() {
     shadowed_container.css('display', 'none');
     $('.suboptions-container').css('display', 'none');
 
+    $('.us-settings-profile-picture').last().removeClass('none');
     $('.us-settings-profile-picture').last().css('display', 'block');
     $('.remove-profile-avatar').css('display', 'none');
-    $('.avatar-removed').val('1');
 
+    $('.avatar-upload-button').value = '';
+    $('.avatar-removed').val('1');
     return false;
 });
 
@@ -515,7 +524,6 @@ $('.remove-profile-cover').click(function() {
 $('.remove-cover-button').click(function() {
     $('.us-cover').addClass('none');
     $('.remove-profile-cover').addClass('none');
-    $('.cover-removed').val('1');
 
     let shadowed_container = $(this);
 
@@ -526,7 +534,10 @@ $('.remove-cover-button').click(function() {
     $('.suboptions-container').css('display', 'none');
 
     $('.change-cover-back-container').removeClass('none');
+    $('.change-cover-back-container').parent().removeClass('none');
 
+    $('.cover-upload-button').value = '';
+    $('.cover-removed').val('1');
     return false;
 });
 
@@ -546,6 +557,7 @@ $('.cover-upload-button').change(function(event) {
         $('.us-cover').attr('src', URL.createObjectURL(event.target.files[0]));
         $('.us-cover').removeClass('none');
         $('.change-cover-back-container').addClass('none');
+        $('.change-cover-back-container').parent().addClass('none');
         $('.update-cover-box').removeClass('none');
         $('.remove-profile-cover').removeClass('none');
 

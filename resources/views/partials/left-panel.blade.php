@@ -10,29 +10,36 @@
         @endif
     </div>
     @auth
+        @php
+            $same_user = false;
+            if(request()->user) {
+                $same_user = (auth()->user()->username == request()->user->username) ? true : false;
+            }
+
+        @endphp
     <div class="relative">
-        <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user') {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'user') ▾ @else ▸ @endif</span></a>
-        <div class="toggle-container" @isset($subpage) style="display: block" @endisset>
+        <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span></a>
+        <div class="toggle-container" @isset($subpage) @if($same_user) style="display: block" @endif @endisset>
             <div class="relative">
-                <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'users.activities') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">Index</a>
+                <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'users.activities' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Index</a>
                 @isset($subpage)
-                    @if($subpage == 'user.activities')
+                    @if($subpage == 'user.activities' && $same_user)
                         <div class="selected-colored-slice"></div>
                     @endif
                 @endisset
             </div>
             <div class="relative">
-                <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.profile') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">Profile</a>
+                <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.profile' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Profile</a>
                 @isset($subpage)
-                    @if($subpage == 'user.profile')
+                    @if($subpage == 'user.profile' && $same_user)
                         <div class="selected-colored-slice"></div>
                     @endif
                 @endisset
             </div>
             <div class="relative">
-                <a href="{{ route('user.settings', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.settings') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">Settings</a>
+                <a href="{{ route('user.settings', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.settings' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Settings</a>
                 @isset($subpage)
-                    @if($subpage == 'user.settings')
+                    @if($subpage == 'user.settings' && $same_user)
                         <div class="selected-colored-slice"></div>
                     @endif
                 @endisset
@@ -72,9 +79,9 @@
         <div class="flex relative">
             <div class="flex align-center full-width relative">
                 <div class="users-icon sprite-icon mx8 absolute left0"></div>
-                <a href="" class="background-partial left-panel-item users-icon lp-padding @if($page == 'users') {{ 'lp-selected' }} @endif">Users</a>
+                <a href="" class="background-partial left-panel-item users-icon lp-padding @if($page == 'user' && !$same_user) {{ 'lp-selected' }} @endif">Users</a>
             </div>
-            @if($page == 'users')
+            @if($page == 'user' && !$same_user)
                 <div class="selected-colored-slice"></div>
             @endif
         </div>

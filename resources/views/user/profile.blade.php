@@ -51,15 +51,14 @@
                             <p class="fs13 gray no-margin">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
                         </div>
                     </div>
-
                 </div>
                 @can('update', $user)
                 <div class="flex">
-                    <a href="" class="bold move-to-right link-without-underline-style">EDIT PROFILE</a>
+                    <a href="{{ route('user.settings', ['user'=>$user->username]) }}" class="bold fs13 move-to-right link-without-underline-style">Edit profile</a>
                 </div>
                 @endcan
                 <div class="flex">
-                    <div class="half-width mx4 us-user-info-container relative">
+                    <div class="half-width mr4 us-user-info-container relative">
                         @can('update', $user)
                             <a href="{{ route('user.settings', ['user'=>$user->username]) }}" class="absolute" style="top: 8px; right: 8px">
                                 <img src="{{ asset('assets/images/icons/bedit.png') }}" class="small-image-size" alt="">
@@ -94,7 +93,7 @@
                             <p class="fs14 no-margin">Member since: : <span class="bold forum-color ml8">{{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</span></p>
                         </div>
                     </div>
-                    <div class="half-width mx4 us-user-info-container full">
+                    <div class="half-width ml4 us-user-info-container full">
                         <h3 class="m4 forum-color" style="margin-bottom: 14px">Friends</h3>
                         <div class="full-center">
                             @if($user->id == auth()->user()->id)
@@ -193,6 +192,12 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="ms-right-panel my8">
+                    <p class="bold forum-color" style="margin-bottom: 12px; margin-top: 0">Personal informations</p>
+                    <div class="ml4">
+                        <p class="fs13 my4"><span class="bold fs13 gray">Join date: </span> {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
                     </div>
                 </div>
             </div>

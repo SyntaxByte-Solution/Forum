@@ -7,7 +7,7 @@ use App\Http\Controllers\
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
     SearchController};
-use App\Models\Forum;
+use App\Models\{UserPersonalInfos};
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +19,11 @@ use App\Models\Forum;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/test', function() {
+    $user = auth()->user();
+    dd(UserPersonalInfos::find($user->personal->id)->owner);
+});
 
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/home', [IndexController::class, 'index']);

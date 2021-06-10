@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\{User, UserPersonalInfos};
 use Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -45,6 +45,11 @@ class OAuthController extends Controller
             $id = $statement[0]->Auto_increment;
             $names = explode(' ', $u->name);
 
+            // Create personal informations row and associate it to user instance
+            $personal = UserPersonalInfos::create([
+                'user'=>$id
+            ]);
+
             // create a new user
             $user = new User;
             $user->firstname = $names[0];
@@ -55,8 +60,10 @@ class OAuthController extends Controller
             $user->provider = $provider;
             $user->avatar = NULL;
             $user->provider_avatar = $u->avatar_original;
+            $user->personal_infos = $personal->id;
 
             $user->save();
+
             Auth::login($user, true);
         }
 

@@ -46,17 +46,13 @@
                                 <a href="" class="white no-underline my4 fs14 close-shadowed-view-button ml8">cancel</a>
                             </div>
                         </div>
-                        @if(!$user->cover)
-                            <div class="full-center full-dimensions">
-                                <img src="{{ asset('storage') . '/' . $user->cover }}" class="us-cover none" alt="">
-                                <div class="flex align-center change-cover-back-container">
-                                    <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
-                                    <p class="fs17 white">ADD A COVER</p>
-                                </div>
+                        <div class="full-center full-dimensions @if($user->cover) none @endif">
+                            <div class="flex align-center change-cover-back-container @if($user->cover) none @endif">
+                                <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
+                                <p class="fs17 white">ADD A COVER</p>
                             </div>
-                        @else
-                            <img src="{{ asset('storage') . '/' . $user->cover }}" class="us-cover" alt="">
-                        @endif
+                        </div>
+                        <img src="{{ $user->cover }}" class="us-cover @if(!$user->cover) none @endif" alt="">
                         <div class="absolute flex align-center update-cover-box" style="bottom: 6px; right: 6px">
                             <div class="flex align-center px8 py8 change-cover-cont relative">
                                 <input type="hidden" name="cover_removed" value="0" class="cover-removed" form="profile-edit-form">
@@ -66,7 +62,7 @@
                             </div>
                             <div>
                                 <a href="" class="remove-profile-cover @if(!$user->cover) none @endif">
-                                    <img src="{{ asset('assets/images/icons/wx.png') }}" class="small-image-size flex mr4 ml8" alt="">
+                                    <img src="{{ asset('assets/images/icons/wx.png') }}" class="small-image-size flex mr4 ml8 rounded" alt="" style="background-color: #0000004d; padding: 4px">
                                 </a>
                             </div>
                         </div>
@@ -90,7 +86,7 @@
                             </div>
                             <a href="{{ route('user.activities', ['user'=>$user->username]) }}">
                                 <div class="us-settings-profile-picture-container full-center relative">
-                                    <img src="{{ asset('storage') . '/' . $user->avatar }}" class="us-settings-profile-picture" alt="">
+                                    <img src="{{ $user->avatar }}" class="us-settings-profile-picture" alt="">
                                     <img src="{{ asset('storage') . '/' . 'users/defaults/avatar-default.png' }}" class="us-settings-profile-picture default-avatar none" alt="">
                                 </div>
                             </a>
@@ -175,8 +171,43 @@
                     </div>
                 </div>
             </div>
-            <div class="ms-right-panel">
-
+            <div>
+                <div class="ms-right-panel">
+                    <p class="bold forum-color" style="margin-bottom: 12px; margin-top: 0">Settings</p>
+                    <div class="ml4">
+                        <a href="" class="black-link fs13 block my8 block-click blue">Profile settings</a>
+                        <a href="" class="black-link fs13 block my8">Personal settings</a>
+                        <a href="" class="black-link fs13 block my8">Password management</a>
+                        <a href="" class="black-link fs13 block my8">Delete profile</a>
+                    </div>
+                </div>
+                <div class="ms-right-panel my8">
+                    <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Settings rules <span class="toggle-arrow">▾</span></a>
+                    <div class="toggle-container ml8 block">
+                        <p class="bold forum-color fs13" style="margin-bottom: 12px;">Cover</p>
+                        <p class="fs12 my4">• {{__('Supported types')}}: PNG, SVG, BMP, GIF or JPG. At most 5MB.</p>
+                        <p class="fs12 my4">• {{ __('Maximum dimensions:') }}</p>
+                        <div class="ml8">
+                            <p class="fs12 my4">* Height: 1280px max</p>
+                            <p class="fs12 my4">* Width: 2050px max</p>
+                        </div>
+                    </div>
+                    <div class="toggle-container ml8 block">
+                        <p class="bold forum-color fs13" style="margin-bottom: 12px;">Avatar</p>
+                        <p class="fs12 my4">• {{__('Supported types')}}: PNG, SVG, BMP, GIF or JPG. At most 5MB.</p>
+                        <p class="fs12 my4">• {{ __('Maximum dimensions:') }}</p>
+                        <div class="ml8">
+                            <p class="fs12 my4">* Height: 1000px max</p>
+                            <p class="fs12 my4">* Width: 1000px max</p>
+                        </div>
+                    </div>
+                    <div class="toggle-container ml8 block">
+                        <p class="bold forum-color fs13" style="margin-bottom: 12px;">Username</p>
+                        <p class="fs12 my4">• {{ __('Should be unique(check it before saving your changes)') }}.</p>
+                        <p class="fs12 my4">• {{ __('Should contain at least 6 characters') }}.</p>
+                        <p class="fs12 my4">• {{ __('Only contains characters, numbers, dashes or underscores') }}.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </div>

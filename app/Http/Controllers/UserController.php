@@ -91,7 +91,7 @@ class UserController extends Controller
             ],
             'about'=>'sometimes|max:1400',
             'avatar'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,svg,png|max:5000|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000',
-            'cover'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,svg,png|max:5000|dimensions:min_width=50,min_height=50,max_width=2050,max_height=2050',
+            'cover'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,svg,png|max:5000|dimensions:min_width=50,min_height=50,max_width=1280,max_height=2050',
         ]);
 
         if($request->avatar_removed) {

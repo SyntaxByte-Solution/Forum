@@ -369,6 +369,10 @@ a, input, textarea {
     color: white;
 }
 
+.blue {
+    color: #2ca0ff !important;
+}
+
 .gray {
     color: rgb(78, 78, 78) !important;
 }
@@ -801,7 +805,7 @@ a, input, textarea {
 }
 
 .block {
-    display: block;
+    display: block !important;
 }
 
 .background-partial-2 {
@@ -1725,7 +1729,7 @@ tr:nth-child(2n) {
 
 .us-user-info-container {
     padding: 14px;
-    margin-top: 20px;
+    margin-top: 12px;
     border: 1px solid #e1e1e1;
     border-radius: 4px;
 }

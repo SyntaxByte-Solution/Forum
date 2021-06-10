@@ -12,6 +12,7 @@ class MsResourceTableRow extends Component
     public $resource;
     public $edit_link;
 
+    public $thread;
     public $thread_id;
     public $thread_icon;
     public $thread_url;
@@ -35,6 +36,7 @@ class MsResourceTableRow extends Component
 
     public function __construct(Thread $thread)
     {
+        $this->thread = $thread;
         $category_model = Category::find($thread->category_id);
         $this->resource = $thread;
         $this->thread_type = $thread->thread_type;

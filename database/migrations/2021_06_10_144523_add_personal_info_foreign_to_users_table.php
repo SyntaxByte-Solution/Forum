@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddProfileViewColumnOnUsersTable extends Migration
+class AddPersonalInfoForeignToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddProfileViewColumnOnUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('profile_views')->default('0');
+            $table->foreign('personal_infos')->references('id')->on('user_personal_infos');
         });
     }
 
@@ -26,7 +26,7 @@ class AddProfileViewColumnOnUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('profile_views');
+            $table->dropForeign('users_personal_infos_foreign');
         });
     }
 }

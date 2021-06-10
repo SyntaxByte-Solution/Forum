@@ -15,6 +15,10 @@ if(urlParams.has('action')) {
 
 // -------------------------------
 
+$('.block-click').click(function() {
+    return false;
+});
+
 $(".button-with-suboptions").each(function() {
     handle_suboptions_container($(this));
 });
@@ -62,7 +66,12 @@ $('.close-shadowed-view-button').click(function() {
     while(!shadowed_container.hasClass('full-shadowed')) {
         shadowed_container = shadowed_container.parent();
     }
-    shadowed_container.css('display', 'none');
+    shadowed_container.animate({
+        opacity: 0
+    }, 300, function() {
+        shadowed_container.css('display', 'none');
+    });
+
     $('.suboptions-container').css('display', 'none');
 
     return false;
@@ -468,4 +477,78 @@ $('.check-username').click(function() {
     })
 
     return false;
+});
+
+$('.remove-profile-avatar').click(function() {
+    $(this).parent().find('.full-shadowed').css("display", 'block');
+    $(this).parent().find('.full-shadowed').css("opacity", '1');
+
+    return false;
+})
+
+$('.remove-avatar-button').click(function() {
+    $('.us-settings-profile-picture').first().css('display', 'none');
+    let shadowed_container = $(this);
+
+    while(!shadowed_container.hasClass('full-shadowed')) {
+        shadowed_container = shadowed_container.parent();
+    }
+    shadowed_container.css('display', 'none');
+    $('.suboptions-container').css('display', 'none');
+
+    $('.us-settings-profile-picture').last().css('display', 'block');
+    $('.remove-profile-avatar').css('display', 'none');
+    $('.avatar-removed').val('1');
+
+    return false;
+});
+
+$('.remove-profile-cover').click(function() {
+    $(this).parent().parent().parent().find('.full-shadowed').css('display', 'flex');
+    $(this).parent().parent().parent().find('.full-shadowed').animate({
+        'opacity': 1
+    });
+
+    return false;
+});
+
+$('.remove-cover-button').click(function() {
+    $('.us-cover').addClass('none');
+    $('.remove-profile-cover').addClass('none');
+    $('.cover-removed').val('1');
+
+    let shadowed_container = $(this);
+
+    while(!shadowed_container.hasClass('full-shadowed')) {
+        shadowed_container = shadowed_container.parent();
+    }
+    shadowed_container.css('display', 'none');
+    $('.suboptions-container').css('display', 'none');
+
+    $('.change-cover-back-container').removeClass('none');
+
+    return false;
+});
+
+$('.avatar-upload-button').change(function(event) {
+    if (event.target.files[0]) {
+        $('.us-settings-profile-picture').first().attr('src', URL.createObjectURL(event.target.files[0]));
+        $('.us-settings-profile-picture').first().css('display', 'block');
+        $('.us-settings-profile-picture').last().css('display', 'none');
+        $('.remove-profile-avatar').css('display', 'flex');
+        $('.avatar-removed').val('0');
+    }
+});
+
+$('.cover-upload-button').change(function(event) {
+    if (event.target.files[0]) {
+        $('.cub-first').addClass('none');
+        $('.us-cover').attr('src', URL.createObjectURL(event.target.files[0]));
+        $('.us-cover').removeClass('none');
+        $('.change-cover-back-container').addClass('none');
+        $('.update-cover-box').removeClass('none');
+        $('.remove-profile-cover').removeClass('none');
+
+        $('.cover-removed').val('0');
+    }
 });

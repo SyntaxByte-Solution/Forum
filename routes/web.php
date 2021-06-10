@@ -81,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
 
     Route::get('/users/{user:username}/settings', [UserController::class, 'edit'])->name('user.settings');
-    Route::patch('/users/{user:username}/settings', [UserController::class, 'update'])->name('change.user.settings');
+    Route::patch('/users/{user:username}/settings/profile', [UserController::class, 'update'])->name('change.user.settings.profile');
 
 });
 

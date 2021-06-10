@@ -64,6 +64,8 @@ class UserController extends Controller
     }
 
     public function edit(Request $request, User $user) {
+        $this->authorize('edit', $user);
+
         $firstname = $user->firstname;
         $lastname = $user->lastname;
         $username = $user->username;
@@ -92,7 +94,11 @@ class UserController extends Controller
             'cover'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,svg,png|max:5000|dimensions:min_width=50,min_height=50,max_width=2050,max_height=2050',
         ]);
 
-        if($request->hasFile('avatar')){
+        if($request->avatar_removed) {
+            $data['avatar'] = null;
+            $data['provider_avatar'] = null;
+        }
+        else if($request->hasFile('avatar')){
             $path = $request->file('avatar')->store(
                 'users/' . $user->id . '/avatars', 'public'
             );
@@ -100,7 +106,10 @@ class UserController extends Controller
             $data['avatar'] = $path;
         }
 
-        if($request->hasFile('cover')){
+        if($request->cover_removed) {
+            $data['cover'] = null;
+        }
+        else if($request->hasFile('cover')){
             $path = $request->file('cover')->store(
                 'users/' . $user->id . '/covers', 'public'
             );

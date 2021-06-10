@@ -41,7 +41,7 @@ class User extends UserAuthenticatable implements Authenticatable
             if($this->provider_avatar) {
                 return $this->provider_avatar;
             } else {
-                return asset('storage/users/defaults/avatar-default.png');
+                return 'users/defaults/avatar-default.png';
             }
         }
 

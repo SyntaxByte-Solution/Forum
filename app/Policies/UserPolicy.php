@@ -43,6 +43,11 @@ class UserPolicy
         //
     }
 
+    public function edit(User $user, User $model)
+    {
+        return $user->id == $model->id;
+    }
+
     /**
      * Determine whether the user can update the model.
      *

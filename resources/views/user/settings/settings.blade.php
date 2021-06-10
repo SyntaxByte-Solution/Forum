@@ -39,42 +39,59 @@
 
                 <div class="relative us-user-media-container">
                     <div class="us-settings-cover-container full-center relative">
+                        <div class="absolute full-shadowed flex flex-column align-center justify-center br6">
+                            <p class="white bold fs17 my4 text-center">Remove cover ?</p>
+                            <div class="flex align-center">
+                                <a href="" class="simple-white-button remove-cover-button">Remove</a>
+                                <a href="" class="white no-underline my4 fs14 close-shadowed-view-button ml8">cancel</a>
+                            </div>
+                        </div>
                         @if(!$user->cover)
                             <div class="full-center full-dimensions">
-                                <input type="file" name="cover" form="profile-edit-form" class="full-dimensions bottom0 absolute pointer" style="height: 200%">
-                                <div class="flex align-center">
+                                <img src="{{ asset('storage') . '/' . $user->cover }}" class="us-cover none" alt="">
+                                <div class="flex align-center change-cover-back-container">
                                     <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
-                                    <p class="fs17 white">Upload a cover</p>
+                                    <p class="fs17 white">ADD A COVER</p>
                                 </div>
                             </div>
                         @else
                             <img src="{{ asset('storage') . '/' . $user->cover }}" class="us-cover" alt="">
-                            <div class="absolute flex align-center" style="bottom: 6px; right: 6px">
-                                <div class="flex align-center px8 py8 change-cover-cont relative">
-                                    <input type="file" name="cover" form="profile-edit-form" class="opacity0 absolute full-dimensions bottom0 pointer" style="height: 200%">
-                                    <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
-                                    <p class="fs14 no-margin white">Update Cover</p>
-                                </div>
-                                <div>
-                                    <a href="">
-                                        <img src="{{ asset('assets/images/icons/wx.png') }}" class="small-image-size flex ml4" alt="">
-                                    </a>
-                                </div>
-                            </div>
                         @endif
+                        <div class="absolute flex align-center update-cover-box" style="bottom: 6px; right: 6px">
+                            <div class="flex align-center px8 py8 change-cover-cont relative">
+                                <input type="hidden" name="cover_removed" value="0" class="cover-removed" form="profile-edit-form">
+                                <input type="file" name="cover" form="profile-edit-form" class="opacity0 absolute full-dimensions bottom0 pointer cover-upload-button" style="height: 200%">
+                                <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
+                                <p class="fs14 no-margin white">@if(!$user->cover) {{__('Add')}} @else {{__('Update')}} @endif {{__('Cover')}}</p>
+                            </div>
+                            <div>
+                                <a href="" class="remove-profile-cover @if(!$user->cover) none @endif">
+                                    <img src="{{ asset('assets/images/icons/wx.png') }}" class="small-image-size flex mr4 ml8" alt="">
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex my8">
                         <div class="relative" style="height: max-content;">
-                            <a href="ererer" class="absolute x-button rounded full-center">
-                                <img src="{{ asset('assets/images/icons/wx.png') }}" style="height: 10px; width: 10px" alt="">
+                            <div class="absolute full-shadowed full-center br6">
+                                <p class="white bold my4 text-center">Remove avatar ?</p>
+                                <div class="flex flex-column align-center">
+                                    <a href="" class="simple-white-button remove-avatar-button">Delete</a>
+                                    <a href="" class="white no-underline my4 fs13 close-shadowed-view-button">cancel</a>
+                                </div>
+                            </div>
+                            <a href="" class="absolute x-button remove-profile-avatar rounded full-center @if($user->avatar == 'users/defaults/avatar-default.png') none @endif" style="z-index: 2">
+                                <img src="{{ asset('assets/images/icons/wx.png') }}" style="height: 8px; width: 8px" alt="">
                             </a>
                             <div class="absolute full-center update-avatar-bottom-section hidden-overflow">
-                                <input type="file" name="avatar" form='profile-edit-form' class="absolute bottom0 opacity0 pointer full-width full-height block" style="height: 200%">
+                                <input type="hidden" name="avatar_removed" value="0" class="avatar-removed" form="profile-edit-form">
+                                <input type="file" name="avatar" form='profile-edit-form' class="absolute bottom0 opacity0 pointer full-width full-height block avatar-upload-button" style="height: 200%">
                                 <a href="" class="white simple-link no-underline">{{__('Update Avatar')}}</a>
                             </div>
                             <a href="{{ route('user.activities', ['user'=>$user->username]) }}">
-                                <div class="us-settings-profile-picture-container full-center">
+                                <div class="us-settings-profile-picture-container full-center relative">
                                     <img src="{{ asset('storage') . '/' . $user->avatar }}" class="us-settings-profile-picture" alt="">
+                                    <img src="{{ asset('storage') . '/' . 'users/defaults/avatar-default.png' }}" class="us-settings-profile-picture default-avatar none" alt="">
                                 </div>
                             </a>
                         </div>
@@ -137,7 +154,7 @@
                             </style>
                         </div>
                         <div>
-                            <form action="{{ route('change.user.settings', ['user'=>$user->username]) }}" method="POST" id="profile-edit-form" class="flex align-center" enctype="multipart/form-data">
+                            <form action="{{ route('change.user.settings.profile', ['user'=>$user->username]) }}" method="POST" id="profile-edit-form" class="flex align-center" enctype="multipart/form-data">
                                 @csrf
                                 @method('patch')
                                 <input type="submit" value="{{ __('Save') }}" class="button-style">

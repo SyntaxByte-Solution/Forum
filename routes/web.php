@@ -87,8 +87,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/settings', [UserController::class, 'edit'])->name('user.settings');
     Route::get('/settings/personal', [UserController::class, 'edit_personal_infos'])->name('user.personal.settings');
+    Route::get('/settings/passwords', [UserController::class, 'edit_password'])->name('user.passwords.settings');
     Route::patch('/settings/profile', [UserController::class, 'update'])->name('change.user.settings.profile');
     Route::patch('/settings/personal', [UserController::class, 'update_personal'])->name('change.user.settings.personal');
+    Route::patch('/settings/password/update', [UserController::class, 'update_password'])->name('change.user.settings.password');
 
 });
 

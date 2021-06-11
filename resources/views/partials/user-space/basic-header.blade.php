@@ -1,7 +1,11 @@
 
 <div class="full-width">
     @php
-        $user = auth()->user();
+        if($page == 'settings') {
+            $user = auth()->user();
+        } else {
+            $user = request()->user;
+        }
     @endphp
     <div class="flex align-center space-between" style="margin-bottom: 10px">
         <div class="flex align-center">

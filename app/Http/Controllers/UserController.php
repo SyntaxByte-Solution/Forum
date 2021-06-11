@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use App\Models\{Thread, Category, User};
+//use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -87,11 +88,22 @@ class UserController extends Controller
         $username = $user->username;
 
         return view('user.settings.personal-settings')
-            ->with(compact('firstname'))
-            ->with(compact('lastname'))
             ->with(compact('username'))
             ->with(compact('user'));
     }
+
+    public function edit_password(Request $request) {
+        $user = auth()->user();
+        $this->authorize('update', $user);
+
+        $username = $user->username;
+
+        return view('user.settings.password-settings')
+            ->with(compact('username'))
+            ->with(compact('user'));
+    }
+
+    
 
     public function update(Request $request) {
         $user = auth()->user();
@@ -157,6 +169,27 @@ class UserController extends Controller
 
         $user->personal->update($data);
         return redirect()->route('user.personal.settings')->with('message','Profile information updated successfully !');
+    }
+    public function update_password(Request $request) {
+        $user = auth()->user();
+        $this->authorize('update', $user);
+
+        // dd($request);
+
+        // $data = $request->validate([
+        //     'password' => [
+        //         Password::min(8)
+        //         ->letters()
+        //         ->mixedCase()
+        //         ->numbers()
+        //         ->uncompromised()
+        //     ]
+        // ]);
+
+        dd($data);
+
+        //$user->update($data);
+        return redirect()->route('user.passwords.settings')->with('message','Your password is saved successfulyy. Now you can loggin using either your social network or usual login email & password !');
     }
 
     public function username_check(Request $request) {

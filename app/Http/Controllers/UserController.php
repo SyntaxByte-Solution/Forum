@@ -63,7 +63,8 @@ class UserController extends Controller
             ->with(compact('recent_threads'));
     }
 
-    public function edit(Request $request, User $user) {
+    public function edit(Request $request) {
+        $user = auth()->user();
         $this->authorize('edit', $user);
 
         $firstname = $user->firstname;
@@ -77,8 +78,25 @@ class UserController extends Controller
             ->with(compact('user'));
     }
 
-    public function update(Request $request, User $user) {
+    public function edit_personal_infos(Request $request) {
+        $user = auth()->user();
         $this->authorize('update', $user);
+
+        $firstname = $user->firstname;
+        $lastname = $user->lastname;
+        $username = $user->username;
+
+        return view('user.settings.personal-settings')
+            ->with(compact('firstname'))
+            ->with(compact('lastname'))
+            ->with(compact('username'))
+            ->with(compact('user'));
+    }
+
+    public function update(Request $request) {
+        $user = auth()->user();
+        $this->authorize('update', $user);
+
 
         $data = $request->validate([
             'firstname'=>'sometimes|alpha|max:266',
@@ -118,7 +136,27 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        return redirect()->route('user.settings', [$user->username])->with('message','Profile updated successfully !');
+        return redirect()->route('user.settings')->with('message','Profile updated successfully !');
+    }
+
+    public function update_personal(Request $request) {
+        $user = auth()->user();
+        $this->authorize('update', $user);
+
+        // dd($request);
+
+        $data = $request->validate([
+            'birth'=>'sometimes|nullable|date',
+            'phone'=>'sometimes|nullable|max:266',
+            'country'=>'sometimes|min:2|max:266',
+            'city'=>'sometimes|min:2|max:266',
+            'facebook'=>'sometimes|nullable|url',
+            'instagram'=>'sometimes|nullable|min:2|max:266',
+            'twitter'=>'sometimes|nullable|url',
+        ]);
+
+        $user->personal->update($data);
+        return redirect()->route('user.personal.settings')->with('message','Profile information updated successfully !');
     }
 
     public function username_check(Request $request) {

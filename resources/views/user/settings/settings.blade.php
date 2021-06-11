@@ -150,7 +150,7 @@
                             </style>
                         </div>
                         <div>
-                            <form action="{{ route('change.user.settings.profile', ['user'=>$user->username]) }}" method="POST" id="profile-edit-form" class="flex align-center" enctype="multipart/form-data">
+                            <form action="{{ route('change.user.settings.profile') }}" method="POST" id="profile-edit-form" class="flex align-center" enctype="multipart/form-data">
                                 @csrf
                                 @method('patch')
                                 <input type="submit" value="{{ __('Save') }}" class="button-style">
@@ -172,15 +172,7 @@
                 </div>
             </div>
             <div>
-                <div class="ms-right-panel">
-                    <p class="bold forum-color" style="margin-bottom: 12px; margin-top: 0">Settings</p>
-                    <div class="ml4">
-                        <a href="" class="black-link fs13 block my8 block-click blue">Profile settings</a>
-                        <a href="" class="black-link fs13 block my8">Personal settings</a>
-                        <a href="" class="black-link fs13 block my8">Password management</a>
-                        <a href="" class="black-link fs13 block my8">Delete profile</a>
-                    </div>
-                </div>
+                @include('partials.settings.profile-right-side-menu', ['item'=>'settings-general'])
                 <div class="ms-right-panel my8">
                     <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Settings rules <span class="toggle-arrow">▾</span></a>
                     <div class="toggle-container ml8 block">

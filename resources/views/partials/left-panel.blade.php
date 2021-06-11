@@ -37,7 +37,7 @@
                 @endisset
             </div>
             <div class="relative">
-                <a href="{{ route('user.settings', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.settings' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Settings</a>
+                <a href="{{ route('user.settings') }}" @isset($subpage) @if($subpage == 'user.settings' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Settings</a>
                 @isset($subpage)
                     @if($subpage == 'user.settings' && $same_user)
                         <div class="selected-colored-slice"></div>

@@ -85,8 +85,10 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/post/{post}', [PostController::class, 'update']);
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
 
-    Route::get('/users/{user:username}/settings', [UserController::class, 'edit'])->name('user.settings');
-    Route::patch('/users/{user:username}/settings/profile', [UserController::class, 'update'])->name('change.user.settings.profile');
+    Route::get('/settings', [UserController::class, 'edit'])->name('user.settings');
+    Route::get('/settings/personal', [UserController::class, 'edit_personal_infos'])->name('user.personal.settings');
+    Route::patch('/settings/profile', [UserController::class, 'update'])->name('change.user.settings.profile');
+    Route::patch('/settings/personal', [UserController::class, 'update_personal'])->name('change.user.settings.personal');
 
 });
 
@@ -107,5 +109,5 @@ Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::get('/users/{user:username}/activities', [UserController::class, 'activities'])->name('user.activities');
-Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
+Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/users/username/check', [UserController::class, 'username_check']);

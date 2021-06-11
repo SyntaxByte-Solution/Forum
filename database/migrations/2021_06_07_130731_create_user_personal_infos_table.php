@@ -17,8 +17,9 @@ class CreateUserPersonalInfosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user')->nullable();
 
-            $table->date('dob')->nullable();
+            $table->date('birth')->nullable();
             $table->string('country')->nullable();
+            $table->string('city')->nullable();
             $table->string('phone')->nullable();
             $table->string('website')->nullable();
             $table->string('facebook')->nullable();

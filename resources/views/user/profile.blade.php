@@ -199,6 +199,7 @@
                     <div class="ml4">
                         <p class="fs13 my4"><span class="bold fs13 gray">Join date: </span> {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
                     </div>
+                    <div class="simple-line-separator"></div>
                 </div>
             </div>
         </section>

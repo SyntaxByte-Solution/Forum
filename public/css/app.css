@@ -655,6 +655,15 @@ a, input, textarea {
     padding: 6px;
 }
 
+.basic-input {
+    box-sizing: border-box;
+    border-radius: 4px 0 0 4px;
+    padding: 5px 6px;
+    font-size: 13px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
 .simple-input {
     box-sizing: border-box;
     height: 24px;
@@ -1277,6 +1286,10 @@ tr:nth-child(2n) {
 .adv-search-button {
     height: 26px;
     width: 26px;
+}
+
+.default-cursor {
+    cursor: default !important;
 }
 
 .pagination-disabled {

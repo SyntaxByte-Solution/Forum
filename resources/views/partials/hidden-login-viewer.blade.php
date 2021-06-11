@@ -1,4 +1,17 @@
-<div class="fixed full-shadowed zi12">
+@php
+    $show_login_view = '';
+@endphp
+@if(!auth()->user())
+    @if($errors->has('email'))
+        @if($errors->first('email') == __("These credentials do not match our records."))
+            @php
+                $show_login_view = "display:block;opacity:1";
+            @endphp
+        @endif
+    @endif
+@endif
+
+<div class="fixed full-shadowed zi12" style="{{ $show_login_view }}">
         <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
         <div id="login-view" class="auth-card">
             <div>
@@ -9,9 +22,9 @@
                 @csrf
 
                 <div class="input-container">
-                    <label for="email" class="label-style">{{ __('Email address') }} @error('email') <span class="error">*</span> @enderror</label>
+                    <label for="email" class="label-style">{{ __('Email address / Username') }} @error('email') <span class="error">*</span> @enderror</label>
 
-                    <input type="email" id="email" name="email" class="full-width input-style @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" placeholder="{{ __('Email address') }}">
+                    <input type="text" id="email" name="email" class="full-width input-style @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" placeholder="{{ __('Email address') }}">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <p class="error">{{ $message }}</p>

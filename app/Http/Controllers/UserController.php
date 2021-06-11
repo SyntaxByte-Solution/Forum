@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Rules\IsValidPassword;
 use App\Models\{Thread, Category, User};
-//use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -176,20 +177,18 @@ class UserController extends Controller
 
         // dd($request);
 
-        // $data = $request->validate([
-        //     'password' => [
-        //         Password::min(8)
-        //         ->letters()
-        //         ->mixedCase()
-        //         ->numbers()
-        //         ->uncompromised()
-        //     ]
-        // ]);
+        $data = $request->validate([
+            'password' => [
+                'required',
+                'confirmed',
+                'string',
+                new IsValidPassword(),
+            ]
+        ]);
 
-        dd($data);
-
-        //$user->update($data);
-        return redirect()->route('user.passwords.settings')->with('message','Your password is saved successfulyy. Now you can loggin using either your social network or usual login email & password !');
+        $data['password'] = Hash::make($data['password']);
+        $user->update($data);
+        return redirect()->route('user.passwords.settings')->with('message','Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !');
     }
 
     public function username_check(Request $request) {

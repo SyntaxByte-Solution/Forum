@@ -3,11 +3,6 @@
 @push('styles')
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-@endpush
-
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 
 @section('header')

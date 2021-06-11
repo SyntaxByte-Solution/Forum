@@ -3,11 +3,6 @@
 @push('styles')
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-@endpush
-
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 
 @section('header')
@@ -37,7 +32,7 @@
                     </div>
                 @endif
 
-                <div>
+                <div class="my8">
                     <div>
                         <div class="flex">
                             <p class="no-margin" style="margin-right: 8px">●</p>
@@ -50,7 +45,7 @@
                     </div>
                     @if($user->password == NULL && $user->provider)
                         <div class="flex">
-                            <div>
+                            <div class="full-width">
                                 <div class="input-container">
                                     <div class="flex">
                                         <label for="password" class="label-style-2">{{ __('Your email') }}: </label>
@@ -59,14 +54,14 @@
                                 </div>
                                 <div class="input-container">
                                     <label for="password" class="label-style-2">{{ __('New Password') }} @error('password') <span class="error ml4">*</span> @enderror</label>
-                                    <input type="text" id="password" name="password" form="password-update-form" class="full-width input-style-1" autocomplete="off" placeholder="Your new password">
+                                    <input type="password" id="password" name="password" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Your new password">
                                     @error('password')
                                         <p class="error" role="alert">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div class="input-container">
                                     <label for="password_confirmation" class="label-style-2">{{ __('Confirm Your Password') }} @error('password_confirmation') <span class="error ml4">*</span> @enderror</label>
-                                    <input type="text" id="password_confirmation" name="password_confirmation" form="password-update-form" class="full-width input-style-1" autocomplete="off" placeholder="Confirm password">
+                                    <input type="password" id="password_confirmation" name="password_confirmation" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Confirm password">
                                     @error('password_confirmation')
                                         <p class="error" role="alert">{{ $message }}</p>
                                     @enderror
@@ -81,7 +76,11 @@
                             </div>
                         </div>
                     @else
-                        <p class="no-margin fs13" style="line-height: 150%">{{ __("Your password has been set previously. If you forgot your password you still can login using your social network account or wait until we add password reset feature") }}.</p>
+                        <div class="simple-line-separator my8"></div>
+                        <div class="flex" style="margin-top: 18px">
+                            <p class="no-margin" style="margin-right: 8px">●</p>
+                            <p class="no-margin fs13" style="line-height: 150%">{{ __("Your password has been set previously. If you forgot your password you still can login using your social network account or wait until we add password reset feature") }}.</p>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -90,7 +89,10 @@
                 <div class="ms-right-panel my8">
                     <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Password rules <span class="toggle-arrow">▾</span></a>
                     <div class="toggle-container ml8 block" style="max-width: 280px">
-                        <p class="fs12 my8">• {{ __("Password must contains at least one character, one uppercase character and one figure") }}.</p>
+                        <p class="fs12 my8">• {{ __("Password must contains at least 8 characters") }}.</p>
+                        <p class="fs12 my8">• {{ __("Password must contains at least one lowercase character") }}.</p>
+                        <p class="fs12 my8">• {{ __("Password must contains at least one uppercasecase character") }}.</p>
+                        <p class="fs12 my8">• {{ __("Password must contains at least one number") }}.</p>
                         <p class="fs12 my8">• {{ __("The two passwords must match each others") }}.</p>
                     </div>
                 </div>

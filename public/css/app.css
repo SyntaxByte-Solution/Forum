@@ -31,6 +31,10 @@ a, input, textarea {
     opacity: 0;
 }
 
+.opacity1 {
+    opacity: 1;
+}
+
 .half-opcaity {
     opacity: 0.5;
 }

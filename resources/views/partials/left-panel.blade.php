@@ -9,6 +9,12 @@
             <div class="selected-colored-slice"></div>
         @endif
     </div>
+    <div class="flex relative">
+        <a href="/forums" class="left-panel-item lp-wpadding @if($page == 'forums') {{ 'lp-selected' }} @endif">Forums</a>
+        @if($page == 'forums')
+            <div class="selected-colored-slice"></div>
+        @endif
+    </div>
     @auth
         @php
             $same_user = false;
@@ -28,7 +34,7 @@
         <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span></a>
         <div class="toggle-container" @isset($subpage) @if($same_user) style="display: block" @endif @endisset>
             <div class="relative">
-                <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.activities' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Index</a>
+                <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.activities' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Activities</a>
                 @isset($subpage)
                     @if($subpage == 'user.activities' && $same_user)
                         <div class="selected-colored-slice"></div>

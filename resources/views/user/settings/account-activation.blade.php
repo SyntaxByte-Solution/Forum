@@ -38,6 +38,7 @@
                 <div class="ms-right-panel my8">
                     <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Account activation <span class="toggle-arrow">▾</span></a>
                     <div class="toggle-container ml8 block" style="max-width: 280px">
+                        <p class="fs12 my8">• {{ __("You can't access any web page unless you activate your account") }}.</p>
                         <p class="fs12 my8">• {{ __("Activate your account to make it accessible to the public") }}.</p>
                     </div>
                 </div>

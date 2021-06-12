@@ -49,7 +49,88 @@ class UserController extends Controller
             ->with(compact('threads'));
     }
 
+    public function user_discussions(Request $request, User $user) {
+        $all = false;
+        $pagesize = 10;
+        $pagesize_exists = false;
+        if($request->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = $request->input('pagesize');
+        }
+
+        $discussions_count = $user->discussions_count();
+        $questions_count = $user->questions_count();
+        $posts_count = $user->posts_count();
+        //$discussions = $user->discussions;
+
+        $discussions;
+        if($pagesize == 'all') {
+            $all = true;
+            $discussions = $user->discussions()
+            ->orderBy('created_at', 'desc')->lazy();
+        } else {
+            $discussions = $user->discussions()
+            ->orderBy('created_at', 'desc')->paginate($pagesize);
+        }
+
+        return view('user.threads.discussions')
+            ->with(compact('user'))
+            ->with(compact('discussions_count'))
+            ->with(compact('questions_count'))
+            ->with(compact('posts_count'))
+            ->with(compact('all'))
+            ->with(compact('pagesize'))
+            ->with(compact('pagesize_exists'))
+            ->with(compact('discussions'));
+    }
+
+    public function user_questions(Request $request, User $user) {
+        $all = false;
+        $pagesize = 10;
+        $pagesize_exists = false;
+        if($request->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = $request->input('pagesize');
+        }
+
+        $discussions_count = $user->discussions_count();
+        $questions_count = $user->questions_count();
+        $posts_count = $user->posts_count();
+        //$discussions = $user->discussions;
+
+        $questions;
+        if($pagesize == 'all') {
+            $all = true;
+            $questions = $user->questions()
+            ->orderBy('created_at', 'desc')->lazy();
+        } else {
+            $questions = $user->questions()
+            ->orderBy('created_at', 'desc')->paginate($pagesize);
+        }
+
+        return view('user.threads.questions')
+            ->with(compact('user'))
+            ->with(compact('discussions_count'))
+            ->with(compact('questions_count'))
+            ->with(compact('posts_count'))
+            ->with(compact('all'))
+            ->with(compact('pagesize'))
+            ->with(compact('pagesize_exists'))
+            ->with(compact('questions'));
+    }
+
     public function profile(Request $request, User $user) {
+
+        /**
+         * Try to create user activity system where you store every activity of the user
+         * and only allow the profile views counter to increment only once per hour per user
+        */
+        if($user->username != auth()->user()->username) {
+            $user->update([
+                'profile_views'=>$user->profile_views + 1
+            ]);
+        }
+
         $discussions_count = $user->discussions_count();
         $questions_count = $user->questions_count();
         $posts_count = $user->posts_count();
@@ -103,8 +184,6 @@ class UserController extends Controller
             ->with(compact('username'))
             ->with(compact('user'));
     }
-
-    
 
     public function update(Request $request) {
         $user = auth()->user();
@@ -171,6 +250,7 @@ class UserController extends Controller
         $user->personal->update($data);
         return redirect()->route('user.personal.settings')->with('message','Profile information updated successfully !');
     }
+
     public function update_password(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
@@ -190,6 +270,7 @@ class UserController extends Controller
         $user->update($data);
         return redirect()->route('user.passwords.settings')->with('message','Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !');
     }
+
     public function account_settings(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);

@@ -28,6 +28,9 @@ Route::get('/test', function() {
 
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/home', [IndexController::class, 'index']);
+Route::get('/forums', [IndexController::class, 'forums']);
+
+
 
 /** 
  * The routes that are accessible for only admins should be placed in a group
@@ -70,18 +73,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
     Route::get('/{forum:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
 
+    
     Route::get('/{user:username}/discussions/{thread}/edit', [ThreadController::class, 'edit'])->name('discussion.edit');
     Route::get('/{user:username}/questions/{thread}/edit', [ThreadController::class, 'edit'])->name('question.edit');
-
+    
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);
     Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);
-
+    
     Route::post('/thread', [ThreadController::class, 'store']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
     Route::delete('/thread/{thread}/force', [ThreadController::class, 'destroy'])->name('thread.destroy');
-
+    
     Route::post('/post', [PostController::class, 'store']);
     Route::patch('/post/{post}', [PostController::class, 'update']);
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
@@ -100,6 +104,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);;
     Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);;
 
+    
 });
 
 Route::get('/{forum:slug}/{category:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
@@ -110,7 +115,7 @@ Route::get('/{forum:slug}/{category:slug}/questions/{thread}', [ThreadController
  * 1. get all discussions & questions of the specified category of the forum in the url 
  * (all in the first route means all thread types [Discussions, questions, advices ..])
  * 2. get all discussions of the specified category of the forum in the url
- * 1. get all questions of the specified category of the forum in the url
+ * 3. get all questions of the specified category of the forum in the url
  */
 Route::get('/{forum:slug}/{category:slug}/all', [ThreadController::class, 'category_misc'])->name('category.misc');
 Route::get('/{forum:slug}/{category:slug}/discussions', [ThreadController::class, 'category_discussions'])->name('category.discussions');
@@ -120,5 +125,8 @@ Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::get('/users/{user:username}/activities', [UserController::class, 'activities'])->name('user.activities');
+
+Route::get('/users/{user:username}/threads/discussions', [UserController::class, 'user_discussions'])->name('user.discussions');
+Route::get('/users/{user:username}/threads/questions', [UserController::class, 'user_questions'])->name('user.questions');
 Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/users/username/check', [UserController::class, 'username_check']);

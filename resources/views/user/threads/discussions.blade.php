@@ -14,16 +14,16 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'user', 'subpage'=>'user.activities'])
+    @include('partials.left-panel', ['page' => 'user', 'subpage'=>'user.profile'])
     <div id="middle-container" class="middle-padding-1">
-        <div class="flex">
+        <section class="flex">  
             <div class="full-width">
-                @include('partials.user-space.basic-header', ['page'=>'activities'])
+                @include('partials.user-space.basic-header', ['page' => 'profile'])
                 <div class="flex space-between">
-                    <h2 class="my8 fs20">My Activities</h2>
+                    <h1 class="">User Discussions</h1>
                     <div class="mr8">
                         @unless($all)
-                            {{ $threads->onEachSide(0)->links() }}
+                            {{ $discussions->onEachSide(0)->links() }}
                         @endunless
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         <th class="table-col-header">
                             <div class="flex space-between align-center">
                                 <div>
-                                    {{ __('Threads') }}@if($all) ({{$threads->count()}}) @endif
+                                    {{ __('Discussions') }}({{$discussions->count()}})
                                 </div>
                                 <div>
                                     <div class="mx4 inline-block">
@@ -46,11 +46,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="inline-block">
-                                        <a href="" class="ms-table-small-button mstsb-selected all-table-threads-changer">all</a>
-                                        <a href="" class="ms-table-small-button all-table-discussions-changer">discussions</a>
-                                        <a href="" class="ms-table-small-button all-table-questions-changer">questions</a>
-                                    </div>
                                 </div>
                             </div>
                         </th>
@@ -58,11 +53,11 @@
                         <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
                         <th class="table-col-header">{{ __('LAST POST') }}</th>
                     </tr>
-                    @foreach($threads as $thread)
-                        <x-ms-resource-table-row :thread="$thread"/>
+                    @foreach($discussions as $discussion)
+                        <x-ms-resource-table-row :thread="$discussion"/>
                     @endforeach
                 </table>
-                @if(!$threads->count())
+                @if(!$discussions->count())
                     <div class="full-center">
                         <div>
                             <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
@@ -74,6 +69,6 @@
             <div>
                 @include('partials.user-space.user-card')
             </div>
-        </div>
+        </section>
     </div>
 @endsection

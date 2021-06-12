@@ -12,4 +12,10 @@ class IndexController extends Controller
         return view('index')
         ->with(compact('forums'));
     }
+
+    public function forums() {
+        $forums = Forum::all();
+        return view('forums')
+        ->with(compact('forums'));
+    }
 }

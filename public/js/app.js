@@ -564,3 +564,16 @@ $('.cover-upload-button').change(function(event) {
         $('.cover-removed').val('0');
     }
 });
+
+$('.delete-account').click(function() {
+    $('#deactivate-account-container').addClass('none');
+    $('#delete-account-container').removeClass('none');
+    return false;
+});
+
+$('.deactivate-account').click(function() {
+    $('#deactivate-account-container').removeClass('none');
+    $('#delete-account-container').addClass('none');
+
+    return false;
+});

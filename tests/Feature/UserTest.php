@@ -79,4 +79,9 @@ class UserTest extends TestCase
             'username'=>'EDITED_USERNAME'
         ]);
     }
+
+    /** @test */
+    public function when_a_user_account_deleted_all_data_associatd_with_it_get_deleted_as_well() {
+
+    }
 }

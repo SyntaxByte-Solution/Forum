@@ -78,8 +78,12 @@
                     @else
                         <div class="simple-line-separator my8"></div>
                         <div class="flex" style="margin-top: 18px">
-                            <p class="no-margin" style="margin-right: 8px">●</p>
+                            <p class="no-margin bold" style="margin-right: 8px">+</p>
                             <p class="no-margin fs13" style="line-height: 150%">{{ __("Your password has been set previously. If you forgot your password you still can login using your social network account or wait until we add password reset feature") }}.</p>
+                        </div>
+                        <div class="flex" style="margin-top: 18px">
+                            <p class="no-margin bold" style="margin-right: 8px">+</p>
+                            <p class="no-margin fs13" style="line-height: 150%">{{ __("Now you can loggin with using your email and password and check remmeber me option to enable the website to remmeber you unless you disconnect.") }}.</p>
                         </div>
                     @endif
                 </div>

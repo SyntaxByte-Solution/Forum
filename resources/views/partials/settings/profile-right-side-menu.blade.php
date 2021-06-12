@@ -7,6 +7,6 @@
         <a href="{{ route('user.settings') }}" class="black-link fs13 block my8 @if($item == 'settings-general') blue block-click default-cursor @endif">Profile settings</a>
         <a href="{{ route('user.personal.settings') }}" class="black-link fs13 block my8 @if($item == 'settings-personal') blue block-click default-cursor @endif">Personal settings</a>
         <a href="{{ route('user.passwords.settings') }}" class="black-link fs13 block my8 @if($item == 'settings-password') blue block-click default-cursor @endif">Password management</a>
-        <a href="" class="black-link fs13 block my8 @if($item == 'settings-account-delete') blue block-click default-cursor @endif">Delete profile</a>
+        <a href="{{ route('user.account') }}" class="black-link fs13 block my8 @if($item == 'user-account-settings') blue block-click default-cursor @endif">Account settings</a>
     </div>
 </div>

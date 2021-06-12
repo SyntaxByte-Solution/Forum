@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\{Role, Permission, UserStatus, Thread, UserPersonalInfos};
+use App\Models\{Role, Permission, UserStatus, Thread, UserPersonalInfos, AccountStatus};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends UserAuthenticatable implements Authenticatable
 {
-    use HasFactory, Notifiable, HasPermissionsTrait;
+    use HasFactory, Notifiable, HasPermissionsTrait, SoftDeletes;
 
     protected $guarded = [];
 
@@ -36,6 +37,7 @@ class User extends UserAuthenticatable implements Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // Mutators
     public function getAvatarAttribute($value) {
         if(!$value) {
             if($this->provider_avatar) {

@@ -5,6 +5,7 @@ namespace App\Permissions;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\UserStatus;
+use App\Models\AccountStatus;
 
 trait HasPermissionsTrait {
 
@@ -71,5 +72,35 @@ trait HasPermissionsTrait {
 
     public function has_status($slug) {
         return $this->status()->slug == $slug;
+    }
+
+    
+    /**
+     * Here we use mutators to access the related account_status by getting the id
+     * and return the associated model
+     */
+    public function getAccountStatusAttribute($value) {
+        $model = AccountStatus::find($value);
+        return $model;
+    }
+
+    public function set_account_status($slug) {
+        // Here we fetch the account_status based on slug if the slug is not found the status will be set to active (id=1)
+        if($slug) {
+            $account_setting = AccountStatus::where('slug', $slug)->first();
+            if($account_setting) {
+                $this->update([
+                    'account_status'=>$account_setting->id
+                ]);
+            }
+        }
+    }
+
+    public function account_deactivated() {
+        if($as = auth()->user()->account_status) {
+            return $as->slug == 'deactivated';
+        }
+
+        return false;
     }
 }

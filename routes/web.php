@@ -7,7 +7,8 @@ use App\Http\Controllers\
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
     SearchController};
-use App\Models\{UserPersonalInfos};
+use App\Models\{UserPersonalInfos, AccountStatus};
+use App\Http\Middleware\AccountActivationCheck;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ use App\Models\{UserPersonalInfos};
 
 Route::get('/test', function() {
     $user = auth()->user();
-    dd(UserPersonalInfos::find($user->personal->id)->owner);
+    dd($user->account_status);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -88,14 +89,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings', [UserController::class, 'edit'])->name('user.settings');
     Route::get('/settings/personal', [UserController::class, 'edit_personal_infos'])->name('user.personal.settings');
     Route::get('/settings/passwords', [UserController::class, 'edit_password'])->name('user.passwords.settings');
+    Route::get('/settings/account', [UserController::class, 'account_settings'])->name('user.account');
+
     Route::patch('/settings/profile', [UserController::class, 'update'])->name('change.user.settings.profile');
     Route::patch('/settings/personal', [UserController::class, 'update_personal'])->name('change.user.settings.personal');
     Route::patch('/settings/password/update', [UserController::class, 'update_password'])->name('change.user.settings.password');
+    Route::patch('/settings/account/delete', [UserController::class, 'delete_account'])->name('delete.user.account');
+    Route::patch('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->name('deactivate.user.account');
+    
+    Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);;
+    Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);;
 
 });
 
 Route::get('/{forum:slug}/{category:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
 Route::get('/{forum:slug}/{category:slug}/questions/{thread}', [ThreadController::class, 'show'])->name('question.show');
+
 
 /**
  * 1. get all discussions & questions of the specified category of the forum in the url 

@@ -21,6 +21,14 @@ a, input, textarea {
     color: #202020;
 }
 
+.red-background {
+    background-color: rgb(165, 44, 44) !important;
+}
+
+.green-background {
+    background-color: rgb(77, 204, 98) !important;
+}
+
 .full-center {
     display: flex;
     align-items: center;
@@ -378,7 +386,7 @@ a, input, textarea {
 }
 
 .gray {
-    color: rgb(78, 78, 78) !important;
+    color: rgb(63, 63, 63) !important;
 }
 
 .no-margin {

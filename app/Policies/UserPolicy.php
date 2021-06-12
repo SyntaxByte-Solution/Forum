@@ -64,6 +64,11 @@ class UserPolicy
         return $user->id == $model->id;
     }
 
+    public function activate_account(User $user, User $model)
+    {
+        return $user->id == $model->id;
+    }
+
     /**
      * Determine whether the user can delete the model.
      *
@@ -73,7 +78,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        //
+        return $user->id == $model->id;
     }
 
     /**

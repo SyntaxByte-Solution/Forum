@@ -34,6 +34,16 @@
         </div>
         <div id="forums-section">
             <div>
+                @if(Session::has('message'))
+                    <div class="green-message-container">
+                        <p class="green-message">{{ Session::get('message') }}</p>
+                    </div>
+                @endif
+                @if(Session::has('error'))
+                    <div class="error-message-container">
+                        <p class="error-message">{{ Session::get('error') }}</p>
+                    </div>
+                @endif
                 <h1 id="page-title">❝ {{__('THE ONLY PERSON WHO CAN STOP YOU FROM REACHING YOUR GOALS IS YOU.') }} ❞</h1>
                 <div class="flex">
                     <p class="move-to-right gray bold" style="margin-top: -14px">~ Jackie Joyner-Kersee</p>

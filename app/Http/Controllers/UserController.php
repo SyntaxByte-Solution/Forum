@@ -190,6 +190,83 @@ class UserController extends Controller
         $user->update($data);
         return redirect()->route('user.passwords.settings')->with('message','Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !');
     }
+    public function account_settings(Request $request) {
+        $user = auth()->user();
+        $this->authorize('update', $user);
+
+        // dd($request);
+        return view('user.settings.account-settings')
+        ->with(compact('user'));
+    }
+
+    public function delete_account(Request $request) {
+        $user = auth()->user();
+        $this->authorize('delete', $user);
+
+        if(Hash::check($request->password, $user->password)) {
+            // Here we need to delete all resources related to this user before deleting the user record
+            $user->delete();
+            return redirect('/home')->with('message', 'Your account is deactivated successfully !');
+        } else {
+            return redirect()->back()->with('error', 'Invalid password !');
+        }
+    }
+
+    public function deactivate_account(Request $request) {
+        $user = auth()->user();
+        $this->authorize('delete', $user);
+
+        $request->validate([
+            'password'=>'required',
+                'confirmed',
+                'string',
+                new IsValidPassword(),
+        ]);
+
+        if(Hash::check($request->password, $user->password)) {
+            // Here we need to delete all resources related to this user before deleting the user record
+            foreach($user->threads as $thread){
+                foreach($thread->posts as $post) {
+                    $post->delete();
+                }
+            }
+
+            foreach($user->threads as $thread){
+                $thread->delete();
+            }
+
+            // Here we chenge the user's account status from active to deactivated
+            $user->set_account_status('deactivated');
+            Auth::logout();
+            return redirect("/home")->with('message', 'Your account is deactivated successfully !');
+        } else {
+            return redirect()->back()->with('errordeactiv', 'Invalid password !');
+        }
+    }
+
+    public function activate_account() {
+        $user = auth()->user();
+        $this->authorize('activate_account', $user);
+
+        if(!$user->account_deactivated()) {
+            return redirect('/')->with('message', "You can't access account activation page because your account is already activated");
+        }
+
+        return view('user.settings.account-activation')
+            ->with(compact('user'));
+    }
+
+    public function activating_account() {
+        $user = auth()->user();
+        $this->authorize('activate_account', $user);
+
+        if($user->account_deactivated()) {
+            $user->set_account_status('active');
+            return redirect('/')->with('message', "Your account is activated successfully !");
+        }
+
+        abort(404);
+    }
 
     public function username_check(Request $request) {
         $response = [

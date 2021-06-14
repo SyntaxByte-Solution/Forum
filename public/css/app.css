@@ -84,11 +84,11 @@ a, input, textarea {
 }
 
 .fs13 {
-    font-size: 13px;
+    font-size: 13px !important;
 }
 
 .fs12 {
-    font-size: 12px;
+    font-size: 12px !important;
 }
 
 .fs11 {
@@ -301,13 +301,13 @@ a, input, textarea {
 }
 
 .mx4 {
-    margin-left: 4px;
-    margin-right: 4px;
+    margin-left: 4px !important;
+    margin-right: 4px !important;
 }
 
 .my4 {
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
 }
 
 .mx8 {
@@ -735,7 +735,7 @@ a, input, textarea {
     position: absolute;
     top: 20px;
     padding: 4px;
-    min-width: 160px;
+    min-width: 132px;
     border-top-right-radius: 4px;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
@@ -1236,7 +1236,7 @@ a, input, textarea {
 }
   
 td, th {
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #d5d5d5;
     text-align: left;
 }
 
@@ -1258,7 +1258,7 @@ td {
 }
 
 tr:nth-child(2n) {
-    background-color: rgb(250, 250, 250);
+    background-color: rgb(246, 246, 246);
 }
 
 .table-numbered-column {
@@ -1334,8 +1334,8 @@ tr:nth-child(2n) {
 }
 
 .adv-search-button {
-    height: 26px;
-    width: 26px;
+    height: 23px;
+    width: 23px;
 }
 
 .default-cursor {
@@ -1692,6 +1692,26 @@ tr:nth-child(2n) {
 
 .toggle-container {
     display: none;
+}
+
+.index-content-section {
+    box-sizing: border-box;
+    padding: 8px;
+    margin: 4px;
+    border-radius: 6px;
+    background-color: #81e7ff12;
+    border: 1px solid #069ef954;
+}
+
+.feedback-textarea {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 6px;
+    border: 1px solid gray;
+    border-radius: 6px;
+    max-height: 120px;
+    max-width: 100%;
 }
 
 .ms-table-small-button {

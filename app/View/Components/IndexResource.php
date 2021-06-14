@@ -21,6 +21,7 @@ class IndexResource extends Component
     public $forum;
 
     public $type;
+    public $type_link;
     public $thread_type;
     public $thread_title;
     public $thread_content;
@@ -72,12 +73,14 @@ class IndexResource extends Component
             $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
             $this->edit_link = route('discussion.edit', ['user'=>$this->thread_owner, 'thread'=>$thread->id]);
             $this->thread_icon = 'assets/images/icns/discussions.png';
-            $this->type = "Discussion";
+            $this->type = "Discussions";
+            $this->type_link = route('category.discussions', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);
         } else if($thread->thread_type == 2) {
             $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
             $this->edit_link = route('question.edit', ['user'=>$this->thread_owner, 'thread'=>$thread->id]);
             $this->thread_icon = 'assets/images/icns/questions.png';
-            $this->type = "Question";
+            $this->type = "Questions";
+            $this->type_link = route('category.questions', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);
         }
 
         if($last_post) {

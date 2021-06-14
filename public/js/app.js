@@ -24,6 +24,10 @@ $('.button-with-strip').on({
     }
 })
 
+$('.stop-propagation').click(function(event) {
+    event.stopPropagation();
+})
+
 $('.block-click').click(function() {
     return false;
 });

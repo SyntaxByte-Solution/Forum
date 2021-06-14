@@ -25,11 +25,11 @@
                 <div class="flex space-between align-end">
                     <div>
                         <h2 class="my8 fs20 forum-color">TOP Questions & Discussions</h2>
-                        <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for everything (users, threads, posts ..)') }}</p>
+                        <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for everything (users, threads, questions, posts ..)') }}</p>
                         <div class="flex align-center">
                             <div>
                                 <form action="" method='get'>
-                                    <input type="text" name="k" class="input-style-2" placeholder="Search this forum .." required>
+                                    <input type="text" name="k" class="input-style-2" placeholder="Search everything .." required>
                                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                                 </form>
                             </div>
@@ -39,12 +39,16 @@
                         </div>
                     </div>
                     <div class="mr8">
-                        {{ $threads->onEachSide(0)->links() }}
-                        <div class="simple-half-line-separator my4"></div>
                         <div class="flex align-center">
-                            <a href="" class="pagination-item pag-active pagination-item-selected bold">ALL</a>
-                            <a href="" class="pagination-item pag-active bold">TODAY</a>
-                            <a href="" class="pagination-item pag-active bold">INTERESTING  </a>
+                            <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
+                            <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
+                            <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
+                        </div>
+                        <div class="simple-half-line-separator my4 move-to-right"></div>
+                        <div class="flex">
+                            <div class="move-to-right">
+                                {{ $threads->onEachSide(0)->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -52,16 +56,29 @@
                     <tr>
                         <th class="table-col-header">
                             <div class="flex align-center">
-                                {{ __('THREADS') }} ({{\App\Models\Thread::count()}} {{__('in total')}})
+                                {{ __('THREADS') }} ({{$threads->count()}} {{__('in total')}})
                                 <div class="mx4 inline-block move-to-right">
                                     <div class="flex align-center">
-                                        <span>rows: </span>
-                                        <select name="" class="small-dropdown row-num-changer">
-                                            <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                            <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                            <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                                            <option value="100" @if($pagesize == 100) selected @endif>50</option>
-                                        </select>
+                                        <div class="flex align-center mr8">
+                                            <p class="gray fs11 no-margin mr4">Forum: </p>
+                                            <div class="relative">
+                                                <a href="{{ route('forum.misc', ['forum'=>'general']) }}" class="mr4 button-right-icon more-icon button-with-suboptions">{{ __('All') }}</a>
+                                                <div class="suboptions-container suboptions-buttons-b-style" style="top: 16px">
+                                                    @foreach($forums as $forum)
+                                                        <a href="{{ route('forum.misc', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex align-center">
+                                            <span>rows: </span>
+                                            <select name="" class="small-dropdown row-num-changer">
+                                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                                <option value="20" @if($pagesize == 20) selected @endif>20</option>
+                                                <option value="50" @if($pagesize == 50) selected @endif>50</option>
+                                                <option value="100" @if($pagesize == 100) selected @endif>50</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -73,6 +90,14 @@
                         <x-index-resource :thread="$thread"/>
                     @endforeach
                 </table>
+                @if(!$threads->count())
+                    <div class="full-center">
+                        <div>
+                            <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("There are no threads for the moment try out later !") }}</p>
+                            <p class="my4 text-center">{{ __("Try to create a ") }} <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="link-path">{{__('discussion')}}</a> / <a href="{{ route('question.add', ['forum'=>'general']) }}" class="link-path">{{__('question')}}</a></p>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="index-right-panel-container border-box">
@@ -83,14 +108,18 @@
                         <p class="bold my8">{{ __('Forums') }}</p>
                     </div>
                     <div class="move-to-right">
-                        <a href="" class="link-style">see all</a>
+                        <a href="/forums" class="link-style">see all</a>
                     </div>
                 </div>
                 <div class="simple-line-separator mb8"></div>
                 <div class="ml8">
                     @foreach($forums as $forum)
                     <div class="my8">
-                        <a href="" class="black bold toggle-container-button no-underline">{{ $forum->forum }}<span class="toggle-arrow">▸</span></a>
+                        <div class="flex align-center bold toggle-container-button pointer">
+                            {{ $forum->forum }}
+                            <span class="toggle-arrow">▸</span>
+                            <a href="{{ route('forum.misc', ['forum'=>$forum->slug]) }}" class="stop-propagation move-to-right link-style fs13 mr8">visit</a>
+                        </div>
                         <div class="toggle-container ml8">
                             @foreach($forum->categories as $category)
                             <div class="my8">
@@ -154,6 +183,51 @@
                     <div class="simple-half-line-separator my8"></div>
                 @endif
                 @endforeach
+            </div>
+            <div class="index-right-panel mt8">
+                <div class="flex align-center mx8">
+                    <img src="{{ asset('assets/images/icons/bfeedback.png') }}" class="small-image mr4" style="margin-top: -3px" alt="">
+                    <p class="bold my8">{{ __('Give us feedback') }}</p>
+                </div>
+                <div class="full-center">
+                    <a href="" class="mx4">
+                        <img src="{{ asset('assets/images/icons/emoji-sad.svg') }}" class="mx4 rounded-style-1" alt="">
+                    </a>
+                    <a href="" class="mx4">
+                        <img src="{{ asset('assets/images/icons/emoji-thinking.svg') }}" class="mx4 rounded-style-1" alt="">
+                    </a>
+                    <a href="" class="mx4">
+                        <img src="{{ asset('assets/images/icons/emoji-sceptic.svg') }}" class="mx4 rounded-style-1" alt="">
+                    </a>
+                    <a href="" class="mx4">
+                        <img src="{{ asset('assets/images/icons/emoji-happy.svg') }}" class="mx4 rounded-style-1" alt="">
+                    </a>
+                    <a href="" class="mx4">
+                        <img src="{{ asset('assets/images/icons/emoji-veryhappy.svg') }}" class="mx4 rounded-style-1" alt="">
+                    </a>
+                </div>
+                <p class="fs12 my8">We are here to anwser any questions you may have about us or any feedback do you have about the website. Reach out to us using below form, and we'll respond as soon as we can.</p>
+                <form action="">
+                    @guest
+                    <div class="input-container">
+                        <label for="subject" class="label-style-1 fs13">{{ __('Email') }} @error('email') <span class="error mr4">*</span> @enderror</label>
+                        <input type="email" id="email" name="email" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
+                        @error('email')
+                            <p class="error" role="alert">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    @endguest
+                    <div class="input-container">
+                        <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} @error('feedback') <span class="error mr4">*</span> @enderror</label>
+                        <textarea name="" id="" class="feedback-textarea" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
+                        @error('feedback')
+                            <p class="error" role="alert">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="flex">
+                        <input type="button" value="send" class="move-to-right">
+                    </div>
+                </form>
             </div>
             <div class="index-right-panel mt8">
                 <div class="flex align-center mx8">

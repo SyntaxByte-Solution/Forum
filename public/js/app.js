@@ -15,6 +15,15 @@ if(urlParams.has('action')) {
 
 // -------------------------------
 
+$('.button-with-strip').on({
+    mouseenter: function() {
+        $(this).find('.menu-botton-bottm-strip').css('display', 'block');
+    },
+    mouseleave: function() {
+        $(this).find('.menu-botton-bottm-strip').css('display', 'none');
+    }
+})
+
 $('.block-click').click(function() {
     return false;
 });

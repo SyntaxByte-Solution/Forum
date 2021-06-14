@@ -30,7 +30,7 @@
                         </div>
                         <span class="relative">
                             <span class="tooltip-section">- {{ $post_date }}</span>
-                            <span class="tooltip">{{ $post_created_at }}</span>
+                            <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
                         </span>
                         @if($post_updated_at)
                             <span class="relative" style="margin-left: 8px">

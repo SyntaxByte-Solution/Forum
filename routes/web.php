@@ -107,10 +107,6 @@ Route::middleware(['auth'])->group(function () {
     
 });
 
-Route::get('/{forum:slug}/{category:slug}/discussions/{thread}', [ThreadController::class, 'show'])->name('discussion.show');
-Route::get('/{forum:slug}/{category:slug}/questions/{thread}', [ThreadController::class, 'show'])->name('question.show');
-
-
 /**
  * 1. get all discussions & questions of the specified category of the forum in the url 
  * (all in the first route means all thread types [Discussions, questions, advices ..])
@@ -130,3 +126,5 @@ Route::get('/users/{user:username}/threads/discussions', [UserController::class,
 Route::get('/users/{user:username}/threads/questions', [UserController::class, 'user_questions'])->name('user.questions');
 Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/users/username/check', [UserController::class, 'username_check']);
+
+Route::get('/{forum:slug}/{category:slug}/{thread}', [ThreadController::class, 'show'])->name('thread.show');

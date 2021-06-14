@@ -20,7 +20,7 @@ header {
 }
 
 #header-logo-container {
-    margin-right: 14px;
+    margin: 0 16px;
 }   
 
 #header-logo {

@@ -1,4 +1,4 @@
-<div class="right-panel">
+<div id="right-panel">
     <div>
         <div class="panel-section-heading-container full-center">
             <p class="panel-section-title">Hot discussions & questions</p>

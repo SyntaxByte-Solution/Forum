@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{User, Post, Category};
+use App\Models\{User, Post, Category, Forum};
 
 class Thread extends Model
 {
@@ -28,5 +28,9 @@ class Thread extends Model
 
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+
+    public function forum() {
+        return Forum::find($this->category->forum_id);
     }
 }

@@ -15,9 +15,9 @@
             <div class="selected-colored-slice"></div>
         @endif
     </div>
-    @auth
-        @php
-            $same_user = false;
+    @php
+        $same_user = false;
+        if(auth()->user()) {
             if(request()->user) {
                 $same_user = (auth()->user()->username == request()->user->username) ? true : false;
 
@@ -28,8 +28,9 @@
                     }
                 }
             }
-
-        @endphp
+        }
+    @endphp
+    @auth
     <div class="relative">
         <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span></a>
         <div class="toggle-container" @isset($subpage) @if($same_user) style="display: block" @endif @endisset>
@@ -102,8 +103,8 @@
     <div>
         <p class="left-panel-label">MORE</p>
         <div class="relative">
-            <a href="" class="left-panel-item lp-wpadding @if($page == 'misc') {{ 'lp-selected' }} @endif"><span class="line-bootstraper">●</span>{{ __('Miscellaneous') }}</a>
-            @if($page == 'misc')
+            <a href="" class="left-panel-item lp-wpadding @if($page == 'adv-search') {{ 'lp-selected' }} @endif">{{ __('Adv. Search') }}</a>
+            @if($page == 'adv-search')
                 <div class="selected-colored-slice"></div>
             @endif
         </div>

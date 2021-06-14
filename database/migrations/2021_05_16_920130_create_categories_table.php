@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug');
             $table->string('description');
             $table->unsignedBigInteger('forum_id');
+            $table->text('icon')->nullable();
             $table->unsignedBigInteger('status');
             $table->foreign('forum_id')->references('id')->on('forums');
             $table->foreign('status')->references('id')->on('category_status');

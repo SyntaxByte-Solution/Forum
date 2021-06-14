@@ -59,11 +59,11 @@ class MsResourceTableRow extends Component
         $this->hasLastPost = $last_post = $thread->posts->last();
 
         if($thread->thread_type == 1) {
-            $this->thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
+            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
             $this->edit_link = route('discussion.edit', ['user'=>$this->thread_owner, 'thread'=>$thread->id]);
             $this->thread_icon = 'assets/images/icns/discussions.png';
         } else if($thread->thread_type == 2) {
-            $this->thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
+            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
             $this->edit_link = route('question.edit', ['user'=>$this->thread_owner, 'thread'=>$thread->id]);
             $this->thread_icon = 'assets/images/icns/questions.png';
         }
@@ -75,9 +75,9 @@ class MsResourceTableRow extends Component
             $this->last_post_date = $last_post->created_at;
 
             if($thread->thread_type == 1) {
-                $this->last_post_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
+                $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
             } else if($thread->thread_type == 2) {
-                $this->last_post_url = route('question.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
+                $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
             }
         }
     }

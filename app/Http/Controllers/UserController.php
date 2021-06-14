@@ -125,7 +125,13 @@ class UserController extends Controller
          * Try to create user activity system where you store every activity of the user
          * and only allow the profile views counter to increment only once per hour per user
         */
-        if($user->username != auth()->user()->username) {
+        if(auth()->user()) {
+            if($user->username != auth()->user()->username) {
+                $user->update([
+                    'profile_views'=>$user->profile_views + 1
+                ]);
+            }
+        } else {
             $user->update([
                 'profile_views'=>$user->profile_views + 1
             ]);

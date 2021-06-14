@@ -41,7 +41,7 @@ class ForumTableRow extends Component
             $this->last_thread_owner_username = User::find($last_thread->user_id)->username;
             $this->last_thread_date = $last_thread->created_at;
             if($last_thread->thread_type == 1) {
-                $this->last_thread_link = route('discussion.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$last_thread->id]);
+                $this->last_thread_link = route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$last_thread->id]);
             } else if($last_thread->thread_type == 2) {
 
             }

@@ -102,6 +102,7 @@
                                 <p class="gray no-margin fs13">Follow</p>
                             </div>
                         </a>
+                        @can('update', $thread)
                         <div class="relative">
                             <a href="" class="black-link button-with-suboptions">
                                 <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
@@ -114,6 +115,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endcan
                     </div>
                 </div>
                 <p class="thread-title">{{ $thread_subject }}</p>    
@@ -135,9 +137,9 @@
                         </div>
                         <div class="relative">
                             <a href="" class="link-without-underline-style button-with-suboptions copy-container-button" class="block" style="margin: 4px; font-size: 12px">Direct Link ▾</a>
-                            <div class="absolute button-simple-container suboptions-container">
+                            <div class="absolute button-simple-container suboptions-container" style="z-index: 1">
                                 <div class="flex">
-                                    <input type="text" value="{{ $thread_url }}" class="simple-input">
+                                    <input type="text" value="{{ $thread_url }}" class="simple-input" style="width: 240px">
                                     <a href="" class="input-button-style flex align-center copy-button">
                                         <div>copy</div>
                                     </a>

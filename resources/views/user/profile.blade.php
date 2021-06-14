@@ -23,7 +23,7 @@
                 <div class="relative us-user-media-container">
                     <div class="us-cover-container full-center">
                         @if(!$user->cover)
-                            @if($user->id == auth()->user()->id)
+                            @if(auth()->user() && $user->id == auth()->user()->id)
                             <a href="{{ route('user.settings') }}" class="no-underline change-cover full-center full-width full-height">
                                 <div class="flex align-center">
                                     <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
@@ -96,7 +96,8 @@
                     <div class="half-width ml4 us-user-info-container full">
                         <h3 class="m4 forum-color" style="margin-bottom: 14px">Friends</h3>
                         <div class="full-center">
-                            @if($user->id == auth()->user()->id)
+
+                            @if(auth()->user() && $user->id == auth()->user()->id)
                                 <p class="forum-color text-center">You don't have friends for the moments ! search for people and send friend requests</p>
                             @else
                                 <p class="forum-color text-center">This user has no friends for the moments !</p>
@@ -104,7 +105,7 @@
                         </div>
                         <h3 class="m4 forum-color" style="margin-bottom: 14px">Followers</h3>
                         <div class="full-center">
-                            @if($user->id == auth()->user()->id)
+                            @if(auth()->user() && $user->id == auth()->user()->id)
                                 <p class="forum-color text-center">You don't have any followers for the moments ! search for people to follow them !</p>
                             @else
                                 <p class="forum-color text-center">This user has no followers for the moments !</p>

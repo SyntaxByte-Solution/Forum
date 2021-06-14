@@ -1,6 +1,17 @@
-main {
-    padding-right: 280px;
+
+.index-right-panel-container {
+    width: 280px;
+    min-width: 280px;
+    margin-left: 10px;
 }
+
+.index-right-panel {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #b9b9b9;
+}
+
+/* ------------------------------------- */
 
 .right-panel {
     position: absolute;

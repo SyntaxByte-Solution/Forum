@@ -53,9 +53,9 @@ class DiscussionTableRow extends Component
         $this->replies = $discussion->posts->count();
 
         if($discussion->thread_type == 1) {
-            $this->thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category->slug,'thread'=>$discussion->id]);
+            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category->slug,'thread'=>$discussion->id]);
         } else if($discussion->thread_type == 2) {
-            $this->thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category->slug, 'thread'=>$discussion->id]);
+            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category->slug, 'thread'=>$discussion->id]);
         }
 
         $this->fetch_last_post($discussion);
@@ -72,9 +72,9 @@ class DiscussionTableRow extends Component
             $this->last_post_date = (new Carbon($last_post->created_at))->toDayDateTimeString();
 
             if($thread->thread_type == 1) {
-                $this->last_post_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category->slug,'thread'=>$thread->id, '#' . $last_post->id]);
+                $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category->slug,'thread'=>$thread->id, '#' . $last_post->id]);
             } else if($thread->thread_type == 2) {
-                $this->last_post_url = route('question.show', ['forum'=>$forum, 'category'=>$category->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
+                $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
             }
         } else {
             $this->thread_date = (new Carbon($thread->created_at))->toDayDateTimeString();

@@ -10,16 +10,27 @@
                 <img src='{{ asset("assets/images/logos/large-logo.png") }}' alt="header logo" id="header-logo">
             </a>
         </div>
-        <div class="h-menu">
-            <a href="/" class="menu-link-button">Home</a>
-            <div class="menu-separator">〡</div>
-            <a href="" class="menu-link-button">Announcements</a>
-            <div class="menu-separator">〡</div>
-            <a href="" class="menu-link-button">About Us</a>
-            <div class="menu-separator">〡</div>
-            <a href="" class="menu-link-button">Contact</a>
-            <div class="menu-separator">〡</div>
-            <a href="" class="menu-link-button">FAQ</a>
+        <div class="flex align-center full-height">
+            <a href="/" class="menu-button-style button-with-strip relative">
+                <span class="white bold">Home</span>
+                <div class="menu-botton-bottm-strip"></div>
+            </a>
+            <a href="" class="menu-button-style button-with-strip relative">
+                <span class="white bold">Announcements</span>
+                <div class="menu-botton-bottm-strip"></div>
+            </a>
+            <a href="" class="menu-button-style button-with-strip relative">
+                <span class="white bold">About Us</span>
+                <div class="menu-botton-bottm-strip"></div>
+            </a>
+            <a href="" class="menu-button-style button-with-strip relative">
+                <span class="white bold">Contact</span>
+                <div class="menu-botton-bottm-strip"></div>
+            </a>
+            <a href="" class="menu-button-style button-with-strip relative">
+                <span class="white bold">FAQs</span>
+                <div class="menu-botton-bottm-strip"></div>
+            </a>
         </div>
 
         <div id="search-and-login" class="flex align-center move-to-right">
@@ -86,8 +97,8 @@
                             <div class="triangle"></div>
                             
                             <div class="flex align-center first-profile-container-part">
-                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
-                                <h2>{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</h2>
+                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded rounded-style-1 mr8">
+                                <h3 class="no-margin">{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</h3>
                             </div>
                             <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
                             <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>

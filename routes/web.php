@@ -6,8 +6,8 @@ use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
-    SearchController, FeedbackController};
-use App\Models\{UserPersonalInfos, AccountStatus};
+    SearchController, FeedbackController, VoteController};
+use App\Models\{Thread, Vote};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -22,8 +22,8 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 Route::get('/test', function() {
-    $user = auth()->user();
-    dd($user->account_status);
+    $vote = Vote::first();
+    dd($vote->votable);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -50,7 +50,6 @@ Route::middleware(['auth'])->group(function () {
      * The routes that are accessible for only admins should be placed in a group
      * with authorization defined as middleware.
      */
-
     Route::post('/roles', [RolesController::class, 'create']);
     Route::patch('/roles/{role}', [RolesController::class, 'update']);
     Route::delete('/roles/{role}', [RolesController::class, 'destroy']);
@@ -99,6 +98,9 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);
     Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);
+
+    Route::post('/{thread}/vote', [VoteController::class, 'thread_vote'])->name('thread.vote');
+    Route::post('/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
 });
 
 /**

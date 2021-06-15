@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{User, Post, Category, Forum};
+use App\Models\{User, Post, Category, Forum, Vote};
 
 class Thread extends Model
 {
@@ -15,6 +15,10 @@ class Thread extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function votes() {
+        return $this->morphMany(Vote::class, 'votable');
     }
 
     public function scopeToday($builder)

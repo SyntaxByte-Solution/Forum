@@ -97,11 +97,11 @@ class ThreadController extends Controller
             $category = Category::find($data['category_id'])->slug;
 
             if(request()->thread_type == 1) {
-                $duplicate_thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+                $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
                 \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
                 return redirect()->back();
             } else if(request()->thread_type == 2) {
-                $duplicate_thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+                $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
                 \Session::flash('message', "This question subject is already exists in your questions list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
                 return redirect()->back();
             }
@@ -190,7 +190,7 @@ class ThreadController extends Controller
              * reload the page by passing flash message to inform the user
              */ 
             if(request()->thread_type == 1) {
-                $duplicate_thread_url = route('discussion.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+                $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
                 \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
                 return route('discussion.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
             } else if(request()->thread_type == 2) {
@@ -212,9 +212,9 @@ class ThreadController extends Controller
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
 
         if($data['thread_type'] == 1) {
-            return route('discussion.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
+            return route('thread.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
         } else if($data['thread_type'] == 2) {
-            return route('question.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
+            return route('thread.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
         }
     }
 
@@ -252,9 +252,10 @@ class ThreadController extends Controller
 
         /**
          * Before deleting the thread, we need to clear all posts related to this thread
+         * Here web need to destroy votes as well
          */
         foreach($thread->posts as $post) {
-            $post->delete();
+            $post->forceDelete();
         }
 
         $thread->forceDelete();

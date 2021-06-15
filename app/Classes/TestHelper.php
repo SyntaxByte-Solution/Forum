@@ -138,8 +138,4 @@ class TestHelper {
 
         return UserStatus::where('slug', $slug)->first();
     }
-
-    public function create_thread() {
-        
-    }
 }

@@ -201,7 +201,7 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function when_a_thread_is_force_deleted_all_related_replies_and_must_be_deleted_as_well() {
+    public function when_a_thread_is_force_deleted_all_related_resources_must_be_deleted_as_well() {
         $this->withoutExceptionHandling();
 
         $thread = Thread::create([

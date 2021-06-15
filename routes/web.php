@@ -99,8 +99,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);
     Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);
 
-    Route::post('/{thread}/vote', [VoteController::class, 'thread_vote'])->name('thread.vote');
-    Route::post('/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
+    Route::post('/threads/{thread}/vote', [VoteController::class, 'thread_vote'])->name('thread.vote');
+    Route::post('/posts/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
 });
 
 /**

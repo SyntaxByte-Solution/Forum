@@ -128,4 +128,35 @@ class VoteTest extends TestCase
         $this->assertCount(1, $thread->votes);
         $this->assertEquals(-1, $thread->votes->first()->vote);
     }
+
+    /** @test */
+    public function handle_three_cases_on_post_table() {
+        $post = Post::first();
+
+        // First case
+        $this->assertCount(0, $post->votes);
+        $this->post(route('post.vote', ['post'=>$post->id]), [
+            'vote'=>1
+        ]);
+        $post->load('votes');
+        $this->assertCount(1, $post->votes);
+
+        // Second case
+        $this->post(route('post.vote', ['post'=>$post->id]), [
+            'vote'=>1
+        ]);
+        $post->load('votes');
+        $this->assertCount(0, $post->votes);
+
+        // Third case
+        $this->post(route('post.vote', ['post'=>$post->id]), [
+            'vote'=>-1
+        ]);
+        $this->post(route('post.vote', ['post'=>$post->id]), [
+            'vote'=>1
+        ]);
+        $post->load('votes');
+        $this->assertCount(1, $post->votes);
+    }
+
 }

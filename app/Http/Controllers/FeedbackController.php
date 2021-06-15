@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Feedback;
+use App\Models\{Feedback, EmojiFeedback};
+use Illuminate\Validation\Rule;
 
 class FeedbackController extends Controller
 {
@@ -27,5 +28,19 @@ class FeedbackController extends Controller
         $data['feedback'] = $d['feedback'];
 
         Feedback::create($data);
+    }
+
+    public function store_emojifeedback(Request $request) {
+        $data = $request->validate([
+            'emoji_feedback'=>[
+                'required',
+                Rule::in(['sad', 'sceptic', 'so-so', 'happy', 'veryhappy']),
+            ]
+        ]);
+
+        $data['user_id'] = ($u = auth()->user()) ? $u->id : null;
+        $data['ip'] = $request->ip();
+
+        EmojiFeedback::create($data);
     }
 }

@@ -123,6 +123,6 @@ Route::post('/users/username/check', [UserController::class, 'username_check']);
 
 Route::get('/{forum:slug}/{category:slug}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
 
-Route::middleware(['throttle:feedback'])->group(function () {
-    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.save');
-});
+Route::post('/feedback', [FeedbackController::class, 'store'])->middleware(['throttle:feedback'])->name('feedback.save');
+//Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->middleware(['throttle:opd'])->name('feedback.emoji.save');
+Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->name('feedback.emoji.save');

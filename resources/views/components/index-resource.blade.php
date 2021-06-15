@@ -13,7 +13,7 @@
                         <img src="{{ asset('assets/images/icns/' . $forum->icon) }}" class="small-image-2 mr4" alt="">
                         <div class="flex align-center">
                             <a href="{{ route('forum.misc', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
-                            <span class="mx4 fs13">▸</span>
+                            <span class="mx4 fs13 gray">▸</span>
                             <a href="{{ route('category.misc', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="fs11 black-link">{{ $category->category }}</a>
                         </div>
                         <a href="{{ $type_link }}" class="fs11 no-margin link-style move-to-right">{{ $type }}</a>
@@ -22,7 +22,7 @@
                     <div class="index-content-section flex">
                         <div>
                             <div class="flex align-center gray">
-                                <div class="flex align-center" style="margin-top: 2px">
+                                <div class="flex align-center">
                                     <p class="no-margin fs11 flex align-center">posted by</p>
                                     <a href="{{ route('user.profile', ['user'=>$thread_owner]) }}" class="black no-underline bold fs12 mx4">{{ $thread_owner }}</a>
                                     <div class="relative">
@@ -33,10 +33,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex align-center mb4">
-                                <p class="fs15 bold no-margin"><a href="{{ $thread_url }}" class="forum-style-link dark-blue">{{ $thread_title }}</a></p>
+                            <div class="flex align-center my8">
+                                <p class="fs16 bold no-margin"><a href="{{ $thread_url }}" class="forum-style-link dark-blue">{{ $thread_title }}</a></p>
                             </div>
-                            <div class="fs15 my8">
+                            <div class="fs16 my8">
                                 <a href="{{ $thread_url }}" class="black no-underline">{{ $thread_content }}</a>
                             </div>
                         </div>

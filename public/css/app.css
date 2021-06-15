@@ -1696,11 +1696,10 @@ tr:nth-child(2n) {
 
 .index-content-section {
     box-sizing: border-box;
-    padding: 8px;
     margin: 4px;
     border-radius: 6px;
-    background-color: #81e7ff12;
-    border: 1px solid #069ef954;
+    /* background-color: #81e7ff12;
+    border: 1px solid #069ef954; */
 }
 
 .feedback-textarea {

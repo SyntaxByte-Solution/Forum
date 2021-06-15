@@ -635,3 +635,37 @@ $('.send-feedback').click(function() {
         }
     })
 });
+
+$('.emoji-button').click(function(event) {
+    event.preventDefault();
+    let emoji_button = $(this);
+
+    console.log($(this).find('.feedback-emoji-state').val());
+    $(this).find('.emoji-unfilled').css('display', 'none');
+    $('.emoji-unfilled').animate({
+        opacity: '0.5'
+    }, 300);
+    $(this).find('.emoji-filled').removeClass('none');
+
+    $('.emoji-button').off('click');
+    $('.emoji-button').click(function() {
+        return false;
+    });
+
+    $.ajax({
+        url: '/emojifeedback',
+        type: 'post',
+        data: {
+            _token: csrf,
+            emoji_feedback: emoji_button.find('.feedback-emoji-state').val()
+        },
+        success: function(response) {
+            console.log('success');
+        },
+        error: function(response) {
+            console.log('error');
+        }
+    });
+
+    console.log('emoji icon pressed !');
+});

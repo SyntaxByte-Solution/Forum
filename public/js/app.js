@@ -490,8 +490,6 @@ $('.check-username').click(function() {
             let errorObject = JSON.parse(response.responseText).errors;
             let er = errorObject[Object.keys(errorObject)][0]; //returns the first error from laravel validator bag
 
-            console.log(er);
-
             button.parent().find('.error').text(er);
         }
     })
@@ -589,4 +587,51 @@ $('.deactivate-account').click(function() {
     $('#delete-account-container').addClass('none');
 
     return false;
+});
+
+$('.send-feedback').click(function() {
+    console.log('clicked');
+    let button = $(this);
+
+    let feedback_container = $(this);
+    while(!feedback_container.hasClass('feedback-container')) {
+        feedback_container = feedback_container.parent();
+    }
+
+    feedback_container.find('#email').attr('disabled', 'disabled');
+    feedback_container.find('textarea').attr('disabled', 'disabled');
+    button.attr('disabled', 'disabled');
+    button.val('sending..');
+    button.attr('style', 'background-color: #acacac; cursor: default');
+
+    $.ajax({
+        url: '/feedback',
+        type: 'POST',
+        data: {
+            '_token': csrf,
+            'email': feedback_container.find('#email').val(),
+            'feedback': feedback_container.find('#feedback').val(),
+        },
+        success: function(response) {
+            feedback_container.find('.feedback-sec').addClass('none');
+            feedback_container.find('.feedback-sent-success-container').removeClass('none');
+        },
+        error: function(response) {
+            feedback_container.find('#email').removeAttr('disabled');
+            feedback_container.find('textarea').removeAttr('disabled');
+            button.removeAttr('disabled');
+            button.val('send');
+            button.attr('style', '');
+            let er = '';
+            try {
+                let errorObject = JSON.parse(response.responseText).errors;
+                er = errorObject[Object.keys(errorObject)][0];
+            } catch(e) {
+                er = 'This form has limited attempts please try again later !';
+            }
+
+            feedback_container.find('.error').removeClass('none');
+            feedback_container.find('.error').text('* ' + er);
+        }
+    })
 });

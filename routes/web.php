@@ -6,7 +6,7 @@ use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
-    SearchController};
+    SearchController, FeedbackController};
 use App\Models\{UserPersonalInfos, AccountStatus};
 use App\Http\Middleware\AccountActivationCheck;
 
@@ -31,29 +31,6 @@ Route::get('/home', [IndexController::class, 'index']);
 Route::get('/forums', [IndexController::class, 'forums']);
 
 
-
-/** 
- * The routes that are accessible for only admins should be placed in a group
- * with authorization defined as middleware.
- */
-
-Route::post('/roles', [RolesController::class, 'create']);
-Route::patch('/roles/{role}', [RolesController::class, 'update']);
-Route::delete('/roles/{role}', [RolesController::class, 'destroy']);
-Route::post('/roles/attach', [RolesController::class, 'attach']);
-Route::delete('/users/{user}/roles/{role}/detach', [RolesController::class, 'detach']);
-
-Route::patch('/permissions/{permission}', [PermissionsController::class, 'update']);
-Route::delete('/permissions/{permission}', [PermissionsController::class, 'destroy']);
-
-Route::post('roles/{role}/permissions/attach', [PermissionsController::class, 'attach_permission_to_role']);
-Route::post('roles/{role}/permissions/{permission}/detach', [PermissionsController::class, 'detach_permission_from_role']);
-
-Route::post('/categories', [CategoryController::class, 'store']);
-Route::patch('/categories/{category}', [CategoryController::class, 'update']);
-Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
-
-
 /**
  * Search routes
  */
@@ -69,10 +46,29 @@ Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussio
 Route::get('/{forum:slug}/questions', [ThreadController::class, 'all_questions'])->name('get.all.forum.questions');
 
 Route::middleware(['auth'])->group(function () {
+    /** 
+     * The routes that are accessible for only admins should be placed in a group
+     * with authorization defined as middleware.
+     */
+
+    Route::post('/roles', [RolesController::class, 'create']);
+    Route::patch('/roles/{role}', [RolesController::class, 'update']);
+    Route::delete('/roles/{role}', [RolesController::class, 'destroy']);
+    Route::post('/roles/attach', [RolesController::class, 'attach']);
+    Route::delete('/users/{user}/roles/{role}/detach', [RolesController::class, 'detach']);
+
+    Route::patch('/permissions/{permission}', [PermissionsController::class, 'update']);
+    Route::delete('/permissions/{permission}', [PermissionsController::class, 'destroy']);
+
+    Route::post('roles/{role}/permissions/attach', [PermissionsController::class, 'attach_permission_to_role']);
+    Route::post('roles/{role}/permissions/{permission}/detach', [PermissionsController::class, 'detach_permission_from_role']);
+
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::patch('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
     Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
     Route::get('/{forum:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
-
     
     Route::get('/{user:username}/discussions/{thread}/edit', [ThreadController::class, 'edit'])->name('discussion.edit');
     Route::get('/{user:username}/questions/{thread}/edit', [ThreadController::class, 'edit'])->name('question.edit');
@@ -101,10 +97,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/settings/account/delete', [UserController::class, 'delete_account'])->name('delete.user.account');
     Route::patch('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->name('deactivate.user.account');
     
-    Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);;
-    Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);;
-
-    
+    Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);
+    Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);
 });
 
 /**
@@ -128,3 +122,7 @@ Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('
 Route::post('/users/username/check', [UserController::class, 'username_check']);
 
 Route::get('/{forum:slug}/{category:slug}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
+
+Route::middleware(['throttle:feedback'])->group(function () {
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.save');
+});

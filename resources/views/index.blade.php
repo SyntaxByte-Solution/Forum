@@ -206,28 +206,35 @@
                         <img src="{{ asset('assets/images/icons/emoji-veryhappy.svg') }}" class="mx4 rounded-style-1" alt="">
                     </a>
                 </div>
-                <p class="fs12 my8">We are here to anwser any questions you may have about us or any feedback do you have about the website. Reach out to us using below form, and we'll respond as soon as we can.</p>
-                <form action="">
-                    @guest
-                    <div class="input-container">
-                        <label for="subject" class="label-style-1 fs13">{{ __('Email') }} @error('email') <span class="error mr4">*</span> @enderror</label>
-                        <input type="email" id="email" name="email" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
-                        @error('email')
-                            <p class="error" role="alert">{{ $message }}</p>
-                        @enderror
+                <p class="fs12 my8">We are here to anwser any questions you may have about us or any feedback you have about the website. Reach out to us using below form, and we'll respond as soon as we can.</p>
+                <div class="feedback-container">
+                    <div class="feedback-sent-success-container green-message-container none">
+                        <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image move-to-middle" alt="">
+                        <p class="fs13 no-margin text-center green-message">{{ __('Your feedback is sent successfully.') }}</p>
                     </div>
-                    @endguest
-                    <div class="input-container">
-                        <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} @error('feedback') <span class="error mr4">*</span> @enderror</label>
-                        <textarea name="" id="" class="feedback-textarea" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
-                        @error('feedback')
-                            <p class="error" role="alert">{{ $message }}</p>
-                        @enderror
+                    <div class="feedback-sec">
+                        <p class="no-margin my4 none error"></p>
+                        @guest
+                        <div class="input-container">
+                            <label for="subject" class="label-style-1 fs13">{{ __('Email') }} @error('email') <span class="error mr4">*</span> @enderror</label>
+                            <input type="email" id="email" name="email" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
+                            @error('email')
+                                <p class="error" role="alert">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        @endguest
+                        <div class="input-container">
+                            <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} @error('feedback') <span class="error mr4">*</span> @enderror</label>
+                            <textarea name="feedback" id="feedback" class="feedback-textarea" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
+                            @error('feedback')
+                                <p class="error" role="alert">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="flex">
+                            <input type="button" value="send" class="move-to-right button-style-1 send-feedback">
+                        </div>
                     </div>
-                    <div class="flex">
-                        <input type="button" value="send" class="move-to-right">
-                    </div>
-                </form>
+                </div>
             </div>
             <div class="index-right-panel mt8">
                 <div class="flex align-center mx8">

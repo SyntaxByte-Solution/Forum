@@ -90,7 +90,7 @@ $('.close-shadowed-view-button').click(function() {
     return false;
 });
 
-$('#login-signin-button').click(function() {
+$('.login-signin-button').click(function() {
     $('#login-view').parent().css('display', 'block');
     $('#login-view').parent().css('opacity', '1');
 
@@ -669,3 +669,100 @@ $('.emoji-button').click(function(event) {
 
     console.log('emoji icon pressed !');
 });
+
+let vote_lock = true;
+$('.thread-up-vote').click(function(event) {
+    if(!vote_lock) {
+        return false;
+    }
+    vote_lock = false;
+
+    let button = $(this);
+    if(button.find('.vote-up-image').hasClass('none')) {
+        button.find('.vote-up-image').removeClass('none');
+        button.find('.vote-up-filled-image').addClass('none');
+    
+        button.parent().find('.vote-down-image').removeClass('none');
+        button.parent().find('.vote-down-filled-image').addClass('none');
+    } else {
+        button.find('.vote-up-image').addClass('none');
+        button.find('.vote-up-filled-image').removeClass('none');
+    
+        button.parent().find('.vote-down-image').removeClass('none');
+        button.parent().find('.vote-down-filled-image').addClass('none');
+    }
+
+    let resource_container = $(this);
+    while(!resource_container.hasClass('resource-container')) {
+        resource_container = resource_container.parent();
+    }
+    let thread_id = resource_container.find('.thread-id').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/threads/' + thread_id + '/vote',
+        data: {
+            _token: csrf,
+            'vote': 1
+        },
+        success: function(response) {
+            button.parent().find('.thread-vote-count').text(response);
+            vote_lock = true;
+        },
+        error: function(response) {
+            vote_lock = true;
+        }
+    })
+
+    event.preventDefault();
+});
+
+$('.thread-down-vote').click(function(event) {
+    if(!vote_lock) {
+        return false;
+    }
+    vote_lock = false;
+
+    let button = $(this);
+    if(button.find('.vote-down-image').hasClass('none')) {
+        button.find('.vote-down-image').removeClass('none');
+        button.find('.vote-down-filled-image').addClass('none');
+    
+        button.parent().find('.vote-up-image').removeClass('none');
+        button.parent().find('.vote-up-filled-image').addClass('none');
+    } else {
+        button.find('.vote-down-image').addClass('none');
+        button.find('.vote-down-filled-image').removeClass('none');
+    
+        button.parent().find('.vote-up-image').removeClass('none');
+        button.parent().find('.vote-up-filled-image').addClass('none');
+    }
+
+    let resource_container = $(this);
+    while(!resource_container.hasClass('resource-container')) {
+        resource_container = resource_container.parent();
+    }
+    let thread_id = resource_container.find('.thread-id').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/threads/' + thread_id + '/vote',
+        data: {
+            _token: csrf,
+            'vote': -1
+        },
+        success: function(response) {
+            button.parent().find('.thread-vote-count').text(response);
+            vote_lock = true;
+        },
+        error: function(response) {
+            vote_lock = true;
+        }
+    });
+
+    event.preventDefault();
+});
+
+function handle_vote() {
+
+}

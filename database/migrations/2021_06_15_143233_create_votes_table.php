@@ -21,7 +21,7 @@ class CreateVotesTable extends Migration
             $table->unsignedBigInteger('votable_id');
             $table->string('votable_type');
 
-            $table->unique('vote', 'user_id', 'votable_id', 'votable_type');
+            $table->unique(['vote', 'user_id', 'votable_id', 'votable_type']);
             $table->timestamps();
         });
     }

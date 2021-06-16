@@ -1,11 +1,18 @@
-<tr>
+<tr class="resource-container">
     <input type="hidden" class="thread-type" value="{{ $thread_type }}">
+    <input type="hidden" class="thread-id" value="{{ $thread_id }}">
     <td>
         <div class="flex">
-            <div class="mr8">
-                <a href="" class="up-icon thread-vote-button thread-up-vote"></a>
-                <p class="bold fs17 no-margin text-center">0</p>
-                <a href="" class="down-icon thread-vote-button thread-down-vote"></a>
+            <div class="mr8 flex flex-column align-center">
+                <a href="" class="@auth thread-up-vote @endauth @guest login-signin-button @endguest">
+                    <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($thread, 'App\Models\Thread') @else none @endupvoted" alt="">
+                    <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($thread, 'App\Models\Thread') none @endupvoted" alt="">
+                </a>
+                <p class="bold fs16 no-margin text-center thread-vote-count">{{ $thread_votes }}</p>
+                <a href="" class="@auth thread-down-vote @endauth @guest login-signin-button @endguest">
+                    <img src="{{ asset('assets/images/icons/down-filled.png') }}" class="small-image vote-down-filled-image @downvoted($thread, 'App\Models\Thread') @else none @enddownvoted" alt="">
+                    <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($thread, 'App\Models\Thread') none @enddownvoted" alt="">
+                </a>
             </div>
             <div class="flex full-width">
                 <div class="full-width">

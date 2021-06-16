@@ -52,27 +52,21 @@ class VoteController extends Controller
                 $founded_vote->delete();
                 if($data['vote'] == 1) {
                     $resource->votes()->save($vote);
-                    return -1;
                 }
-                return 0;
             } else {
                 $founded_vote->delete();
                 if($data['vote'] == -1) {
                     $resource->votes()->save($vote);
-                    return -1;
                 }
-                return 0;
             }
         } else {
             $resource->votes()->save($vote);
-            return 1;
         }
-
-        /**
-         * for return value:
-         *      -1: downvote
-         *      0 : unvoted (due to viting with the same prvious vote value)
-         *      1 : upvote
-         */
+        
+        $vote_count = 0;
+        foreach($resource->votes as $vote) {
+            $vote_count += $vote->vote;
+        }
+        return $vote_count;
     }
 }

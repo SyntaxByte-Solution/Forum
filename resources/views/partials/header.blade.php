@@ -117,7 +117,7 @@
             @guest
             <div id="login" class="flex align-center">
                 <div class="sprite-icon white-sprite login-icon mr4"></div>
-                <a href="" id="login-signin-button" class="white">Register / Login</a>
+                <a href="" class="white login-signin-button">Register / Login</a>
             </div>
             @endguest
         </div>

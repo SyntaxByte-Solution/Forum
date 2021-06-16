@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use App\Models\{Thread, EmojiFeedback, Vote};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,7 +32,31 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::if('canemoji', function () {
             $ip = request()->ip();
-            return \App\Models\EmojiFeedback::where('ip', $ip)->where('created_at', '>', today())->count() == 0;
+            return EmojiFeedback::where('ip', $ip)->where('created_at', '>', today())->count() == 0;
+        });
+
+        Blade::if('upvoted', function ($resource, $type) {
+            if($user=auth()->user()) {
+                return Vote::where('vote', '1')
+                        ->where('user_id', $user->id)
+                        ->where('votable_id', $resource->id)
+                        ->where('votable_type', $type)
+                        ->count() > 0;
+            } else {
+                return false;
+            }
+        });
+
+        Blade::if('downvoted', function ($resource, $type) {
+            if($user=auth()->user()) {
+                return Vote::where('vote', '-1')
+                        ->where('user_id', $user->id)
+                        ->where('votable_id', $resource->id)
+                        ->where('votable_type', $type)
+                        ->count() > 0;
+            } else {
+                return false;
+            }
         });
     }
 }

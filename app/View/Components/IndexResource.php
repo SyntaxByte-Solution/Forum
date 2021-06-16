@@ -22,6 +22,7 @@ class IndexResource extends Component
 
     public $type;
     public $type_link;
+    public $thread_votes;
     public $thread_type;
     public $thread_title;
     public $thread_content;
@@ -41,14 +42,20 @@ class IndexResource extends Component
     public function __construct(Thread $thread)
     {
         $this->thread = $thread;
-        $category_model = Category::find($thread->category_id);
-        $this->resource = $thread;
+        $this->thread_id = $thread->id;
         $this->thread_type = $thread->thread_type;
+
+        $vote_count = 0;
+        foreach($thread->votes as $vote) {
+            $vote_count += $vote->vote;
+        }
+        $this->thread_votes = $vote_count;
+
+        $category_model = Category::find($thread->category_id);
         $this->forum = Forum::find($thread->category->forum_id);
         $forum = $this->forum->slug;
         $this->thread_owner = User::find($thread->user_id)->username;
         
-        $this->thread_id = $thread->id;
         if(strlen($thread->subject) > 80) {
             $this->thread_title = substr($thread->subject, 0, 80) . '..';
         } else {
@@ -95,6 +102,14 @@ class IndexResource extends Component
                 $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
             }
         }
+    }
+
+    function convert($number)
+    {
+        if($number < 1000) return $number;
+        $suffix = ['','k','M','G','T','P','E','Z','Y'];
+        $power = floor(log($number, 1000));
+        return round($number/(1000**$power),1,PHP_ROUND_HALF_EVEN).$suffix[$power];
     }
 
     /**

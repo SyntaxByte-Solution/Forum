@@ -50,60 +50,69 @@
     
     @include('partials.left-panel', ['page' => 'discussions'])
     <div id="middle-container" class="middle-padding-1">
-        <div class="flex space-between full-width">
+        <div class="flex">
             <div>
-                <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum_slug]) }}" class="link-path">{{ $forum_name }} > </a>
-                <span class="current-link-path">{{ $thread_subject }}</span>
-            </div>
-            @auth
-            <div>
-                <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style">{{ __('Start Discussion') }}</a>
-            </div>
-            @endauth
-        </div>
-        <x-thread-component :thread="request()->thread"/>
-
-        <div>
-            <div class="share-post-form">
-                @csrf
-                <div class="input-container">
-                    <div class="fs14" style="margin: 20px 0 8px 0">
-                        <div class="relative">
-                            <span class="absolute" id="reply-site" style="margin-top: -70px"></span>
-                        </div>
-                        <label for="reply-content" class="flex bold">Your reply 
-                            <span class="error frt-error reply-content-error">  *</span>
-                        </label>
+                <div class="flex space-between full-width">
+                    <div>
+                        <a href="/" class="link-path">{{ __('Board index') }} > </a>
+                        <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum_slug]) }}" class="link-path">{{ $forum_name }} > </a>
+                        <span class="current-link-path">{{ $thread_subject }}</span>
                     </div>
-                    <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
-                    <textarea name="subject" class="reply-content" id="post-reply"></textarea>
-                    <style>
-                        .CodeMirror,
-                        .CodeMirror-scroll {
-                            max-height: 150px;
-                            min-height: 150px;
-                        }
-                    </style>
+                    @auth
+                    <div>
+                        <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style">{{ __('Start Discussion') }}</a>
+                    </div>
+                    @endauth
                 </div>
-                <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
-                <input type='button' class="inline-block button-style share-post" value="Post your reply">
+                <x-thread-component :thread="request()->thread"/>
+
+                <div>
+                    <div class="share-post-form">
+                        @csrf
+                        <div class="input-container">
+                            <div class="fs14" style="margin: 20px 0 8px 0">
+                                <div class="relative">
+                                    <span class="absolute" id="reply-site" style="margin-top: -70px"></span>
+                                </div>
+                                <label for="reply-content" class="flex bold">Your reply 
+                                    <span class="error frt-error reply-content-error">  *</span>
+                                </label>
+                            </div>
+                            <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
+                            <textarea name="subject" class="reply-content" id="post-reply"></textarea>
+                            <style>
+                                .CodeMirror,
+                                .CodeMirror-scroll {
+                                    max-height: 150px;
+                                    min-height: 150px;
+                                }
+                            </style>
+                        </div>
+                        <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
+                        <input type='button' class="inline-block button-style share-post" value="Post your reply">
+                    </div>
+                </div>
+                
+                <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
+                <div id="replies-container" style="margin-bottom: 30px">
+                    @foreach($posts as $post)
+                        <x-discussion-post :post="$post->id"/>
+                    @endforeach
+                </div>
+                <script>
+                    $('textarea').each(function() {
+                        var simplemde = new SimpleMDE({
+                            element: this,
+                        });
+                        simplemde.render();
+                    });
+                </script>
+            </div>
+            <div class="index-right-panel-container border-box">
+                <div class="index-right-panel">
+                    
+                </div>
             </div>
         </div>
-        
-        <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
-        <div id="replies-container" style="margin-bottom: 30px">
-            @foreach($posts as $post)
-                <x-discussion-post :post="$post->id"/>
-            @endforeach
-        </div>
-        <script>
-            $('textarea').each(function() {
-                var simplemde = new SimpleMDE({
-                    element: this,
-                });
-                simplemde.render();
-            });
-        </script>
     </div>
 @endsection

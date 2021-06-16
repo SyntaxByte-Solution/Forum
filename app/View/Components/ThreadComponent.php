@@ -19,6 +19,7 @@ class ThreadComponent extends Component
     public $thread;
     public $thread_url;
     public $thread_edit_url;
+    public $thread_votes;
     public $thread_delete_endpoint;
     public $thread_subject;
     public $thread_created_at;
@@ -36,6 +37,12 @@ class ThreadComponent extends Component
         $this->thread = $thread;
         $forum = Forum::find($thread->category->forum_id)->slug;
         $category = Category::find($thread->category_id);
+
+        $vote_count = 0;
+        foreach($thread->votes as $vote) {
+            $vote_count += $vote->vote;
+        }
+        $this->thread_votes = $vote_count;
 
         $this->thread_delete_endpoint = route('thread.destroy', ['thread'=>$thread->id]);
         

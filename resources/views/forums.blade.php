@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'MG Forums')
+
 @push('styles')
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
@@ -33,10 +35,10 @@
                     </div>
                 @endauth
             </div>
-            <div class="full-width">
-                <img src="{{ asset('assets/images/img/welcome.png') }}" class="full-width br6" alt="">
+            <div class="half-width my8">
+                <img src="{{ asset('assets/images/img/forums.png') }}" class="full-width br6" alt="">
             </div>
-            <div id="forums-section">
+            <div id="forums-section" style='padding-top: 0'>
                 <div>
                     @if(Session::has('message'))
                         <div class="green-message-container">
@@ -55,7 +57,7 @@
                 </div>
                 <table class="forums-table">
                     <tr>
-                        <th class="table-col-header">{{ __('MB FORUMS') }}</th>
+                        <th class="table-col-header">{{ __('ALL FORUMS') }}</th>
                         <th class="table-col-header table-numbered-column">{{ __('THREADS') }}</th>
                         <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
                         <th class="table-col-header table-last-post">{{ __('LAST THREAD') }}</th>
@@ -100,12 +102,12 @@
 
                                     <div class="move-to-right flex">
                                         <div class="flex align-center mr8">
-                                            <p class="fs11 no-margin" style="margin-right: 2px">0</p>
+                                            <p class="fs11 no-margin" style="margin-right: 2px">{{ $thread->upvotes }}</p>
                                             <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-size" alt="">
                                         </div>
 
                                         <div class="flex align-center">
-                                            <p class="fs11 no-margin" style="margin-right: 2px">0</p>
+                                            <p class="fs11 no-margin" style="margin-right: 2px">{{ $thread->downvotes }}</p>
                                             <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image-size" alt="">
                                         </div>
                                     </div>

@@ -2,7 +2,7 @@
     <td>
         <div class="flex">
             <div>
-                <div class="black-sprite-icon sprite-size-2 {{ $forum_icon }} mx8"></div>
+                <img src="{{ asset('assets/images/icons') . '/' . $forum_icon }}" class="small-image-1 mx8" alt="">
             </div>
             <div class="flex">
                 <div class="forum-category-icon-container">

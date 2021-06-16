@@ -19,7 +19,7 @@
     <div id="middle-container" class="middle-padding-1 flex">
         <div class="full-width">
             <div class="full-center">
-                <img src="{{ asset('assets/images/logos/mg.png') }}" class="half-width" alt="">
+                <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt="">
             </div>
             <div>
                 <div class="flex space-between align-end">
@@ -57,7 +57,7 @@
                         <th class="table-col-header">
                             <div class="flex align-center">
                                 {{ __('THREADS') }} ({{$threads->count()}} {{__('in total')}})
-                                <div class="mx4 inline-block move-to-right">
+                                <div class="inline-block move-to-right mr4">
                                     <div class="flex align-center">
                                         <div class="flex align-center mr8">
                                             <p class="gray fs11 no-margin mr4">Forum: </p>
@@ -98,6 +98,11 @@
                         </div>
                     </div>
                 @endif
+            </div>
+            <div class="flex my8">
+                <div class="move-to-right">
+                    {{ $threads->onEachSide(0)->links() }}
+                </div>
             </div>
         </div>
         <div class="index-right-panel-container border-box">
@@ -184,134 +189,136 @@
                 @endif
                 @endforeach
             </div>
-            <div class="index-right-panel mt8">
-                <div class="flex align-center mx8">
-                    <img src="{{ asset('assets/images/icons/bfeedback.png') }}" class="small-image mr4" style="margin-top: -3px" alt="">
-                    <p class="bold my8">{{ __('Feedback') }}</p>
-                </div>
-                @canemoji
-                <div class="full-center">
-                    <a href="" class="mx4 emoji-button">
-                        <img src="{{ asset('assets/images/icons/emoji-sad.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
-                        <img src="{{ asset('assets/images/icons/emoji-sad-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
-                        <input type="hidden" class="feedback-emoji-state" value="sad">
-                    </a>
-                    <a href="" class="mx4 emoji-button">
-                        <img src="{{ asset('assets/images/icons/emoji-thinking.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
-                        <img src="{{ asset('assets/images/icons/emoji-thinking-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
-                        <input type="hidden" class="feedback-emoji-state" value="sceptic">
-                    </a>
-                    <a href="" class="mx4 emoji-button">
-                        <img src="{{ asset('assets/images/icons/emoji-sceptic.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
-                        <img src="{{ asset('assets/images/icons/emoji-sceptic-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
-                        <input type="hidden" class="feedback-emoji-state" value="so-so">
-                    </a>
-                    <a href="" class="mx4 emoji-button">
-                        <img src="{{ asset('assets/images/icons/emoji-happy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
-                        <img src="{{ asset('assets/images/icons/emoji-happy-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
-                        <input type="hidden" class="feedback-emoji-state" value="happy">
-                    </a>
-                    <a href="" class="mx4 emoji-button">
-                        <img src="{{ asset('assets/images/icons/emoji-veryhappy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
-                        <img src="{{ asset('assets/images/icons/emoji-veryhappy-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
-                        <input type="hidden" class="feedback-emoji-state" value="veryhappy">
-                    </a>
-                </div>
-                @else
-                    @php
-                        $feedback_state = \App\Models\EmojiFeedback::where('ip', request()->ip())->orderBy('created_at', 'desc')->first()->emoji_feedback;
-                    @endphp
-                <div class="full-center">
-                    <a href="" class="mx4 block-click">
-                        @if($feedback_state == 'sad')
-                            <img src="{{ asset('assets/images/icons/emoji-sad-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
-                        @else
-                            <img src="{{ asset('assets/images/icons/emoji-sad.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
-                        @endif
-                    </a>
-                    <a href="" class="mx4 block-click">
-                        @if($feedback_state == 'sceptic')
-                            <img src="{{ asset('assets/images/icons/emoji-thinking-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
-                        @else
-                            <img src="{{ asset('assets/images/icons/emoji-thinking.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
-                        @endif
-                    </a>
-                    <a href="" class="mx4 block-click">
-                        @if($feedback_state == 'so-so')
-                            <img src="{{ asset('assets/images/icons/emoji-sceptic-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
-                        @else
-                            <img src="{{ asset('assets/images/icons/emoji-sceptic.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
-                        @endif
-                    </a>
-                    <a href="" class="mx4 block-click">
-                        @if($feedback_state == 'happy')
-                            <img src="{{ asset('assets/images/icons/emoji-happy-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
-                        @else
-                            <img src="{{ asset('assets/images/icons/emoji-happy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
-                        @endif
-                    </a>
-                    <a href="" class="mx4 block-click">
-                        @if($feedback_state == 'veryhappy')
-                            <img src="{{ asset('assets/images/icons/emoji-veryhappy-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
-                        @else
-                            <img src="{{ asset('assets/images/icons/emoji-veryhappy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
-                        @endif
-                    </a>
-                </div>
-                @endcanemoji
-                <p class="fs12 my8">We are here to anwser any questions you may have about us or any feedback you have about the website. Reach out to us using below form, and we'll respond as soon as we can.</p>
-                <div class="feedback-container">
-                    <div class="feedback-sent-success-container green-message-container none">
-                        <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image move-to-middle" alt="">
-                        <p class="fs13 no-margin text-center green-message">{{ __('Your feedback is sent successfully.') }}</p>
+            <div class="sticky" style="top: 70px">
+                <div class="index-right-panel mt8">
+                    <div class="flex align-center mx8">
+                        <img src="{{ asset('assets/images/icons/bfeedback.png') }}" class="small-image mr4" style="margin-top: -3px" alt="">
+                        <p class="bold my8">{{ __('Feedback') }}</p>
                     </div>
-                    <div class="feedback-sec">
-                        <p class="no-margin my4 none error"></p>
-                        @guest
-                        <div class="input-container">
-                            <label for="subject" class="label-style-1 fs13">{{ __('Email') }} @error('email') <span class="error mr4">*</span> @enderror</label>
-                            <input type="email" id="email" name="email" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
-                            @error('email')
-                                <p class="error" role="alert">{{ $message }}</p>
-                            @enderror
+                    @canemoji
+                    <div class="full-center">
+                        <a href="" class="mx4 emoji-button">
+                            <img src="{{ asset('assets/images/icons/emoji-sad.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
+                            <img src="{{ asset('assets/images/icons/emoji-sad-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
+                            <input type="hidden" class="feedback-emoji-state" value="sad">
+                        </a>
+                        <a href="" class="mx4 emoji-button">
+                            <img src="{{ asset('assets/images/icons/emoji-thinking.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
+                            <img src="{{ asset('assets/images/icons/emoji-thinking-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
+                            <input type="hidden" class="feedback-emoji-state" value="sceptic">
+                        </a>
+                        <a href="" class="mx4 emoji-button">
+                            <img src="{{ asset('assets/images/icons/emoji-sceptic.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
+                            <img src="{{ asset('assets/images/icons/emoji-sceptic-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
+                            <input type="hidden" class="feedback-emoji-state" value="so-so">
+                        </a>
+                        <a href="" class="mx4 emoji-button">
+                            <img src="{{ asset('assets/images/icons/emoji-happy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
+                            <img src="{{ asset('assets/images/icons/emoji-happy-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
+                            <input type="hidden" class="feedback-emoji-state" value="happy">
+                        </a>
+                        <a href="" class="mx4 emoji-button">
+                            <img src="{{ asset('assets/images/icons/emoji-veryhappy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" alt="">
+                            <img src="{{ asset('assets/images/icons/emoji-veryhappy-filled.png') }}" class="mx4 rounded-style-1 none emoji-filled" alt="">
+                            <input type="hidden" class="feedback-emoji-state" value="veryhappy">
+                        </a>
+                    </div>
+                    @else
+                        @php
+                            $feedback_state = \App\Models\EmojiFeedback::where('ip', request()->ip())->orderBy('created_at', 'desc')->first()->emoji_feedback;
+                        @endphp
+                    <div class="full-center">
+                        <a href="" class="mx4 block-click">
+                            @if($feedback_state == 'sad')
+                                <img src="{{ asset('assets/images/icons/emoji-sad-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
+                            @else
+                                <img src="{{ asset('assets/images/icons/emoji-sad.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
+                            @endif
+                        </a>
+                        <a href="" class="mx4 block-click">
+                            @if($feedback_state == 'sceptic')
+                                <img src="{{ asset('assets/images/icons/emoji-thinking-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
+                            @else
+                                <img src="{{ asset('assets/images/icons/emoji-thinking.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
+                            @endif
+                        </a>
+                        <a href="" class="mx4 block-click">
+                            @if($feedback_state == 'so-so')
+                                <img src="{{ asset('assets/images/icons/emoji-sceptic-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
+                            @else
+                                <img src="{{ asset('assets/images/icons/emoji-sceptic.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
+                            @endif
+                        </a>
+                        <a href="" class="mx4 block-click">
+                            @if($feedback_state == 'happy')
+                                <img src="{{ asset('assets/images/icons/emoji-happy-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
+                            @else
+                                <img src="{{ asset('assets/images/icons/emoji-happy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
+                            @endif
+                        </a>
+                        <a href="" class="mx4 block-click">
+                            @if($feedback_state == 'veryhappy')
+                                <img src="{{ asset('assets/images/icons/emoji-veryhappy-filled.png') }}" class="mx4 rounded-style-1 emoji-filled" alt="">
+                            @else
+                                <img src="{{ asset('assets/images/icons/emoji-veryhappy.svg') }}" class="mx4 rounded-style-1 emoji-unfilled" style="opacity: 0.5" alt="">
+                            @endif
+                        </a>
+                    </div>
+                    @endcanemoji
+                    <p class="fs12 my8">We are here to anwser any questions you may have about us or any feedback you have about the website. Reach out to us using below form, and we'll respond as soon as we can.</p>
+                    <div class="feedback-container">
+                        <div class="feedback-sent-success-container green-message-container none">
+                            <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image move-to-middle" alt="">
+                            <p class="fs13 no-margin text-center green-message">{{ __('Your feedback is sent successfully.') }}</p>
                         </div>
-                        @endguest
-                        <div class="input-container">
-                            <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} @error('feedback') <span class="error mr4">*</span> @enderror</label>
-                            <textarea name="feedback" id="feedback" class="feedback-textarea" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
-                            @error('feedback')
-                                <p class="error" role="alert">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="flex">
-                            <input type="button" value="send" class="move-to-right button-style-1 send-feedback">
+                        <div class="feedback-sec">
+                            <p class="no-margin my4 none error"></p>
+                            @guest
+                            <div class="input-container">
+                                <label for="subject" class="label-style-1 fs13">{{ __('Email') }} @error('email') <span class="error mr4">*</span> @enderror</label>
+                                <input type="email" id="email" name="email" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
+                                @error('email')
+                                    <p class="error" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            @endguest
+                            <div class="input-container">
+                                <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} @error('feedback') <span class="error mr4">*</span> @enderror</label>
+                                <textarea name="feedback" id="feedback" class="feedback-textarea" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
+                                @error('feedback')
+                                    <p class="error" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="flex">
+                                <input type="button" value="send" class="move-to-right button-style-1 send-feedback">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="index-right-panel mt8">
-                <div class="flex align-center mx8">
-                    <img src="{{ asset('assets/images/icons/statistics.svg') }}" class="small-image mr4" style="margin-top: -3px" alt="">
-                    <p class="bold my8">{{ __('Statistics') }}</p>
-                </div>
-                <div class="simple-line-separator my4"></div>
-                <div class="flex">
-                    <img src="{{ asset('assets/images/icons/thread.svg') }}" class="small-image-2 mr4" alt="">
-                    <p class="my4 fs13">Total forums threads: {{ \App\Models\Thread::count() }}</p>
-                </div>
-                <div class="flex align-center my4">
-                    <img src="{{ asset('assets/images/icons/discussions.png') }}" class="small-image-2 mr4" alt="">
-                    <p class="my4 fs13">Total replies: {{ \App\Models\Post::count() }}</p>
-                </div>
-                <div class="mt8 my4">
+                <div class="index-right-panel mt8">
+                    <div class="flex align-center mx8">
+                        <img src="{{ asset('assets/images/icons/statistics.svg') }}" class="small-image mr4" style="margin-top: -3px" alt="">
+                        <p class="bold my8">{{ __('Statistics') }}</p>
+                    </div>
+                    <div class="simple-line-separator my4"></div>
                     <div class="flex">
-                        <img src="{{ asset('assets/images/icons/user.svg') }}" class="small-image-2 mr4" alt="" style="margin-top:1px">
-                        <div>
-                            <p class="no-margin mt4 fs13">Total members: {{ \App\Models\User::count() }}</p>
-                            @php
-                                $last_user_username = \App\Models\User::orderBy('created_at')->first()->username;
-                            @endphp
-                            <p class="fs11 no-margin">Our newest member: <a href="{{ route('user.profile', ['user'=>$last_user_username]) }}" class="link-style inline-block fs12 bold">{{$last_user_username}}</a></p>
+                        <img src="{{ asset('assets/images/icons/thread.svg') }}" class="small-image-2 mr4" alt="">
+                        <p class="my4 fs13">Total forums threads: {{ \App\Models\Thread::count() }}</p>
+                    </div>
+                    <div class="flex align-center my4">
+                        <img src="{{ asset('assets/images/icons/discussions.png') }}" class="small-image-2 mr4" alt="">
+                        <p class="my4 fs13">Total replies: {{ \App\Models\Post::count() }}</p>
+                    </div>
+                    <div class="mt8 my4">
+                        <div class="flex">
+                            <img src="{{ asset('assets/images/icons/user.svg') }}" class="small-image-2 mr4" alt="" style="margin-top:1px">
+                            <div>
+                                <p class="no-margin mt4 fs13">Total members: {{ \App\Models\User::count() }}</p>
+                                @php
+                                    $last_user_username = \App\Models\User::orderBy('created_at')->first()->username;
+                                @endphp
+                                <p class="fs11 no-margin">Our newest member: <a href="{{ route('user.profile', ['user'=>$last_user_username]) }}" class="link-style inline-block fs12 bold">{{$last_user_username}}</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>

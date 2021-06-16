@@ -21,6 +21,26 @@ class Thread extends Model
         return $this->morphMany(Vote::class, 'votable');
     }
 
+    public function getUpvotesAttribute() {
+        $count = 0;
+        foreach($this->votes as $vote) {
+            if($vote->vote == '-1')
+            $count -= 1;
+        }
+
+        return $count;
+    }
+
+    public function getDownvotesAttribute() {
+        $count = 0;
+        foreach($this->votes as $vote) {
+            if($vote->vote == '1')
+            $count += 1;
+        }
+
+        return $count;
+    }
+
     public function scopeToday($builder)
     {
         return $builder->where('created_at', '>', today());

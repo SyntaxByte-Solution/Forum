@@ -156,6 +156,10 @@ a, input, textarea {
     position: fixed;
 }
 
+.sticky {
+    position: sticky;
+}
+
 .none {
     display: none !important;
 }
@@ -1400,7 +1404,7 @@ tr:nth-child(2n) {
 }
 
 .thread-section {
-    padding: 16px;
+    padding: 16px 16px 16px 0;
     width: 100%;
     box-sizing: border-box;
 }

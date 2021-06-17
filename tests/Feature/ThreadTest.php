@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Exceptions\{AccessDeniedException, UserBannedException, DuplicateThreadException, CategoryClosedException};
 use App\Classes\TestHelper;
-use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus, ThreadType, Post};
+use App\Models\{Thread, ForumStatus, CategoryStatus, ThreadStatus, PostStatus, ThreadType, Post, Vote};
 
 class ThreadTest extends TestCase
 {
@@ -212,7 +212,7 @@ class ThreadTest extends TestCase
             'thread_type'=>1
         ]);
 
-        Post::create([
+        $post = Post::create([
             'content'=>'Post #1',
             'thread_id'=>$thread->id,
             'user_id'=>1
@@ -224,13 +224,28 @@ class ThreadTest extends TestCase
             'user_id'=>1
         ]);
 
-        $this->assertCount(2, $thread->posts);
+        $thread_vote = new Vote;
+        $thread_vote->vote = '1';
+        $thread_vote->user_id = 1;
+        $thread_vote->votable_id = $thread->id;
+        $thread_vote->votable_type = 'App\Models\Thread';
+
+        $post_vote = new Vote;
+        $post_vote->vote = '1';
+        $post_vote->user_id = 1;
+        $post_vote->votable_id = $post->id;
+        $post_vote->votable_type = 'App\Models\Post';
+
+        $thread->votes()->save($thread_vote);
+        $post->votes()->save($post_vote);
+
         $this->assertCount(1, Thread::all());
+        $this->assertCount(2, $thread->posts);
+        $this->assertCount(2, Vote::all());
         $this->delete('/thread/'.$thread->id.'/force');
         $this->assertCount(0, Thread::all());
-
-        $thread->load('posts');
-        $this->assertCount(0, $thread->posts);
+        $this->assertCount(0, Post::all());
+        $this->assertCount(0, Vote::all());
     }
 
     /** @test */

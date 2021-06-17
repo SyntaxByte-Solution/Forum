@@ -159,4 +159,46 @@ class VoteTest extends TestCase
         $this->assertCount(1, $post->votes);
     }
 
+    /** @test */
+    public function when_a_post_deleted_all_related_votes_get_deleted_as_well() {
+        $post = Post::first();
+        
+        $vote = new Vote;
+        $vote->vote = '1';
+        $vote->user_id = 1;
+        $vote->votable_id = $post->id;
+        $vote->votable_type = 'App\Models\Post';
+        
+        $this->assertCount(0, $post->votes);
+        $post->votes()->save($vote);
+        $post->load('votes');
+        $this->assertCount(1, $post->votes);
+
+        $this->delete('/post/'.$post->id);
+
+        $post->load('votes');
+        $this->assertCount(0, $post->votes);
+    }
+
+    /** @test */
+    public function when_a_thread_deleted_all_related_votes_get_deleted_as_well() {
+        $thread = Thread::first();
+        
+        $vote = new Vote;
+        $vote->vote = '1';
+        $vote->user_id = 1;
+        $vote->votable_id = $thread->id;
+        $vote->votable_type = 'App\Models\Thread';
+
+        $this->assertCount(0, $thread->votes);
+        $thread->votes()->save($vote);
+        $thread->load('votes');
+        $this->assertCount(1, $thread->votes);
+        $this->delete('/thread/'.$thread->id.'/force');
+        $thread->load('votes');
+        $this->assertCount(0, $thread->votes);
+        
+
+    }
+
 }

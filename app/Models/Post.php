@@ -20,4 +20,13 @@ class Post extends Model
     public function votes() {
         return $this->morphMany(Vote::class, 'votable');
     }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($post) {
+            // delete related votes records
+            $post->votes()->delete();
+        });
+    }
 }

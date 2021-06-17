@@ -245,14 +245,6 @@ class ThreadController extends Controller
             $url = route('get.all.forum.questions', [$forum_slug]);
         }
 
-        /**
-         * Before deleting the thread, we need to clear all posts related to this thread
-         * Here web need to destroy votes as well
-         */
-        foreach($thread->posts as $post) {
-            $post->forceDelete();
-        }
-
         $thread->forceDelete();
         return redirect($url);
     }

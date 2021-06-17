@@ -13,6 +13,22 @@ class Thread extends Model
 
     protected $guarded = [];
 
+    public static function boot() {
+        parent::boot();
+
+        /**
+         * Before deleting the thread, we need to clear all posts related to this thread
+         * as well as deleting the related votes to this thread and its posts
+         */
+        static::deleting(function($thread) {
+            foreach($thread->posts as $post) {
+                $post->votes()->delete();
+            }
+            $thread->votes()->delete();
+            $thread->posts()->forceDelete();
+        });
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

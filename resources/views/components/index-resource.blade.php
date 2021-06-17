@@ -1,15 +1,16 @@
 <tr class="resource-container">
     <input type="hidden" class="thread-type" value="{{ $thread_type }}">
-    <input type="hidden" class="thread-id" value="{{ $thread_id }}">
+    <input type="hidden" class="votable-id" value="{{ $thread_id }}">
+    <input type="hidden" class="votable-type" value="thread">
     <td>
         <div class="flex">
             <div class="mr8 flex flex-column align-center">
-                <a href="" class="@auth thread-up-vote @endauth @guest login-signin-button @endguest">
+                <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">
                     <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($thread, 'App\Models\Thread') @else none @endupvoted" alt="">
                     <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($thread, 'App\Models\Thread') none @endupvoted" alt="">
                 </a>
-                <p class="bold fs16 no-margin text-center thread-vote-count">{{ $thread_votes }}</p>
-                <a href="" class="@auth thread-down-vote @endauth @guest login-signin-button @endguest">
+                <p class="bold fs16 no-margin text-center votable-count">{{ $thread_votes }}</p>
+                <a href="" class="@auth votable-down-vote @endauth @guest login-signin-button @endguest">
                     <img src="{{ asset('assets/images/icons/down-filled.png') }}" class="small-image vote-down-filled-image @downvoted($thread, 'App\Models\Thread') @else none @enddownvoted" alt="">
                     <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($thread, 'App\Models\Thread') none @enddownvoted" alt="">
                 </a>
@@ -17,7 +18,7 @@
             <div class="flex full-width">
                 <div class="full-width">
                     <div class="flex align-center">
-                        <img src="{{ asset('assets/images/icns/' . $forum->icon) }}" class="small-image-2 mr4" alt="">
+                        <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-2 mr4" alt="">
                         <div class="flex align-center">
                             <a href="{{ route('forum.misc', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
                             <span class="mx4 fs13 gray">▸</span>

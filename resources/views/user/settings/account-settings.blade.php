@@ -92,7 +92,7 @@
             </div>
             <div>
                 @include('partials.settings.profile-right-side-menu', ['item'=>'user-account-settings'])
-                <div class="ms-right-panel my8">
+                <div class="ms-right-panel my8 toggle-box">
                     <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Account deletion <span class="toggle-arrow">▾</span></a>
                     <div class="toggle-container ml8 block" style="max-width: 280px">
                         <p class="fs12 my8">• {{ __("If you delete your account all your threads will be trashed as well as you replies, votes and every activity with this account") }}.</p>

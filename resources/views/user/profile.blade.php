@@ -114,8 +114,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div>
                 @include('partials.user-space.user-card')
                 <div class="ms-right-panel my8">
@@ -150,7 +148,7 @@
                     </div>
                     @endisset
                     @if(@isset($user->personal->facebook) || @isset($user->personal->instagram) || @isset($user->personal->twitter))
-                        <div class="flex flex-column">
+                        <div class="flex flex-column toggle-box">
                             <a href="" class="move-to-right link-style toggle-container-button">Social media</a>
                             <div class="toggle-container">
                             @isset($user->personal->facebook)
@@ -184,13 +182,11 @@
             <table class="forums-table">
                 <tr>
                     <th class="table-col-header">{{ __('THREADS') }}</th>
-                    <th class="table-col-header">{{ __('CATEGORY') }}</th>
-                    <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
-                    <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
+                    <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
                     <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
                 </tr>
                 @foreach($recent_threads as $thread)
-                    <x-resource-table-row :thread="$thread"/>
+                    <x-index-resource :thread="$thread"/>
                 @endforeach
             </table>
         </div>

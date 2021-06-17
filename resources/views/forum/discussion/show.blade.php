@@ -51,19 +51,17 @@
     @include('partials.left-panel', ['page' => 'discussions'])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex">
-            <div>
-                <div class="flex space-between full-width">
+            <div class="full-width">
+                <div class="flex space-between full-width align-end">
                     <div>
                         <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                        <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum_slug]) }}" class="link-path">{{ $forum_name }} > </a>
-                        <span class="current-link-path">{{ $thread_subject }}</span>
+                        <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum }} > </a>
                     </div>
-                    @auth
                     <div>
-                        <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style">{{ __('Start Discussion') }}</a>
+                        <a href="{{ route('discussion.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style @guest login-signin-button @endguest">{{ __('Start Discussion') }}</a>
                     </div>
-                    @endauth
                 </div>
+                <h2>Discussion</h2>
                 <x-thread-component :thread="request()->thread"/>
 
                 <div>
@@ -89,14 +87,14 @@
                             </style>
                         </div>
                         <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
-                        <input type='button' class="inline-block button-style share-post" value="Post your reply">
+                        <input type='button' class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest" value="Post your reply">
                     </div>
                 </div>
                 
                 <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
                 <div id="replies-container" style="margin-bottom: 30px">
                     @foreach($posts as $post)
-                        <x-discussion-post :post="$post->id"/>
+                        <x-post-component :post="$post->id"/>
                     @endforeach
                 </div>
                 <script>
@@ -108,11 +106,7 @@
                     });
                 </script>
             </div>
-            <div class="index-right-panel-container border-box">
-                <div class="index-right-panel">
-                    
-                </div>
-            </div>
+            @include('partials.thread.right-panel', ['thread_type'=>'discussion'])
         </div>
     </div>
 @endsection

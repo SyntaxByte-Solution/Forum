@@ -1,4 +1,6 @@
-<div class="relative">
+<div class="relative resource-container">
+    <input type="hidden" class="votable-type" value="post">
+    <input type="hidden" class="votable-id" value="{{ $post->id }}">
     <div class="absolute full-shadowed br6" style="z-index: 1">
         <div class="full-center full-width full-height">
             <div class="flex align-center">
@@ -17,9 +19,15 @@
         <div id="{{ $post_id }}" class="absolute" style="top: -65px">
         </div>
         <div class="vote-section post-vs">
-            <a href="" class="up-icon post-vote-button thread-up-vote"></a>
-            <p class="bold fs20 no-margin text-center">0</p>
-            <a href="" class="down-icon post-vote-button thread-down-vote"></a>
+            <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">
+                <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($post, 'App\Models\Post') @else none @endupvoted" alt="">
+                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($post, 'App\Models\Post') none @endupvoted" alt="">
+            </a>
+            <p class="bold fs16 no-margin text-center votable-count">{{ $post_votes }}</p>
+            <a href="" class="@auth votable-down-vote @endauth @guest login-signin-button @endguest">
+                <img src="{{ asset('assets/images/icons/down-filled.png') }}" class="small-image vote-down-filled-image @downvoted($post, 'App\Models\Post') @else none @enddownvoted" alt="">
+                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($post, 'App\Models\Post') none @enddownvoted" alt="">
+            </a>
         </div>
         <div class="post-main-section">
             <div class="flex space-between">
@@ -51,6 +59,7 @@
                         <a href="" class="button-style edit-post">Edit Post</a>
                         @endcan
                         @can('destroy', $post)
+                        <div class="simple-line-separator my4"></div>
                         <a href="" class="button-style delete-post-button">Delete Post</a>
                         @endcan
                     </div>

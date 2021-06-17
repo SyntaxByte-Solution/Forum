@@ -49,12 +49,11 @@
                                 </div>
                             </div>
                         </th>
-                        <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
-                        <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
+                        <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
                         <th class="table-col-header">{{ __('LAST POST') }}</th>
                     </tr>
                     @foreach($questions as $question)
-                        <x-ms-resource-table-row :thread="$question"/>
+                        <x-index-resource :thread="$question"/>
                     @endforeach
                 </table>
                 @if(!$questions->count())

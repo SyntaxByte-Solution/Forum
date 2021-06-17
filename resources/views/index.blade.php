@@ -119,7 +119,7 @@
                 <div class="simple-line-separator mb8"></div>
                 <div class="ml8">
                     @foreach($forums as $forum)
-                    <div class="my8">
+                    <div class="my8 toggle-box">
                         <div class="flex align-center bold toggle-container-button pointer">
                             {{ $forum->forum }}
                             <span class="toggle-arrow">▸</span>

@@ -342,7 +342,12 @@ $('.hide-parent').click(function() {
 });
 
 $('.toggle-container-button').click(function() {
-    let container = $(this).parent().find('.toggle-container');
+    let box = $(this);
+    while(!box.hasClass('toggle-box')) {
+        box = box.parent();
+    }
+    let container = box.find('.toggle-container');
+
     if(container.css('display') == 'none') {
         container.removeClass('none');
         container.addClass('block');
@@ -671,20 +676,44 @@ $('.emoji-button').click(function(event) {
 });
 
 let vote_lock = true;
-$('.thread-up-vote').click(function(event) {
+$('.votable-up-vote').click(function(event) {
+    handle_up_vote($(this));
+
+    event.preventDefault();
+});
+
+$('.votable-down-vote').click(function(event) {
+    handle_down_vote($(this));
+
+    event.preventDefault();
+});
+
+function handle_up_vote(button) {
     if(!vote_lock) {
         return false;
     }
     vote_lock = false;
 
-    let button = $(this);
+    let vote_count = parseInt(button.parent().find('.votable-count').text());
+
     if(button.find('.vote-up-image').hasClass('none')) {
+        console.log('I');
+        // In this case the user is already votes up and then press up again so we need to delete the vote record
+        button.parent().find('.votable-count').text(vote_count-1);
         button.find('.vote-up-image').removeClass('none');
         button.find('.vote-up-filled-image').addClass('none');
     
         button.parent().find('.vote-down-image').removeClass('none');
         button.parent().find('.vote-down-filled-image').addClass('none');
     } else {
+        // here we have 2 cases:
+        // 1- case where the user is not voted at all we only need to add 1
+        if(button.parent().find('.vote-up-filled-image').hasClass('none') && button.parent().find('.vote-down-filled-image').hasClass('none')) {
+            button.parent().find('.votable-count').text(vote_count+1);    
+        // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
+        } else {
+            button.parent().find('.votable-count').text(vote_count+2);
+        }
         button.find('.vote-up-image').addClass('none');
         button.find('.vote-up-filled-image').removeClass('none');
     
@@ -692,45 +721,64 @@ $('.thread-up-vote').click(function(event) {
         button.parent().find('.vote-down-filled-image').addClass('none');
     }
 
-    let resource_container = $(this);
+    let resource_container = button;
     while(!resource_container.hasClass('resource-container')) {
         resource_container = resource_container.parent();
     }
-    let thread_id = resource_container.find('.thread-id').val();
+    let votable_id = resource_container.find('.votable-id').val();
+    let votable_type = resource_container.find('.votable-type').val();
 
     $.ajax({
         type: 'POST',
-        url: '/threads/' + thread_id + '/vote',
+        url: '/' + votable_type + '/' + votable_id + '/vote',
         data: {
             _token: csrf,
             'vote': 1
         },
         success: function(response) {
-            button.parent().find('.thread-vote-count').text(response);
-            vote_lock = true;
+            button.parent().find('.votable-count').text(response);
         },
         error: function(response) {
+            if(button.find('.vote-up-image').hasClass('none')) {
+                button.find('.vote-up-image').removeClass('none');
+                button.find('.vote-up-filled-image').addClass('none');
+            } else {
+                button.find('.vote-up-image').addClass('none');
+                button.find('.vote-up-filled-image').removeClass('none');
+            }
+            // If there's an error we simply set the old value
+            button.parent().find('.votable-count').text(vote_count);
+        },
+        complete: function() {
             vote_lock = true;
         }
     })
+}
 
-    event.preventDefault();
-});
-
-$('.thread-down-vote').click(function(event) {
+function handle_down_vote(button) {
     if(!vote_lock) {
         return false;
     }
     vote_lock = false;
 
-    let button = $(this);
+    let vote_count = parseInt(button.parent().find('.votable-count').text());
+
     if(button.find('.vote-down-image').hasClass('none')) {
+        button.parent().find('.votable-count').text(vote_count+1);
         button.find('.vote-down-image').removeClass('none');
         button.find('.vote-down-filled-image').addClass('none');
     
         button.parent().find('.vote-up-image').removeClass('none');
         button.parent().find('.vote-up-filled-image').addClass('none');
     } else {
+        // here alse we have 2 cases:
+        // 1- case where the user is not voted at all we only need to subtract 1
+        if(button.parent().find('.vote-up-filled-image').hasClass('none') && button.parent().find('.vote-down-filled-image').hasClass('none')) {
+            button.parent().find('.votable-count').text(vote_count-1);    
+        // 2- case where the user is already up voted the resource and then he press down vote, we need to subtract 2 in this case
+        } else {
+            button.parent().find('.votable-count').text(vote_count-2);
+        }
         button.find('.vote-down-image').addClass('none');
         button.find('.vote-down-filled-image').removeClass('none');
     
@@ -738,31 +786,36 @@ $('.thread-down-vote').click(function(event) {
         button.parent().find('.vote-up-filled-image').addClass('none');
     }
 
-    let resource_container = $(this);
+    let resource_container = button;
     while(!resource_container.hasClass('resource-container')) {
         resource_container = resource_container.parent();
     }
-    let thread_id = resource_container.find('.thread-id').val();
+    let votable_id = resource_container.find('.votable-id').val();
+    let votable_type = resource_container.find('.votable-type').val();
 
     $.ajax({
         type: 'POST',
-        url: '/threads/' + thread_id + '/vote',
+        url: '/' + votable_type + '/' + votable_id + '/vote',
         data: {
             _token: csrf,
             'vote': -1
         },
         success: function(response) {
-            button.parent().find('.thread-vote-count').text(response);
-            vote_lock = true;
+            button.parent().find('.votable-count').text(response);
         },
         error: function(response) {
+            if(button.find('.vote-up-image').hasClass('none')) {
+                button.find('.vote-up-image').removeClass('none');
+                button.find('.vote-up-filled-image').addClass('none');
+            } else {
+                button.find('.vote-up-image').addClass('none');
+                button.find('.vote-up-filled-image').removeClass('none');
+            }
+            // If there's an error we simply set the old value
+            button.parent().find('.votable-count').text(vote_count);
+        },
+        complete: function() {
             vote_lock = true;
         }
-    });
-
-    event.preventDefault();
-});
-
-function handle_vote() {
-
+    })
 }

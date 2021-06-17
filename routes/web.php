@@ -66,8 +66,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/categories/{category}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
-    Route::get('/{forum:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
-    Route::get('/{forum:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
+    Route::get('/{forum:slug}/{category:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
+    Route::get('/{forum:slug}/{category:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
     
     Route::get('/{user:username}/discussions/{thread}/edit', [ThreadController::class, 'edit'])->name('discussion.edit');
     Route::get('/{user:username}/questions/{thread}/edit', [ThreadController::class, 'edit'])->name('question.edit');
@@ -99,8 +99,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);
     Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);
 
-    Route::post('/threads/{thread}/vote', [VoteController::class, 'thread_vote'])->name('thread.vote');
-    Route::post('/posts/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
+    Route::post('/thread/{thread}/vote', [VoteController::class, 'thread_vote'])->name('thread.vote');
+    Route::post('/post/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
 });
 
 /**

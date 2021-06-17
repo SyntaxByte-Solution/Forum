@@ -42,11 +42,15 @@ class IndexController extends Controller
 
     public function forums() {
         $forums = Forum::all();
+        $forum = Forum::first();
+        $category = $forum->categories->where('slug', '<>', 'announcements')->first();
         $recent_threads = Thread::
-        orderBy('created_at', 'desc')->take(6)->get();
+            orderBy('created_at', 'desc')->take(6)->get();
 
         return view('forums')
         ->with(compact('recent_threads'))
-        ->with(compact('forums'));
+        ->with(compact('forums'))
+        ->with(compact('category'))
+        ->with(compact('forum'));
     }
 }

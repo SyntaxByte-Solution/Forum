@@ -29,9 +29,9 @@
                 @auth
                     <div class="flex align-center">
                         <p class="mr8 fs13 gray">Add: </p>
-                        <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="button-style-1 flex">{{ __('Discussion') }}</a>
+                        <a href="{{ route('discussion.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 flex">{{ __('Discussion') }}</a>
                         <div class="mx4 fs11">or</div>
-                        <a href="{{ route('question.add', ['forum'=>'general']) }}" class="button-style-1 flex">{{ __('Question') }}</a>
+                        <a href="{{ route('question.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 flex">{{ __('Question') }}</a>
                     </div>
                 @endauth
             </div>

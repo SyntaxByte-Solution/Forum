@@ -31,7 +31,7 @@
         }
     @endphp
     @auth
-    <div class="relative">
+    <div class="relative toggle-box">
         <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span></a>
         <div class="toggle-container" @isset($subpage) @if($same_user) style="display: block" @endif @endisset>
             <div class="relative">

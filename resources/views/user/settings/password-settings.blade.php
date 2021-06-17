@@ -90,7 +90,7 @@
             </div>
             <div>
                 @include('partials.settings.profile-right-side-menu', ['item'=>'settings-password'])
-                <div class="ms-right-panel my8">
+                <div class="ms-right-panel my8 toggle-box">
                     <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Password rules <span class="toggle-arrow">▾</span></a>
                     <div class="toggle-container ml8 block" style="max-width: 280px">
                         <p class="fs12 my8">• {{ __("Password must contains at least 8 characters") }}.</p>

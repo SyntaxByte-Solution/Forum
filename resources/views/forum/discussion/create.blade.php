@@ -23,17 +23,17 @@
         <div class="flex space-between align-center">
             <div>
                 <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __(request()->forum->forum) }}</a>
+                <a href="{{ route('forum.misc', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __($forum->forum) }}</a>
             </div>
             <div>
-                <p class="no-margin fs11">{{ __('Do you want to ask a question ?') }} <a href="{{ route('question.add', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __('click here') }}</a></p>
+                <p class="no-margin fs11">{{ __('Do you want to ask a question ?') }} <a href="{{ route('question.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ __('click here') }}</a></p>
                 <div class="flex align-center">
                     <p class="mr4 fs12">Change forum: </p>
                     <div class="relative">
                         <a href="" class="mr4 button-right-icon more-icon button-with-suboptions">{{ request()->forum->forum }}</a>
                         <div class="suboptions-container suboptions-buttons-b-style">
                             @foreach($forums as $forum)
-                                <a href="{{ route(Illuminate\Support\Facades\Route::currentRouteName(), ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                                <a href="{{ route(Illuminate\Support\Facades\Route::currentRouteName(), ['forum'=>$forum->slug, 'category'=>$forum->categories->first()->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -62,8 +62,8 @@
                 @enderror
                 <label for="category" class="label-style-1">{{ __('Category') }} @error('category_id') <span class="error">*</span> @enderror<span class="error frt-error">* Invalidate category value</span></label>
                 <select name="category_id" id="category" class="dropdown-style" value="old('category_id') }}">
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->category }}</option>
+                    @foreach($categories as $c)
+                        <option value="{{ $c->id }}" @if($c->slug == $category->slug) selected @endif>{{ $c->category }}</option>
                     @endforeach
                 </select>
             </div>

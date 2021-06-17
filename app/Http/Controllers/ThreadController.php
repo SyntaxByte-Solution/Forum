@@ -11,35 +11,28 @@ use App\Http\Controllers\PostController;
 class ThreadController extends Controller
 {
     public function show(Forum $forum, Category $category, Thread $thread) {
-        $forum_slug = $forum->slug;
-        $forum_name = $forum->forum;
-
-        $category_name = $category->category;
-        $category_slug = $category->slug;
+        $thread_owner = User::find($thread->user_id);
 
         $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
         $posts = $thread->posts;
 
+        $view_name;
         if($thread->thread_type == 1) {
-            return view('forum.discussion.show')
-                ->with(compact('forum_name'))
-                ->with(compact('forum_slug'))
-                ->with(compact('category_name'))
-                ->with(compact('category_slug'))
-                ->with(compact('posts'))
-                ->with(compact('thread_subject'));
-            } else if($thread->thread_type == 2) {
-            return view('forum.question.show')
-                ->with(compact('forum_name'))
-                ->with(compact('forum_slug'))
-                ->with(compact('category_name'))
-                ->with(compact('category_slug'))
-                ->with(compact('posts'))
-                ->with(compact('thread_subject'));
+            $view_name = 'forum.discussion.show';
+        } else if($thread->thread_type == 2) {
+            $view_name = 'forum.question.show';
         }
+
+        return view($view_name)
+            ->with(compact('forum'))
+            ->with(compact('category'))
+            ->with(compact('thread'))
+            ->with(compact('thread_subject'))
+            ->with(compact('posts'))
+            ->with(compact('thread_owner'));
     }
 
-    public function create(Forum $forum) {
+    public function create(Forum $forum, Category $category) {
         $this->authorize('create', Thread::class);
 
         $forums = Forum::where('id', '<>', $forum->id)->get();
@@ -53,6 +46,8 @@ class ThreadController extends Controller
 
         return view($view)
             ->with(compact('forums'))
+            ->with(compact('forum'))
+            ->with(compact('category'))
             ->with(compact('categories'));
     }
 
@@ -264,6 +259,7 @@ class ThreadController extends Controller
 
     public function all_discussions(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+        $category = $forum->categories->first();
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
         $announcements = Thread::where('category_id', $anoun_id)->where('thread_type', 1)->get();
@@ -284,6 +280,7 @@ class ThreadController extends Controller
 
         return view('forum.discussion.all-discussions')
         ->with(compact('categories'))
+        ->with(compact('category'))
         ->with(compact('forums'))
         ->with(compact('announcements'))
         ->with(compact('discussions'))
@@ -292,6 +289,7 @@ class ThreadController extends Controller
 
     public function all_questions(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+        $category = $forum->categories->first();
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
         $announcements = Thread::where('category_id', $anoun_id)->where('thread_type', 1)->get();
@@ -312,6 +310,7 @@ class ThreadController extends Controller
         
         return view('forum.question.all-questions')
         ->with(compact('categories'))
+        ->with(compact('category'))
         ->with(compact('forums'))
         ->with(compact('announcements'))
         ->with(compact('questions'))
@@ -320,6 +319,7 @@ class ThreadController extends Controller
 
     public function forum_all_threads(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+        $category = $forum->categories->first();
         $forums = Forum::where('id', '<>', $forum->id)->get();
 
         // First get all forum's categories
@@ -343,6 +343,7 @@ class ThreadController extends Controller
         return view('forum.category.misc')
         ->with(compact('forums'))
         ->with(compact('categories'))
+        ->with(compact('category'))
         ->with(compact('announcements'))
         ->with(compact('threads'))
         ->with(compact('pagesize'));

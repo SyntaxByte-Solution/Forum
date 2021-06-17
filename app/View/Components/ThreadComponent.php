@@ -9,6 +9,7 @@ use Markdown;
 
 class ThreadComponent extends Component
 {
+    public $thread_owner;
     public $thread_owner_avatar;
     public $thread_owner_username;
     public $thread_owner_reputation;
@@ -17,12 +18,16 @@ class ThreadComponent extends Component
     public $thread_owner_joined_at;
 
     public $thread;
+    public $forum_slug;
+    public $category_slug;
+
     public $thread_url;
     public $thread_edit_url;
     public $thread_votes;
     public $thread_delete_endpoint;
     public $thread_subject;
     public $thread_created_at;
+    public $thread_created_at_hummans;
     public $thread_view_counter;
     public $thread_content;
     public $thread_replies_num;
@@ -35,8 +40,9 @@ class ThreadComponent extends Component
         ]);
 
         $this->thread = $thread;
-        $forum = Forum::find($thread->category->forum_id)->slug;
-        $category = Category::find($thread->category_id);
+        $this->forum = $forum = Forum::find($thread->category->forum_id);
+        $this->category = $category = Category::find($thread->category_id);
+        $this->thread_type = $thread->thread_type;
 
         $vote_count = 0;
         foreach($thread->votes as $vote) {
@@ -47,7 +53,7 @@ class ThreadComponent extends Component
         $this->thread_delete_endpoint = route('thread.destroy', ['thread'=>$thread->id]);
         
         $this->thread_replies_num = $thread->posts->count();
-        $thread_owner = User::find($thread->user_id);
+        $this->thread_owner = $thread_owner = User::find($thread->user_id);
         $this->thread_owner_avatar = $thread_owner->avatar;
         $this->thread_owner_username = $thread_owner->username;
         $this->thread_owner_reputation = $thread_owner->reputation;
@@ -56,19 +62,17 @@ class ThreadComponent extends Component
         $this->thread_owner_joined_at = (new Carbon($thread_owner->created_at))->toDayDateTimeString();
 
         if($thread->thread_type == 1) {
-
             $this->thread_edit_url = route('discussion.edit', ['user'=>$this->thread_owner_username, 'thread'=>$thread->id]);
-            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category->slug,'thread'=>$thread->id]);
+            $this->thread_url = route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug,'thread'=>$thread->id]);
 
         } else if($thread->thread_type == 2) {
-
             $this->thread_edit_url = route('question.edit', ['user'=>$this->thread_owner_username, 'thread'=>$thread->id]);
-            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category->slug, 'thread'=>$thread->id]);
-
+            $this->thread_url = route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$thread->id]);
         }
 
         $this->thread_subject = $thread->subject;
-        $this->thread_created_at = (new Carbon($thread->created_at))->diffForHumans();
+        $this->thread_created_at_hummans = (new Carbon($thread->created_at))->diffForHumans();
+        $this->thread_created_at = (new Carbon($thread->created_at))->toDayDateTimeString();
         $this->thread_view_counter = $thread->view_count;
         $this->thread_content = strip_tags(Markdown::parse($thread->content));
     }

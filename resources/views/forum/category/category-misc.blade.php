@@ -59,8 +59,8 @@
                 <div class="relative">
                     <a href="" class="mr4 button-right-icon more-icon button-with-suboptions">Add Thread</a>
                     <div class="suboptions-container suboptions-buttons-b-style">
-                        <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Discussion</a>
-                        <a href="{{ route('question.add', ['forum'=>request()->forum->slug]) }}" class="suboption-b-style">Add Question</a>
+                        <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="suboption-b-style">Add Discussion</a>
+                        <a href="{{ route('question.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="suboption-b-style">Add Question</a>
                     </div>
                 </div>
                 <form action="">
@@ -97,13 +97,11 @@
                         </div>
                     </div>
                 </th>
-                <th class="table-col-header">{{ __('CATEGORY') }}</th>
-                <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
-                <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
+                <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
             @foreach($threads as $thread)
-                <x-resource-table-row :thread="$thread"/>
+                <x-index-resource :thread="$thread"/>
             @endforeach
         </table>
     </div>

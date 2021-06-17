@@ -55,7 +55,7 @@
         </div>
         <div class="flex align-center space-between" style="margin-bottom: 10px">
             <div class="flex align-center">
-                <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug]) }}" class="button-style-1 mx4">New Discussion</a>
+                <a href="{{ route('discussion.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 mx4">New Discussion</a>
                 <form action="">
                     <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
@@ -98,13 +98,11 @@
                         </div>
                     </div>
                 </th>
-                <th class="table-col-header">{{ __('CATEGORY') }}</th>
-                <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
-                <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
+                <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
                 <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
             </tr>
             @foreach($discussions as $discussion)
-                <x-resource-table-row :thread="$discussion"/>
+                <x-index-resource :thread="$discussion"/>
             @endforeach
         </table>
     </div>

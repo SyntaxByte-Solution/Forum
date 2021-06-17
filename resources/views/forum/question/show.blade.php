@@ -8,7 +8,7 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/post.js') }}"></script>
+    <script src="{{ asset('js/post.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 
@@ -56,8 +56,8 @@
                     <div style="height: max-content">
                         <a href="/" class="link-path">{{ __('Board index') }} > </a>
                         <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum }} > </a>
-                        <a href="{{ route('category.discussions', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $forum->forum }} > </a>
-                        <span class="current-link-path">[QUESTION]: {{ $thread_subject }}</span>
+                        <a href="{{ route('category.discussions', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }} > </a>
+                        <span class="current-link-path">[QUESTION]</span>
                     </div>
                     <div>
                         <a href="{{ route('question.add', ['forum'=>'general', 'category'=>$category->slug]) }}" class="button-style @guest login-signin-button @endguest">{{ __('Ask Question') }}</a>

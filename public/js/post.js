@@ -31,7 +31,8 @@ function handle_edit_post(post) {
     
         $(this).parent().css('display', 'none');
     
-        post.find('.post-content').css('display', 'none');
+        post.find('.post-content').addClass('none');
+        post.find('.post-edit-container').removeClass('none');
         post.find('.post-edit-container').css('display', 'block');
     
         let old_value = post.find('.post-content').text();
@@ -78,8 +79,9 @@ function handle_save_edit_post(post) {
                     btn.attr('style', '');
                     btn.prop("disabled", false);
                     post.find('.post-content').html('<p>'+v+'</p>');
-                    post.find('.post-edit-container').css('display', 'none');
-                    post.find('.post-content').css('display', 'block');
+
+                    post.find('.post-edit-container').addClass('none');
+                    post.find('.post-content').removeClass('none');
 
                     post.find('.post-updated-date').text('updated 1s ago');
                     post.find('.post-updated-date-human').text('Now');
@@ -107,8 +109,8 @@ function handle_save_edit_post(post) {
 
 function handle_exit_edit_changes(post) {
     post.find('.exit-edit-post').click(function() {
-        $(this).parent().css('display', 'none');
-        post.find('.post-content').css('display', 'flex');
+        $(this).parent().addClass('none');
+        post.find('.post-content').removeClass('none');
     
         return false;    
     });

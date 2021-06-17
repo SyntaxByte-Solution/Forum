@@ -56,6 +56,8 @@
                     <div>
                         <a href="/" class="link-path">{{ __('Board index') }} > </a>
                         <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum }} > </a>
+                        <a href="{{ route('category.discussions', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }} > </a>
+                        <span class="current-link-path">[QUESTION]</span>
                     </div>
                     <div>
                         <a href="{{ route('discussion.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style @guest login-signin-button @endguest">{{ __('Start Discussion') }}</a>

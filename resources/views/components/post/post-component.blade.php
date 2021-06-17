@@ -43,7 +43,7 @@
                         @if($post_updated_at)
                             <span class="relative" style="margin-left: 8px">
                                 <span class="tooltip-section post-updated-date">(upated {{ $post_update_date }})</span>
-                                <span class="tooltip post-updated-date-human">{{ $post_updated_at }}</span>
+                                <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
                             </span>
                         @endif
                 </div>

@@ -68,8 +68,11 @@
 
                         <div class="flex my8">
                             <p class="fs14 no-margin flex align-center">Status: 
-                                <img src="{{ asset('assets/images/icons/active.png') }}" class="small-image-size ml8" alt="">
-                                <span class="bold forum-color ml4">Online</span>
+                                @php
+                                    $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
+                                @endphp
+                                <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="small-image-size ml8" alt="">
+                                <span class="bold forum-color ml4">@if(Cache::has('user-is-online-' . $user->id)) Online @else Offline @endif</span>
                             </p>
                         </div>
 

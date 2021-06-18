@@ -32,6 +32,9 @@ class VoteController extends Controller
                 Rule::in([-1, 1]),
             ]
         ]);
+        $type_name = strtolower(substr($type, strrpos($type, '\\') + 1));
+
+        $this->authorize('store', [\App\Models\Vote::class, $data['vote'], $resource, $type_name]);
 
         $exists = false;
         $founded_vote;
@@ -39,6 +42,7 @@ class VoteController extends Controller
             if($vote->votable_id == $resource->id && $vote->votable_type == $type) {
                 $exists = true;
                 $founded_vote = $vote;
+                break;
             }
         }
 
@@ -48,16 +52,10 @@ class VoteController extends Controller
 
         if($exists) {
             $vote_value = $founded_vote->vote;
-            if($vote_value == -1) {
-                $founded_vote->delete();
-                if($data['vote'] == 1) {
-                    $resource->votes()->save($vote);
-                }
-            } else {
-                $founded_vote->delete();
-                if($data['vote'] == -1) {
-                    $resource->votes()->save($vote);
-                }
+            $founded_vote->delete();
+
+            if(($vote_value == -1 && $data['vote'] == 1) || ($vote_value == 1 && $data['vote'] == -1)) {
+                $resource->votes()->save($vote);
             }
         } else {
             $resource->votes()->save($vote);

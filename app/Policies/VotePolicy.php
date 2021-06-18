@@ -34,14 +34,27 @@ class VotePolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can store models.
      *
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function store(User $user, $vote_value, $resource, $resource_name)
     {
-        //
+        if ($resource->user->id == $user->id) {
+            $message;
+            if($vote_value == 1) {
+                $message = __("You cannot upvote your own {$resource_name}s");
+            } else {
+                $message = __("You cannot downvote your own {$resource_name}s");
+            }
+            return $this->deny($message);
+        }
+
+        if ($user->isBanned()) {
+            $this->deny("You cannot vote because you're currently banned !");
+        }
+        return true;
     }
 
     /**

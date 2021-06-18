@@ -2,7 +2,14 @@
     <input type="hidden" class="votable-id" value="{{ $thread->id }}">
     <input type="hidden" class="votable-type" value="thread">
     <div class="thread-container flex">
-        <div class="my8 mx8 py8 flex flex-column align-center">
+        <div class="my8 px8 py8 flex flex-column align-center relative">
+            <div class="vote-message-container absolute left100 zi1">
+                <div class="left-middle-triangle"></div>
+                <div class="flex align-center">
+                    <p class="vote-message">you can't up vote your thread</p>
+                    <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-vote-message-container rounded pointer" alt="">
+                </div>
+            </div>
             <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">
                 <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($thread, 'App\Models\Thread') @else none @endupvoted" alt="">
                 <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($thread, 'App\Models\Thread') none @endupvoted" alt="">
@@ -78,6 +85,10 @@
                             </a>
                             <div class="absolute suboptions-container suboption-style-left">
                                 <a href="{{ $thread_edit_url }}" class="button-style">Edit Thread</a>
+                                <div>
+                                    <a href="" class="button-style action-verification">Close Thread</a>
+                                    <input type="hidden" value="thread.close" class="verification-action-type">
+                                </div>
                                 <div>
                                     <a href="" class="button-style action-verification">Delete Thread</a>
                                     <input type="hidden" value="thread.destroy" class="verification-action-type">

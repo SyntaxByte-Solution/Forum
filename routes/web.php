@@ -22,8 +22,8 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 Route::get('/test', function() {
-    $vote = Vote::first();
-    dd($vote->votable);
+    $name = "mouad";
+    dd("{$name}s");
 });
 
 Route::get('/', [IndexController::class, 'index']);

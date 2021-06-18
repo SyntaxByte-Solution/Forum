@@ -610,7 +610,6 @@ function handle_up_vote(button) {
     let vote_count = parseInt(button.parent().find('.votable-count').text());
 
     if(button.find('.vote-up-image').hasClass('none')) {
-        console.log('I');
         // In this case the user is already votes up and then press up again so we need to delete the vote record
         button.parent().find('.votable-count').text(vote_count-1);
         button.find('.vote-up-image').removeClass('none');
@@ -651,7 +650,7 @@ function handle_up_vote(button) {
         success: function(response) {
             button.parent().find('.votable-count').text(response);
         },
-        error: function(response) {
+        error: function(xhr, status, error) {
             if(button.find('.vote-up-image').hasClass('none')) {
                 button.find('.vote-up-image').removeClass('none');
                 button.find('.vote-up-filled-image').addClass('none');
@@ -661,6 +660,17 @@ function handle_up_vote(button) {
             }
             // If there's an error we simply set the old value
             button.parent().find('.votable-count').text(vote_count);
+
+            let errorObject = JSON.parse(xhr.responseText);
+            let er = errorObject.message;
+            // and then print the error returned in the vote-message-container
+            let vote_message_container = button.parent().find('.vote-message-container');
+            vote_message_container.find('.vote-message').text(er);
+            vote_message_container.css('display', 'block');
+
+            setTimeout( function(){ 
+                vote_message_container.css('display', 'none');
+            }, 4000);
         },
         complete: function() {
             vote_lock = true;
@@ -716,19 +726,38 @@ function handle_down_vote(button) {
         success: function(response) {
             button.parent().find('.votable-count').text(response);
         },
-        error: function(response) {
-            if(button.find('.vote-up-image').hasClass('none')) {
-                button.find('.vote-up-image').removeClass('none');
-                button.find('.vote-up-filled-image').addClass('none');
-            } else {
-                button.find('.vote-up-image').addClass('none');
-                button.find('.vote-up-filled-image').removeClass('none');
-            }
+        error: function(xhr, status, error) {
+            button.find('.vote-up-filled-image').addClass('none');
+            button.find('.vote-down-filled-image').addClass('none');
+            button.find('.vote-up-image').removeClass('none');
+            button.find('.vote-down-image').removeClass('none');
+
             // If there's an error we simply set the old value
             button.parent().find('.votable-count').text(vote_count);
+
+            let errorObject = JSON.parse(xhr.responseText);
+            let er = errorObject.message;
+            // and then print the error returned in the vote-message-container
+            let vote_message_container = button.parent().find('.vote-message-container');
+            vote_message_container.find('.vote-message').text(er);
+            vote_message_container.css('display', 'block');
+
+            setTimeout( function(){ 
+                vote_message_container.css('display', 'none');
+            }, 4000);
+
         },
         complete: function() {
             vote_lock = true;
         }
     })
 }
+
+$('.remove-vote-message-container').click(function() {
+    let vote_container = $(this);
+    while(!vote_container.hasClass('vote-message-container')) {
+        vote_container = vote_container.parent();
+    }
+
+    vote_container.css('display', 'none');
+});

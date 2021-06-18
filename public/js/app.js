@@ -192,20 +192,10 @@ $('.edit-thread').click(function() {
 $('#category-dropdown').change(function() {
     let forum_slug = $('#forum-slug').val();
     let category_slug = $('#category-dropdown').val();
-    let sector = window.location.href.split("/").pop();
     if(category_slug == 'all') {
-        if(window.location.href.indexOf('discussions') >= 0) {
-            console.log('discussions');
-            url = '/'+forum_slug+'/discussions';
-        } else if(window.location.href.indexOf('questions') >= 0) {
-            console.log('questions');
-            url = '/'+forum_slug+'/questions';
-        } else {
-            console.log('all');
-            url = '/'+forum_slug+'/all';
-        }
+        url = '/'+forum_slug+'/all';
     } else {
-        url = '/'+forum_slug+'/'+category_slug+'/'+sector;
+        url = '/'+forum_slug+'/'+category_slug+'/threads';
     }
 
     document.location.href = url;
@@ -358,83 +348,6 @@ $('.toggle-container-button').click(function() {
         $(this).find('.toggle-arrow').text('▸');
     }
     
-    return false;
-});
-
-$('.all-table-threads-changer').click(function() {
-    if($(this).hasClass('mstsb-selected')) {
-        return false;
-    }
-
-    $('.ms-table-small-button').removeClass('mstsb-selected');
-    $(this).addClass('mstsb-selected');
-
-    let table = $(this);
-    while(!table.is('table')) {
-        table = table.parent();
-    }
-
-    table.find('tr').each(function() {
-        $(this).css('display', '');
-    });
-    return false;
-});
-
-$('.all-table-discussions-changer').click(function() {
-    if($(this).hasClass('mstsb-selected')) {
-        return false;
-    }
-
-    $('.ms-table-small-button').removeClass('mstsb-selected');
-    $(this).addClass('mstsb-selected');
-
-    let table = $(this);
-    while(!table.is('table')) {
-        table = table.parent();
-    }
-
-    let first = true;
-    table.find('tr').each(function() {
-        if(first) {
-            first = false;
-        }
-        else {
-            if($(this).find('.thread-type').val() == 1) {
-                $(this).css('display', '');
-            } else {
-                $(this).css('display', 'none');
-            }
-        }
-    });
-    return false;
-});
-
-$('.all-table-questions-changer').click(function() {
-    if($(this).hasClass('mstsb-selected')) {
-        return false;
-    }
-
-    $('.ms-table-small-button').removeClass('mstsb-selected');
-    $(this).addClass('mstsb-selected');
-
-    let table = $(this);
-    while(!table.is('table')) {
-        table = table.parent();
-    }
-
-    let first = true;
-    table.find('tr').each(function() {
-        if(first) {
-            first = false;
-        }
-        else {
-            if($(this).find('.thread-type').val() == 2) {
-                $(this).css('display', '');
-            } else {
-                $(this).css('display', 'none');
-            }
-        }
-    });
     return false;
 });
 

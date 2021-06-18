@@ -37,23 +37,11 @@
             <div class="flex align-center">
                 <div class="flex align-center">
                     <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
-                    <p class="inline-block my4 fs13">Discussions: </p><span class="fs15 bold ml8">{{ $discussions_count }}</span>
+                    <p class="inline-block my4 fs13">Threads: </p><span class="fs15 bold ml8">{{ $threads_count }}</span>
                 </div>
-                @if($discussions_count)
+                @if($threads_count)
                 <div class="fill-thin-line"></div>
-                <span class="move-to-right">[<a href="{{ route('user.discussions', ['user'=>$user->username]) }}" class="fs11 black-link">SEE</a>]</span>
-                @endif
-            </div>
-        </div>
-        <div class="my4">
-            <div class="flex align-center">
-                <div class="flex align-center">
-                    <img src="{{ asset('assets/images/icons/bqst.png') }}" class="small-image-2 mr4" alt="">
-                    <p class="inline-block my4 fs13">Questions: </p><span class="fs15 bold ml8">{{ $questions_count }}</span>
-                </div>
-                @if($questions_count)
-                <div class="fill-thin-line"></div>
-                <span class="move-to-right">[<a href="{{ route('user.questions', ['user'=>$user->username]) }}" class="fs11 black-link">SEE</a>]</span>
+                <span class="move-to-right">[<a href="{{ route('user.threads', ['user'=>$user->username]) }}" class="fs11 black-link">SEE</a>]</span>
                 @endif
             </div>
         </div>
@@ -76,8 +64,8 @@
         <div class="my4">
             <div class="flex align-center">
                 <div class="flex align-center">
-                    <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-2 mr4" alt="">
-                    <p class="inline-block my4 fs13">Votes casts: </p><span class="fs15 bold ml8">20K</span>
+                    <img src="{{ asset('assets/images/icons/votes.png') }}" class="small-image-2 mr4" alt="">
+                    <p class="inline-block my4 fs13">Votes casts: </p><span class="fs15 bold ml8">{{ $user->votes_count() }}</span>
                 </div>
             </div>
         </div>

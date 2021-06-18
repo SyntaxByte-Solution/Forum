@@ -144,12 +144,6 @@
                         <p class="fs13 mr4 my4"><span class="bold fs13 gray">From: {{ $user->personal->country }}@isset($user->personal->city), {{ $user->personal->city }}  @endisset</span></p>
                     </div>
                     @endisset
-                    @isset($user->personal->phone)
-                    <div class="flex align-center my8">
-                        <img src="{{ asset('assets/images/icons/call.svg') }}" class="small-image-2 mr4" alt="">
-                        <p class="fs13 mr4 my4"><span class="bold fs13 gray">Phone number: {{ $user->personal->phone }}</span></p>
-                    </div>
-                    @endisset
                     @if(@isset($user->personal->facebook) || @isset($user->personal->instagram) || @isset($user->personal->twitter))
                         <div class="flex flex-column toggle-box">
                             <a href="" class="move-to-right link-style toggle-container-button">Social media</a>
@@ -157,19 +151,19 @@
                             @isset($user->personal->facebook)
                             <div class="flex my8">
                                 <img src="{{ asset('assets/images/icons/facebook.svg') }}" class="small-image-2 mr4" alt="">
-                                <a href="{{ $user->personal->facebook }}" class="fs13 link-style">{{ $user->personal->facebook }}</a>
+                                <a href="{{ $user->personal->facebook }}" target="_blank"  class="fs13 link-style">{{ $user->personal->facebook }}</a>
                             </div>
                             @endisset
                             @isset($user->personal->instagram)
                             <div class="flex my8">
                                 <img src="{{ asset('assets/images/icons/instagram.svg') }}" class="small-image-2 mr4" alt="">
-                                <a href="" class="bold fs13 link-style">@{{ $user->personal->instagram }}</a>
+                                <a href="https://www.instagram.com/{{ $user->personal->instagram }}/" target="_blank" class="fs13 link-style">{{ '@'.$user->personal->instagram }}</a>
                             </div>
                             @endisset
                             @isset($user->personal->twitter)
                             <div class="flex my8">
                                 <img src="{{ asset('assets/images/icons/twitter.svg') }}" class="small-image-2 mr4" alt="">
-                                <p class="fs13 mr4 my4"><a href="{{ $user->personal->twitter }}" class="fs13 link-style">{{ $user->personal->twitter }}</a></p>
+                                <p class="fs13 mr4 my4"><a href="{{ $user->personal->twitter }}" target="_blank"  class="fs13 link-style">{{ $user->personal->twitter }}</a></p>
                             </div>
                             @endisset
                             </div>

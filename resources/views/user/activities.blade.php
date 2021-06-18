@@ -46,11 +46,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="inline-block">
-                                        <a href="" class="ms-table-small-button mstsb-selected all-table-threads-changer">all</a>
-                                        <a href="" class="ms-table-small-button all-table-discussions-changer">discussions</a>
-                                        <a href="" class="ms-table-small-button all-table-questions-changer">questions</a>
-                                    </div>
                                 </div>
                             </div>
                         </th>
@@ -65,7 +60,12 @@
                     <div class="full-center">
                         <div>
                             <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
-                            <p class="my4 text-center">{{ __("Try to create a ") }} <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="link-path">{{__('discussion')}}</a> / <a href="{{ route('question.add', ['forum'=>'general']) }}" class="link-path">{{__('question')}}</a></p>
+                            @php
+                                $forum = \App\Models\Forum::first();
+                                $forum_slug = $forum->slug;
+                                $category_slug = $forum->categories->first()->slug;
+                            @endphp
+                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>$forum_slug, 'category'=>$category_slug]) }}" class="link-path">{{__('thread')}}</a></p>
                         </div>
                     </div>
                 @endif

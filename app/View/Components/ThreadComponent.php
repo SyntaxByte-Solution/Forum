@@ -61,14 +61,8 @@ class ThreadComponent extends Component
         $this->thread_owner_posts_number = $thread_owner->posts_count();
         $this->thread_owner_joined_at = (new Carbon($thread_owner->created_at))->toDayDateTimeString();
 
-        if($thread->thread_type == 1) {
-            $this->thread_edit_url = route('discussion.edit', ['user'=>$this->thread_owner_username, 'thread'=>$thread->id]);
-            $this->thread_url = route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug,'thread'=>$thread->id]);
-
-        } else if($thread->thread_type == 2) {
-            $this->thread_edit_url = route('question.edit', ['user'=>$this->thread_owner_username, 'thread'=>$thread->id]);
-            $this->thread_url = route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$thread->id]);
-        }
+        $this->thread_edit_url = route('thread.edit', ['user'=>$this->thread_owner_username, 'thread'=>$thread->id]);
+        $this->thread_url = route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug,'thread'=>$thread->id]);
 
         $this->thread_subject = $thread->subject;
         $this->thread_created_at_hummans = (new Carbon($thread->created_at))->diffForHumans();

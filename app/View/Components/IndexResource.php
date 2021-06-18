@@ -21,7 +21,7 @@ class IndexResource extends Component
     public $forum;
 
     public $type;
-    public $type_link;
+    public $category_threads_link;
     public $thread_votes;
     public $thread_type;
     public $thread_title;
@@ -76,19 +76,10 @@ class IndexResource extends Component
 
         $this->hasLastPost = $last_post = $thread->posts->last();
 
-        if($thread->thread_type == 1) {
-            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
-            $this->edit_link = route('discussion.edit', ['user'=>$this->thread_owner, 'thread'=>$thread->id]);
-            $this->thread_icon = 'assets/images/icns/discussions.png';
-            $this->type = "Discussions";
-            $this->type_link = route('category.discussions', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);
-        } else if($thread->thread_type == 2) {
-            $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
-            $this->edit_link = route('question.edit', ['user'=>$this->thread_owner, 'thread'=>$thread->id]);
-            $this->thread_icon = 'assets/images/icns/questions.png';
-            $this->type = "Questions";
-            $this->type_link = route('category.questions', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);
-        }
+        $this->thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id]);
+        $this->edit_link = route('thread.edit', ['user'=>$this->thread_owner, 'thread'=>$thread->id]);
+        $this->thread_icon = 'assets/images/icns/discussions.png';
+        $this->category_threads_link = route('category.threads', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);
 
         if($last_post) {
             $lpc = strip_tags(Markdown::parse($last_post->content));
@@ -119,6 +110,6 @@ class IndexResource extends Component
      */
     public function render()
     {
-        return view('components.index-resource');
+        return view('components.thread.index-resource');
     }
 }

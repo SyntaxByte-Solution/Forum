@@ -21,11 +21,16 @@ class Thread extends Model
          * as well as deleting the related votes to this thread and its posts
          */
         static::deleting(function($thread) {
-            foreach($thread->posts as $post) {
-                $post->votes()->delete();
+            // Delete registry_detail
+            if ($thread->isForceDeleting()) {
+                foreach($thread->posts as $post) {
+                    $post->votes()->delete();
+                }
+                $thread->votes()->delete();
+                $thread->posts()->forceDelete();
+            } else {
+                $thread->posts()->delete();
             }
-            $thread->votes()->delete();
-            $thread->posts()->forceDelete();
         });
     }
 

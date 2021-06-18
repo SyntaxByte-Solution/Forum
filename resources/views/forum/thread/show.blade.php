@@ -23,7 +23,7 @@
             <h2>{{ __('Please make sure you want to delete the thread !') }}</h2>
             <div class="flex">
                 <div class="half-width my8 mx4">
-                    <form action="{{ route('thread.delete', ['thread'=>request()->thread->id]) }}" method="post">
+                    <form action="{{ route('thread.delete', ['thread'=>$thread->id]) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <input type="submit" class="button-style mr8" value='DELETE'>
@@ -31,7 +31,7 @@
                     <p class="fs12">{{ __('This will throw the thread to the trash. However It will not be deleted completely, you can restore it later if you want by going to your archive and select the thread to restore it !') }}</p>
                 </div>
                 <div class="half-width my8 mx4">
-                    <form action="{{ route('thread.destroy', ['thread'=>request()->thread->id]) }}" method="post">
+                    <form action="{{ route('thread.destroy', ['thread'=>$thread->id]) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <input type="submit" class="button-style mr8" value='FORCE DELETE'>
@@ -47,23 +47,24 @@
     @include('partials.header')
 @endsection
 @section('content')
-    @include('partials.hidden-login-viewer')
-    @include('partials.left-panel', ['page' => 'questions'])
+    
+    @include('partials.left-panel', ['page' => 'threads'])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex">
             <div class="full-width">
-                <div class="flex space-between full-width flex-end">
-                    <div style="height: max-content">
+                <div class="flex space-between full-width align-end">
+                    <div>
                         <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                        <a href="{{ route('get.all.forum.discussions', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum }} > </a>
-                        <a href="{{ route('category.discussions', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }} > </a>
-                        <span class="current-link-path">[QUESTION]</span>
+                        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum }} > </a>
+                        <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }}</a>
                     </div>
                     <div>
-                        <a href="{{ route('question.add', ['forum'=>'general', 'category'=>$category->slug]) }}" class="button-style @guest login-signin-button @endguest">{{ __('Ask Question') }}</a>
+                        <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style @guest login-signin-button @endguest">{{ __('Create a thread') }}</a>
                     </div>
                 </div>
+                <h2>Discussion</h2>
                 <x-thread-component :thread="request()->thread"/>
+
                 <div>
                     <div class="share-post-form">
                         @csrf
@@ -87,26 +88,26 @@
                             </style>
                         </div>
                         <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
-                        <input type='button' class="inline-block button-style share-post" value="Post your reply">
+                        <input type='button' class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest" value="Post your reply">
                     </div>
                 </div>
                 
                 <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
-                <div id="replies-container">
+                <div id="replies-container" style="margin-bottom: 30px">
                     @foreach($posts as $post)
                         <x-post-component :post="$post->id"/>
                     @endforeach
-                    <script>
-                        $('textarea').each(function() {
-                            var simplemde = new SimpleMDE({
-                                element: this,
-                            });
-                            simplemde.render();
-                        });
-                    </script>
                 </div>
+                <script>
+                    $('textarea').each(function() {
+                        var simplemde = new SimpleMDE({
+                            element: this,
+                        });
+                        simplemde.render();
+                    });
+                </script>
             </div>
-            @include('partials.thread.right-panel', ['thread_type'=>'question'])
+            @include('partials.thread.right-panel', ['thread_type'=>'discussion'])
         </div>
     </div>
 @endsection

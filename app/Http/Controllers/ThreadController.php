@@ -16,14 +16,7 @@ class ThreadController extends Controller
         $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
         $posts = $thread->posts;
 
-        $view_name;
-        if($thread->thread_type == 1) {
-            $view_name = 'forum.discussion.show';
-        } else if($thread->thread_type == 2) {
-            $view_name = 'forum.question.show';
-        }
-
-        return view($view_name)
+        return view('forum.thread.show')
             ->with(compact('forum'))
             ->with(compact('category'))
             ->with(compact('thread'))
@@ -37,14 +30,8 @@ class ThreadController extends Controller
 
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $categories = $forum->categories->where('slug', '<>', 'announcements');
-        $view = '';
-        if(strpos(url()->current(), 'discussions')) {
-            $view = 'forum.discussion.create';
-        } else if(strpos(url()->current(), 'questions')) {
-            $view = 'forum.question.create';
-        }
 
-        return view($view)
+        return view('forum.thread.create')
             ->with(compact('forums'))
             ->with(compact('forum'))
             ->with(compact('category'))
@@ -58,7 +45,6 @@ class ThreadController extends Controller
             'subject'=>'required|min:2|max:1000',
             'content'=>'required|min:2|max:40000',
             'category_id'=>'required|exists:categories,id',
-            'thread_type'=>'required|exists:thread_types,id',
             'content'=>'required|min:2|max:40000',
         ]);
 
@@ -67,39 +53,29 @@ class ThreadController extends Controller
         try {
 
             /**
-             * Notice that here we need to manage a special situation
-             * two threads could have the same subject(title) but they 
-             * have to have different thread_type or same thread_type but different category
+             * User could not have two threads with the same subject in the same category
              */
             if(auth()->user()->threads
                 ->where('subject', $data['subject'])
-                ->where('thread_type', $data['thread_type'])
                 ->where('category_id', $data['category_id'])->count()) {
 
                 $duplicated_thread = auth()->user()->threads
                 ->where('subject', $data['subject'])
-                ->where('thread_type', $data['thread_type'])
                 ->where('category_id', $data['category_id'])->first();
                 throw new DuplicateThreadException();
             }
         } catch(DuplicateThreadException $exception) {
             \Session::flash('type', 'error');
             /**
-             * If the edited thread is a discussion and there's a duplicate subjects we need to 
+             * If there's a duplicate subjects in the same category we need to 
              * reload the page by passing flash message to inform the user
              */ 
             $forum = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
             $category = Category::find($data['category_id'])->slug;
 
-            if(request()->thread_type == 1) {
-                $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-                \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
-                return redirect()->back();
-            } else if(request()->thread_type == 2) {
-                $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-                \Session::flash('message', "This question subject is already exists in your questions list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
-                return redirect()->back();
-            }
+            $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+            \Session::flash('message', "This title is already exists in your threads list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
+            return redirect()->back();
         }
 
         $category_status_slug = CategoryStatus::
@@ -114,15 +90,12 @@ class ThreadController extends Controller
 
         $data['user_id'] = auth()->user()->id;
 
-        Thread::create($data);
+        $thread = Thread::create($data);
 
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
+        $categaory_slug = Category::find($data['category_id'])->slug;
 
-        if($data['thread_type'] == 1) {
-            return redirect(route('get.all.forum.discussions', [$forum_slug]));
-        } else if($data['thread_type'] == 2) {
-            return redirect(route('get.all.forum.questions', [$forum_slug]));
-        }
+        return redirect(route('thread.show', ['forum'=>$forum_slug, 'category'=>$categaory_slug, 'thread'=>$thread->id]));
     }
 
     public function edit(User $user, Thread $thread) {
@@ -133,14 +106,7 @@ class ThreadController extends Controller
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $categories = $forum->categories->where('slug', '<>', 'announcements');
 
-        $view = '';
-        if($thread->thread_type == 1) {
-            $view = 'forum.discussion.edit';
-        } else if($thread->thread_type == 2) {
-            $view = 'forum.question.edit';
-        }
-
-        return view($view)
+        return view('forum.thread.edit')
             ->with(compact('forums'))
             ->with(compact('forum'))
             ->with(compact('category'))
@@ -162,18 +128,15 @@ class ThreadController extends Controller
         try {
 
             /**
-             * Notice that here we need to manage a special situation
-             * two threads could have the same subject(title) but they 
-             * have to have different thread_type or same thread_type but different category
+             * User could not update the thread with a subject that already exists
+             * in the same category
              */
             if(auth()->user()->threads
                 ->where('subject', request()->subject)
-                ->where('thread_type', request()->thread_type)
                 ->where('category_id', request()->category_id)
                 ->where('id', '<>', $thread->id)->count()) {
                 $duplicated_thread = auth()->user()->threads
                     ->where('subject', request()->subject)
-                    ->where('thread_type', request()->thread_type)
                     ->where('category_id', request()->category_id)
                     ->where('id', '<>', $thread->id)->first();
                 throw new DuplicateThreadException();
@@ -181,48 +144,31 @@ class ThreadController extends Controller
         } catch(DuplicateThreadException $exception) {
             \Session::flash('type', 'error');
             /**
-             * If the edited thread is a discussion and there's a duplicate subjects we need to 
+             * If there's a duplicate subjects in the same category we need to 
              * reload the page by passing flash message to inform the user
              */ 
-            if(request()->thread_type == 1) {
-                $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-                \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
-                return route('discussion.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
-            } else if(request()->thread_type == 2) {
-                $duplicate_thread_url = route('question.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-                \Session::flash('message', "This title is already exists in your thread list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
-                return route('question.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
-            }
+            $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+            \Session::flash('message', "This title is already exists in your thread list withing the same category(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
+            return route('thread.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
         }
 
         $data = request()->validate([
             'subject'=>'sometimes|min:2|max:1000',
             'content'=>'sometimes|min:2|max:40000',
             'category_id'=>'sometimes|exists:categories,id',
-            'thread_type'=>'sometimes|exists:thread_types,id',
         ]);
 
         $thread->update($data);
 
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
 
-        if($data['thread_type'] == 1) {
-            return route('thread.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
-        } else if($data['thread_type'] == 2) {
-            return route('thread.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
-        }
+        return route('thread.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
     }
 
     public function delete(Thread $thread) {
         $this->authorize('delete', $thread);
 
         $forum_slug = Forum::find(Category::find($thread['category_id'])->forum_id)->slug;
-
-        if($thread->thread_type == 1) {
-            $url = route('get.all.forum.discussions', [$forum_slug]);
-        } else if($thread->thread_type == 2) {
-            $url = route('get.all.forum.questions', [$forum_slug]);
-        }
 
         /**
          * Notice here we don't have to delete the related resource because we used soft
@@ -231,7 +177,7 @@ class ThreadController extends Controller
          */
 
         $thread->delete();
-        return redirect($url);
+        return redirect(route('user.activities', ['user'=>auth()->user()->username]));
     }
 
     public function destroy(Thread $thread) {
@@ -239,74 +185,8 @@ class ThreadController extends Controller
 
         $forum_slug = Forum::find(Category::find($thread['category_id'])->forum_id)->slug;
 
-        if($thread->thread_type == 1) {
-            $url = route('get.all.forum.discussions', [$forum_slug]);
-        } else if($thread->thread_type == 2) {
-            $url = route('get.all.forum.questions', [$forum_slug]);
-        }
-
         $thread->forceDelete();
-        return redirect($url);
-    }
-
-    public function all_discussions(Forum $forum) {
-        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-        $category = $forum->categories->first();
-        $forums = Forum::where('id', '<>', $forum->id)->get();
-        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
-        $announcements = Thread::where('category_id', $anoun_id)->where('thread_type', 1)->get();
-
-        // First get all forum's categories
-        $ids = $categories->pluck('id');
-        
-        $pagesize = 10;
-        $pagesize_exists = false;
-        
-        if(request()->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = request()->input('pagesize');
-        }
-
-        // Then we fetch all threads in those categories
-        $discussions = Thread::whereIn('category_id', $ids)->where('thread_type', 1)->orderBy('created_at', 'desc')->paginate($pagesize);
-
-        return view('forum.discussion.all-discussions')
-        ->with(compact('categories'))
-        ->with(compact('category'))
-        ->with(compact('forums'))
-        ->with(compact('announcements'))
-        ->with(compact('discussions'))
-        ->with(compact('pagesize'));
-    }
-
-    public function all_questions(Forum $forum) {
-        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-        $category = $forum->categories->first();
-        $forums = Forum::where('id', '<>', $forum->id)->get();
-        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
-        $announcements = Thread::where('category_id', $anoun_id)->where('thread_type', 1)->get();
-
-        // First get all forum's categories
-        $ids = $categories->pluck('id');
-        
-        $pagesize = 10;
-        $pagesize_exists = false;
-        
-        if(request()->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = request()->input('pagesize');
-        }
-
-        // Then we fetch all threads in those categories
-        $questions = Thread::whereIn('category_id', $ids)->where('thread_type', 2)->orderBy('created_at', 'desc')->paginate($pagesize);
-        
-        return view('forum.question.all-questions')
-        ->with(compact('categories'))
-        ->with(compact('category'))
-        ->with(compact('forums'))
-        ->with(compact('announcements'))
-        ->with(compact('questions'))
-        ->with(compact('pagesize'));
+        return redirect(route('user.activities', ['user'=>auth()->user()->username]));
     }
 
     public function forum_all_threads(Forum $forum) {
@@ -332,7 +212,7 @@ class ThreadController extends Controller
         // Then we fetch all threads in those categories
         $threads = Thread::whereIn('category_id', $categories_ids)->orderBy('created_at', 'desc')->paginate($pagesize);
         
-        return view('forum.category.misc')
+        return view('forum.category.categories-threads')
         ->with(compact('forums'))
         ->with(compact('categories'))
         ->with(compact('category'))
@@ -341,7 +221,7 @@ class ThreadController extends Controller
         ->with(compact('pagesize'));
     }
 
-    public function category_misc(Forum $forum, Category $category) {
+    public function category_threads(Forum $forum, Category $category) {
         $category = $category;
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $forums = Forum::where('id', '<>', $forum->id)->get();
@@ -356,54 +236,7 @@ class ThreadController extends Controller
 
         $threads = Thread::where('category_id', $category->id)->orderBy('created_at', 'desc')->paginate($pagesize);
 
-        return view('forum.category.category-misc')
-        ->with(compact('forums'))
-        ->with(compact('category'))
-        ->with(compact('categories'))
-        ->with(compact('threads'))
-        ->with(compact('pagesize'));
-    }
-
-    public function category_discussions(Forum $forum, Category $category) {
-        $forums = Forum::where('id', '<>', $forum->id)->get();
-        $category = $category;
-        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-
-        $pagesize = 10;
-        $pagesize_exists = false;
-        
-        if(request()->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = request()->input('pagesize');
-        }
-
-        $threads = Thread::where('category_id', $category->id)
-        ->where('thread_type', 1)->orderBy('created_at')->paginate($pagesize);
-
-        return view('forum.category.category-discussions')
-        ->with(compact('forums'))
-        ->with(compact('category'))
-        ->with(compact('categories'))
-        ->with(compact('threads'))
-        ->with(compact('pagesize'));
-    }
-
-    public function category_questions(Forum $forum, Category $category) {
-        $forums = Forum::where('id', '<>', $forum->id)->get();
-        $category = $category;
-        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-
-        $pagesize = 10;
-        $pagesize_exists = false;
-        
-        if(request()->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = request()->input('pagesize');
-        }
-
-        $threads = Thread::where('category_id', $category->id)->where('thread_type', 2)->orderBy('created_at', 'desc')->paginate($pagesize);
-
-        return view('forum.category.category-questions')
+        return view('forum.category.category-threads')
         ->with(compact('forums'))
         ->with(compact('category'))
         ->with(compact('categories'))

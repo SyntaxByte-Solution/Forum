@@ -34,14 +34,12 @@ class UserController extends Controller
             $threads = Thread::whereNotIn('category_id', $announcements)->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($pagesize);
         }
 
-        $discussions_count = $user->discussions_count();
-        $questions_count = $user->questions_count();
+        $threads_count = $user->threads->count();
         $posts_count = $user->posts_count();
 
         return view('user.activities')
             ->with(compact('user'))
-            ->with(compact('discussions_count'))
-            ->with(compact('questions_count'))
+            ->with(compact('threads_count'))
             ->with(compact('posts_count'))
             ->with(compact('pagesize'))
             ->with(compact('pagesize_exists'))
@@ -49,7 +47,7 @@ class UserController extends Controller
             ->with(compact('threads'));
     }
 
-    public function user_discussions(Request $request, User $user) {
+    public function user_threads(Request $request, User $user) {
         $all = false;
         $pagesize = 10;
         $pagesize_exists = false;
@@ -58,65 +56,27 @@ class UserController extends Controller
             $pagesize = $request->input('pagesize');
         }
 
-        $discussions_count = $user->discussions_count();
-        $questions_count = $user->questions_count();
+        $threads_count = $user->threads->count();
         $posts_count = $user->posts_count();
-        //$discussions = $user->discussions;
 
-        $discussions;
+        $threads;
         if($pagesize == 'all') {
             $all = true;
-            $discussions = $user->discussions()
+            $threads = $user->threads()
             ->orderBy('created_at', 'desc')->lazy();
         } else {
-            $discussions = $user->discussions()
+            $threads = $user->threads()
             ->orderBy('created_at', 'desc')->paginate($pagesize);
         }
 
-        return view('user.threads.discussions')
+        return view('user.threads')
             ->with(compact('user'))
-            ->with(compact('discussions_count'))
-            ->with(compact('questions_count'))
+            ->with(compact('threads_count'))
             ->with(compact('posts_count'))
             ->with(compact('all'))
             ->with(compact('pagesize'))
             ->with(compact('pagesize_exists'))
-            ->with(compact('discussions'));
-    }
-
-    public function user_questions(Request $request, User $user) {
-        $all = false;
-        $pagesize = 10;
-        $pagesize_exists = false;
-        if($request->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = $request->input('pagesize');
-        }
-
-        $discussions_count = $user->discussions_count();
-        $questions_count = $user->questions_count();
-        $posts_count = $user->posts_count();
-        //$discussions = $user->discussions;
-
-        $questions;
-        if($pagesize == 'all') {
-            $all = true;
-            $questions = $user->questions()
-            ->orderBy('created_at', 'desc')->lazy();
-        } else {
-            $questions = $user->questions()
-            ->orderBy('created_at', 'desc')->paginate($pagesize);
-        }
-
-        return view('user.threads.questions')
-            ->with(compact('user'))
-            ->with(compact('discussions_count'))
-            ->with(compact('questions_count'))
-            ->with(compact('posts_count'))
-            ->with(compact('all'))
-            ->with(compact('pagesize'))
-            ->with(compact('pagesize_exists'))
-            ->with(compact('questions'));
+            ->with(compact('threads'));
     }
 
     public function profile(Request $request, User $user) {
@@ -137,8 +97,7 @@ class UserController extends Controller
             ]);
         }
 
-        $discussions_count = $user->discussions_count();
-        $questions_count = $user->questions_count();
+        $threads_count = $user->threads->count();
         $posts_count = $user->posts_count();
 
         $recent_threads = $user->threads()
@@ -146,8 +105,7 @@ class UserController extends Controller
 
         return view('user.profile')
             ->with(compact('user'))
-            ->with(compact('discussions_count'))
-            ->with(compact('questions_count'))
+            ->with(compact('threads_count'))
             ->with(compact('posts_count'))
             ->with(compact('recent_threads'));
     }

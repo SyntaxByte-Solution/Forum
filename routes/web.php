@@ -37,13 +37,10 @@ Route::get('/forums', [IndexController::class, 'forums']);
 Route::get('/{forum:slug}/search', [SearchController::class, 'forum_search'])->name('forum.thread.search');
 
 /**
- * 1. get all discussions & questions of all categories in the specified forum in the url
- * 2. get all discussions of all categories in the specified forum in the url
- * 1. get all questions of all categories in the specified forum in the url
+ * get all forum threads
+ * forum.misc -> forum.all.threads
  */
-Route::get('/{forum:slug}/all', [ThreadController::class, 'forum_all_threads'])->name('forum.misc');
-Route::get('/{forum:slug}/discussions', [ThreadController::class, 'all_discussions'])->name('get.all.forum.discussions');
-Route::get('/{forum:slug}/questions', [ThreadController::class, 'all_questions'])->name('get.all.forum.questions');
+Route::get('/{forum:slug}/all', [ThreadController::class, 'forum_all_threads'])->name('forum.all.threads');
 
 Route::middleware(['auth'])->group(function () {
     /** 
@@ -66,11 +63,9 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/categories/{category}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
-    Route::get('/{forum:slug}/{category:slug}/discussions/add', [ThreadController::class, 'create'])->name('discussion.add');
-    Route::get('/{forum:slug}/{category:slug}/questions/add', [ThreadController::class, 'create'])->name('question.add');
+    Route::get('/{forum:slug}/{category:slug}/threads/add', [ThreadController::class, 'create'])->name('thread.add');
     
-    Route::get('/{user:username}/discussions/{thread}/edit', [ThreadController::class, 'edit'])->name('discussion.edit');
-    Route::get('/{user:username}/questions/{thread}/edit', [ThreadController::class, 'edit'])->name('question.edit');
+    Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
     
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);
@@ -103,23 +98,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/post/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
 });
 
-/**
- * 1. get all discussions & questions of the specified category of the forum in the url 
- * (all in the first route means all thread types [Discussions, questions, advices ..])
- * 2. get all discussions of the specified category of the forum in the url
- * 3. get all questions of the specified category of the forum in the url
- */
-Route::get('/{forum:slug}/{category:slug}/all', [ThreadController::class, 'category_misc'])->name('category.misc');
-Route::get('/{forum:slug}/{category:slug}/discussions', [ThreadController::class, 'category_discussions'])->name('category.discussions');
-Route::get('/{forum:slug}/{category:slug}/questions', [ThreadController::class, 'category_questions'])->name('category.questions');
+
+Route::get('/{forum:slug}/{category:slug}/threads', [ThreadController::class, 'category_threads'])->name('category.threads');
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::get('/users/{user:username}/activities', [UserController::class, 'activities'])->name('user.activities');
 
-Route::get('/users/{user:username}/threads/discussions', [UserController::class, 'user_discussions'])->name('user.discussions');
-Route::get('/users/{user:username}/threads/questions', [UserController::class, 'user_questions'])->name('user.questions');
+Route::get('/users/{user:username}/threads', [UserController::class, 'user_threads'])->name('user.threads');
 Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/users/username/check', [UserController::class, 'username_check']);
 

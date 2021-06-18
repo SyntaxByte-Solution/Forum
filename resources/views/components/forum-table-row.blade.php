@@ -9,15 +9,15 @@
                     <img src="" class="forum-category-icon" alt="">
                 </div>
                 <div>
-                    <h2 class="forum-category-link-header"><a href="{{ route('forum.misc', ['forum'=>$forum_slug]) }}" class="forum-style-link">{{ $forum_forum }}</a></h2>
+                    <h2 class="forum-category-link-header"><a href="{{ route('forum.all.threads', ['forum'=>$forum_slug]) }}" class="forum-style-link">{{ $forum_forum }}</a></h2>
                     <p class="forum-category-description">{{ $forum_description }}</p>
                 </div>
             </div>
         </div>
     </td>
-    <!-- number of both discussions and questions -->
+    <!-- number of threads -->
     <td class="fs13">{{ $threads_count }}</td>
-    <!-- number of views of both discussions and questions -->
+    <!-- number of views of threads -->
     <td class="fs13">{{ $posts_count }}</td>
     <td>
         @if($last_thread_title)

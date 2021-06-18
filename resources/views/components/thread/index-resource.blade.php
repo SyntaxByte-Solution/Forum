@@ -1,5 +1,4 @@
 <tr class="resource-container">
-    <input type="hidden" class="thread-type" value="{{ $thread_type }}">
     <input type="hidden" class="votable-id" value="{{ $thread_id }}">
     <input type="hidden" class="votable-type" value="thread">
     <td>
@@ -17,16 +16,6 @@
             </div>
             <div class="flex full-width">
                 <div class="full-width">
-                    <div class="flex align-center">
-                        <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-2 mr4" alt="">
-                        <div class="flex align-center">
-                            <a href="{{ route('forum.misc', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
-                            <span class="mx4 fs13 gray">▸</span>
-                            <a href="{{ route('category.misc', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="fs11 black-link">{{ $category->category }}</a>
-                        </div>
-                        <a href="{{ $type_link }}" class="fs11 no-margin link-style move-to-right">{{ $type }}</a>
-                    </div>
-                    <div class="simple-half-line-separator"></div>
                     <div class="index-content-section flex">
                         <div>
                             <div class="flex align-center gray">
@@ -59,6 +48,17 @@
                                 </div>
                             </div>
                             @endcan
+                        </div>
+                    </div>
+                    <div class="simple-line-separator my4"></div>
+                    <div class="flex">
+                        <div class="flex align-center move-to-right">
+                            <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-size mr4" alt="">
+                            <div class="flex align-center">
+                                <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
+                                <span class="mx4 fs13 gray">▸</span>
+                                <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="fs11 black-link">{{ $category->category }}</a>
+                            </div>
                         </div>
                     </div>
                 </div>    

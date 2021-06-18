@@ -60,24 +60,37 @@
             </div>
         </div>
     </div>
+    <div class="flex relative">
+        <div class="flex align-center full-width relative">
+            <div class="sprite-icon wedit-icon mx8 absolute left0"></div>
+            @php
+                $add_thread_link;
+
+                if($forum = request()->forum) {
+                    if($category = request()->category) {
+                        $add_thread_link = route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]);
+                    } else {
+                        $add_thread_link = route('thread.add', ['forum'=>$forum->slug, 'category'=>$forum->categories->first()->slug]);
+                    }
+                } else {
+                    $add_thread_link = route('thread.add', ['forum'=>\App\Models\Forum::first()->slug, 'category'=>\App\Models\Forum::first()->categories->first()->slug]);
+                }
+            @endphp
+            <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected' }} @endif" style="padding-left: 35px">Add a thread</a>
+        </div>
+        @if($page == 'add-thread')
+            <div class="selected-colored-slice"></div>
+        @endif
+    </div>
     @endauth
     <div>
         <p class="left-panel-label">PUBLIC</p>
         <div class="flex relative">
             <div class="flex align-center full-width relative">
                 <div class="sprite-icon wdiscussion-icon mx8 absolute left0"></div>
-                <a href="{{ route('category.discussions', ['forum'=>'general', 'category'=>'general-infos']) }}" class="left-panel-item lp-padding @if($page == 'discussions') {{ 'lp-selected' }} @endif">Discussions</a>
+                <a href="{{ route('category.threads', ['forum'=>'general', 'category'=>'general-infos']) }}" class="left-panel-item lp-padding @if($page == 'threads') {{ 'lp-selected' }} @endif">Threads</a>
             </div>
-            @if($page == 'discussions')
-                <div class="selected-colored-slice"></div>
-            @endif
-        </div>
-        <div class="flex relative">
-            <div class="flex align-center full-width relative">
-                <div class="sprite-icon question-icon mx8 absolute left0"></div>
-                <a href="{{ route('category.questions', ['forum'=>'general', 'category'=>'general-infos']) }}" class="left-panel-item lp-padding @if($page == 'questions') {{ 'lp-selected' }} @endif">Questions</a>
-            </div>
-            @if($page == 'questions')
+            @if($page == 'threads')
                 <div class="selected-colored-slice"></div>
             @endif
         </div>

@@ -20,10 +20,10 @@
             <div class="full-width">
                 @include('partials.user-space.basic-header', ['page' => 'profile'])
                 <div class="flex space-between">
-                    <h1 class="">User Questions</h1>
+                    <h1 class="">User Discussions</h1>
                     <div class="mr8">
                         @unless($all)
-                            {{ $questions->onEachSide(0)->links() }}
+                            {{ $discussions->onEachSide(0)->links() }}
                         @endunless
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         <th class="table-col-header">
                             <div class="flex space-between align-center">
                                 <div>
-                                    {{ __('Questions') }}({{$questions->count()}})
+                                    {{ __('Discussions') }}({{$discussions->count()}})
                                 </div>
                                 <div>
                                     <div class="mx4 inline-block">
@@ -52,15 +52,15 @@
                         <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
                         <th class="table-col-header">{{ __('LAST POST') }}</th>
                     </tr>
-                    @foreach($questions as $question)
-                        <x-index-resource :thread="$question"/>
+                    @foreach($discussions as $discussion)
+                        <x-index-resource :thread="$discussion"/>
                     @endforeach
                 </table>
-                @if(!$questions->count())
+                @if(!$discussions->count())
                     <div class="full-center">
                         <div>
                             <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
-                            <p class="my4 text-center">{{ __("Try to create a ") }} <a href="{{ route('discussion.add', ['forum'=>'general']) }}" class="link-path">{{__('discussion')}}</a> / <a href="{{ route('question.add', ['forum'=>'general']) }}" class="link-path">{{__('question')}}</a></p>
+                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>'general']) }}" class="link-path">{{__('thread')}}</a></p>
                         </div>
                     </div>
                 @endif

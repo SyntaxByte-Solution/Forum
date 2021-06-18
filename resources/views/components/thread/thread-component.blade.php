@@ -1,5 +1,4 @@
 <div style="margin: 14px 0" class="resource-container">
-    <input type="hidden" class="thread-type" value="{{ $thread->thread_type }}">
     <input type="hidden" class="votable-id" value="{{ $thread->id }}">
     <input type="hidden" class="votable-type" value="thread">
     <div class="thread-container flex">
@@ -43,15 +42,11 @@
                                                 <p class="fs13 no-margin">Reputation</p>
                                             </div>
                                             <div class="half-width">
-                                                <p class="fs17 bold no-margin">{{ $thread_owner->questions_count() }} <span class="fs12">(<a href="{{ route('user.activities', ['user'=>$thread_owner->username]) }}" class="link-path">See</a>)</span></p>
+                                                <p class="fs17 bold no-margin">{{ $thread_owner->threads_count() }} <span class="fs12">(<a href="{{ route('user.activities', ['user'=>$thread_owner->username]) }}" class="link-path">See</a>)</span></p>
                                                 <p class="fs13 no-margin">Questions</p>
                                             </div>
                                         </div>
                                         <div class="flex space-between my4">
-                                            <div class="half-width">
-                                                <p class="fs17 bold no-margin">{{ $thread_owner->discussions_count() }} <span class="fs12">(<a href="{{ route('user.activities', ['user'=>$thread_owner->username]) }}" class="link-path">See</a>)</span></p>
-                                                <p class="fs13 no-margin">Discussions</p>
-                                            </div>
                                             <div class="half-width">
                                                 <p class="fs17 bold no-margin">{{ $thread_owner->posts_count() }}</p>
                                                 <p class="fs13 no-margin">Total Posts</p>

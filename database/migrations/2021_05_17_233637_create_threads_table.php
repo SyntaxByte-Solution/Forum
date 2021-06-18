@@ -22,12 +22,10 @@ class CreateThreadsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('status_id')->default('1');
-            $table->unsignedBigInteger('thread_type');
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('status_id')->references('id')->on('thread_status');
-            $table->foreign('thread_type')->references('id')->on('thread_types');
 
             $table->timestamps();
         });

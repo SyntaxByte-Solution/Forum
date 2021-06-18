@@ -64,10 +64,7 @@
             <div class="index-right-panel">
                 <p class="bold no-margin mb8 fs15 blue">{{ __("Not the") }} {{ $thread_type }} {{ __("you're looking for ?") }}</p>
                 <p class="fs12"><span class="bold mr4">+</span>{{ __("Use the") }} <a href="" class="blue bold no-underline">{{ __('search feature') }}</a> {{ __("by specifying the forum and category (or select [all] option to search in all forums and categories)") }}.</p>
-                @php
-                    $thread_creation_link = route($thread_type . '.add', ['forum'=>$forum->slug, 'category'=>$category->slug]);
-                @endphp
-                <p class="fs12"><span class="bold mr4">+</span>{{ __("Or") }} <a href="{{ $thread_creation_link }}" class="blue bold no-underline">{{ __("create your own ") }} {{ $thread_type }}</a></p>
+                <p class="fs12"><span class="bold mr4">+</span>{{ __("Or") }} <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="blue bold no-underline">{{ __("create your own ") }} {{ $thread_type }}</a></p>
             </div>
         </div>
     </div>

@@ -66,16 +66,12 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->hasMany(Thread::class);
     }
 
-    public function discussions() {
-        return $this->threads()->where('thread_type', 1);
-    }
-
-    public function questions() {
-        return $this->threads()->where('thread_type', 2);
-    }
-
     public function votes() {
         return Vote::where('user_id', $this->id)->get();
+    }
+
+    public function votes_count() {
+        return $this->votes()->count();
     }
 
     public function isBanned() {
@@ -106,13 +102,5 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function threads_count() {
         return $this->threads()->count();
-    }
-
-    public function discussions_count() {
-        return $this->discussions()->count();
-    }
-
-    public function questions_count() {
-        return $this->questions()->count();
     }
 }

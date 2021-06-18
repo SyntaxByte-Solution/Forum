@@ -584,6 +584,10 @@ a, input, textarea {
     background-position: -0px -193px;
 }
 
+.wedit-icon {
+    background-position: -0px -60px;
+}
+
 .wmenu-icon {
     background-image: url(../assets/images/icons/wmenu.png);
 }
@@ -593,7 +597,7 @@ a, input, textarea {
 }
 
 .bedit-icon {
-    background-position: 0 -339.9px;
+    background-position: 0 -340.9px;
 }
 
 .bdelete-icon {
@@ -1487,6 +1491,8 @@ tr:nth-child(2n) {
     color: white;
     margin: 0;
     border-radius: 4px;
+
+    z-index: 5;
 }
 .tooltip-style-2 {
     max-width: 160px;

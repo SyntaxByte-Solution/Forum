@@ -14,6 +14,7 @@ class ThreadPolicy
 
     public function create(User $user) {
         if($user->isBanned()) {
+            return $this->deny("You can't update your threads because you're currently banned");
             throw new UserBannedException();
         }
 
@@ -54,7 +55,7 @@ class ThreadPolicy
     public function update(User $user, Thread $thread)
     {
         if($user->isBanned()) {
-            throw new UserBannedException();
+            return $this->deny("You can't update your threads because you're currently banned");
         }
 
         return $thread->user_id == $user->id;

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException};
-use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User};
+use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User, ThreadStatus};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
@@ -187,6 +188,32 @@ class ThreadController extends Controller
 
         $thread->forceDelete();
         return redirect(route('user.activities', ['user'=>auth()->user()->username]));
+    }
+
+    public function thread_posts_switch(Request $request, Thread $thread) {
+        $this->authorize('update', $thread);
+
+        $data = $request->validate([
+            'switch'=>[
+                'required',
+                Rule::in(['on', 'off']),
+            ]
+        ]);
+
+        if($data['switch'] == 'off') {
+            $thread_posts_turn_off_status = ThreadStatus::where('slug', 'posts-turn-off')->first();
+        } else if($data['switch'] == 'on') {
+            $thread_posts_turn_off_status = ThreadStatus::where('slug', 'live')->first();
+        }
+
+        $thread->update([
+            'status_id'=>$thread_posts_turn_off_status->id
+        ]);
+
+        $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;
+        $category = Category::find($thread->category_id)->slug;
+
+        return route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$thread->id]);
     }
 
     public function forum_all_threads(Forum $forum) {

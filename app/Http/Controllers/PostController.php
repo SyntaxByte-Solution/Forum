@@ -11,12 +11,12 @@ use App\View\Components\PostComponent;
 class PostController extends Controller
 {
     public function store() {
-        $this->authorize('store', Post::class);
-
+        
         $data = request()->validate([
             'content'=>'required|min:2|max:40000',
             'thread_id'=>'required|exists:threads,id',
         ]);
+        $this->authorize('store', [Post::class, $data['thread_id']]);
 
         $thread_status_slug = ThreadStatus::find(Thread::find($data['thread_id'])->status_id)->slug;
 

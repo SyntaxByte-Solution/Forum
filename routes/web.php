@@ -75,6 +75,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
     Route::delete('/thread/{thread}/force', [ThreadController::class, 'destroy'])->name('thread.destroy');
+    Route::post('/thread/{thread}/posts/switch', [ThreadController::class, 'thread_posts_switch'])->name('thread.posts.turn.off');
     
     Route::post('/post', [PostController::class, 'store']);
     Route::patch('/post/{post}', [PostController::class, 'update']);
@@ -97,7 +98,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/thread/{thread}/vote', [VoteController::class, 'thread_vote'])->name('thread.vote');
     Route::post('/post/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
 });
-
 
 Route::get('/{forum:slug}/{category:slug}/threads', [ThreadController::class, 'category_threads'])->name('category.threads');
 

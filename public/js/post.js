@@ -252,13 +252,21 @@ $('.share-post').click(function() {
 
             },
             error: function(response) {
-                // Here we get the errors of the response as an object
-                let errors = JSON.parse(response.responseText).errors;
+                
+                let errors = JSON.parse(response.responseText);
+                let error;
 
-                // The errors object hold errors keys as well as error values in form of array of errors
-                // because a field could have multiple validation constraints and then it could have multiple errors
-                // strings. In this case we only need the first error of the first validation
-                let error = errors[Object.keys(errors)[0]][0];
+                if(errors.message) {
+                    error = errors.message
+                } else {
+                    // Here we get the errors of the response as an object
+                    let errors = JSON.parse(response.responseText);
+    
+                    // The errors object hold errors keys as well as error values in form of array of errors
+                    // because a field could have multiple validation constraints and then it could have multiple errors
+                    // strings. In this case we only need the first error of the first validation
+                    error = errors[Object.keys(errors)[0]][0];
+                }
                 $('#global-error').text(error);
                 $('#global-error').css('display', 'block');
                 btn.val('Post your reply');

@@ -58,7 +58,7 @@ class UserPolicy
     public function update(User $user, User $model)
     {
         if($user->isBanned()) {
-            throw new UserBannedException();
+            return $this->deny("You can't update your profile you're currently banned");
         }
 
         return $user->id == $model->id;
@@ -66,6 +66,9 @@ class UserPolicy
 
     public function activate_account(User $user, User $model)
     {
+        if($user->isBanned()) {
+            return $this->deny("You can't access this page because you're currently banned");
+        }
         return $user->id == $model->id;
     }
 

@@ -49,7 +49,7 @@
                         <div class="full-center full-dimensions @if($user->cover) none @endif">
                             <div class="flex align-center change-cover-back-container @if($user->cover) none @endif">
                                 <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
-                                <p class="fs17 white">ADD A COVER</p>
+                                <p class="fs17 white unselectable">ADD A COVER</p>
                             </div>
                         </div>
                         <img src="{{ $user->cover }}" class="us-cover @if(!$user->cover) none @endif" alt="">
@@ -76,7 +76,7 @@
                                     <a href="" class="white no-underline my4 fs13 close-shadowed-view-button">cancel</a>
                                 </div>
                             </div>
-                            <a href="" class="absolute x-button remove-profile-avatar rounded full-center @if($user->avatar == 'users/defaults/avatar-default.png') none @endif" style="z-index: 2">
+                            <a href="" class="absolute x-button remove-profile-avatar rounded full-center @if(!$user->getRawOriginal('avatar')) none @endif" style="z-index: 2">
                                 <img src="{{ asset('assets/images/icons/wx.png') }}" style="height: 8px; width: 8px" alt="">
                             </a>
                             <div class="absolute full-center update-avatar-bottom-section hidden-overflow">
@@ -86,7 +86,7 @@
                             </div>
                             <a href="{{ route('user.activities', ['user'=>$user->username]) }}">
                                 <div class="us-settings-profile-picture-container full-center relative">
-                                    <img src="{{ $user->avatar }}" class="us-settings-profile-picture" alt="">
+                                    <img src="{{ $user->avatar }}" class="us-settings-profile-picture handle-image-center-positioning" alt="">
                                     <img src="{{ asset('storage') . '/' . 'users/defaults/avatar-default.png' }}" class="us-settings-profile-picture default-avatar none" alt="">
                                 </div>
                             </a>

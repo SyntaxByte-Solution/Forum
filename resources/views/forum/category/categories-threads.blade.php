@@ -55,7 +55,7 @@
                     <div class="relative">
                         <a href="{{ route('thread.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 mr4">Add Thread</a>
                     </div>
-                    <form action="{{ route('forum.thread.search', ['forum'=>request()->forum]) }}" method='get'>
+                    <form action="{{ route('forum.thread.search', ['forum'=>request()->forum]) }}" method='get' class="flex">
                         <input type="text" name="k" class="input-style-2" placeholder="Search this forum .." required>
                         <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                     </form>

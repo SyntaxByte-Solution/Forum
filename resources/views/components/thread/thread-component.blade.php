@@ -1,6 +1,31 @@
-<div style="margin: 14px 0" class="resource-container">
+<div style="margin: 14px 0" class="resource-container relative">
+
     <input type="hidden" class="votable-id" value="{{ $thread->id }}">
     <input type="hidden" class="votable-type" value="thread">
+
+    <div class="absolute full-shadowed br6 turn-off-viewer" style="z-index: 1">
+        <div class="full-center full-width full-height">
+            <div>
+                @php
+                    $posts_switch = ($thread->status->id == 3) ? 'on' : 'off';
+                @endphp
+                
+                @if($thread->status->id != 3)
+                <p class="white bold fs15 my4">{{ __('Important: If you turn off replies, no one could reply to your tread') }}.</p>
+                <p class="white fs15 mt4 mb8">{{ __('However if there are already some replies, they will not disappeared.') }}</p>
+                @else
+                <p class="white bold fs15 my8">{{ __('Turn on replies on this thread') }}.</p>
+                @endif
+                <div class="full-center">
+                    <input type="button" class="simple-white-button pointer turn-off-posts fs13" value="Turn {{ $posts_switch }} replies">
+                    <a href="" class="simple-link close-shadowed-view-button fs14" style="text-decoration: none; margin-left: 6px;">cancel</a>
+                    <input type="hidden" class="id" value="{{ $thread->id }}">
+                    <input type="hidden" class="switch" value="{{ $posts_switch }}">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="thread-container flex">
         <div class="my8 px8 py8 flex flex-column align-center relative">
             <div class="vote-message-container absolute left100 zi1">
@@ -24,43 +49,22 @@
             <div class="thread-header">
                 <div class="flex space-between">
                     <div>
+                        <div class="flex">
+                            <div class="flex align-center">
+                                <img src="{{ asset('assets/images/icons/' . request()->forum->icon) }}" class="small-image-size mr4" alt="">
+                                <div class="flex align-center">
+                                    <a href="{{ route('forum.all.threads', ['forum'=>request()->forum->slug]) }}" class="fs11 black-link">{{ request()->forum->forum }}</a>
+                                    <span class="mx4 fs13 gray">▸</span>
+                                    <a href="{{ route('category.threads', ['forum'=>request()->forum->slug, 'category'=>request()->category->slug]) }}" class="fs11 black-link">{{ request()->category->category }}</a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="flex align-center">
                             <span class="no-margin fs12 mr4">Posted by:</span>
                             <!-- thread owner username alog with container -->
                             <div class="relative inline-block">
                                 <a href="{{ route('user.profile', ['user'=>$thread_owner_username]) }}" class="link-style bold fs12 button-with-container" style="margin: 0 1px">{{ $thread_owner_username }}</a>
-                                <div class="button-container button-container-style absolute">
-                                    <div class="flex">
-                                        <img src="{{ $thread_owner->avatar }}" class="user-container-image mr8" alt="">
-                                        <div>
-                                            <h2 class="no-margin fs17">{{ $thread_owner->firstname }} {{ $thread_owner->lastname }} [<a href="{{ route('user.profile', ['user'=>$thread_owner_username]) }}" class="user-container-username">{{ $thread_owner_username }}</a>]</h2>
-                                            <p class="no-margin fs12 gray ">Member since: {{ $thread_owner_joined_at }}</p>
-                                            <div class="flex align-center">
-                                                <img src="{{ asset('assets/images/icons/active.png') }}" class="tiny-image mr4" alt="">
-                                                <p class="fs11 no-margin">Active</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="user-container-line-separator"></div>
-                                    <div>
-                                        <div class="flex space-between my4">
-                                            <div class="half-width">
-                                                <p class="fs17 bold no-margin">{{ $thread_owner->reputation }}</p>
-                                                <p class="fs13 no-margin">Reputation</p>
-                                            </div>
-                                            <div class="half-width">
-                                                <p class="fs17 bold no-margin">{{ $thread_owner->threads_count() }} <span class="fs12">(<a href="{{ route('user.activities', ['user'=>$thread_owner->username]) }}" class="link-path">See</a>)</span></p>
-                                                <p class="fs13 no-margin">Questions</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex space-between my4">
-                                            <div class="half-width">
-                                                <p class="fs17 bold no-margin">{{ $thread_owner->posts_count() }}</p>
-                                                <p class="fs13 no-margin">Total Posts</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('partials.user-profile-card', ['user'=>$thread_owner])
                             </div>
                             <div class="relative ml4">
                                 <span class="no-margin fs12 tooltip-section">{{ $thread_created_at_hummans }}</span>
@@ -69,7 +73,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="no-margin fs12">viewes: {{ $thread_view_counter }} times</p>
+                        <!-- <p class="no-margin fs12">viewes: {{ $thread_view_counter }} times</p> -->
                     </div>
                     <div class="flex">
                         <a href="" class="black-link">
@@ -86,9 +90,10 @@
                             <div class="absolute suboptions-container suboption-style-left">
                                 <a href="{{ $thread_edit_url }}" class="button-style">Edit Thread</a>
                                 <div>
-                                    <a href="" class="button-style action-verification">Close Thread</a>
-                                    <input type="hidden" value="thread.close" class="verification-action-type">
+                                    <a href="" class="button-style action-verification">Turn {{ $posts_switch }} replies</a>
+                                    <input type="hidden" value="turn.off.posts" class="verification-action-type">
                                 </div>
+                                <div class="simple-line-separator my4" style="background-color: #474c5e"></div>
                                 <div>
                                     <a href="" class="button-style action-verification">Delete Thread</a>
                                     <input type="hidden" value="thread.destroy" class="verification-action-type">

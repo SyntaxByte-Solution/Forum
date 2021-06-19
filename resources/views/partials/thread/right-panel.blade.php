@@ -10,10 +10,10 @@
                     <img src="{{ $thread_owner->cover }}"  class="us-cover" alt="">
                 </div>
                 <div class="us-after-cover-section flex" style="margin-left: 20px; margin-top: -40px">
-                    <div>
+                    <div style="padding: 6px; background-color: white;" class="rounded">
                         <a href="{{ route('user.profile', ['user'=>$thread_owner->username]) }}">
-                            <div class="image-size-1 full-center rounded">
-                                <img src="{{ $thread_owner->avatar }}" class="image-size-1 rounded" alt="">
+                            <div class="image-size-1 full-center rounded hidden-overflow">
+                                <img src="{{ $thread_owner->avatar }}" class="handle-image-center-positioning" alt="">
                             </div>
                         </a>
                     </div>
@@ -42,6 +42,13 @@
     </div>
     <div class="sticky" style="top: 68px">
         <div class="index-right-panel-container border-box mt8">
+            <div class="index-right-panel">
+                <p class="bold no-margin mb8 fs15 blue">{{ __("Not the") }} {{ $thread_type }} {{ __("you're looking for ?") }}</p>
+                <p class="fs12"><span class="bold mr4">+</span>{{ __("Use the") }} <a href="" class="blue bold no-underline">{{ __('search feature') }}</a> {{ __("by specifying the forum and category (or select [all] option to search in all forums and categories)") }}.</p>
+                <p class="fs12"><span class="bold mr4">+</span>{{ __("Or") }} <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="blue bold no-underline">{{ __("create your own thread") }}</a></p>
+            </div>
+        </div>
+        <div class="index-right-panel-container border-box mt8">
             <div class="index-right-panel toggle-box">
                 <div class="flex align-center space-between">
                     <p class="bold no-margin unselectable blue">{{ __('Posting Guidelines') }}</p>
@@ -58,13 +65,6 @@
                         <a href="/guidelines" class="move-to-right link-style">go to guidelines page</a>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="index-right-panel-container border-box mt8">
-            <div class="index-right-panel">
-                <p class="bold no-margin mb8 fs15 blue">{{ __("Not the") }} {{ $thread_type }} {{ __("you're looking for ?") }}</p>
-                <p class="fs12"><span class="bold mr4">+</span>{{ __("Use the") }} <a href="" class="blue bold no-underline">{{ __('search feature') }}</a> {{ __("by specifying the forum and category (or select [all] option to search in all forums and categories)") }}.</p>
-                <p class="fs12"><span class="bold mr4">+</span>{{ __("Or") }} <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="blue bold no-underline">{{ __("create your own ") }} {{ $thread_type }}</a></p>
             </div>
         </div>
     </div>

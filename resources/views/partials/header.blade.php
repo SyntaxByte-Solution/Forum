@@ -57,48 +57,27 @@
                         </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
-                            
-                            <div class="flex align-center first-profile-container-part">
-                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded rounded-style-1" style="margin-right: 6px">
-                                <h2>Mouad Nassri</h2>
-                            </div>
-                            <div class="flex align-center relative">
-                                <div class="profile-icon black-sprite-icon sprite-size-3 absolute left8"></div>
-                                <a href="" class="suboption-style-1 full-width">Profile</a>
-                            </div>
-                            <div class="flex align-center">
-                                <div class="bquestion-icon black-sprite-icon sprite-size-3 absolute left8"></div>
-                                <a href="" class="suboption-style-1 full-width">Help</a>
-                            </div>
-                            <div class="flex align-center">
-                                <div class="bsettings-icon black-sprite-icon sprite-size-3 absolute left8"></div>
-                                <a href="" class="suboption-style-1 full-width">Settings</a>
-                            </div>
-                            <div class="flex align-center">
-                                <div class="logout-icon black-sprite-icon sprite-size-3 absolute left8"></div>
-                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1 full-width">Logout</a>
-                            </div>
-                            
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                @csrf
-                            </form>
                         </div>
                     </div>
                     <div class="relative">
-                        <a href="" class="header-profile-button button-with-suboptions">
-                        @auth
-                            <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture">
-                        @endauth
-                        @guest
-                            <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture">
-                        @endguest
+                        <a href="" class="full-center header-profile-button button-with-suboptions">
+                            <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning">
                         </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
                             
-                            <div class="flex align-center first-profile-container-part">
-                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded rounded-style-1 mr8">
-                                <h3 class="no-margin">{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</h3>
+                            
+                            <div class="flex first-profile-container-part">
+                                <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}">
+                                    <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded size36 mr8">
+                                </a>
+                                <div>
+                                    <p class="no-margin fs15 bold unselectable">{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</p>
+                                    <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="no-underline">
+                                        <p class="no-margin fs12 blue">{{ auth()->user()->username }}</p>
+                                    </a>
+
+                                </div>
                             </div>
                             <a href="" class="suboption-style-1 profile-icon background-partial-1">Profile</a>
                             <a href="" class="suboption-style-1 bquestion-icon background-partial-1">Your questions</a>
@@ -122,34 +101,4 @@
             @endguest
         </div>
     </div>
-    <!-- <div id="second-header">
-        <div id="forum-header" class="flex">
-            <div class="h-menu">
-                <div class="relative">
-                    <a href="" class="menu-link-button wmenu-icon button-with-suboptions background-partial">Quick links</a>
-                    <div class="suboptions-container suboptions-buttons-style">
-                        <a href="" class="menu-link-button calendar-icon background-partial">Today's posts</a>        
-                        <a href="" class="menu-link-button calendar-icon background-partial">Today's posts</a>
-                        <a href="" class="menu-link-button calendar-icon background-partial">Today's posts</a>
-                    </div>
-                </div>
-                <div class="menu-separator">〡</div>
-                <a href="" class="menu-link-button calendar-icon background-partial">Today's posts</a>
-                <div class="fs11 menu-separator">〡</div>
-                <a href="" class="menu-link-button question-icon background-partial">Questions</a>
-                <div class="fs11 menu-separator">〡</div>
-                <a href="" class="menu-link-button fire-icon background-partial">Active Topics</a>
-                <div class="fs11 menu-separator">〡</div>
-                <a href="" class="menu-link-button article-icon background-partial">Articles</a>
-                <div class="fs11 menu-separator">〡</div>
-                <a href="" class="menu-link-button settings-icon background-partial">Adv. Search</a>
-            </div>
-
-            <div class="move-to-right flex align-center">
-                <a href="" class="menu-link-button feather-icon background-partial">Become a writer</a>
-                <div class="fs11 menu-separator">〡</div>
-                <a href="" class="menu-link-button edit-icon background-partial">Add Question</a>
-            </div>
-        </div>
-    </div> -->
 </header>

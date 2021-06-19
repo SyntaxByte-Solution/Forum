@@ -59,12 +59,14 @@
                         <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }}</a>
                     </div>
                     <div>
-                        <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style @guest login-signin-button @endguest">{{ __('Create a thread') }}</a>
+                        <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 @guest login-signin-button @endguest">{{ __('Create a thread') }}</a>
                     </div>
                 </div>
-                <h2>Discussion</h2>
                 <x-thread-component :thread="request()->thread"/>
 
+                @if($thread->status->slug == 'posts-turn-off')
+                    <p class="fs13 text-center">{{ __('The owner of this thread turned off replies') }}</p>
+                @else
                 <div>
                     <div class="share-post-form">
                         @csrf
@@ -91,8 +93,11 @@
                         <input type='button' class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest" value="Post your reply">
                     </div>
                 </div>
+                @endif
                 
+                @if($posts->count() != 0)
                 <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
+                @endif
                 <div id="replies-container" style="margin-bottom: 30px">
                     @foreach($posts as $post)
                         <x-post-component :post="$post->id"/>

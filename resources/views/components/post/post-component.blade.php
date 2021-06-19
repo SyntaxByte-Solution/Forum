@@ -18,7 +18,14 @@
     <div class="flex post-container relative">
         <div id="{{ $post_id }}" class="absolute" style="top: -65px">
         </div>
-        <div class="vote-section post-vs">
+        <div class="vote-section post-vs relative">
+            <div class="vote-message-container absolute left100 zi1">
+                <div class="left-middle-triangle"></div>
+                <div class="flex align-center">
+                    <p class="vote-message">you can't up vote your thread</p>
+                    <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-vote-message-container rounded pointer" alt="">
+                </div>
+            </div>
             <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">
                 <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($post, 'App\Models\Post') @else none @endupvoted" alt="">
                 <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($post, 'App\Models\Post') none @endupvoted" alt="">
@@ -34,7 +41,7 @@
                 <div class="no-margin fs12 gray light-border-bottom">replied by 
                         <div class="inline-block relative">
                             <a href="" class="bold button-with-container forum-style-link fs12">{{ $post_owner_username }}</a>
-                            @include('partials.user-profile-card')
+                            @include('partials.user-profile-card', ['user'=>$post_owner])
                         </div>
                         <span class="relative">
                             <span class="tooltip-section">- {{ $post_date }}</span>
@@ -59,7 +66,7 @@
                         <a href="" class="button-style edit-post">Edit Post</a>
                         @endcan
                         @can('destroy', $post)
-                        <div class="simple-line-separator my4"></div>
+                        <div class="simple-line-separator my4" style="background-color: #474c5e"></div>
                         <a href="" class="button-style delete-post-button">Delete Post</a>
                         @endcan
                     </div>

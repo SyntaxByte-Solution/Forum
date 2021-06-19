@@ -36,10 +36,10 @@
                         @endif
                     </div>
                     <div class="us-after-cover-section flex">
-                        <div>
+                        <div style="padding: 7px; background-color: white" class="rounded">
                             <a href="{{ route('user.activities', ['user'=>$user->username]) }}">
                                 <div class="us-profile-picture-container full-center rounded">
-                                    <img src="{{ $user->avatar }}" class="us-profile-picture rounded" alt="">
+                                    <img src="{{ $user->avatar }}" class="us-profile-picture handle-image-center-positioning" alt="">
                                 </div>
                             </a>
                         </div>

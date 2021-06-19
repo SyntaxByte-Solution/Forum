@@ -54,12 +54,9 @@
             <div class="flex align-center space-between" style="margin-bottom: 10px">
                 <div class="flex align-center">
                     <div class="relative">
-                        <a href="" class="mr4 button-right-icon more-icon button-with-suboptions">Add Thread</a>
-                        <div class="suboptions-container suboptions-buttons-b-style">
-                            <a href="{{ route('thread.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="suboption-b-style">{{ __('Add Discussion or question') }}</a>
-                        </div>
+                        <a href="{{ route('thread.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 mr4">Add Thread</a>
                     </div>
-                    <form action="">
+                    <form action="" class="flex">
                         <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
                         <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                     </form>

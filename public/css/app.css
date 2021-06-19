@@ -88,7 +88,7 @@ a, input, textarea {
 }
 
 .fs14 {
-    font-size: 14px;
+    font-size: 14px !important;
 }
 
 .fs13 {
@@ -664,13 +664,6 @@ a, input, textarea {
     background-position: 0 0;
 }
 
-.user-container-connnection-status {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: rgb(79, 185, 79);
-}
-
 .user-container-image {
     width: 46px;
     height: 46px;
@@ -828,7 +821,7 @@ a, input, textarea {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.70);
+    background-color: rgba(0, 0, 0, 0.78);
 
     transition: opacity 1s;
 }
@@ -901,21 +894,13 @@ a, input, textarea {
     width: 50px;
 }
 
+.size36{
+    height: 36px;
+    width: 36px;
+}
+
 .rounded {
     border-radius: 50% !important;
-}
-
-.rounded-style-1 {
-    height: 30px;
-    width: 30px;
-}
-
-.first-profile-container-part {
-    padding: 10px 10px 6px 10px;
-    background-color: whitesmoke;
-    border-bottom: 1px solid #d7d7d7;
-
-    margin-bottom: 6px;
 }
 
 .green-message-container {
@@ -1816,24 +1801,22 @@ tr:nth-child(2n) {
     height: 144px;
     border-radius: 8px;
     background-color: white;
+    overflow: hidden;
 }
 
 .us-settings-profile-picture-container {
     width: 100px;
     height: 100px;
-    border-radius: 4px;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .us-profile-picture {
-    width: 136px;
-    height: 136px;
+    padding: 8px;
     border-radius: 8px;
 }
 
 .us-settings-profile-picture {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
     z-index: 1;
 }
 

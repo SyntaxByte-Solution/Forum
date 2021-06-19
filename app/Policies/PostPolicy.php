@@ -5,16 +5,21 @@ namespace App\Policies;
 use App\Exceptions\UserBannedException;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Thread;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostPolicy
 {
     use HandlesAuthorization;
 
-    public function store(User $user)
+    public function store(User $user, $thread_id)
     {
         if($user->isBanned()) {
             throw new UserBannedException();
+        }
+
+        if(Thread::find($thread_id)->status->id == 3) {
+            return $this->deny("You can't post on this thread because the owner is turning off the replies");
         }
 
         // The user should be: authenticated, not banned and post less than 280 posts per day.

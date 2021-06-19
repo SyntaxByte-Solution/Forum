@@ -20,7 +20,7 @@ class LastUserActivity
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            $expiresAt = Carbon::now()->addMinutes(1);
+            $expiresAt = Carbon::now()->addMinutes(4);
             Cache::put('user-is-online-' . Auth::user()->id, true, $expiresAt);
         }
         

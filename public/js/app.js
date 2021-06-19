@@ -32,6 +32,27 @@ $('.block-click').click(function() {
     return false;
 });
 
+$('.handle-image-center-positioning').each(function() {
+    let image_container = $(this).parent();
+    let image = $(this);
+    let height;
+    let width;
+
+    image.on('load', function(){
+        width = $(this).width();
+        height = $(this).height();
+
+        if(width >= height) {
+            image.height(image_container.height());
+        } else {
+            let ratio = height / width;
+            image.width(image_container.width());
+            image.height(image_container.width() * ratio);
+        }
+    });
+
+});
+
 $(".button-with-suboptions").each(function() {
     handle_suboptions_container($(this));
 });
@@ -145,6 +166,36 @@ $('.share-thread').click(function(event) {
     return false;
 });
 
+$('.turn-off-posts').click(function() {
+    let button = $(this);
+    let old_button_name = button.val();
+    button.val('Please wait..')
+    button.attr("disabled","disabled");
+    button.attr('style', 'background-color: #acacac; cursor: default');
+
+    let thread_id = $(this).parent().find('.id').val();
+    let swtch = $(this).parent().find('.switch').val();
+
+    $.ajax({
+        type: 'post',
+        url: '/thread/'+thread_id+'/posts/switch',
+        data: {
+            _token: csrf,
+            switch: swtch
+        },
+        success: function(response) {
+            window.location.href = response;
+        },
+        error: function(response) {
+            button.val(old_button_name);
+            button.attr('style', '');
+            button.prop("disabled", false);
+        },
+    })
+
+    return false;
+});
+
 $('.edit-thread').click(function() {
     
     let thread_id = $(this).parent().find('.thread_id').val();
@@ -213,13 +264,18 @@ $('.copy-button').click(function() {
     return false;
 });
 
-$('.action-verification').click(function() {
+$('.action-verification').click(function(event) {
     let action_type = $('.verification-action-type').val();
 
     if(action_type == 'thread.destroy') {
         $('.thread-deletion-viewer').css('display', 'block');
         $('.thread-deletion-viewer').css('opacity', '1');
+    } else if(action_type == 'turn.off.posts') {
+        $('.turn-off-viewer').css('display', 'block');
+        $('.turn-off-viewer').css('opacity', '1');
     }
+
+    $('.suboptions-container').css('display', 'none');
     return false;
 });
 
@@ -475,7 +531,7 @@ $('.avatar-upload-button').change(function(event) {
         $('.us-settings-profile-picture').first().attr('src', URL.createObjectURL(event.target.files[0]));
         $('.us-settings-profile-picture').first().css('display', 'block');
         $('.us-settings-profile-picture').last().css('display', 'none');
-        $('.remove-profile-avatar').css('display', 'flex');
+        $('.remove-profile-avatar').removeClass('none');
         $('.avatar-removed').val('0');
     }
 });

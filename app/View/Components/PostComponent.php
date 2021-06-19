@@ -20,6 +20,7 @@ class PostComponent extends Component
     public $post_updated_at;
     public $post_update_date;
 
+    public $post_owner;
     public $post_owner_avatar;
     public $post_owner_username;
     public $post_owner_reputation;
@@ -27,7 +28,7 @@ class PostComponent extends Component
     public function __construct($post)
     {
         $post = $this->post = Post::find($post);
-        $post_owner = User::find($post->user_id);
+        $this->post_owner = $post_owner = User::find($post->user_id);
 
         $this->post_id = $post->id;
         $this->post_content = Markdown::parse($post->content);

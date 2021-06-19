@@ -29,6 +29,13 @@ header {
     height: 50px;
 }
 
+.first-profile-container-part {
+    padding: 10px 10px 6px 10px;
+    background-color: whitesmoke;
+    border-bottom: 1px solid #d7d7d7;
+
+    margin-bottom: 6px;
+}
 
 .header-profile-button {
     display: flex;
@@ -37,15 +44,14 @@ header {
     height: 40px;
     width: 40px;
     margin: 0 4px;
+    overflow: hidden;
 
     border-radius: 50%;
     background-color: #181a22;
 }
 
 .header-profile-picture {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
+
 }
 
 main {

@@ -28,7 +28,7 @@
                         <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for everything (users, threads, questions, posts ..)') }}</p>
                         <div class="flex align-center">
                             <div>
-                                <form action="" method='get'>
+                                <form action="" method='get' class="flex">
                                     <input type="text" name="k" class="input-style-2" placeholder="Search everything .." required>
                                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                                 </form>

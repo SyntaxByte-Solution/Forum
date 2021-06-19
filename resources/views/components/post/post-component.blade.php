@@ -1,4 +1,4 @@
-<div class="relative resource-container">
+<div class="relative resource-container" id="@if($post->ticked){{'ticked-post'}}@endif">
     <input type="hidden" class="votable-type" value="post">
     <input type="hidden" class="votable-id" value="{{ $post->id }}">
     <div class="absolute full-shadowed br6" style="z-index: 1">
@@ -15,15 +15,15 @@
         Reply hidden (<a href="" class="show-post black-link bold">click here to show it</a>)
         <div class="line-separator"></div>
     </div>
-    <div class="flex post-container relative">
+    <div class="flex post-container relative" style="@if($post->ticked) border-color: #1c8e19b3; @endif">
         <div id="{{ $post_id }}" class="absolute" style="top: -65px">
         </div>
         <div class="vote-section post-vs relative">
-            <div class="vote-message-container absolute left100 zi1">
+            <div class="informer-message-container absolute left100 zi1">
                 <div class="left-middle-triangle"></div>
                 <div class="flex align-center">
-                    <p class="vote-message">you can't up vote your thread</p>
-                    <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-vote-message-container rounded pointer" alt="">
+                    <p class="informer-message">you can't up vote your thread</p>
+                    <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                 </div>
             </div>
             <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">
@@ -35,8 +35,27 @@
                 <img src="{{ asset('assets/images/icons/down-filled.png') }}" class="small-image vote-down-filled-image @downvoted($post, 'App\Models\Post') @else none @enddownvoted" alt="">
                 <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($post, 'App\Models\Post') none @enddownvoted" alt="">
             </a>
+
+            <div class="my8 relative informer-box tick-post-container">
+                @can('update', $post->thread)
+                <div class="informer-message-container absolute zi1" style="left: 126%; top: -10px">
+                    <div>
+                        <p class="informer-message"></p>
+                    </div>
+                </div>
+                <a href="" class="hover-informer-display-element">
+                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size28 green-tick @if(!$post->ticked) none @endif" alt="">
+                    <img src="{{ asset('assets/images/icons/grey-tick.png') }}" class="size28 grey-tick @if($post->ticked) none @endif" alt="">
+                </a>
+                <input type="hidden" value="{{ $post->id }}" class="post-id">
+                @else
+                    @if($post->ticked)
+                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size28 grey-tick" alt="">
+                    @endif
+                @endcan
+            </div>
         </div>
-        <div class="post-main-section">
+        <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe44a; @endif">
             <div class="flex space-between">
                 <div class="no-margin fs12 gray light-border-bottom">replied by 
                         <div class="inline-block relative">
@@ -49,26 +68,29 @@
                         </span>
                         @if($post_updated_at)
                             <span class="relative" style="margin-left: 8px">
-                                <span class="tooltip-section post-updated-date">(upated {{ $post_update_date }})</span>
+                                <span class="tooltip-section post-updated-date">(updated {{ $post_update_date }})</span>
                                 <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
                             </span>
                         @endif
                 </div>
-
-
-                <div class="relative">
-                    <a href="" class="black-link button-with-suboptions">
-                        <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
-                    </a>
-                    <div class="absolute suboptions-container suboption-style-left" style="margin-top: 8px">
-                        <a href="" class="button-style hide-post">Hide Post</a>
-                        @can('update', $post)
-                        <a href="" class="button-style edit-post">Edit Post</a>
-                        @endcan
-                        @can('destroy', $post)
-                        <div class="simple-line-separator my4" style="background-color: #474c5e"></div>
-                        <a href="" class="button-style delete-post-button">Delete Post</a>
-                        @endcan
+                <div class="flex align-center relative">
+                    @if($post->ticked)
+                    <p class="best-reply-ticket unselectable">{{ __('BEST REPLY') }}</p>
+                    @endif
+                    <div>
+                        <a href="" class="black-link button-with-suboptions">
+                            <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
+                        </a>
+                        <div class="absolute suboptions-container suboption-style-left" style="margin-top: 8px">
+                            <a href="" class="button-style hide-post">Hide Post</a>
+                            @can('update', $post)
+                            <a href="" class="button-style edit-post">Edit Post</a>
+                            @endcan
+                            @can('destroy', $post)
+                            <div class="simple-line-separator my4" style="background-color: #474c5e"></div>
+                            <a href="" class="button-style delete-post-button">Delete Post</a>
+                            @endcan
+                        </div>
                     </div>
                 </div>
             </div>

@@ -894,6 +894,11 @@ a, input, textarea {
     width: 50px;
 }
 
+.size28{
+    height: 28px;
+    width: 28px;
+}
+
 .size36{
     height: 36px;
     width: 36px;
@@ -1064,7 +1069,7 @@ a, input, textarea {
 }
 
 .middle-padding-1 {
-    padding: 16px;
+    padding: 10px;
 }
 
 .label-style {
@@ -1449,18 +1454,15 @@ tr:nth-child(2n) {
     flex-direction: column;
     align-items: center;
 
-    background-color: rgb(231, 231, 231);
+    background-color: rgb(241, 241, 241);
+    border-right: 1px solid rgb(206, 206, 206);
 }
 
 /* vs: vote section */
-.thread-vs {
-    padding: 10px 0;
-    width: 36px;
-}
-
-.post-vs {
-    padding: 10px 0;
-    width: 50px;
+.thread-vs, .post-vs {
+    padding: 8px;
+    width: 42px;
+    border-radius: 6px 0 0 6px;
 }
 
 .post-vote-button {
@@ -1868,7 +1870,7 @@ tr:nth-child(2n) {
     background-color: #0000003f;
 }
 
-.vote-message-container {
+.informer-message-container {
     display: none;
     background-color: white;
     padding: 12px;
@@ -1878,13 +1880,13 @@ tr:nth-child(2n) {
     width: max-content;
 }
 
-.vote-message {
+.informer-message {
     color: rgb(32, 32, 32);
     margin: 0;
     font-size: 13px;
 }
 
-.remove-vote-message-container {
+.remove-informer-message-container {
     width: 9px;
     height: 9px;
     padding: 3px;
@@ -1903,4 +1905,15 @@ tr:nth-child(2n) {
     width: 0px;
     display: inline-block;
     transform: rotate(-90deg);
+}
+
+.best-reply-ticket {
+    margin: 0;
+    margin-right: 14px;
+    padding: 10px;
+    border-radius: 10px;
+    background-image: linear-gradient(70deg, rgb(67, 170, 83) 21%, rgba(29, 115, 40, 0.57) 117%);
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
 }

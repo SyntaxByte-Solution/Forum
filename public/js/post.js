@@ -1,5 +1,7 @@
 
 
+let vote_tick_lock = true;
+
 function handle_post_display_buttons(post) {
     post.find('.hide-post').click(function() {
         while(!post.hasClass('post-container')) {
@@ -180,6 +182,8 @@ function handle_post_events(post) {
     handle_tooltips(post);
     // Handle close shadowed view for deleting
     handle_close_shadowed_view(post.parent().find('.close-shadowed-view-button'));
+    // Handle post best reply
+    handle_post_reply_tick_button(post);
 }
 
 function handle_post_other_events(post) {
@@ -230,7 +234,11 @@ $('.share-post').click(function() {
             url: '/post',
             success: function(response) {
                 $('#global-error').css('display', 'none');
-                $('#replies-container').append(response);
+                if ($("#ticked-post")[0]){
+                    $("#replies-container:first-child").after(response);
+                } else {
+                    $('#replies-container').prepend(response);
+                }
                 let last_post = $('#replies-container .post-container:last');
                 
                 btn.val('Post your reply');
@@ -278,3 +286,78 @@ $('.share-post').click(function() {
     }
     return false;
 });
+
+function handle_post_reply_tick_button(post) {
+    if(post.find('.best-reply-container')) {
+        let best_reply_container = post.find('.tick-post-container');
+        best_reply_container.find('.hover-informer-display-element').on({
+            mouseenter: function() {
+                if(post.parent().attr('id') == "ticked-post") {
+                    $(this).parent().find('.informer-message').text('Remove best reply');
+                } else {
+                    $(this).parent().find('.informer-message').text('Mark this reply as the best reply');
+                }
+                $(this).parent().find('.informer-message-container').css('display', 'block');
+            },
+            mouseleave: function() {
+                $(this).parent().find('.informer-message-container').css('display', 'none');
+            },
+            click: function(event) {
+                if(vote_tick_lock == false) {
+                    return false;
+                }
+                vote_tick_lock = false;
+
+                if(post.find('.grey-tick').hasClass('none')) {
+                    post.find('.grey-tick').removeClass('none');
+                    post.find('.green-tick').addClass('none');
+                } else {
+                    post.find('.grey-tick').addClass('none');
+                    post.find('.green-tick').removeClass('none');
+                }
+
+                let post_id = $(this).parent().find('.post-id').val();
+                $.ajax({
+                    url: '/post/' + post_id + '/tick',
+                    type: 'post',
+                    data: {
+                        _token: csrf
+                    },
+                    success: function(response) {
+                        if(response == 1) {
+                            post.attr('style', 'border-color: #1c8e19b3;');
+                            post.find('.post-main-section').attr('style', 'background-color: #e1ffe44a;');
+                            post.find('.best-reply-ticket').css('display', 'block');
+                        } else {
+                            post.attr('style', '');
+                            post.find('.post-main-section').attr('style', '');
+                            post.find('.best-reply-ticket').css('display', 'none');
+                        }
+                    },
+                    error: function(response) {
+                        if(post.find('.grey-tick').hasClass('none')) {
+                            post.find('.grey-tick').removeClass('none');
+                            post.find('.green-tick').addClass('none');
+                        } else {
+                            post.find('.grey-tick').addClass('none');
+                            post.find('.green-tick').removeClass('none');
+                        }
+
+                        let error = JSON.parse(response.responseText).message;
+                        best_reply_container.find('.informer-message').parent().parent().css('display', 'block');
+                        best_reply_container.parent().find('.informer-message').text(error);
+
+                        setTimeout(function() {
+                            console.log('close');
+                            best_reply_container.find('.informer-message').parent().parent().css('display', 'none');
+                        }, 2000);
+                    },
+                    complete: function() {
+                        vote_tick_lock = true;
+                    }
+                })
+                event.preventDefault();
+            }
+        });
+    }
+}

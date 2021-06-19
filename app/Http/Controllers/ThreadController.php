@@ -6,24 +6,47 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException};
-use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User, ThreadStatus};
+use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User, ThreadStatus, Post};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
 {
     public function show(Forum $forum, Category $category, Thread $thread) {
         $thread_owner = User::find($thread->user_id);
-
         $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
-        $posts = $thread->posts;
+        
+        $pagesize = 6;
+        $pagesize_exists = false;
+        
+        if(request()->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = request()->input('pagesize');
+        }
+
+        $tickedPost = $thread->tickedPost();
+        
+        if($tickedPost) {
+            $posts = $thread->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->paginate($pagesize);
+            if(request()->has('page') && request()->get('page') != 1) {
+                $tickedPost = false;
+            }
+        } else {
+            $posts = $thread->posts()->orderBy('created_at', 'desc')->paginate($pagesize);
+        }
+        
+        foreach($posts->pluck('user')->unique('id') as $user) {
+            $user->increment('reach');
+        }
 
         return view('forum.thread.show')
             ->with(compact('forum'))
             ->with(compact('category'))
             ->with(compact('thread'))
             ->with(compact('thread_subject'))
-            ->with(compact('posts'))
-            ->with(compact('thread_owner'));
+            ->with(compact('thread_owner'))
+            ->with(compact('tickedPost'))
+            ->with(compact('pagesize'))
+            ->with(compact('posts'));
     }
 
     public function create(Forum $forum, Category $category) {
@@ -156,6 +179,7 @@ class ThreadController extends Controller
         $data = request()->validate([
             'subject'=>'sometimes|min:2|max:1000',
             'content'=>'sometimes|min:2|max:40000',
+            'status_id'=>'sometimes|exists:thread_status,id',
             'category_id'=>'sometimes|exists:categories,id',
         ]);
 

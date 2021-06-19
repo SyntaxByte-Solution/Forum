@@ -96,12 +96,25 @@
                 @endif
                 
                 @if($posts->count() != 0)
-                <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">{{ $posts->count() }}</span> Replies</p>
+                <div class="flex space-between align-end">
+                    <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
+                    <div>
+                        {{ $posts->onEachSide(0)->links() }}
+                    </div>
+                </div>
                 @endif
                 <div id="replies-container" style="margin-bottom: 30px">
+                    @if($tickedPost)
+                    <x-post-component :post="$tickedPost->id"/>
+                    @endif
                     @foreach($posts as $post)
                         <x-post-component :post="$post->id"/>
                     @endforeach
+                    <div class="flex">
+                        <div class="move-to-right">
+                            {{ $posts->onEachSide(0)->links() }}
+                        </div>
+                    </div>
                 </div>
                 <script>
                     $('textarea').each(function() {
@@ -112,7 +125,7 @@
                     });
                 </script>
             </div>
-            @include('partials.thread.right-panel', ['thread_type'=>'discussion'])
+            @include('partials.thread.right-panel', ['thread_type'=>'threads'])
         </div>
     </div>
 @endsection

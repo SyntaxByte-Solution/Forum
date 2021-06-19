@@ -93,7 +93,6 @@
                         }
                     </style>
                 </div>
-                <input type="hidden" name="thread_type" id="thread_type" value="1">
                 <div class="input-container">
                     <input type="submit" class="button-style block share-thread" value="{{ __('Share') }}">
                 </div>

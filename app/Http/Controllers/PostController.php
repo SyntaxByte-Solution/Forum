@@ -57,4 +57,23 @@ class PostController extends Controller
 
         $post->delete();
     }
+
+    public function tick(Post $post) {
+        $this->authorize('tick', $post);
+
+        /**
+         * Here we disable timestamps and use save method instead of update directly model because we don't
+         * want to set updated_at timestamp when changing tecked column
+        */
+        $post->timestamps = false;
+        if($post->ticked) {
+            $post->ticked = false;
+            $post->save();
+            return 0;
+        } else {
+            $post->ticked = true;
+            $post->save();
+            return 1;
+        }
+    }
 }

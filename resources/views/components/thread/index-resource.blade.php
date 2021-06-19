@@ -4,11 +4,11 @@
     <td>
         <div class="flex">
             <div class="px8 flex flex-column align-center relative">
-                <div class="vote-message-container absolute left100 zi1">
+                <div class="informer-message-container absolute left100 zi1">
                     <div class="left-middle-triangle"></div>
                     <div class="flex align-center">
-                        <p class="vote-message">you can't up vote your thread</p>
-                        <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-vote-message-container rounded pointer" alt="">
+                        <p class="informer-message">you can't up vote your thread</p>
+                        <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                     </div>
                 </div>
                 <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">

@@ -208,6 +208,12 @@ $('.edit-thread').click(function() {
         '_method': $(this).parent().find('._method').val()
     };
 
+    if($('#thread-post-switch').prop("checked") == true) {
+        data.status_id = 3;
+    } else {
+        data.status_id = 1;
+    }
+
     if(data.subject == '') {
         $('#subject').parent().find('.frt-error').css('display', 'flex');
         return;
@@ -657,6 +663,7 @@ $('.votable-down-vote').click(function(event) {
     event.preventDefault();
 });
 
+let informer_container_timeout;
 function handle_up_vote(button) {
     if(!vote_lock) {
         return false;
@@ -719,12 +726,12 @@ function handle_up_vote(button) {
 
             let errorObject = JSON.parse(xhr.responseText);
             let er = errorObject.message;
-            // and then print the error returned in the vote-message-container
-            let vote_message_container = button.parent().find('.vote-message-container');
-            vote_message_container.find('.vote-message').text(er);
+            // and then print the error returned in the informer-message-container
+            let vote_message_container = button.parent().find('.informer-message-container');
+            vote_message_container.find('.informer-message').text(er);
             vote_message_container.css('display', 'block');
 
-            setTimeout( function(){ 
+            informer_container_timeout = setTimeout( function(){ 
                 vote_message_container.css('display', 'none');
             }, 4000);
         },
@@ -794,11 +801,11 @@ function handle_down_vote(button) {
             let errorObject = JSON.parse(xhr.responseText);
             let er = errorObject.message;
             // and then print the error returned in the vote-message-container
-            let vote_message_container = button.parent().find('.vote-message-container');
-            vote_message_container.find('.vote-message').text(er);
+            let vote_message_container = button.parent().find('.informer-message-container');
+            vote_message_container.find('.informer-message').text(er);
             vote_message_container.css('display', 'block');
 
-            setTimeout( function(){ 
+            informer_container_timeout = setTimeout( function(){ 
                 vote_message_container.css('display', 'none');
             }, 4000);
 
@@ -809,11 +816,25 @@ function handle_down_vote(button) {
     })
 }
 
-$('.remove-vote-message-container').click(function() {
+$('.remove-informer-message-container').click(function() {
     let vote_container = $(this);
-    while(!vote_container.hasClass('vote-message-container')) {
+    while(!vote_container.hasClass('informer-message-container')) {
         vote_container = vote_container.parent();
     }
 
+
+    clearTimeout(informer_container_timeout);
+
     vote_container.css('display', 'none');
 });
+
+function handle_hover_informer_display(element) {
+    element.find('.hover-informer-display-element').on({
+        mouseenter: function() {
+            $(this).parent().find('.informer-message-container').css('display', 'block');
+        },
+        mouseleave: function() {
+            $(this).parent().find('.informer-message-container').css('display', 'none');
+        }
+    })
+}

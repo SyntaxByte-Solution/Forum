@@ -57,4 +57,35 @@ class PostPolicy
 
         return $post->user_id == $user->id;
     }
+
+    public function tick(User $user, Post $post) {
+        if($user->isBanned()) {
+            return $this->deny("You can't update your threads because you're currently banned");
+        }
+
+        /**
+         * 1. verify if the user is the owner of the thread where the post is attached to
+         * 2. verify if the thread is closed
+         * 2. verify if the thread has already a ticked post [different than the curren one because
+         * the owner could make it ticked and then click on it to remove the tick]; 
+         * If we found one, we can't make the fetched post ticked otherwise we continue
+         */
+
+        if($post->thread->user->id != $user->id) {
+            return $this->deny("You can't tick a post attached to a thread you don't own");
+        }
+
+        if($post->thread->isClosed()) {
+            return $this->deny("You can't tick a post attached to a closed thread");
+        }
+
+        foreach($post->thread->posts as $p) {
+            if($p->ticked && $p->id != $post->id) {
+                return $this->deny("This thread has already a ticked reply");
+                break;
+            }
+        }
+
+        return true;
+    }
 }

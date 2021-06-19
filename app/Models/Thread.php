@@ -75,8 +75,22 @@ class Thread extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function isClosed() {
+        return $this->status->slug == 'closed';
+    }
+
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+
+    public function tickedPost() {
+        foreach($this->posts as $post) {
+            if($post->ticked) {
+                return $post;
+            }
+        }
+
+        return false;
     }
 
     public function forum() {

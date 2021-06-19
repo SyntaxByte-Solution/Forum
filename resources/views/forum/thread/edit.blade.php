@@ -80,7 +80,11 @@
                     }
                 </style>
             </div>
-            <input type="hidden" name="thread_type" id="thread_type" value="1">
+            <div class="flex align-center">
+                <p class="fs12 mr4">{{ __('Turn off replies on this thread') }}: </p>
+                <input type="checkbox" id="thread-post-switch" @if($thread->status->id == 3) checked @endif>
+            </div>
+            <div class="simple-half-line-separator"></div>
             <div class="input-container">
                 <input type="hidden" class="thread_id" value="{{ $thread->id }}">
                 <input type="hidden" name="_method" class="_method" value="PATCH">

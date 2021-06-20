@@ -120,6 +120,8 @@ function handle_exit_edit_changes(post) {
 
 function handle_delete_post_button(post) {
     post.find('.delete-post-button').click(function() {
+        post.find('.post-content').removeClass('none');
+
         $(this).parent().css('display', 'none');
         post.find('.post-edit-container').css('display', 'none');
         post.find('.post-content').css('display', 'block');
@@ -233,28 +235,32 @@ $('.share-post').click(function() {
             data: data,
             url: '/post',
             success: function(response) {
+                $('.replies_header_after_thread').removeClass('none');
                 $('#global-error').css('display', 'none');
+                let pst;
                 if ($("#ticked-post")[0]){
-                    $("#replies-container:first-child").after(response);
+                    console.log('here !');
+                    $("#replies-container .resource-container:first-child").after(response);
+                    pst = $('#replies-container .resource-container:eq(1)');
                 } else {
                     $('#replies-container').prepend(response);
+                    pst = $('#replies-container .resource-container').first();
                 }
-                let last_post = $('#replies-container .post-container:last');
-                
+                console.log(pst);
                 btn.val('Post your reply');
                 btn.prop("disabled", false);
                 btn.attr('style', '');
                 $codemirror.getDoc().setValue('');
 
-                last_post.find('textarea').each(function() {
+                pst.find('textarea').each(function() {
                     var sm = new SimpleMDE({
                         element: this,
                     });
                     sm.render();
                 })
                 // Handling all events of the newly appended component
-                handle_post_events(last_post);
-                handle_post_other_events(last_post);
+                handle_post_events(pst);
+                handle_post_other_events(pst);
 
                 $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
 
@@ -327,17 +333,22 @@ function handle_post_reply_tick_button(post) {
                         if(response == 1) {
                             post.attr('style', 'border-color: #1c8e19b3;');
                             post.find('.post-main-section').attr('style', 'background-color: #e1ffe44a;');
-                            post.find('.best-reply-ticket').css('display', 'block');
+                            post.find('.best-reply-ticket').removeClass('none');
+                            post.parent().attr('id', 'ticked-post');
+                            console.log('best reply below: ');
+                            console.log(post.find('.best-reply-ticket'));
                         } else {
                             post.attr('style', '');
                             post.find('.post-main-section').attr('style', '');
-                            post.find('.best-reply-ticket').css('display', 'none');
+                            post.find('.best-reply-ticket').addClass('none');
+                            post.parent().attr('id', '');
                         }
                     },
                     error: function(response) {
                         if(post.find('.grey-tick').hasClass('none')) {
                             post.find('.grey-tick').removeClass('none');
                             post.find('.green-tick').addClass('none');
+                            post.find('.best-reply-ticket').addClass('none');
                         } else {
                             post.find('.grey-tick').addClass('none');
                             post.find('.green-tick').removeClass('none');

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\{Role, Permission, UserStatus, Thread, UserPersonalInfos, AccountStatus, Vote};
+use App\Models\{Role, Permission, UserStatus, UserReach, Thread, UserPersonalInfos, AccountStatus, Vote};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -48,6 +48,10 @@ class User extends UserAuthenticatable implements Authenticatable
         }
 
         return asset('storage') . '/' . $value;
+    }
+
+    public function getReachAttribute() {
+        return UserReach::where('user_id', $this->id)->count();
     }
 
     public function getCoverAttribute($value) {

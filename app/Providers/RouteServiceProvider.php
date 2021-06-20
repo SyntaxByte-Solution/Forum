@@ -64,6 +64,7 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perHour(5)->by($request->ip());
         });
 
+        // opd: one per day actions
         RateLimiter::for('opd', function (Request $request) {
             return Limit::perDay(1)->by($request->ip());
         });

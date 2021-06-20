@@ -95,14 +95,12 @@
                 </div>
                 @endif
                 
-                @if($posts->count() != 0)
-                <div class="flex space-between align-end">
+                <div class="flex space-between align-end replies_header_after_thread @if($posts->count() == 0) none @endif">
                     <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
                     <div>
                         {{ $posts->onEachSide(0)->links() }}
                     </div>
                 </div>
-                @endif
                 <div id="replies-container" style="margin-bottom: 30px">
                     @if($tickedPost)
                     <x-post-component :post="$tickedPost->id"/>

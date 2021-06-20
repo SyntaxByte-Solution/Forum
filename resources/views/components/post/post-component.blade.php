@@ -12,7 +12,7 @@
     </div>
     <div class="show-post-container fs11">
         <div class="line-separator"></div>
-        Reply hidden (<a href="" class="show-post black-link bold">click here to show it</a>)
+        {{ __('Reply hidden') }} [<a href="" class="show-post black-link bold">{{ __('click here to show it') }}</a>]
         <div class="line-separator"></div>
     </div>
     <div class="flex post-container relative" style="@if($post->ticked) border-color: #1c8e19b3; @endif">
@@ -22,7 +22,7 @@
             <div class="informer-message-container absolute left100 zi1">
                 <div class="left-middle-triangle"></div>
                 <div class="flex align-center">
-                    <p class="informer-message">you can't up vote your thread</p>
+                    <p class="informer-message">{{ __("you can't up vote your thread") }}</p>
                     <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                 </div>
             </div>
@@ -57,26 +57,27 @@
         </div>
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe44a; @endif">
             <div class="flex space-between">
-                <div class="no-margin fs12 gray light-border-bottom">replied by 
-                        <div class="inline-block relative">
-                            <a href="" class="bold button-with-container forum-style-link fs12">{{ $post_owner_username }}</a>
-                            @include('partials.user-profile-card', ['user'=>$post_owner])
-                        </div>
-                        <span class="relative">
-                            <span class="tooltip-section">- {{ $post_date }}</span>
-                            <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
-                        </span>
-                        @if($post_updated_at)
-                            <span class="relative" style="margin-left: 8px">
-                                <span class="tooltip-section post-updated-date">(updated {{ $post_update_date }})</span>
-                                <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
+                <div>
+                    <div class="no-margin fs12 gray">replied by 
+                            <div class="inline-block relative">
+                                <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold button-with-container forum-style-link fs12">{{ $post_owner_username }}</a>
+                                @include('partials.user-profile-card', ['user'=>$post_owner])
+                            </div>
+                            <span class="relative">
+                                <span class="tooltip-section">- {{ $post_date }}</span>
+                                <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
                             </span>
-                        @endif
+                            @if($post_updated_at)
+                                <span class="relative" style="margin-left: 8px">
+                                    <span class="tooltip-section post-updated-date">(updated {{ $post_update_date }})</span>
+                                    <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
+                                </span>
+                            @endif
+                    </div>
+                    <div class="simple-line-separator my4"></div>
                 </div>
                 <div class="flex align-center relative">
-                    @if($post->ticked)
-                    <p class="best-reply-ticket unselectable">{{ __('BEST REPLY') }}</p>
-                    @endif
+                    <p class="best-reply-ticket unselectable @if(!$post->ticked) none @endif">{{ __('BEST REPLY') }}</p>
                     <div>
                         <a href="" class="black-link button-with-suboptions">
                             <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">

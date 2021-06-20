@@ -27,6 +27,14 @@
         <div class="my4">
             <div class="flex align-center">
                 <div class="flex align-center">
+                    <img src="{{ asset('assets/images/icons/reach.svg') }}" class="small-image-2 mr4" alt="">
+                    <p class="inline-block my4 fs13 black">Reach: </p><span class="fs15 bold ml8">{{ $user->reach }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="my4">
+            <div class="flex align-center">
+                <div class="flex align-center">
                     <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
                     <p class="inline-block my4 fs13 black">Threads: </p><span class="fs15 bold ml8">{{ $user->threads_count() }}</span>
                 </div>

@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException};
-use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User, ThreadStatus, Post};
+use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
 {
-    public function show(Forum $forum, Category $category, Thread $thread) {
+    public function show(Request $request, Forum $forum, Category $category, Thread $thread) {
         $thread_owner = User::find($thread->user_id);
         $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
         
@@ -34,8 +34,34 @@ class ThreadController extends Controller
             $posts = $thread->posts()->orderBy('created_at', 'desc')->paginate($pagesize);
         }
         
+        // The following foreach will loop through each owner of all posts of the page
         foreach($posts->pluck('user')->unique('id') as $user) {
-            $user->increment('reach');
+            // Here we just create userreach record
+            $reach = new UserReach;
+            $reach->visitor_ip = $request->ip();
+            $reach->user_id = $user->id;
+            $reach->resource_id = $posts->where('user_id', $user->id)->first()->id;
+            $reach->resource_name = 'post';
+
+            // before saving the userreach we need to check if the user has already reach the page before today
+            // by checking ip, resource id, if so we don't have to increment the reach
+            
+            $found = UserReach::today()
+            ->where('visitor_ip', $reach->visitor_ip)
+            ->where('user_id', $user->id)
+            ->where('resource_id', $reach->resource_id)
+            ->where('resource_name', 'post')
+            ->where('user_id', $user->id)->count();
+
+            if(!$found) {
+                if(auth()->user()) {
+                    if(auth()->user()->id != $user->id) {
+                        $reach->save();
+                    }
+                } else {
+                    $reach->save();
+                }
+            }
         }
 
         return view('forum.thread.show')

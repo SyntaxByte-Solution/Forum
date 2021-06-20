@@ -44,11 +44,9 @@
                             </a>
                         </div>
                         <div class="ms-profile-infos-container">
-                            <h2 class="no-margin forum-color flex align-center">
-                                {{ $user->firstname . ' ' . $user->lastname }}
-                                <p class="fs14 bold m4">[{{ $user->username }}]</p>
-                            </h2>
-                            <p class="fs13 gray no-margin">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
+                            <h2 class="no-margin forum-color flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
+                            <p class="bold no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>
+                            <p class="fs12 gray no-margin">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
                         </div>
                     </div>
                 </div>
@@ -64,22 +62,22 @@
                                 <img src="{{ asset('assets/images/icons/bedit.png') }}" class="small-image-size" alt="">
                             </a>
                         @endcan
-                        <h3 class="m4 forum-color light-border-bottom" style="padding-bottom: 8px; margin-bottom: 14px">Puplic Informations</h3>
+                        <h3 class="m4 forum-color light-border-bottom" style="padding-bottom: 8px; margin-bottom: 14px">Public Informations</h3>
 
                         <div class="flex my8">
-                            <p class="fs14 no-margin flex align-center">Status: 
+                            <p class="fs14 no-margin flex align-center"><span class="bold">Status: </span>
                                 @php
                                     $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
                                 @endphp
                                 <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="small-image-size ml8" alt="">
-                                <span class="bold forum-color ml4">@if(Cache::has('user-is-online-' . $user->id)) Online @else Offline @endif</span>
+                                <span class="forum-color ml4">@if(Cache::has('user-is-online-' . $user->id)) Online @else Offline @endif</span>
                             </p>
                         </div>
 
                         <div class="flex my8">
-                            <p class="fs14 no-margin">About me: 
+                            <p class="fs14 no-margin"><span class="bold">About: </span>
                                     @if($user->about)
-                                    <span class="bold forum-color ml8">
+                                    <span class="forum-color ml8">
                                         {{ $user->about }}
                                     </span>
                                     @else
@@ -90,14 +88,14 @@
                             </p>
                         </div>
                         <div class="flex my8">
-                            <p class="fs14 no-margin">Username: <span class="bold forum-color ml8">{{ $user->username }}</span></p>
+                            <p class="fs14 no-margin"><span class="bold">Username: </span><span class="forum-color ml8">{{ $user->username }}</span></p>
                         </div>
                         <div class="flex my8">
                             <p class="fs14 no-margin">Member since: : <span class="bold forum-color ml8">{{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</span></p>
                         </div>
                     </div>
                     <div class="half-width ml4 us-user-info-container full">
-                        <h3 class="m4 forum-color" style="margin-bottom: 14px">Friends</h3>
+                        <h3 class="m4 forum-color" style="margin-bottom: 14px">Followers</h3>
                         <div class="full-center">
 
                             @if(auth()->user() && $user->id == auth()->user()->id)
@@ -106,7 +104,7 @@
                                 <p class="forum-color text-center">This user has no friends for the moments !</p>
                             @endif
                         </div>
-                        <h3 class="m4 forum-color" style="margin-bottom: 14px">Followers</h3>
+                        <h3 class="m4 forum-color" style="margin-bottom: 14px">Following</h3>
                         <div class="full-center">
                             @if(auth()->user() && $user->id == auth()->user()->id)
                                 <p class="forum-color text-center">You don't have any followers for the moments ! search for people to follow them !</p>

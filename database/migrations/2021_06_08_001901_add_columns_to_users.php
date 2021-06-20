@@ -15,7 +15,6 @@ class AddColumnsToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('personal_infos')->nullable();
-            $table->unsignedBigInteger('profile_views')->default('0');
             $table->text('cover')->nullable();
             $table->text('about')->nullable();
         });

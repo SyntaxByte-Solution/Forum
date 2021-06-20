@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\IsValidPassword;
-use App\Models\{Thread, Category, User};
+use App\Models\{Thread, Category, User, ProfileView};
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -81,20 +82,29 @@ class UserController extends Controller
 
     public function profile(Request $request, User $user) {
 
-        /**
-         * Try to create user activity system where you store every activity of the user
-         * and only allow the profile views counter to increment only once per hour per user
-        */
-        if(auth()->user()) {
-            if($user->username != auth()->user()->username) {
-                $user->update([
-                    'profile_views'=>$user->profile_views + 1
-                ]);
+        $profile_view = new ProfileView;
+        $profile_view->visitor_ip = $request->ip();
+        $profile_view->visited_id = $user->id;
+        $profile_view->visitor_id = null;
+        if($current_user = auth()->user()) {
+            $profile_view->visitor_id = $current_user->id;
+        }
+
+        $found = ProfileView::
+        where('created_at', '>', Carbon::now()->subHours(1)->toDateTimeString())
+        ->where('visitor_ip', $request->ip())
+        ->where('visited_id', $user->id)
+        ->where('visitor_id', $profile_view->visitor_id)
+        ->count();
+
+        if(!$found) {
+            if(auth()->user()) {
+                if($user->id != auth()->user()->id) {
+                    $profile_view->save();
+                }
+            } else {
+                $profile_view->save();
             }
-        } else {
-            $user->update([
-                'profile_views'=>$user->profile_views + 1
-            ]);
         }
 
         $threads_count = $user->threads->count();

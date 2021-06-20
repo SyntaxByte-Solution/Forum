@@ -1,7 +1,8 @@
-<div class="relative resource-container" id="@if($post->ticked){{'ticked-post'}}@endif">
+<div class="relative post-container resource-container" id="@if($post->ticked){{'ticked-post'}}@endif">
     <input type="hidden" class="votable-type" value="post">
     <input type="hidden" class="votable-id" value="{{ $post->id }}">
     <div class="absolute full-shadowed br6" style="z-index: 1">
+        @can('destroy', $post)
         <div class="full-center full-width full-height">
             <div class="flex align-center">
                 <input type="button" class="simple-white-button pointer delete-post" value="Delete">
@@ -9,13 +10,14 @@
                 <input type="hidden" class="post-id" value="{{ $post_id }}">
             </div>
         </div>
+        @endcan
     </div>
     <div class="show-post-container fs11">
         <div class="line-separator"></div>
         {{ __('Reply hidden') }} [<a href="" class="show-post black-link bold">{{ __('click here to show it') }}</a>]
         <div class="line-separator"></div>
     </div>
-    <div class="flex post-container relative" style="@if($post->ticked) border-color: #1c8e19b3; @endif">
+    <div class="flex post-main-component relative" style="@if($post->ticked) border-color: #1c8e19b3; @endif">
         <div id="{{ $post_id }}" class="absolute" style="top: -65px">
         </div>
         <div class="vote-section post-vs relative">

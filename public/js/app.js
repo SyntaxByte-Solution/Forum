@@ -727,7 +727,7 @@ function handle_up_vote(button) {
             let errorObject = JSON.parse(xhr.responseText);
             let er = errorObject.message;
             // and then print the error returned in the informer-message-container
-            let vote_message_container = button.parent().find('.informer-message-container');
+            let vote_message_container = button.parent().find('.informer-message-container').first();
             vote_message_container.find('.informer-message').text(er);
             vote_message_container.css('display', 'block');
 
@@ -801,7 +801,7 @@ function handle_down_vote(button) {
             let errorObject = JSON.parse(xhr.responseText);
             let er = errorObject.message;
             // and then print the error returned in the vote-message-container
-            let vote_message_container = button.parent().find('.informer-message-container');
+            let vote_message_container = button.parent().find('.informer-message-container').first();
             vote_message_container.find('.informer-message').text(er);
             vote_message_container.css('display', 'block');
 
@@ -827,6 +827,22 @@ $('.remove-informer-message-container').click(function() {
 
     vote_container.css('display', 'none');
 });
+
+function handle_remove_informer_message_container(element) {
+    button = element.find('.remove-informer-message-container');
+    button.click(function(event) {
+        let vote_container = $(this);
+        while(!vote_container.hasClass('informer-message-container')) {
+            vote_container = vote_container.parent();
+        }
+    
+    
+        clearTimeout(informer_container_timeout);
+    
+        vote_container.css('display', 'none');
+        event.preventDefault();
+    });
+}
 
 function handle_hover_informer_display(element) {
     element.find('.hover-informer-display-element').on({

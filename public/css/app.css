@@ -1282,7 +1282,7 @@ th {
 }
 
 td {
-    padding: 12px 14px;
+    padding: 8px 10px 6px 10px;
 }
 
 tr:nth-child(2n) {
@@ -1461,7 +1461,7 @@ tr:nth-child(2n) {
 /* vs: vote section */
 .thread-vs, .post-vs {
     padding: 8px;
-    width: 42px;
+    width: 32px;
     border-radius: 6px 0 0 6px;
 }
 
@@ -1510,7 +1510,7 @@ tr:nth-child(2n) {
 
 
 
-.post-container {
+.post-main-component {
     margin: 10px 0;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 8px 1px #f4f4f4;
@@ -1518,7 +1518,7 @@ tr:nth-child(2n) {
 }
 
 .post-main-section {
-    padding: 14px;
+    padding: 8px 14px;
     width: 100%;
     box-sizing: border-box;
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\{Role, Permission, UserStatus, UserReach, Thread, UserPersonalInfos, AccountStatus, Vote};
+use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, Thread, UserPersonalInfos, AccountStatus, Vote};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -60,6 +60,10 @@ class User extends UserAuthenticatable implements Authenticatable
         }
 
         return $value;
+    }
+
+    public function getProfileViewsAttribute() {
+        return ProfileView::where('visited_id', $this->id)->count();
     }
 
     public function personal() {

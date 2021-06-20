@@ -48,7 +48,7 @@ class VotePolicy
             } else {
                 $message = __("You cannot downvote your own {$resource_name}s");
             }
-            return $this->deny($message);
+            return $this->deny(__($message));
         }
 
         if ($user->isBanned()) {

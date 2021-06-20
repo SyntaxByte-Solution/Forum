@@ -55,7 +55,7 @@ class PostPolicy
             throw new UserBannedException();
         }
 
-        return $post->user_id == $user->id;
+        return $post->user_id == $user->id || $user->id == $post->thread->user->id;
     }
 
     public function tick(User $user, Post $post) {

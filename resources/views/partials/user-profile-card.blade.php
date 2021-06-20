@@ -40,7 +40,7 @@
                 </div>
                 @if($user->threads_count())
                 <div class="fill-thin-line"></div>
-                <span class="move-to-right">[<a href="{{ route('user.threads', ['user'=>$user->username]) }}" class="fs11 black-link">SEE</a>]</span>
+                <span class="move-to-right">[<a href="{{ route('user.activities', ['user'=>$user->username]) }}" class="fs11 black-link">SEE</a>]</span>
                 @endif
             </div>
         </div>

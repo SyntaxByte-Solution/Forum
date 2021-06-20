@@ -100,6 +100,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/post/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
 });
 
+Route::get('/users/{user:username}/threads', [UserController::class, 'user_threads'])->name('user.threads');
 Route::get('/{forum:slug}/{category:slug}/threads', [ThreadController::class, 'category_threads'])->name('category.threads');
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
@@ -107,7 +108,6 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 
 Route::get('/users/{user:username}/activities', [UserController::class, 'activities'])->name('user.activities');
 
-Route::get('/users/{user:username}/threads', [UserController::class, 'user_threads'])->name('user.threads');
 Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/users/username/check', [UserController::class, 'username_check']);
 

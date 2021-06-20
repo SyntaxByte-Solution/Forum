@@ -15,14 +15,12 @@
     <td class="fs13">{{ $replies }}</td>
     <td class="fs13">{{ $views }}</td>
     <td>
-        <p class="no-margin fs11">announced by <a href="" class="bold forum-style-link fs11">{{ $thread_owner }} </a></p>
-        <p class="fs11 no-margin" style="margin-top: 3px">{{ $thread_date }} </p>
         @if($last_post_content)
+        <p class="no-margin fs11 grey">announced by <a href="" class="bold forum-style-link fs11">{{ $thread_owner }} </a></p>
         <div>
-            <a href="{{ $last_post_url }}" class="block forum-style-link fs11 bold">{{ $last_post_content }}</a>
+            <a href="{{ $last_post_url }}" class="block forum-style-link fs12 bold">{{ $last_post_content }}</a>
             <div class="form-column-line-separator"></div>
-            <p class="no-margin fs11">by <a href="" class="bold forum-style-link fs11">{{ $last_post_owner_username }} </a></p>
-            <p class="fs11 no-margin" style="margin-top: 3px">{{ $last_post_date }} </p>
+            <p class="fs11 no-margin" style="margin-top: 3px">at: {{ $last_post_date }} </p>
         </div>
         @else
         <div>

@@ -738,7 +738,7 @@ function handle_up_vote(button) {
         complete: function() {
             vote_lock = true;
         }
-    })
+    });
 }
 
 function handle_down_vote(button) {
@@ -854,3 +854,59 @@ function handle_hover_informer_display(element) {
         }
     })
 }
+
+function handle_resource_like(resource) {
+    resource.find('.like-resource').click(function() {
+        let resource_likes_counter = parseInt(resource.find('.resource-likes-counter').text());
+        if($(this).find('.gray-love').hasClass('none')) {
+            resource.find('.resource-likes-counter').text(resource_likes_counter - 1);
+            $(this).find('.gray-love').removeClass('none');
+            $(this).find('.red-love').addClass('none');
+        } else {
+            resource.find('.resource-likes-counter').text(resource_likes_counter + 1);
+            $(this).find('.gray-love').addClass('none');
+            $(this).find('.red-love').removeClass('none');
+        }
+    
+        let likable_id = resource.find('.likable-id').val();
+        let likable_type = resource.find('.likable-type').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/' + likable_type + '/' + likable_id + '/like',
+            data: {
+                _token: csrf,
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                if($(this).find('.gray-love').hasClass('none')) {
+                    $(this).find('.gray-love').removeClass('none');
+                    $(this).find('.red-love').addClass('none');
+                } else {
+                    $(this).find('.gray-love').addClass('none');
+                    $(this).find('.red-love').removeClass('none');
+                }
+                // If there's an error we simply set the old value
+                resource.find('.resource-likes-count').text(resource_likes_counter);
+    
+                let errorObject = JSON.parse(xhr.responseText);
+                let er = errorObject.message;
+
+
+            },
+            complete: function() {
+                vote_lock = true;
+            }
+        });
+    
+        event.preventDefault();
+    });
+}
+
+$(".resource-container").each(function() {
+    if($(this).find('.like-resource')[0]) {
+        handle_resource_like($(this));
+    }
+});

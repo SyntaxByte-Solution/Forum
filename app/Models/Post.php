@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{Thread, Vote};
+use App\Models\{Thread, Vote, Like};
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -23,6 +23,10 @@ class Post extends Model
 
     public function votes() {
         return $this->morphMany(Vote::class, 'votable');
+    }
+
+    public function likes() {
+        return $this->morphMany(Like::class, 'likable');
     }
 
     public static function boot() {

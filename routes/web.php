@@ -6,8 +6,9 @@ use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
-    SearchController, FeedbackController, VoteController};
-use App\Models\{Thread, Vote};
+    SearchController, FeedbackController, VoteController,
+    LikesController};
+use App\Models\{Thread, Vote, ResourceLike};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -22,8 +23,11 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 Route::get('/test', function() {
-    $name = "mouad";
-    dd("{$name}s");
+    // $thread = Thread::first();
+    // $thread_like = new ResourceLike;
+    // $thread_like->user_id = auth()->user()->id;
+    
+    // $thread->likes()->save($thread_like);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -95,6 +99,9 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/settings/account/activate', [UserController::class, 'activate_account'])->name('user.account.activate')->withoutMiddleware([AccountActivationCheck::class]);
     Route::patch('/settings/account/activating', [UserController::class, 'activating_account'])->name('user.account.activating')->withoutMiddleware([AccountActivationCheck::class]);
+
+    Route::post('/thread/{thread}/like', [LikesController::class, 'thread_like']);
+    Route::post('/post/{post}/like', [LikesController::class, 'post_like']);
 
     Route::post('/thread/{thread}/vote', [VoteController::class, 'thread_vote'])->name('thread.vote');
     Route::post('/post/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');

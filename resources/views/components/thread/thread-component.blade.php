@@ -2,6 +2,8 @@
 
     <input type="hidden" class="votable-id" value="{{ $thread->id }}">
     <input type="hidden" class="votable-type" value="thread">
+    <input type="hidden" class="likable-id" value="{{ $thread->id }}">
+    <input type="hidden" class="likable-type" value="thread">
 
     <div class="absolute full-shadowed br6 turn-off-viewer" style="z-index: 1">
         <div class="full-center full-width full-height">
@@ -79,7 +81,7 @@
                         <a href="" class="black-link">
                             <div class="flex align-center" style="margin-right: 6px">
                                 <img src="{{ asset('assets/images/icons/follow.png') }}" class="small-image mr4" alt="">
-                                <p class="gray no-margin fs13">Follow</p>
+                                <p class="gray no-margin fs13">Save</p>
                             </div>
                         </a>
                         @can('update', $thread)
@@ -113,12 +115,15 @@
                 <div class="flex">
                     <div class="flex">
                         <div class="flex" style="margin-right: 6px">
-                            <img src="{{ asset('assets/images/icons/gray-reply.png') }}" class="small-image mr4" alt="">
-                            <p class="gray no-margin fs13" class="block" style="margin: 4px; font-size: 12px"><span class="thread-replies-number">{{ $thread_replies_num }}</span> Replies</p>
+                            <a href="" class="@auth like-resource @endauth @guest login-signin-button @endguest">
+                                <img src="{{ asset('assets/images/icons/love-gray.png') }}" class="gray-love small-image mr4 @if($thread->liked) none @endif" alt="">
+                                <img src="{{ asset('assets/images/icons/love.png') }}" class="red-love small-image mr4 @if(!$thread->liked) none @endif" alt="">
+                            </a>
+                            <p class="gray no-margin fs13 resource-likes-counter" style="margin: 4px; font-size: 12px">{{ $thread->likes->count() }}</p>
                         </div>
                         <div class="flex" style="margin-right: 6px">
-                            <a href=""><img src="{{ asset('assets/images/icons/love-gray.png') }}" class="small-image mr4" alt=""></a>
-                            <p class="gray no-margin fs13" style="margin: 4px; font-size: 12px">{{ $thread_replies_num }}</p>
+                            <img src="{{ asset('assets/images/icons/gray-reply.png') }}" class="small-image mr4" alt="">
+                            <a href="" class="reply-to-thread black-link"><p class="gray no-margin fs13" class="block" style="margin: 4px; font-size: 12px"><span class="thread-replies-number">{{ $thread_replies_num }}</span> Replies</p></a>
                         </div>
                         <div class="relative">
                             <a href="" class="link-without-underline-style button-with-suboptions copy-container-button" class="block" style="margin: 4px; font-size: 12px">Direct Link ▾</a>
@@ -133,12 +138,10 @@
                         </div>
                     </div>
                     <div class="move-to-right flex">
-                        <a href="" class="reply-to-thread black-link">
-                            <div class="flex align-center" style="margin-right: 6px">
-                                <img src="{{ asset('assets/images/icons/discussions.png') }}" class="small-image mr4" alt="">
-                                <p class="no-margin fs14">Reply</p>
-                            </div>
-                        </a>
+                        <div class="flex align-center">
+                            <img src="{{ asset('assets/images/icons/gray-eye.png') }}" class="small-image mr4" alt="">
+                            <p class="no-margin gray fs12">{{ $thread->view_count }} {{ __('views') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

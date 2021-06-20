@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus};
+use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like};
 
 class Thread extends Model
 {
@@ -44,6 +44,20 @@ class Thread extends Model
 
     public function votes() {
         return $this->morphMany(Vote::class, 'votable');
+    }
+
+    public function likes() {
+        return $this->morphMany(Like::class, 'likable');
+    }
+
+    public function getLikedAttribute() {
+        if($current_user = auth()->user()) {
+            return Like::where('user_id', $current_user->id)
+                ->where('likable_type', 'App\Models\Thread')
+                ->where('likable_id', $this->id)
+                ->count();
+        }
+        return false;
     }
 
     public function getUpvotesAttribute() {

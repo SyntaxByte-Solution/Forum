@@ -28,6 +28,8 @@ Route::get('/test', function() {
     // $thread_like->user_id = auth()->user()->id;
     
     // $thread->likes()->save($thread_like);
+
+    phpinfo();
 });
 
 Route::get('/', [IndexController::class, 'index']);

@@ -8,14 +8,19 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\IsValidPassword;
-use App\Models\{Thread, Category, User, ProfileView};
+use App\Models\{Thread, Category, User, ProfileView, Like, Vote};
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class UserController extends Controller
 {
     public function activities(Request $request, User $user) {
-        $pagesize = 10;
+        $is_current = false;
+        if($current_user = auth()->user()) {
+            $is_current = ($current_user->id == $user->id) ? true : false;
+        }
+
+        $pagesize = 6;
         $pagesize_exists = false;
         $all = false;
         if($request->has('pagesize')) {
@@ -26,6 +31,7 @@ class UserController extends Controller
         $announcements = Category::where('slug', 'announcements')->pluck('id');
 
         $threads;
+        $liked_threads = false;
         if($pagesize == 'all') {
             $all = true;
             $threads = Thread::whereNotIn('category_id', $announcements)
@@ -33,6 +39,17 @@ class UserController extends Controller
                 ->orderBy('created_at', 'desc')->lazy();
         } else {
             $threads = Thread::whereNotIn('category_id', $announcements)->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($pagesize);
+            
+            $liked_threads = Thread::whereIn('id', 
+            Like::where('user_id', $user->id)->where('likable_type', 'App\Models\Thread')->pluck('likable_id'))
+            ->orderBy('created_at', 'desc')->get();
+
+            $voted_threads = collect([]);
+            foreach(Vote::where('user_id', $user->id)->where('votable_type', 'App\Models\Thread')->get(['votable_id', 'vote']) as $votable) {
+                $voted_threads->push([Thread::find($votable['votable_id']), $votable['vote']]);
+            }
+
+            
         }
 
         $threads_count = $user->threads->count();
@@ -40,11 +57,14 @@ class UserController extends Controller
 
         return view('user.activities')
             ->with(compact('user'))
+            ->with(compact('is_current'))
             ->with(compact('threads_count'))
             ->with(compact('posts_count'))
             ->with(compact('pagesize'))
             ->with(compact('pagesize_exists'))
             ->with(compact('all'))
+            ->with(compact('voted_threads'))
+            ->with(compact('liked_threads'))
             ->with(compact('threads'));
     }
 

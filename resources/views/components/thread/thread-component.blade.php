@@ -78,12 +78,6 @@
                         <!-- <p class="no-margin fs12">viewes: {{ $thread_view_counter }} times</p> -->
                     </div>
                     <div class="flex">
-                        <a href="" class="black-link">
-                            <div class="flex align-center" style="margin-right: 6px">
-                                <img src="{{ asset('assets/images/icons/follow.png') }}" class="small-image mr4" alt="">
-                                <p class="gray no-margin fs13">Save</p>
-                            </div>
-                        </a>
                         @can('update', $thread)
                         <div class="relative">
                             <a href="" class="black-link button-with-suboptions">

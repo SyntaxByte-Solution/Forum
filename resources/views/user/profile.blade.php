@@ -114,6 +114,65 @@
                         </div>
                     </div>
                 </div>
+                @if($recent_threads->count())
+                <div style="margin-top: 20px">
+                    <div class="flex align-center">
+                        <h2>Recent Threads</h2>
+                        <a href="{{ route('user.activities', ['user'=>$user->username]) }}" class="link-path move-to-right">see all</a>
+                    </div>
+                    @foreach($recent_threads as $thread)
+                        @php
+                            $is_ticked = $thread->posts->where('ticked', 1)->count();
+
+                            $forum = $thread->forum();
+                            $category = $thread->category;
+
+                            $forum_slug = $thread->forum()->slug;
+                            $category_slug = $thread->category->slug;
+                        @endphp
+                        <div class="my8 p4 br4" style="@if($is_ticked) background-color: #cfffcf3d; border: 1px solid #89c489bd; @endif">
+                            <div class="flex align-center">
+                                <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-size mr4" alt="">
+                                <div class="flex align-center">
+                                    <a href="{{ route('forum.all.threads', ['forum'=>$forum_slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
+                                    <span class="mx4 fs13 gray">▸</span>
+                                    <a href="{{ route('category.threads', ['forum'=>$forum_slug, 'category'=>$category_slug]) }}" class="fs11 black-link">{{ $category->category }}</a>
+                                </div>
+                                @if($is_ticked)
+                                <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="ml8 small-image" alt="">
+                                @endif
+                            </div>
+                            <div class="flex align-center">
+                                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-2" alt="">
+                                <span class="fs13 mr4">{{ $thread->votes->where('vote', '1')->count() }}</span>
+                                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image-2" alt="">
+                                <span class="fs13">{{ $thread->downvotes }}</span>
+                                <a href="{{ route('thread.show', ['forum'=> $forum_slug, 'category'=> $category_slug, 'thread'=>$thread->id]) }}" class="link-path flex ml8">{{ $thread->subject }}</a>
+
+                                <div class="move-to-right flex align-center">
+                                    @if($lc = $thread->likes->count())
+                                    <div class="flex align-center mx8">
+                                        <img src="{{ asset('assets/images/icons/love-gray.png') }}" class="small-image-2 mr4" alt="">
+                                        <p class="fs12 no-margin">{{ $lc }} likes</p>
+                                    </div>
+                                    @endif
+                                    @if($pc = $thread->posts->count())
+                                    <div class="flex align-center mx8">
+                                        <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
+                                        <p class="fs12 no-margin">{{ $pc }} replies</p>
+                                    </div>
+                                    @endif
+                                    <div class="flex align-center mx8">
+                                        <img src="{{ asset('assets/images/icons/gray-eye.png') }}" class="small-image-2 mr4" alt="">
+                                        <p class="fs12 no-margin">{{ $thread->view_count }} {{ __('views') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="simple-line-separator my4"></div>
+                        </div>
+                    @endforeach
+                </div>
+                @endif
             </div>
             <div>
                 @include('partials.user-space.user-card')
@@ -171,20 +230,5 @@
                 </div>
             </div>
         </section>
-        @if($recent_threads->count())
-        <div style="margin-top: 20px">
-            <h2>Recent Threads</h2>
-            <table class="forums-table">
-                <tr>
-                    <th class="table-col-header">{{ __('THREADS') }}</th>
-                    <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
-                    <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
-                </tr>
-                @foreach($recent_threads as $thread)
-                    <x-index-resource :thread="$thread"/>
-                @endforeach
-            </table>
-        </div>
-        @endif
     </div>
 @endsection

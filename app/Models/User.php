@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, Thread, UserPersonalInfos, AccountStatus, Vote};
+use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, Thread, UserPersonalInfos, AccountStatus, Vote, Like};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -72,6 +72,12 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function threads() {
         return $this->hasMany(Thread::class);
+    }
+
+    public function liked_threads() {
+        $threads_ids = Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Thread')->pluck('likable_id');
+
+        return Thread::whereIn('id', $threads_ids)->get();
     }
 
     public function votes() {

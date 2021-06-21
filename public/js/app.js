@@ -296,40 +296,54 @@ $('.tooltip-section').on({
 
 let mouse_over_button = false;
 let mouse_over_container = false;
+let mouse_over_button_timeout;
+let mouse_over_button_container_timeout;
 
 $('.button-with-container').on({
     'mouseenter': function() {
-        mouse_over_button = true;
-        $(this).parent().find('.button-container').css('display', 'block');
-        $(this).parent().find('.button-container').css('opacity', '1');
+        let button = $(this);
+        setTimeout(function() {
+            mouse_over_button = true;
+            button.parent().find('.button-container').css('display', 'block');
+            button.parent().find('.button-container').css('opacity', '1');
+        }, 800);
     },
     'mouseleave': function() {
+        let button = $(this);
         /*
             Here we need to check whether the mouse is over the button or container before closing the container as well
         */
-        mouse_over_button = false;
-        if(!mouse_over_container) {
-            $(this).parent().find('.button-container').css('display', 'none');
-            $(this).parent().find('.button-container').css('opacity', '0');
-        }
+        setTimeout(function() {
+            mouse_over_button = false;
+            if(!mouse_over_container) {
+                button.parent().find('.button-container').css('display', 'none');
+                button.parent().find('.button-container').css('opacity', '0');
+            }
+        }, 800);
     }
 })
 $('.button-container').on({
     mouseenter: function(event) {
-        mouse_over_container = true;
-        $(this).css('display', 'block');
-        $(this).css('opacity', '1');
+        let container = $(this);
+        setTimeout(function() {
+            mouse_over_container = true;
+            container.css('display', 'block');
+            container.css('opacity', '1');
+        }, 800)
         event.stopPropagation();
     },
     mouseleave: function(event) {
+        let container = $(this);
         /*
             Here we need to check whether the mouse is over the button or container before closing the container as well
         */
-        mouse_over_container = false;
-        if(!mouse_over_button) {
-            $(this).parent().find('.button-container').css('display', 'none');
-            $(this).parent().find('.button-container').css('opacity', '0');
-        }
+       setTimeout(function() {
+           mouse_over_container = false;
+           if(!mouse_over_button) {
+               container.css('display', 'none');
+               container.css('opacity', '0');
+           }
+       }, 400);
     }
 });
 

@@ -60,21 +60,31 @@
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe44a; @endif">
             <div class="flex space-between">
                 <div>
-                    <div class="no-margin fs12 gray">replied by 
-                            <div class="inline-block relative">
-                                <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold button-with-container forum-style-link fs12">{{ $post_owner_username }}</a>
-                                @include('partials.user-profile-card', ['user'=>$post_owner])
+                    <div class="no-margin fs12 gray">
+                        <div class="inline-block relative">
+                            <div class="flex">
+                                <div class="relative">
+                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="button-with-container forum-style-link fs12 flex">
+                                        <img src="{{ $post_owner->avatar }}" class="size28 mr4 rounded" alt="">
+                                    </a>
+                                    
+                                    @include('partials.user-profile-card', ['user'=>$post_owner])
+                                </div>
+                                <div>
+                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold link-path">{{ $post_owner_username }}</a>
+                                    <span class="relative block">
+                                        <span class="tooltip-section">{{ __('replied at') }}: {{ $post_date }}</span>
+                                        <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
+                                    </span>
+                                </div>
                             </div>
-                            <span class="relative">
-                                <span class="tooltip-section">- {{ $post_date }}</span>
-                                <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
+                        </div>
+                        @if($post_updated_at)
+                            <span class="relative" style="margin-left: 8px">
+                                <span class="tooltip-section post-updated-date">(updated {{ $post_update_date }})</span>
+                                <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
                             </span>
-                            @if($post_updated_at)
-                                <span class="relative" style="margin-left: 8px">
-                                    <span class="tooltip-section post-updated-date">(updated {{ $post_update_date }})</span>
-                                    <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
-                                </span>
-                            @endif
+                        @endif
                     </div>
                     <div class="simple-line-separator my4"></div>
                 </div>

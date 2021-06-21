@@ -62,14 +62,14 @@
                             </div>
                         </div>
                         <div class="flex align-center">
-                            <span class="no-margin fs12 mr4">Posted by:</span>
                             <!-- thread owner username alog with container -->
-                            <div class="relative inline-block">
+                            <div class="relative flex align-center">
+                                <img src="{{ $thread_owner->avatar }}" class="small-image-2 rounded mr4" alt="">
                                 <a href="{{ route('user.profile', ['user'=>$thread_owner_username]) }}" class="link-style bold fs12 button-with-container" style="margin: 0 1px">{{ $thread_owner_username }}</a>
                                 @include('partials.user-profile-card', ['user'=>$thread_owner])
                             </div>
                             <div class="relative ml4">
-                                <span class="no-margin fs12 tooltip-section">{{ $thread_created_at_hummans }}</span>
+                                <span class="no-margin fs12 tooltip-section">{{ __('posted') }}: {{ $thread_created_at_hummans }}</span>
                                 <div class="tooltip tooltip-style-1">
                                     {{ $thread_created_at }}
                                 </div>

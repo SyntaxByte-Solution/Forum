@@ -40,7 +40,7 @@ Route::get('/forums', [IndexController::class, 'forums']);
 /**
  * Search routes
  */
-Route::get('/{forum:slug}/search', [SearchController::class, 'forum_search'])->name('forum.thread.search');
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 /**
  * get all forum threads

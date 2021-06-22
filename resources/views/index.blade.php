@@ -25,10 +25,10 @@
                 <div class="flex space-between align-end">
                     <div>
                         <h2 class="my8 fs20 forum-color">{{ __('TOP Discussions & Questions') }}</h2>
-                        <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for everything (users, threads, questions, posts ..)') }}</p>
+                        <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for threads, users ..') }}</p>
                         <div class="flex align-center">
                             <div>
-                                <form action="" method='get' class="flex">
+                                <form action="{{ route('search') }}" method='get' class="flex">
                                     <input type="text" name="k" class="input-style-2" placeholder="Search everything .." required>
                                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                                 </form>

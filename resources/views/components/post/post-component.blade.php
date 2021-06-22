@@ -73,7 +73,7 @@
                                 <div>
                                     <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold link-path">{{ $post_owner_username }}</a>
                                     <span class="relative block">
-                                        <span class="tooltip-section">{{ __('replied at') }}: {{ $post_date }}</span>
+                                        <span class="tooltip-section">{{ __('replied') }}: {{ $post_date }}</span>
                                         <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
                                     </span>
                                 </div>

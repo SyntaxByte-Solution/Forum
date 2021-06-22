@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException};
-use App\Models\{Forum, Thread, ThreadType, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
+use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller

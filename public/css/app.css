@@ -43,6 +43,10 @@ a, input, textarea {
     z-index: 12;
 }
 
+.parent-height {
+    height: 100%;
+}
+
 .opacity0 {
     opacity: 0;
 }
@@ -84,7 +88,7 @@ a, input, textarea {
 }
 
 .fs16 {
-    font-size: 16px;
+    font-size: 16px !important;
 }
 
 .fs15 {
@@ -190,6 +194,10 @@ a, input, textarea {
 
 .flex {
     display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
 }
 
 .flex-column {
@@ -896,6 +904,11 @@ a, input, textarea {
 .rounded-style-1 {
     height: 50px;
     width: 50px;
+}
+
+.size60 {
+    height: 60px;
+    width: 60px;
 }
 
 .size28{
@@ -1920,4 +1933,12 @@ tr:nth-child(2n) {
     color: white;
     font-weight: bold;
     font-size: 12px;
+}
+
+.user-component-container {
+    border: 1px solid #b9b9b9;
+    border-radius: 6px;
+    padding: 8px;
+    margin: 5px 0;
+    box-shadow: 0 0 5px 0.2px #0000001a;
 }

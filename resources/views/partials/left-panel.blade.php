@@ -1,6 +1,6 @@
 <div id="left-panel">
     <div class="flex align-center" style="margin-bottom: 20px">
-        <a href="" class="quick-links-button">Quick links ❯</a>
+        <a href="" class="quick-links-button">Quick links ▸</a>
     </div>
 
     <div class="flex relative">
@@ -115,6 +115,12 @@
     </div>
     <div>
         <p class="left-panel-label">MORE</p>
+        <div class="relative">
+            <a href="{{ route('search') }}" class="left-panel-item lp-wpadding @if($page == 'adv-search') {{ 'lp-selected' }} @endif">{{ __('Search') }}</a>
+            @if($page == 'adv-search')
+                <div class="selected-colored-slice"></div>
+            @endif
+        </div>
         <div class="relative">
             <a href="" class="left-panel-item lp-wpadding @if($page == 'adv-search') {{ 'lp-selected' }} @endif">{{ __('Adv. Search') }}</a>
             @if($page == 'adv-search')

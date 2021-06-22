@@ -20,10 +20,8 @@ class IndexResource extends Component
 
     public $forum;
 
-    public $type;
     public $category_threads_link;
     public $thread_votes;
-    public $thread_type;
     public $thread_title;
     public $thread_content;
     public $views;
@@ -43,7 +41,6 @@ class IndexResource extends Component
     {
         $this->thread = $thread;
         $this->thread_id = $thread->id;
-        $this->thread_type = $thread->thread_type;
 
         $vote_count = 0;
         foreach($thread->votes as $vote) {
@@ -87,11 +84,7 @@ class IndexResource extends Component
             $this->last_post_owner_username = User::find($last_post->user_id)->username;
             $this->last_post_date = $last_post->created_at;
 
-            if($thread->thread_type == 1) {
-                $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
-            } else if($thread->thread_type == 2) {
-                $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
-            }
+            $this->last_post_url = route('thread.show', ['forum'=>$forum, 'category'=>$category_model->slug, 'thread'=>$thread->id, '#' . $last_post->id]);
         }
     }
 

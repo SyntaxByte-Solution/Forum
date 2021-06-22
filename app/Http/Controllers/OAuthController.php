@@ -54,7 +54,7 @@ class OAuthController extends Controller
             $user = new User;
             $user->firstname = $names[0];
             $user->lastname = (count($names) > 1) ? $names[1] : '';
-            $user->username = 'beast_' . $id;
+            $user->username = 'gladiator_' . $id;
             $user->email = $u->email;
             $user->provider_id = $u->id;
             $user->provider = $provider;

@@ -432,7 +432,7 @@ $('.row-num-changer').change(function() {
     
     let urlObj = new URL(window.location.href.split('?')[0]);
     let url = '';
-    
+
     urlObj.searchParams.set('pagesize', page_size);
     url = urlObj.href;
 

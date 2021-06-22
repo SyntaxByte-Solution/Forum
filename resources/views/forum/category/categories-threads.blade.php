@@ -22,10 +22,10 @@
             <div>
                 <a href="/" class="link-path">{{ __('Board index') }} > </a>
                 <a href="" class="link-path">{{ __(request()->forum->forum) }} > </a>
-                <span class="current-link-path">{{ __('All Categories Threads') }}</span>
+                <span class="current-link-path">{{ __('All Forum Threads') }}</span>
             </div>
             <div class="flex space-between">
-                <h1 id="page-title">{{ __('All forums threads') }}</h1>
+                <h1 id="page-title">{{ __('All ' . request()->forum->forum . ' threads') }}</h1>
                 <div>
                     <div class="flex align-center" style="margin-top: 8px">
                         <p class="gray fs12 mr8">Forum: </p>
@@ -55,7 +55,7 @@
                     <div class="relative">
                         <a href="{{ route('thread.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 mr4">Add Thread</a>
                     </div>
-                    <form action="{{ route('forum.thread.search', ['forum'=>request()->forum]) }}" method='get' class="flex">
+                    <form action="{{ route('search') }}" method='get' class="flex">
                         <input type="text" name="k" class="input-style-2" placeholder="Search this forum .." required>
                         <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                     </form>

@@ -20,6 +20,9 @@
                     <img src="{{ asset('assets/images/icons/down-filled.png') }}" class="small-image vote-down-filled-image @downvoted($thread, 'App\Models\Thread') @else none @enddownvoted" alt="">
                     <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($thread, 'App\Models\Thread') none @enddownvoted" alt="">
                 </a>
+                @if($thread->tickedPost())
+                <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image mt8" alt="">
+                @endif
             </div>
             <div class="flex full-width">
                 <div class="full-width">
@@ -87,7 +90,7 @@
         <div>
             <a href="{{ $last_post_url }}" class="block forum-style-link fs11 bold">{{ $last_post_content }}</a>
             <div class="form-column-line-separator"></div>
-            <p class="no-margin fs11">by <a href="" class="bold forum-style-link fs11">{{ $last_post_owner_username }}</a></p>
+            <p class="no-margin fs11">by <a href="{{ route('user.profile', ['user'=>$last_post_owner_username]) }}" class="bold forum-style-link fs11">{{ $last_post_owner_username }}</a></p>
             <p class="fs11 no-margin" style="margin-top: 3px">{{ $last_post_date }} </p>
         </div>
         @else

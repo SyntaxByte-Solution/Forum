@@ -14,7 +14,7 @@ header {
 }
 
 #header {
-    height: 65px;
+    height: 55px;
     display: flex;
     align-items: center;
 }
@@ -26,7 +26,7 @@ header {
 #header-logo {
     display: flex;
     margin: 0 8px;
-    height: 50px;
+    height: 40px;
 }
 
 .first-profile-container-part {
@@ -56,5 +56,19 @@ header {
 
 main {
     margin: 0 auto;
-    margin-top: 65px;
+    margin-top: 55px;
+}
+
+.menu-button-style {
+    display: flex;
+    align-items: center;
+
+    text-decoration: none;
+    color: white;
+    padding: 0 16px;
+    height: 100%;
+}
+
+.menu-button-style:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }

@@ -56,8 +56,8 @@
                     <div class="relative">
                         <a href="{{ route('thread.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 mr4">Add Thread</a>
                     </div>
-                    <form action="" class="flex">
-                        <input type="text" name="search" class="input-style-2" placeholder="Search this forum">
+                    <form action="{{ route('search') }}" class="flex">
+                        <input type="text" name="k" class="input-style-2" placeholder="Search this forum" required>
                         <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                     </form>
                     <a href="/advanced/search" class="bsettings-icon background-style" style="width: 26px; height: 26px"></a>

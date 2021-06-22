@@ -22,15 +22,15 @@
                 <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt="">
             </div>
             <div>
+                <h2 class="my8 fs26 forum-color">{{ __('Top Discussions & Questions') }}</h2>
                 <div class="flex space-between align-end">
                     <div>
-                        <h2 class="my8 fs20 forum-color">{{ __('TOP Discussions & Questions') }}</h2>
                         <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for threads, users ..') }}</p>
                         <div class="flex align-center">
                             <div>
                                 <form action="{{ route('search') }}" method='get' class="flex">
-                                    <input type="text" name="k" class="input-style-2" placeholder="Search everything .." required>
-                                    <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
+                                    <input type="text" name="k" class="input-style-2" style="width: 330px" placeholder="Search everything .." required>
+                                    <input type="submit" value="" class="search-forum-button" style="margin-left: -8px; width: 60px">
                                 </form>
                             </div>
                             <a href="" class="ml4">
@@ -39,10 +39,12 @@
                         </div>
                     </div>
                     <div class="mr8">
-                        <div class="flex align-center">
-                            <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
-                            <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
-                            <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
+                        <div class="flex">
+                            <div class="flex align-center move-to-right">
+                                <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
+                                <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
+                                <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
+                            </div>
                         </div>
                         <div class="simple-half-line-separator my4 move-to-right"></div>
                         <div class="flex">
@@ -52,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <table class="forums-table">
+                <table class="forums-table my8">
                     <tr>
                         <th class="table-col-header">
                             <div class="flex align-center">

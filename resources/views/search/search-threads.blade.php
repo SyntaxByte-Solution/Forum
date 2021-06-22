@@ -15,47 +15,38 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'search', 'subpage'=>'search'])
+    @include('partials.left-panel', ['page' => 'search', 'subpage'=>'threads-search'])
     <div id="middle-container" class="middle-padding-1 flex">
         <div class="full-width">
             <div class="flex">
                 <div>
-                    <h1 id="page-title" class="my8 fs28 forum-color">{{ __('Explore threads, users..') }}</h1>
+                    <a href="/" class="link-path">{{ __('Board index') }} > </a>
+                    <a href="/search" class="link-path">{{ __('Search') }} > </a>
+                    <span class="current-link-path">{{ __('Threads search') }}</span>
+                </div>
+                <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="button-style-1 flex move-to-right">{{ __('Add a thread') }}</a>
+            </div>
+            <div class="flex">
+                <div>
+                    <h1 id="page-title" class="my8 fs28 forum-color">{{ __('Search [Threads]') }}</h1>
                 </div>
             </div>
             <div>
-                <form action="{{ route('search') }}" method='get' class="flex align-end full-width">
+                <form action="{{ route('threads.search') }}" method='get' class="flex align-end full-width">
                     <div class="full-width">
                         <div class="flex align-end space-between">
-                            <label for='main-srch' class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for everything (threads, users ..)') }}</label>
+                            <label for='main-srch' class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for threads.') }}</label>
                             <a href="" class="link-path">Advanced search</a>
                         </div>    
     
-                        <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="Search everything .." required>
+                        <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="{{ __('Search for threads') }}" required>
                     </div>
                     <input type="submit" class="ml8 button-style-1" style="padding: 9px 12px" value="{{ __('Search') }}">
                 </form>
             </div>
-            <div class="simple-line-separator my8"></div>
             @if($search_query != "")
             <h2 class="fs20 flex align-center gray">Search results for: "<span class="black">{{ $search_query }}</span>"</h2>
             @endif
-            <div>
-                @if($users->count())
-                    <div class="flex space-between align-center">
-                        <a href="{{ route('users.search') }}" class="fs20 blue bold no-underline my4 flex align-center">{{ __('Users') }}<span class="gray fs14 ml4 @if($search_query == '') none @endif">({{$users->total()}} {{__('found')}})</span></a>
-                        @if($users->count() > 4)
-                        <a href="" class="link-path mr4">see all</a>
-                        @endif
-                    </div>
-                    <div class="flex flex-wrap space-between">
-                        @foreach($users as $user)
-                            <x-search.user :user="$user" class="half-width" style="width: calc(100% / 2 - 7.5px);"/>
-                            <div class="simple-line-separator"></div>
-                        @endforeach
-                    </div>
-                @endif
-            </div>
             <div class="simple-line-separator my8"></div>
             <div class="flex">
                 <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Threads') }}<span class="gray fs14 ml4">@isset($search_query) ({{$threads->total() . ' ' . __('found')}}) @endisset</span></h2>

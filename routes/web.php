@@ -41,6 +41,9 @@ Route::get('/forums', [IndexController::class, 'forums']);
  * Search routes
  */
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search/advanced', [SearchController::class, 'search_advanced'])->name('advanced.search');
+Route::get('/threads/search', [SearchController::class, 'threads_search'])->name('threads.search');
+Route::get('/users/search', [SearchController::class, 'users_search'])->name('users.search');
 
 /**
  * get all forum threads

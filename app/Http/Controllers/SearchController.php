@@ -48,6 +48,72 @@ class SearchController extends Controller
             ->with(compact('search_query'));
     }
 
+    public function threads_search(Request $request) {
+        $pagesize = 10;
+        $pagesize_exists = false;
+        if($request->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = $request->input('pagesize');
+        }
+
+        $keyword = $request->validate([
+            'k'=>'sometimes|max:2000'
+        ]);
+
+        if(empty($keyword)) {
+            $search_query = '';
+        } else {
+            $search_query = $keyword['k'];
+        }
+
+        
+        $forums = Forum::all();
+        $threads = Thread::whereIn('id', array_column(
+            DB::select(
+                $this->search_query_generator('threads', $search_query, ['subject', 'content'], ['LIKE'], ['OR'])
+            ), 'id'
+        ))->orderBy('created_at', 'desc')->paginate($pagesize);
+
+        return view('search.search-threads')
+            ->with(compact('forums'))
+            ->with(compact('threads'))
+            ->with(compact('pagesize'))
+            ->with(compact('search_query'));
+    }
+
+    public function users_search(Request $request) {
+        $pagesize = 8;
+        $pagesize_exists = false;
+        if($request->has('pagesize')) {
+            $pagesize_exists = true;
+            $pagesize = $request->input('pagesize');
+        }
+
+        $keyword = $request->validate([
+            'k'=>'sometimes|max:2000'
+        ]);
+
+        if(empty($keyword)) {
+            $search_query = '';
+        } else {
+            $search_query = $keyword['k'];
+        }
+
+        
+        $forums = Forum::all();
+        $users = User::whereIn('id', array_column(
+            DB::select(
+                $this->search_query_generator('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE'], ['OR'])
+            ), 'id'
+        ))->orderBy('username', 'asc')->paginate($pagesize);
+
+        return view('search.search-users')
+            ->with(compact('forums'))
+            ->with(compact('users'))
+            ->with(compact('pagesize'))
+            ->with(compact('search_query'));
+    }
+
     private $default_operator = "=";
     private $default_conditional_operator = "AND";
 

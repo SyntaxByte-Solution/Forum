@@ -13,7 +13,7 @@ function handle_post_display_buttons(post) {
         return false;
     });
 
-    post.parent().find('.show-post').click(function() {
+    post.find('.show-post').click(function() {
         $(this).parent().css('display', 'none');
         $(this).parent().parent().find('.post-main-component').css('display', 'flex');
         $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);

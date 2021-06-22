@@ -22,7 +22,7 @@
             <div>
                 <a href="/" class="link-path">{{ __('Board index') }} > </a>
                 <a href="" class="link-path">{{ __(request()->forum->forum) }} > </a>
-                <span class="current-link-path">{{ __('All Forum Threads') }}</span>
+                <span class="current-link-path">{{ __('All Categories Threads') }}</span>
             </div>
             <div class="flex space-between">
                 <h1 id="page-title">{{ __('All ' . request()->forum->forum . ' threads') }}</h1>

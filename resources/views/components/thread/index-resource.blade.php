@@ -21,7 +21,7 @@
                     <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($thread, 'App\Models\Thread') none @enddownvoted" alt="">
                 </a>
                 @if($thread->tickedPost())
-                <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image mt8" alt="">
+                <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image mt8" title="{{ __('This thread has a ticked reply') }}" alt="">
                 @endif
             </div>
             <div class="flex full-width">

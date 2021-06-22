@@ -121,7 +121,7 @@ $('.login-signin-button').click(function() {
 $('#left-panel').height($(window).height() - $('header').height() - 30);
 
 window.onresize = function(event) {
-    $('#left-panel').height($(window).height() - $('header').height() - 30);
+    $('#left-panel').height($(window).height() - $('header').height() - 20);
 };
 
 $('.reply-to-thread').click(function() {

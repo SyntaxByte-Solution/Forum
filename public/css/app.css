@@ -362,6 +362,10 @@ a, input, textarea {
     margin-bottom: 8px !important;
 }
 
+.pb8 {
+    padding-bottom: 8px !important;
+}
+
 .px4 {
     padding-left: 4px;
     padding-right: 4px;
@@ -402,16 +406,18 @@ a, input, textarea {
 
 .suboption-style-1 {
     display: flex;
-    padding: 10px 10px 10px 36px;
-    font-weight: 600;
-    color:#202020;
+    align-items: center;
+    padding: 8px 10px;
+    font-weight: bold;
+    color:#131313;
     font-size: 14px;
     text-decoration: none;
     border-radius: 4px;
-    transition: 1s background-color;
+    transition: 0.6s background-color;
 }
 
 .suboption-style-1:hover {
+    color: black;
     background-color: rgb(236, 236, 236);
 }
 
@@ -442,6 +448,10 @@ a, input, textarea {
     color: rgb(63, 63, 63) !important;
 }
 
+.light-gray {
+    color: rgb(216, 216, 216);
+}
+
 .no-margin {
     margin: 0;
 }
@@ -456,38 +466,43 @@ a, input, textarea {
 }
 
 .search-field {
-    padding: 10px 16px;
+    padding: 7px 16px;
     padding-left: 32px;
 
     font-size: 13px;
     
     min-width: 270px;
-    border-radius: 6px;
+    border-radius: 4px;
     border: none;
 
     background-image: url(../assets/images/icons/black-search.png);
     background-size: 16px;
     background-repeat: no-repeat;
     background-position: 10px center;
+    background-color: rgb(214, 214, 214);
+
+    transition: 1s ease background-color;
+}
+
+.search-field:focus {
+    background-color: white;
 }
 
 .search-button {
     display: flex;
     cursor: pointer;
     border: none;
-    background-color: rgb(58, 186, 236);
+    background-color: rgb(102, 153, 219);
     color: white;
-    border-bottom-right-radius: 6px;
-    border-top-right-radius: 6px;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
     padding: 0 10px;
 
     margin-left: -10px;
-
-    transition: 1s ease background-color;
 }
 
 .search-button:hover {
-    background-color: rgb(44, 154, 197);
+    background-color: rgb(75, 137, 218);
 }
 
 #search-and-login {
@@ -793,12 +808,12 @@ a, input, textarea {
 .suboptions-account-style {
     display: none;
     position: absolute;
-    top: 48px;
+    top: 41px;
     right: 0;
-    width: 240px;
+    width: 180px;
     background-color: white;
     border: 1px solid rgb(177, 177, 177);
-    border-radius: 6px;
+    border-top: unset;
 }
 
 .triangle {
@@ -1268,6 +1283,7 @@ a, input, textarea {
     width: 100%;
     position: relative;
     border-spacing: 0px;
+    border: 1px solid #e3e3e3;
 }
   
 td, th {
@@ -1283,7 +1299,7 @@ th {
     padding: 8px;
     position: sticky;
     z-index: 2;
-    top: 55px; /* Don't forget this, required for the stickiness */
+    top: 48px; /* Don't forget this, required for the stickiness */
     box-shadow: 0 5px 6px -1px rgba(159, 159, 159, 0.2);
     background-color: rgb(250, 250, 250);
 }

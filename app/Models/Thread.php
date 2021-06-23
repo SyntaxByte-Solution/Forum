@@ -80,6 +80,15 @@ class Thread extends Model
         return $count;
     }
 
+    public function getVotevalueAttribute() {
+        $count = 0;
+        foreach($this->votes as $vote) {
+            $count += $vote->vote;
+        }
+
+        return $count;
+    }
+
     public function scopeToday($builder)
     {
         return $builder->where('created_at', '>', today());

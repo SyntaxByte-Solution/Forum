@@ -16,6 +16,44 @@
                 <div class="selected-colored-slice"></div>
             @endif
         </div>
+        <div class="relative toggle-box pb8">
+            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected' }} @endif">Search <span class="toggle-arrow">@if($page == 'search') ▾ @else ▸ @endif</span></a>
+            <div class="toggle-container" @isset($subpage) @if($page == 'search') style="display: block" @endif @endisset>
+                <div class="relative">
+                    <a href="{{ route('search') }}" @isset($subpage) @if($subpage == 'search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Search Index</a>
+                    @isset($subpage)
+                        @if($subpage == 'search')
+                            <div class="selected-colored-slice"></div>
+                        @endif
+                    @endisset
+                </div>
+                <div class="relative">
+                    <a href="{{ route('threads.search') }}" @isset($subpage) @if($subpage == 'threads-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Threads Search</a>
+                    @isset($subpage)
+                        @if($subpage == 'threads-search')
+                            <div class="selected-colored-slice"></div>
+                        @endif
+                    @endisset
+                </div>
+                <div class="relative">
+                    <a href="{{ route('users.search') }}" @isset($subpage) @if($subpage == 'users-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Users Search</a>
+                    @isset($subpage)
+                        @if($subpage == 'users-search')
+                            <div class="selected-colored-slice"></div>
+                        @endif
+                    @endisset
+                </div>
+                <div class="simple-line-separator" style="background-color: #626266;"></div>
+                <div class="relative">
+                    <a href="{{ route('advanced.search') }}" @isset($subpage) @if($subpage == 'advanced-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Advanced Search</a>
+                    @isset($subpage)
+                        @if($subpage == 'advanced-search')
+                            <div class="selected-colored-slice"></div>
+                        @endif
+                    @endisset
+                </div>
+            </div>
+        </div>
         @php
             $same_user = false;
             if(auth()->user()) {
@@ -32,7 +70,7 @@
             }
         @endphp
         @auth
-        <div class="relative toggle-box">
+        <div class="relative toggle-box pb8">
             <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span></a>
             <div class="toggle-container" @isset($subpage) @if($same_user) style="display: block" @endif @endisset>
                 <div class="relative">
@@ -116,47 +154,27 @@
         </div>
         <div>
             <p class="left-panel-label">MORE</p>
-            <div class="relative toggle-box">
-                <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected' }} @endif">Search <span class="toggle-arrow">@if($page == 'search') ▾ @else ▸ @endif</span></a>
-                <div class="toggle-container" @isset($subpage) style="display: block" @endisset>
-                    <div class="relative">
-                        <a href="{{ route('search') }}" @isset($subpage) @if($subpage == 'search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Search Index</a>
-                        @isset($subpage)
-                            @if($subpage == 'search')
-                                <div class="selected-colored-slice"></div>
-                            @endif
-                        @endisset
-                    </div>
-                    <div class="relative">
-                        <a href="{{ route('threads.search') }}" @isset($subpage) @if($subpage == 'threads-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Threads Search</a>
-                        @isset($subpage)
-                            @if($subpage == 'threads-search')
-                                <div class="selected-colored-slice"></div>
-                            @endif
-                        @endisset
-                    </div>
-                    <div class="relative">
-                        <a href="{{ route('users.search') }}" @isset($subpage) @if($subpage == 'users-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Users Search</a>
-                        @isset($subpage)
-                            @if($subpage == 'users-search')
-                                <div class="selected-colored-slice"></div>
-                            @endif
-                        @endisset
-                    </div>
-                    <div class="simple-line-separator" style="background-color: #626266;"></div>
-                    <div class="relative">
-                        <a href="{{ route('advanced.search') }}" @isset($subpage) @if($subpage == 'advanced-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Advanced Search</a>
-                        @isset($subpage)
-                            @if($subpage == 'advanced-search')
-                                <div class="selected-colored-slice"></div>
-                            @endif
-                        @endisset
-                    </div>
-                </div>
+            <div class="flex relative">
+                <a href="/" class="left-panel-item lp-wpadding @if($page == 'aboutus') {{ 'lp-selected' }} @endif">About Us</a>
+                @if($page == 'aboutus')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
+            <div class="flex relative">
+                <a href="/" class="left-panel-item lp-wpadding @if($page == 'faqs') {{ 'lp-selected' }} @endif">FAQs</a>
+                @if($page == 'faqs')
+                    <div class="selected-colored-slice"></div>
+                @endif
             </div>
         </div>
     </div>
-    <div class="move-to-bottom">
-        <p>Designed with <span>love</span> by mouad</p>
+    <div class="move-to-bottom" style="margin-bottom: 12px">
+        <div class="flex align-center fs13">
+            <p>Designed with 
+            <div style="height: 19px; width: 19px" class="full-center mx4">
+                <img src="{{ asset('assets/images/icons/plove.png') }}" class="heart-beating" style="width: 16px;"> 
+            </div>
+            by <a href="https://www.mouad-dev.com" target="_blank" class="link-style mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
+        </div>
     </div>
 </div>

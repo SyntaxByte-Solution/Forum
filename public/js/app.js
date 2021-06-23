@@ -111,6 +111,21 @@ $('.close-shadowed-view-button').click(function() {
     return false;
 });
 
+function heart_beating() {
+    let heart = $('.heart-beating');
+
+    if(heart.height() == 16) {
+        heart.css('height', '19px');
+        heart.css('width', '19px');
+    } else {
+        heart.css('height', '16px');
+        heart.css('width', '16px');
+    }
+    
+}
+
+var t=setInterval(heart_beating,500);
+
 $('.login-signin-button').click(function() {
     $('#login-view').parent().css('display', 'block');
     $('#login-view').parent().css('opacity', '1');

@@ -36,7 +36,7 @@
                     <div class="full-width">
                         <div class="flex align-end space-between">
                             <label for='main-srch' class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for threads.') }}</label>
-                            <a href="" class="link-path">Advanced search</a>
+                            <a href="{{ route('advanced.search') }}" class="link-path">Advanced search</a>
                         </div>    
     
                         <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="{{ __('Search for threads') }}" required>

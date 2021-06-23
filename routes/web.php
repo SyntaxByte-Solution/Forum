@@ -7,7 +7,7 @@ use App\Http\Controllers\
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
     SearchController, FeedbackController, VoteController,
-    LikesController};
+    LikesController, GeneralController};
 use App\Models\{Thread, Vote, ResourceLike};
 use App\Http\Middleware\AccountActivationCheck;
 
@@ -42,14 +42,15 @@ Route::get('/forums', [IndexController::class, 'forums']);
  */
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search/advanced', [SearchController::class, 'search_advanced'])->name('advanced.search');
+Route::get('/search/advanced/results', [SearchController::class, 'search_advanced_results'])->name('advanced.search.results');
 Route::get('/threads/search', [SearchController::class, 'threads_search'])->name('threads.search');
 Route::get('/users/search', [SearchController::class, 'users_search'])->name('users.search');
 
 /**
  * get all forum threads
- * forum.misc -> forum.all.threads
  */
 Route::get('/{forum:slug}/all', [ThreadController::class, 'forum_all_threads'])->name('forum.all.threads');
+Route::get('/forums/{forum}/categories/ids', [GeneralController::class, 'get_forum_categories_ids']);
 
 Route::middleware(['auth'])->group(function () {
     /** 

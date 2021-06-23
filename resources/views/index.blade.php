@@ -33,7 +33,7 @@
                                     <input type="submit" value="" class="search-forum-button" style="margin-left: -8px; width: 60px">
                                 </form>
                             </div>
-                            <a href="" class="ml4">
+                            <a href="{{ route('advanced.search') }}" class="ml4">
                                 <img src="{{ asset('assets/images/icons/bsettings.png') }}" class="adv-search-button" alt="">
                             </a>
                         </div>

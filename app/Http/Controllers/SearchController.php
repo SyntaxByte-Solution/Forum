@@ -48,6 +48,16 @@ class SearchController extends Controller
             ->with(compact('search_query'));
     }
 
+    public function search_advanced(Request $request) {
+        $forums = Forum::all();
+        return view('search.search-advanced')
+            ->with(compact('forums'));
+    }
+
+    public function search_advanced_results(Request $request) {
+        
+    }
+
     public function threads_search(Request $request) {
         $pagesize = 10;
         $pagesize_exists = false;

@@ -174,7 +174,7 @@
             <div style="height: 19px; width: 19px" class="full-center mx4">
                 <img src="{{ asset('assets/images/icons/plove.png') }}" class="heart-beating" style="width: 16px;"> 
             </div>
-            by <a href="https://www.mouad-dev.com" target="_blank" class="link-style mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
+            by <a href="https://www.mouad-dev.com" target="_blank" class="no-underline mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
         </div>
     </div>
 </div>

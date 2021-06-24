@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like};
 
 class Thread extends Model
@@ -89,9 +90,14 @@ class Thread extends Model
         return $count;
     }
 
-    public function scopeToday($builder)
-    {
+    public function scopeToday($builder){
         return $builder->where('created_at', '>', today());
+    }
+
+    public function scopeTicked($builder) {
+        return $builder->whereHas('posts', function(Builder $post) {
+            return $post->where('ticked', 1);
+        });
     }
 
     public function category() {

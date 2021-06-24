@@ -8,7 +8,7 @@ use App\Http\Controllers\
     IndexController, UserController, OAuthController,
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController};
-use App\Models\{Thread, Vote, ResourceLike};
+use App\Models\{Thread, Forum, User};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -23,13 +23,11 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 Route::get('/test', function() {
-    // $thread = Thread::first();
-    // $thread_like = new ResourceLike;
-    // $thread_like->user_id = auth()->user()->id;
-    
-    // $thread->likes()->save($thread_like);
-
-    phpinfo();
+    $resources;
+    User::orWhere(function($query) use (&$resources) {
+        $resources = User::where('username', 'LIKE', "%grotto%")->get();
+    })->get();
+    dd($resources);
 });
 
 Route::get('/', [IndexController::class, 'index']);

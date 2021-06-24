@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{ForumStatus, Category};
+use App\Models\{ForumStatus, Category, Thread};
 
 class Forum extends Model
 {
@@ -18,5 +18,14 @@ class Forum extends Model
 
     public function categories() {
         return $this->hasMany(Category::class);
+    }
+
+    public function threads() {
+        $threads = collect();
+        foreach($this->categories as $category) {
+            $threads = $threads->merge($category->threads);
+        }
+
+        return $threads;
     }
 }

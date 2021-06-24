@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use App\Models\{Thread, User, Forum};
+use Carbon\Carbon;
+use App\Models\{Thread, User, Forum, Vote, Like};
 
 class SearchController extends Controller
 {
@@ -55,7 +57,145 @@ class SearchController extends Controller
     }
 
     public function search_advanced_results(Request $request) {
+        $search_query = '';
+        $forums = Forum::all();
+
+        $pagesize = 10;
+        $threads = Thread::query();
+        $keywords;
+
+        $data = $request->validate([
+            'k'=>'required|min:1|max:2000',
+            'forum'=> [
+                function ($attribute, $value, $fail) use (&$keywords) {
+                    $forums_ids = Forum::all()->pluck('id')->toArray();
+                    $forums_ids[] = 0;
+
+                    if(!in_array($value, $forums_ids)) {
+                        $fail('The '.$attribute."  doesn't exists in our records.");
+                    }
+                },
+            ],
+            'category'=>[
+                function ($attribute, $value, $fail) use (&$threads) {
+                    $keywords = array_filter(explode(' ', request()->k));
+
+                    // request()->forum != 0 means the user select a forum
+                    // request()->forum == 0; means user select All forums
+                    if(($forum = request()->forum) != 0) {
+                        $categories_ids = Forum::find($forum)->categories->pluck('id')->toArray();
+                        $categories_ids[] = 0;
+
+                        if(!in_array($value, $categories_ids)) {
+                            $fail('The '.$attribute." doesn't exists in our records.");
+                        }
+                        array_pop($categories_ids);
+                        
+                        if($value == '0') {
+                            /**
+                             * Get threads for all categories of the forum that match the search query
+                             * Notice here we have to use conditional groups because threads will be fetched like following
+                             * WHERE category_id IN (1, 2, 3) AND (subject = keyword || content = keyword)
+                             */
+                            $threads = Thread::whereIn('category_id', $categories_ids)
+                                        ->where(function($query) use($keywords) {
+                                foreach($keywords as $keyword) {
+                                    $query->where('subject','like',"%$keyword%")
+                                            ->orWhere('content','like',"%$keyword%");
+                                }
+                            });
+                        } else {
+                            // Get threads for category of the forum that match the search query
+                            foreach($keywords as $keyword) {
+                                $threads = 
+                                    Thread::where('category_id', $value)
+                                    // see notice above where $value = '0'
+                                    ->where(function($query) use ($keyword) {
+                                        $query->where('subject','like',"%$keyword%")
+                                        ->orWhere('content','like',"%$keyword%");
+                                    });
+                            }
+                        }
+                    } else {
+                        if($value != 0) {
+                            $fail('Invalid '.$attribute." value");
+                        }
+                        /**
+                         * get all threads of all forums categories that match one of search query keywords
+                         * Notice that here also we need to use groupings because we need OR operators
+                         * between keywords checks
+                         * eg. :
+                         * keyword = mouad nassri => keywords = ['mouad','nassri']
+                         * SELECT * FROM threads 
+                         * where `subject` LIKE '%mouad%'
+                         * OR `content` LIKE '%nassri%'
+                         * OR `subject` LIKE '%mouad%'
+                         * OR `content` LIKE '%nassri%'
+                         */
+                        foreach($keywords as $keyword) {
+                            Thread::orWhere(function($query) use (&$threads, $keyword) {
+                                $threads = $threads->where('subject','like',"%$keyword%")
+                                        ->orWhere('content','like',"%$keyword%");
+                            });
+                        }
+                    }
+                },
+            ],
+            'threads_date'=> [
+                'required',
+                Rule::in(['anytime', 'past24hours', 'pastweek', 'pastmonth', 'pastyear']),
+            ],
+            'sorted_by'=>[
+                'required',
+                Rule::in(['created_at_desc', 'created_at_asc', 'views', 'votes', 'likes']),
+            ]
+        ]);
+
+        if(isset($request->hasbestreply)) {
+            $threads = $threads->ticked();
+        }
+
+        switch($data['threads_date']) {
+            case 'past24hours':
+                $threads = $threads->where("created_at",">",Carbon::now()->subDay(1));
+                break;
+            case 'pastweek':
+                $threads = $threads->where("created_at",">",Carbon::now()->subDays(7));
+                break;
+            case 'pastmonth':
+                $threads = $threads->where("created_at",">",Carbon::now()->subMonth());
+                break;
+            case 'pastyear':
+                $threads = $threads->where("created_at",">",Carbon::now()->subYear());
+                break;
+        }
+        switch($data['sorted_by']) {
+            case 'created_at_desc':
+                $threads = $threads->orderBy('created_at', 'desc');
+                break;
+            case 'created_at_asc':
+                $threads = $threads->orderBy('created_at');
+                break;
+            case 'views':
+                // We plan to separate thread view to new table
+                $threads = $threads->orderBy('view_count', 'desc');
+                break;
+            case 'votes':
+                $threads = $threads->withCount('votes')->orderBy('votes_count', 'desc');
+                break;
+            case 'likes':
+                $threads = $threads->withCount('likes')->orderBy('likes_count', 'desc');
+                break;
+        }
         
+        $threads = $threads->paginate($pagesize);
+        $search_query = $data['k'];
+        
+        return view('search.search-threads')
+            ->with(compact('forums'))
+            ->with(compact('threads'))
+            ->with(compact('pagesize'))
+            ->with(compact('search_query'));
     }
 
     public function threads_search(Request $request) {

@@ -25,16 +25,13 @@
             </div>
             <div class="flex">
                 <div>
-                    <h1 id="page-title" class="my8 fs28 forum-color">{{ __('Search [Users]') }}</h1>
+                    <h1 id="page-title" class="my8 fs28 forum-color">{{ __('Users Search') }}</h1>
                 </div>
             </div>
             <div>
                 <form action="{{ route('users.search') }}" method='get' class="flex align-end full-width">
                     <div class="full-width">
-                        <div class="flex align-end space-between">
-                            <label for='main-srch' class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search For Users (name or username)') }}</label>
-                            <a href="{{ route('advanced.search') }}" class="link-path">Advanced search</a>
-                        </div>    
+                        <label for='main-srch' class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search For Users (name or username)') }}</label>
     
                         <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="Search everything .." required>
                     </div>

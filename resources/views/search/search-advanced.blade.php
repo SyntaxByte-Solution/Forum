@@ -51,7 +51,7 @@
                         <p class="error">{{ $message }}</p>
                     @enderror
                     <div class="full-width flex my8">
-                        <label for="forum_category_dropdown" class="mr8 fs13 bold  no-margin" style="width: 160px">{{__('Forum')}}</label>
+                        <label for="forum_category_dropdown" class="mr8 fs13 bold  no-margin" style="width: 160px">{{__('Forum')}} @error('forum')<span class="error">*</span>@enderror</label>
                         <span class="bold mx4">:</span>
                         <select name="forum" id="forum_category_dropdown" class="dropdown-style" style="width: 180px">
                             <option value="0">{{ __("All forums") }}</option>
@@ -85,7 +85,7 @@
                         <p class="error">{{ $message }}</p>
                     @enderror
                     <div class="full-width flex align-center">
-                        <label for="threads_date" class="mr8 fs13 bold" style="width: 160px">{{ __('Date') }}</label>
+                        <label for="threads_date" class="mr8 fs13 bold" style="width: 160px">{{ __('Thread Creation Date') }}</label>
                         <span class="bold mx4">:</span>
                         <select name="threads_date" id="threads_date" class="dropdown-style" style="width: 180px">
                             <option value="anytime">{{ __("anytime") }}</option>
@@ -111,7 +111,6 @@
                     <input type="submit" class="button-style-1" style="padding: 9px 12px" value="{{ __('Search') }}">
                 </form>
             </div>
-            <div class="simple-line-separator my8"></div>
         </div>
         <div>
             <div class="ms-right-panel mb8">

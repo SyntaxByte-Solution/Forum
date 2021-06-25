@@ -8,7 +8,7 @@ use App\Http\Controllers\
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
     SearchController, FeedbackController, VoteController,
-    LikesController, GeneralController};
+    LikesController, GeneralController, MultilanguageHelperController};
 use App\Models\{Thread, Forum, User};
 use App\Http\Middleware\AccountActivationCheck;
 
@@ -37,6 +37,11 @@ Route::get('/forums', [IndexController::class, 'forums']);
 
 Route::post('/setlang', [GeneralController::class, 'setlang']);
 
+/**
+ * Multilanguage helper routes
+ */
+Route::get('/languages/helper', [MultilanguageHelperController::class, 'index']);
+Route::get('/languages/{lang}/keys', [MultilanguageHelperController::class, 'get_keys']);
 /**
  * Search routes
  */

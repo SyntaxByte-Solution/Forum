@@ -18,7 +18,7 @@ class GeneralController extends Controller
         $lang = $request->validate([
             'lang'=>[
                 'required',
-                Rule::in(['en', 'fr', 'ar']),
+                Rule::in(['en', 'fr', 'ma-ar']),
             ]
         ]);
 

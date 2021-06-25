@@ -12,21 +12,21 @@
         </div>
         <div class="flex align-center full-height">
             <a href="/" class="menu-button-style">{{ __('Home') }}</a>
-            <a href="" class="menu-button-style">Notifications</a>
-            <a href="" class="menu-button-style">Announcements</a>
-            <a href="" class="menu-button-style">Contact</a>
+            <a href="" class="menu-button-style">{{ __('Notifications') }}</a>
+            <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
+            <a href="" class="menu-button-style">{{ __('Contact') }}</a>
         </div>
 
         <div id="search-and-login" class="flex align-center move-to-right">
             <div id="header-search-container">
                 <form action="{{ route('search') }}" method="GET" class="search-forum">
                     <input type="text" name="k" value="{{ request()->get('k') }}" class="search-field" placeholder="Search everything.." required>
-                    <input type="submit" value="search" class="search-button">
+                    <input type="submit" value="{{ __('search') }}" class="search-button">
                 </form>
             </div>
             @auth
                 @php
-                    $username = auth()->user()->username;
+                    $user = auth()->user();
                 @endphp
                 <div class="flex">
                     <div class="relative">
@@ -55,22 +55,22 @@
                         </a>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="flex first-profile-container-part">
-                                <a href="{{ route('user.profile', ['user'=>$username]) }}">
+                                <a href="{{ route('user.profile', ['user'=>$user->username]) }}">
                                     <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded size36 mr8">
                                 </a>
                                 <div>
-                                    <p class="no-margin fs15 bold unselectable">{{ auth()->user()->firstname . ' ' . auth()->user()->lastname }}</p>
-                                    <a href="{{ route('user.profile', ['user'=>$username]) }}" class="no-underline">
-                                        <p class="no-margin fs12 blue">{{ $username }}</p>
+                                    <p class="no-margin fs15 bold unselectable">{{ $user->firstname . ' ' . $user->lastname }}</p>
+                                    <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="no-underline">
+                                        <p class="no-margin fs12 blue">{{ $user->username }}</p>
                                     </a>
 
                                 </div>
                             </div>
-                            <a href="{{ route('user.profile', ['user'=>$username]) }}" class="suboption-style-1">
+                            <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="suboption-style-1">
                                 <img src="{{ asset('assets/images/icons/user.svg') }}" class="small-image-2 mr8" alt="">
                                 <p class="no-margin">Profile</p>
                             </a>
-                            <a href="{{ route('user.activities', ['user'=>$username]) }}" class="suboption-style-1">
+                            <a href="{{ route('user.activities', ['user'=>$user->username]) }}" class="suboption-style-1">
                                 <img src="{{ asset('assets/images/icons/activities.svg') }}" class="small-image-2 mr8" alt="">
                                 <p class="no-margin">My activities</p>
                             </a>
@@ -103,26 +103,29 @@
             </div>
             @endguest
             <div class="relative mx4">
+                @php
+                    $local = \Illuminate\Support\Facades\App::currentLocale();
+                @endphp
                 <a href="" class="flex align-center no-underline button-with-suboptions">
                     <div class='header-profile-button'>
-                        <img src="{{ asset('assets/images/icons/english.svg') }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning">
+                        <img src='{{ asset("assets/images/icons/$local.svg") }}' alt="profile picture" class="header-profile-picture handle-image-center-positioning">
                     </div>
                 </a>
                 <div class="suboptions-container suboptions-account-style">
-                    <a href="" class="suboption-style-1 set-lang">
-                        <img src="{{ asset('assets/images/icons/english.svg') }}" class="small-image-2 mr8" alt="">
+                    <a href="" class="suboption-style-1 @if($local == 'en') block-click @else set-lang @endif" style="@if($local == 'en') background-color: #e6e6e6; cursor: pointer @endif">
+                        <img src="{{ asset('assets/images/icons/en.svg') }}" class="small-image-2 mr8" alt="">
                         <p class="no-margin">{{__('English')}}</p>
                         <input type="hidden" class="lang-value" value="en">
                     </a>
-                    <a href="" class="suboption-style-1 set-lang">
-                        <img src="{{ asset('assets/images/icons/france.svg') }}" class="small-image-2 mr8" alt="">
+                    <a href="" class="suboption-style-1 @if($local == 'fr') block-click @else set-lang @endif" style="@if($local == 'fr') background-color: #e6e6e6; cursor: pointer @endif">
+                        <img src="{{ asset('assets/images/icons/fr.svg') }}" class="small-image-2 mr8" alt="">
                         <p class="no-margin">{{__('French')}}</p>
                         <input type="hidden" class="lang-value" value="fr">
                     </a>
-                    <a href="/help" class="suboption-style-1 set-lang">
-                        <img src="{{ asset('assets/images/icons/morocco.svg') }}" class="small-image-2 mr8" alt="">
+                    <a href="" class="suboption-style-1 @if($local == 'ma-ar') block-click @else set-lang @endif" style="@if($local == 'ma-ar') background-color: #e6e6e6; cursor: pointer @endif">
+                        <img src="{{ asset('assets/images/icons/ma-ar.svg') }}" class="small-image-2 mr8" alt="">
                         <p class="no-margin">{{ __('Arabic-Morocco') }}</p>
-                        <input type="hidden" class="lang-value" value="ar">
+                        <input type="hidden" class="lang-value" value="ma-ar">
                     </a>
                 </div>
             </div>

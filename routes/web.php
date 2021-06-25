@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
     CategoryController, ThreadController, PostController,
@@ -23,17 +24,18 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 Route::get('/test', function() {
-    $resources;
-    User::orWhere(function($query) use (&$resources) {
-        $resources = User::where('username', 'LIKE', "%grotto%")->get();
-    })->get();
-    dd($resources);
+    $value = Cache::remember('users', 60, function () {
+        return DB::table('users')->get();
+    });
+
+    dd($value);
 });
 
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/home', [IndexController::class, 'index']);
 Route::get('/forums', [IndexController::class, 'forums']);
 
+Route::post('/setlang', [GeneralController::class, 'setlang']);
 
 /**
  * Search routes

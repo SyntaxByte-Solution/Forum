@@ -90,6 +90,30 @@ class Thread extends Model
         return $count;
     }
 
+    public function getVoteCountAttribute() {
+        return $this->votes->count();
+    }
+
+    public function getUpvoteCountAttribute() {
+        $count = 0;
+        foreach($this->votes as $vote) {
+            if($vote->vote == '1')
+            $count += 1;
+        }
+
+        return $count;
+    }
+
+    public function getDownvoteCountAttribute() {
+        $count = 0;
+        foreach($this->votes as $vote) {
+            if($vote->vote == '-1')
+            $count += 1;
+        }
+
+        return $count;
+    }
+
     public function scopeToday($builder){
         return $builder->where('created_at', '>', today());
     }

@@ -939,3 +939,21 @@ $(".resource-container").each(function() {
         handle_resource_like($(this));
     }
 });
+
+$('.set-lang').click(function(event) {
+    let language = $(this).find('.lang-value').val();
+    
+    $.ajax({
+        type: 'post',
+        url: '/setlang',
+        data: {
+            _token: csrf,
+            lang: language
+        },
+        success: function() {
+            location.reload();
+        }
+    });
+
+    event.preventDefault();
+})

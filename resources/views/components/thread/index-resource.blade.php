@@ -11,6 +11,9 @@
                         <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                     </div>
                 </div>
+                @if($votes_count = $thread->vote_count)
+                <p class="fs10 no-margin">({{ $votes_count }})</p>
+                @endif
                 <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">
                     <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($thread, 'App\Models\Thread') @else none @endupvoted" alt="">
                     <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($thread, 'App\Models\Thread') none @endupvoted" alt="">
@@ -27,18 +30,26 @@
             <div class="flex full-width">
                 <div class="full-width">
                     <div class="index-content-section flex">
-                        <div>
-                            <div class="flex align-center gray">
-                                <div class="flex align-center">
-                                    <p class="no-margin fs11 flex align-center">posted by</p>
-                                    <a href="{{ route('user.profile', ['user'=>$thread_owner]) }}" class="black no-underline bold fs12 mx4">{{ $thread_owner }}</a>
-                                    <div class="relative">
-                                        <p class="no-margin fs11 flex align-center tooltip-section">: {{ $at_hummans }}</p>
-                                        <div class="tooltip tooltip-style-1">
-                                            {{ $at }}
+                        <div class="full-width">
+                            <div class="full-width flex">
+                                <div class="flex align-center gray">
+                                    <div class="flex align-center">
+                                        <p class="no-margin fs11 flex align-center">posted by</p>
+                                        <a href="{{ route('user.profile', ['user'=>$thread_owner]) }}" class="black no-underline bold fs12 mx4">{{ $thread_owner }}</a>
+                                        <div class="relative">
+                                            <p class="no-margin fs11 flex align-center tooltip-section">: {{ $at_hummans }}</p>
+                                            <div class="tooltip tooltip-style-1">
+                                                {{ $at }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                @if($likes_count = $thread->likes->count())
+                                <div class="move-to-right flex align-center">
+                                    <p class="fs12 no-margin mr4 gray">({{ $likes_count }})</p>
+                                    <img src="{{ asset('assets/images/icons/love.png') }}" class="small-image-2" alt="">
+                                </div>
+                                @endif
                             </div>
                             <div class="flex align-center my8">
                                 <p class="fs16 bold no-margin"><a href="{{ $thread_url }}" class="forum-style-link dark-blue">{{ $thread_title }}</a></p>
@@ -84,6 +95,18 @@
             <img src="{{ asset('assets/images/icons/gray-reply.png') }}" class="small-image-2 mr4" alt="">
             <p class="no-margin fs12">{{ $replies }} replies</p>
         </div>
+        @if($thread->vote_count)
+        <div class="flex align-center" style="margin-top: 2px">
+            <div class="flex align-center">
+                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="size14" alt="">
+                <p class="no-margin fs12">{{ $thread->upvote_count }}</p>
+            </div>
+            <div class="flex align-center mx4">
+                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="size14" alt="">
+                <p class="no-margin fs12">{{ $thread->downvote_count }}</p>
+            </div>
+        </div>
+        @endif
     </td>
     <td style="width: 180px;" class="relative">
         @if($hasLastPost)

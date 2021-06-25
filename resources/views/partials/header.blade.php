@@ -11,7 +11,7 @@
             </a>
         </div>
         <div class="flex align-center full-height">
-            <a href="/" class="menu-button-style">Home</a>
+            <a href="/" class="menu-button-style">{{ __('Home') }}</a>
             <a href="" class="menu-button-style">Notifications</a>
             <a href="" class="menu-button-style">Announcements</a>
             <a href="" class="menu-button-style">Contact</a>
@@ -109,17 +109,20 @@
                     </div>
                 </a>
                 <div class="suboptions-container suboptions-account-style">
-                    <a href="" class="suboption-style-1">
+                    <a href="" class="suboption-style-1 set-lang">
                         <img src="{{ asset('assets/images/icons/english.svg') }}" class="small-image-2 mr8" alt="">
                         <p class="no-margin">{{__('English')}}</p>
+                        <input type="hidden" class="lang-value" value="en">
                     </a>
-                    <a href="" class="suboption-style-1">
+                    <a href="" class="suboption-style-1 set-lang">
                         <img src="{{ asset('assets/images/icons/france.svg') }}" class="small-image-2 mr8" alt="">
                         <p class="no-margin">{{__('French')}}</p>
+                        <input type="hidden" class="lang-value" value="fr">
                     </a>
-                    <a href="/help" class="suboption-style-1">
+                    <a href="/help" class="suboption-style-1 set-lang">
                         <img src="{{ asset('assets/images/icons/morocco.svg') }}" class="small-image-2 mr8" alt="">
                         <p class="no-margin">{{ __('Arabic-Morocco') }}</p>
+                        <input type="hidden" class="lang-value" value="ar">
                     </a>
                 </div>
             </div>

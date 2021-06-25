@@ -44,7 +44,7 @@
             @endif
             <div>
                 @if($users->count())
-                    <div class="flex space-between align-center">
+                    <div class="flex space-between align-center my8">
                         <a href="{{ route('users.search') }}" class="fs20 blue bold no-underline my4 flex align-center">{{ __('Users') }}<span class="gray fs14 ml4 @if($search_query == '') none @endif">({{$users->total()}} {{__('found')}})</span></a>
                         <div class="move-to-right">
                             {{ $users->appends(request()->query())->links() }}

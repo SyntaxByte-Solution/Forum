@@ -5,7 +5,7 @@
         </div>
 
         <div class="flex relative">
-            <a href="/" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected' }} @endif">Home</a>
+            <a href="/" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected' }} @endif">{{ __('Home') }}</a>
             @if($page == 'home')
                 <div class="selected-colored-slice"></div>
             @endif

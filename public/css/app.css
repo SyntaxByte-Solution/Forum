@@ -921,9 +921,14 @@ a, input, textarea {
     width: 28px;
 }
 
-.size36{
+.size36 {
     height: 36px;
     width: 36px;
+}
+
+.size14 {
+    height: 14px;
+    width: 14px;
 }
 
 .rounded {

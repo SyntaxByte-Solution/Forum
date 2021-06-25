@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Crypt;
 use App\Models\{Thread, EmojiFeedback, Vote};
 
 class AppServiceProvider extends ServiceProvider
@@ -58,5 +61,9 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
         });
+
+        if (($lang = Cookie::get('lang')) !== null) {
+            App::setLocale($lang);
+        }
     }
 }

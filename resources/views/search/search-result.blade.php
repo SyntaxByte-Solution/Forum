@@ -57,7 +57,7 @@
                 @endif
             </div>
             <div class="simple-line-separator my8"></div>
-            <div class="flex">
+            <div class="flex my8">
                 <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Threads') }}<span class="gray fs14 ml4">@isset($search_query) ({{$threads->total() . ' ' . __('found')}}) @endisset</span></h2>
                 <div class="move-to-right">
                     {{ $threads->appends(request()->query())->links() }}

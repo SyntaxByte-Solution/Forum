@@ -78,3 +78,56 @@ main {
     color: white;
     background-color: #3f4859c4;
 }
+
+.header-button-counter-indicator {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -3px;
+    right: -3px;
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+    background-color: rgb(231, 71, 71);
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.suboptions-container-header {
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid rgb(218, 218, 218);
+}
+
+.suboptions-header-button-style {
+    position: absolute;
+    top: 41px;
+    right: 0;
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid rgb(177, 177, 177);
+    border-top: unset;
+}
+
+.suboptions-container-dims {
+    max-height: 440px;
+    box-sizing: border-box;
+    width: 280px;
+    padding: 4px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.notification-component-container {
+    display: flex;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.notification-component-container:hover {
+    background-color: rgb(240, 240, 240);
+}

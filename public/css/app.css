@@ -135,6 +135,10 @@ a, input, textarea {
     margin: 4px;
 }
 
+.p8 {
+    margin: 8px;
+}
+
 .p4 {
     padding: 4px;
 }
@@ -671,6 +675,10 @@ a, input, textarea {
     background-position: 0px -396px;
 }
 
+.resource24-reply-icon {
+    background-position: 0px -456px;
+}
+
 /* ----------------------------------------------------- */
 
 .wedit-icon {
@@ -862,7 +870,6 @@ a, input, textarea {
 }
 
 .suboptions-account-style {
-    display: none;
     position: absolute;
     top: 41px;
     right: 0;
@@ -875,7 +882,7 @@ a, input, textarea {
 .triangle {
     z-index: 0;
     top: -12px;
-    right: 16px;
+    right: 15px;
     position: absolute;
     border-color: transparent transparent #ffffff transparent;
     border-style: solid;
@@ -982,6 +989,11 @@ a, input, textarea {
     width: 36px;
 }
 
+.size48 {
+    height: 48px;
+    width: 48px;
+}
+
 .size14 {
     height: 14px;
     width: 14px;
@@ -1037,6 +1049,11 @@ a, input, textarea {
 
 .middle-padding {
     padding: 12px 12px 12px 12px;
+}
+
+.link-wraper {
+    text-decoration: none;
+    color: inherit;
 }
 
 .current-link-path {
@@ -1765,7 +1782,7 @@ tr:nth-child(2n) {
 }
 
 .sprite {
-    background-image: url(../assets/images/icons/sp-min.png);
+    background-image: url(../assets/images/icons/sp.png);
 }
 
 .sprite-2-size {
@@ -2011,4 +2028,13 @@ tr:nth-child(2n) {
     padding: 8px;
     margin: 5px 0;
     box-shadow: 0 0 5px 0.2px #0000001a;
+}
+
+.notification-type-icon {
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    right: 8px;
+    bottom: 8px;
 }

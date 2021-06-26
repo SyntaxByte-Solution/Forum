@@ -18,7 +18,10 @@ class PostController extends Controller
         ]);
         $this->authorize('store', [Post::class, $data['thread_id']]);
 
-        $thread_status_slug = ThreadStatus::find(Thread::find($data['thread_id'])->status_id)->slug;
+        $current_user = auth()->user();
+        $thread = Thread::find($data['thread_id']);
+        $thread_owner = $thread->user;
+        $thread_status_slug = ThreadStatus::find($thread->status_id)->slug;
 
         if($thread_status_slug == 'closed') {
             throw new ThreadClosedException("You can't share posts on a closed thread");
@@ -27,12 +30,35 @@ class PostController extends Controller
         if($thread_status_slug == 'temp.closed') {
             throw new ThreadClosedException("You can't share posts on a temporarily closed thread");
         }
+        
+        if($thread_owner->id != $current_user->id) {
+            /**
+             * Before notify the user we have to fetch all the notifications that have the same resource_id
+             * and action_type and pluck the users's names and delete them to make it in one notification
+             * like following: 
+             * grotto_IV, hostname47 and hitman replied to your thread
+             */
+
+            // $names = [];
+            // $thread_owner->notifications->where('data->')
+
+            $thread_owner->notify(
+                new \App\Notifications\UserAction([
+                    'action_user'=>$current_user->id,
+                    'action_statement'=>"replied to your thread:",
+                    'resource_string_slice'=> (strlen($thread->subject) > 30) ? substr($thread->subject, 0, 30) . '..' : $thread->subject,
+                    'action_type'=>'thread-reply',
+                    'action_resource_id'=>$thread->id,
+                    'action_resource_link'=>route('thread.show', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug, 'thread'=>$thread->user]),
+                ])
+            );
+        }
 
         $data['user_id'] = auth()->user()->id;
         
+        
         $post = Post::create($data);
 
-        // We return a component based on the created post
         
         // First we create a component class instance
         $component = (new PostComponent($post->id));

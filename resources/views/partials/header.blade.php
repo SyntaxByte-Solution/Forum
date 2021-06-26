@@ -34,13 +34,21 @@
                 @endphp
                 <div class="flex align-center">
                     <div class="relative">
+                        <div class="header-button-counter-indicator">
+                            +99
+                        </div>
                         <div class="header-button button-with-suboptions pointer" title="Notifications">
                             <div class="small-image sprite sprite-2-size notifications-icon"></div>
                         </div>    
-                        <div class="suboptions-container suboptions-account-style">
+                        <div class="suboptions-container suboptions-header-button-style">
                             <div class="triangle"></div>
                             <div class="suboptions-container-header">
-                                <h2>Notifications</h2>
+                                <h2 class="no-margin">Notifications</h2>
+                            </div>
+                            <div class="suboptions-container-dims">
+                                @foreach($user->notifications as $notification)
+                                    <x-user.notification :notification="$notification"/>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -77,24 +85,24 @@
                             </div>
                             <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="suboption-style-1">
                                 <div class="small-image-2 sprite sprite-2-size profile17-icon mr8"></div>
-                                <p class="no-margin">Profile</p>
+                                <p class="no-margin">{{__('Profile')}}</p>
                             </a>
                             <a href="{{ route('user.activities', ['user'=>$user->username]) }}" class="suboption-style-1">
                                 <div class="small-image-2 sprite sprite-2-size activities17-icon mr8"></div>
-                                <p class="no-margin">My activities</p>
+                                <p class="no-margin">{{__('My activities')}}</p>
                             </a>
                             <a href="/help" class="suboption-style-1">
                                 <div class="small-image-2 sprite sprite-2-size help17-icon mr8"></div>
-                                <p class="no-margin">Help</p>
+                                <p class="no-margin">{{__('Help')}}</p>
                             </a>
                             <a href="{{ route('user.settings') }}" class="suboption-style-1">
                                 <div class="small-image-2 sprite sprite-2-size settings17-icon mr8"></div>
-                                <p class="no-margin">Settings</p>
+                                <p class="no-margin">{{__('Settings')}}</p>
                             </a>
 
                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="suboption-style-1">
                                 <div class="small-image-2 sprite sprite-2-size logout17-icon mr8"></div>
-                                <p class="no-margin">Logout</p>
+                                <p class="no-margin">{{__('Logout')}}</p>
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST">
@@ -109,7 +117,7 @@
             <div id="login" class="flex align-center">
                 <a href="" class="flex align-center login-signin-button fs13 light-gray no-underline">
                     <div class="small-image sprite sprite-2-size wprofile17-icon mr4"></div>
-                    Sign-in
+                    {{__('Sign-in')}}
                 </a>
             </div>
             @endguest

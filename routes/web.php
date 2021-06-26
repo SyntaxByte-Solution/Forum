@@ -9,7 +9,7 @@ use App\Http\Controllers\
     IndexController, UserController, OAuthController,
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController, MultilanguageHelperController};
-use App\Models\{Thread, Forum, User};
+use App\Models\{User};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -24,11 +24,18 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 Route::get('/test', function() {
-    $value = Cache::remember('users', 60, function () {
-        return DB::table('users')->get();
-    });
+    if (Auth::check()) {
+        $user = auth()->user();
 
-    dd($value);
+        $user->notify(
+            new \App\Notifications\UserAction([
+                'action_dower'=>3,
+                'action_statement'=>'replied to your recent discussion',
+                'action_type'=>'reply',
+                'action_resource_id'=>3,
+            ])
+        );
+    }
 });
 
 Route::get('/', [IndexController::class, 'index']);

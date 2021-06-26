@@ -1,7 +1,7 @@
 <div id="left-panel" class="flex flex-column">
     <div>
         <div class="flex align-center" style="margin-bottom: 20px">
-            <a href="" class="quick-links-button">Quick links ▸</a>
+            <a href="" class="quick-links-button">{{__('Quick links')}} ▸</a>
         </div>
 
         <div class="flex relative">
@@ -11,10 +11,10 @@
             @endif
         </div>
         <div class="relative toggle-box pb8">
-            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected' }} @endif">Search <span class="toggle-arrow mx4">@if($page == 'search') ▾ @else ▸ @endif</span></a>
+            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected' }} @endif">{{__('Search')}} <span class="toggle-arrow mx4">@if($page == 'search') ▾ @else ▸ @endif</span></a>
             <div class="toggle-container" @isset($subpage) @if($page == 'search') style="display: block" @endif @endisset>
                 <div class="relative">
-                    <a href="{{ route('search') }}" @isset($subpage) @if($subpage == 'search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Search Index</a>
+                    <a href="{{ route('search') }}" @isset($subpage) @if($subpage == 'search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">{{__('Search Index')}}</a>
                     @isset($subpage)
                         @if($subpage == 'search')
                             <div class="selected-colored-slice"></div>
@@ -22,7 +22,7 @@
                     @endisset
                 </div>
                 <div class="relative">
-                    <a href="{{ route('threads.search') }}" @isset($subpage) @if($subpage == 'threads-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Threads Search</a>
+                    <a href="{{ route('threads.search') }}" @isset($subpage) @if($subpage == 'threads-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">{{__('Threads Search')}}</a>
                     @isset($subpage)
                         @if($subpage == 'threads-search')
                             <div class="selected-colored-slice"></div>
@@ -30,7 +30,7 @@
                     @endisset
                 </div>
                 <div class="relative">
-                    <a href="{{ route('users.search') }}" @isset($subpage) @if($subpage == 'users-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Users Search</a>
+                    <a href="{{ route('users.search') }}" @isset($subpage) @if($subpage == 'users-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">{{__('Users Search')}}</a>
                     @isset($subpage)
                         @if($subpage == 'users-search')
                             <div class="selected-colored-slice"></div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="simple-line-separator" style="background-color: #626266;"></div>
                 <div class="relative">
-                    <a href="{{ route('advanced.search') }}" @isset($subpage) @if($subpage == 'advanced-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">Advanced Search</a>
+                    <a href="{{ route('advanced.search') }}" @isset($subpage) @if($subpage == 'advanced-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">{{__('Advanced Search')}}</a>
                     @isset($subpage)
                         @if($subpage == 'advanced-search')
                             <div class="selected-colored-slice"></div>
@@ -65,10 +65,10 @@
         @endphp
         @auth
         <div class="relative toggle-box pb8">
-            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">My Space <span class="toggle-arrow mx4">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span></a>
+            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">{{__('My Space')}} <span class="toggle-arrow mx4">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span></a>
             <div class="toggle-container" @isset($subpage) @if($same_user) style="display: block" @endif @endisset>
                 <div class="relative">
-                    <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.activities' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Activities</a>
+                    <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.activities' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">{{__('Activities')}}</a>
                     @isset($subpage)
                         @if($subpage == 'user.activities' && $same_user)
                             <div class="selected-colored-slice"></div>
@@ -76,7 +76,7 @@
                     @endisset
                 </div>
                 <div class="relative">
-                    <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.profile' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">Profile</a>
+                    <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" @isset($subpage) @if($subpage == 'user.profile' && $same_user) style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">{{__('Profile')}}</a>
                     @isset($subpage)
                         @if($subpage == 'user.profile' && $same_user)
                             <div class="selected-colored-slice"></div>
@@ -84,7 +84,7 @@
                     @endisset
                 </div>
                 <div class="relative">
-                    <a href="{{ route('user.settings') }}" @isset($subpage) @if($subpage == 'user.settings') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">Settings</a>
+                    <a href="{{ route('user.settings') }}" @isset($subpage) @if($subpage == 'user.settings') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'user') {{ 'lp-selected' }} @endif">{{__('Settings')}}</a>
                     @isset($subpage)
                         @if($subpage == 'user.settings')
                             <div class="selected-colored-slice"></div>
@@ -110,7 +110,7 @@
                 @endphp
                 <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected' }} @endif">
                     <div class="small-image sprite sprite-2-size plus17-icon mr4"></div>
-                    Add a thread
+                    {{__('Add a thread')}}
                 </a>
             </div>
             @if($page == 'add-thread')
@@ -119,12 +119,12 @@
         </div>
         @endauth
         <div>
-            <p class="left-panel-label">PUBLIC</p>
+            <p class="left-panel-label">{{__('PUBLIC')}}</p>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected' }} @endif">
                         <div class="small-image sprite sprite-2-size forums17-icon mr4"></div>
-                        Foums
+                        {{__('Foums')}}
                     </a>
                 </div>
                 @if($page == 'forums')
@@ -135,7 +135,7 @@
                 <div class="flex align-center full-width relative">
                     <a href="" class="left-panel-item lp-padding @if($page == 'popular-posts') {{ 'lp-selected' }} @endif">
                         <div class="small-image sprite sprite-2-size fire17-icon mr4"></div>
-                        Popular posts
+                        {{__('Popular threads')}}
                     </a>
                 </div>
                 @if($page == 'popular')
@@ -155,15 +155,15 @@
             </div>
         </div>
         <div>
-            <p class="left-panel-label">MORE</p>
+            <p class="left-panel-label">{{__('MORE')}}</p>
             <div class="flex relative">
-                <a href="/" class="left-panel-item lp-wpadding @if($page == 'aboutus') {{ 'lp-selected' }} @endif">About Us</a>
+                <a href="/" class="left-panel-item lp-wpadding @if($page == 'aboutus') {{ 'lp-selected' }} @endif">{{__('About Us')}}</a>
                 @if($page == 'aboutus')
                     <div class="selected-colored-slice"></div>
                 @endif
             </div>
             <div class="flex relative">
-                <a href="/" class="left-panel-item lp-wpadding @if($page == 'faqs') {{ 'lp-selected' }} @endif">FAQs</a>
+                <a href="/" class="left-panel-item lp-wpadding @if($page == 'faqs') {{ 'lp-selected' }} @endif">{{__('FAQs')}}</a>
                 @if($page == 'faqs')
                     <div class="selected-colored-slice"></div>
                 @endif

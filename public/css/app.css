@@ -597,25 +597,81 @@ a, input, textarea {
     background-position: -0px -319px;
 }
 
+/* -------------------- NEW SPRITE -------------------- */
+
 .notifications-icon {
-    background-position: -0px -239px;
+    background-position: -20px 0px;
 }
 
-.wdiscussion-icon {
-    background-position: -0px -359px;
+.messages-icon {
+    background-position: -20px -20px;
 }
 
-.profile-icon {
-    background-position: -0px -169px;
+.languages26-icon {
+    background-position: -24px -192px;
 }
 
-.bquestion-icon {
-    background-position: -0px -215px;
+.english17-flag {
+    background-position: -17px -102px;
 }
 
-.logout-icon {
-    background-position: -0px -193px;
+.french17-flag {
+    background-position: 0px -119px;
 }
+
+.ma-arabic17-flag {
+    background-position: 0px -102px;
+}
+
+.profile17-icon {
+    background-position: 0px -34px;
+}
+
+.wprofile17-icon {
+    background-position: -20px -40px;
+}
+
+.activities17-icon {
+    background-position: 0px -153px;
+}
+
+.help17-icon {
+    background-position: 0px -170px;
+}
+
+.settings17-icon {
+    background-position: 0px -51px;
+}
+
+.logout17-icon {
+    background-position: 0px -187px;
+}
+
+.plus17-icon {
+    background-position: -20px -260px;
+}
+
+.forums17-icon {
+    background-position: -20px -280px;
+}
+
+.fire17-icon {
+    background-position: -20px -300px;
+}
+
+.market17-icon {
+    background-position: -20px -320px;
+}
+
+.inbox17-icon {
+    background-position: -20px -340px;
+}
+
+.rating22-icon {
+    background-position: 0px -396px;
+}
+
+/* ----------------------------------------------------- */
 
 .wedit-icon {
     background-position: -0px -60px;
@@ -818,12 +874,12 @@ a, input, textarea {
 
 .triangle {
     z-index: 0;
-    top: -16px;
-    right: 15px;
+    top: -12px;
+    right: 16px;
     position: absolute;
     border-color: transparent transparent #ffffff transparent;
     border-style: solid;
-    border-width: 8px 8px 8px 8px;
+    border-width: 6px 6px 6px 6px;
     height: 0px;
     width: 0px;
     display: inline-block;
@@ -1695,19 +1751,9 @@ tr:nth-child(2n) {
     background-size: 32px;
 }
 
-.sprite-size-3 {
-    min-width: 24px;
+.size26 {
+    width: 24px;
     height: 24px;
-    
-    background-repeat: no-repeat;
-    background-size: 24px;
-}
-
-.sprite-size-1 {
-    min-width: 16px;
-    height: 16px;
-    background-repeat: no-repeat;
-    background-size: 16px;
 }
 
 .sprite-icon {
@@ -1716,6 +1762,18 @@ tr:nth-child(2n) {
 
     background-image: url(../assets/images/icons/white-sprite.png);
     background-size: 20px;
+}
+
+.sprite {
+    background-image: url(../assets/images/icons/sp-min.png);
+}
+
+.sprite-2-size {
+    background-size: 200%;
+}
+
+.sprite-contain {
+    background-size: contain;
 }
 
 .sprite-icon-small {
@@ -1925,11 +1983,11 @@ tr:nth-child(2n) {
 
 .left-middle-triangle {
     z-index: 0;
-    left: -12px;
+    left: -14px;
     position: absolute;
     border-color: transparent transparent #a6a6a6 transparent;
     border-style: solid;
-    border-width: 6px 6px 6px 6px;
+    border-width: 5px 5px 5px 5px;
     height: 0px;
     width: 0px;
     display: inline-block;

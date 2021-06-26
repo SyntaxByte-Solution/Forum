@@ -1,7 +1,7 @@
 <div class="index-right-panel mt8">
     <div class="flex align-center mx8">
-        <img src="{{ asset('assets/images/icons/bfeedback.png') }}" class="small-image mr4" style="margin-top: -3px" alt="">
-        <p class="bold my8 blue">{{ __('Feedback') }}</p>
+        <div class="small-image-3 sprite sprite-2-size rating22-icon mr4"></div>
+        <p class="bold my8">{{ __('Feedback') }}</p>
     </div>
     @canemoji
     <div class="full-center">

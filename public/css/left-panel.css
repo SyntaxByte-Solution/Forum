@@ -17,7 +17,7 @@ main {
 }
 
 .lp-padding {
-    padding: 8px 8px 8px 30px;
+    padding: 8px;
 }
 
 .lp-wpadding {
@@ -25,7 +25,8 @@ main {
 }
 
 .left-panel-item {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
     box-sizing: border-box;
     color: rgb(225, 225, 225);

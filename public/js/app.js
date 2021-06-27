@@ -1010,6 +1010,22 @@ $('.find-keys').click(function() {
         let generated_json = JSON.stringify(result, null, " ");
         $('#multilang_result_textarea').val(generated_json + '\n');        
     }
+});
 
-    
+$('.notification-button').click(function() {
+    let button = $(this);
+
+    button.parent().find('.header-button-counter-indicator').addClass('none');
+    button.parent().find('.header-button-counter-indicator').text('0');
+
+    $.ajax({
+        type: 'post',
+        url: '/notifications/markasread',
+        data: {
+            _token: csrf
+        },
+        success: function() {
+
+        }
+    })
 });

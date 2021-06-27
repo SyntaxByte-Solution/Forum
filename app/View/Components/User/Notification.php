@@ -26,6 +26,7 @@ class Notification extends Component
      */
     public function __construct($notification)
     {
+        $current_user = auth()->user();
         $this->notification = $notification;
 
         $this->action_user = User::find($notification->data['action_user']);
@@ -44,6 +45,10 @@ class Notification extends Component
         $action_type = $notification->data['action_type'];
         if($action_type == 'thread-reply') {
             $this->resource_action_icon = 'resource24-reply-icon';
+        } else if($action_type == 'thread-vote' || $action_type == 'post-vote') {
+            $this->resource_action_icon = 'resource24-vote-icon';
+        } else {
+            $this->resource_action_icon = 'notification24-icon';
         }
     }
 

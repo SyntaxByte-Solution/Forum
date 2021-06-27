@@ -114,9 +114,9 @@ main {
 }
 
 .suboptions-container-dims {
-    max-height: 440px;
+    max-height: 340px;
     box-sizing: border-box;
-    width: 280px;
+    width: 300px;
     padding: 4px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -124,7 +124,7 @@ main {
 
 .notification-component-container {
     display: flex;
-    padding: 10px;
+    padding: 6px;
     border-radius: 6px;
 }
 

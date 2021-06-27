@@ -8,7 +8,8 @@ use App\Http\Controllers\
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController,
     SearchController, FeedbackController, VoteController,
-    LikesController, GeneralController, MultilanguageHelperController};
+    LikesController, GeneralController, MultilanguageHelperController,
+    NotificationController};
 use App\Models\{User};
 use App\Http\Middleware\AccountActivationCheck;
 
@@ -29,10 +30,12 @@ Route::get('/test', function() {
 
         $user->notify(
             new \App\Notifications\UserAction([
-                'action_dower'=>3,
-                'action_statement'=>'replied to your recent discussion',
-                'action_type'=>'reply',
-                'action_resource_id'=>3,
+                'action_user'=>1,
+                'action_statement'=>'did something',
+                'resource_string_slice'=>'slice',
+                'action_type'=>'thread_like',
+                'action_resource_id'=>'48',
+                'action_resource_link'=>'google.com',
             ])
         );
     }
@@ -89,6 +92,8 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
     
+    Route::post('/notifications/markasread', [NotificationController::class, 'mark_as_read']);
+
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);
     Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);

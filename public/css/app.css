@@ -607,6 +607,10 @@ a, input, textarea {
     background-position: -20px 0px;
 }
 
+.notifications-icon:hover {
+    background-position: 0px 0px;
+}
+
 .messages-icon {
     background-position: -20px -20px;
 }
@@ -671,12 +675,24 @@ a, input, textarea {
     background-position: -20px -340px;
 }
 
+.binbox28-icon {
+    background-position: 0px -476px;
+}
+
 .rating22-icon {
     background-position: 0px -396px;
 }
 
 .resource24-reply-icon {
-    background-position: 0px -456px;
+    background-position: 0px -455px;
+}
+
+.resource24-vote-icon {
+    background-position: 0px -480px;
+}
+
+.notification24-icon {
+    background-position: -24px -456px;
 }
 
 /* ----------------------------------------------------- */
@@ -2035,6 +2051,6 @@ tr:nth-child(2n) {
     height: 24px;
     width: 24px;
     border-radius: 50%;
-    right: 8px;
-    bottom: 8px;
+    right: 5px;
+    bottom: 0px;
 }

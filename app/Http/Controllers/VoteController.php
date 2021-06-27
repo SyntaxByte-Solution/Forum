@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\{Thread, Post, Vote};
+use App\Models\{Thread, Post, Vote, UserAction};
 
 class VoteController extends Controller
 {
@@ -17,11 +17,48 @@ class VoteController extends Controller
      *     vote and then add the down vote
      */
     public function thread_vote(Request $request, Thread $thread) {
-        return $this->handle_vote($request, $thread, 'App\Models\Thread');
+        $thread_vote_count = $thread->votes->count();
+
+        $result = $this->handle_vote($request, $thread, 'App\Models\Thread');
+
+        // If the subtraction of the below operation is greater than 0 means he get rid of his vote
+        // meaning we don't have to notify the user of that action 
+        if($thread_vote_count - $thread->votes->count() <= 0) {
+            // Before notify loop through the recipient notifications and reduce them to one
+            $thread->user->notify(
+                new \App\Notifications\UserAction([
+                    'action_user'=>auth()->user()->id,
+                    'action_statement'=>"voted on your thread:",
+                    'resource_string_slice'=>(strlen($thread->subject) > 30) ? substr($thread->subject, 0, 30) . '..' : $thread->subject,
+                    'action_type'=>'thread-vote',
+                    'action_resource_id'=>$thread->id,
+                    'action_resource_link'=>route('thread.show', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug, 'thread'=>$thread->user]),
+                ])
+            );
+        }
+
+        return $result;
     }
 
     public function post_vote(Request $request, Post $post) {
-        return $this->handle_vote($request, $post, 'App\Models\Post');
+        $post_vote_count = $post->votes->count();
+        $result = $this->handle_vote($request, $post, 'App\Models\Post');
+        $thread = $post->thread;
+        if($post_vote_count - $post->votes->count() <= 0) {
+            // Before notify loop through the recipient notifications and reduce them to one
+            $post->user->notify(
+                new \App\Notifications\UserAction([
+                    'action_user'=>auth()->user()->id,
+                    'action_statement'=>"voted on your post",
+                    'resource_string_slice'=>"",
+                    'action_type'=>'post-vote',
+                    'action_resource_id'=>$post->id,
+                    'action_resource_link'=>route('thread.show', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug, 'thread'=>$thread->user]),
+                ])
+            );
+        }
+
+        return $result;
     }
 
     private function handle_vote($request, $resource, $type) {
@@ -61,6 +98,7 @@ class VoteController extends Controller
             $resource->votes()->save($vote);
         }
         
+        $resource->load('votes');
         $vote_count = 0;
         foreach($resource->votes as $vote) {
             $vote_count += $vote->vote;

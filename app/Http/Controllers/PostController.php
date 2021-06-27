@@ -30,18 +30,23 @@ class PostController extends Controller
         if($thread_status_slug == 'temp.closed') {
             throw new ThreadClosedException("You can't share posts on a temporarily closed thread");
         }
+
+        /**
+         * Before notify the user we have to fetch all the notifications that have the same resource_id
+         * and action_type and pluck the users's names and delete all those notifications and add one with the collection of names
+         * like following: 
+         * grotto_IV, hostname47 and hitman replied to your thread
+         * Actually this is useful for likes not for comment all we need to do is delete existing 
+         * notifications related to this thread with this action type and add this one
+         */
+        
+        foreach($thread_owner->notifications as $notification) {
+            if($notification->data['action_resource_id'] == $thread->id && $notification->data['action_type'] == 'thread-reply') {
+                $notification->delete();
+            }
+        }
         
         if($thread_owner->id != $current_user->id) {
-            /**
-             * Before notify the user we have to fetch all the notifications that have the same resource_id
-             * and action_type and pluck the users's names and delete them to make it in one notification
-             * like following: 
-             * grotto_IV, hostname47 and hitman replied to your thread
-             */
-
-            // $names = [];
-            // $thread_owner->notifications->where('data->')
-
             $thread_owner->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>$current_user->id,

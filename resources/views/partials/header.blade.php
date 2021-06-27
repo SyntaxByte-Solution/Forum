@@ -31,13 +31,20 @@
             @auth
                 @php
                     $user = auth()->user();
+                    $unread_notifications_counter = $user->unreadNotifications->count()
                 @endphp
                 <div class="flex align-center">
                     <div class="relative">
-                        <div class="header-button-counter-indicator">
-                            +99
+                        <div class="header-button-counter-indicator @if(!$unread_notifications_counter) none @endif">
+                            @if($unread_notifications_counter)
+                                @if($unread_notifications_counter > 99)
+                                    '+'.{{ $unread_notifications_counter }}
+                                @else
+                                    {{ $unread_notifications_counter }}
+                                @endif
+                            @endif
                         </div>
-                        <div class="header-button button-with-suboptions pointer" title="Notifications">
+                        <div class="header-button button-with-suboptions pointer notification-button" title="Notifications">
                             <div class="small-image sprite sprite-2-size notifications-icon"></div>
                         </div>    
                         <div class="suboptions-container suboptions-header-button-style">
@@ -49,6 +56,13 @@
                                 @foreach($user->notifications as $notification)
                                     <x-user.notification :notification="$notification"/>
                                 @endforeach
+                                @if(!$user->notifications->count())
+                                    <div class="my8">
+                                        <div class="size28 sprite sprite-2-size binbox28-icon move-to-middle"></div>
+                                        <h3 class="my4 fs17 text-center">{{__('Notifications box is empty')}}</h3>
+                                        <p class="my4 fs13 gray text-center">{{ __('Try to start discussions/questions or react to people posts') }}.</p>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

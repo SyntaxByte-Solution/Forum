@@ -19,7 +19,7 @@
     <div id="middle-container" class="middle-padding-1 flex">
         <div class="full-width">
             <div class="full-center">
-                <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt="">
+                <!-- <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt=""> -->
             </div>
             <div>
                 <h2 class="my8 fs26 forum-color">{{ __('Top Discussions & Questions') }}</h2>

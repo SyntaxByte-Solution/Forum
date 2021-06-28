@@ -12,9 +12,9 @@ class Notification extends Component
 
     public $resource_link;
     public $action_user;
-    public $action_user_name;
+    public $action_takers;
     public $action_statement;
-    public $action_resource_slice;
+    public $resource_string_slice;
     public $action_type;
     public $resource_action_icon;
     public $action_date;
@@ -26,30 +26,13 @@ class Notification extends Component
      */
     public function __construct($notification)
     {
-        $current_user = auth()->user();
-        $this->notification = $notification;
-
-        $this->action_user = User::find($notification->data['action_user']);
-
-        $this->action_user_name = 
-            strlen($fullname=($this->action_user->firstname . ' ' . $this->action_user->lastname)) > 20
-            ? strlen($username=$this->action_user->username) > 14 ? substr($fullname, 0, 14) . '..': $username
-            : $fullname;
-
-        $this->action_statement = $notification->data['action_statement'];
-        
-        $this->action_resource_slice = $notification->data['resource_string_slice'];
-        $this->action_date = (new Carbon($notification->created_at))->diffForHumans();
-        $this->resource_link = $notification->data['action_resource_link'];
-
-        $action_type = $notification->data['action_type'];
-        if($action_type == 'thread-reply') {
-            $this->resource_action_icon = 'resource24-reply-icon';
-        } else if($action_type == 'thread-vote' || $action_type == 'post-vote') {
-            $this->resource_action_icon = 'resource24-vote-icon';
-        } else {
-            $this->resource_action_icon = 'notification24-icon';
-        }
+        $this->action_user = $notification['action_user'];
+        $this->action_takers = $notification['action_takers'];
+        $this->action_statement = $notification['action_statement'];
+        $this->resource_string_slice = $notification['resource_string_slice'];
+        $this->action_date = $notification['action_date'];
+        $this->action_resource_link = $notification['action_resource_link'];
+        $this->resource_action_icon = $notification['resource_action_icon'];
     }
 
     /**

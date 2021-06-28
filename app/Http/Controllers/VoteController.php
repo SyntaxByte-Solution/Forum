@@ -24,7 +24,6 @@ class VoteController extends Controller
         // If the subtraction of the below operation is greater than 0 means he get rid of his vote
         // meaning we don't have to notify the user of that action 
         if($thread_vote_count - $thread->votes->count() <= 0) {
-            // Before notify loop through the recipient notifications and reduce them to one
             $thread->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
@@ -45,7 +44,6 @@ class VoteController extends Controller
         $result = $this->handle_vote($request, $post, 'App\Models\Post');
         $thread = $post->thread;
         if($post_vote_count - $post->votes->count() <= 0) {
-            // Before notify loop through the recipient notifications and reduce them to one
             $post->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
@@ -90,6 +88,13 @@ class VoteController extends Controller
         if($exists) {
             $vote_value = $founded_vote->vote;
             $founded_vote->delete();
+            foreach($resource->user->notifications as $notification) {
+                if($notification->data['action_type'] == $type_name."-vote" 
+                && $notification->data['action_user'] == $current_user->id
+                && $notification->data['action_resource_id'] == $resource->id) {
+                    $notification->delete();
+                }
+            }
 
             if(($vote_value == -1 && $data['vote'] == 1) || ($vote_value == 1 && $data['vote'] == -1)) {
                 $resource->votes()->save($vote);

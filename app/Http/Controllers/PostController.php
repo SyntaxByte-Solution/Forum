@@ -40,13 +40,16 @@ class PostController extends Controller
          * notifications related to this thread with this action type and add this one
          */
         
-        foreach($thread_owner->notifications as $notification) {
-            if($notification->data['action_resource_id'] == $thread->id && $notification->data['action_type'] == 'thread-reply') {
-                $notification->delete();
-            }
-        }
-        
         if($thread_owner->id != $current_user->id) {
+            // If the user is already reply to this thread we have to delete the previous notification
+            foreach($thread_owner->notifications as $notification) {
+                if($notification->data['action_type'] == "thread-reply" 
+                && $notification->data['action_user'] == $current_user->id
+                && $notification->data['action_resource_id'] == $thread->id) {
+                    $notification->delete();
+                }
+            }
+            
             $thread_owner->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>$current_user->id,
@@ -85,6 +88,14 @@ class PostController extends Controller
 
     public function destroy(Post $post) {
         $this->authorize('destroy', $post);
+
+        foreach($post->thread->user->notifications as $notification) {
+            if($notification->data['action_type'] == "thread-reply" 
+            && $notification->data['action_user'] == auth()->user()->id
+            && $notification->data['action_resource_id'] == $post->thread->id) {
+                $notification->delete();
+            }
+        }
 
         $post->delete();
     }

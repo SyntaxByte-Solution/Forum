@@ -3,10 +3,6 @@
     ini_set('display_errors', 'On');
 ?>
 
-@push('scripts')
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-@endpush
-
 <header>
     <div id="header" class="relative">
         <div id="header-logo-container">
@@ -53,7 +49,7 @@
                                 <h2 class="no-margin">Notifications</h2>
                             </div>
                             <div class="suboptions-container-dims">
-                                @foreach($user->notifications as $notification)
+                                @foreach($user->notifs as $notification)
                                     <x-user.notification :notification="$notification"/>
                                 @endforeach
                                 @if(!$user->notifications->count())
@@ -82,7 +78,7 @@
                             <div class='header-profile-button'>
                                 <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning hidden-overflow">
                             </div>
-                            <p class="no-margin fs13 mx4 light-gray">Mouad Nassri <span>▾</span></p>
+                            <p class="no-margin fs13 mx4 light-gray">{{ $user->username }} <span>▾</span></p>
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="flex first-profile-container-part">
@@ -139,11 +135,11 @@
                 @php
                     $local = \Illuminate\Support\Facades\App::currentLocale();
                 @endphp
-                <a href="" class="flex align-center no-underline button-with-suboptions">
+                <div class="flex align-center no-underline button-with-suboptions pointer" title="{{ __('Languages') }}">
                     <div class='header-profile-button'>
                         <div class="size26 sprite sprite-2-size languages26-icon"></div>
                     </div>
-                </a>
+                </div>
                 <div class="suboptions-container suboptions-account-style">
                     <div class="triangle"></div>
                     <a href="" class="suboption-style-1 @if($local == 'en') block-click @else set-lang @endif" style="@if($local == 'en') background-color: #e6e6e6; cursor: pointer @endif">

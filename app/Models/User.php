@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -117,4 +118,77 @@ class User extends UserAuthenticatable implements Authenticatable
     public function threads_count() {
         return $this->threads()->count();
     }
+
+    public function getNotifsAttribute() {
+        // Grouped based on action_type and action_resource_id
+        $grouped_notifications = $this->notifications;
+
+        // First let's group by action_resource_id
+        $groups_by_resource_id = $this->notifications->pluck('data')
+        ->groupBy('action_resource_id');
+        
+        // This will be result
+        $notifications = collect();
+
+        foreach($groups_by_resource_id as $group_by_resource_id) {
+            foreach($group_by_resource_id->groupBy('action_type') as $group) {
+                $action_takers_count = $group->count();
+                $action_takers = '';
+                switch($action_takers_count) {
+                    case 1:
+                        $action_takers = User::find($group->first()['action_user'])->minified_name;
+                        break;
+                    case 2:
+                        $action_takers = User::find($group->first()['action_user'])->minified_name;
+                        $action_takers .= __(' and ') . User::find($group[1]['action_user'])->minified_name;
+                        break;
+                    default:
+                        $c = 0;
+                        $i = 0;
+                        foreach($group as $notification_data_record) {
+                            if($c == 0) {
+                                $action_takers = User::find($notification_data_record['action_user'])->minified_name;
+                            } else if($c == 1) {
+                                $action_takers .= ', ' . User::find($notification_data_record['action_user'])->minified_name;
+                            } else {
+                                $i++;
+                            }
+                            $c++;
+                        }
+                        $action_takers .= __(' and ') . $i . (($i>1) ? __(' others ') : __(' other '));
+                }
+
+                $cloned_notification_data = $this->notifications->where('data', $group[0])->first();
+                
+                $resource_action_icon = '';
+                if($cloned_notification_data->data['action_type'] == 'thread-reply') {
+                    $resource_action_icon = 'resource24-reply-icon';
+                } else if($cloned_notification_data->data['action_type'] == 'thread-vote' || $cloned_notification_data->data['action_type'] == 'post-vote') {
+                    $resource_action_icon = 'resource24-vote-icon';
+                } else {
+                    $resource_action_icon = 'notification24-icon';
+                }
+
+                $notifications->push([
+                    'action_takers'=>$action_takers,
+                    'action_statement'=> __($cloned_notification_data->data['action_statement']),
+                    'resource_string_slice'=>$cloned_notification_data->data['resource_string_slice'],
+                    'action_date'=>(new Carbon($cloned_notification_data->created_at))->diffForHumans(),
+                    'action_type'=>$cloned_notification_data->data['action_type'],
+                    'action_resource_link'=>$cloned_notification_data->data['action_resource_link'],
+                    'action_user' => User::find($cloned_notification_data->data['action_user']),
+                    'resource_action_icon' => $resource_action_icon,
+                ]);
+            }
+        }
+
+        return $notifications;
+    }
+
+    public function getMinifiedNameAttribute() {
+        return strlen($fullname=($this->firstname . ' ' . $this->lastname)) > 20
+            ? strlen($username=$this->username) > 14 ? substr($fullname, 0, 14) . '..': $username
+            : $fullname;
+    }
 }
+

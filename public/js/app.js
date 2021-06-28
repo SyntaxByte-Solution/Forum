@@ -136,7 +136,7 @@ $('.login-signin-button').click(function() {
 $('#left-panel').height($(window).height() - $('header').height() - 30);
 
 window.onresize = function(event) {
-    $('#left-panel').height($(window).height() - $('header').height() - 20);
+    $('#left-panel').height($(window).height() - $('header').height() - 30);
 };
 
 $('.reply-to-thread').click(function() {

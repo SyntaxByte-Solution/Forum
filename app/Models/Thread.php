@@ -26,6 +26,7 @@ class Thread extends Model
             if ($thread->isForceDeleting()) {
                 foreach($thread->posts as $post) {
                     $post->votes()->delete();
+                    $post->likes()->delete();
                 }
                 $thread->votes()->delete();
                 $thread->posts()->forceDelete();

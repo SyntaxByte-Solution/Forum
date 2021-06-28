@@ -236,6 +236,7 @@ class ThreadController extends Controller
 
         $forum_slug = Forum::find(Category::find($thread['category_id'])->forum_id)->slug;
 
+        // You may be wondering about deleting the related resources: look at the boot method in Thread model
         $thread->forceDelete();
         return redirect(route('user.activities', ['user'=>auth()->user()->username]));
     }

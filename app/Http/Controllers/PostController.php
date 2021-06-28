@@ -96,7 +96,7 @@ class PostController extends Controller
                 $notification->delete();
             }
         }
-
+        // You may be wondering about deleting the related resources: look at the boot method in Post model
         $post->delete();
     }
 

@@ -1,6 +1,8 @@
 <div class="relative post-container resource-container" id="@if($post->ticked){{'ticked-post'}}@endif">
     <input type="hidden" class="votable-type" value="post">
     <input type="hidden" class="votable-id" value="{{ $post->id }}">
+    <input type="hidden" class="likable-type" value="post">
+    <input type="hidden" class="likable-id" value="{{ $post->id }}">
     <div class="absolute full-shadowed br6" style="z-index: 1">
         @can('destroy', $post)
         <div class="full-center full-width full-height">
@@ -38,7 +40,7 @@
                 <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($post, 'App\Models\Post') none @enddownvoted" alt="">
             </a>
 
-            <div class="my8 relative informer-box tick-post-container">
+            <div class="mt8 relative informer-box tick-post-container">
                 @can('update', $post->thread)
                 <div class="informer-message-container absolute zi1" style="left: 126%; top: -10px">
                     <div>
@@ -89,6 +91,13 @@
                     <div class="simple-line-separator my4"></div>
                 </div>
                 <div class="flex align-center relative">
+                    @auth
+                    <div class="resource-like-container like-resource pointer">
+                        <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($post->liked_by(auth()->user())) none @endif"></div>
+                        <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$post->liked_by(auth()->user())) none @endif"></div>
+                        <p class="no-margin mx4 fs13 resource-likes-counter">{{ $post->likes->count() }}</p>
+                    </div>
+                    @endauth
                     <p class="best-reply-ticket unselectable @if(!$post->ticked) none @endif">{{ __('BEST REPLY') }}</p>
                     <div>
                         <a href="" class="black-link button-with-suboptions">

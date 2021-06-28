@@ -137,7 +137,7 @@
                 @endphp
                 <div class="flex align-center no-underline button-with-suboptions pointer" title="{{ __('Languages') }}">
                     <div class='header-profile-button'>
-                        <div class="size26 sprite sprite-2-size languages26-icon"></div>
+                        <div class="size24 sprite sprite-2-size languages24-icon"></div>
                     </div>
                 </div>
                 <div class="suboptions-container suboptions-account-style">

@@ -29,6 +29,16 @@ class Post extends Model
         return $this->morphMany(Like::class, 'likable');
     }
 
+    public function liked_by($user) {
+        foreach($this->likes as $like) {
+            if($like->likable_id == $this->id && $like->likable_type == 'App\Models\Post' && $like->user_id == $user->id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getSliceAttribute() {
         return substr($this->content, 0, 30);
     }
@@ -42,6 +52,7 @@ class Post extends Model
 
         static::deleting(function($post) {
             // delete related votes records
+            $post->likes()->delete();
             $post->votes()->delete();
         });
     }

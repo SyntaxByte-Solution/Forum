@@ -907,7 +907,7 @@ function handle_resource_like(resource) {
                 _token: csrf,
             },
             success: function(response) {
-                console.log(response);
+                
             },
             error: function(xhr, status, error) {
                 if($(this).find('.gray-love').hasClass('none')) {

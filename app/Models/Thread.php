@@ -149,4 +149,12 @@ class Thread extends Model
     public function forum() {
         return Forum::find($this->category->forum_id);
     }
+
+    public function getSliceAttribute() {
+        return substr($this->subject, 0, 30);
+    }
+
+    public function getLinkAttribute() {
+        return route('thread.show', ['forum'=>$this->forum()->slug, 'category'=>$this->category->slug, 'thread'=>$this->id]);
+    }
 }

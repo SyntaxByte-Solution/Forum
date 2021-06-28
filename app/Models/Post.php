@@ -29,6 +29,14 @@ class Post extends Model
         return $this->morphMany(Like::class, 'likable');
     }
 
+    public function getSliceAttribute() {
+        return substr($this->content, 0, 30);
+    }
+
+    public function getLinkAttribute() {
+        return $this->thread->link . "#" . $this->id;
+    }
+    
     public static function boot() {
         parent::boot();
 

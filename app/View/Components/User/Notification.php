@@ -10,7 +10,7 @@ class Notification extends Component
 {
     public $notification;
 
-    public $resource_link;
+    public $action_resource_link;
     public $action_user;
     public $action_takers;
     public $action_statement;

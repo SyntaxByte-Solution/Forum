@@ -125,13 +125,13 @@ class User extends UserAuthenticatable implements Authenticatable
 
         // First let's group by action_resource_id
         $groups_by_resource_id = $this->notifications->pluck('data')
-        ->groupBy('action_resource_id');
+        ->groupBy('action_type');
         
         // This will be result
         $notifications = collect();
 
         foreach($groups_by_resource_id as $group_by_resource_id) {
-            foreach($group_by_resource_id->groupBy('action_type') as $group) {
+            foreach($group_by_resource_id->groupBy('action_resource_id') as $group) {
                 $action_takers_count = $group->count();
                 $action_takers = '';
                 switch($action_takers_count) {
@@ -165,6 +165,8 @@ class User extends UserAuthenticatable implements Authenticatable
                     $resource_action_icon = 'resource24-reply-icon';
                 } else if($cloned_notification_data->data['action_type'] == 'thread-vote' || $cloned_notification_data->data['action_type'] == 'post-vote') {
                     $resource_action_icon = 'resource24-vote-icon';
+                } else if($cloned_notification_data->data['action_type'] == 'resource-like') {
+                    $resource_action_icon = 'resource24-like-icon';
                 } else {
                     $resource_action_icon = 'notification24-icon';
                 }

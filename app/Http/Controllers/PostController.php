@@ -57,7 +57,7 @@ class PostController extends Controller
                     'resource_string_slice'=> (strlen($thread->subject) > 30) ? substr($thread->subject, 0, 30) . '..' : $thread->subject,
                     'action_type'=>'thread-reply',
                     'action_resource_id'=>$thread->id,
-                    'action_resource_link'=>route('thread.show', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug, 'thread'=>$thread->user]),
+                    'action_resource_link'=>$thread->link,
                 ])
             );
         }

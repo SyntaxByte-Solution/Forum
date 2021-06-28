@@ -1,5 +1,5 @@
 <div>
-    <a href="{{ $resource_link }}" class="link-wraper notification-component-container">
+    <a href="{{ $action_resource_link }}" class="link-wraper notification-component-container">
         <div class="relative" style="height: max-content">
             <img src="{{ $action_user->avatar }}" class="size48 rounded mr8" alt="{{ $action_user->firstname . ' ' . $action_user->lastname . ' profile picture' }}">
             <div class="notification-type-icon sprite sprite-2-size {{ $resource_action_icon }}"></div>

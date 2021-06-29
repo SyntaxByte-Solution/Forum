@@ -1,4 +1,3 @@
-
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
 
@@ -1029,3 +1028,5 @@ $('.notification-button').click(function() {
         }
     })
 });
+
+console.log(Pusher);

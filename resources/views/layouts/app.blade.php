@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Moroccan Gladiator')</title>
-
+    <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/bootstrap.js') }}" async></script>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -21,8 +21,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/app-depth.js') }}" defer></script>
+    <script type="module" src="{{ asset('js/app-depth.js') }}" defer></script>
     @stack('styles')
     @stack('scripts')
 </head>

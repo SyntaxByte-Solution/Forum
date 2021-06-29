@@ -21,7 +21,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script type="module" src="{{ asset('js/app-depth.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/app-depth.js') }}" defer></script>
     @stack('styles')
     @stack('scripts')
 </head>
@@ -31,19 +31,24 @@
         @yield('header')
         <main class="relative">
             @yield('content')
-            <div class='hidden-notification-container flex align-center'>
-                <div class="mr8 relative">
-                    <img src="" class="hidden-notification-image size60 rounded" alt="">
-                    <div class="hidden-notification-type-icon rounded"></div>
-                </div>
-                <div>
-                    <div class="mb4">
-                        <strong class="hidden-notification-action-taker">Mouad Nassri</strong>
-                        <span class="inline hidden-notification-content">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae, suscipit</span>
+            <a href="" class="hidden-notification-container relative link-wraper none flex">
+                <div class='flex'>
+                    <div class="mr8 relative" style="height: max-content">
+                        <img src="" class="hidden-notification-image size60 rounded" alt="">
+                        <div class="hidden-notification-type-icon rounded sprite sprite-2-size icon-type-throw-lot-of-uranium"></div>
                     </div>
-                    <p class="no-margin blue fs12">Now</p>
+                    <div>
+                        <div style="margin-bottom: 2px">
+                            <strong class="hidden-notification-action-taker">Mouad Nassri</strong>
+                            <span class="inline hidden-notification-content">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae, suscipit</span>
+                        </div>
+                        <p class="no-margin blue fs12">{{ __('Just now') }}</p>
+                    </div>
                 </div>
-            </div>
+                <div class="x-close-container pointer">
+                    <span class="x-close">✖</span>
+                </div>
+            </a>
         </main>
     </div>
 </body>

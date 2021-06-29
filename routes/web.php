@@ -93,6 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
     
     Route::post('/notifications/markasread', [NotificationController::class, 'mark_as_read']);
+    Route::post('/notifications/component/generate', [NotificationController::class, 'notification_component_generate']);
 
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);

@@ -1,3 +1,4 @@
+var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
 
@@ -30,6 +31,13 @@ $('.stop-propagation').click(function(event) {
 $('.block-click').click(function() {
     return false;
 });
+
+$('.x-close-container').click(function(event) {
+    $(this).parent().addClass('none');
+
+    event.stopPropagation();
+    event.preventDefault();
+})
 
 $('.handle-image-center-positioning').each(function() {
     let image_container = $(this).parent();
@@ -1029,4 +1037,61 @@ $('.notification-button').click(function() {
     })
 });
 
-console.log(Pusher);
+let notification_timeout;
+if(userId) {
+    Echo.private('user.' + userId + '.notifications')
+        .notification((notification) => {
+            // Stop animatio if there's already animation
+            $('.hidden-notification-container').stop();
+            clearTimeout(notification_timeout);
+
+            $('.hidden-notification-container .hidden-notification-image').attr('src', notification.image);
+            $('.hidden-notification-container .hidden-notification-action-taker').text(notification.action_taker_name);
+            $('.hidden-notification-container .hidden-notification-content').text(notification.action_statement + notification.resource_string_slice);
+            $('.hidden-notification-container').attr('href', notification.action_resource_link);
+
+            let lastClass = $('.hidden-notification-type-icon').attr('class').split(' ').pop();
+            $('.hidden-notification-type-icon').removeClass(lastClass);
+            $('.hidden-notification-type-icon').addClass(notification.resource_action_icon);
+
+            $('.hidden-notification-container').removeClass('none');
+            $('.hidden-notification-container').animate({
+                'opacity': 1
+            }, 600);
+
+            notification_timeout = setTimeout(function() {
+                $('.hidden-notification-container').animate({
+                    'opacity': 0
+                }, 600, function() {
+                    $('.hidden-notification-container').addClass('none');
+                });
+            }, 5000);
+
+            console.log('run ajax request to fetch component ui and prepand it to notification box');
+            console.log('notification type: ' + notification.type);
+
+            $('.header-button-counter-indicator').removeClass('none');
+            let notif_counter_value = $('.header-button-counter-indicator').text();
+            if (!(notif_counter_value.indexOf('+') > -1)) {
+                $('.header-button-counter-indicator').text(parseInt(notif_counter_value) + 1);
+            }
+        });
+}
+
+$('.hidden-notification-container').on({
+    mouseenter: function(event) {
+        clearTimeout(notification_timeout);
+        $('.hidden-notification-container').stop();
+        $('.hidden-notification-container').removeClass('none');
+        $('.hidden-notification-container').css('opacity', '1');
+    }, 
+    mouseleave: function(event) {
+        notification_timeout = setTimeout(function() {
+            $('.hidden-notification-container').animate({
+                'opacity': 0
+            }, 600, function() {
+                $('.hidden-notification-container').addClass('none');
+            });
+        }, 5000);
+    }
+});

@@ -4,6 +4,7 @@
 ?>
 
 <header>
+    <input type="hidden" class="uid" value="@auth{{ auth()->user()->id }}@endauth">
     <div id="header" class="relative">
         <div id="header-logo-container">
             <a href="/">
@@ -27,19 +28,15 @@
             @auth
                 @php
                     $user = auth()->user();
-                    $unread_notifications_counter = $user->unreadNotifications->count()
+                    if($unread_notifications_counter = $user->unreadNotifications->count()) {
+                        $unread_notifications_counter = ($unread_notifications_counter > 99) 
+                            ? ('+'.$unread_notifications_counter)
+                            : $unread_notifications_counter;
+                    }
                 @endphp
                 <div class="flex align-center">
                     <div class="relative">
-                        <div class="header-button-counter-indicator @if(!$unread_notifications_counter) none @endif">
-                            @if($unread_notifications_counter)
-                                @if($unread_notifications_counter > 99)
-                                    '+'.{{ $unread_notifications_counter }}
-                                @else
-                                    {{ $unread_notifications_counter }}
-                                @endif
-                            @endif
-                        </div>
+                        <div class="header-button-counter-indicator @if(!$unread_notifications_counter) none @endif">{{ $unread_notifications_counter }}</div>
                         <div class="header-button button-with-suboptions pointer notification-button" title="Notifications">
                             <div class="small-image sprite sprite-2-size notifications-icon"></div>
                         </div>    
@@ -48,7 +45,7 @@
                             <div class="suboptions-container-header">
                                 <h2 class="no-margin">Notifications</h2>
                             </div>
-                            <div class="suboptions-container-dims">
+                            <div class="suboptions-container-dims notifs-box">
                                 @foreach($user->notifs as $notification)
                                     <x-user.notification :notification="$notification"/>
                                 @endforeach

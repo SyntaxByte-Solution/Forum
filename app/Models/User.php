@@ -192,5 +192,15 @@ class User extends UserAuthenticatable implements Authenticatable
             ? strlen($username=$this->username) > 14 ? substr($fullname, 0, 14) . '..': $username
             : $fullname;
     }
+
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'user.'.$this->id.'.notifications';
+    }
 }
 

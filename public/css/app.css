@@ -2093,13 +2093,15 @@ tr:nth-child(2n) {
 
 .hidden-notification-container {
     position: fixed;
+    opacity: 0;
     z-index: 10;
     bottom: 26px;
     left: 26px;
 
     padding: 8px 30px 8px 8px;
     width: 340px;
-    height: 90px;
+    height: max-content;
+    max-height: 90px;
     box-sizing: border-box;
     
     background-color: #f9f9f9;
@@ -2111,7 +2113,29 @@ tr:nth-child(2n) {
     position: absolute;
     bottom: -2px;
     right: -2px;
-    width: 26px;
-    height: 26px;
-    background-color: brown;
+    width: 24px;
+    height: 24px;
+}
+
+.x-close-container {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background-color: #0000006b;
+    color: white;
+}
+
+.x-close-container:hover {
+    background-color: black;
+}
+
+.x-close {
+    font-size: 10px;
 }

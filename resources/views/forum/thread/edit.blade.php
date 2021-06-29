@@ -26,7 +26,7 @@
                     <a href="/" class="link-path">{{ __('Board index') }} > </a>
                     <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path">{{ __($forum->forum) }}</a>
                 </div>
-                <a href="{{ route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$thread->id]) }}" class="link-path">{{ __('<< return to the thread') }}</a>
+                <a href="{{ $thread->link }}" class="link-path">{{ __('<< return to the thread') }}</a>
             </div>
             <div class="flex space-between align-center">
                 <h1 id="page-title">Edit your discussion</h1>

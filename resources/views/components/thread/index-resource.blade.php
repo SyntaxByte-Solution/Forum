@@ -7,7 +7,7 @@
                 <div class="informer-message-container absolute left100 zi1">
                     <div class="left-middle-triangle"></div>
                     <div class="flex align-center">
-                        <p class="informer-message">you can't up vote your thread</p>
+                        <p class="informer-message">{{__("you can't up vote your thread")}}</p>
                         <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                     </div>
                 </div>
@@ -44,12 +44,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if($likes_count = $thread->likes->count())
-                                <div class="move-to-right flex align-center">
-                                    <p class="fs12 no-margin mr4 gray">({{ $likes_count }})</p>
-                                    <img src="{{ asset('assets/images/icons/love.png') }}" class="small-image-2" alt="">
-                                </div>
-                                @endif
                             </div>
                             <div class="flex align-center my8">
                                 <p class="fs16 bold no-margin"><a href="{{ $thread_url }}" class="forum-style-link dark-blue">{{ $thread_title }}</a></p>
@@ -88,23 +82,17 @@
     </td>
     <td class="fs13" style="width: 106px">
         <div class="flex align-center mb4">
-            <img src="{{ asset('assets/images/icons/gray-eye.png') }}" class="small-image-2 mr4" alt="">
-            <p class="no-margin fs12">{{ $views }} views</p>
+        <div class="small-image-2 sprite sprite-2-size eye17-icon mr4"></div>
+            <p class="no-margin fs12">{{ $views }} {{__('views')}}</p>
         </div>
+        <div class="flex align-center mb4">
+            <div class="small-image-2 sprite sprite-2-size reply17-icon mr4"></div>
+            <p class="no-margin fs12">{{ $replies }} {{__('replies')}}</p>
+        </div>
+        @if($likes_count = $thread->likes->count())
         <div class="flex align-center">
-            <img src="{{ asset('assets/images/icons/gray-reply.png') }}" class="small-image-2 mr4" alt="">
-            <p class="no-margin fs12">{{ $replies }} replies</p>
-        </div>
-        @if($thread->vote_count)
-        <div class="flex align-center" style="margin-top: 2px">
-            <div class="flex align-center">
-                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="size14" alt="">
-                <p class="no-margin fs12">{{ $thread->upvote_count }}</p>
-            </div>
-            <div class="flex align-center mx4">
-                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="size14" alt="">
-                <p class="no-margin fs12">{{ $thread->downvote_count }}</p>
-            </div>
+            <div class="small-image-2 sprite sprite-2-size resource17-like-gicon mr4"></div>
+            <p class="fs12 no-margin">{{ $likes_count }} {{ __("like". (($likes_count>1) ? 's' : '')) }}</p>
         </div>
         @endif
     </td>
@@ -120,9 +108,9 @@
             <p class="no-margin fs11">{{ __('No posts yet') }}</p>
         @endif
         <div class="absolute mr8 bottom0 right0">
-            <a href="{{ route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$thread->id]) }}" class="flex align-center gray link-style no-underline">
+            <a href="{{ $thread->link }}" class="flex align-center gray link-style no-underline">
                 <img src="{{ asset('assets/images/icons/gray-reply.png') }}" class="small-image-2" alt="">
-                <p class="fs13 no-margin my4 mx4">Reply</p>
+                <p class="fs13 no-margin my4 mx4">{{__('Reply')}}</p>
             </a>
         </div>
     </td>

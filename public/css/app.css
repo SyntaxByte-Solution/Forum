@@ -675,6 +675,14 @@ a, input, textarea {
     background-position: -20px -340px;
 }
 
+.reply17-icon {
+    background-position: 0px -17px;
+}
+
+.eye17-icon {
+    background-position: 0px -373px;
+}
+
 .binbox28-icon {
     background-position: 0px -476px;
 }
@@ -1571,6 +1579,10 @@ tr:nth-child(2n) {
     display: inline-block;
 }
 
+.inline {
+    display: inline;
+}
+
 .page-title-icon {
     padding-left: 46px;
     background-repeat: no-repeat;
@@ -2028,7 +2040,7 @@ tr:nth-child(2n) {
 
 .left-middle-triangle {
     z-index: 0;
-    left: -14px;
+    left: -11px;
     position: absolute;
     border-color: transparent transparent #a6a6a6 transparent;
     border-style: solid;
@@ -2077,4 +2089,29 @@ tr:nth-child(2n) {
 
 .resource-like-container:hover {
     background-color: #f0f0f0;
+}
+
+.hidden-notification-container {
+    position: fixed;
+    z-index: 10;
+    bottom: 26px;
+    left: 26px;
+
+    padding: 8px 30px 8px 8px;
+    width: 340px;
+    height: 90px;
+    box-sizing: border-box;
+    
+    background-color: #f9f9f9;
+    border: 1px solid #b8b8b8;
+    border-radius: 8px;
+}
+
+.hidden-notification-type-icon {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 26px;
+    height: 26px;
+    background-color: brown;
 }

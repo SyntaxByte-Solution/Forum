@@ -30,7 +30,7 @@
                     <img src="{{ $thread->user->avatar }}" class="small-image-3 rounded mr4" alt="">
                 </a>
                 <div class="full-width">
-                    <a href="{{ route('thread.show', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug, 'thread'=>$thread->id]) }}" class="no-margin bold no-underline forum-color fs13">{{ $thread->subject }}</a>
+                    <a href="{{ $thread->link }}" class="no-margin bold no-underline forum-color fs13">{{ $thread->subject }}</a>
                     <div class="flex align-center mt4">
                         <div class="flex align-center">
                             <img src="{{ asset('assets/images/icons/eye.png') }}" class="small-image-size mr4" alt="">

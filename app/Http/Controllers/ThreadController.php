@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Request as Rqst;
-use App\Exceptions\{DuplicateThreadException, CategoryClosedException};
+use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
 use App\Http\Controllers\PostController;
 
@@ -101,7 +101,6 @@ class ThreadController extends Controller
         $duplicated_thread;        
         $duplicated_thread_url;        
         try {
-
             /**
              * User could not have two threads with the same subject in the same category
              */
@@ -119,15 +118,21 @@ class ThreadController extends Controller
             /**
              * If there's a duplicate subjects in the same category we need to 
              * reload the page by passing flash message to inform the user
-             */ 
+             */
             $forum = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
             $category = Category::find($data['category_id'])->slug;
 
             $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-            \Session::flash('message', "This title is already exists in your threads list(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
+            \Session::flash('message', __("This title is already exists in your threads list") . "(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), " . __("please choose another one !"));
             return redirect()->back();
         }
 
+        $announcements_ids = Category::whereIn('slug', 'announcements')->pluck('id');
+
+        if(in_array($data['category_id'], $announcements_ids)) {
+            throw new AccessDeniedException("Only admins could share announcements");
+        }
+        
         $category_status_slug = CategoryStatus::
                                     find(Category::find($data['category_id'])->status)
                                     ->slug;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Forum, Thread};
+use App\Models\{Forum, Thread, Category};
 
 class IndexController extends Controller
 {
@@ -29,12 +29,15 @@ class IndexController extends Controller
         } else {
             $threads = Thread::orderBy('created_at', 'desc')->paginate($pagesize);
         }
-
+        
         $forums = Forum::all();
         $recent_threads = Thread::orderBy('created_at', 'desc')->take(4)->get();
+        $annc_ids = Category::where('slug', 'announcements')->pluck('id');
+        $announcements = Thread::whereIn('category_id', $annc_ids)->take(4)->get();
 
         return view('index')
         ->with(compact('threads'))
+        ->with(compact('announcements'))
         ->with(compact('pagesize'))
         ->with(compact('recent_threads'))
         ->with(compact('forums'));

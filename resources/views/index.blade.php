@@ -22,7 +22,30 @@
                 <!-- <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt=""> -->
             </div>
             <div>
-                <h2 class="my8 fs26 forum-color">{{ __('Top Discussions & Questions') }}</h2>
+                <div class="flex align-center">
+                    <h2 class="my8 fs26 forum-color">{{ __('Top Discussions & Questions') }}</h2>
+                    <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="move-to-right button-style">+ disucssion/Question</a>
+                </div>
+
+                <div class="flex align-end">
+                    <h3 class="no-margin fs17 blue">Announcements</h3>
+                    <a href="" class="fs13 move-to-right link-path">See all</a>
+                </div>
+                <table class="forums-table my8">
+                    <tr>
+                        <th class="table-col-header">
+                            <div class="flex align-center">
+                                {{ __('ANNOUNCEMENTS') }}
+                            </div>
+                        </th>
+                        <th class="table-col-header table-numbered-column">{{ __('FORUM') }}</th>
+                        <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
+                        <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
+                    </tr>
+                    @foreach($announcements as $announcement)
+                        <x-announcement :announcement="$announcement"/>
+                    @endforeach
+                </table>
                 <div class="flex space-between align-end">
                     <div>
                         <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for threads, users ..') }}</p>
@@ -54,6 +77,7 @@
                         </div>
                     </div>
                 </div>
+                <h3 class="my8 fs17 blue">{{ __('Discussions and Questions') }}</h3>
                 <table class="forums-table my8">
                     <tr>
                         <th class="table-col-header">
@@ -110,7 +134,7 @@
         <div class="index-right-panel-container border-box">
             @include('partials.right-panels.forums-list')
             @include('partials.right-panels.recent-forum-threads')
-            <div class="sticky" style="top: 70px">
+            <div class="sticky" style="top: 54px">
                 @include('partials.right-panels.feedback')
                 @include('partials.right-panels.statistics')
             </div>

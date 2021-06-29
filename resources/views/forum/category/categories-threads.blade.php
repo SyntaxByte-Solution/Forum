@@ -74,7 +74,7 @@
                     <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
                 </tr>
                 @foreach($announcements as $announcement)
-                    <x-announcement-table-row :announcement="$announcement"/>
+                    <x-announcement :announcement="$announcement"/>
                 @endforeach
             </table>
             @endif

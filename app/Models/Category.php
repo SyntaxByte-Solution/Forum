@@ -20,4 +20,8 @@ class Category extends Model
     public function threads() {
         return $this->hasMany(Thread::class);
     }
+
+    public function getLinkAttribute() {
+        return route('category.threads', ['category'=>$this->id]);
+    }
 }

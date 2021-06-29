@@ -63,7 +63,7 @@
                                 <span class="fs13 mr4">{{ $thread->votes->where('vote', '1')->count() }}</span>
                                 <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image-2" alt="">
                                 <span class="fs13">{{ $thread->votes->where('vote', '-1')->count() }}</span>
-                                <a href="{{ route('thread.show', ['forum'=> $forum_slug, 'category'=> $category_slug, 'thread'=>$thread->id]) }}" class="link-path flex ml8">{{ $thread->subject }}</a>
+                                <a href="{{ $thread->link }}" class="link-path flex ml8">{{ $thread->subject }}</a>
 
                                 <div class="move-to-right flex align-center">
                                     @if($lc = $thread->likes->count())
@@ -116,7 +116,7 @@
                                 <img src="{{ asset('assets/images/icons/down-filled-red.png') }}" class="small-image-2" alt="">
                                 @endif
                                 <span class="fs13">{{ $voted[0]->votevalue }}</span>
-                                <a href="{{ route('thread.show', ['forum'=> $forum_slug, 'category'=> $category_slug, 'thread'=>$voted[0]->id]) }}" class="link-path flex ml8">{{ $voted[0]->subject }}</a>
+                                <a href="{{ $voted[0]->link }}" class="link-path flex ml8">{{ $voted[0]->subject }}</a>
                             </div>
                             <div class="simple-line-separator"></div>
                         @endforeach

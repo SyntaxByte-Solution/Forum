@@ -68,4 +68,17 @@ class UserAction extends Notification// implements ShouldQueue
             //
         ];
     }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            'data' => "this is data",
+        ]);
+    }
 }

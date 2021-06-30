@@ -1100,18 +1100,21 @@ if(userId) {
 $('.notifications-load').click(function(event) {
     event.preventDefault();
     let button = $(this);
+
+    loadNotifications(button);
+});
+
+function loadNotifications(button) {
     button.val('loading..')
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
-
-
     let notif_state_counter = parseInt($('.notif-state-couter').val());
     $.ajax({
         url: '/notifications/generate?range='+6+'&state_counter='+notif_state_counter,
         type: 'get',
         success: function(notifications_components) {
             console.log(notifications_components);
-            if(notifications_components.has == false) {
+            if(notifications_components.hasNext == false) {
                 button.addClass('none');
             }
             $(`${notifications_components.content}`).insertBefore(button);
@@ -1123,7 +1126,7 @@ $('.notifications-load').click(function(event) {
             $('.notif-state-couter').val(notif_state_counter+1);
         }
     })
-});
+}
 
 $('.hidden-notification-container').on({
     mouseenter: function(event) {

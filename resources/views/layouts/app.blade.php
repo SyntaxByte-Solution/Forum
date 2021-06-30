@@ -38,11 +38,11 @@
                         <div class="hidden-notification-type-icon rounded sprite sprite-2-size icon-type-throw-lot-of-uranium"></div>
                     </div>
                     <div>
-                        <div style="margin-bottom: 2px">
+                        <div style="margin-bottom: 3px">
                             <strong class="hidden-notification-action-taker">Mouad Nassri</strong>
                             <span class="inline hidden-notification-content">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae, suscipit</span>
                         </div>
-                        <p class="no-margin blue fs12">{{ __('Just now') }}</p>
+                        <p class="no-margin blue fs12 bold">{{ __('Just now') }}</p>
                     </div>
                 </div>
                 <div class="x-close-container pointer">

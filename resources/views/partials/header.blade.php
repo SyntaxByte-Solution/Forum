@@ -42,11 +42,16 @@
                         </div>    
                         <div class="suboptions-container suboptions-header-button-style">
                             <div class="triangle"></div>
-                            <div class="suboptions-container-header">
+                            <div class="suboptions-container-header flex align-center space-between">
                                 <h2 class="no-margin">Notifications</h2>
+                                <a href="" class="link-path">{{ __('See all') }}</a>
                             </div>
                             <div class="suboptions-container-dims notifs-box">
+                                <input type="hidden" class="notif-state-couter" value="1">
                                 @foreach($user->notifs as $notification)
+                                    @if($loop->index == 6)
+                                        @break
+                                    @endif
                                     <x-user.notification :notification="$notification"/>
                                 @endforeach
                                 @if(!$user->notifications->count())
@@ -55,6 +60,8 @@
                                         <h3 class="my4 fs17 text-center">{{__('Notifications box is empty')}}</h3>
                                         <p class="my4 fs13 gray text-center">{{ __('Try to start discussions/questions or react to people posts') }}.</p>
                                     </div>
+                                @elseif($user->notifications->count() > 6)
+                                    <input type='button' class="see-all-full-style notifications-load" value="{{__('load more')}}">
                                 @endif
                             </div>
                         </div>

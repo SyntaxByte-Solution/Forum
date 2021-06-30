@@ -34,5 +34,25 @@ class NotificationController extends Controller
         $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
         
         return $notification_component;
-    } 
+    }
+
+    public function notification_generate_range(Request $request) {
+        $data = $request->validate([
+            'range'=>'required|Numeric',
+            'state_counter'=>'required|Numeric',
+        ]);
+
+        $skipable_items = $data['state_counter'] * $data['range'];
+        $notifs_to_return = auth()->user()->notifs->skip($skipable_items)->take($data['range']);
+
+        $payload = "";
+
+        foreach($notifs_to_return as $notification) {
+            $notification_component = (new Notification($notification));
+            $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
+            $payload .= $notification_component;
+        }
+
+        return $payload;
+    }
 }

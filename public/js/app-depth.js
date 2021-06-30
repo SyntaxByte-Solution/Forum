@@ -1097,6 +1097,34 @@ if(userId) {
         });
 }
 
+$('.notifications-load').click(function(event) {
+    event.preventDefault();
+    let button = $(this);
+    button.val('loading..')
+    button.attr("disabled","disabled");
+    button.attr('style', 'background-color: #acacac; cursor: default');
+
+
+    let notif_state_counter = parseInt($('.notif-state-couter').val());
+    $.ajax({
+        url: '/notifications/generate?range='+6+'&state_counter='+notif_state_counter,
+        type: 'get',
+        success: function(notifications_components) {
+            if(notifications_components == "") {
+                button.addClass('none');
+            } else {
+                $(`${notifications_components}`).insertBefore(button);
+            }
+        },
+        complete: function() {
+            button.val('load more');
+            button.attr('style', '');
+            button.prop("disabled", false);
+            $('.notif-state-couter').val(notif_state_counter+1);
+        }
+    })
+});
+
 $('.hidden-notification-container').on({
     mouseenter: function(event) {
         clearTimeout(notification_timeout);

@@ -6,7 +6,7 @@ use Illuminate\View\Component;
 use Carbon\Carbon;
 use App\Models\User;
 
-class Notification extends Component
+class HeaderNotification extends Component
 {
     public $notification;
 
@@ -42,6 +42,6 @@ class Notification extends Component
      */
     public function render($data=[])
     {
-        return view('components.user.notification', $data);
+        return view('components.user.header-notification', $data);
     }
 }

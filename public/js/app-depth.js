@@ -1102,7 +1102,7 @@ $('.notifications-load').click(function(event) {
     let button = $(this);
     button.val('loading..')
     button.attr("disabled","disabled");
-    button.attr('style', 'background-color: #acacac; cursor: default');
+    button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
 
 
     let notif_state_counter = parseInt($('.notif-state-couter').val());
@@ -1110,11 +1110,11 @@ $('.notifications-load').click(function(event) {
         url: '/notifications/generate?range='+6+'&state_counter='+notif_state_counter,
         type: 'get',
         success: function(notifications_components) {
-            if(notifications_components == "") {
+            console.log(notifications_components);
+            if(notifications_components.has == false) {
                 button.addClass('none');
-            } else {
-                $(`${notifications_components}`).insertBefore(button);
             }
+            $(`${notifications_components.content}`).insertBefore(button);
         },
         complete: function() {
             button.val('load more');

@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\View\Components\User\Notification;
+use App\View\Components\User\HeaderNotification;
 use App\Models\User;
 
 class NotificationController extends Controller
 {
+    public function notifications() {
+        $user = auth()->user();
+
+        foreach ($user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+
+        return view('user.notifications')
+            ->with(compact('user'));
+    }
+
     public function mark_as_read() {
         $user = auth()->user();
         $this->authorize('mark_as_read', $user);
@@ -30,7 +41,7 @@ class NotificationController extends Controller
         $notification['action_user'] = User::find($notification['action_user']);
         $notification['action_takers'] = User::find($notification['action_user'])->first()->minified_name;
 
-        $notification_component = (new Notification($notification));
+        $notification_component = (new HeaderNotification($notification));
         $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
         
         return $notification_component;
@@ -48,11 +59,14 @@ class NotificationController extends Controller
         $payload = "";
 
         foreach($notifs_to_return as $notification) {
-            $notification_component = (new Notification($notification));
+            $notification_component = (new HeaderNotification($notification));
             $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
             $payload .= $notification_component;
         }
 
-        return $payload;
+        return [
+            "has"=> auth()->user()->notifs->skip(($data['state_counter']+1) * $data['range'])->count() > 0,
+            "content"=>$payload
+        ];
     }
 }

@@ -88,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/categories/{category}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
+    Route::get('/notifications', [NotificationController::class, 'notifications'])->name('user.notifications');
     Route::post('/notifications/markasread', [NotificationController::class, 'mark_as_read']);
     Route::post('/notification/generate', [NotificationController::class, 'notification_generate']);
     Route::get('/notifications/generate', [NotificationController::class, 'notification_generate_range']);

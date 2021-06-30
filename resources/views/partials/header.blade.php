@@ -13,7 +13,7 @@
         </div>
         <div class="flex align-center full-height">
             <a href="/" class="menu-button-style">{{ __('Home') }}</a>
-            <a href="" class="menu-button-style">{{ __('Notifications') }}</a>
+            <a href="{{ route('user.notifications') }}" class="menu-button-style">{{ __('Notifications') }}</a>
             <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
             <a href="" class="menu-button-style">{{ __('Contact') }}</a>
         </div>
@@ -44,7 +44,7 @@
                             <div class="triangle"></div>
                             <div class="suboptions-container-header flex align-center space-between">
                                 <h2 class="no-margin">Notifications</h2>
-                                <a href="" class="link-path">{{ __('See all') }}</a>
+                                <a href="{{ route('user.notifications') }}" class="link-path">{{ __('See all') }}</a>
                             </div>
                             <div class="suboptions-container-dims notifs-box">
                                 <input type="hidden" class="notif-state-couter" value="1">
@@ -52,7 +52,7 @@
                                     @if($loop->index == 6)
                                         @break
                                     @endif
-                                    <x-user.notification :notification="$notification"/>
+                                    <x-user.header-notification :notification="$notification"/>
                                 @endforeach
                                 @if(!$user->notifications->count())
                                     <div class="my8">

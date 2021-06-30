@@ -40,8 +40,8 @@ class Notification extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.user.notification');
+        return view('components.user.notification', $data);
     }
 }

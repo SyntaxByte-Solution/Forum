@@ -17,21 +17,22 @@ class NotificationController extends Controller
         }
     }
 
-    public function notification_component_generate(Request $request) {
+    public function notification_generate(Request $request) {
         $notification = $request->validate([
             'action_user'=>'required|exists:users,id',
-            'action_takers'=>'required|min:2|max:60',
-            'action_statement'=>'required|max:200',
-            'resource_string_slice'=>'required|max:200',
-            'action_date'=>'required|max:200',
+            'action_statement'=>'required|max:400',
+            'resource_string_slice'=>'required|max:400',
+            'action_date'=>'required|max:400',
             'action_resource_link'=>'required|max:400',
             'resource_action_icon'=>'required|max:400',
         ]);
 
+        $notification['action_user'] = User::find($notification['action_user']);
+        $notification['action_takers'] = User::find($notification['action_user'])->first()->minified_name;
+
         $notification_component = (new Notification($notification));
+        $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
         
-        $notification_component = $notification_component->render(get_object_vars($component))->render();
-        
-        return $component;
+        return $notification_component;
     } 
 }

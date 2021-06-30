@@ -9,6 +9,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\User;
+use Carbon\Carbon;
 
 class UserAction extends Notification implements ShouldBroadcast
 {
@@ -19,6 +20,7 @@ class UserAction extends Notification implements ShouldBroadcast
     public $action_statement;
     public $resource_string_slice;
     public $action_type;
+    public $action_date;
     public $action_resource_id;
     public $action_resource_link;
 
@@ -35,6 +37,7 @@ class UserAction extends Notification implements ShouldBroadcast
         $this->action_type = $data['action_type'];
         $this->action_resource_id = $data['action_resource_id'];
         $this->action_resource_link = $data['action_resource_link'];
+        $this->action_date = (new Carbon($data['action_date']))->diffForHumans();
     }
 
     /**
@@ -82,9 +85,11 @@ class UserAction extends Notification implements ShouldBroadcast
 
         return (new BroadcastMessage([
             "image"=>User::find($this->action_user)->avatar,
+            "action_user"=>$this->action_user,
             "action_taker_name"=>User::find($this->action_user)->minified_name,
             "action_statement"=>$this->action_statement,
             'resource_string_slice'=>$this->resource_string_slice,
+            'resource_date'=>$this->action_date,
             'action_resource_link'=>$this->action_resource_link,
             'resource_action_icon'=>$resource_action_icon,
         ]));

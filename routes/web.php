@@ -88,12 +88,11 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/categories/{category}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
-    Route::get('/{forum:slug}/{category:slug}/threads/add', [ThreadController::class, 'create'])->name('thread.add');
-    
-    Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
-    
     Route::post('/notifications/markasread', [NotificationController::class, 'mark_as_read']);
-    Route::post('/notifications/component/generate', [NotificationController::class, 'notification_component_generate']);
+    Route::post('/notification/generate', [NotificationController::class, 'notification_generate']);
+
+    Route::get('/{forum:slug}/{category:slug}/threads/add', [ThreadController::class, 'create'])->name('thread.add');
+    Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
 
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);

@@ -29,7 +29,7 @@
     </div>
 
     <div class="thread-container flex">
-        <div class="my8 px8 py8 flex flex-column align-center relative">
+        <div class="thread-vote-part flex flex-column align-center relative">
             <div class="informer-message-container absolute left100 zi1">
                 <div class="left-middle-triangle"></div>
                 <div class="flex align-center">

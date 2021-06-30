@@ -27,11 +27,12 @@ class VoteController extends Controller
             $thread->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
-                    'action_statement'=>"voted on your thread:",
-                    'resource_string_slice'=>(strlen($thread->subject) > 30) ? substr($thread->subject, 0, 30) . '..' : $thread->subject,
+                    'action_statement'=>"voted your thread:",
+                    'resource_string_slice'=>$thread->slice,
                     'action_type'=>'thread-vote',
+                    'action_date'=>now(),
                     'action_resource_id'=>$thread->id,
-                    'action_resource_link'=>route('thread.show', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug, 'thread'=>$thread->user]),
+                    'action_resource_link'=>$thread->link,
                 ])
             );
         }
@@ -47,11 +48,12 @@ class VoteController extends Controller
             $post->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
-                    'action_statement'=>"voted on your post",
-                    'resource_string_slice'=>"",
+                    'action_statement'=>"voted your reply: '",
+                    'resource_string_slice'=>$post->slice . "' on:" . $thread->slice,
                     'action_type'=>'post-vote',
+                    'action_date'=>now(),
                     'action_resource_id'=>$post->id,
-                    'action_resource_link'=>route('thread.show', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug, 'thread'=>$thread->user]),
+                    'action_resource_link'=>$thread->link,
                 ])
             );
         }

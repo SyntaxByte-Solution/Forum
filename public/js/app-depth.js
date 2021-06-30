@@ -1067,6 +1067,25 @@ if(userId) {
                 });
             }, 5000);
 
+            console.log(notification);
+
+            $.ajax({
+                type: 'post',
+                url: '/notification/generate',
+                data: {
+                    _token: csrf,
+                    action_user: notification.action_user,
+                    action_statement: notification.action_statement,
+                    resource_string_slice: notification.resource_string_slice,
+                    action_date: notification.resource_date,
+                    action_resource_link: notification.action_resource_link,
+                    resource_action_icon: notification.resource_action_icon,
+                },
+                success: function(response) {
+                    $('.notifs-box').prepend(response);
+                }
+            })
+            
             console.log('run ajax request to fetch component ui and prepand it to notification box');
             console.log('notification type: ' + notification.type);
 

@@ -53,8 +53,9 @@ class PostController extends Controller
             $notif_data = [
                 'action_user'=>$current_user->id,
                 'action_statement'=>"replied to your thread:",
-                'resource_string_slice'=> (strlen($thread->subject) > 30) ? substr($thread->subject, 0, 30) . '..' : $thread->subject,
+                'resource_string_slice'=> $thread->slice,
                 'action_type'=>'thread-reply',
+                'action_date'=>now(),
                 'action_resource_id'=>$thread->id,
                 'action_resource_link'=>$thread->link,
             ];

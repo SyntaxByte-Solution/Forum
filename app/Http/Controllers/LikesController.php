@@ -62,6 +62,7 @@ class LikesController extends Controller
                         'action_statement'=>"liked your " . $type_name . ':',
                         'resource_string_slice'=> $resource->slice,
                         'action_type'=>'resource-like',
+                        'action_date'=>now(),
                         'action_resource_id'=>$resource->id,
                         'action_resource_link'=>$resource->link
                     ])

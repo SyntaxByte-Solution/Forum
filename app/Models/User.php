@@ -176,6 +176,7 @@ class User extends UserAuthenticatable implements Authenticatable
                     'action_statement'=> __($cloned_notification_data->data['action_statement']),
                     'resource_string_slice'=>$cloned_notification_data->data['resource_string_slice'],
                     'action_date'=>(new Carbon($cloned_notification_data->created_at))->diffForHumans(),
+                    'action_real_date'=>$cloned_notification_data->created_at,
                     'action_type'=>$cloned_notification_data->data['action_type'],
                     'action_resource_link'=>$cloned_notification_data->data['action_resource_link'],
                     'action_user' => User::find($cloned_notification_data->data['action_user']),
@@ -184,7 +185,7 @@ class User extends UserAuthenticatable implements Authenticatable
             }
         }
 
-        return $notifications;
+        return $notifications->sortByDesc('action_real_date');
     }
 
     public function getMinifiedNameAttribute() {

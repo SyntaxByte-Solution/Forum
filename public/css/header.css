@@ -105,7 +105,7 @@ main {
 
 .suboptions-header-button-style {
     position: absolute;
-    top: 41px;
+    top: 42px;
     right: 0;
     background-color: white;
     border-radius: 6px;
@@ -124,6 +124,8 @@ main {
 
 .notification-component-container {
     display: flex;
+    width: 100%;
+    box-sizing: border-box;
     padding: 6px;
     border-radius: 6px;
 }

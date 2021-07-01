@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\View\Components\User\HeaderNotification;
-use App\Models\User;
+use App\Models\{User, Notification};
 
 class NotificationController extends Controller
 {
@@ -21,7 +21,6 @@ class NotificationController extends Controller
 
     public function mark_as_read() {
         $user = auth()->user();
-        $this->authorize('mark_as_read', $user);
 
         foreach ($user->unreadNotifications as $notification) {
             $notification->markAsRead();
@@ -66,7 +65,22 @@ class NotificationController extends Controller
 
         return [
             "hasNext"=> auth()->user()->notifs->skip(($data['state_counter']+1) * $data['range'])->count() > 0,
-            "content"=>$payload
+            "content"=>$payload,
+            "count"=>$notifs_to_return->count()
         ];
+    }
+
+    public function destroy(Request $request, $notification_id) {
+        $this->authorize('delete', [Notification::class, $notification_id]);
+
+        $notification = Notification::find($notification_id);
+        $notification_data = \json_decode($notification->data);
+        $current_user = auth()->user();
+
+        foreach($current_user->notifications as $notif) {
+            if($notif->data['action_resource_id'] == $notification_data->action_resource_id && $notif->data['action_type'] == $notification_data->action_type) {
+                $notif->delete();
+            }
+        }
     }
 }

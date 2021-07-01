@@ -9,6 +9,7 @@ use App\Models\User;
 class HeaderNotification extends Component
 {
     public $notification;
+    public $notification_id;
 
     public $action_resource_link;
     public $action_user;
@@ -26,6 +27,7 @@ class HeaderNotification extends Component
      */
     public function __construct($notification)
     {
+        $this->notification_id = isset($notification['notif_id']) ? $notification['notif_id'] : '';
         $this->action_user = $notification['action_user'];
         $this->action_takers = $notification['action_takers'];
         $this->action_statement = $notification['action_statement'];

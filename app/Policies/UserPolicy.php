@@ -9,10 +9,6 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function mark_as_read(User $user) {
-        return auth()->user()->id == $user->id;
-    }
-
     /**
      * Determine whether the user can view any models.
      *

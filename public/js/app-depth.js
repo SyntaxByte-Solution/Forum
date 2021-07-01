@@ -64,17 +64,65 @@ $(".button-with-suboptions").each(function() {
     handle_suboptions_container($(this));
 });
 
+$(".nested-soc-button").each(function() {
+    handle_nested_soc($(this));
+});
+
+$('.notification-menu-button').each(function() {
+    handle_notification_menu_buttons($(this));
+})
+
+$('.notification-container').each(function() {
+    handle_notification_menu_appearence($(this));
+});
+
 function handle_suboptions_container(button) {
     button.on({
         'click': function(event) {
-            let container = $(this).parent().find(".suboptions-container");
+            let container = $(this).parent().find(".suboptions-container").first();
             if(container.css("display") == "none") {
                 $(".suboptions-container").css("display", "none");
+                $(".nested-soc").css("display", "none");
                 container.css("display", "block");
             } else {
                 container.css("display", "none");
             }
             return false;
+        }
+    });
+}
+
+function handle_nested_soc(button) {
+    // nested-soc: nested suboptions container
+    button.click(function() {
+        // Handle only the third level of suboptions, later we're gonna handle infinite number of suboptions level
+
+        if(button.parent().find('.nested-soc').css('display') == 'block') {
+            button.parent().find('.nested-soc').css('display', 'none');
+            return;
+        }
+        $('.nested-soc').css('display', 'none');
+        button.parent().find('.nested-soc').css('display', 'block');
+        return false;
+    });
+}
+
+function handle_notification_menu_buttons(button) {
+    button.click(function(event) {
+        $('.notification-menu-button-container').addClass('none');
+        button.parent().removeClass('none');
+    })
+}
+
+function handle_notification_menu_appearence(notif_container) {
+    notif_container.on({
+        mouseenter: function() {
+            $(this).find('.notification-menu-button-container').removeClass('none');
+        },
+        mouseleave: function() {
+            if($(this).find('.nested-soc').css('display') == 'none') {
+                $(this).find('.notification-menu-button-container').addClass('none');
+            }
         }
     });
 }
@@ -97,6 +145,7 @@ let subContainers = document.querySelectorAll('.suboptions-container');
 for(let i = 0;i<subContainers.length;i++) {
     subContainers[i].addEventListener("click", function(evt) {
         $(this).css("display", "block");
+        $(".nested-soc").css("display", "none");
         evt.stopPropagation();
     }, false);
 }
@@ -1118,6 +1167,22 @@ function loadNotifications(button) {
                 button.addClass('none');
             }
             $(`${notifications_components.content}`).insertBefore(button);
+
+            /**
+             * Notice here when we fetch the notifications we return the number of fetched notifs
+             * because we need to handle the last count of appended components events
+             * 
+             */
+            let unhandled_event_notification_components = 
+                $('.notifs-box > .notification-container').slice(notifications_components.count*(-1));
+            
+                unhandled_event_notification_components.each(function() {
+                    handle_notification_menu_appearence($(this));
+                    handle_notification_menu_buttons($(this).find('.notification-menu-button'));
+                    handle_nested_soc($(this).find('.notification-menu-button'));
+                    handle_delete_notification($(this).find('.delete-notification'))
+                });
+            
         },
         complete: function() {
             button.val('load more');
@@ -1131,6 +1196,7 @@ function loadNotifications(button) {
 $('.hidden-notification-container').on({
     mouseenter: function(event) {
         clearTimeout(notification_timeout);
+        $('.header-button-counter-indicator').css('opacity', '0')
         $('.hidden-notification-container').stop();
         $('.hidden-notification-container').removeClass('none');
         $('.hidden-notification-container').css('opacity', '1');
@@ -1145,3 +1211,42 @@ $('.hidden-notification-container').on({
         }, 5000);
     }
 });
+
+$('.delete-notification').each(function() {
+    handle_delete_notification($(this));
+})
+
+let notification_delete_lock = true;
+function handle_delete_notification(button) {
+    button.click(function() {
+        if(!notification_delete_lock) {
+            return false;;
+        }
+        notification_delete_lock = false;
+
+        let notif_id = button.parent().find('.notif-id').val();
+        let notif_container = button;
+        while(!notif_container.hasClass('notification-container')) {
+            notif_container = notif_container.parent();
+        }
+
+        button.find('.button-text').text(button.parent().find('.message-ing').val());
+        button.addClass('block-click');
+        button.attr('style', 'background-color: #dddddd5e; cursor: default');
+        $.ajax({
+            url: `/notification/${notif_id}/delete`,
+            type: 'delete',
+            data: {
+                _token: csrf,
+            },
+            success: function() {
+                notif_container.remove();
+            },
+            complete: function() {
+                notification_delete_lock = true;
+            }
+        })
+
+        return false;
+    });
+}

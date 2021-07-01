@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifications/markasread', [NotificationController::class, 'mark_as_read']);
     Route::post('/notification/generate', [NotificationController::class, 'notification_generate']);
     Route::get('/notifications/generate', [NotificationController::class, 'notification_generate_range']);
+    Route::delete('/notification/{notification_id}/delete', [NotificationController::class, 'destroy']);
 
     Route::get('/{forum:slug}/{category:slug}/threads/add', [ThreadController::class, 'create'])->name('thread.add');
     Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');

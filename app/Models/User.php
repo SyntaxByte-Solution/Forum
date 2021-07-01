@@ -172,6 +172,7 @@ class User extends UserAuthenticatable implements Authenticatable
                 }
 
                 $notifications->push([
+                    'notif_id'=>$cloned_notification_data->id,
                     'action_takers'=>$action_takers,
                     'action_statement'=> __($cloned_notification_data->data['action_statement']),
                     'resource_string_slice'=>$cloned_notification_data->data['resource_string_slice'],
@@ -180,6 +181,7 @@ class User extends UserAuthenticatable implements Authenticatable
                     'action_type'=>$cloned_notification_data->data['action_type'],
                     'action_resource_link'=>$cloned_notification_data->data['action_resource_link'],
                     'action_user' => User::find($cloned_notification_data->data['action_user']),
+                    'resource_id' => $cloned_notification_data->data['action_resource_id'],
                     'resource_action_icon' => $resource_action_icon,
                 ]);
             }

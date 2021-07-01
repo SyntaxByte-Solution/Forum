@@ -711,8 +711,28 @@ a, input, textarea {
     background-position: -17px -357px;
 }
 
+.delete17b-icon {
+    background-position: -17px -408px;
+}
+
 .resource24-like-icon {
     background-position: -24px -480px;
+}
+
+.disablenotif17b-icon {
+    background-position: 0px -424px;
+}
+
+.menu24-icon {
+    background-position: 0px -552px;
+    border-radius: 50%;
+    border: 1px solid gray;
+}
+
+.menu24b-icon {
+    background-position: -20px -552px;
+    border-radius: 50%;
+    border: 1px solid gray;
 }
 
 /* ----------------------------------------------------- */
@@ -2174,4 +2194,33 @@ tr:nth-child(2n) {
     border: 1px solid rgb(227, 227, 227);
     box-shadow: 0 0 6px 0px #0000001f;
     border-radius: 6px;
+}
+
+.notification-menu-button-container {
+    position: absolute;
+    right: 10px;
+
+    height: 24px;
+    width: 24px;
+}
+
+.suboptions-container-right-style {
+    position: absolute;
+    top: 41px;
+    right: 0;
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid rgb(177, 177, 177);
+    border-top: unset;
+}
+
+.simple-button-suboptions-container {
+    position: absolute;
+    right: 0;
+    top: 30px;
+    padding: 6px;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 0 4px 0px #62626233;
+    border-radius: 4px;
 }

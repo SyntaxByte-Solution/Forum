@@ -3,18 +3,18 @@
 @prepend('scripts')
     <script type="application/javascript" defer>
         $(document).ready(function() { 
+            handle_mark_as_read();
+
             $('.header-button-counter-indicator').css('opacity', '0');
             let element = $('.notification-button');
             let icon = element.find('.notifications-icon');
             icon.removeClass('notification-icon')
-            icon.off();
             icon.css('background-position', '0px 0px');
             element.off();
 
             $(window).scroll(function() {
                 if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                    let button;
-                    if(button = $('.notifications-load')) {
+                    if(button = $('.notifications-load-scroll')) {
                         loadNotifications(button);
                     }
                 }
@@ -56,8 +56,8 @@
                             <h3 class="my4 fs17 text-center">{{__('Notifications box is empty')}}</h3>
                             <p class="my4 fs13 gray text-center">{{ __('Try to start discussions/questions or react to people posts') }}.</p>
                         </div>
-                    @elseif($user->notifications->count() > 6)
-                        <input type='button' class="see-all-full-style notifications-load" value="{{__('load more')}}">
+                    @elseif($user->notifications->count() > 8)
+                        <input type='button' class="see-all-full-style notifications-load-scroll" value="{{__('load more')}}">
                     @endif
                 </div>
             </div>

@@ -40,6 +40,7 @@ class NotificationController extends Controller
 
         $notification['action_user'] = User::find($notification['action_user']);
         $notification['action_takers'] = User::find($notification['action_user'])->first()->minified_name;
+        $notification['notif_read'] = false;
 
         $notification_component = (new HeaderNotification($notification));
         $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
@@ -50,11 +51,10 @@ class NotificationController extends Controller
     public function notification_generate_range(Request $request) {
         $data = $request->validate([
             'range'=>'required|Numeric',
-            'state_counter'=>'required|Numeric',
+            'skip'=>'required|Numeric',
         ]);
 
-        $skipable_items = $data['state_counter'] * $data['range'];
-        $notifs_to_return = auth()->user()->notifs->skip($skipable_items)->take($data['range']);
+        $notifs_to_return = auth()->user()->notifs->skip($data['skip'])->take($data['range']);
 
         $payload = "";
 
@@ -65,7 +65,7 @@ class NotificationController extends Controller
         }
 
         return [
-            "hasNext"=> auth()->user()->notifs->skip(($data['state_counter']+1) * $data['range'])->count() > 0,
+            "hasNext"=> auth()->user()->notifs->skip(($data['skip']+1) * $data['range'])->count() > 0,
             "content"=>$payload,
             "count"=>$notifs_to_return->count()
         ];

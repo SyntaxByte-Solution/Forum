@@ -19,6 +19,7 @@ class HeaderNotification extends Component
     public $action_type;
     public $resource_action_icon;
     public $action_date;
+    public $notif_read;
 
     /**
      * Create a new component instance.
@@ -35,6 +36,7 @@ class HeaderNotification extends Component
         $this->action_date = $notification['action_date'];
         $this->action_resource_link = $notification['action_resource_link'];
         $this->resource_action_icon = $notification['resource_action_icon'];
+        $this->notif_read = $notification['notif_read'];
     }
 
     /**

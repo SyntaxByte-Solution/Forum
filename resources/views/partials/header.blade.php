@@ -47,7 +47,6 @@
                                 <a href="{{ route('user.notifications') }}" class="link-path">{{ __('See all') }}</a>
                             </div>
                             <div class="suboptions-container-dims notifs-box">
-                                <input type="hidden" class="notif-state-couter" value="1">
                                 @foreach($user->notifs as $notification)
                                     @if($loop->index == 6)
                                         @break

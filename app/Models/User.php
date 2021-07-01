@@ -183,6 +183,7 @@ class User extends UserAuthenticatable implements Authenticatable
                     'action_user' => User::find($cloned_notification_data->data['action_user']),
                     'resource_id' => $cloned_notification_data->data['action_resource_id'],
                     'resource_action_icon' => $resource_action_icon,
+                    'notif_read' => $cloned_notification_data->read(),
                 ]);
             }
         }

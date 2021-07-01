@@ -1094,6 +1094,13 @@ if(userId) {
             $('.hidden-notification-container').stop();
             clearTimeout(notification_timeout);
 
+            $('.header-button-counter-indicator').removeClass('none');
+            let notif_counter_value = $('.header-button-counter-indicator').text();
+            if (!(notif_counter_value.indexOf('+') > -1)) {
+                $('.header-button-counter-indicator').text(parseInt(notif_counter_value) + 1);
+            }
+            $('.notification-empty-box').addClass('none');
+
             $('.hidden-notification-container .hidden-notification-image').attr('src', notification.image);
             $('.hidden-notification-container .hidden-notification-action-taker').text(notification.action_taker_name);
             $('.hidden-notification-container .hidden-notification-content').text(notification.action_statement + notification.resource_string_slice);
@@ -1130,15 +1137,9 @@ if(userId) {
                     action_date: notification.resource_date,
                     action_resource_link: notification.action_resource_link,
                     resource_action_icon: notification.resource_action_icon,
+                    notif_read: notification.notif_read,
                 },
                 success: function(response) {
-                    $('.header-button-counter-indicator').removeClass('none');
-                    let notif_counter_value = $('.header-button-counter-indicator').text();
-                    if (!(notif_counter_value.indexOf('+') > -1)) {
-                        $('.header-button-counter-indicator').text(parseInt(notif_counter_value) + 1);
-                    }
-
-                    $('.notification-empty-box').addClass('none');
                     $('.notifs-box').prepend(response);
                     let appended_component = $('.notifs-box').find('.notification-container').first()
                     handle_notification_menu_appearence(appended_component);
@@ -1161,15 +1162,24 @@ function loadNotifications(button) {
     button.val('loading..')
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
-    let notif_state_counter = parseInt($('.notif-state-couter').val());
+    
+    let notifs_box = button;
+    while(!notifs_box.hasClass('notifs-box')) {
+        notifs_box = notifs_box.parent();
+    }
+
+    let present_notifs_count = notifs_box.find('.notification-container').length;
+
     $.ajax({
-        url: '/notifications/generate?range='+6+'&state_counter='+notif_state_counter,
+        url: '/notifications/generate?range='+6+'&skip='+present_notifs_count,
         type: 'get',
         success: function(notifications_components) {
             console.log(notifications_components);
             if(notifications_components.hasNext == false) {
                 button.addClass('none');
-            } else {
+            }
+
+            if(notifications_components.content != "") {
                 $(`${notifications_components.content}`).insertBefore(button);
     
                 /**
@@ -1192,7 +1202,7 @@ function loadNotifications(button) {
             button.val('load more');
             button.attr('style', '');
             button.prop("disabled", false);
-            $('.notif-state-couter').val(notif_state_counter+1);
+            $('.notif-state-couter').val(present_notifs_count+1);
         }
     })
 }

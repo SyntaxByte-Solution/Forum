@@ -1069,11 +1069,10 @@ $('.find-keys').click(function() {
 });
 
 $('.notification-button').click(function() {
-    let button = $(this);
+    handle_mark_as_read();
+});
 
-    button.parent().find('.header-button-counter-indicator').addClass('none');
-    button.parent().find('.header-button-counter-indicator').text('0');
-
+function handle_mark_as_read() {
     $.ajax({
         type: 'post',
         url: '/notifications/markasread',
@@ -1081,10 +1080,11 @@ $('.notification-button').click(function() {
             _token: csrf
         },
         success: function() {
-
+            $('.header-button-counter-indicator').addClass('none');
+            $('.header-button-counter-indicator').text('0');
         }
     })
-});
+}
 
 let notification_timeout;
 if(userId) {
@@ -1123,6 +1123,7 @@ if(userId) {
                 url: '/notification/generate',
                 data: {
                     _token: csrf,
+                    notif_id: notification.id,
                     action_user: notification.action_user,
                     action_statement: notification.action_statement,
                     resource_string_slice: notification.resource_string_slice,
@@ -1131,18 +1132,21 @@ if(userId) {
                     resource_action_icon: notification.resource_action_icon,
                 },
                 success: function(response) {
+                    $('.header-button-counter-indicator').removeClass('none');
+                    let notif_counter_value = $('.header-button-counter-indicator').text();
+                    if (!(notif_counter_value.indexOf('+') > -1)) {
+                        $('.header-button-counter-indicator').text(parseInt(notif_counter_value) + 1);
+                    }
+
+                    $('.notification-empty-box').addClass('none');
                     $('.notifs-box').prepend(response);
+                    let appended_component = $('.notifs-box').find('.notification-container').first()
+                    handle_notification_menu_appearence(appended_component);
+                    handle_notification_menu_buttons(appended_component.find('.notification-menu-button'));
+                    handle_nested_soc(appended_component.find('.notification-menu-button'));
+                    handle_delete_notification(appended_component.find('.delete-notification'))
                 }
             })
-            
-            console.log('run ajax request to fetch component ui and prepand it to notification box');
-            console.log('notification type: ' + notification.type);
-
-            $('.header-button-counter-indicator').removeClass('none');
-            let notif_counter_value = $('.header-button-counter-indicator').text();
-            if (!(notif_counter_value.indexOf('+') > -1)) {
-                $('.header-button-counter-indicator').text(parseInt(notif_counter_value) + 1);
-            }
         });
 }
 
@@ -1165,24 +1169,24 @@ function loadNotifications(button) {
             console.log(notifications_components);
             if(notifications_components.hasNext == false) {
                 button.addClass('none');
-            }
-            $(`${notifications_components.content}`).insertBefore(button);
-
-            /**
-             * Notice here when we fetch the notifications we return the number of fetched notifs
-             * because we need to handle the last count of appended components events
-             * 
-             */
-            let unhandled_event_notification_components = 
-                $('.notifs-box > .notification-container').slice(notifications_components.count*(-1));
-            
+            } else {
+                $(`${notifications_components.content}`).insertBefore(button);
+    
+                /**
+                 * Notice here when we fetch the notifications we return the number of fetched notifs
+                 * because we need to handle the last count of appended components events
+                 * 
+                 */
+                let unhandled_event_notification_components = 
+                    $('.notifs-box > .notification-container').slice(notifications_components.count*(-1));
+                
                 unhandled_event_notification_components.each(function() {
                     handle_notification_menu_appearence($(this));
                     handle_notification_menu_buttons($(this).find('.notification-menu-button'));
                     handle_nested_soc($(this).find('.notification-menu-button'));
                     handle_delete_notification($(this).find('.delete-notification'))
                 });
-            
+            }
         },
         complete: function() {
             button.val('load more');
@@ -1196,10 +1200,11 @@ function loadNotifications(button) {
 $('.hidden-notification-container').on({
     mouseenter: function(event) {
         clearTimeout(notification_timeout);
-        $('.header-button-counter-indicator').css('opacity', '0')
+        $('.header-button-counter-indicator').addClass("none")
         $('.hidden-notification-container').stop();
         $('.hidden-notification-container').removeClass('none');
         $('.hidden-notification-container').css('opacity', '1');
+        handle_mark_as_read();
     }, 
     mouseleave: function(event) {
         notification_timeout = setTimeout(function() {
@@ -1241,6 +1246,9 @@ function handle_delete_notification(button) {
             },
             success: function() {
                 notif_container.remove();
+                if(!$('.notifs-box .notification-container')[0]) {
+                    $('.notification-empty-box').removeClass('none');
+                }
             },
             complete: function() {
                 notification_delete_lock = true;

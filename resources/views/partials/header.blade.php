@@ -54,13 +54,12 @@
                                     @endif
                                     <x-user.header-notification :notification="$notification"/>
                                 @endforeach
-                                @if(!$user->notifications->count())
-                                    <div class="my8">
-                                        <div class="size28 sprite sprite-2-size binbox28-icon move-to-middle"></div>
-                                        <h3 class="my4 fs17 text-center">{{__('Notifications box is empty')}}</h3>
-                                        <p class="my4 fs13 gray text-center">{{ __('Try to start discussions/questions or react to people posts') }}.</p>
-                                    </div>
-                                @elseif($user->notifications->count() > 6)
+                                <div class="notification-empty-box my8 @if($user->notifications->count()) none @endif">
+                                    <div class="size28 sprite sprite-2-size binbox28-icon move-to-middle"></div>
+                                    <h3 class="my4 fs17 text-center">{{__('Notifications box is empty')}}</h3>
+                                    <p class="my4 fs13 gray text-center">{{ __('Try to start discussions/questions or react to people posts') }}.</p>
+                                </div>
+                                @if($user->notifs->count() > 6)
                                     <input type='button' class="see-all-full-style notifications-load" value="{{__('load more')}}">
                                 @endif
                             </div>

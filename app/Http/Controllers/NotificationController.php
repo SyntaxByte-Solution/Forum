@@ -29,6 +29,7 @@ class NotificationController extends Controller
 
     public function notification_generate(Request $request) {
         $notification = $request->validate([
+            'notif_id'=>'required|exists:notifications,id',
             'action_user'=>'required|exists:users,id',
             'action_statement'=>'required|max:400',
             'resource_string_slice'=>'required|max:400',

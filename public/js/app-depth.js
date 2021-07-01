@@ -42,22 +42,29 @@ $('.x-close-container').click(function(event) {
 $('.handle-image-center-positioning').each(function() {
     let image_container = $(this).parent();
     let image = $(this);
-    let height;
-    let width;
 
-    image.on('load', function(){
-        width = $(this).width();
-        height = $(this).height();
+    width = $(this).width();
+    height = $(this).height();
+    let ratio;
+    if(width >= height) {
+        // if(image_container.height() > height) {
+        //     ratio = height * 1 / image_container.height();
+        // } else {
+        //     ratio = image_container.height() * 1 / height;
+        // }
 
-        if(width >= height) {
-            image.height(image_container.height());
-        } else {
-            let ratio = height / width;
-            image.width(image_container.width());
-            image.height(image_container.width() * ratio);
-        }
-    });
+        // image.width(ratio*width);
+        image.height(image_container.height());
+    } else {
+        // if(image_container.width() < width) {
+        //     ratio = image_container.width() * 1 / width; 
+        // } else {
+        //     ratio = image_container.width() * 1 / width;
+        // }
 
+        image.width(image_container.width());
+        //image.height(width*ratio);
+    }
 });
 
 $(".button-with-suboptions").each(function() {
@@ -342,7 +349,7 @@ $('.copy-button').click(function() {
 });
 
 $('.action-verification').click(function(event) {
-    let action_type = $('.verification-action-type').val();
+    let action_type = $(this).parent().find('.verification-action-type').val();
 
     if(action_type == 'thread.destroy') {
         $('.thread-deletion-viewer').css('display', 'block');

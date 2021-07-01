@@ -127,9 +127,11 @@ class SearchController extends Controller
                          * eg. :
                          * keyword = mouad nassri => keywords = ['mouad','nassri']
                          * SELECT * FROM threads 
-                         * where `subject` LIKE '%mouad%'
-                         * OR `content` LIKE '%nassri%'
+                         * where `subject` LIKE '%mouad nassri%'
                          * OR `subject` LIKE '%mouad%'
+                         * OR `subject` LIKE '%nassri%'
+                         * OR `content` LIKE '%mouad nassri%'
+                         * OR `content` LIKE '%mouad%'
                          * OR `content` LIKE '%nassri%'
                          */
                         foreach($keywords as $keyword) {
@@ -320,21 +322,22 @@ class SearchController extends Controller
         $fi = true;
         $i = 0;
         $j = 0;
+
         $query = "SELECT * FROM $table ";
+        
         foreach($columns as $column) {
-            foreach($keywords as $keyword) {
-                if($first_iteration) {
-                    if($operators[$i] == 'LIKE') {
-                        $keyword = "%$keyword%";
-                    }
-                    $query .= "WHERE `$column` $operators[$i] '$keyword' ";
-                    $first_iteration = false;
-                } else {
-                    if($operators[$i] == 'LIKE') {
-                        $keyword = "%$keyword%";
-                    }
-                    $query .= "$conditional_operators[$j] `$column` $operators[$i] '$keyword' ";
+            if($first_iteration) {
+                $query .= "WHERE `$column` LIKE '%$search_query%' ";
+                $first_iteration = false;
+            } else {
+                $query .= "OR `$column` LIKE '%$search_query%' ";
+            }
+
+            foreach($keywords as $keyword) {    
+                if($operators[$i] == 'LIKE') {
+                    $keyword = "%$keyword%";
                 }
+                $query .= "$conditional_operators[$j] `$column` $operators[$i] '$keyword' ";
             }
             $i++;
             if(!$fi) {

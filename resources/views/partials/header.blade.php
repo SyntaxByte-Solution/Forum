@@ -78,7 +78,7 @@
                     <div class="relative">
                         <div class="flex align-center pointer button-with-suboptions">
                             <div class='header-profile-button'>
-                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning hidden-overflow">
+                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning">
                             </div>
                             <p class="no-margin fs13 mx4 light-gray">{{ $user->username }} <span>▾</span></p>
                         </div>

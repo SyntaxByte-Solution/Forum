@@ -1238,6 +1238,10 @@ $('.delete-notification').each(function() {
     handle_delete_notification($(this));
 })
 
+$('.disable-switch-notification').each(function() {
+    handle_disable_switch_notification($(this));
+})
+
 let notification_delete_lock = true;
 function handle_delete_notification(button) {
     button.click(function() {
@@ -1252,7 +1256,7 @@ function handle_delete_notification(button) {
             notif_container = notif_container.parent();
         }
 
-        button.find('.button-text').text(button.parent().find('.message-ing').val());
+        button.find('.button-text').text(button.find('.message-ing').val());
         button.addClass('block-click');
         button.attr('style', 'background-color: #dddddd5e; cursor: default');
         $.ajax({
@@ -1269,6 +1273,63 @@ function handle_delete_notification(button) {
             },
             complete: function() {
                 notification_delete_lock = true;
+            }
+        })
+
+        return false;
+    });
+}
+
+let notification_disable_switch_lock = true;
+function handle_disable_switch_notification(button) {
+    button.click(function() {
+        if(!notification_disable_switch_lock) {
+            return false;;
+        }
+        notification_disable_switch_lock = false;
+
+        let notif_id = button.parent().find('.notif-id').val();
+
+        button.attr('style', 'background-color: #dddddd5e; cursor: default');
+
+        let url;
+        if(button.hasClass('disable-notification')) {
+            button.find('.button-text').text(button.find('.disable-message-ing').val());
+            url = `/notification/${notif_id}/disable`;
+        } else {
+            button.find('.button-text').text(button.find('.enable-message-ing').val());
+            url = `/notification/${notif_id}/enable`;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: {
+                _token: csrf,
+            },
+            success: function(response) {
+                console.log(response);
+                if(response == 'enabled') {
+                    button.find('.notif-switch-icon').removeClass('enablenotif17b-icon');
+                    button.find('.notif-switch-icon').addClass('disablenotif17b-icon');
+
+                    button.removeClass('enable-notification');
+                    button.addClass('disable-notification');
+
+                    button.find('.button-text').text(button.find('.disable-action-text').val());
+                } else {
+                    button.find('.notif-switch-icon').removeClass('disablenotif17b-icon');
+                    button.find('.notif-switch-icon').addClass('enablenotif17b-icon');
+
+                    button.removeClass('disable-notification');
+                    button.addClass('enable-notification');
+
+                    button.find('.button-text').text(button.find('.enable-action-text').val());
+                }
+            },
+            complete: function() {
+                button.attr('style', '');
+                notification_disable_switch_lock = true;
             }
         })
 

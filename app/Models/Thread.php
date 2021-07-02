@@ -52,6 +52,10 @@ class Thread extends Model
         return $this->morphMany(Like::class, 'likable');
     }
 
+    public function disables() {
+        return $this->morphMany(NotificationDisable::class, 'disabled');
+    }
+
     public function getLikedAttribute() {
         if($current_user = auth()->user()) {
             return Like::where('user_id', $current_user->id)

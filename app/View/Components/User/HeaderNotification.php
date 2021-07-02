@@ -4,7 +4,7 @@ namespace App\View\Components\User;
 
 use Illuminate\View\Component;
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\{User, NotificationDisable};
 
 class HeaderNotification extends Component
 {
@@ -20,6 +20,7 @@ class HeaderNotification extends Component
     public $resource_action_icon;
     public $action_date;
     public $notif_read;
+    public $disabled;
 
     /**
      * Create a new component instance.
@@ -37,6 +38,8 @@ class HeaderNotification extends Component
         $this->action_resource_link = $notification['action_resource_link'];
         $this->resource_action_icon = $notification['resource_action_icon'];
         $this->notif_read = $notification['notif_read'];
+        $this->disabled = $notification['disabled'];
+
     }
 
     /**

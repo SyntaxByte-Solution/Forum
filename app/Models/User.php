@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, Thread, UserPersonalInfos, AccountStatus, Vote, Like};
+use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, 
+    Thread, UserPersonalInfos, AccountStatus, Vote, Like, NotificationDisable};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -87,6 +88,10 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function votes_count() {
         return $this->votes()->count();
+    }
+
+    public function disables() {
+        return $this->hasMany(NotificationDisable::class);
     }
 
     public function isBanned() {
@@ -171,6 +176,20 @@ class User extends UserAuthenticatable implements Authenticatable
                     $resource_action_icon = 'notification24-icon';
                 }
 
+                $resource_type = explode('-', $cloned_notification_data->data['action_type'])[0];
+                if($resource_type == 'thread') {
+                    $resource_type = "App\Models\Thread";
+                } else if($resource_type == 'post') {
+                    $resource_type = "App\Models\Post";
+                }
+
+                $resource_id = $cloned_notification_data->data['action_resource_id'];
+                $disabled = (bool)
+                    $this->disables
+                    ->where('disabled_type', $resource_type)
+                    ->where('disabled_id', $resource_id)
+                    ->count();
+
                 $notifications->push([
                     'notif_id'=>$cloned_notification_data->id,
                     'action_takers'=>$action_takers,
@@ -184,6 +203,7 @@ class User extends UserAuthenticatable implements Authenticatable
                     'resource_id' => $cloned_notification_data->data['action_resource_id'],
                     'resource_action_icon' => $resource_action_icon,
                     'notif_read' => $cloned_notification_data->read(),
+                    'disabled'=>$disabled
                 ]);
             }
         }

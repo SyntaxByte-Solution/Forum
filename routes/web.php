@@ -10,7 +10,7 @@ use App\Http\Controllers\
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController, MultilanguageHelperController,
     NotificationController};
-use App\Models\{User};
+use App\Models\{User, Thread};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -28,16 +28,14 @@ Route::get('/test', function() {
     if (Auth::check()) {
         $user = auth()->user();
 
-        $user->notify(
-            new \App\Notifications\UserAction([
-                'action_user'=>1,
-                'action_statement'=>'did something',
-                'resource_string_slice'=>'slice',
-                'action_type'=>'thread_like',
-                'action_resource_id'=>'48',
-                'action_resource_link'=>'google.com',
-            ])
-        );
+        // $thread = Thread::first();
+
+        // $notif_disable = new \App\Models\NotificationDisable;
+        // $notif_disable->user_id = $user->id;
+        
+        // $thread->disables()->save($notif_disable);
+
+        // dd($thread->disables);
     }
 });
 
@@ -92,6 +90,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifications/markasread', [NotificationController::class, 'mark_as_read']);
     Route::post('/notification/generate', [NotificationController::class, 'notification_generate']);
     Route::get('/notifications/generate', [NotificationController::class, 'notification_generate_range']);
+    Route::post('/notification/{notification_id}/disable', [NotificationController::class, 'disable']);
+    Route::post('/notification/{notification_id}/enable', [NotificationController::class, 'enable']);
     Route::delete('/notification/{notification_id}/delete', [NotificationController::class, 'destroy']);
 
     Route::get('/{forum:slug}/{category:slug}/threads/add', [ThreadController::class, 'create'])->name('thread.add');

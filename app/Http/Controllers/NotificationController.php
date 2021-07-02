@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\View\Components\User\HeaderNotification;
-use App\Models\{User, Notification};
+use App\Models\{User, Notification, NotificationDisable, Thread, Post};
 
 class NotificationController extends Controller
 {
@@ -69,6 +69,57 @@ class NotificationController extends Controller
             "content"=>$payload,
             "count"=>$notifs_to_return->count()
         ];
+    }
+
+    public function disable(Request $request, $notification_id) {
+        $this->authorize('disable', [Notification::class, $notification_id]);
+
+        $notification = Notification::find($notification_id);
+        $notification_data = \json_decode($notification->data);
+        
+        $current_user = auth()->user();
+        $resource_id = $notification_data->action_resource_id;
+        $resource_type = explode('-', $notification_data->action_type)[0];
+
+        $disable = new NotificationDisable;
+        $disable->user_id = $current_user->id;
+
+        if($resource_type == "thread") {
+            Thread::find($resource_id)->disables()->save($disable);
+        } else if($resource_type == "post") {
+            Post::find($resource_id)->disables()->save($disable);
+        }
+
+        return 'disabled';
+    }
+
+    public function enable(Request $request, $notification_id) {
+        $this->authorize('enable', [Notification::class, $notification_id]);
+
+        $notification = Notification::find($notification_id);
+        $notification_data = \json_decode($notification->data);
+        
+        $current_user = auth()->user();
+        $resource_id = $notification_data->action_resource_id;
+        $resource_type = explode('-', $notification_data->action_type)[0];
+
+        $disable = new NotificationDisable;
+        $disable->user_id = $current_user->id;
+
+        if($resource_type == "thread") {
+            NotificationDisable::where('disabled_id', $resource_id)
+            ->where('disabled_type', 'App\Models\Thread')
+            ->where('user_id', $current_user->id)
+            ->delete();
+        } else if($resource_type == "post") {
+            NotificationDisable::where('disabled_id', $resource_id)
+            ->where('disabled_type', 'App\Models\Post')
+            ->where('user_id', $current_user->id)
+            ->delete();
+        }
+
+
+        return 'enabled';
     }
 
     public function destroy(Request $request, $notification_id) {

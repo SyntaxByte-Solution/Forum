@@ -724,7 +724,11 @@ a, input, textarea {
 }
 
 .disablenotif17b-icon {
-    background-position: 0px -424px;
+    background-position: 0px -425px;
+}
+
+.enablenotif17b-icon {
+    background-position: -17px -425px;
 }
 
 .menu24-icon {

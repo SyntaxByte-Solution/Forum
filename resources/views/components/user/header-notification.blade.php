@@ -20,10 +20,17 @@
                 <span class="button-text">{{ __('Delete this notification') }}</span>
                 <input type="hidden" class="message-ing" value="{{ __('Deleting notification..') }}">
             </a>
-            <a href="" class="suboption-style-1 fs13 disable-notification align-center" style="width: 230px;">
-                <div class="small-image-2 sprite sprite-2-size disablenotif17b-icon mr4"></div>
-                <span class="button-text">{{ __('Disable notifications on this post') }}</span>
-                <input type="hidden" class="message-ing" value="{{ __('Disabling notifications..') }}">
+            <a href="" class="suboption-style-1 fs13 disable-switch-notification @if($disabled) enable-notification @else disable-notification @endif align-center" style="width: 230px;">
+                <div class="notif-switch-icon small-image-2 sprite sprite-2-size @if($disabled) enablenotif17b-icon @else disablenotif17b-icon @endif disablenotif17b-icon mr4"></div>
+                @if($disabled)
+                    <span class="button-text">{{ __('Enable notifications on this post') }}</span>
+                @else
+                    <span class="button-text">{{ __('Disable notifications on this post') }}</span>
+                @endif
+                <input type="hidden" class="disable-message-ing" value="{{ __('Disabling notifications..') }}">
+                <input type="hidden" class="enable-message-ing" value="{{ __('Enabling notifications..') }}">
+                <input type="hidden" class="disable-action-text" value="{{ __('Disable notifications on this post') }}">
+                <input type="hidden" class="enable-action-text" value="{{ __('Enable notifications on this post') }}">
             </a>
         </div>
     </div>

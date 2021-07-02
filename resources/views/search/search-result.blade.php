@@ -43,7 +43,7 @@
             <div>
                 @if($users->count())
                     <div class="flex space-between align-center">
-                        <a href="{{ route('users.search') }}" class="fs20 blue bold no-underline my4 flex align-center">{{ __('Users') }}<span class="gray fs14 ml4 @if($search_query == '') none @endif">({{$users->total()}} {{__('found')}})</span></a>
+                        <a href="{{ route('users.search') . '?k=' . request()->input('k') }}" class="fs20 blue bold no-underline my4 flex align-center">{{ __('Users') }}<span class="gray fs14 ml4 @if($search_query == '') none @endif">({{$users->total()}} {{__('found')}})</span></a>
                         @if($users->count() > 4)
                         <a href="" class="link-path mr4">see all</a>
                         @endif
@@ -58,7 +58,7 @@
             </div>
             <div class="simple-line-separator my8"></div>
             <div class="flex my8">
-                <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Threads') }}<span class="gray fs14 ml4">@isset($search_query) ({{$threads->total() . ' ' . __('found')}}) @endisset</span></h2>
+                <a href="{{ route('threads.search') . '?k=' . request()->input('k') }}" class="fs20 blue bold no-underline my4 flex align-center">{{ __('Threads') }}<span class="gray fs14 ml4">@isset($search_query) ({{$threads->total() . ' ' . __('found')}}) @endisset</span></a>
                 <div class="move-to-right">
                     {{ $threads->appends(request()->query())->links() }}
                 </div>

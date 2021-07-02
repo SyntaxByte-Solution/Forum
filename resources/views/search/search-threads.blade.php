@@ -20,11 +20,17 @@
         <div class="full-width">
             <div class="flex">
                 <div>
-                    <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                    <a href="/search" class="link-path">{{ __('Search') }} > </a>
-                    <span class="current-link-path">{{ __('Threads search') }}</span>
+                    <div>
+                        <a href="/" class="link-path">{{ __('Board index') }} > </a>
+                        <a href="/search" class="link-path">{{ __('Search') }} > </a>
+                        <span class="current-link-path">{{ __('Threads search') }}</span>
+                    </div>
+                    <!-- 
+                        Here we need to know if the page loaded from advanced search; If so we need to show the user
+                        the filters.
+                     -->
                 </div>
-                <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="button-style-1 flex move-to-right">{{ __('Add a thread') }}</a>
+                <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="button-style-1 flex move-to-right height-max-content">{{ __('Add a thread') }}</a>
             </div>
             <div class="flex">
                 <div>

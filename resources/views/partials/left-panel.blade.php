@@ -96,17 +96,7 @@
         <div class="flex relative">
             <div class="flex align-center full-width">
                 @php
-                    $add_thread_link;
-
-                    if($forum = request()->forum) {
-                        if($category = request()->category) {
-                            $add_thread_link = route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]);
-                        } else {
-                            $add_thread_link = route('thread.add', ['forum'=>$forum->slug, 'category'=>$forum->categories->first()->slug]);
-                        }
-                    } else {
-                        $add_thread_link = route('thread.add', ['forum'=>\App\Models\Forum::first()->slug, 'category'=>\App\Models\Forum::first()->categories->first()->slug]);
-                    }
+                    $add_thread_link = route('thread.add', ['forum'=>\App\Models\Forum::first()->slug, 'category'=>\App\Models\Forum::first()->categories->first()->slug]);
                 @endphp
                 <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected' }} @endif">
                     <div class="small-image sprite sprite-2-size plus17-icon mr4"></div>
@@ -124,7 +114,7 @@
                 <div class="flex align-center full-width relative">
                     <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected' }} @endif">
                         <div class="small-image sprite sprite-2-size forums17-icon mr4"></div>
-                        {{__('Foums')}}
+                        {{__('Forums')}}
                     </a>
                 </div>
                 @if($page == 'forums')

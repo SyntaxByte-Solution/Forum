@@ -188,6 +188,10 @@ a, input, textarea {
     display: none !important;
 }
 
+.height-max-content {
+    height: max-content;
+}
+
 .left8 {
     left: 8px;
 }

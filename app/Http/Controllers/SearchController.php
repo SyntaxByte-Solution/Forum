@@ -57,7 +57,6 @@ class SearchController extends Controller
     }
 
     public function search_advanced_results(Request $request) {
-        $search_query = '';
         $forums = Forum::all();
 
         $pagesize = 10;
@@ -78,8 +77,6 @@ class SearchController extends Controller
             ],
             'category'=>[
                 function ($attribute, $value, $fail) use (&$threads) {
-                    $keywords = array_filter(explode(' ', request()->k));
-
                     // request()->forum != 0 means the user select a forum
                     // request()->forum == 0; means user select All forums
                     if(($forum = request()->forum) != 0) {
@@ -89,56 +86,9 @@ class SearchController extends Controller
                         if(!in_array($value, $categories_ids)) {
                             $fail('The '.$attribute." doesn't exists in our records.");
                         }
-                        array_pop($categories_ids);
-                        
-                        if($value == '0') {
-                            /**
-                             * Get threads for all categories of the forum that match the search query
-                             * Notice here we have to use conditional groups because threads will be fetched like following
-                             * WHERE category_id IN (1, 2, 3) AND (subject = keyword || content = keyword)
-                             */
-                            $threads = Thread::whereIn('category_id', $categories_ids)
-                                        ->where(function($query) use($keywords) {
-                                foreach($keywords as $keyword) {
-                                    $query->where('subject','like',"%$keyword%")
-                                            ->orWhere('content','like',"%$keyword%");
-                                }
-                            });
-                        } else {
-                            // Get threads for category of the forum that match the search query
-                            foreach($keywords as $keyword) {
-                                $threads = 
-                                    Thread::where('category_id', $value)
-                                    // see notice above where $value = '0'
-                                    ->where(function($query) use ($keyword) {
-                                        $query->where('subject','like',"%$keyword%")
-                                        ->orWhere('content','like',"%$keyword%");
-                                    });
-                            }
-                        }
                     } else {
                         if($value != 0) {
                             $fail('Invalid '.$attribute." value");
-                        }
-                        /**
-                         * get all threads of all forums categories that match one of search query keywords
-                         * Notice that here also we need to use groupings because we need OR operators
-                         * between keywords checks
-                         * eg. :
-                         * keyword = mouad nassri => keywords = ['mouad','nassri']
-                         * SELECT * FROM threads 
-                         * where `subject` LIKE '%mouad nassri%'
-                         * OR `subject` LIKE '%mouad%'
-                         * OR `subject` LIKE '%nassri%'
-                         * OR `content` LIKE '%mouad nassri%'
-                         * OR `content` LIKE '%mouad%'
-                         * OR `content` LIKE '%nassri%'
-                         */
-                        foreach($keywords as $keyword) {
-                            Thread::orWhere(function($query) use (&$threads, $keyword) {
-                                $threads = $threads->where('subject','like',"%$keyword%")
-                                        ->orWhere('content','like',"%$keyword%");
-                            });
                         }
                     }
                 },
@@ -152,6 +102,82 @@ class SearchController extends Controller
                 Rule::in(['created_at_desc', 'created_at_asc', 'views', 'votes', 'likes']),
             ]
         ]);
+
+        $query_string = $data['k'];
+        $keywords = array_filter(explode(' ', $query_string));
+        usort($keywords, function($a, $b){
+            return strlen($a) < strlen($b);
+        });
+         
+
+        // request()->forum != 0 means the user select a forum
+        // request()->forum == 0; means user select All forums
+        if(($forum = $data['forum']) != 0) {
+            $categories_ids = Forum::find($forum)->categories->pluck('id')->toArray();
+            
+            if($data['category'] == '0') {
+                /**
+                 * Get threads for all categories of the forum that match the search query
+                 * Notice here we have to use conditional groups because threads will be fetched like following
+                 * First we fetch threads from categories of the selected forum
+                 * then we open a group to place all the conditions:
+                 *  1. we compare threads subject with the whole query_string using like operator
+                 *  2. we compare threads content with the whole query_string using like operator
+                 *  3. then we pass the keywords to the nested group to fetch all threads with either subject or content like keyword
+                 * WHERE category_id IN (1, 2, 3) AND (subject like '%keyword%' || content like '%keyword%')
+                 */
+                $threads = Thread::whereIn('category_id', $categories_ids)
+                    ->where(function($query) use ($query_string,$keywords) {
+                        $query->where('subject', 'like', "%$query_string%")
+                            ->orWhere('content', 'like', "%$query_string%")
+                            ->orWhere(function($q) use ($keywords) {
+                                foreach($keywords as $keyword) {
+                                    $q->where('subject','like',"%$keyword%")
+                                            ->orWhere('content','like',"%$keyword%");
+                                }
+                            });
+                    });
+            } else {
+                // Get threads for category of the forum that match the search query
+                $threads = 
+                    Thread::where('category_id', $data['category'])
+                    ->where(function($query) use ($query_string, $keywords) {
+                        $query->where('subject', 'like', "%$query_string%")
+                        ->orWhere('content', 'like', "%$query_string%")
+                        // see notice above where $value = '0'
+                        ->orWhere(function($query) use ($keywords) {
+                            foreach($keywords as $keyword) {
+                                $query->where('subject','like',"%$keyword%")
+                                ->orWhere('content','like',"%$keyword%");
+                            }
+                        });
+                });
+            }
+        } else {
+            /**
+             * get all threads of all forums categories that match one of search query keywords
+             * Notice that here also we need to use groupings because we need OR operators
+             * between keywords checks
+             * eg. :
+             * keyword = mouad nassri => keywords = ['mouad','nassri']
+             * SELECT * FROM threads 
+             * where `subject` LIKE '%mouad nassri%'
+             * OR `content` LIKE '%mouad nassri%'
+             * OR `subject` LIKE '%mouad%'
+             * OR `subject` LIKE '%nassri%'
+             * OR `content` LIKE '%mouad%'
+             * OR `content` LIKE '%nassri%'
+             */
+            $threads = 
+                Thread::where('subject', 'like', "%$query_string%")
+                    ->orWhere('content', 'like', "%$query_string%")
+                    ->orWhere(function($query) use ($keywords) {
+                        foreach($keywords as $keyword) {
+                            $query->where('subject', 'like', "%$keyword%")
+                            ->orWhere('content', 'like', "%$keyword%");
+                        }
+                    });
+        }
 
         if(isset($request->hasbestreply)) {
             $threads = $threads->ticked();

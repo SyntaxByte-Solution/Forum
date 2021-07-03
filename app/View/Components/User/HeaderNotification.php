@@ -38,7 +38,7 @@ class HeaderNotification extends Component
         $this->action_resource_link = $notification['action_resource_link'];
         $this->resource_action_icon = $notification['resource_action_icon'];
         $this->notif_read = $notification['notif_read'];
-        $this->disabled = $notification['disabled'];
+        $this->disabled = isset($notification['disabled']) ? $notification['disabled'] : false;
 
     }
 

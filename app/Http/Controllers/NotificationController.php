@@ -134,5 +134,21 @@ class NotificationController extends Controller
                 $notif->delete();
             }
         }
+
+        // Cleaning up notification disables related to this notification
+        $notification_resource_id = $notification_data->action_resource_id;
+        $notification_resource_type = explode('-', $notification_data->action_type)[0];
+        $notifiable_user = $notification->notifiable_id;
+
+        if($notification_resource_type == 'thread') {
+            $notification_resource_type = "App\Models\Thread";
+        } else if($notification_resource_type == 'post') {
+            $notification_resource_type = "App\Models\Post";
+        }
+
+        NotificationDisable::where('user_id', $notifiable_user)
+        ->where('disabled_type', $notification_resource_type)
+        ->where('disabled_id', $notification_resource_id)
+        ->delete();
     }
 }

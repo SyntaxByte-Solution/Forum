@@ -36,32 +36,35 @@ class PostController extends Controller
          * and action_type and pluck the users's names and delete all those notifications and add one with the collection of names
          * like following: 
          * grotto_IV, hostname47 and hitman replied to your thread
-         * Actually this is useful for likes not for comment all we need to do is delete existing 
-         * notifications related to this thread with this action type and add this one
+         * Take a look at User model->fetchNotifs()
          */
         
-        if($thread_owner->id != $current_user->id) {
-            // If the user is already reply to this thread we have to delete the previous notification
-            foreach($thread_owner->notifications as $notification) {
-                if($notification->data['action_type'] == "thread-reply" 
-                && $notification->data['action_user'] == $current_user->id
-                && $notification->data['action_resource_id'] == $thread->id) {
-                    $notification->delete();
+        if(!$thread_owner->thread_disabled($thread->id)) {
+            if($thread_owner->id != $current_user->id) {
+                // If the user is already reply to this thread we have to delete the previous notification
+                foreach($thread_owner->notifications as $notification) {
+                    if($notification->data['action_type'] == "thread-reply" 
+                    && $notification->data['action_user'] == $current_user->id
+                    && $notification->data['action_resource_id'] == $thread->id) {
+                        $notification->delete();
+                    }
                 }
+                
+                $notif_data = [
+                    'action_user'=>$current_user->id,
+                    'action_statement'=>"replied to your thread:",
+                    'resource_string_slice'=> $thread->slice,
+                    'action_type'=>'thread-reply',
+                    'action_date'=>now(),
+                    'action_resource_id'=>$thread->id,
+                    'action_resource_link'=>$thread->link,
+                ];
+
+                // Only notify thread owner if he didn't disable notif on the thread
+                $thread_owner->notify(
+                    new \App\Notifications\UserAction($notif_data)
+                );
             }
-            
-            $notif_data = [
-                'action_user'=>$current_user->id,
-                'action_statement'=>"replied to your thread:",
-                'resource_string_slice'=> $thread->slice,
-                'action_type'=>'thread-reply',
-                'action_date'=>now(),
-                'action_resource_id'=>$thread->id,
-                'action_resource_link'=>$thread->link,
-            ];
-            $thread_owner->notify(
-                new \App\Notifications\UserAction($notif_data)
-            );
         }
 
         $data['user_id'] = auth()->user()->id;

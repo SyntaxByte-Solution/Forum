@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, 
-    Thread, UserPersonalInfos, AccountStatus, Vote, Like, NotificationDisable};
+    Thread, Post, UserPersonalInfos, AccountStatus, Vote, Like, NotificationDisable};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -92,6 +92,20 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function disables() {
         return $this->hasMany(NotificationDisable::class);
+    }
+
+    public function post_disabled($post_id) {
+        return $this->disables
+            ->where('disabled_type', 'App\Models\Post')
+            ->where('disabled_id', $post_id)
+            ->count();
+    }
+
+    public function thread_disabled($post_id) {
+        return $this->disables
+            ->where('disabled_type', 'App\Models\Thread')
+            ->where('disabled_id', $post_id)
+            ->count();
     }
 
     public function isBanned() {

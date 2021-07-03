@@ -23,7 +23,7 @@ class VoteController extends Controller
 
         // If the subtraction of the below operation is greater than 0 means he get rid of his vote
         // meaning we don't have to notify the user of that action 
-        if($thread_vote_count - $thread->votes->count() <= 0) {
+        if($thread_vote_count - $thread->votes->count() <= 0 && !$thread->user->thread_disabled($thread->id)) {
             $thread->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
@@ -44,7 +44,7 @@ class VoteController extends Controller
         $post_vote_count = $post->votes->count();
         $result = $this->handle_vote($request, $post, 'App\Models\Post');
         $thread = $post->thread;
-        if($post_vote_count - $post->votes->count() <= 0) {
+        if($post_vote_count - $post->votes->count() <= 0 && !$post->user->post_disabled($post->id)) {
             $post->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,

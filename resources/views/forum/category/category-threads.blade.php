@@ -56,11 +56,13 @@
                     <div class="relative">
                         <a href="{{ route('thread.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 mr4">Add Thread</a>
                     </div>
-                    <form action="{{ route('search') }}" class="flex">
-                        <input type="text" name="k" class="input-style-2" placeholder="Search this forum" required>
+                    <form action="{{ route('advanced.search.results') }}" class="flex">
+                        <input type="hidden" name="forum" value="{{ request()->forum->id }}">
+                        <input type="hidden" name="category" value="{{ $category->id }}">
+                        <input type="text" name="k" class="input-style-2" placeholder="{{ __('Search this category') }}" required>
                         <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                     </form>
-                    <a href="/advanced/search" class="bsettings-icon background-style" style="width: 26px; height: 26px"></a>
+                    <a href="/advanced/search" class="size24 sprite sprite-2-size adv24-icon mx4"></a>
                 </div>
                 <div class="mr8">
                     {{ $threads->onEachSide(0)->links() }}

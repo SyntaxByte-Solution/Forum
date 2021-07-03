@@ -1130,8 +1130,6 @@ if(userId) {
                 });
             }, 5000);
 
-            console.log(notification);
-
             $.ajax({
                 type: 'post',
                 url: '/notification/generate',
@@ -1148,11 +1146,12 @@ if(userId) {
                 },
                 success: function(response) {
                     $('.notifs-box').prepend(response);
-                    let appended_component = $('.notifs-box').find('.notification-container').first()
+                    let appended_component = $('.notifs-box').last().find('.notification-container').first();
                     handle_notification_menu_appearence(appended_component);
                     handle_notification_menu_buttons(appended_component.find('.notification-menu-button'));
                     handle_nested_soc(appended_component.find('.notification-menu-button'));
-                    handle_delete_notification(appended_component.find('.delete-notification'))
+                    handle_delete_notification(appended_component.find('.delete-notification'));
+                    handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
                 }
             })
         });
@@ -1201,7 +1200,8 @@ function loadNotifications(button) {
                     handle_notification_menu_appearence($(this));
                     handle_notification_menu_buttons($(this).find('.notification-menu-button'));
                     handle_nested_soc($(this).find('.notification-menu-button'));
-                    handle_delete_notification($(this).find('.delete-notification'))
+                    handle_delete_notification($(this).find('.delete-notification'));
+                    handle_disable_switch_notification($(this).find('.disable-switch-notification'));
                 });
             }
         },

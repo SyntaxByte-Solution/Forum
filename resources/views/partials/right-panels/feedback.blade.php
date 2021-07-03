@@ -83,19 +83,13 @@
             <p class="no-margin my4 none error"></p>
             @guest
             <div class="input-container">
-                <label for="subject" class="label-style-1 fs13">{{ __('Email') }} @error('email') <span class="error mr4">*</span> @enderror</label>
+                <label for="subject" class="label-style-1 fs13">{{ __('Email') }} </label>
                 <input type="email" id="email" name="email" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
-                @error('email')
-                    <p class="error" role="alert">{{ $message }}</p>
-                @enderror
             </div>
             @endguest
             <div class="input-container">
-                <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} @error('feedback') <span class="error mr4">*</span> @enderror</label>
+                <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }}</label>
                 <textarea name="feedback" id="feedback" class="feedback-textarea" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
-                @error('feedback')
-                    <p class="error" role="alert">{{ $message }}</p>
-                @enderror
             </div>
             <div class="flex">
                 <input type="button" value="send" class="move-to-right button-style-1 send-feedback">

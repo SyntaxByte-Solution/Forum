@@ -743,6 +743,10 @@ a, input, textarea {
     border: 1px solid gray;
 }
 
+.adv24-icon {
+    background-position: 0px -624px;
+}
+
 /* ----------------------------------------------------- */
 
 .wedit-icon {
@@ -1175,11 +1179,12 @@ a, input, textarea {
     box-sizing: border-box;
     padding: 28px;
     width: 36%;
+    min-width: 380px;
+    margin: 26px auto 0 auto;
     border-radius: 6px;
-    margin: 26px auto;
 
     border: 1px solid #d7d7d7;
-    background-color: whitesmoke;
+    background-color: white;
 }
 
 .input-style {

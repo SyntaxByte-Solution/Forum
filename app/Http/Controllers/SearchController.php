@@ -66,6 +66,7 @@ class SearchController extends Controller
         $data = $request->validate([
             'k'=>'required|min:1|max:2000',
             'forum'=> [
+                'sometimes',
                 function ($attribute, $value, $fail) use (&$keywords) {
                     $forums_ids = Forum::all()->pluck('id')->toArray();
                     $forums_ids[] = 0;
@@ -76,6 +77,7 @@ class SearchController extends Controller
                 },
             ],
             'category'=>[
+                'sometimes',
                 function ($attribute, $value, $fail) use (&$threads) {
                     // request()->forum != 0 means the user select a forum
                     // request()->forum == 0; means user select All forums
@@ -94,11 +96,11 @@ class SearchController extends Controller
                 },
             ],
             'threads_date'=> [
-                'required',
+                'sometimes',
                 Rule::in(['anytime', 'past24hours', 'pastweek', 'pastmonth', 'pastyear']),
             ],
             'sorted_by'=>[
-                'required',
+                'sometimes',
                 Rule::in(['created_at_desc', 'created_at_asc', 'views', 'votes', 'likes']),
             ]
         ]);
@@ -115,7 +117,7 @@ class SearchController extends Controller
         if(($forum = $data['forum']) != 0) {
             $categories_ids = Forum::find($forum)->categories->pluck('id')->toArray();
             
-            if($data['category'] == '0') {
+            if(!isset($data['category']) || $data['category'] == '0') {
                 /**
                  * Get threads for all categories of the forum that match the search query
                  * Notice here we have to use conditional groups because threads will be fetched like following
@@ -183,37 +185,42 @@ class SearchController extends Controller
             $threads = $threads->ticked();
         }
 
-        switch($data['threads_date']) {
-            case 'past24hours':
-                $threads = $threads->where("created_at",">",Carbon::now()->subDay(1));
-                break;
-            case 'pastweek':
-                $threads = $threads->where("created_at",">",Carbon::now()->subDays(7));
-                break;
-            case 'pastmonth':
-                $threads = $threads->where("created_at",">",Carbon::now()->subMonth());
-                break;
-            case 'pastyear':
-                $threads = $threads->where("created_at",">",Carbon::now()->subYear());
-                break;
+        if(isset($data['threads_date'])) {
+            switch($data['threads_date']) {
+                case 'past24hours':
+                    $threads = $threads->where("created_at",">",Carbon::now()->subDay(1));
+                    break;
+                case 'pastweek':
+                    $threads = $threads->where("created_at",">",Carbon::now()->subDays(7));
+                    break;
+                case 'pastmonth':
+                    $threads = $threads->where("created_at",">",Carbon::now()->subMonth());
+                    break;
+                case 'pastyear':
+                    $threads = $threads->where("created_at",">",Carbon::now()->subYear());
+                    break;
+            }
         }
-        switch($data['sorted_by']) {
-            case 'created_at_desc':
-                $threads = $threads->orderBy('created_at', 'desc');
-                break;
-            case 'created_at_asc':
-                $threads = $threads->orderBy('created_at');
-                break;
-            case 'views':
-                // We plan to separate thread view to new table
-                $threads = $threads->orderBy('view_count', 'desc');
-                break;
-            case 'votes':
-                $threads = $threads->withCount('votes')->orderBy('votes_count', 'desc');
-                break;
-            case 'likes':
-                $threads = $threads->withCount('likes')->orderBy('likes_count', 'desc');
-                break;
+
+        if(isset($data['sorted_by'])) {
+            switch($data['sorted_by']) {
+                case 'created_at_desc':
+                    $threads = $threads->orderBy('created_at', 'desc');
+                    break;
+                case 'created_at_asc':
+                    $threads = $threads->orderBy('created_at');
+                    break;
+                case 'views':
+                    // We plan to separate thread view to new table
+                    $threads = $threads->orderBy('view_count', 'desc');
+                    break;
+                case 'votes':
+                    $threads = $threads->withCount('votes')->orderBy('votes_count', 'desc');
+                    break;
+                case 'likes':
+                    $threads = $threads->withCount('likes')->orderBy('likes_count', 'desc');
+                    break;
+            }
         }
         
         $threads = $threads->paginate($pagesize);

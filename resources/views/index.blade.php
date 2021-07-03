@@ -47,33 +47,16 @@
                     @endforeach
                 </table>
                 <div class="flex space-between align-end">
-                    <div>
-                        <p class="fs12 no-margin mt8" style="margin-bottom: 2px">{{ __('Search for threads, users ..') }}</p>
-                        <div class="flex align-center">
-                            <div>
-                                <form action="{{ route('search') }}" method='get' class="flex">
-                                    <input type="text" name="k" class="input-style-2" style="width: 330px" placeholder="Search everything .." required>
-                                    <input type="submit" value="" class="search-forum-button" style="margin-left: -8px; width: 60px">
-                                </form>
-                            </div>
-                            <a href="{{ route('advanced.search') }}" class="ml4">
-                                <img src="{{ asset('assets/images/icons/bsettings.png') }}" class="adv-search-button" alt="">
-                            </a>
+                    <div class="flex">
+                        <div class="flex align-center move-to-right">
+                            <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
+                            <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
+                            <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
                         </div>
                     </div>
-                    <div class="mr8">
-                        <div class="flex">
-                            <div class="flex align-center move-to-right">
-                                <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
-                                <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
-                                <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
-                            </div>
-                        </div>
-                        <div class="simple-half-line-separator my4 move-to-right"></div>
-                        <div class="flex">
-                            <div class="move-to-right">
-                                {{ $threads->onEachSide(0)->links() }}
-                            </div>
+                    <div class="flex">
+                        <div class="move-to-right">
+                            {{ $threads->onEachSide(0)->links() }}
                         </div>
                     </div>
                 </div>
@@ -120,7 +103,7 @@
                     <div class="full-center">
                         <div>
                             <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("There are no threads for the moment try out later !") }}</p>
-                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>'general']) }}" class="link-path">{{__('thread')}}</a></p>
+                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="link-path">{{__('thread')}}</a></p>
                         </div>
                     </div>
                 @endif

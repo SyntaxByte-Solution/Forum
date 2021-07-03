@@ -127,7 +127,7 @@ class ThreadController extends Controller
             return redirect()->back();
         }
 
-        $announcements_ids = Category::whereIn('slug', 'announcements')->pluck('id');
+        $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();
 
         if(in_array($data['category_id'], $announcements_ids)) {
             throw new AccessDeniedException("Only admins could share announcements");
@@ -150,7 +150,7 @@ class ThreadController extends Controller
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
         $categaory_slug = Category::find($data['category_id'])->slug;
 
-        return redirect(route('thread.show', ['forum'=>$forum_slug, 'category'=>$categaory_slug, 'thread'=>$thread->id]));
+        return redirect($thread->link);
     }
 
     public function edit(User $user, Thread $thread) {

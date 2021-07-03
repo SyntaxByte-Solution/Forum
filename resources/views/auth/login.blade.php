@@ -1,11 +1,14 @@
 @extends('layouts.app')
 
+@push('styles')
+    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
+@endpush
+
+@section('header')
+    @include('partials.header')
+@endsection
+
 @section('content')
-<style>
-    body {
-        background-color: #49516a12;
-    }
-</style>
 <div class="auth-card">
     <div>
         <a href="../"><img id="login-top-logo" class="move-to-middle" src="/assets/images/logos/b-large-logo.png" alt="logo"></a>
@@ -68,7 +71,7 @@
     </div>
     <div class="line-separator"></div>
     <div>
-        <div><strong>Not a member?</strong> <a href="{{ route('register') }}" class="link-style no-underline">{{ __('Signup now') }}</a></div>
+        <div class="flex align-center"><strong class="mr4">Not a member?</strong> <a href="{{ route('register') }}" class="link-style no-underline">{{ __('Signup now') }}</a></div>
     </div>
 </div>
 @endsection

@@ -623,6 +623,10 @@ a, input, textarea {
     background-position: -24px -192px;
 }
 
+.more7-icon {
+    background-position: 0px -434px;
+}
+
 .english17-flag {
     background-position: -17px -102px;
 }
@@ -745,6 +749,22 @@ a, input, textarea {
 
 .adv24-icon {
     background-position: 0px -624px;
+}
+
+.public18-icon {
+    background-position: 0px -1133px;
+}
+
+.public14-icon {
+    background-position: 0px -1372px;
+}
+
+.followers14-icon {
+    background-position: 0px -1386px;
+}
+
+.private14-icon {
+    background-position: 0px -1400px;
 }
 
 /* ----------------------------------------------------- */
@@ -1062,9 +1082,29 @@ a, input, textarea {
     width: 48px;
 }
 
+.size24 {
+    width: 24px;
+    height: 24px;
+}
+
+.size18 {
+    width: 18px;
+    height: 18px;
+}
+
+.size20 {
+    width: 20px;
+    height: 20px;
+}
+
 .size14 {
     height: 14px;
     width: 14px;
+}
+
+.size7 {
+    height: 7px;
+    width: 7px;
 }
 
 .rounded {
@@ -1846,11 +1886,6 @@ tr:nth-child(2n) {
     background-size: 32px;
 }
 
-.size24 {
-    width: 24px;
-    height: 24px;
-}
-
 .sprite-icon {
     min-width: 20px;
     height: 20px;
@@ -2236,4 +2271,77 @@ tr:nth-child(2n) {
     border: 1px solid #d9d9d9;
     box-shadow: 0 0 4px 0px #62626233;
     border-radius: 4px;
+}
+
+.thread-add-container {
+    border-radius: 6px;
+    border: 1px solid #dbdbdb;
+}
+
+.thread-add-header {
+    padding: 6px;
+    background-color: rgb(250, 250, 250);
+    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.thread-add-posted-to {
+    padding: 6px;
+    background-color: rgba(172, 201, 240, 0.31);
+    border-radius: 4px;
+}
+
+.thread-add-suboptions-container {
+    position: absolute;
+    top: calc(100% + 2px);
+    padding: 6px;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 0 4px 0px #62626233;
+    border-radius: 4px;
+    min-width: 160px;
+}
+
+.thread-add-suboption {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.thread-add-suboption-selected {
+    background-color: #f0f0f0;
+}
+
+.thread-add-suboption:hover {
+    background-color: #f4f4f4;
+}
+
+.thread-add-input {
+    padding: 8px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid gray;
+}
+
+.thread-add-input:focus {
+    border-color: #64ceff;
+    box-shadow: 0 0 0px 3px #def2ff;
+}
+
+.thread-add-share {
+    display: block;
+    text-decoration: none;
+    padding: 12px;
+    background-color: #4d5264;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+}
+
+.thread-add-share:hover {
+    background-color: #383e53;
 }

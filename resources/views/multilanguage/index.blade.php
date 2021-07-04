@@ -42,6 +42,9 @@
     </style>
     <div id="middle-container" class="middle-padding-1 flex">
         <div class="full-width">
+            @auth
+                @include('partials.thread.thread-add')
+            @endauth
             <h1 class="my8">Multilanguage Helper</h1>
             <div class="flex space-between">
                 <div class="part half-width">

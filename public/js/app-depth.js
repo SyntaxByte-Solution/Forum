@@ -1336,3 +1336,109 @@ function handle_disable_switch_notification(button) {
         return false;
     });
 }
+
+// Thread Add scripts
+let thread_add_forum_lock = true;
+$('.thread-add-forum').click(function() {
+    if(!thread_add_forum_lock) {
+        return;
+    }
+    thread_add_forum_lock = false;
+
+    let button = $(this);
+    let loading_anim = button.find('.loading-dots-anim');
+    loading_anim.removeClass('none');
+    start_loading_anim(loading_anim);
+
+    let thread_add_container = button;
+    while(!thread_add_container.hasClass('thread-add-container')) {
+        thread_add_container = thread_add_container.parent();
+    }
+
+    let forum_id = button.find('.forum-id').val();
+
+    $.ajax({
+        url: `/forums/${forum_id}/categories/ids`,
+        type: 'get',
+        success: function(response) {
+            let categories = JSON.parse(response);
+            $('.thread-add-category:not(:first)').remove();
+
+            let first_iteration = true;
+            $.each(categories, function(id, category){
+                if(first_iteration) {
+                    $('.thread-add-selected-category').text(category);
+                    $('.thread-add-category').find('.thread-add-category-val').text(category);
+                    $('.thread-add-category').find('.category-id').text(id);
+                    thread_add_container.find('.category').val(id);
+                    first_iteration = false;
+                } else {
+                    $('.thread-add-categories-container').append(`
+                        <div class="thread-add-suboption thread-add-category flex align-center">
+                            <span class="thread-add-category-val">${category}</span>
+                            <input type="hidden" class="category-id" value="${id}">
+                        </div>
+                    `);
+
+                    handle_category_selection($('.thread-add-category').last());
+                }
+            });
+            console.log(response);
+        },
+        complete: function() {
+            // Stop loading animation
+            loading_anim.addClass('none');
+            loading_anim.text('.');
+            stop_loading_anim();
+
+            thread_add_container.find('.forum').val(forum_id);
+
+            // setting forum to posted to:
+            $('.thread-add-selected-forum').text(button.find('.thread-add-forum-val').text());
+            // Hide the suboptions container
+            $('.thread-add-forum').removeClass('thread-add-suboption-selected');
+            
+            button.addClass('thread-add-suboption-selected');
+            button.parent().css('display', 'none');
+            thread_add_forum_lock = true;
+        }
+    })
+});
+
+$('.thread-add-category').each(function() {
+    handle_category_selection($(this));
+})
+
+function handle_category_selection(category_button) {
+    category_button.click(function(event) {
+        event.stopPropagation();
+        $(".thread-add-selected-category").text(category_button.find('.thread-add-category-val').text());
+
+        let container = category_button;
+        while(!container.hasClass('thread-add-container')) {
+            container = container.parent();
+        }
+        container.find('.category').val(category_button.find('.category-id').val());
+
+
+        $(this).parent().parent().css('display', 'none');
+
+    });
+}
+
+let loading_anim_interval;
+function start_loading_anim(loading_anim) {
+    loading_anim_interval = window.setInterval(function(){
+        if(loading_anim.text() == ".") {
+            loading_anim.text("..");
+        } else if(loading_anim.text() == "..") {
+            loading_anim.text("...");
+        } else {
+            loading_anim.text(".");
+        }
+    }, 300);
+}
+
+function stop_loading_anim() {
+    clearInterval(loading_anim_interval);
+}

@@ -21,31 +21,14 @@
             <div class="full-center">
                 <!-- <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt=""> -->
             </div>
+            @auth
+                @include('partials.thread.thread-add')
+            @endauth
             <div>
                 <div class="flex align-center">
                     <h2 class="my8 fs26 forum-color">{{ __('Top Discussions & Questions') }}</h2>
                     <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="move-to-right button-style">+ disucssion/Question</a>
                 </div>
-
-                <div class="flex align-end">
-                    <h3 class="no-margin fs17 blue">Announcements</h3>
-                    <a href="" class="fs13 move-to-right link-path">See all</a>
-                </div>
-                <table class="forums-table my8">
-                    <tr>
-                        <th class="table-col-header">
-                            <div class="flex align-center">
-                                {{ __('ANNOUNCEMENTS') }}
-                            </div>
-                        </th>
-                        <th class="table-col-header table-numbered-column">{{ __('FORUM') }}</th>
-                        <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
-                        <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
-                    </tr>
-                    @foreach($announcements as $announcement)
-                        <x-announcement :announcement="$announcement"/>
-                    @endforeach
-                </table>
                 <div class="flex space-between align-end">
                     <div class="flex">
                         <div class="flex align-center move-to-right">

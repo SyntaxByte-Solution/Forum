@@ -2339,7 +2339,7 @@ tr:nth-child(2n) {
 }
 
 .thread-add-share {
-    display: block;
+    display: flex;
     border: none;
     cursor: pointer;
     text-decoration: none;

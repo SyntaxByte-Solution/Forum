@@ -85,8 +85,8 @@
             <span class="fs13 error thread-add-error none"></span>
         </div>
         <div class="mx8 my8">
-            <label for="subject" class="thread-add-label">{{ __('Subject') }}<span class="error none">*</span></label>
-            <input type="hidden" class="required-text" value="{{ __('Subject field is required') }}">
+            <label for="subject" class="thread-add-label">{{ __('Title') }}<span class="error none">*</span></label>
+            <input type="hidden" class="required-text" value="{{ __('Title field is required') }}">
             <input type="text" id="subject" name="subject" class="thread-add-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re asking a question to another person") }}'>
         </div>
         <div>
@@ -112,6 +112,8 @@
             
         </div>
         <div class="my4 px8 py4 flex">
+            <input type="hidden" class="message-ing" value="{{ __('Sharing..') }}">
+            <input type="hidden" class="message-no-ing" value="{{ __('Share') }}">
             <input type="button" class="thread-add-share" value="{{ __('Share') }}">
         </div>
         <style>

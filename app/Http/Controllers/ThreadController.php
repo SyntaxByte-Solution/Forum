@@ -123,8 +123,7 @@ class ThreadController extends Controller
             $category = Category::find($data['category_id'])->slug;
 
             $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-            \Session::flash('message', __("This title is already exists in your threads list") . "(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), " . __("please choose another one !"));
-            return redirect()->back();
+            return response()->json(['error' => '* ' . __("This title is already exists in your threads list") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>) , " . __("please choose another one or delete/edit the previous one!")], 422);
         }
 
         $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();

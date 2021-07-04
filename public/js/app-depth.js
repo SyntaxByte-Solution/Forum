@@ -315,7 +315,6 @@ $('.edit-thread').click(function() {
             data: data,
             url: '/thread/'+thread_id,
             success: function(response) {
-                console.log(response);
                 document.location.href = response;
             }
         })
@@ -662,7 +661,6 @@ $('.deactivate-account').click(function() {
 });
 
 $('.send-feedback').click(function() {
-    console.log('clicked');
     let button = $(this);
 
     let feedback_container = $(this);
@@ -712,7 +710,6 @@ $('.emoji-button').click(function(event) {
     event.preventDefault();
     let emoji_button = $(this);
 
-    console.log($(this).find('.feedback-emoji-state').val());
     $(this).find('.emoji-unfilled').css('display', 'none');
     $('.emoji-unfilled').animate({
         opacity: '0.5'
@@ -730,16 +727,8 @@ $('.emoji-button').click(function(event) {
         data: {
             _token: csrf,
             emoji_feedback: emoji_button.find('.feedback-emoji-state').val()
-        },
-        success: function(response) {
-            console.log('success');
-        },
-        error: function(response) {
-            console.log('error');
         }
     });
-
-    console.log('emoji icon pressed !');
 });
 
 let vote_lock = true;
@@ -1180,7 +1169,6 @@ function loadNotifications(button) {
         url: '/notifications/generate?range='+6+'&skip='+present_notifs_count,
         type: 'get',
         success: function(notifications_components) {
-            console.log(notifications_components);
             if(notifications_components.hasNext == false) {
                 button.addClass('none');
             }
@@ -1308,7 +1296,6 @@ function handle_disable_switch_notification(button) {
                 _token: csrf,
             },
             success: function(response) {
-                console.log(response);
                 if(response == 'enabled') {
                     button.find('.notif-switch-icon').removeClass('enablenotif17b-icon');
                     button.find('.notif-switch-icon').addClass('disablenotif17b-icon');
@@ -1383,7 +1370,6 @@ $('.thread-add-forum').click(function() {
                     handle_category_selection($('.thread-add-category').last());
                 }
             });
-            console.log(response);
         },
         complete: function() {
             // Stop loading animation
@@ -1477,6 +1463,39 @@ $('.thread-add-share').click(function(event) {
         $('#content').parent().find('.error').addClass('none');
         container.find('.thread-add-error').addClass('none');
     }
+
+    button.val(button.parent().find('.message-ing').val());
+    button.attr("disabled","disabled");
+    button.attr('style', 'background-color: #acacac; cursor: default');
+    $.ajax({
+        url: '/thread',
+        type: 'post',
+        data: data,
+        success: function(response) {
+            $('#subject').val('');
+            simplemde.value('');
+            // Show notification flash
+        },
+        error: function(response) {
+            let er;
+            let error = JSON.parse(response.responseText).error;
+            if(error) {
+                er = JSON.parse(response.responseText).error;
+            } else {
+                let errorObject = JSON.parse(response.responseText).errors;
+                er = errorObject[Object.keys(errorObject)[0]][0];
+            }
+
+            container.find('.thread-add-error').removeClass('none');
+            container.find('.thread-add-error').html(er);
+        },
+        complete: function(response) {
+            button.val(button.parent().find('.message-no-ing').val());
+            button.attr('style', '');
+            button.prop("disabled", false);
+        }
+    })
+    $('#thread-creation-forum').submit();
     
     return false;
 })

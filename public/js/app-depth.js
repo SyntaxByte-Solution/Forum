@@ -1420,9 +1420,7 @@ function handle_category_selection(category_button) {
         }
         container.find('.category').val(category_button.find('.category-id').val());
 
-
         $(this).parent().parent().css('display', 'none');
-
     });
 }
 
@@ -1442,3 +1440,43 @@ function start_loading_anim(loading_anim) {
 function stop_loading_anim() {
     clearInterval(loading_anim_interval);
 }
+
+$('.thread-add-share').click(function(event) {
+    event.preventDefault();
+
+    let data = {
+        '_token':csrf,
+        'subject': $('#subject').val(),
+        'category_id': $('.category').val(),
+        'content':simplemde.value(),
+    };
+
+    let button = $(this);
+    let container = $(this);
+    while(!container.hasClass('thread-add-container')) {
+        container = container.parent();
+    }
+
+    if(data.subject == '') {
+        $('#subject').parent().find('.error').removeClass('none');
+        container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
+        container.find('.thread-add-error').removeClass('none');
+        return;
+    } else {
+        $('#subject').parent().find('.error').addClass('none');
+        container.find('.thread-add-error').text("");
+        container.find('.thread-add-error').addClass('none');
+    }
+
+    if(data.content == '') {
+        $('#content').parent().find('.error').removeClass('none');
+        container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
+        container.find('.thread-add-error').removeClass('none');
+        return;
+    } else {
+        $('#content').parent().find('.error').addClass('none');
+        container.find('.thread-add-error').addClass('none');
+    }
+    
+    return false;
+})

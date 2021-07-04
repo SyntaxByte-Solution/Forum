@@ -2330,8 +2330,18 @@ tr:nth-child(2n) {
     box-shadow: 0 0 0px 3px #def2ff;
 }
 
+.thread-add-label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    font-weight: bold;
+}
+
 .thread-add-share {
     display: block;
+    border: none;
+    cursor: pointer;
     text-decoration: none;
     padding: 12px;
     background-color: #4d5264;

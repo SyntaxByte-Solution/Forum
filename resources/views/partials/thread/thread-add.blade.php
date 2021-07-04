@@ -37,7 +37,8 @@
                     </div>
                 </div>
             </div>
-            <div class="relative ml4">
+            <div class="gray mx4">▸</div>
+            <div class="relative">
                 <div>
                     <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to fs12">
                         <span class="mr4">{{ __('Category') }}:</span>
@@ -80,30 +81,38 @@
                 </div>
             </div>
         </div>
-        <div class="my8 px8">
-            <label for="subject" class="block my4">{{ __('Subject') }} <span class="error"></span></label>
+        <div class="mx8 my8">
+            <span class="fs13 error thread-add-error none"></span>
+        </div>
+        <div class="mx8 my8">
+            <label for="subject" class="thread-add-label">{{ __('Subject') }}<span class="error none">*</span></label>
+            <input type="hidden" class="required-text" value="{{ __('Subject field is required') }}">
             <input type="text" id="subject" name="subject" class="thread-add-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re asking a question to another person") }}'>
         </div>
-        <textarea name="content" id="content"></textarea>
-        <script>
-            var simplemde = new SimpleMDE({
-                placeholder: '{{ __("Add a discussion or question..") }}',
-                hideIcons: ["guide", "heading"],
-            });
-            simplemde.value();
+        <div>
+            <label for="content" class="thread-add-label mx8">{{ __('Content') }}<span class="error none">*</span></label>
+            <input type="hidden" class="required-text" value="{{ __('Content field is required') }}">
+            <textarea name="content" id="content"></textarea>
+            <script>
+                var simplemde = new SimpleMDE({
+                    placeholder: '{{ __("Add a discussion or question..") }}',
+                    hideIcons: ["guide", "heading"],
+                });
+                simplemde.value();
 
-            function htmlDecode(input){
-                var e = document.createElement('textarea');
-                e.innerHTML = input;
-                // handle case of empty input
-                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-            }
-        </script>
+                function htmlDecode(input){
+                    var e = document.createElement('textarea');
+                    e.innerHTML = input;
+                    // handle case of empty input
+                    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+                }
+            </script>
+        </div>
         <div class="thread-add-media-section">
             
         </div>
         <div class="my4 px8 py4 flex">
-            <a href="" class="thread-add-share">Share</a>
+            <input type="button" class="thread-add-share" value="{{ __('Share') }}">
         </div>
         <style>
             .CodeMirror,

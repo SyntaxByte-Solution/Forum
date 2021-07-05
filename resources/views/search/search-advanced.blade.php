@@ -112,29 +112,32 @@
                 </form>
             </div>
         </div>
-        <div>
-            <div class="ms-right-panel mb8">
-                <div>
-                    <p class="black-link bold" style="margin-bottom: 12px; margin-top: 0">{{ __('Advanced Search Rules') }}</p>
-                    <div class="ml8 block">
-                        <p class="bold forum-color fs13" style="margin-bottom: 12px;">{{ __('Resource type') }}</p>
-                        <p class="fs12 my4">• {{__('Choose the resource you want to search (user, thread, [product in market - not supported yet])')}}.</p>
-                        <p class="fs12 my4">• {{ __('Th filters will be changed based on the resource type') }}</p>
-                    </div>
+    </div>
+    <div id="right-panel">
+        @include('partials.right-panels.forums-list')
+        <div class="mb8">
+            <div>
+                <div class="right-panel-header-container">
+                    <p class="bold no-margin unselectable my4">{{ __('Advanced Search Rules') }}</p>
                 </div>
-                <div>
-                    <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">Thread Filters</p>
-                    <div class="ml8">
-                        <p class="fs12 my4">• {{ __('Select the forum where you want to search, or select all forums to search in the entire forums') }}.</p>
-                        <p class="fs12 my4">• {{ __("Select the category where you want to search, or select all categories to search in all forum's categories") }}.</p>
-                        <p class="fs12 my4">• {{ __('If you want to return only the threads where the owner mark as best reply, check the Select only threads with best reply checkbox') }}.</p>
-                    </div>
+                <div class="ml8 block">
+                    <p class="bold forum-color fs13" style="margin-bottom: 12px;">{{ __('Resource type') }}</p>
+                    <p class="fs12 my4">• {{__('Choose the resource you want to search (user, thread, [product in market - not supported yet])')}}.</p>
+                    <p class="fs12 my4">• {{ __('Th filters will be changed based on the resource type') }}</p>
                 </div>
-                <div>
-                    <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">Users Search</p>
-                    <div class="ml8">
-                        <p class="fs12 my4">• {{ __('If you want to search for a user, go to ') }} <a href="{{ route('users.search') }}" class="link-path">users search</a> {{ __(' page') }}.</p>
-                    </div>
+            </div>
+            <div>
+                <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">Thread Filters</p>
+                <div class="ml8">
+                    <p class="fs12 my4">• {{ __('Select the forum where you want to search, or select all forums to search in the entire forums') }}.</p>
+                    <p class="fs12 my4">• {{ __("Select the category where you want to search, or select all categories to search in all forum's categories") }}.</p>
+                    <p class="fs12 my4">• {{ __('If you want to return only the threads where the owner mark as best reply, check the Select only threads with best reply checkbox') }}.</p>
+                </div>
+            </div>
+            <div>
+                <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">Users Search</p>
+                <div class="ml8">
+                    <p class="fs12 my4">• {{ __('If you want to search for a user, go to ') }} <a href="{{ route('users.search') }}" class="link-path">users search</a> {{ __(' page') }}.</p>
                 </div>
             </div>
         </div>

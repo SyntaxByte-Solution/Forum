@@ -14,25 +14,32 @@ if(urlParams.has('action')) {
 
 // -------------------------------
 
-$(document).scroll(function() {
-    if (document.documentElement.scrollTop + $(window).height() > 48 + $('#right-panel').height()) { 
-        $('#right-panel').css({
-            position: 'fixed',
-            bottom: '0',
-            top: 'unset'
-        });
-        console.log('You reached the end of the DIV');
-    } else {
-        $('#right-panel').css({
-            position: 'absolute',
-            top: '0',
-            bottom: 'unset'
-        });
-    }
-    console.log('scrolling ..');
-    // $('.right-panel').css({position: 'fixed', top: '0px'});
-    //console.log('bottom reached !');
-})
+if($('#right-panel').height() > $(window).height()) {
+    $(document).scroll(function() {
+        if (document.documentElement.scrollTop + $(window).height() > 48 + $('#right-panel').height()) { 
+            $('#right-panel').css({
+                position: 'fixed',
+                bottom: '0',
+                top: 'unset'
+            });
+            console.log('You reached the end of the DIV');
+        } else {
+            $('#right-panel').css({
+                position: 'absolute',
+                top: '0',
+                bottom: 'unset'
+            });
+        }
+        console.log('scrolling ..');
+        // $('.right-panel').css({position: 'fixed', top: '0px'});
+        //console.log('bottom reached !');
+    });
+} else {
+    $('#right-panel').css({
+        position: 'fixed',
+        top: '48px',
+    });
+}
 
 $('.button-with-strip').on({
     mouseenter: function() {

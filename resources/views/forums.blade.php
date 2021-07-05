@@ -66,7 +66,7 @@
                 </table>
             </div>
         </div>
-        <div class="index-right-panel-container border-box">
+        <div id="right-panel">
             @include('partials.right-panels.recent-forum-threads')
             @include('partials.right-panels.forum-guidelines-panel-section')
         </div>

@@ -123,7 +123,9 @@
                     });
                 </script>
             </div>
-            @include('partials.thread.right-panel', ['thread_type'=>'threads'])
         </div>
+    </div>
+    <div id="right-panel">
+        @include('partials.thread.right-panel', ['thread_type'=>'threads'])
     </div>
 @endsection

@@ -98,10 +98,8 @@
                 </div>
             </form>
         </div>
-        <div class="index-right-panel-container border-box">
-            <div class="sticky" style="top: 68px">
-                @include('partials.right-panels.forum-guidelines-panel-section')
-            </div>
+        <div id="right-panel">
+            @include('partials.right-panels.forum-guidelines-panel-section')
         </div>
     </div>
 @endsection

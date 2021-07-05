@@ -91,10 +91,8 @@
                 <input type="submit" class="button-style block edit-thread" value="{{ __('Save Changes') }}">
             </div>
         </div>
-        <div class="index-right-panel-container border-box">
-            <div class="sticky" style="top: 68px">
-                @include('partials.right-panels.forum-guidelines-panel-section')
-            </div>
-        </div>
+    </div>
+    <div id="right-panel">
+        @include('partials.right-panels.forum-guidelines-panel-section')
     </div>
 @endsection

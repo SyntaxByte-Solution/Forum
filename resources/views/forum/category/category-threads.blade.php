@@ -62,7 +62,7 @@
                         <input type="text" name="k" class="input-style-2" placeholder="{{ __('Search this category') }}" required>
                         <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
                     </form>
-                    <a href="/advanced/search" class="size24 sprite sprite-2-size adv24-icon mx4"></a>
+                    <a href="{{ route('advanced.search') }}" class="size24 sprite sprite-2-size adv24-icon mx4"></a>
                 </div>
                 <div class="mr8">
                     {{ $threads->onEachSide(0)->links() }}
@@ -95,12 +95,12 @@
                 @endforeach
             </table>
         </div>
-        <div class="index-right-panel-container border-box">
-            @include('partials.right-panels.forums-list')
-            @include('partials.right-panels.recent-forum-threads')
-            <div class="sticky" style="top: 70px">
-                @include('partials.right-panels.feedback')
-            </div>
+    </div>
+    <div id="right-panel">
+        @include('partials.right-panels.forums-list')
+        @include('partials.right-panels.recent-forum-threads')
+        <div class="sticky" style="top: 70px">
+            @include('partials.right-panels.feedback')
         </div>
     </div>
 @endsection

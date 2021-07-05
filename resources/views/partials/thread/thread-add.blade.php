@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="relative move-to-right">
-                <div class="button-with-suboptions flex align-center pointer">
+                <div class="audience-button button-with-suboptions flex align-center pointer">
                     <p class="no-margin mr4 fs12 gray">Audience: </p>
                     <div class="size18 sprite sprite-2-size public18-icon" title="Public"></div>
                 </div>

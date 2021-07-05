@@ -111,9 +111,9 @@
                 @endif
             </div>
         </div>
-        <div class="index-right-panel-container border-box">
-            @include('partials.right-panels.forums-list')
-            @include('partials.right-panels.recent-forum-threads')
-        </div>
+    </div>
+    <div id="right-panel">
+        @include('partials.right-panels.forums-list')
+        @include('partials.right-panels.recent-forum-threads')
     </div>
 @endsection

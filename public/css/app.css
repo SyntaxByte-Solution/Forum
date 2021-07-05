@@ -627,6 +627,18 @@ a, input, textarea {
     background-position: 0px -434px;
 }
 
+.forums20-icon {
+    background-position: -20px -280px;
+}
+
+.rating20-icon {
+    background-position: 0px -360px;
+}
+
+.binbox28-icon {
+    background-position: 0px -476px;
+}
+
 .english17-flag {
     background-position: -17px -102px;
 }
@@ -667,14 +679,6 @@ a, input, textarea {
     background-position: -20px -260px;
 }
 
-.forums20-icon {
-    background-position: -20px -280px;
-}
-
-.rating20-icon {
-    background-position: 0px -360px;
-}
-
 .statistics17-icon {
     background-position: 17px -1037px;
 }
@@ -699,22 +703,6 @@ a, input, textarea {
     background-position: 0px -373px;
 }
 
-.binbox28-icon {
-    background-position: 0px -476px;
-}
-
-.resource24-reply-icon {
-    background-position: 0px -455px;
-}
-
-.resource24-vote-icon {
-    background-position: 0px -480px;
-}
-
-.notification24-icon {
-    background-position: -24px -456px;
-}
-
 .resource17-like-gicon {
     background-position: 0px -357px;
 }
@@ -725,10 +713,6 @@ a, input, textarea {
 
 .delete17b-icon {
     background-position: -17px -408px;
-}
-
-.resource24-like-icon {
-    background-position: -24px -480px;
 }
 
 .disablenotif17b-icon {
@@ -745,6 +729,26 @@ a, input, textarea {
 
 .clock17-icon {
     background-position: 0px -1734px;
+}
+
+.author17-icon {
+    background-position: 0px -238px;
+}
+
+.resource24-reply-icon {
+    background-position: 0px -455px;
+}
+
+.resource24-vote-icon {
+    background-position: 0px -480px;
+}
+
+.notification24-icon {
+    background-position: -24px -456px;
+}
+
+.resource24-like-icon {
+    background-position: -24px -480px;
 }
 
 .menu24-icon {
@@ -2298,6 +2302,19 @@ tr:nth-child(2n) {
     padding: 6px;
     background-color: rgba(172, 201, 240, 0.31);
     border-radius: 4px;
+}
+
+.thread-add-posted-to:hover {
+    background-color: rgba(140, 191, 255, 0.44);
+}
+
+.audience-button {
+    padding: 5px 8px;
+    border-radius: 5px;
+}
+
+.audience-button:hover {
+    background-color: rgb(233, 233, 233);
 }
 
 .thread-add-suboptions-container {

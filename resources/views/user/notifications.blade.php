@@ -37,7 +37,7 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'user', 'subpage'=>'user.activities'])
+    @include('partials.left-panel', ['page' => '', 'subpage'=>''])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex">
             <div class="notifications-wrapper">

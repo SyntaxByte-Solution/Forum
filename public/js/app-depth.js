@@ -1,3 +1,4 @@
+
 var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
@@ -198,6 +199,21 @@ $('.close-shadowed-view-button').click(function() {
     $('.suboptions-container').css('display', 'none');
 
     return false;
+});
+
+$('.expand-button').click(function() {
+    let button = $(this);
+    let state = button.parent().find('.expand-text-state').val();
+
+    if(state == '0') {
+        button.parent().find('.expandable-text').text(button.parent().find('.expand-whole-text').val());
+        button.parent().find('.expand-text-state').val(1);
+        button.parent().find('.expand-button').text(button.parent().find('.collapse-text').val());
+    } else {
+        button.parent().find('.expandable-text').text(button.parent().find('.expand-slice-text').val());
+        button.parent().find('.expand-text-state').val(0);
+        button.parent().find('.expand-button').text(button.parent().find('.expand-text').val());
+    }
 });
 
 function heart_beating() {
@@ -1525,3 +1541,21 @@ $('.thread-add-share').click(function(event) {
     
     return false;
 })
+
+$('.thread-container-box').each(function() {
+    handle_thread_display($(this));
+});
+
+function handle_thread_display(thread_container_box) {
+    thread_container_box.find('.thread-display-button').click(function() {
+        let thread_component_display = thread_container_box.find('.thread-component').css('display');
+
+        if(thread_component_display == 'none') {
+            thread_container_box.find('.thread-component').css('display', 'flex');
+            thread_container_box.find('.hidden-thread-section').addClass('none');
+        } else {
+            thread_container_box.find('.thread-component').css('display', 'none');
+            thread_container_box.find('.hidden-thread-section').removeClass('none');
+        }
+    });
+}

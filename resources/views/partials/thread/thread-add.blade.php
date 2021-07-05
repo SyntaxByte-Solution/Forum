@@ -12,8 +12,8 @@
     $category = $categories->first();
 @endphp
 
-<div class="my8">
-    <p class="my4 bold">{{ __('Start a discussion / Ask a question') }}</p>
+<div>
+    <p class="no-margin mb8 bold">{{ __('Start a discussion / Ask a question') }}</p>
     <div class="thread-add-container">
         <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
         <input type="hidden" class="category" value="{{ $category->id }}">

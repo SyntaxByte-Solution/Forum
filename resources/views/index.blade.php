@@ -24,11 +24,9 @@
             @auth
                 @include('partials.thread.thread-add')
             @endauth
+
             <div>
-                <div class="flex align-center">
-                    <h2 class="my8 fs26 forum-color">{{ __('Top Discussions & Questions') }}</h2>
-                </div>
-                <div class="flex space-between align-end">
+                <!-- <div class="flex space-between align-end">
                     <div class="flex">
                         <div class="flex align-center move-to-right">
                             <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
@@ -41,9 +39,9 @@
                             {{ $threads->onEachSide(0)->links() }}
                         </div>
                     </div>
-                </div>
-                <h3 class="my8 fs17 blue">{{ __('Discussions and Questions') }}</h3>
-                <table class="forums-table my8">
+                </div> -->
+                <h3 class="fs26 page-title forum-color" style="margin: 12px 0 26px 0">{{ __('Discussions and Questions') }}</h3>
+                <!-- <table class="forums-table my8">
                     <tr>
                         <th class="table-col-header">
                             <div class="flex align-center">
@@ -77,10 +75,12 @@
                         <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
                         <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
                     </tr>
+                </table> -->
+                <div id="threads-global-container">
                     @foreach($threads as $thread)
                         <x-index-resource :thread="$thread"/>
                     @endforeach
-                </table>
+                </div>
                 @if(!$threads->count())
                     <div class="full-center">
                         <div>

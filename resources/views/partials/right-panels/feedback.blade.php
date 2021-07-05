@@ -36,7 +36,7 @@
             @php
                 $feedback_state = \App\Models\EmojiFeedback::where('ip', request()->ip())->orderBy('created_at', 'desc')->first()->emoji_feedback;
             @endphp
-        <div class="full-center">
+        <div class="flex space-between">
             <a href="" class="mx4 block-click">
                 @if($feedback_state == 'sad')
                     <img src="{{ asset('assets/images/icons/emoji-sad-filled.png') }}" class="mx4 size28 emoji-filled" alt="">

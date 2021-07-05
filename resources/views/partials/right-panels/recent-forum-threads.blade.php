@@ -1,9 +1,8 @@
-<div class="index-right-panel mt8">
-    <div class="flex align-center mx8">
-        <img src="{{ asset('assets/images/icons/clock.svg') }}" class="small-image mr4" alt="">
-        <p class="bold my8 blue">{{ __('Recent threads') }}</p>
+<div>
+    <div class="right-panel-header-container">
+        <div class="small-image-2 sprite sprite-2-size clock17-icon mr4"></div>
+        <p class="bold no-margin">{{ __('Recent threads') }}</p>
     </div>
-    <div class="simple-line-separator my8"></div>
     @php
         $recent_threads = collect([]);
         if($forum = request()->forum) {
@@ -18,7 +17,7 @@
         }
     @endphp
     @foreach($recent_threads as $thread)
-    <div class="my8">
+    <div class="my8 mx8">
         <div>
             <div class="flex align-center">
                 <a href="{{ route('forum.all.threads', ['forum'=>$thread->forum()->slug]) }}" class="blue no-underline fs11">{{ $thread->forum()->forum }}</a>
@@ -30,7 +29,7 @@
                     <img src="{{ $thread->user->avatar }}" class="small-image-3 rounded mr4" alt="">
                 </a>
                 <div class="full-width">
-                    <a href="{{ $thread->link }}" class="no-margin bold no-underline forum-color fs13">{{ $thread->subject }}</a>
+                    <a href="{{ $thread->link }}" class="no-margin bold no-underline forum-color fs13">{{ $thread->slice }}</a>
                     <div class="flex align-center mt4">
                         <div class="flex align-center">
                             <img src="{{ asset('assets/images/icons/eye.png') }}" class="small-image-size mr4" alt="">
@@ -44,13 +43,8 @@
 
                         <div class="move-to-right flex">
                             <div class="flex align-center mr8">
-                                <p class="fs11 no-margin" style="margin-right: 2px">0</p>
-                                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-size" alt="">
-                            </div>
-
-                            <div class="flex align-center">
-                                <p class="fs11 no-margin" style="margin-right: 2px">0</p>
-                                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image-size" alt="">
+                                <p class="fs11 no-margin" style="margin-right: 2px">{{ $thread->votevalue }}</p>
+                                <div class="size14 sprite sprite-2-size votes14-icon"></div>
                             </div>
                         </div>
                     </div>
@@ -60,7 +54,7 @@
         
     </div>
     @if(!$loop->last)
-        <div class="simple-half-line-separator my8"></div>
+        <div class="simple-line-separator my8"></div>
     @endif
     @endforeach
 </div>

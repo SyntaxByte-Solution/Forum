@@ -1,4 +1,8 @@
 
+main {
+    padding-right: 320px;
+}
+
 .index-right-panel-container {
     width: 280px;
     min-width: 280px;
@@ -7,20 +11,26 @@
 
 .index-right-panel {
     padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #b9b9b9;
 }
 
 /* ------------------------------------- */
 
-.right-panel {
+#right-panel {
     position: absolute;
-    top: 0px;
+    top: 0;
     right: 0px;
-    width: 260px;
-    border-left: 1px solid #b9b9b9;
-    border-bottom: 1px solid #b9b9b9;
-    height: 500px;
+    width: 320px;
+    padding: 0;
+    border-left: 1px solid #d5d5d5;
+}
+
+.right-panel-header-container {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    background-image: linear-gradient(70deg, rgba(217, 217, 217, 0.18) 21%, rgba(0, 0, 0, 0.04) 117%);
 }
 
 .rp-title {

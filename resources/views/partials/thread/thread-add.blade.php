@@ -12,9 +12,9 @@
     $category = $categories->first();
 @endphp
 
-<div>
-    <p class="my4">{{ __('Start a discussion / Ask a question') }}</p>
-    <div class="thread-add-container" style="width: 60%">
+<div class="my8">
+    <p class="my4 bold">{{ __('Start a discussion / Ask a question') }}</p>
+    <div class="thread-add-container">
         <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
         <input type="hidden" class="category" value="{{ $category->id }}">
         <div class="thread-add-header flex align-center">
@@ -119,8 +119,8 @@
         <style>
             .CodeMirror,
             .CodeMirror-scroll {
-                max-height: 120px;
-                min-height: 120px;
+                max-height: 100px;
+                min-height: 100px;
                 border-radius: 0;
                 border-left: none;
                 border-right: none;

@@ -667,8 +667,16 @@ a, input, textarea {
     background-position: -20px -260px;
 }
 
-.forums17-icon {
+.forums20-icon {
     background-position: -20px -280px;
+}
+
+.rating20-icon {
+    background-position: 0px -360px;
+}
+
+.statistics17-icon {
+    background-position: 17px -1037px;
 }
 
 .fire17-icon {
@@ -693,10 +701,6 @@ a, input, textarea {
 
 .binbox28-icon {
     background-position: 0px -476px;
-}
-
-.rating22-icon {
-    background-position: 0px -396px;
 }
 
 .resource24-reply-icon {
@@ -735,6 +739,14 @@ a, input, textarea {
     background-position: -17px -425px;
 }
 
+.forums17-icon {
+    background-position: 0px -1717px;
+}
+
+.clock17-icon {
+    background-position: 0px -1734px;
+}
+
 .menu24-icon {
     background-position: 0px -552px;
     border-radius: 50%;
@@ -765,6 +777,10 @@ a, input, textarea {
 
 .private14-icon {
     background-position: 0px -1400px;
+}
+
+.votes14-icon {
+    background-position: 14px -1287px;
 }
 
 /* ----------------------------------------------------- */
@@ -1159,6 +1175,10 @@ a, input, textarea {
     padding: 12px 12px 12px 12px;
 }
 
+.middle-container-style {
+    padding: 36px 60px;
+}
+
 .link-wraper {
     text-decoration: none;
     color: inherit;
@@ -1540,17 +1560,6 @@ tr:nth-child(2n) {
     font-size: 13px;
     margin: 0;
     margin-top: 3px;
-}
-
-#right-panel {
-    width: 270px;
-    height: 400px;
-    background-color: gray;
-    border-radius: 6px;
-
-    position: absolute;
-    right: 6px;
-    top: 6px;
 }
 
 #page-title {

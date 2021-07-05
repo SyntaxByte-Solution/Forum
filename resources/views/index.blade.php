@@ -16,7 +16,7 @@
 
 @section('content')
     @include('partials.left-panel', ['page' => 'home'])
-    <div id="middle-container" class="middle-padding-1 flex">
+    <div id="middle-container" class="middle-container-style">
         <div class="full-width">
             <div class="full-center">
                 <!-- <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt=""> -->
@@ -27,7 +27,6 @@
             <div>
                 <div class="flex align-center">
                     <h2 class="my8 fs26 forum-color">{{ __('Top Discussions & Questions') }}</h2>
-                    <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="move-to-right button-style">+ disucssion/Question</a>
                 </div>
                 <div class="flex space-between align-end">
                     <div class="flex">
@@ -97,13 +96,43 @@
                 </div>
             </div>
         </div>
-        <div class="index-right-panel-container border-box">
+        <!-- <div class="index-right-panel-container border-box">
             @include('partials.right-panels.forums-list')
             @include('partials.right-panels.recent-forum-threads')
             <div class="sticky" style="top: 54px">
                 @include('partials.right-panels.feedback')
                 @include('partials.right-panels.statistics')
             </div>
+        </div> -->
+    </div>
+
+    @push('scripts')
+        <!-- <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script> -->
+        <script>
+        // window.googletag = window.googletag || {cmd: []};
+        // googletag.cmd.push(function() {
+        //     googletag
+        //         .defineSlot(
+        //             '/6355419/Travel/Europe/France/Paris', [300, 250], 'banner-ad')
+        //         .addService(googletag.pubads());
+        //     googletag.enableServices();
+        // });
+        </script>
+    @endpush
+    <div id="right-panel">
+        @include('partials.right-panels.forums-list')
+        <div class="line-separator"></div>
+        <div id="banner-ad" style="width: 300px; height: 250px; margin: 0 auto">
+            <script>
+                // googletag.cmd.push(function() {
+                // googletag.display('banner-ad');
+                // });
+            </script>
+        </div>
+        <div>
+            @include('partials.right-panels.recent-forum-threads')
+            @include('partials.right-panels.statistics')
+            @include('partials.right-panels.feedback')
         </div>
     </div>
 @endsection

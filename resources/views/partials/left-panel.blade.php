@@ -113,7 +113,7 @@
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected' }} @endif">
-                        <div class="small-image sprite sprite-2-size forums17-icon mr4"></div>
+                        <div class="small-image sprite sprite-2-size forums20-icon mr4"></div>
                         {{__('Forums')}}
                     </a>
                 </div>

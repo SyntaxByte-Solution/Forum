@@ -390,14 +390,19 @@ $('.copy-button').click(function() {
 });
 
 $('.action-verification').click(function(event) {
-    let action_type = $(this).parent().find('.verification-action-type').val();
+    let action_type = $(this).find('.verification-action-type').val();
+    console.log(action_type);
+    let container = $(this);
+    while(!container.hasClass('shadow-contained-box')) {
+        container = container.parent();
+    }
 
     if(action_type == 'thread.destroy') {
-        $('.thread-deletion-viewer').css('display', 'block');
-        $('.thread-deletion-viewer').css('opacity', '1');
+        container.find('.thread-deletion-viewer').css('display', 'block');
+        container.find('.thread-deletion-viewer').css('opacity', '1');
     } else if(action_type == 'turn.off.posts') {
-        $('.turn-off-viewer').css('display', 'block');
-        $('.turn-off-viewer').css('opacity', '1');
+        container.find('.turn-off-viewer').css('display', 'block');
+        container.find('.turn-off-viewer').css('opacity', '1');
     }
 
     $('.suboptions-container').css('display', 'none');

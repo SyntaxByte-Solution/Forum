@@ -16,66 +16,54 @@
 
 @section('content')
     @include('partials.left-panel', ['page' => 'home'])
-    <div id="middle-container" class="middle-container-style">
+    <div id="middle-container">
         <div class="full-width">
-            <div class="full-center">
-                <!-- <img src="{{ asset('assets/images/logos/b-large-logo.png') }}" class="half-width" alt=""> -->
+            <div>
+                <img src="{{ asset('assets/images/logos/welcome.png') }}" class="flex full-width" alt="">
             </div>
             @auth
                 @include('partials.thread.thread-add')
             @endauth
+            <div class="middle-container-style">
+                <h3 class="fs26 page-title forum-color" style="margin: 12px 0 26px 0">{{ __('Discussions and Questions') }}</h3>
+                <div class="flex space-between align-end my8">
+                    <div>
+                        
+                        <div class="flex align-center my8">
+                            <div class="flex align-center mr8">
+                                <p class="no-margin mr4">{{__('Forums')}}: </p>
+                                <div class="relative">
+                                    <a href="{{ route('forum.all.threads', ['forum'=>'general']) }}" class="flex mr4 button-right-icon more-icon button-with-suboptions" style="padding: 6px 26px 6px 10px; font-size: 12px">{{ __('All') }}</a>
+                                    <div class="suboptions-container suboptions-buttons-b-style">
+                                        @foreach($forums as $forum)
+                                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div>
-                <!-- <div class="flex space-between align-end">
-                    <div class="flex">
                         <div class="flex align-center move-to-right">
                             <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
                             <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
                             <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
                         </div>
                     </div>
-                    <div class="flex">
-                        <div class="move-to-right">
-                            {{ $threads->onEachSide(0)->links() }}
-                        </div>
-                    </div>
-                </div> -->
-                <h3 class="fs26 page-title forum-color" style="margin: 12px 0 26px 0">{{ __('Discussions and Questions') }}</h3>
-                <!-- <table class="forums-table my8">
-                    <tr>
-                        <th class="table-col-header">
-                            <div class="flex align-center">
-                                {{ __('THREADS') }} ({{$threads->count()}} {{__('in total')}})
-                                <div class="inline-block move-to-right mr4">
-                                    <div class="flex align-center">
-                                        <div class="flex align-center mr8">
-                                            <p class="gray fs11 no-margin mr4">Forum: </p>
-                                            <div class="relative">
-                                                <a href="{{ route('forum.all.threads', ['forum'=>'general']) }}" class="mr4 button-right-icon more-icon button-with-suboptions">{{ __('All') }}</a>
-                                                <div class="suboptions-container suboptions-buttons-b-style" style="top: 16px">
-                                                    @foreach($forums as $forum)
-                                                        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex align-center">
-                                            <span>rows: </span>
-                                            <select name="" class="small-dropdown row-num-changer">
-                                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                                <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                                <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                                                <option value="100" @if($pagesize == 100) selected @endif>50</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div>
+                        <div class="flex">
+                            <div class="flex align-center my4 move-to-right">
+                                <span class="mr4 fs13 gray">posts/page :</span>
+                                <select name="" class="small-dropdown row-num-changer">
+                                    <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                    <option value="20" @if($pagesize == 20) selected @endif>20</option>
+                                    <option value="50" @if($pagesize == 50) selected @endif>50</option>
+                                    <option value="100" @if($pagesize == 100) selected @endif>50</option>
+                                </select>
                             </div>
-                        </th>
-                        <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
-                        <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
-                    </tr>
-                </table> -->
+                        </div>
+                        {{ $threads->onEachSide(0)->links() }}
+                    </div>
+                </div>
                 <div id="threads-global-container">
                     @foreach($threads as $thread)
                         <x-index-resource :thread="$thread"/>
@@ -96,14 +84,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="index-right-panel-container border-box">
-            @include('partials.right-panels.forums-list')
-            @include('partials.right-panels.recent-forum-threads')
-            <div class="sticky" style="top: 54px">
-                @include('partials.right-panels.feedback')
-                @include('partials.right-panels.statistics')
-            </div>
-        </div> -->
     </div>
 
     @push('scripts')
@@ -130,10 +110,8 @@
                 // });
             </script>
         </div>
-        <div>
-            @include('partials.right-panels.recent-forum-threads')
-            @include('partials.right-panels.statistics')
-            @include('partials.right-panels.feedback')
-        </div>
+        @include('partials.right-panels.recent-forum-threads')
+        @include('partials.right-panels.statistics')
+        @include('partials.right-panels.feedback')
     </div>
 @endsection

@@ -1,8 +1,59 @@
-<div class="resource-container thread-container-box">
+<div class="resource-container thread-container-box relative shadow-contained-box">
     <input type="hidden" class="votable-id" value="{{ $thread->id }}">
     <input type="hidden" class="votable-type" value="thread">
+    <input type="hidden" class="likable-id" value="{{ $thread->id }}">
+    <input type="hidden" class="likable-type" value="thread">
     <div class="hidden-thread-section none px8 py8">
         <p class="my4 fs12">Thread hidden. If you want to show it again <span class="pointer blue thread-display-button">click here</span></p>
+    </div>
+    <div class="absolute full-shadowed br6 turn-off-viewer" style="z-index: 1">
+        <div class="full-center full-width full-height">
+            <div>
+                @php
+                    $posts_switch = ($thread->status->id == 3) ? 'on' : 'off';
+                @endphp
+                
+                @if($thread->status->id != 3)
+                <p class="white bold fs15 my4">{{ __('Important: If you turn off replies, no one could reply to your tread') }}.</p>
+                <p class="white fs15 mt4 mb8">{{ __('However if there are already some replies, they will not disappeared.') }}</p>
+                @else
+                <p class="white bold fs15 my8">{{ __('Turn on replies on this thread') }}.</p>
+                @endif
+                <div class="full-center">
+                    <input type="button" class="simple-white-button pointer turn-off-posts fs13" value="Turn {{ $posts_switch }} replies">
+                    <a href="" class="simple-link close-shadowed-view-button fs14" style="text-decoration: none; margin-left: 6px;">cancel</a>
+                    <input type="hidden" class="id" value="{{ $thread->id }}">
+                    <input type="hidden" class="switch" value="{{ $posts_switch }}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixed full-shadowed zi12 thread-deletion-viewer">
+        <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
+        <div class="shadowed-view-section-style">
+            <h2>{{ __('Please make sure you want to delete the thread !') }}</h2>
+            <div class="flex">
+                <div class="half-width my8 mx4">
+                    <form action="{{ route('thread.delete', ['thread'=>$thread->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" class="button-style mr8" value='DELETE'>
+                    </form>
+                    <p class="fs12">{{ __('This will throw the thread to the trash. However It will not be deleted completely, you can restore it later if you want by going to your archive and select the thread to restore it !') }}</p>
+                </div>
+                <div class="half-width my8 mx4">
+                    <form action="{{ route('thread.destroy', ['thread'=>$thread->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" class="button-style mr8" value='FORCE DELETE'>
+                    </form>
+                    <p class="fs12">{{ __('This will remove the thread completely from our system. If you choose this option the thread will be removed permanently as well as all related replies') }}</p>
+                </div>
+            </div>
+            <div>
+                <a href="" class="button-style close-shadowed-view-button move-to-right" style="display: block; text-align: center; width: 60px">Exit</a>
+            </div>
+        </div>
     </div>
     <div class="flex thread-component">
         <div class="thread-vote-section">
@@ -41,14 +92,38 @@
                                     </div>
                                 </div>
                                 <div class="gray height-max-content mx4 fs10">•</div>
-                                <div class="size12 sprite sprite-2-size public12-icon" title="public"></div>
+                                <div class="relative ">
+                                    <div class="flex align-center @can('update', $thread) pointer button-with-suboptions thread-status-changer @endcan">
+                                        <div class="size12 sprite sprite-2-size public12-icon" title="public"></div>
+                                        @can('update', $thread)
+                                        <span class="gray fs12" style="margin-top: 1px">▾</span>
+
+                                        @endcan
+                                    </div>
+                                    @can('update', $thread)
+                                    <div class="suboptions-container suboptions-container-right-style" style="left: 0">
+                                        <div class="pointer simple-suboption flex align-center">
+                                            <div class="size18 sprite sprite-2-size public18-icon mr4"></div>
+                                            <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Public') }}</a>
+                                        </div>
+                                        <div class="pointer simple-suboption flex align-center">
+                                            <div class="size18 sprite sprite-2-size followers18-icon mr4"></div>
+                                            <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Followers Only') }}</a>
+                                        </div>
+                                        <div class="pointer simple-suboption flex align-center">
+                                            <div class="size18 sprite sprite-2-size private18-icon mr4"></div>
+                                            <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Only Me') }}</a>
+                                        </div>
+                                    </div>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="flex align-center">
-                    <div class="thread-views mr8">
-                        <div class="small-image-2 sprite sprite-2-size eye17-icon mr8"></div>
+                    <div class="thread-views mr8 flex align-center">
+                        <div class="small-image-2 sprite sprite-2-size eye17-icon mr4"></div>
                         <p class="no-margin fs12 unselectable">{{ $views }}</p>
                     </div>
                     <div class="relative">
@@ -59,9 +134,15 @@
                                 <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
                                 <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Edit thread') }}</a>
                             </div>
-                            <div class="pointer simple-suboption flex align-center">
+                            <div class="pointer simple-suboption flex align-center action-verification">
                                 <div class="small-image-2 sprite sprite-2-size delete17b-icon mr4"></div>
-                                <a href="{{ $thread->link }}?action=thread-delete" target="_blank" class="no-underline black">{{ __('Delete thread') }}</a>
+                                <div class="no-underline black">{{ __('Delete thread') }}</div>
+                                <input type="hidden" value="thread.destroy" class="verification-action-type">
+                            </div>
+                            <div class="simple-suboption flex align-center action-verification">
+                                <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') repliesoff17-icon @else reply17-icon @endif mr4"></div>
+                                <div>{{ __('Turn ' . $posts_switch .  ' replies') }}</div>
+                                <input type="hidden" value="turn.off.posts" class="verification-action-type">
                             </div>
                             @endcan
                             <div class="pointer simple-suboption thread-display-button flex align-center">
@@ -106,13 +187,14 @@
             </div>
             <div class="thread-bottom-section space-between">
                 <div class="flex align-center">
-                    <div class="flex align-center mr8">
-                        <div class="small-image-2 sprite sprite-2-size resource17-like-ricon mr4"></div>
-                        <p class="fs12 no-margin">{{ $likes }} @if($likes>1) {{ __("likes") }} @endif</p>
+                    <div class="thread-likes @auth like-resource @endauth @guest login-signin-button @endguest">
+                        <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($thread->liked) none @endif"></div>
+                        <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
+                        <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                     </div>
                     <div class="flex align-center">
-                        <div class="small-image-2 sprite sprite-2-size reply17-icon mr4"></div>
-                        <p class="no-margin fs12">{{ $replies }} {{__('replies')}}</p>
+                        <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
+                        <p class="no-margin unselectable fs12">{{ $replies }} {{__('replies')}}</p>
                     </div>
                 </div>
                 <div class="flex align-center">
@@ -128,7 +210,7 @@
                         </div>
                     </div>
                     <div class="flex align-center">
-                        <div class="thread-report pointer small-image-2 sprite sprite-2-size report17-icon mr8"></div>
+                        <div class="@auth thread-report @endauth @guest login-signin-button @endguest pointer small-image-2 sprite sprite-2-size report17-icon mr8"></div>
                     </div>
                 </div>
             </div>

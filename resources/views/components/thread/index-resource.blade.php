@@ -10,10 +10,10 @@
         <div class="full-center full-width full-height">
             <div>
                 @php
-                    $posts_switch = ($thread->status->id == 3) ? 'on' : 'off';
+                    $posts_switch = ($thread->replies_off) ? 'on' : 'off';
                 @endphp
                 
-                @if($thread->status->id != 3)
+                @if($thread->replies_off)
                 <p class="white bold fs15 my4">{{ __('Important: If you turn off replies, no one could reply to your tread') }}.</p>
                 <p class="white fs15 mt4 mb8">{{ __('However if there are already some replies, they will not disappeared.') }}</p>
                 @else
@@ -102,17 +102,23 @@
                                     </div>
                                     @can('update', $thread)
                                     <div class="suboptions-container suboptions-container-right-style" style="left: 0">
-                                        <div class="pointer simple-suboption flex align-center">
+                                        <div class="pointer simple-suboption flex align-center thread-status-button">
                                             <div class="size18 sprite sprite-2-size public18-icon mr4"></div>
-                                            <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Public') }}</a>
+                                            <div class="fs13">{{ __('Public') }}</div>
+                                            <input type="hidden" class="thread-status" value="live">
+                                            <div class="loading-dots-anim fs16 bold ml4 none">.</div>
                                         </div>
-                                        <div class="pointer simple-suboption flex align-center">
+                                        <div class="pointer simple-suboption flex align-center thread-status-button">
                                             <div class="size18 sprite sprite-2-size followers18-icon mr4"></div>
-                                            <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Followers Only') }}</a>
+                                            <div class="fs13">{{ __('Followers Only') }}</div>
+                                            <input type="hidden" class="thread-status" value="followers-only">
+                                            <div class="loading-dots-anim fs16 bold ml4 none">.</div>
                                         </div>
-                                        <div class="pointer simple-suboption flex align-center">
+                                        <div class="pointer simple-suboption flex align-center thread-status-button">
                                             <div class="size18 sprite sprite-2-size private18-icon mr4"></div>
-                                            <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Only Me') }}</a>
+                                            <div class="fs13">{{ __('Only Me') }}</div>
+                                            <input type="hidden" class="thread-status" value="only-me">
+                                            <div class="loading-dots-anim fs16 bold ml4 none">.</div>
                                         </div>
                                     </div>
                                     @endcan

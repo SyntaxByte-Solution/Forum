@@ -10,7 +10,7 @@ use App\Http\Controllers\
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController, MultilanguageHelperController,
     NotificationController};
-use App\Models\{User, Thread};
+use App\Models\{User, Thread, ThreadStatus};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -28,14 +28,14 @@ Route::get('/test', function() {
     if (Auth::check()) {
         $user = auth()->user();
 
-        // $thread = Thread::first();
+        $thread = Thread::first();
 
-        // $notif_disable = new \App\Models\NotificationDisable;
-        // $notif_disable->user_id = $user->id;
-        
-        // $thread->disables()->save($notif_disable);
+        $private_status = ThreadStatus::where('slug', 'only-me')->first()->id;
+        $thread->update([
+            'status_id'=>$private_status
+        ]);
 
-        // dd($thread->disables);
+        dd($thread->status);
     }
 });
 

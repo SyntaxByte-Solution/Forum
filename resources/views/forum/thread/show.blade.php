@@ -38,7 +38,7 @@
 
                 <x-index-resource :thread="request()->thread"/>
 
-                @if($thread->status->slug == 'posts-turn-off')
+                @if($thread->replies_off)
                     <p class="fs13 text-center">{{ __('The owner of this thread turned off replies') }}</p>
                 @else
                 <div>

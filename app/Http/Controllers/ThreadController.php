@@ -255,14 +255,8 @@ class ThreadController extends Controller
             ]
         ]);
 
-        if($data['switch'] == 'off') {
-            $thread_posts_turn_off_status = ThreadStatus::where('slug', 'posts-turn-off')->first();
-        } else if($data['switch'] == 'on') {
-            $thread_posts_turn_off_status = ThreadStatus::where('slug', 'live')->first();
-        }
-
         $thread->update([
-            'status_id'=>$thread_posts_turn_off_status->id
+            'replies-off'=> ($data['switch'] == 'off') ? 1 : 0
         ]);
 
         $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;

@@ -11,6 +11,9 @@
             <div>
                 @php
                     $posts_switch = ($thread->replies_off) ? 'on' : 'off';
+                    // Here we flip it back because the switch will be used to set the replies_off value
+                    // and not an indicator of the state of replies
+                    $switch = ($thread->replies_off) ? 0 : 1;
                 @endphp
                 
                 @if($thread->replies_off)
@@ -23,7 +26,7 @@
                     <input type="button" class="simple-white-button pointer turn-off-posts fs13" value="Turn {{ $posts_switch }} replies">
                     <a href="" class="simple-link close-shadowed-view-button fs14" style="text-decoration: none; margin-left: 6px;">cancel</a>
                     <input type="hidden" class="id" value="{{ $thread->id }}">
-                    <input type="hidden" class="switch" value="{{ $posts_switch }}">
+                    <input type="hidden" class="switch" value="{{ $switch }}">
                 </div>
             </div>
         </div>

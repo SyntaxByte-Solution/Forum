@@ -82,7 +82,7 @@
             </div>
             <div class="flex align-center">
                 <p class="fs12 mr4">{{ __('Turn off replies on this thread') }}: </p>
-                <input type="checkbox" id="thread-post-switch" @if($thread->status->id == 3) checked @endif>
+                <input type="checkbox" id="thread-post-switch" @if($thread->replies_off) checked @endif>
             </div>
             <div class="simple-half-line-separator"></div>
             <div class="input-container">

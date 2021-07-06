@@ -209,7 +209,7 @@ class ThreadController extends Controller
         $data = request()->validate([
             'subject'=>'sometimes|min:2|max:1000',
             'content'=>'sometimes|min:2|max:40000',
-            'status_id'=>'sometimes|exists:thread_status,id',
+            'replies_off'=>'sometimes|boolean',
             'category_id'=>'sometimes|exists:categories,id',
         ]);
 
@@ -251,12 +251,12 @@ class ThreadController extends Controller
         $data = $request->validate([
             'switch'=>[
                 'required',
-                Rule::in(['on', 'off']),
+                Rule::in([0, 1]),
             ]
         ]);
 
         $thread->update([
-            'replies-off'=> ($data['switch'] == 'off') ? 1 : 0
+            'replies_off'=> $data['switch']
         ]);
 
         $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;

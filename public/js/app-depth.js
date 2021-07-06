@@ -329,9 +329,9 @@ $('.edit-thread').click(function() {
     };
 
     if($('#thread-post-switch').prop("checked") == true) {
-        data.status_id = 3;
+        data.replies_off = 1;
     } else {
-        data.status_id = 1;
+        data.replies_off = 0;
     }
 
     if(data.subject == '') {

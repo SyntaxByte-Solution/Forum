@@ -169,7 +169,6 @@ class ThreadController extends Controller
     }
 
     public function update(Thread $thread) {
-
         $this->authorize('update', $thread);
 
         $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;
@@ -218,6 +217,22 @@ class ThreadController extends Controller
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
 
         return route('thread.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
+    }
+
+    public function update_status(Request $request) {
+        $data = $request->validate([
+            'thread_id'=>'required|exists:threads,id',
+            'status_slug'=>'required|exists:thread_status,slug'
+        ]);
+        $thread = Thread::find($data['thread_id']);
+
+        $this->authorize('update', $thread);
+
+        $thread_status_id = ThreadStatus::where('slug', $data['status_slug'])->first()->id;
+
+        $thread->update([
+            'status_id'=>$thread_status_id
+        ]);
     }
 
     public function delete(Thread $thread) {

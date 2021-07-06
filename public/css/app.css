@@ -63,6 +63,11 @@ a, input, textarea {
     opacity: 0.5;
 }
 
+.loading-dots-anim {
+    letter-spacing: 1.4px;
+    font-size: 12px !important;
+}
+
 .br6 {
     border-radius: 6px;
 }
@@ -833,16 +838,16 @@ a, input, textarea {
     background-position: 0px -1372px;
 }
 
-.public12-icon {
-    background-position: 0px -1595px;
+.closed14-icon {
+    background-position: 12px -1295px;
+}
+
+.private14-icon {
+    background-position: 0px -1890px;
 }
 
 .followers14-icon {
     background-position: 0px -1386px;
-}
-
-.private14-icon {
-    background-position: 0px -1400px;
 }
 
 .votes14-icon {

@@ -1460,12 +1460,12 @@ function handle_category_selection(category_button) {
 let loading_anim_interval;
 function start_loading_anim(loading_anim) {
     loading_anim_interval = window.setInterval(function(){
-        if(loading_anim.text() == ".") {
-            loading_anim.text("..");
-        } else if(loading_anim.text() == "..") {
-            loading_anim.text("...");
+        if(loading_anim.text() == "•") {
+            loading_anim.text("••");
+        } else if(loading_anim.text() == "••") {
+            loading_anim.text("•••");
         } else {
-            loading_anim.text(".");
+            loading_anim.text("•");
         }
     }, 300);
 }
@@ -1549,6 +1549,7 @@ $('.thread-add-share').click(function(event) {
 
 $('.thread-container-box').each(function() {
     handle_thread_display($(this));
+    handle_thread_status_buttons($(this));
 });
 
 function handle_thread_display(thread_container_box) {
@@ -1562,5 +1563,50 @@ function handle_thread_display(thread_container_box) {
             thread_container_box.find('.thread-component').css('display', 'none');
             thread_container_box.find('.hidden-thread-section').removeClass('none');
         }
+    });
+}
+
+let thread_status_lock = true;
+function handle_thread_status_buttons(thread_container_box) {
+    thread_container_box.find('.thread-status-button').click(function() {
+        if(!thread_status_lock) {
+            return;
+        }
+        thread_status_lock = false;
+
+        thread_container_box.find('.thread-status-button').attr('style','background-color: rgb(250, 250, 250); color: gray');
+        $(this).attr('style', 'background-color: rgb(240, 240, 240); color: black');
+        let loading = $(this).find('.loading-dots-anim');
+        loading.removeClass('none');
+        start_loading_anim(loading);
+        
+        let button = $(this);
+
+        let thread_id = $(this).parent().find('.thread-id').val();
+        let status_slug = $(this).find('.thread-status-slug').val();
+
+        $.ajax({
+            url: `/thread/status/patch`,
+            type: 'patch',
+            data: {
+                _token: csrf,
+                thread_id: thread_id,
+                status_slug: status_slug
+            },
+            success: function() {
+                let lastClass = $('.thread-status-button-14icon').attr('class').split(' ').pop();
+                thread_container_box.find('.thread-status-button-14icon').removeClass(lastClass);
+                thread_container_box.find('.thread-status-button-14icon').addClass(button.find('.icon-when-selected').val());
+            },
+            complete: function() {
+                thread_status_lock = true;
+                stop_loading_anim(loading);
+                loading.addClass('none');
+                thread_container_box.find('.thread-status-button').attr('style','');
+
+                button.parent().css('display', 'none');
+            }
+        });
+
     });
 }

@@ -21,10 +21,10 @@
             <div>
                 <img src="{{ asset('assets/images/logos/welcome.png') }}" class="flex full-width" alt="">
             </div>
-            @auth
-                @include('partials.thread.thread-add')
-            @endauth
             <div class="middle-container-style">
+                @auth
+                    @include('partials.thread.thread-add')
+                @endauth
                 <h3 class="fs26 page-title forum-color" style="margin: 12px 0 26px 0">{{ __('Discussions and Questions') }}</h3>
                 <div class="flex space-between align-end my8">
                     <div>

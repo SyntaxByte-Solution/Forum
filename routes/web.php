@@ -102,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);
     
     Route::post('/thread', [ThreadController::class, 'store']);
+    Route::patch('/thread/status/patch', [ThreadController::class, 'update_status']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
     Route::delete('/thread/{thread}/force', [ThreadController::class, 'destroy'])->name('thread.destroy');

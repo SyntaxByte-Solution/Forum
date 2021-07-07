@@ -1634,3 +1634,49 @@ $('.thread-add-status').click(function(event) {
     console.log($(this).parent());
     $(this).parent().css('display', 'none');
 });
+
+let follow_resource_lock = true;
+$('.follow-resource').click(function(event) {
+    if(!follow_resource_lock) {
+        return;
+    }
+    follow_resource_lock = false;
+
+    let button = $(this);
+    button.attr('style', 'background-color: #009fffad; border-color: #009fffad; cursor: default');
+
+    if(button.find('.status').val() == '1') {
+        button.find('.btn-txt').text(button.find('.unfollowing-text').val());
+    } else {
+        button.find('.btn-txt').text(button.find('.following-text').val());
+    }
+
+    let followable_id = button.find('.followable-id').val();
+    let followable_type = button.find('.followable-type').val();
+
+    $.ajax({
+        type: 'post',
+        url: `/${followable_type}s/${followable_id}/follow`,
+        data: {
+            _token: csrf
+        },
+        success: function(response) {
+            let button_icon = button.find('.follow-button-icon');
+            let lastClass = button_icon.attr('class').trim().split(' ').pop();
+            button_icon.removeClass(lastClass);
+            if(response == -1) {
+                button.find('.status').val(-1);
+                button_icon.addClass(button.find('.unfollowed-icon').val());
+                button.find('.btn-txt').text(button.find('.follow-text').val());
+            } else {
+                button.find('.status').val(1);
+                button_icon.addClass(button.find('.followed-icon').val());
+                button.find('.btn-txt').text(button.find('.followed-text').val());
+            }
+        },
+        complete: function() {
+            button.attr('style', '');
+            follow_resource_lock = true;
+        }
+    });
+});

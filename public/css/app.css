@@ -834,6 +834,14 @@ a, input, textarea {
     background-position: 0px -1170px;
 }
 
+.follow14-icon {
+    background-position: 14px -658px;
+}
+
+.followed14-icon {
+    background-position: 14px -644px;
+}
+
 .public14-icon {
     background-position: 0px -1371px;
 }
@@ -2089,6 +2097,8 @@ tr:nth-child(2n) {
 .ms-profile-infos-container {
     margin-left: 10px;
     margin-top: 88px;
+    display: flex;
+    width: 100%;
 }
 
 .x-button {
@@ -2099,6 +2109,23 @@ tr:nth-child(2n) {
     right: 3px;
     padding: 6px;
     background-color: #00000075;
+}
+
+.button-wraper-style {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px 7px;
+    border: 1px solid #888;
+
+    border-radius: 4px;
+}
+
+.button-wraper-style:hover {
+    border-color: #009fffad;
+    background-color: #009fffad;
 }
 
 .us-user-info-container {

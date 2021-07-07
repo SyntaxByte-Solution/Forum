@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, 
-    Thread, Post, UserPersonalInfos, AccountStatus, Vote, Like, NotificationDisable};
+    Thread, Post, UserPersonalInfos, AccountStatus, Vote, Like, NotificationDisable, Follow};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -68,12 +68,25 @@ class User extends UserAuthenticatable implements Authenticatable
         return ProfileView::where('visited_id', $this->id)->count();
     }
 
+    // Relationships
     public function personal() {
         return $this->hasOne(UserPersonalInfos::class, 'user');
     }
 
     public function threads() {
         return $this->hasMany(Thread::class);
+    }
+
+    public function disables() {
+        return $this->hasMany(NotificationDisable::class);
+    }
+
+    public function followers() {
+        return $this->morphMany(Follow::class, 'followable');
+    }
+
+    public function getFollowsAttribute() {
+        return Follow::where('follower', $this->id)->get();
     }
 
     public function liked_threads() {
@@ -88,10 +101,6 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function votes_count() {
         return $this->votes()->count();
-    }
-
-    public function disables() {
-        return $this->hasMany(NotificationDisable::class);
     }
 
     public function post_disabled($post_id) {

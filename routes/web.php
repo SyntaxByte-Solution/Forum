@@ -9,7 +9,7 @@ use App\Http\Controllers\
     IndexController, UserController, OAuthController,
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController, MultilanguageHelperController,
-    NotificationController};
+    NotificationController, FollowController};
 use App\Models\{User, Thread, ThreadStatus};
 use App\Http\Middleware\AccountActivationCheck;
 
@@ -28,9 +28,7 @@ Route::get('/test', function() {
     if (Auth::check()) {
         $user = auth()->user();
 
-        $thread = Thread::first();
-
-        dd($thread->status);
+        dd($user->followers);
     }
 });
 
@@ -88,6 +86,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notification/{notification_id}/disable', [NotificationController::class, 'disable']);
     Route::post('/notification/{notification_id}/enable', [NotificationController::class, 'enable']);
     Route::delete('/notification/{notification_id}/delete', [NotificationController::class, 'destroy']);
+
+    Route::post('/users/{user}/follow', [FollowController::class, 'follow_user']);
+    Route::post('/threads/{thread}/follow', [FollowController::class, 'follow_thread']);
 
     Route::get('/{forum:slug}/{category:slug}/threads/add', [ThreadController::class, 'create'])->name('thread.add');
     Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');

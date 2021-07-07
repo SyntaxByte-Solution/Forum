@@ -20,7 +20,7 @@
             <div class="full-width">
                 @include('partials.user-space.basic-header', ['page' => 'profile'])
                 <h1 class="">User Profile</h1>
-                <div class="relative us-user-media-container">
+                <div class="relative us-user-media-container mx8">
                     <div class="us-cover-container full-center">
                         @if(!$user->cover)
                             @if(auth()->user() && $user->id == auth()->user()->id)
@@ -43,10 +43,35 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="ms-profile-infos-container">
-                            <h2 class="no-margin forum-color flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
-                            <p class="bold no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>
-                            <p class="fs12 gray no-margin">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
+                        <div class="ms-profile-infos-container full-width">
+                            <div>
+                                <h2 class="no-margin forum-color flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
+                                <p class="bold no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>
+                                <p class="fs12 gray no-margin">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
+                            </div>
+                            @if($user->id != auth()->user()->id)
+                            <div class="move-to-right">
+                                <div class="button-wraper-style @auth follow-resource @endauth @guest login-signin-button @endguest">
+                                    <div class="size14 sprite sprite-2-size follow-button-icon mr4 @if($followed) followed14-icon @else follow14-icon @endif"></div>
+                                    @if($followed)
+                                    <p class="no-margin btn-txt unselectable">{{ __('Followed') }}</p>
+                                    <input type="hidden" class="status" value="1">
+                                    @else
+                                    <p class="no-margin btn-txt unselectable">{{ __('Follow') }}</p>
+                                    <input type="hidden" class="status" value="-1">
+                                    @endif
+                                    <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
+                                    <input type="hidden" class="following-text" value="{{ __('Following ..') }}">
+                                    <input type="hidden" class="followed-text" value="{{ __('Followed') }}">
+                                    <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
+                                    <input type="hidden" class="followable-id" value="{{ $user->id }}">
+                                    <input type="hidden" class="followable-type" value="user">
+
+                                    <input type="hidden" class="followed-icon" value="followed14-icon">
+                                    <input type="hidden" class="unfollowed-icon" value="follow14-icon">
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -114,62 +139,15 @@
                         </div>
                     </div>
                 </div>
-                @if($recent_threads->count())
+                @if($threads->count())
                 <div style="margin-top: 20px">
-                    <div class="flex align-center">
-                        <h2>Recent Threads</h2>
-                        <a href="{{ route('user.activities', ['user'=>$user->username]) }}" class="link-path move-to-right">see all</a>
+                    <div class="flex align-center space-between">
+                        <h2>{{ __('Threads') }}</h2>
+
+                        {{ $threads->onEachSide(0)->links() }}
                     </div>
-                    @foreach($recent_threads as $thread)
-                        @php
-                            $is_ticked = $thread->posts->where('ticked', 1)->count();
-
-                            $forum = $thread->forum();
-                            $category = $thread->category;
-
-                            $forum_slug = $thread->forum()->slug;
-                            $category_slug = $thread->category->slug;
-                        @endphp
-                        <div class="my8 p4 br4" style="@if($is_ticked) background-color: #cfffcf3d; border: 1px solid #89c489bd; @endif">
-                            <div class="flex align-center">
-                                <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-size mr4" alt="">
-                                <div class="flex align-center">
-                                    <a href="{{ route('forum.all.threads', ['forum'=>$forum_slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
-                                    <span class="mx4 fs13 gray">▸</span>
-                                    <a href="{{ route('category.threads', ['forum'=>$forum_slug, 'category'=>$category_slug]) }}" class="fs11 black-link">{{ $category->category }}</a>
-                                </div>
-                                @if($is_ticked)
-                                <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="ml8 small-image" alt="">
-                                @endif
-                            </div>
-                            <div class="flex align-center">
-                                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-2" alt="">
-                                <span class="fs13 mr4">{{ $thread->votes->where('vote', '1')->count() }}</span>
-                                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image-2" alt="">
-                                <span class="fs13">{{ $thread->downvotes }}</span>
-                                <a href="{{ $thread->link }}" class="link-path flex ml8">{{ $thread->subject }}</a>
-
-                                <div class="move-to-right flex align-center">
-                                    @if($lc = $thread->likes->count())
-                                    <div class="flex align-center mx8">
-                                        <img src="{{ asset('assets/images/icons/love-gray.png') }}" class="small-image-2 mr4" alt="">
-                                        <p class="fs12 no-margin">{{ $lc }} likes</p>
-                                    </div>
-                                    @endif
-                                    @if($pc = $thread->posts->count())
-                                    <div class="flex align-center mx8">
-                                        <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
-                                        <p class="fs12 no-margin">{{ $pc }} replies</p>
-                                    </div>
-                                    @endif
-                                    <div class="flex align-center mx8">
-                                        <img src="{{ asset('assets/images/icons/gray-eye.png') }}" class="small-image-2 mr4" alt="">
-                                        <p class="fs12 no-margin">{{ $thread->view_count }} {{ __('views') }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="simple-line-separator my4"></div>
-                        </div>
+                    @foreach($threads as $thread)
+                        <x-index-resource :thread="$thread"/>
                     @endforeach
                 </div>
                 @endif

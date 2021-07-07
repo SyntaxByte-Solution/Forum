@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\IsValidPassword;
-use App\Models\{Thread, Category, User, ProfileView, Like, Vote};
+use App\Models\{Thread, Category, User, ProfileView, Like, Vote, Follow};
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
@@ -127,17 +127,22 @@ class UserController extends Controller
             }
         }
 
+        $followed = (bool) Follow::where('follower', auth()->user()->id)
+        ->where('followable_id', $user->id)
+        ->where('followable_type', 'App\Models\User')
+        ->count();
+
         $threads_count = $user->threads->count();
         $posts_count = $user->posts_count();
-
-        $recent_threads = $user->threads()
+        $threads = $user->threads()
         ->orderBy('created_at', 'desc')->paginate(6);
 
         return view('user.profile')
             ->with(compact('user'))
+            ->with(compact('followed'))
             ->with(compact('threads_count'))
             ->with(compact('posts_count'))
-            ->with(compact('recent_threads'));
+            ->with(compact('threads'));
     }
 
     public function edit(Request $request) {

@@ -23,7 +23,7 @@
             </div>
             <div class="middle-container-style">
                 @auth
-                    @include('partials.thread.thread-add')
+                    @include('partials.thread.thread-add', ['editor_height'=>100])
                 @endauth
                 <h3 class="fs26 page-title forum-color" style="margin: 12px 0 26px 0">{{ __('Discussions and Questions') }}</h3>
                 <div class="flex space-between align-end my8">

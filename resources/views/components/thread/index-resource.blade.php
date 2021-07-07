@@ -95,53 +95,55 @@
                                     </div>
                                 </div>
                                 <div class="gray height-max-content mx4 fs10">•</div>
-                                <div class="relative ">
-                                    <div class="flex align-center @can('update', $thread) pointer button-with-suboptions thread-status-changer @endcan">
-                                        @php
-                                            $icon;
-                                            $alt = $thread->status->status;
-                                            if($thread->status_id == 1) {
-                                                $icon = "public14-icon";
-                                            } else if($thread->status_id == 2) {
-                                                $icon = "closed14-icon";
-                                            } else if($thread->status_id == 3) {
-                                                $icon = "followers14-icon";
-                                            } else if($thread->status_id == 4) {
-                                                $icon = "private14-icon";
-                                            }
-                                        @endphp
-                                        <div class="size14 sprite sprite-2-size thread-status-button-14icon {{ $icon }}" title="{{ $alt }}"></div>
-                                        @can('update', $thread)
-                                        <span class="gray fs12" style="margin-top: 1px">▾</span>
+                                <div class="status-box">
+                                    <div class="relative ">
+                                        <div class="flex align-center @can('update', $thread) pointer button-with-suboptions thread-status-changer @endcan">
+                                            @php
+                                                $icon;
+                                                $alt = $thread->status->status;
+                                                if($thread->status_id == 1) {
+                                                    $icon = "public14-icon";
+                                                } else if($thread->status_id == 2) {
+                                                    $icon = "closed14-icon";
+                                                } else if($thread->status_id == 3) {
+                                                    $icon = "followers14-icon";
+                                                } else if($thread->status_id == 4) {
+                                                    $icon = "private14-icon";
+                                                }
+                                            @endphp
+                                            <div class="size14 sprite sprite-2-size thread-status-button-14icon {{ $icon }}" title="{{ $alt }}"></div>
+                                            @can('update', $thread)
+                                            <span class="gray fs12" style="margin-top: 1px">▾</span>
 
+                                            @endcan
+                                        </div>
+                                        @can('update', $thread)
+                                        <div class="suboptions-container suboptions-container-right-style" style="left: 0; width:156px">
+                                            <div class="pointer simple-suboption flex align-center thread-status-button">
+                                                <div class="size18 sprite sprite-2-size public18-icon mr4"></div>
+                                                <div class="fs13">{{ __('Public') }}</div>
+                                                <input type="hidden" class="thread-add-status-slug" value="live">
+                                                <input type="hidden" class="icon-when-selected" value="public14-icon">
+                                                <div class="loading-dots-anim ml4 none">•</div>
+                                            </div>
+                                            <div class="pointer simple-suboption flex align-center thread-status-button">
+                                                <div class="size18 sprite sprite-2-size followers18-icon mr4"></div>
+                                                <div class="fs13">{{ __('Followers Only') }}</div>
+                                                <input type="hidden" class="thread-add-status-slug" value="followers-only">
+                                                <input type="hidden" class="icon-when-selected" value="followers14-icon">
+                                                <div class="loading-dots-anim ml4 none">•</div>
+                                            </div>
+                                            <div class="pointer simple-suboption flex align-center thread-status-button">
+                                                <div class="size18 sprite sprite-2-size private18-icon mr4"></div>
+                                                <div class="fs13">{{ __('Only Me') }}</div>
+                                                <input type="hidden" class="thread-add-status-slug" value="only-me">
+                                                <input type="hidden" class="icon-when-selected" value="private14-icon">
+                                                <div class="loading-dots-anim ml4 none">•</div>
+                                            </div>
+                                            <input type="hidden" class="thread-id" value="{{ $thread->id }}">
+                                        </div>
                                         @endcan
                                     </div>
-                                    @can('update', $thread)
-                                    <div class="suboptions-container suboptions-container-right-style" style="left: 0; width:156px">
-                                        <div class="pointer simple-suboption flex align-center thread-status-button">
-                                            <div class="size18 sprite sprite-2-size public18-icon mr4"></div>
-                                            <div class="fs13">{{ __('Public') }}</div>
-                                            <input type="hidden" class="thread-status-slug" value="live">
-                                            <input type="hidden" class="icon-when-selected" value="public14-icon">
-                                            <div class="loading-dots-anim ml4 none">•</div>
-                                        </div>
-                                        <div class="pointer simple-suboption flex align-center thread-status-button">
-                                            <div class="size18 sprite sprite-2-size followers18-icon mr4"></div>
-                                            <div class="fs13">{{ __('Followers Only') }}</div>
-                                            <input type="hidden" class="thread-status-slug" value="followers-only">
-                                            <input type="hidden" class="icon-when-selected" value="followers14-icon">
-                                            <div class="loading-dots-anim ml4 none">•</div>
-                                        </div>
-                                        <div class="pointer simple-suboption flex align-center thread-status-button">
-                                            <div class="size18 sprite sprite-2-size private18-icon mr4"></div>
-                                            <div class="fs13">{{ __('Only Me') }}</div>
-                                            <input type="hidden" class="thread-status-slug" value="only-me">
-                                            <input type="hidden" class="icon-when-selected" value="private14-icon">
-                                            <div class="loading-dots-anim ml4 none">•</div>
-                                        </div>
-                                        <input type="hidden" class="thread-id" value="{{ $thread->id }}">
-                                    </div>
-                                    @endcan
                                 </div>
                             </div>
                         </div>
@@ -213,12 +215,12 @@
             </div>
             <div class="thread-bottom-section space-between">
                 <div class="flex align-center">
-                    <div class="thread-likes @auth like-resource @endauth @guest login-signin-button @endguest">
+                    <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
                         <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($thread->liked) none @endif"></div>
                         <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
                         <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                     </div>
-                    <div class="flex align-center">
+                    <div class="thread-react-hover flex align-center">
                         <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
                         <p class="no-margin unselectable fs12">{{ $replies }} {{__('replies')}}</p>
                     </div>

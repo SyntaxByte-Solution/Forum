@@ -91,10 +91,16 @@ class ThreadController extends Controller
     public function store(Request $request) {
         $this->authorize('store', Thread::class);
 
+        /**
+         * Notice status_id we check the slug because we take it as slug from request and change it to its
+         * associated threadstatus id
+         * Also it's optional (sometimes) because it has a default value
+         */
         $data = request()->validate([
             'subject'=>'required|min:2|max:1000',
             'content'=>'required|min:2|max:40000',
             'category_id'=>'required|exists:categories,id',
+            'status_id'=>'sometimes|exists:thread_status,slug',
             'content'=>'required|min:2|max:40000',
         ]);
 
@@ -143,6 +149,11 @@ class ThreadController extends Controller
         }
 
         $data['user_id'] = auth()->user()->id;
+        
+        // Verify if status is submitted before creating the thread !
+        if($data['status_id']) {
+            $data['status_id'] = ThreadStatus::where('slug', $data['status_id'])->first()->id;
+        }
 
         $thread = Thread::create($data);
 
@@ -210,6 +221,7 @@ class ThreadController extends Controller
             'content'=>'sometimes|min:2|max:40000',
             'replies_off'=>'sometimes|boolean',
             'category_id'=>'sometimes|exists:categories,id',
+            'status_id'=>'sometimes|exists:thread_status,id',
         ]);
 
         $thread->update($data);

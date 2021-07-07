@@ -1481,6 +1481,7 @@ $('.thread-add-share').click(function(event) {
         '_token':csrf,
         'subject': $('#subject').val(),
         'category_id': $('.category').val(),
+        'status_id': $('.thread-add-status-slug').val(),
         'content':simplemde.value(),
     };
 
@@ -1549,7 +1550,6 @@ $('.thread-add-share').click(function(event) {
 
 $('.thread-container-box').each(function() {
     handle_thread_display($(this));
-    handle_thread_status_buttons($(this));
 });
 
 function handle_thread_display(thread_container_box) {
@@ -1567,46 +1567,70 @@ function handle_thread_display(thread_container_box) {
 }
 
 let thread_status_lock = true;
-function handle_thread_status_buttons(thread_container_box) {
-    thread_container_box.find('.thread-status-button').click(function() {
-        if(!thread_status_lock) {
-            return;
+$('.thread-status-button').click(function() {
+    if(!thread_status_lock) {
+        return;
+    }
+    thread_status_lock = false;
+
+    thread_container_box = $(this);
+    while(!thread_container_box.hasClass('status-box')) {
+        thread_container_box = thread_container_box.parent();
+    }
+
+    thread_container_box.find('.thread-status-button').attr('style','background-color: rgb(250, 250, 250); color: gray');
+    $(this).attr('style', 'background-color: rgb(240, 240, 240); color: black');
+    let loading = $(this).find('.loading-dots-anim');
+    loading.removeClass('none');
+    start_loading_anim(loading);
+    
+    let button = $(this);
+
+    let thread_id = $(this).parent().find('.thread-id').val();
+    let status_slug = $(this).find('.thread-add-status-slug').val();
+
+    $.ajax({
+        url: `/thread/status/patch`,
+        type: 'patch',
+        data: {
+            _token: csrf,
+            thread_id: thread_id,
+            status_slug: status_slug
+        },
+        success: function() {
+            let button_ico = thread_container_box.find('.thread-status-button-14icon');
+            let lastClass = button_ico.attr('class').split(' ').pop();
+            button_ico.removeClass(lastClass);
+            button_ico.addClass(button.find('.icon-when-selected').val());
+        },
+        complete: function() {
+            thread_status_lock = true;
+            stop_loading_anim(loading);
+            loading.addClass('none');
+            thread_container_box.find('.thread-status-button').attr('style','');
+
+            button.parent().css('display', 'none');
         }
-        thread_status_lock = false;
-
-        thread_container_box.find('.thread-status-button').attr('style','background-color: rgb(250, 250, 250); color: gray');
-        $(this).attr('style', 'background-color: rgb(240, 240, 240); color: black');
-        let loading = $(this).find('.loading-dots-anim');
-        loading.removeClass('none');
-        start_loading_anim(loading);
-        
-        let button = $(this);
-
-        let thread_id = $(this).parent().find('.thread-id').val();
-        let status_slug = $(this).find('.thread-status-slug').val();
-
-        $.ajax({
-            url: `/thread/status/patch`,
-            type: 'patch',
-            data: {
-                _token: csrf,
-                thread_id: thread_id,
-                status_slug: status_slug
-            },
-            success: function() {
-                let lastClass = $('.thread-status-button-14icon').attr('class').split(' ').pop();
-                thread_container_box.find('.thread-status-button-14icon').removeClass(lastClass);
-                thread_container_box.find('.thread-status-button-14icon').addClass(button.find('.icon-when-selected').val());
-            },
-            complete: function() {
-                thread_status_lock = true;
-                stop_loading_anim(loading);
-                loading.addClass('none');
-                thread_container_box.find('.thread-status-button').attr('style','');
-
-                button.parent().css('display', 'none');
-            }
-        });
-
     });
-}
+
+});
+
+$('.thread-add-status').click(function(event) {
+    event.stopPropagation();
+
+    let container = $(this);
+    while(!container.hasClass('thread-add-container')) {
+        container = container.parent();
+    }
+
+    container.find('.thread-add-status-slug').val($(this).find('.thread-state').val())
+
+    let icon_when_selected = $(this).find('.icon-when-selected').val();
+    let status_ico = container.find('.thread-add-status-icon');
+    let lastClass = status_ico.attr('class').split(' ').pop();
+
+    status_ico.removeClass(lastClass);
+    status_ico.addClass(icon_when_selected);
+    console.log($(this).parent());
+    $(this).parent().css('display', 'none');
+});

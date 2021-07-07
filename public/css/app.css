@@ -835,7 +835,7 @@ a, input, textarea {
 }
 
 .public14-icon {
-    background-position: 0px -1372px;
+    background-position: 0px -1371px;
 }
 
 .closed14-icon {
@@ -2485,17 +2485,17 @@ tr:nth-child(2n) {
     background-color: rgb(250, 250, 250);
 }
 
-.thread-likes {
+.thread-react-hover {
     display: flex;
     align-items: center;
     cursor: pointer;
     padding: 3px 5px;
-    margin-right: 8px;
+    margin-right: 4px;
     border-radius: 4px;
     transition: 0.5s ease background-color;
 }
 
-.thread-likes:hover {
+.thread-react-hover:hover {
     background-color: #ececec;
 }
 

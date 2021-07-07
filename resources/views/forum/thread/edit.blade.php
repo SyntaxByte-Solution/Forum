@@ -11,8 +11,6 @@
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 
-
-
 @section('header')
     @include('partials.header')
 @endsection
@@ -38,7 +36,57 @@
             </div>
             <div class="input-container">
                 <label for="subject" class="label-style-1">{{ __('Subject') }} @error('subject') <span class="error">* this field is required</span> @enderror <span class="error frt-error">* this field is required</span></label>
-                <p class="mini-label">Be specific and imagine you’re asking a question to another person</p>
+                <div class="flex space-between align-end">
+                    <p class="mini-label">Be specific and imagine you’re asking a question to another person</p>
+                    <div class="flex align-center">
+                        <p class="fs13 no-margin mr4">Edit visibility:</p>
+                        <div class="status-box">
+                            <div class="relative">
+                                <div class="flex align-center pointer button-with-suboptions thread-status-changer" style="padding: 4px 6px">
+                                    @php
+                                        $icon;
+                                        $alt = $thread->status->status;
+                                        if($thread->status_id == 1) {
+                                            $icon = "public14-icon";
+                                        } else if($thread->status_id == 2) {
+                                            $icon = "closed14-icon";
+                                        } else if($thread->status_id == 3) {
+                                            $icon = "followers14-icon";
+                                        } else if($thread->status_id == 4) {
+                                            $icon = "private14-icon";
+                                        }
+                                    @endphp
+                                    <div class="size14 sprite sprite-2-size thread-status-button-14icon {{ $icon }}" title="{{ $alt }}"></div>
+                                    <span class="gray fs12" style="margin-top: 1px">▾</span>
+                                </div>
+                                <div class="suboptions-container suboptions-container-right-style" style="left: 0; width:156px">
+                                    <div class="pointer simple-suboption flex align-center thread-status-button">
+                                        <div class="size18 sprite sprite-2-size public18-icon mr4"></div>
+                                        <div class="fs13">{{ __('Public') }}</div>
+                                        <input type="hidden" class="thread-add-status-slug" value="live">
+                                        <input type="hidden" class="icon-when-selected" value="public14-icon">
+                                        <div class="loading-dots-anim ml4 none">•</div>
+                                    </div>
+                                    <div class="pointer simple-suboption flex align-center thread-status-button">
+                                        <div class="size18 sprite sprite-2-size followers18-icon mr4"></div>
+                                        <div class="fs13">{{ __('Followers Only') }}</div>
+                                        <input type="hidden" class="thread-add-status-slug" value="followers-only">
+                                        <input type="hidden" class="icon-when-selected" value="followers14-icon">
+                                        <div class="loading-dots-anim ml4 none">•</div>
+                                    </div>
+                                    <div class="pointer simple-suboption flex align-center thread-status-button">
+                                        <div class="size18 sprite sprite-2-size private18-icon mr4"></div>
+                                        <div class="fs13">{{ __('Only Me') }}</div>
+                                        <input type="hidden" class="thread-add-status-slug" value="only-me">
+                                        <input type="hidden" class="icon-when-selected" value="private14-icon">
+                                        <div class="loading-dots-anim ml4 none">•</div>
+                                    </div>
+                                    <input type="hidden" class="thread-id" value="{{ $thread->id }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <input type="text" id="subject" name="subject" class="full-width input-style-1" value="{{ $thread->subject }}" required autocomplete="off" placeholder="eg. Kifach nwli b7al Arnold f simana ?">
                 @error('subject')
                     <p class="error" role="alert">{{ $message }}</p>
@@ -81,7 +129,7 @@
                 </style>
             </div>
             <div class="flex align-center">
-                <p class="fs12 mr4">{{ __('Turn off replies on this thread') }}: </p>
+                <p class="my4 mr4">{{ __('Turn off replies on this thread') }}: </p>
                 <input type="checkbox" id="thread-post-switch" @if($thread->replies_off) checked @endif>
             </div>
             <div class="simple-half-line-separator"></div>

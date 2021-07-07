@@ -100,7 +100,7 @@
                 @endphp
                 <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected' }} @endif">
                     <div class="small-image sprite sprite-2-size plus17-icon mr4"></div>
-                    {{__('Add a thread')}}
+                    {{__('Start discussion')}}
                 </a>
             </div>
             @if($page == 'add-thread')

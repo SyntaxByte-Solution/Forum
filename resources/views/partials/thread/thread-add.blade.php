@@ -59,24 +59,28 @@
             </div>
             <div class="relative move-to-right">
                 <div class="audience-button button-with-suboptions flex align-center pointer">
-                    <p class="no-margin mr4 fs12 gray">Audience: </p>
-                    <div class="size18 sprite sprite-2-size public18-icon" title="Public"></div>
+                    <p class="no-margin mr4 fs12 gray">{{__('Visibility')}}: </p>
+                    <div class="size18 sprite sprite-2-size thread-add-status-icon public18-icon" title="Public"></div>
+                    <input type="hidden" class="thread-add-status-slug" value="live">
                 </div>
                 <div class="suboptions-container thread-add-suboptions-container" style="right: 0; min-width: 134px">
                     <div class="thread-add-suboption thread-add-status flex align-center">
                         <div class="size14 sprite sprite-2-size public14-icon mr4"></div>
                         <span class="thread-add-forum-val">{{ __('Public') }}</span>
                         <input type="hidden" class="thread-state" value="public">
+                        <input type="hidden" class="icon-when-selected" value="public18-icon">
                     </div>
                     <div class="thread-add-suboption thread-add-status flex align-center">
                         <div class="size14 sprite sprite-2-size followers14-icon mr4"></div>
                         <span class="thread-add-forum-val">{{ __('Followers-only') }}</span>
                         <input type="hidden" class="thread-state" value="followers-only">
+                        <input type="hidden" class="icon-when-selected" value="followers18-icon">
                     </div>
                     <div class="thread-add-suboption thread-add-status flex align-center">
                         <div class="size14 sprite sprite-2-size private14-icon mr4"></div>
                         <span class="thread-add-forum-val">{{ __('Private') }}</span>
-                        <input type="hidden" class="thread-state" value="private">
+                        <input type="hidden" class="thread-state" value="only-me">
+                        <input type="hidden" class="icon-when-selected" value="private18-icon">
                     </div>
                 </div>
             </div>
@@ -119,8 +123,8 @@
         <style>
             .CodeMirror,
             .CodeMirror-scroll {
-                max-height: 100px;
-                min-height: 100px;
+                max-height: {{ $editor_height }}px;
+                min-height: {{ $editor_height }}px;
                 border-radius: 0;
                 border-left: none;
                 border-right: none;

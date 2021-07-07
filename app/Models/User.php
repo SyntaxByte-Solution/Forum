@@ -184,7 +184,9 @@ class User extends UserAuthenticatable implements Authenticatable
                     $resource_action_icon = 'resource24-reply-icon';
                 } else if($cloned_notification_data->data['action_type'] == 'thread-vote' || $cloned_notification_data->data['action_type'] == 'post-vote') {
                     $resource_action_icon = 'resource24-vote-icon';
-                } else if($cloned_notification_data->data['action_type'] == 'resource-like') {
+                } else if($cloned_notification_data->data['action_type'] == 'reply-like') {
+                    $resource_action_icon = 'resource24-like-icon';
+                } else if($cloned_notification_data->data['action_type'] == 'thread-like') {
                     $resource_action_icon = 'resource24-like-icon';
                 } else {
                     $resource_action_icon = 'notification24-icon';
@@ -193,7 +195,7 @@ class User extends UserAuthenticatable implements Authenticatable
                 $resource_type = explode('-', $cloned_notification_data->data['action_type'])[0];
                 if($resource_type == 'thread') {
                     $resource_type = "App\Models\Thread";
-                } else if($resource_type == 'post') {
+                } else if($resource_type == 'reply') {
                     $resource_type = "App\Models\Post";
                 }
 

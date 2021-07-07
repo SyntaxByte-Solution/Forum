@@ -50,7 +50,7 @@ class VoteController extends Controller
                     'action_user'=>auth()->user()->id,
                     'action_statement'=>"voted your reply: '",
                     'resource_string_slice'=>$post->slice . "' on:" . $thread->slice,
-                    'action_type'=>'post-vote',
+                    'action_type'=>'reply-vote',
                     'action_date'=>now(),
                     'action_resource_id'=>$post->id,
                     'action_resource_link'=>$thread->link,

@@ -86,7 +86,7 @@ class NotificationController extends Controller
 
         if($resource_type == "thread") {
             Thread::find($resource_id)->disables()->save($disable);
-        } else if($resource_type == "post") {
+        } else if($resource_type == "reply") {
             Post::find($resource_id)->disables()->save($disable);
         }
 
@@ -111,7 +111,7 @@ class NotificationController extends Controller
             ->where('disabled_type', 'App\Models\Thread')
             ->where('user_id', $current_user->id)
             ->delete();
-        } else if($resource_type == "post") {
+        } else if($resource_type == "reply") {
             NotificationDisable::where('disabled_id', $resource_id)
             ->where('disabled_type', 'App\Models\Post')
             ->where('user_id', $current_user->id)

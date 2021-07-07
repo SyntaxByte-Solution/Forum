@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use App\Scopes\ExcludePrivateScope;
 use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like};
 
 class Thread extends Model
@@ -34,6 +35,10 @@ class Thread extends Model
                 $thread->posts()->delete();
             }
         });
+    }
+
+    protected static function booted() {
+        static::addGlobalScope(new ExcludePrivateScope);
     }
 
     public function user() {

@@ -30,11 +30,6 @@ Route::get('/test', function() {
 
         $thread = Thread::first();
 
-        $private_status = ThreadStatus::where('slug', 'only-me')->first()->id;
-        $thread->update([
-            'status_id'=>$private_status
-        ]);
-
         dd($thread->status);
     }
 });

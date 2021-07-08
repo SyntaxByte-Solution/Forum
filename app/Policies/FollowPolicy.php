@@ -9,14 +9,14 @@ class FollowPolicy
 {
     use HandlesAuthorization;
 
-    public function follow(User $user)
+    public function follow_user(User $user, $u)
     {
         if ($user->isBanned()) {
             $this->deny("You cannot follow people because you're currently banned !");
         }
         
-        if($user->id == auth()->user()->id) {
-            $this->deny("You cannot follow yourself !");
+        if($u->id == auth()->user()->id) {
+            $this->deny("You cannot follow people because you're currently banned !");
         }
         return true;
     }

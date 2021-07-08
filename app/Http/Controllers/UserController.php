@@ -144,7 +144,7 @@ class UserController extends Controller
         $followers = $user->followers;
         $followers = $followers->map(function($item, $key) {
             return User::find($item->follower);
-        })->take(2);
+        })->take(8);
 
         return view('user.profile')
             ->with(compact('user'))

@@ -33,57 +33,18 @@
     <div class="fixed full-shadowed followers-viewer zi12" style="display: block; opacity: 1">
         <div class="follow-container">
             <div class="follow-box-header relative">
-                <div class="bold fs18 unselectable">Followers</div>
+                <div class="fs18 unselectable">Followers</div>
                 <div class="close-shadowed-view-button close-button-style">
                     <span style="margin-top: -1px">✖</span>
                 </div>
             </div>
             <div class="follow-box-body">
-                <input type="hidden" class="follow-items-counter" value="10">
+                <input type="hidden" class="profile_owner_id" value="{{ $user->id }}">
                 @if($user->followers->count())
                     @foreach($followers as $follower)
-                        @php
-                            $followed;
-                            if(Auth::check()) {
-                                $followed = (bool) \App\Models\Follow::where('follower', auth()->user()->id)
-                                ->where('followable_id', $follower->id)
-                                ->where('followable_type', 'App\Models\User')
-                                ->count();
-                            } else {
-                                $followed = false;
-                            }
-                        @endphp
-                        <div class="follow-box-item follow-box">
-                            <input type="hidden" class="followers-counter" value="">
-                            <div class="flex align-center">
-                                <img src="{{ $follower->avatar }}" class="size36 rounded mr8" alt="{{ $follower->username . ' ' . __(' avatar') }}">
-                                <div>
-                                    <a href="{{ route('user.profile', ['user'=>$follower->username]) }}" class="bold no-underline blue">{{ $follower->username }}</a>
-                                    <p class="fs13 gray no-margin">{{ $follower->firstname . ' ' . $follower->lastname }}</p>
-                                </div>
-                            </div>
-                            <div class="move-to-right height-max-content button-wraper-style @auth follow-resource @endauth @guest login-signin-button @endguest">
-                                <div class="size14 sprite sprite-2-size follow-button-icon mr4 @if($followed) followed14-icon @else follow14-icon @endif"></div>
-                                @if($followed)
-                                <p class="no-margin btn-txt unselectable">{{ __('Followed') }}</p>
-                                <input type="hidden" class="status" value="1">
-                                @else
-                                <p class="no-margin btn-txt unselectable">{{ __('Follow') }}</p>
-                                <input type="hidden" class="status" value="-1">
-                                @endif
-                                <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
-                                <input type="hidden" class="following-text" value="{{ __('Following ..') }}">
-                                <input type="hidden" class="followed-text" value="{{ __('Followed') }}">
-                                <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
-                                <input type="hidden" class="followable-id" value="{{ $follower->id }}">
-                                <input type="hidden" class="followable-type" value="user">
-
-                                <input type="hidden" class="followed-icon" value="followed14-icon">
-                                <input type="hidden" class="unfollowed-icon" value="follow14-icon">
-                            </div>
-                        </div>
+                        <x-user.follow :user="$follower"/>
                     @endforeach
-                    @if($user->followers->count() >= 3)
+                    @if($user->followers->count() > 8)
                         <input type='button' class="see-all-full-style followers-load" value="{{__('load more')}}">
                     @endif
                 @else
@@ -91,10 +52,10 @@
                         <div class="size36 sprite sprite-2-size nofollow36-icon" style="margin-top: 16px"></div>
                         @if(auth()->user() && $user->id == auth()->user()->id)
                         <p class="bold fs17 gray mb8 unselectable">{{ __("You don't have any followers at that time") }}</h2>
-                        <p class="no-margin forum-color unselectable">{{ __("tip: Try to follow people and react to others's discussions to get more followers attention.") }}</p>
+                        <p class="no-margin forum-color unselectable text-center">{{ __("tip: Try to follow people and react to others's discussions to get more followers attention.") }}</p>
                         @else
                         <p class="bold fs17 gray my8 unselectable">{{ $user->username . __(" has no followers") }}</h2>
-                        <p class="no-margin forum-color unselectable">{{ __("Be his first follower :)") }}</p>
+                        <p class="no-margin forum-color unselectable text-center">{{ __("Be his first follower :)") }}</p>
                         @endif
                     </div>
                 @endif
@@ -138,10 +99,10 @@
                             </div>
                             <div class="move-to-right flex align-center height-max-content follow-box">
                                 <div class="flex align-center">
-                                    <div class="flex align-center px4 py4 pointer followers-display light-border" style="margin: 0 14px">
+                                    <div class="flex align-center px8 py4 pointer followers-display light-border" style="margin: 0 14px">
                                         <div class="gray">{{ _('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers->count() }}</span></div>
                                     </div>
-                                    <div class="flex align-center px4 py4 pointer follows-display light-border mr8">
+                                    <div class="flex align-center px8 py4 pointer follows-display light-border mr8">
                                         <div class="gray">{{ _('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->follows->count() }}</span></div>
                                     </div>
                                 </div>

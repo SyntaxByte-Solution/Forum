@@ -5,6 +5,7 @@ namespace App\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ThreadStatus;
 
 class ExcludePrivateScope implements Scope
@@ -19,12 +20,16 @@ class ExcludePrivateScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Only show private threads owned by the current user
-        $builder->where(function($query) {
-            $query->where('status_id', '<>', 4)
-            ->orWhere(function($query) {
-                $query->where('status_id', 4)
-                ->where('user_id', auth()->user()->id);
+        if(!Auth::check()) {
+            $builder->where('status_id', '<>', 4);
+        } else {
+            $builder->where(function($query) {
+                $query->where('status_id', '<>', 4)
+                ->orWhere(function($query) {
+                    $query->where('status_id', 4)
+                    ->where('user_id', auth()->user()->id);
+                });
             });
-        });
+        }
     }
 }

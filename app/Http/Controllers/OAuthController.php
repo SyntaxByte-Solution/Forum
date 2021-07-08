@@ -45,11 +45,6 @@ class OAuthController extends Controller
             $id = $statement[0]->Auto_increment;
             $names = explode(' ', $u->name);
 
-            // Create personal informations row and associate it to user instance
-            $personal = UserPersonalInfos::create([
-                'user'=>$id
-            ]);
-
             // create a new user
             $user = new User;
             $user->firstname = $names[0];
@@ -60,9 +55,42 @@ class OAuthController extends Controller
             $user->provider = $provider;
             $user->avatar = NULL;
             $user->provider_avatar = $u->avatar_original;
-            $user->personal_infos = $personal->id;
 
             $user->save();
+            $user->refresh();
+
+            // Create personal informations row and associate it to user instance
+            $personal = UserPersonalInfos::create([
+                'user'=>$user->id
+            ]);
+            
+            $user->update([
+                'personal_infos'=>$personal->id
+            ]);
+
+            $user->notify(
+                new \App\Notifications\UserAction([
+                    'action_user'=>User::where('username', 'Gladiator Team')->first()->id,
+                    'action_statement'=>"",
+                    'resource_string_slice'=>__("Welcome to MOROCCAN GLADIATOR, a moroccan sports forum wise factory ;)"),
+                    'action_type'=>'welcome-welcome',
+                    'action_date'=>now(),
+                    'action_resource_id'=>"",
+                    'action_resource_link'=>"",
+                ])
+            );
+
+            $user->notify(
+                new \App\Notifications\UserAction([
+                    'action_user'=>User::where('username', 'Gladiator Team')->first()->id,
+                    'action_statement'=>"",
+                    'resource_string_slice'=>__("Regarding your account credentials, you must read this To keep your account activated !"),
+                    'action_type'=>'warning-warning',
+                    'action_date'=>now(),
+                    'action_resource_id'=>"",
+                    'action_resource_link'=>"http://localhost:8000/settings/passwords",
+                ])
+            );
 
             Auth::login($user, true);
         }

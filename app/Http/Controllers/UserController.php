@@ -127,10 +127,14 @@ class UserController extends Controller
             }
         }
 
-        $followed = (bool) Follow::where('follower', auth()->user()->id)
-        ->where('followable_id', $user->id)
-        ->where('followable_type', 'App\Models\User')
-        ->count();
+        if(Auth::check()) {
+            $followed = (bool) Follow::where('follower', auth()->user()->id)
+            ->where('followable_id', $user->id)
+            ->where('followable_type', 'App\Models\User')
+            ->count();
+        } else {
+            $followed = false;
+        }
 
         $threads_count = $user->threads->count();
         $posts_count = $user->posts_count();

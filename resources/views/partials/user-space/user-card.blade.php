@@ -1,22 +1,21 @@
 <div class="ms-right-panel">
     @php
         $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
+        $login_status = Cache::has('user-is-online-' . $user->id) ? 'online' : 'offline';
     @endphp
     <div class="flex px8 py8">
         <div>
             <img src="{{ $user->avatar }}" class="small-image-1 br6 mr8" alt="">
         </div>
         <div class="mr8">
+            <h2 class="no-margin">{{ $user->firstname . ' ' . $user->lastname }}</h2>
+            <p class="fs12 no-margin gray">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
             <div class="flex align-center">
-                <h2 class="no-margin">{{ $user->firstname . ' ' . $user->lastname }}</h2>
-                <div class="relative">
-                    <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="tiny-image ml4 tooltip-section" alt="">
-                    <p class="tooltip tooltip-style-2 right0" style="top: 15px">
-                        {{ $ustatus }}
-                    </p>
+                <div class="flex align-center">
+                    <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="tiny-image mx4 tooltip-section" alt="">
+                    <span class="fs13 gray">{{ $login_status }}</span>
                 </div>
             </div>
-            <p class="fs12 no-margin gray">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
         </div>
     </div>
     <div>

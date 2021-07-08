@@ -21,7 +21,7 @@
             <div>
                 <img src="{{ asset('assets/images/logos/welcome.png') }}" class="flex full-width" alt="">
             </div>
-            <div class="middle-container-style">
+            <div class="index-middle-width middle-container-style">
                 @auth
                     @include('partials.thread.thread-add', ['editor_height'=>100])
                 @endauth
@@ -77,10 +77,10 @@
                         </div>
                     </div>
                 @endif
-            </div>
-            <div class="flex my8">
-                <div class="move-to-right">
-                    {{ $threads->onEachSide(0)->links() }}
+                <div class="flex my8">
+                    <div class="move-to-right">
+                        {{ $threads->onEachSide(0)->links() }}
+                    </div>
                 </div>
             </div>
         </div>

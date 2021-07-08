@@ -9,13 +9,11 @@ class FollowPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function follow(User $user)
     {
-        //
+        if ($user->isBanned()) {
+            $this->deny("You cannot follow people because you're currently banned !");
+        }
+        return true;
     }
 }

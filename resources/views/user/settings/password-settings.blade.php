@@ -38,6 +38,10 @@
                             <p class="no-margin" style="margin-right: 8px">●</p>
                             <p class="no-margin fs13" style="line-height: 150%">{{ __("Your're currently using ") }} <b> {{ $user->provider }} </b> {{ __(" service and you can access your account by choosing this service in the login section without using a password. However If you intend to create a password for your account, this will allow you to loggin using normal authentication(email & password) or login directly using your social network service") }}.</p>
                         </div>
+                        <div class="flex">
+                            <p class="no-margin" style="margin-right: 8px">●</p>
+                            <p class="no-margin fs13" style="line-height: 150%">{{ __("Keep in mind that If you close the browser, later you need to login again using your social account. To fix this issue, try to create a password to your account below to allow your account to use normal authentication (email & password) and then use REMEMBER ME feature to keep your account logged-in") }}.</p>
+                        </div>
                         <div class="flex" style="margin-top: 12px">
                             <p class="no-margin" style="margin-right: 8px">●</p>
                             <p class="no-margin fs13" style="line-height: 150%">{{ __("However keep in mind when you choose a password and forget it later, you can't reset your password because this feature is not present for the moment. Instead you can login directly using your social netweork service") }}.</p>
@@ -54,14 +58,14 @@
                                 </div>
                                 <div class="input-container">
                                     <label for="password" class="label-style-2">{{ __('New Password') }} @error('password') <span class="error ml4">*</span> @enderror</label>
-                                    <input type="password" id="password" name="password" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Your new password">
+                                    <input type="password" required id="password" name="password" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Your new password">
                                     @error('password')
                                         <p class="error" role="alert">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div class="input-container">
                                     <label for="password_confirmation" class="label-style-2">{{ __('Confirm Your Password') }} @error('password_confirmation') <span class="error ml4">*</span> @enderror</label>
-                                    <input type="password" id="password_confirmation" name="password_confirmation" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Confirm password">
+                                    <input type="password" required id="password_confirmation" name="password_confirmation" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Confirm password">
                                     @error('password_confirmation')
                                         <p class="error" role="alert">{{ $message }}</p>
                                     @enderror

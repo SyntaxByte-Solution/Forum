@@ -47,10 +47,18 @@
                             <div>
                                 <h2 class="no-margin forum-color flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
                                 <p class="bold no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>
-                                <p class="fs12 gray no-margin">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
+                                <p class="fs12 gray no-margin" style="margin: 2px 0">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
                             </div>
-                            @if($user->id != auth()->user()->id)
-                            <div class="move-to-right">
+                            <div class="move-to-right flex align-center height-max-content">
+                                <div class="flex align-center">
+                                    <div class="flex align-center">
+                                        <div class="forum-color">{{ _('followers') }}:<span class="bold" style="margin-left: 1px">12</span></div>
+                                    </div>
+                                    <div class="flex align-center" style="margin: 0 14px">
+                                        <div class="forum-color">{{ _('following') }}:<span class="bold" style="margin-left: 1px">12</span></div>
+                                    </div>
+                                </div>
+                                @if(auth()->user() && $user->id != auth()->user()->id)
                                 <div class="button-wraper-style @auth follow-resource @endauth @guest login-signin-button @endguest">
                                     <div class="size14 sprite sprite-2-size follow-button-icon mr4 @if($followed) followed14-icon @else follow14-icon @endif"></div>
                                     @if($followed)
@@ -70,79 +78,24 @@
                                     <input type="hidden" class="followed-icon" value="followed14-icon">
                                     <input type="hidden" class="unfollowed-icon" value="follow14-icon">
                                 </div>
+                                @endif
                             </div>
-                            @endif
                         </div>
                     </div>
                 </div>
-                @can('update', $user)
-                <div class="flex">
-                    <a href="{{ route('user.settings') }}" class="bold fs13 move-to-right link-without-underline-style">Edit profile</a>
-                </div>
-                @endcan
-                <div class="flex">
-                    <div class="half-width mr4 us-user-info-container relative">
-                        @can('update', $user)
-                            <a href="{{ route('user.settings') }}" class="absolute" style="top: 8px; right: 8px">
-                                <img src="{{ asset('assets/images/icons/bedit.png') }}" class="small-image-size" alt="">
-                            </a>
-                        @endcan
-                        <h3 class="m4 forum-color light-border-bottom" style="padding-bottom: 8px; margin-bottom: 14px">Public Informations</h3>
-
-                        <div class="flex my8">
-                            <p class="fs14 no-margin flex align-center"><span class="bold">Status: </span>
-                                @php
-                                    $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
-                                @endphp
-                                <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="small-image-size ml8" alt="">
-                                <span class="forum-color ml4">@if(Cache::has('user-is-online-' . $user->id)) Online @else Offline @endif</span>
-                            </p>
-                        </div>
-
-                        <div class="flex my8">
-                            <p class="fs14 no-margin"><span class="bold">About: </span>
-                                    @if($user->about)
-                                    <span class="forum-color ml8">
-                                        {{ $user->about }}
-                                    </span>
-                                    @else
-                                    <span class="italic gray ml8">
-                                        EMPTY
-                                    </span>
-                                    @endif
-                            </p>
-                        </div>
-                        <div class="flex my8">
-                            <p class="fs14 no-margin"><span class="bold">Username: </span><span class="forum-color ml8">{{ $user->username }}</span></p>
-                        </div>
-                        <div class="flex my8">
-                            <p class="fs14 no-margin">Member since: : <span class="bold forum-color ml8">{{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</span></p>
-                        </div>
-                    </div>
-                    <div class="half-width ml4 us-user-info-container full">
-                        <h3 class="m4 forum-color" style="margin-bottom: 14px">Followers</h3>
-                        <div class="full-center">
-
-                            @if(auth()->user() && $user->id == auth()->user()->id)
-                                <p class="forum-color text-center">You don't have friends for the moments ! search for people and send friend requests</p>
-                            @else
-                                <p class="forum-color text-center">This user has no friends for the moments !</p>
-                            @endif
-                        </div>
-                        <h3 class="m4 forum-color" style="margin-bottom: 14px">Following</h3>
-                        <div class="full-center">
-                            @if(auth()->user() && $user->id == auth()->user()->id)
-                                <p class="forum-color text-center">You don't have any followers for the moments ! search for people to follow them !</p>
-                            @else
-                                <p class="forum-color text-center">This user has no followers for the moments !</p>
-                            @endif
-                        </div>
-                    </div>
+                <div class="my8">
+                    @auth
+                        @include('partials.thread.thread-add', ['editor_height'=>60])
+                    @endauth
                 </div>
                 @if($threads->count())
                 <div style="margin-top: 20px">
                     <div class="flex align-center space-between">
+                        @if(auth()->user() && $user->id == auth()->user()->id)
+                        <h2>{{ __('Your Threads') }}</h2>
+                        @else
                         <h2>{{ __('Threads') }}</h2>
+                        @endif
 
                         {{ $threads->onEachSide(0)->links() }}
                     </div>
@@ -150,6 +103,17 @@
                         <x-index-resource :thread="$thread"/>
                     @endforeach
                 </div>
+                @else
+                    @if(auth()->user() && $user->id == auth()->user()->id)
+                    <div class="full-center">
+                        <div>
+                            <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any thread for the moment !") }}</p>
+                            <p class="my4 text-center">{{ __("Try to start a discussion or question using the forum above") }}</p>
+                        </div>
+                    </div>
+                    @else
+
+                    @endif
                 @endif
             </div>
             <div>

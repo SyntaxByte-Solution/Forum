@@ -1130,7 +1130,7 @@ function handle_mark_as_read() {
 }
 
 let notification_timeout;
-if(userId) {
+if(userId != "") {
     Echo.private('user.' + userId + '.notifications')
         .notification((notification) => {
             // Stop animatio if there's already animation

@@ -195,6 +195,8 @@ class User extends UserAuthenticatable implements Authenticatable
                     $resource_action_icon = 'resource24-vote-icon';
                 } else if($cloned_notification_data->data['action_type'] == 'reply-like') {
                     $resource_action_icon = 'resource24-like-icon';
+                } else if($cloned_notification_data->data['action_type'] == 'warning-warning') {
+                    $resource_action_icon = 'warning24-icon';
                 } else if($cloned_notification_data->data['action_type'] == 'thread-like') {
                     $resource_action_icon = 'resource24-like-icon';
                 } else {

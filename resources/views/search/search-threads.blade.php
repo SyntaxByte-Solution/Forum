@@ -54,54 +54,55 @@
             <h2 class="fs20 flex align-center gray">Search results for: "<span class="black">{{ $search_query }}</span>"</h2>
             @endif
             <div class="simple-line-separator my8"></div>
-            <div class="flex my8">
-                <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Threads') }}<span class="gray fs14 ml4">@isset($search_query) ({{$threads->total() . ' ' . __('found')}}) @endisset</span></h2>
-                <div class="move-to-right">
-                    {{ $threads->appends(request()->query())->links() }}
-                </div>
-            </div>
+            <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Threads') }}</h2>
             <div>
-                <table class="forums-table">
-                    <tr>
-                        <th class="table-col-header">
-                            <div class="flex align-center">
-                                {{ __('THREADS') }}
-                                <div class="inline-block move-to-right mr4">
-                                    <div class="flex align-center">
-                                        <div class="flex align-center mr8">
-                                            <p class="gray fs11 no-margin mr4">Forum: </p>
-                                            <div class="relative">
-                                                <a href="{{ route('forum.all.threads', ['forum'=>'general']) }}" class="mr4 button-right-icon more-icon button-with-suboptions">{{ __('All') }}</a>
-                                                <div class="suboptions-container suboptions-buttons-b-style" style="top: 16px">
-                                                    @foreach($forums as $forum)
-                                                        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex align-center">
-                                            <span>rows: </span>
-                                            <select name="" class="small-dropdown row-num-changer">
-                                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                                <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                                <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                                            </select>
-                                        </div>
+                <div class="flex space-between align-end my8">
+                    <div>
+                        
+                        <div class="flex align-center my8">
+                            <div class="flex align-center mr8">
+                                <p class="no-margin mr4">{{__('Forums')}}: </p>
+                                <div class="relative">
+                                    <a href="{{ route('forum.all.threads', ['forum'=>'general']) }}" class="flex mr4 button-right-icon more-icon button-with-suboptions" style="padding: 6px 26px 6px 10px; font-size: 12px">{{ __('All') }}</a>
+                                    <div class="suboptions-container suboptions-buttons-b-style">
+                                        @foreach($forums as $forum)
+                                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
-                        </th>
-                        <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
-                        <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
-                    </tr>
+                        </div>
+
+                        <div class="flex align-center move-to-right">
+                            <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
+                            <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
+                            <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex">
+                            <div class="flex align-center my4 move-to-right">
+                                <span class="mr4 fs13 gray">Discussion/Page :</span>
+                                <select name="" class="small-dropdown row-num-changer">
+                                    <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                    <option value="20" @if($pagesize == 20) selected @endif>20</option>
+                                    <option value="50" @if($pagesize == 50) selected @endif>50</option>
+                                </select>
+                            </div>
+                        </div>
+                        {{ $threads->onEachSide(0)->links() }}
+                    </div>
+                </div>
+                <div id="threads-global-container">
                     @foreach($threads as $thread)
                         <x-index-resource :thread="$thread"/>
                     @endforeach
-                </table>
+                </div>
                 @if(!$threads->count())
                     <div class="full-center">
                         <div>
-                            <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("No threads matched your search !") }}</p>
+                            <div class="size36 sprite sprite-2-size notfound36-icon" style="margin-top: 16px"></div>
+                            <p class="fs20 bold gray my4">{{ __("No threads matched your search !") }}</p>
                             <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>$forums->first()->slug, 'category'=>$forums->first()->categories->first()->slug]) }}" class="link-path">{{__('thread')}}</a></p>
                         </div>
                     </div>

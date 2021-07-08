@@ -27,7 +27,7 @@ function loadFollowers(button) {
     let user_id = follow_container.find('.profile_owner_id').val();
 
     $.ajax({
-        url: `/users/${user_id}/followers/load?range=12&skip=${present_followers_count}`,
+        url: `/users/${user_id}/followers/load?range=8&skip=${present_followers_count}`,
         type: 'get',
         success: function(followers_rows) {
             if(followers_rows.hasNext == false) {

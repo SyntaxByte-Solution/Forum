@@ -57,7 +57,6 @@
                                     <option value="10" @if($pagesize == 10) selected @endif>10</option>
                                     <option value="20" @if($pagesize == 20) selected @endif>20</option>
                                     <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                                    <option value="100" @if($pagesize == 100) selected @endif>50</option>
                                 </select>
                             </div>
                         </div>

@@ -20,17 +20,7 @@
 
 @section('content')
     @include('partials.left-panel', ['page' => 'user', 'subpage'=>'user.profile'])
-
-    <style>
-        #followers-container {
-            background-color: #ccc;
-            border-radius: 6px;
-            width: 410px;
-            height: 200px;
-            margin: 0 auto;
-        }
-    </style>
-    <div class="fixed full-shadowed followers-viewer zi12" style="display: block; opacity: 1">
+    <div class="fixed full-shadowed followers-viewer zi12">
         <div class="follow-container">
             <div class="follow-box-header relative">
                 <div class="fs18 unselectable">Followers</div>
@@ -158,7 +148,7 @@
                     <div class="full-center">
                         <div>
                             <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any thread for the moment !") }}</p>
-                            <p class="my4 text-center">{{ __("Try to start a discussion or question using the forum above") }}</p>
+                            <p class="my4 text-center">{{ __("Try to start a discussion or question using the form above") }}</p>
                         </div>
                     </div>
                     @else

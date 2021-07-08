@@ -34,13 +34,28 @@ class SearchController extends Controller
             DB::select(
                 $this->search_query_generator('threads', $search_query, ['subject', 'content'], ['LIKE'], ['OR'])
             ), 'id'
-        ))->orderBy('created_at', 'desc')->paginate($pagesize);
+        ))->orderBy('created_at', 'desc');
+
+        if($request->has('tab')) {
+            $tab = $request->input('tab');
+            if($tab == 'today') {
+                $threads = $threads->today();
+            } else if($tab == 'thisweek') {
+                $threads = $threads->where(
+                    'created_at', 
+                    '>=', 
+                    \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
+                );
+            }
+        }
+
+        $threads = $threads->paginate($pagesize);
 
         $users = User::whereIn('id', array_column(
             DB::select(
                 $this->search_query_generator('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE'], ['OR'])
             ), 'id'
-        ))->orderBy('username', 'asc')->paginate(5);
+        ))->orderBy('username', 'asc')->paginate(4);
 
         return view('search.search-result')
             ->with(compact('forums'))
@@ -257,7 +272,22 @@ class SearchController extends Controller
             DB::select(
                 $this->search_query_generator('threads', $search_query, ['subject', 'content'], ['LIKE'], ['OR'])
             ), 'id'
-        ))->orderBy('created_at', 'desc')->paginate($pagesize);
+        ))->orderBy('created_at', 'desc');
+
+        if($request->has('tab')) {
+            $tab = $request->input('tab');
+            if($tab == 'today') {
+                $threads = $threads->today();
+            } else if($tab == 'thisweek') {
+                $threads = $threads->where(
+                    'created_at', 
+                    '>=', 
+                    \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
+                );
+            }
+        }
+
+        $threads = $threads->paginate($pagesize);
 
         return view('search.search-threads')
             ->with(compact('forums'))

@@ -14,6 +14,10 @@ class FollowPolicy
         if ($user->isBanned()) {
             $this->deny("You cannot follow people because you're currently banned !");
         }
+        
+        if($user->id == auth()->user()->id) {
+            $this->deny("You cannot follow yourself !");
+        }
         return true;
     }
 }

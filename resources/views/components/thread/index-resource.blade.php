@@ -6,6 +6,7 @@
     <div class="hidden-thread-section none px8 py8">
         <p class="my4 fs12">Thread hidden. If you want to show it again <span class="pointer blue thread-display-button">click here</span></p>
     </div>
+    @can('update', $thread)
     <div class="absolute full-shadowed br6 turn-off-viewer" style="z-index: 1">
         <div class="full-center full-width full-height">
             <div>
@@ -58,6 +59,7 @@
             </div>
         </div>
     </div>
+    @endcan
     <div class="flex thread-component">
         <div class="thread-vote-section">
             <div class="informer-message-container absolute left100 zi1">

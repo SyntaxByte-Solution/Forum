@@ -68,6 +68,15 @@ a, input, textarea {
     font-size: 12px !important;
 }
 
+.light-border {
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+}
+
+.light-border:hover {
+    background-color: #eaeaea;
+}
+
 .br6 {
     border-radius: 6px;
 }
@@ -93,7 +102,7 @@ a, input, textarea {
 }
 
 .fs18 {
-    font-size: 18px;
+    font-size: 18px !important;
 }
 
 .fs17 {
@@ -866,6 +875,10 @@ a, input, textarea {
     background-position: 14px -1287px;
 }
 
+.nofollow36-icon {
+    background-position: 0 -144px;
+}
+
 /* ----------------------------------------------------- */
 
 .wedit-icon {
@@ -1089,8 +1102,6 @@ a, input, textarea {
     height: 100%;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.78);
-
-    transition: opacity 1s;
 }
 
 .close-shadowed-view {
@@ -2543,4 +2554,61 @@ tr:nth-child(2n) {
     border-top: 1px solid #e1e1e1;
     background-color: white;
     border-radius: 0 0 6px 0 ;
+}
+
+.follow-container {
+    background-color: white;
+    border-radius: 10px;
+    width: 380px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+}
+
+.follow-box-header {
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.follow-box-body {
+    min-height: 260px;
+    max-height: 380px;
+    overflow-y: scroll;
+
+    padding: 4px;
+}
+
+.close-button-style {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    margin-left: 1px;
+    margin-top: -1px;
+    font-weight: bold;
+    top: 8px;
+    right: 8px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: rgba(219, 219, 219, 0.49);
+    color: black;
+}
+
+.close-button-style:hover {
+    background-color: rgba(219, 219, 219, 0.86);
+}
+
+.follow-box-item {
+    display: flex;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.follow-box-item:hover {
+    background-color: #f9f9f9;
 }

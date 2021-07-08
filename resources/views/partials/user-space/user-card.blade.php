@@ -12,7 +12,7 @@
             <p class="fs12 no-margin gray">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
             <div class="flex align-center">
                 <div class="flex align-center">
-                    <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="tiny-image mx4 tooltip-section" alt="">
+                    <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="tiny-image mr4 tooltip-section" alt="">
                     <span class="fs13 gray">{{ $login_status }}</span>
                 </div>
             </div>

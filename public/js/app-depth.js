@@ -190,11 +190,9 @@ $('.close-shadowed-view-button').click(function() {
     while(!shadowed_container.hasClass('full-shadowed')) {
         shadowed_container = shadowed_container.parent();
     }
-    shadowed_container.animate({
-        opacity: 0
-    }, 300, function() {
-        shadowed_container.css('display', 'none');
-    });
+
+    shadowed_container.css('opacity', '0');
+    shadowed_container.css('display', 'none');
 
     $('.suboptions-container').css('display', 'none');
 
@@ -1642,6 +1640,11 @@ $('.follow-resource').click(function(event) {
     }
     follow_resource_lock = false;
 
+    let follow_box = $(this);
+    while(!follow_box.hasClass('follow-box')) {
+        follow_box = follow_box.parent();
+    }
+
     let button = $(this);
     button.attr('style', 'background-color: #009fffad; border-color: #009fffad; cursor: default');
 
@@ -1661,6 +1664,7 @@ $('.follow-resource').click(function(event) {
             _token: csrf
         },
         success: function(response) {
+            let followers_counter = follow_box.find('.followers-counter');
             let button_icon = button.find('.follow-button-icon');
             let lastClass = button_icon.attr('class').trim().split(' ').pop();
             button_icon.removeClass(lastClass);
@@ -1668,10 +1672,12 @@ $('.follow-resource').click(function(event) {
                 button.find('.status').val(-1);
                 button_icon.addClass(button.find('.unfollowed-icon').val());
                 button.find('.btn-txt').text(button.find('.follow-text').val());
+                followers_counter.text(parseInt(followers_counter.text()) - 1);
             } else {
                 button.find('.status').val(1);
                 button_icon.addClass(button.find('.followed-icon').val());
                 button.find('.btn-txt').text(button.find('.followed-text').val());
+                followers_counter.text(parseInt(followers_counter.text()) + 1);
             }
         },
         complete: function() {

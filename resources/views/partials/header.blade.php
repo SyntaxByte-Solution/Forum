@@ -21,7 +21,7 @@
         <div id="search-and-login" class="flex align-center move-to-right">
             <div id="header-search-container">
                 <form action="{{ route('search') }}" method="GET" class="search-forum">
-                    <input type="text" name="k" value="{{ request()->get('k') }}" class="search-field" placeholder="Search everything.." required>
+                    <input type="text" name="k" value="{{ request()->get('k') }}" class="search-field" placeholder="{{ __('Search everything') }}.." title="{{ __('search field') }}" required>
                     <input type="submit" value="{{ __('search') }}" class="search-button">
                 </form>
             </div>

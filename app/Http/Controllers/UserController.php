@@ -141,8 +141,14 @@ class UserController extends Controller
         $threads = $user->threads()
         ->orderBy('created_at', 'desc')->paginate(6);
 
+        $followers = $user->followers;
+        $followers = $followers->map(function($item, $key) {
+            return User::find($item->follower);
+        })->take(2);
+
         return view('user.profile')
             ->with(compact('user'))
+            ->with(compact('followers'))
             ->with(compact('followed'))
             ->with(compact('threads_count'))
             ->with(compact('posts_count'))

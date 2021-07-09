@@ -27,8 +27,6 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     if (Auth::check()) {
         $user = auth()->user();
-
-        dd($user->followed_users);
     }
 });
 

@@ -229,6 +229,22 @@ class UserController extends Controller
             );
 
             $data['avatar'] = $path;
+            // Here we need to notify all the followers about avatar change
+            foreach($user->followers as $follower) {
+                $follower = User::find($follower->follower);
+                
+                $follower->notify(
+                    new \App\Notifications\UserAction([
+                        'action_user'=>auth()->user()->id,
+                        'action_statement'=>"changed his profile avatar",
+                        'resource_string_slice'=>"",
+                        'action_type'=>'image-action',
+                        'action_date'=>now(),
+                        'action_resource_id'=>auth()->user()->id,
+                        'action_resource_link'=>route('user.profile', ['user'=>auth()->user()->username]),
+                    ])
+                );
+            }
         }
 
         if($request->cover_removed) {
@@ -240,6 +256,22 @@ class UserController extends Controller
             );
 
             $data['cover'] = $path;
+
+            foreach($user->followers as $follower) {
+                $follower = User::find($follower->follower);
+                
+                $follower->notify(
+                    new \App\Notifications\UserAction([
+                        'action_user'=>auth()->user()->id,
+                        'action_statement'=>"changed his profile cover",
+                        'resource_string_slice'=>"",
+                        'action_type'=>'image-action',
+                        'action_date'=>now(),
+                        'action_resource_id'=>auth()->user()->id,
+                        'action_resource_link'=>route('user.profile', ['user'=>auth()->user()->username]),
+                    ])
+                );
+            }
         }
 
         $user->update($data);

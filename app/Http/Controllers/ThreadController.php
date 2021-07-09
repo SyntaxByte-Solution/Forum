@@ -155,6 +155,23 @@ class ThreadController extends Controller
 
         $thread = Thread::create($data);
 
+        // Notify the followers
+        foreach(auth()->user()->followers as $follower) {
+            $follower = User::find($follower->follower);
+            
+            $follower->notify(
+                new \App\Notifications\UserAction([
+                    'action_user'=>auth()->user()->id,
+                    'action_statement'=>"Shared a new thread: ",
+                    'resource_string_slice'=>$thread->slice,
+                    'action_type'=>'thread-action',
+                    'action_date'=>now(),
+                    'action_resource_id'=>$thread->id,
+                    'action_resource_link'=>$thread->link,
+                ])
+            );
+        }
+
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
         $categaory_slug = Category::find($data['category_id'])->slug;
 

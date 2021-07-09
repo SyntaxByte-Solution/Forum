@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\View\Components\User\Follow as FollowComponent;
+use App\View\Components\User\{Follower, Follows};
 use App\Models\{User, Thread, Follow};
 
 class FollowController extends Controller
@@ -45,15 +45,39 @@ class FollowController extends Controller
 
         foreach($followers_to_return as $follower) {
             $follower = User::find($follower->follower);
-            $follower_component = (new FollowComponent($follower));
+            $follower_component = (new Follower($follower));
             $follower_component = $follower_component->render(get_object_vars($follower_component))->render();
             $payload .= $follower_component;
         }
 
         return [
-            "hasNext"=> auth()->user()->followers->skip(($data['skip']+1) * $data['range'])->count() > 0,
+            "hasNext"=> $user->followers->skip($data['skip']+1)->count() > 0,
             "content"=>$payload,
             "count"=>$followers_to_return->count()
+        ];
+    }
+
+    public function follows_load(Request $request, User $user) {
+        $data = $request->validate([
+            'range'=>'required|Numeric',
+            'skip'=>'required|Numeric',
+        ]);
+
+        $follows_to_return = $user->followed_users->skip($data['skip'])->take($data['range']);
+
+        $payload = "";
+
+        foreach($follows_to_return as $followed_user) {
+            $followed_user = User::find($followed_user->followable_id);
+            $follows_component = (new Follows($followed_user));
+            $follows_component = $follows_component->render(get_object_vars($follows_component))->render();
+            $payload .= $follows_component;
+        }
+
+        return [
+            "hasNext"=> $user->followed_users->skip($data['skip'] + 1)->count() > 0,
+            "content"=>$payload,
+            "count"=>$follows_to_return->count()
         ];
     }
 }

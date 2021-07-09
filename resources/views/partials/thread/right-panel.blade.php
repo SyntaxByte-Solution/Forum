@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt8">
+        <div class="mt8 py8">
             <div class="toggle-box">
                 <div class="right-panel-header-container space-between">
                     <div class="flex align-center">

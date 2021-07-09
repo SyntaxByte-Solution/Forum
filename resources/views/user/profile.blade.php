@@ -64,18 +64,22 @@
             </div>
             <div class="follow-box-body">
                 <input type="hidden" class="profile_owner_id" value="{{ $user->id }}">
-                @if($followed_users->count())
+                @if($user->followed_users->count())
                     @foreach($followed_users as $followed_user)
                         <x-user.follows :user="$followed_user"/>
                     @endforeach
-                    @if($followed_users->count() > 8)
-                        <input type='button' class="see-all-full-style follows-load" value="{{__('load more')}}">
+                    @if($user->followed_users->count() > 8)
+                        <div>
+                            <input type='button' class="see-all-full-style follows-load" value="{{__('load more')}}">
+                            <input type='hidden' class="button-text-no-ing" value="{{ __('load more') }}">
+                            <input type='hidden' class="button-text-ing" value="{{ __('loading..') }}">
+                        </div>
                     @endif
                 @else
                     <div class="flex flex-column align-center">
                         <div class="size36 sprite sprite-2-size nofollow36-icon" style="margin-top: 16px"></div>
                         @if(auth()->user() && $user->id == auth()->user()->id)
-                        <p class="bold fs17 gray mb8 unselectable">{{ __("You don't follow one at that time") }}</h2>
+                        <p class="bold fs17 gray mb8 unselectable">{{ __("You don't follow any one at the moment") }}</h2>
                         <p class="no-margin forum-color unselectable text-center">{{ __("tip: Try to follow people in order to get notifications about their activities and see their posts.") }}</p>
                         @else
                         <p class="bold fs17 gray my8 unselectable">{{ $user->username . __(" doesn't follow anyone") }}</h2>
@@ -114,7 +118,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="ms-profile-infos-container full-width">
+                        <div class="ms-profile-infos-container flex full-width">
                             <div style="max-width: 220px">
                                 <h2 class="no-margin forum-color flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
                                 <p class="bold no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>

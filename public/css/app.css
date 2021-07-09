@@ -6,7 +6,7 @@ body {
 }
 
 main {
-    background-color: rgb(252, 252, 252);
+    background-color: #F6F8FA;
 }
 
 a, input, textarea {
@@ -648,11 +648,7 @@ a, input, textarea {
 /* -------------------- NEW SPRITE -------------------- */
 
 .notifications-icon {
-    background-position: -20px 0px;
-}
-
-.notifications-icon:hover {
-    background-position: 0px 0px;
+    background-position: -17px 0px;
 }
 
 .messages-icon {
@@ -681,6 +677,10 @@ a, input, textarea {
 
 .binbox28-icon {
     background-position: 0px -476px;
+}
+
+.message17-icon {
+    background-position: 17px -85px;
 }
 
 .english17-flag {
@@ -809,6 +809,10 @@ a, input, textarea {
 
 .resource24-vote-icon {
     background-position: 0px -480px;
+}
+
+.followfilled24-icon {
+    background-position: 0px -312px;
 }
 
 .notification24-icon {
@@ -1079,7 +1083,7 @@ a, input, textarea {
 
 .suboptions-account-style {
     position: absolute;
-    top: 42px;
+    top: 44px;
     right: 0;
     width: 180px;
     background-color: white;
@@ -1618,7 +1622,7 @@ th {
     padding: 8px;
     position: sticky;
     z-index: 2;
-    top: 48px; /* Don't forget this, required for the stickiness */
+    top: 52px; /* Don't forget this, required for the stickiness */
     box-shadow: 0 5px 6px -1px rgba(159, 159, 159, 0.2);
     background-color: rgb(250, 250, 250);
 }
@@ -2291,7 +2295,7 @@ tr:nth-child(2n) {
     bottom: 26px;
     left: 26px;
 
-    padding: 8px 30px 8px 8px;
+    padding: 8px 38px 8px 8px;
     width: 340px;
     height: max-content;
     max-height: 90px;
@@ -2536,8 +2540,8 @@ tr:nth-child(2n) {
 }
 
 .thread-content-section {
+    background-color: white;
     padding: 10px;
-    transition: 0.3s ease background-color;
 }
 
 .thread-content-section:hover {

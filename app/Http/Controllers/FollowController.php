@@ -19,12 +19,31 @@ class FollowController extends Controller
 
         if($found->count()) {
             $found->first()->delete();
+            foreach($user->notifications as $notification) {
+                if($notification->data['action_type'] == "user-follow" 
+                && $notification->data['action_user'] == $current_user->id
+                && $notification->data['action_resource_id'] == $user->id) {
+                    $notification->delete();
+                }
+            }
             return -1;
         }
 
         $follow = new Follow;
         $follow->follower = $current_user->id;
         $user->followers()->save($follow);
+
+        $user->notify(
+            new \App\Notifications\UserAction([
+                'action_user'=>auth()->user()->id,
+                'action_statement'=>"starts following you",
+                'resource_string_slice'=>"",
+                'action_type'=>'user-follow',
+                'action_date'=>now(),
+                'action_resource_id'=>$user->id,
+                'action_resource_link'=>route('user.profile', ['user'=>$user->username]),
+            ])
+        );
 
         return 1;
     }

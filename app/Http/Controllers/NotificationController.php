@@ -31,8 +31,8 @@ class NotificationController extends Controller
         $notification = $request->validate([
             'notif_id'=>'required|exists:notifications,id',
             'action_user'=>'required|exists:users,id',
-            'action_statement'=>'required|max:400',
-            'resource_string_slice'=>'required|max:400',
+            'action_statement'=>'sometimes|max:400',
+            'resource_string_slice'=>'sometimes|max:400',
             'action_date'=>'required|max:400',
             'action_resource_link'=>'required|max:400',
             'resource_action_icon'=>'required|max:400',

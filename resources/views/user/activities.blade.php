@@ -97,7 +97,7 @@
                                 $forum_slug = $forum->slug;
                                 $category_slug = $forum->categories->first()->slug;
                             @endphp
-                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>$forum_slug, 'category'=>$category_slug]) }}" class="link-path">{{__('thread')}}</a></p>
+                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('thread')}}</a></p>
                         </div>
                     </div>
                 @endif

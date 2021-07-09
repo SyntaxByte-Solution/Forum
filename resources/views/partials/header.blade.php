@@ -8,7 +8,7 @@
     <div id="header" class="relative">
         <div id="header-logo-container">
             <a href="/">
-                <img src='{{ asset("assets/images/logos/large-logo.png") }}' alt="header logo" id="header-logo" rel="preload">
+                <img src='{{ asset("assets/images/logos/large-logo.png") }}' alt="header logo" id="header-logo" loading="lazy">
             </a>
         </div>
         <div class="flex align-center full-height">
@@ -38,7 +38,7 @@
                     <div class="relative">
                         <div class="header-button-counter-indicator @if(!$unread_notifications_counter) none @endif">{{ $unread_notifications_counter }}</div>
                         <div class="header-button button-with-suboptions pointer notification-button" title="Notifications">
-                            <div class="small-image sprite sprite-2-size notifications-icon"></div>
+                            <div class="small-image-2 sprite sprite-2-size notifications-icon"></div>
                         </div>    
                         <div class="suboptions-container suboptions-header-button-style">
                             <div class="triangle"></div>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="relative">
                         <div class="header-button button-with-suboptions pointer" title="Messages">
-                            <div class="small-image sprite sprite-2-size inbox17-icon"></div>
+                            <div class="small-image-2 sprite sprite-2-size message17-icon"></div>
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
@@ -78,14 +78,14 @@
                     <div class="relative">
                         <div class="flex align-center pointer button-with-suboptions">
                             <div class='header-profile-button'>
-                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning">
+                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning" loading="lazy">
                             </div>
                             <p class="no-margin fs13 mx4 light-gray">{{ $user->username }} <span>▾</span></p>
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="flex first-profile-container-part">
                                 <a href="{{ route('user.profile', ['user'=>$user->username]) }}">
-                                    <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded size36 mr8">
+                                    <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded size36 mr8" loading="lazy">
                                 </a>
                                 <div>
                                     <p class="no-margin fs15 bold unselectable">{{ $user->firstname . ' ' . $user->lastname }}</p>

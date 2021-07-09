@@ -92,7 +92,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/{user}/followers/load', [FollowController::class, 'followers_load']);
     Route::get('/users/{user}/follows/load', [FollowController::class, 'follows_load']);
 
-    Route::get('/{forum:slug}/{category:slug}/threads/add', [ThreadController::class, 'create'])->name('thread.add');
+    Route::get('/threads/add', [ThreadController::class, 'create'])->name('thread.add');
     Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
 
     Route::post('/forums', [ForumController::class, 'store']);

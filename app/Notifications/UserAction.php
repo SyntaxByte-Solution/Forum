@@ -79,6 +79,8 @@ class UserAction extends Notification implements ShouldBroadcast
             $resource_action_icon = 'resource24-vote-icon';
         } else if($action_type == 'resource-like') {
             $resource_action_icon = 'resource24-like-icon';
+        } else if($action_type == 'user-follow') {
+            $resource_action_icon = 'followfilled24-icon';
         } else {
             $resource_action_icon = 'notification24-icon';
         }

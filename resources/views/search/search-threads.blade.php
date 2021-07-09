@@ -30,7 +30,7 @@
                         the filters.
                      -->
                 </div>
-                <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="button-style-1 flex move-to-right height-max-content">{{ __('Add a thread') }}</a>
+                <a href="{{ route('thread.add') }}" class="button-style-1 flex move-to-right height-max-content">{{ __('Add a thread') }}</a>
             </div>
             <div class="flex">
                 <div>
@@ -103,7 +103,7 @@
                         <div>
                             <div class="size36 sprite sprite-2-size notfound36-icon" style="margin: 16px auto 0 auto"></div>
                             <p class="fs20 bold gray my4">{{ __("No threads matched your search !") }}</p>
-                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>$forums->first()->slug, 'category'=>$forums->first()->categories->first()->slug]) }}" class="link-path">{{__('thread')}}</a></p>
+                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('thread')}}</a></p>
                         </div>
                     </div>
                 @endif

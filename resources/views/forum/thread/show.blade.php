@@ -32,7 +32,7 @@
                         <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }}</a>
                     </div>
                     <div>
-                        <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 @guest login-signin-button @endguest">{{ __('Create a thread') }}</a>
+                        <a href="{{ route('thread.add') }}" class="button-style-1 @guest login-signin-button @endguest">{{ __('Create a thread') }}</a>
                     </div>
                 </div>
 
@@ -92,6 +92,7 @@
                     $('textarea').each(function() {
                         var simplemde = new SimpleMDE({
                             element: this,
+                            placeholder: "{{ __('Your reply here') }}"
                         });
                         simplemde.render();
                     });

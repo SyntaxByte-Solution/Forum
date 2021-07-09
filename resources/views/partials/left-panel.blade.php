@@ -66,7 +66,7 @@
         @auth
         <div class="relative toggle-box pb8">
             <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">
-                <img src="{{ auth()->user()->avatar }}" class="rounded size24 mr8" alt="">
+                <img src="{{ auth()->user()->avatar }}" class="rounded size24 mr8" alt="" loading="lazy">
                 {{__('My Space')}} 
                 <span class="toggle-arrow mx4">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span>
             </a>
@@ -100,7 +100,7 @@
         <div class="flex relative">
             <div class="flex align-center full-width">
                 @php
-                    $add_thread_link = route('thread.add', ['forum'=>\App\Models\Forum::first()->slug, 'category'=>\App\Models\Forum::first()->categories->first()->slug]);
+                    $add_thread_link = route('thread.add');
                 @endphp
                 <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected' }} @endif">
                     <div class="small-image sprite sprite-2-size plus17-icon mr4"></div>
@@ -168,7 +168,7 @@
         <div class="flex align-center fs13">
             <p>Designed with 
             <div style="height: 19px; width: 19px" class="full-center mx4">
-                <img src="{{ asset('assets/images/icons/plove.png') }}" class="heart-beating" style="width: 16px;"> 
+                <img src="{{ asset('assets/images/icons/plove.png') }}" class="heart-beating" style="width: 16px;" loading="lazy"> 
             </div>
             by <a href="https://www.mouad-dev.com" target="_blank" class="no-underline mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
         </div>

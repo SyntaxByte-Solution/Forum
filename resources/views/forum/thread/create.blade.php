@@ -23,8 +23,7 @@
         <div class="full-width">
             <div>
                 <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                <a href="{{ route('forum.all.threads', ['forum'=>request()->forum->slug]) }}" class="link-path">{{ __($forum->forum) }} > </a>
-                <a href="{{ route('category.threads', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ __($category->category) }}</a>
+                <span class="current-link-path">{{ __('Start a discussion / Ask a question') }}</span>
             </div>
             <div>
                 <h1 id="page-title">{{ __('Start a discussion / Ask a question') }}</h1>

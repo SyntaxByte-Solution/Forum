@@ -17,7 +17,7 @@ if(urlParams.has('action')) {
 
 if($('#right-panel').height() > $(window).height()) {
     $(document).scroll(function() {
-        if (document.documentElement.scrollTop + $(window).height() > 50 + $('#right-panel').height()) { 
+        if (document.documentElement.scrollTop + $(window).height() > 54 + $('#right-panel').height()) { 
             $('#right-panel').css({
                 position: 'fixed',
                 bottom: '0',
@@ -1517,6 +1517,7 @@ $('.thread-add-share').click(function(event) {
             $('#subject').val('');
             simplemde.value('');
             // Show notification flash
+            window.location.href = response;
         },
         error: function(response) {
             let er;

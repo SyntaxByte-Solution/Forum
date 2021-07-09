@@ -75,16 +75,14 @@ class ThreadController extends Controller
             ->with(compact('posts'));
     }
 
-    public function create(Forum $forum, Category $category) {
+    public function create() {
         $this->authorize('create', Thread::class);
 
-        $forums = Forum::where('id', '<>', $forum->id)->get();
-        $categories = $forum->categories->where('slug', '<>', 'announcements');
+        $forums = Forum::all();
+        $categories = $forums->first()->categories->where('slug', '<>', 'announcements');
 
         return view('forum.thread.create')
             ->with(compact('forums'))
-            ->with(compact('forum'))
-            ->with(compact('category'))
             ->with(compact('categories'));
     }
 
@@ -160,7 +158,7 @@ class ThreadController extends Controller
         $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
         $categaory_slug = Category::find($data['category_id'])->slug;
 
-        return redirect($thread->link);
+        return $thread->link;
     }
 
     public function edit(User $user, Thread $thread) {

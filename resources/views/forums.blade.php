@@ -29,7 +29,7 @@
                 @auth
                     <div class="flex align-center">
                         <p class="mr8 fs13 gray">Add: </p>
-                        <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 flex">{{ __('Discussion or Question') }}</a>
+                        <a href="{{ route('thread.add') }}" class="button-style-1 flex">{{ __('Discussion or Question') }}</a>
                     </div>
                 @endauth
             </div>

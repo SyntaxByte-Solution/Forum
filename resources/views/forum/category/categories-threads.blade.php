@@ -53,7 +53,7 @@
             <div class="flex align-center space-between" style="margin-bottom: 10px">
                 <div class="flex align-center">
                     <div class="relative">
-                        <a href="{{ route('thread.add', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="button-style-1 mr4">Add Thread</a>
+                        <a href="{{ route('thread.add') }}" class="button-style-1 mr4">Add Thread</a>
                     </div>
                     <form action="{{ route('advanced.search.results') }}" method='get' class="flex">
                         <input type="hidden" name="forum" value="{{ request()->forum->id }}">

@@ -72,7 +72,7 @@
                     <div class="full-center">
                         <div>
                             <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("There are no threads for the moment try out later !") }}</p>
-                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>'general', 'category'=>'general-infos']) }}" class="link-path">{{__('thread')}}</a></p>
+                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('thread')}}</a></p>
                         </div>
                     </div>
                 @endif

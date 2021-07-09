@@ -5,6 +5,15 @@ $('.followers-display').click(function() {
     }, 200);
 });
 
+$('.follows-display').click(function() {
+    $('.follows-viewer').css('display', 'block');
+    $('.follows-viewer').animate({
+        opacity: '1'
+    }, 200);
+});
+
+
+
 $('.followers-load').click(function(event) {
     event.preventDefault();
     let button = $(this);

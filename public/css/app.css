@@ -47,6 +47,10 @@ a, input, textarea {
     z-index: 12;
 }
 
+.zi100 {
+    z-index: 20;
+}
+
 .parent-height {
     height: 100%;
 }
@@ -2121,7 +2125,6 @@ tr:nth-child(2n) {
 .ms-profile-infos-container {
     margin-left: 10px;
     margin-top: 88px;
-    display: flex;
     width: 100%;
 }
 
@@ -2151,6 +2154,25 @@ tr:nth-child(2n) {
     border-color: #009fffad;
     background-color: #009fffad;
 }
+
+.button-mini-wraper-style {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 2px 4px;
+    border: 1px solid #888;
+
+    border-radius: 4px;
+}
+
+.button-mini-wraper-style:hover {
+    border-color: #009fffad;
+    background-color: #009fffad;
+}
+
+
 
 .us-user-info-container {
     padding: 14px;
@@ -2576,8 +2598,7 @@ tr:nth-child(2n) {
 }
 
 .follow-box-body {
-    min-height: 260px;
-    max-height: 380px;
+    height: 380px;
     overflow-y: scroll;
 
     padding: 4px;

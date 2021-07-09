@@ -42,23 +42,29 @@
         </div>
     </div>
     <div>
-        <div class="index-right-panel-container border-box mt8">
-            <div class="index-right-panel">
-                <p class="bold no-margin mb8 fs15 blue">{{ __("Not the") }} {{ $thread_type }} {{ __("you're looking for ?") }}</p>
-                <p class="fs12"><span class="bold mr4">+</span>{{ __("Use the") }} <a href="" class="blue bold no-underline">{{ __('search feature') }}</a> {{ __("by specifying the forum and category (or select [all] option to search in all forums and categories)") }}.</p>
-                <p class="fs12"><span class="bold mr4">+</span>{{ __("Or") }} <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="blue bold no-underline">{{ __("create your own thread") }}</a></p>
+        <div class="border-box mt8">
+            <div>
+                <div class="right-panel-header-container">
+                    <p class="bold no-margin fs15 blue">{{ __("Not the") }} {{ $thread_type }} {{ __("you're looking for ?") }}</p>
+                </div>
+                <div class="px8 mx8">
+                    <p class="fs12"><span class="bold mr4">+</span>{{ __("Use the") }} <a href="" class="blue bold no-underline">{{ __('search feature') }}</a> {{ __("by specifying the forum and category (or select [all] option to search in all forums and categories)") }}.</p>
+                    <p class="fs12"><span class="bold mr4">+</span>{{ __("Or") }} <a href="{{ route('thread.add', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="blue bold no-underline">{{ __("create your own thread") }}</a></p>
+                </div>
             </div>
         </div>
-        <div class="index-right-panel-container border-box mt8">
-            <div class="index-right-panel toggle-box">
-                <div class="flex align-center space-between">
-                    <p class="bold no-margin unselectable blue">{{ __('Posting Guidelines') }}</p>
+        <div class="mt8">
+            <div class="toggle-box">
+                <div class="right-panel-header-container space-between">
+                    <div class="flex align-center">
+                        <p class="bold no-margin fs15 blue">{{ __('Posting Guidelines') }}</p>
+                    </div>
                     <a href="" class="link-style fs12 toggle-container-button">see more</a>
                 </div>
-                <p class="fs12 my8"><strong>1. {{ __('Treat people with respect if you want to be respected') }}.</strong></p>
-                <p class="fs12 my8"><strong>2.</strong> {{ __('Stick to the topic when responding to posts created by others') }}.</p>
-                <p class="fs12 my8"><strong>3.</strong> {{ __('When creating your own post in the form of a topic, please choose the appropriate forum and give it a clear and concise title') }}.</p>
-                <div class="toggle-container">
+                <div class="mx8 px8">
+                    <p class="fs12 my8"><strong>1. {{ __('Treat people with respect if you want to be respected') }}.</strong></p>
+                    <p class="fs12 my8"><strong>2.</strong> {{ __('Stick to the topic when responding to posts created by others') }}.</p>
+                    <p class="fs12 my8"><strong>3.</strong> {{ __('When creating your own post in the form of a topic, please choose the appropriate forum and give it a clear and concise title') }}.</p>
                     <p class="fs12 my8"><strong>4.</strong> {{ __('Due to the multinational nature of the forum, you are free to use any language(more preferable arabic(or darija =D), english or french). If you’d like to use a different language (by way of an external link, for example), consider providing a translation of the relevant portion in your topic/reply. It could even be a machine translation (Google Translate, for example), as long as the point comes across correctly') }}.</p>
                     <p class="fs12 my8"><strong>5.</strong> {{ __('When creating your own post in the form of a topic, please choose the appropriate forum and give it a clear and concise title') }}.</p>
                     <p class="fs12 my8"><strong>6.</strong> {{ __('Before creating a new topic, or asking a new question, consider using the Search function to see whether it has already been addressed. If it has, post your new topic only if the previous thread has already been closed. Note that if you believe that your topic is related to an existing one but with significant differences, feel free to create the new topic (but make sure to address the difference)') }}.</p>

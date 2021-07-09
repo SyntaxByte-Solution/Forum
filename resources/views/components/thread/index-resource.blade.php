@@ -17,7 +17,7 @@
                     $switch = ($thread->replies_off) ? 0 : 1;
                 @endphp
                 
-                @if($thread->replies_off)
+                @if(!$thread->replies_off)
                 <p class="white bold fs15 my4">{{ __('Important: If you turn off replies, no one could reply to your tread') }}.</p>
                 <p class="white fs15 mt4 mb8">{{ __('However if there are already some replies, they will not disappeared.') }}</p>
                 @else
@@ -88,7 +88,29 @@
                     <div class="flex">
                         <img src="{{ $thread->user->avatar }}" class="flex size28 rounded mr4" alt="">
                         <div>
-                            <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold fs13">{{ $thread->user->firstname }} {{ $thread->user->lastname }} - {{ $thread->user->username }}</a>
+                            <div class="flex align-center follow-box">
+                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold fs13">{{ $thread->user->firstname }} {{ $thread->user->lastname }} - {{ $thread->user->username }}</a>
+                                @if(auth()->user() && $thread->user->id != auth()->user()->id)
+                                    <div class="button-mini-wraper-style ml8 @auth @if(!$followed) follow-resource @endif @endauth @guest login-signin-button @endguest">
+                                        <div class="size14 sprite sprite-2-size follow-button-icon @if($followed) followed14-icon @else mr4 follow14-icon @endif" title="@if($followed){{ __('Followed')}}@endif"></div>
+                                        @if($followed)
+                                        <input type="hidden" class="status" value="1">
+                                        @else
+                                        <p class="no-margin btn-txt unselectable">{{ __('Follow') }}</p>
+                                        <input type="hidden" class="status" value="-1">
+                                        @endif
+                                        <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
+                                        <input type="hidden" class="following-text" value="{{ __('Following ..') }}">
+                                        <input type="hidden" class="followed-text" value="{{ __('Followed') }}">
+                                        <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
+                                        <input type="hidden" class="followable-id" value="{{ $thread->user->id }}">
+                                        <input type="hidden" class="followable-type" value="user">
+
+                                        <input type="hidden" class="followed-icon" value="followed14-icon">
+                                        <input type="hidden" class="unfollowed-icon" value="follow14-icon">
+                                    </div>
+                                @endif
+                            </div>
                             <div class="flex align-center">
                                 <div class="relative height-max-content">
                                     <p class="no-margin fs11 flex align-center tooltip-section gray" style="margin-top:1px">{{ $at_hummans }}</p>

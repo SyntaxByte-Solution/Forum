@@ -4,9 +4,9 @@ namespace App\View\Components\User;
 
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
-use App\Models\{User, Follow as FLW};
+use App\Models\{User, Follow};
 
-class Follow extends Component
+class Follower extends Component
 {
     public $follower;
     public $followed;
@@ -15,7 +15,7 @@ class Follow extends Component
     {
         $this->follower = $user;
         if(Auth::check()) {
-            $this->followed = (bool) FLW::where('follower', auth()->user()->id)
+            $this->followed = (bool) Follow::where('follower', auth()->user()->id)
             ->where('followable_id', $user->id)
             ->where('followable_type', 'App\Models\User')
             ->count();
@@ -31,6 +31,6 @@ class Follow extends Component
      */
     public function render($data=[])
     {
-        return view('components.user.follow', $data);
+        return view('components.user.follower', $data);
     }
 }

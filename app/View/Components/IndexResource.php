@@ -3,7 +3,8 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
-use App\Models\{Thread, User, Category, Forum};
+use Illuminate\Support\Facades\Auth;
+use App\Models\{Thread, User, Category, Forum, Follow};
 use Carbon\Carbon;
 use Markdown;
 
@@ -17,6 +18,7 @@ class IndexResource extends Component
     public $edit_link;
     public $category_threads_link;
 
+    public $followed;
     public $views;
     public $likes;
     public $replies;
@@ -35,6 +37,15 @@ class IndexResource extends Component
         $this->views = $thread->view_count;
         $this->replies = $thread->posts->count();
         $this->likes = $thread->likes->count();
+
+        if(Auth::check()) {
+            $this->followed = (bool)Follow::where('follower', auth()->user()->id)
+            ->where('followable_id', $thread->user->id)
+            ->where('followable_type', 'App\Models\User')
+            ->count();
+        } else {
+            $this->followed = false;
+        }
 
         $this->edit_link = route('thread.edit', ['user'=>$thread->user->username, 'thread'=>$thread->id]);
         $this->category_threads_link = route('category.threads', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);

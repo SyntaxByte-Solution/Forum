@@ -5,13 +5,13 @@
     @if($errors->has('email'))
         @if($errors->first('email') == __("These credentials do not match our records."))
             @php
-                $show_login_view = "display:block;opacity:1";
+                $show_login_view = "display:block;opacity:1;z-index:100";
             @endphp
         @endif
     @endif
 @endif
 
-<div class="fixed full-shadowed zi12" style="{{ $show_login_view }}">
+<div class="fixed full-shadowed" style="{{ $show_login_view }}z-index:90">
         <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
         <div id="login-view" class="auth-card">
             <div>

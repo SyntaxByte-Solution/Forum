@@ -28,7 +28,7 @@ Route::get('/test', function() {
     if (Auth::check()) {
         $user = auth()->user();
 
-        dd($user->personal->city);
+        dd($user->followed_users);
     }
 });
 

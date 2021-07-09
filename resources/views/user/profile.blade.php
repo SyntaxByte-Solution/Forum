@@ -10,6 +10,8 @@
     <script src="{{ asset('js/profile.js') }}" defer></script>
 @endpush
 
+@section('title', $user->username)
+
 @section('header')
     @guest
         @include('partials.hidden-login-viewer')
@@ -32,7 +34,7 @@
                 <input type="hidden" class="profile_owner_id" value="{{ $user->id }}">
                 @if($user->followers->count())
                     @foreach($followers as $follower)
-                        <x-user.follow :user="$follower"/>
+                        <x-user.follower :user="$follower"/>
                     @endforeach
                     @if($user->followers->count() > 8)
                         <input type='button' class="see-all-full-style followers-load" value="{{__('load more')}}">
@@ -46,6 +48,37 @@
                         @else
                         <p class="bold fs17 gray my8 unselectable">{{ $user->username . __(" has no followers") }}</h2>
                         <p class="no-margin forum-color unselectable text-center">{{ __("Be his first follower :)") }}</p>
+                        @endif
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+    <div class="fixed full-shadowed follows-viewer zi12">
+        <div class="follow-container">
+            <div class="follow-box-header relative">
+                <div class="fs18 unselectable">{{__('Follows')}}</div>
+                <div class="close-shadowed-view-button close-button-style">
+                    <span style="margin-top: -1px">✖</span>
+                </div>
+            </div>
+            <div class="follow-box-body">
+                <input type="hidden" class="profile_owner_id" value="{{ $user->id }}">
+                @if($followed_users->count())
+                    @foreach($followed_users as $followed_user)
+                        <x-user.follows :user="$followed_user"/>
+                    @endforeach
+                    @if($followed_users->count() > 8)
+                        <input type='button' class="see-all-full-style follows-load" value="{{__('load more')}}">
+                    @endif
+                @else
+                    <div class="flex flex-column align-center">
+                        <div class="size36 sprite sprite-2-size nofollow36-icon" style="margin-top: 16px"></div>
+                        @if(auth()->user() && $user->id == auth()->user()->id)
+                        <p class="bold fs17 gray mb8 unselectable">{{ __("You don't follow one at that time") }}</h2>
+                        <p class="no-margin forum-color unselectable text-center">{{ __("tip: Try to follow people in order to get notifications about their activities and see their posts.") }}</p>
+                        @else
+                        <p class="bold fs17 gray my8 unselectable">{{ $user->username . __(" doesn't follow anyone") }}</h2>
                         @endif
                     </div>
                 @endif
@@ -82,7 +115,7 @@
                             </a>
                         </div>
                         <div class="ms-profile-infos-container full-width">
-                            <div>
+                            <div style="max-width: 220px">
                                 <h2 class="no-margin forum-color flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
                                 <p class="bold no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>
                                 <p class="fs12 gray no-margin" style="margin: 2px 0">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
@@ -93,7 +126,7 @@
                                         <div class="gray">{{ _('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers->count() }}</span></div>
                                     </div>
                                     <div class="flex align-center px8 py4 pointer follows-display light-border mr8">
-                                        <div class="gray">{{ _('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->follows->count() }}</span></div>
+                                        <div class="gray">{{ _('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->followed_users->count() }}</span></div>
                                     </div>
                                 </div>
                                 @if(auth()->user() && $user->id != auth()->user()->id)

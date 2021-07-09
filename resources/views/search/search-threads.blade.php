@@ -101,7 +101,7 @@
                 @if(!$threads->count())
                     <div class="full-center">
                         <div>
-                            <div class="size36 sprite sprite-2-size notfound36-icon" style="margin-top: 16px"></div>
+                            <div class="size36 sprite sprite-2-size notfound36-icon" style="margin: 16px auto 0 auto"></div>
                             <p class="fs20 bold gray my4">{{ __("No threads matched your search !") }}</p>
                             <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add', ['forum'=>$forums->first()->slug, 'category'=>$forums->first()->categories->first()->slug]) }}" class="link-path">{{__('thread')}}</a></p>
                         </div>

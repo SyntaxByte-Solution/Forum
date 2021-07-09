@@ -1,21 +1,22 @@
+@php
+    $recent_threads = collect([]);
+    if($forum = request()->forum) {
+        if($category = request()->category) {
+            $recent_threads = \App\Models\Category::find($category)->first()->threads->sortByDesc('created_at')->take(4);
+        } else {
+            $forum_categories_ids = \App\Models\forum::find($forum)->first()->categories->pluck('id');
+            $recent_threads = \App\Models\Thread::whereIn('category_id', $forum_categories_ids)->orderBy('created_at', 'desc')->take(4)->get();
+        }
+    } else {
+        $recent_threads = \App\Models\Thread::orderBy('created_at', 'desc')->take(4)->get();
+    }
+@endphp
+@if($recent_threads->count())
 <div>
     <div class="right-panel-header-container">
         <div class="small-image-2 sprite sprite-2-size clock17-icon mr4"></div>
         <p class="bold no-margin">{{ __('Recent threads') }}</p>
     </div>
-    @php
-        $recent_threads = collect([]);
-        if($forum = request()->forum) {
-            if($category = request()->category) {
-                $recent_threads = $category->threads()->orderBy('created_at', 'desc')->take(4)->get();
-            } else {
-                $forum_categories_ids = $forum->categories->pluck('id');
-                $recent_threads = \App\Models\Thread::whereIn('category_id', $forum_categories_ids)->orderBy('created_at', 'desc')->take(4)->get();
-            }
-        } else {
-            $recent_threads = \App\Models\Thread::orderBy('created_at', 'desc')->take(4)->get();
-        }
-    @endphp
     @foreach($recent_threads as $thread)
     <div class="my8 mx8">
         <div>
@@ -58,3 +59,4 @@
     @endif
     @endforeach
 </div>
+@endif

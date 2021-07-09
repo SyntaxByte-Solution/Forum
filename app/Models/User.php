@@ -85,8 +85,11 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->morphMany(Follow::class, 'followable');
     }
 
-    public function getFollowsAttribute() {
-        return Follow::where('follower', $this->id)->get();
+    public function getFollowedUsersAttribute() {
+        return 
+            Follow::where('follower', $this->id)
+            ->where('followable_type', 'App\Models\User')
+            ->get();
     }
 
     public function liked_threads() {

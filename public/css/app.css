@@ -2318,13 +2318,14 @@ tr:nth-child(2n) {
     height: 24px;
 }
 
-.x-close-container {
+.x-close-container-style {
     position: absolute;
     right: 6px;
     top: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     height: 20px;
     width: 20px;
     min-width: 20px;
@@ -2333,7 +2334,7 @@ tr:nth-child(2n) {
     color: white;
 }
 
-.x-close-container:hover {
+.x-close-container-style:hover {
     background-color: black;
 }
 
@@ -2519,6 +2520,19 @@ tr:nth-child(2n) {
 
 .thread-add-button-hover-style:hover {
     background-color: #ececec;
+}
+
+.thread-add-uploaded-media {
+    height: 110px;
+    width: 110px;
+    border-radius: 8px;
+    background-color: #d5d5d5;
+    overflow: hidden;
+    margin-right: 4px;
+}
+
+.thread-add-uploaded-image {
+    display: flex;
 }
 
 /* index thread component */

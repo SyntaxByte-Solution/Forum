@@ -119,13 +119,19 @@
                 <p class="error tame-video-type none">* {{ __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported') }}.</p>
             </div>
             <div class="flex">
-                <div class="flex align-center relative thread-add-button-hover-style">
+                <div class="flex align-center thread-add-button-hover-style relative">
                     <div class="size24 sprite sprite-2-size image24-icon mr4"></div>
                     <p class="no-margin fs13">Photos</p>
                     <input type="file" name="images" id="thread-photos" class="thread-add-file-input" multiple accept=".jpg,.jpeg,.png, .gif">
                 </div>
-                <div class="thread-add-media-container">
-                    
+            </div>
+            <div class="thread-add-uploaded-medias-container flex my4">
+                <!-- the following div will be used to clone uploaded images -->
+                <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
+                    <img src="" class="thread-add-uploaded-image none" alt="">
+                    <div class="close-thread-media-upload x-close-container-style remove">
+                        <span class="x-close">✖</span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -63,11 +63,25 @@ $('.x-close-container').click(function(event) {
 })
 
 $('.handle-image-center-positioning').each(function() {
-    let image_container = $(this).parent();
-    let image = $(this);
+    handle_image_dimensions($(this));
+});
 
-    width = $(this).width();
-    height = $(this).height();
+function handle_image_dimensions(image) {
+    let image_container = image.parent();
+
+    width = image.width();
+    height = image.height();
+    if(width >= height) {
+        image.height(image_container.height());
+    } else {
+        image.width(image_container.width());
+    }
+}
+function handle_complexe_image_dimensions(image) {
+    let image_container = image.parent();
+
+    width = image.width();
+    height = image.height();
     let ratio;
     if(width >= height) {
         // if(image_container.height() > height) {
@@ -88,7 +102,7 @@ $('.handle-image-center-positioning').each(function() {
         image.width(image_container.width());
         //image.height(width*ratio);
     }
-});
+}
 
 $(".button-with-suboptions").each(function() {
     handle_suboptions_container($(this));
@@ -1708,30 +1722,76 @@ $("#thread-photos").change(function(event) {
      * If the length of the returned array matches the length of original array of files; that means all files are validated :)
      * If not display the 
      */
-    let uploaded_files = event.originalEvent.target.files;
-    if(uploaded_files.length != validate_image_file_Type(uploaded_files).length) {
-        let container = $(this);
-        while(!container.hasClass('thread-add-media-section')) {
-            container = container.parent();    
-        }
-        // Print error: Only jpeg, png .. are supported
-        container.find('.tame-image-type').removeClass('none');
+     let media_container = $(this);
+     while(!media_container.hasClass('thread-add-media-section')) {
+         media_container = media_container.parent();    
+     }
+
+    let images = event.originalEvent.target.files;
+    if(images.length != validate_image_file_Type(images).length) {
+        /**
+         * Print error: Only jpeg, png .. are supported
+         * (tame: thread add media error)
+         */
+        media_container.find('.tame-image-type').removeClass('none');
+    } else {
+        media_container.find('.tame-image-type').addClass('none');
     }
 
-    uploaded_files = validate_image_file_Type(uploaded_files);
-    uploaded_thread_assets.push(...uploaded_files);
+    images = validate_image_file_Type(images);
+    uploaded_thread_assets.push(...images);
 
-    console.log(uploaded_thread_assets);
+    /**
+     * Now we loop through the new files and append them to thread-add-uploaded-medias-container by cloning 
+     * thread-add-uploaded-media-projection-model container
+     * About the other validations like file size we're gonna implement them in the backend
+     */
+    for (let i = 0; i < images.length; i++) {
+        let clone = $('.thread-add-uploaded-media-projection-model').clone(true);
+        $('.thread-add-uploaded-medias-container').append(clone);
+
+        // We get the last uploaded image container
+        let last_uploaded_image = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").last();
+        last_uploaded_image.removeClass('none thread-add-uploaded-media-projection-model');
+        let img = last_uploaded_image.find(".thread-add-uploaded-image");
+        img.removeClass('none');
+
+        // Preview the image
+        load_image(images[i], img);
+
+        
+    }
 });
+
+let load_image = function(file, image) {
+    let reader = new FileReader();
+    reader.onload = function(){
+        image.attr('src', reader.result);
+        image.on('load', function() {
+            handle_image_dimensions(image);
+        })
+        
+    };
+    reader.readAsDataURL(file);
+};
+
+$('.close-thread-media-upload').click(function() {
+    console.log('closing ..');
+});
+
+Array.prototype.contains = function(element){
+    return this.indexOf(element) > -1;
+};
 
 // Validate images upload
 function validate_image_file_Type(files){
+    let extensions = ["jpg", "jpeg", "png", "gif"];
     let result = [];
     for(let i = 0; i<files.length;i++) {
         fileName = files[i].name;
         var idxDot = fileName.lastIndexOf(".") + 1;
         var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png" || extFile=="gif"){
+        if(extensions.contains(extFile)) {
             result.push(files[i]);
         }
     }

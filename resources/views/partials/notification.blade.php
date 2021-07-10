@@ -12,7 +12,7 @@
             <p class="no-margin blue fs12 bold">{{ __('Just now') }}</p>
         </div>
     </div>
-    <div class="x-close-container pointer">
+    <div class="x-close-container x-close-container-style">
         <span class="x-close">✖</span>
     </div>
 </a>

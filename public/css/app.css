@@ -2403,6 +2403,7 @@ tr:nth-child(2n) {
 }
 
 .thread-add-container {
+    background-color: white;
     border-radius: 6px;
     border: 1px solid #dbdbdb;
 }
@@ -2496,6 +2497,28 @@ tr:nth-child(2n) {
 
 .thread-add-share:hover {
     background-color: #383e53;
+}
+
+.thread-add-media-section {
+    padding: 2px 8px;
+}
+
+.thread-add-file-input {
+    position: absolute;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+
+    cursor: pointer;
+}
+
+.thread-add-button-hover-style {
+    border-radius: 4px;
+    padding: 3px 6px;
+}
+
+.thread-add-button-hover-style:hover {
+    background-color: #ececec;
 }
 
 /* index thread component */

@@ -1688,3 +1688,53 @@ function handle_follow_resource(button) {
         });
     })
 }
+
+// ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
+
+let uploaded_thread_assets = [];
+// This will track image uploads --- [Now it is possible to share more than one image] ---
+$("#thread-photos").change(function(event) {
+    /**
+     * IMPORTANT: Because this is input file, if it gets clicked two times a row, then it will remove all the first files and
+     * replace them with the new files so we will handle the situation where we upload more than one file; then we put them in an array;
+     * then later if the user want to add more image or video; we'll take that addition and append it to the array(uploaded_thread_assets)
+     * First we get the container and store it in a variable, then we loop through files and assign each one to the container and append
+     * it to the post container to show it to the user
+     */
+
+    /**
+     * First get the new uploaded files and passed them to validation function.
+     * Images type validation function get the files, verify their types and then return an array of validated images
+     * If the length of the returned array matches the length of original array of files; that means all files are validated :)
+     * If not display the 
+     */
+    let uploaded_files = event.originalEvent.target.files;
+    if(uploaded_files.length != validate_image_file_Type(uploaded_files).length) {
+        let container = $(this);
+        while(!container.hasClass('thread-add-media-section')) {
+            container = container.parent();    
+        }
+        // Print error: Only jpeg, png .. are supported
+        container.find('.tame-image-type').removeClass('none');
+    }
+
+    uploaded_files = validate_image_file_Type(uploaded_files);
+    uploaded_thread_assets.push(...uploaded_files);
+
+    console.log(uploaded_thread_assets);
+});
+
+// Validate images upload
+function validate_image_file_Type(files){
+    let result = [];
+    for(let i = 0; i<files.length;i++) {
+        fileName = files[i].name;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png" || extFile=="gif"){
+            result.push(files[i]);
+        }
+    }
+
+    return result;
+}

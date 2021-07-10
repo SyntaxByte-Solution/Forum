@@ -99,8 +99,9 @@
             <textarea name="content" id="content"></textarea>
             <script>
                 var simplemde = new SimpleMDE({
-                    placeholder: '{{ __("Add a discussion or question..") }}',
-                    hideIcons: ["guide", "heading"],
+                    placeholder: '{{ __("Add a discussion content here..") }}',
+                    hideIcons: ["guide", "heading", "link", "image"],
+                    spellChecker: false,
                 });
                 simplemde.value();
 
@@ -113,7 +114,20 @@
             </script>
         </div>
         <div class="thread-add-media-section">
-            
+            <div class="thread-add-media-error px8 my8">
+                <p class="error tame-image-type none">* {{ __('Only JPG, PNG, JPEG and GIF image formats are supported') }}.</p>
+                <p class="error tame-video-type none">* {{ __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported') }}.</p>
+            </div>
+            <div class="flex">
+                <div class="flex align-center relative thread-add-button-hover-style">
+                    <div class="size24 sprite sprite-2-size image24-icon mr4"></div>
+                    <p class="no-margin fs13">Photos</p>
+                    <input type="file" name="images" id="thread-photos" class="thread-add-file-input" multiple accept=".jpg,.jpeg,.png, .gif">
+                </div>
+                <div class="thread-add-media-container">
+                    
+                </div>
+            </div>
         </div>
         <div class="my4 px8 py4 flex">
             <input type="hidden" class="message-ing" value="{{ __('Sharing..') }}">

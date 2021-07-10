@@ -161,7 +161,7 @@
                 @if(auth()->user() && $user->id == auth()->user()->id)
                 <div class="my8">
                     @auth
-                        @include('partials.thread.thread-add', ['editor_height'=>60])
+                        @include('partials.thread.thread-add', ['editor_height'=>100])
                     @endauth
                 </div>
                 @endif

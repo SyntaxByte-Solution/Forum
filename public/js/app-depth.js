@@ -73,8 +73,10 @@ function handle_image_dimensions(image) {
     height = image.height();
     if(width >= height) {
         image.height(image_container.height());
+        image.css('width', 'max-content');
     } else {
         image.width(image_container.width());
+        image.css('height', 'max-content');
     }
 }
 function handle_complexe_image_dimensions(image) {
@@ -1485,13 +1487,12 @@ function stop_loading_anim() {
 $('.thread-add-share').click(function(event) {
     event.preventDefault();
 
-    let data = {
-        '_token':csrf,
-        'subject': $('#subject').val(),
-        'category_id': $('.category').val(),
-        'status_id': $('.thread-add-status-slug').val(),
-        'content':simplemde.value(),
-    };
+    let form_data = new FormData();
+    form_data.append('_token' ,csrf);
+    form_data.append('subject' ,$('#subject').val());
+    form_data.append('category_id' ,$('.category').val());
+    form_data.append('status_id' ,$('.thread-add-status-slug').val());
+    form_data.append('content' ,simplemde.value());
 
     let button = $(this);
     let container = $(this);
@@ -1499,7 +1500,7 @@ $('.thread-add-share').click(function(event) {
         container = container.parent();
     }
 
-    if(data.subject == '') {
+    if(form_data.get('subject') == '') {
         $('#subject').parent().find('.error').removeClass('none');
         container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
         container.find('.thread-add-error').removeClass('none');
@@ -1510,7 +1511,7 @@ $('.thread-add-share').click(function(event) {
         container.find('.thread-add-error').addClass('none');
     }
 
-    if(data.content == '') {
+    if(form_data.get('content') == '') {
         $('#content').parent().find('.error').removeClass('none');
         container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
         container.find('.thread-add-error').removeClass('none');
@@ -1520,18 +1521,30 @@ $('.thread-add-share').click(function(event) {
         container.find('.thread-add-error').addClass('none');
     }
 
+    // Checking images existence in the thread
+    if(uploaded_thread_images_assets.length) {
+        // Append image files
+        for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
+            form_data.append('images[]', uploaded_thread_images_assets[i]);
+        }
+    }
+
     button.val(button.parent().find('.message-ing').val());
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #acacac; cursor: default');
+
     $.ajax({
         url: '/thread',
         type: 'post',
-        data: data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        data: form_data,
         success: function(response) {
             $('#subject').val('');
             simplemde.value('');
             // Show notification flash
-            window.location.href = response;
+            //window.location.href = response;
         },
         error: function(response) {
             let er;
@@ -1705,7 +1718,8 @@ function handle_follow_resource(button) {
 
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
 
-let uploaded_thread_assets = [];
+let uploaded_thread_images_assets = [];
+let uploaded_thread_videos_assets = [];
 // This will track image uploads --- [Now it is possible to share more than one image] ---
 $("#thread-photos").change(function(event) {
     /**
@@ -1728,6 +1742,12 @@ $("#thread-photos").change(function(event) {
      }
 
     let images = event.originalEvent.target.files;
+
+    /** First let's limit the number of uploaded files */
+    if(images.length > 30) {
+        images = images.slice(0, 30);
+        media_container.find('.tame-image-limit').removeClass('none');
+    }
     if(images.length != validate_image_file_Type(images).length) {
         /**
          * Print error: Only jpeg, png .. are supported
@@ -1739,8 +1759,7 @@ $("#thread-photos").change(function(event) {
     }
 
     images = validate_image_file_Type(images);
-    uploaded_thread_assets.push(...images);
-
+    uploaded_thread_images_assets.push(...images);
     /**
      * Now we loop through the new files and append them to thread-add-uploaded-medias-container by cloning 
      * thread-add-uploaded-media-projection-model container
@@ -1749,18 +1768,24 @@ $("#thread-photos").change(function(event) {
     for (let i = 0; i < images.length; i++) {
         let clone = $('.thread-add-uploaded-media-projection-model').clone(true);
         $('.thread-add-uploaded-medias-container').append(clone);
+        // Increment the index
+        let upload_images_index = $('.thread-add-uploaded-medias-container').find('.uploaded-images-counter');
+        let images_counter = parseInt(upload_images_index.val()) + 1;
+        upload_images_index.val(images_counter);
 
         // We get the last uploaded image container
         let last_uploaded_image = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").last();
+        last_uploaded_image.find('.uploaded-media-index').val(images_counter-1); // we want 0 based indexes here
+        last_uploaded_image.find('.uploaded-media-genre').val('image'); // this is useful when close button is pressed in order for us to know from where we should delete the uploaded file(either from videos array container/image array container)
         last_uploaded_image.removeClass('none thread-add-uploaded-media-projection-model');
         let img = last_uploaded_image.find(".thread-add-uploaded-image");
         img.removeClass('none');
 
         // Preview the image
         load_image(images[i], img);
-
-        
     }
+
+    console.log(uploaded_thread_images_assets);
 });
 
 let load_image = function(file, image) {
@@ -1776,8 +1801,42 @@ let load_image = function(file, image) {
 };
 
 $('.close-thread-media-upload').click(function() {
-    console.log('closing ..');
+    /**
+     * Before deleting the component we need the whole components container to decrement the 
+     * global upload media counter and the genre of the component whether it's an image or video
+     */
+    let container = $(this);
+    while(!container.hasClass('thread-add-uploaded-medias-container')) {
+        container = container.parent();
+    }
+    let component_genre = $(this).parent().find('.uploaded-media-genre').val();
+    // We need to remove the component
+    $(this).parent().remove();
+
+    // Then decrement the global uploads counter
+    let global_counter = container.find('.uploaded-medias-counter');
+    global_counter.val(parseInt(global_counter.val()) - 1);
+
+    // Then we need to adjust the files array
+    let index_to_remove = $(this).parent().find('.uploaded-media-index').val();
+
+    // Then we have to know the genre of component(image/video) in rorder to delete it from the array container type
+    if(component_genre == 'image') {
+        uploaded_thread_images_assets.splice(index_to_remove,  1);
+    } else if(component_genre == 'video') {
+        uploaded_thread_videos_assets.splice(index_to_remove,  1);
+    }
+    // After deleting the component we need to adjust indexes
+    adjust_uploaded_medias_indexes();
 });
+
+function adjust_uploaded_medias_indexes() {
+    let count = -1;
+    $('.thread-add-uploaded-media').each(function() {
+        $(this).find('.uploaded-media-index').val(count);
+        count++;
+    });
+}
 
 Array.prototype.contains = function(element){
     return this.indexOf(element) > -1;

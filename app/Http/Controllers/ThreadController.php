@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
@@ -102,6 +103,19 @@ class ThreadController extends Controller
             'content'=>'required|min:2|max:40000',
         ]);
 
+        // If the user add images to thread we have to validate them
+        if(request()->has('images')) {
+            $validator = Validator::make(
+                $request->all(), [
+                'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000'
+                ],[
+                    'images.*.mimes' => __('Only jpg,jpeg,png,gif and bmp images are alowed'),
+                    'images.*.max' => 'Sorry! Maximum allowed size for an image is 15MB',
+                ]
+            );
+        }
+
+
         $duplicated_thread;        
         $duplicated_thread_url;        
         try {
@@ -153,29 +167,29 @@ class ThreadController extends Controller
             $data['status_id'] = ThreadStatus::where('slug', $data['status_id'])->first()->id;
         }
 
-        $thread = Thread::create($data);
+        //$thread = Thread::create($data);
 
         // Notify the followers
-        foreach(auth()->user()->followers as $follower) {
-            $follower = User::find($follower->follower);
+        // foreach(auth()->user()->followers as $follower) {
+        //     $follower = User::find($follower->follower);
             
-            $follower->notify(
-                new \App\Notifications\UserAction([
-                    'action_user'=>auth()->user()->id,
-                    'action_statement'=>"Shared a new thread: ",
-                    'resource_string_slice'=>$thread->slice,
-                    'action_type'=>'thread-action',
-                    'action_date'=>now(),
-                    'action_resource_id'=>$thread->id,
-                    'action_resource_link'=>$thread->link,
-                ])
-            );
-        }
+        //     $follower->notify(
+        //         new \App\Notifications\UserAction([
+        //             'action_user'=>auth()->user()->id,
+        //             'action_statement'=>"Shared a new thread: ",
+        //             'resource_string_slice'=>$thread->slice,
+        //             'action_type'=>'thread-action',
+        //             'action_date'=>now(),
+        //             'action_resource_id'=>$thread->id,
+        //             'action_resource_link'=>$thread->link,
+        //         ])
+        //     );
+        // }
 
-        $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
-        $categaory_slug = Category::find($data['category_id'])->slug;
+        // $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
+        // $categaory_slug = Category::find($data['category_id'])->slug;
 
-        return $thread->link;
+        // return $thread->link;
     }
 
     public function edit(User $user, Thread $thread) {

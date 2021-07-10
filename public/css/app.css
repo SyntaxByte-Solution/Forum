@@ -2500,10 +2500,6 @@ tr:nth-child(2n) {
     background-color: #383e53;
 }
 
-.thread-add-media-section {
-    padding: 2px 8px;
-}
-
 .thread-add-file-input {
     position: absolute;
     opacity: 0;
@@ -2523,16 +2519,15 @@ tr:nth-child(2n) {
 }
 
 .thread-add-uploaded-media {
+    display: flex;
+    justify-content: center;
+
     height: 110px;
     width: 110px;
     border-radius: 8px;
     background-color: #d5d5d5;
     overflow: hidden;
-    margin-right: 4px;
-}
-
-.thread-add-uploaded-image {
-    display: flex;
+    margin: 4px;
 }
 
 /* index thread component */

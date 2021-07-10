@@ -113,29 +113,39 @@
                 }
             </script>
         </div>
-        <div class="thread-add-media-section">
+        <div class="thread-add-media-section px8">
             <div class="thread-add-media-error px8 my8">
-                <p class="error tame-image-type none">* {{ __('Only JPG, PNG, JPEG and GIF image formats are supported') }}.</p>
+                <p class="error tame-image-type none">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported') }}.</p>
+                <p class="error tame-image-limit none">* {{ __('You couldonly upload 30 images max') }}.</p>
                 <p class="error tame-video-type none">* {{ __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported') }}.</p>
             </div>
             <div class="flex">
-                <div class="flex align-center thread-add-button-hover-style relative">
+                <div class="flex align-center thread-add-button-hover-style mr8 relative">
                     <div class="size24 sprite sprite-2-size image24-icon mr4"></div>
                     <p class="no-margin fs13">Photos</p>
-                    <input type="file" name="images" id="thread-photos" class="thread-add-file-input" multiple accept=".jpg,.jpeg,.png, .gif">
+                    <input type="file" name="images[]" id="thread-photos" class="thread-add-file-input" multiple accept=".jpg,.jpeg,.png,.bmp,.gif">
+                </div>
+                <div class="flex align-center thread-add-button-hover-style relative">
+                    <div class="size24 sprite sprite-2-size image24-icon mr4"></div>
+                    <p class="no-margin fs13">Videos</p>
+                    <input type="file" name="videos[]" id="thread-videos" class="thread-add-file-input" multiple accept=".mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi">
                 </div>
             </div>
-            <div class="thread-add-uploaded-medias-container flex my4">
+            <div class="thread-add-uploaded-medias-container flex flex-wrap my4">
+                <input type="hidden" class="uploaded-images-counter" value="0">
+                <input type="hidden" class="uploaded-videos-counter" value="0">
                 <!-- the following div will be used to clone uploaded images -->
                 <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
-                    <img src="" class="thread-add-uploaded-image none" alt="">
+                    <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">
                     <div class="close-thread-media-upload x-close-container-style remove">
                         <span class="x-close">✖</span>
                     </div>
+                    <input type="hidden" class="uploaded-media-index" value="-1">
+                    <input type="hidden" class="uploaded-media-genre" value="">
                 </div>
             </div>
         </div>
-        <div class="my4 px8 py4 flex">
+        <div class="mb8 px8 flex">
             <input type="hidden" class="message-ing" value="{{ __('Sharing..') }}">
             <input type="hidden" class="message-no-ing" value="{{ __('Share') }}">
             <input type="button" class="thread-add-share" value="{{ __('Share') }}">

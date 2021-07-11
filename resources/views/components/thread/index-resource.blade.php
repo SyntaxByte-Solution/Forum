@@ -83,6 +83,7 @@
             @endif
         </div>
         <div class="thread-main-section">
+            <!-- thread header section -->
             <div class="thread-header-section space-between">
                 <div class="flex">
                     <div class="flex">
@@ -205,7 +206,9 @@
                     </div>
                 </div>
             </div>
+            <!-- thread main content -->
             <div class="thread-content-section">
+                <!-- thread content: header FORUM->category -->
                 <div class="flex align-center">
                     <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-size mr4" alt="">
                     <div class="flex align-center">
@@ -236,6 +239,17 @@
                     <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
                     @endif
                 </div>
+                @if($thread->has_media)
+                <!-- thread media -->
+                <div class="thread-medias-container flex">
+                    @foreach($images_links as $image)
+                        <div class="thread-media-container relative">
+                            <div class="fade-loading"></div>
+                            <img src="{{ asset($image) }}" alt="" class="full-width thread-media image-that-fade-wait">
+                        </div>
+                    @endforeach
+                </div>
+                @endif
             </div>
             <div class="thread-bottom-section space-between">
                 <div class="flex align-center">

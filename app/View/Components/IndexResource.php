@@ -6,6 +6,7 @@ use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\{Thread, User, Category, Forum, Follow};
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Markdown;
 
 class IndexResource extends Component
@@ -24,6 +25,8 @@ class IndexResource extends Component
     public $replies;
     public $at;
     public $at_hummans;
+
+    public $images_links;
 
     public function __construct(Thread $thread)
     {
@@ -49,6 +52,12 @@ class IndexResource extends Component
 
         $this->edit_link = route('thread.edit', ['user'=>$thread->user->username, 'thread'=>$thread->id]);
         $this->category_threads_link = route('category.threads', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);
+
+        // Thread medias
+        if($thread->has_media) {
+            $this->images_links = 
+                Storage::disk('public')->files('users/' . $thread->user->id . '/threads/' . $thread->id . '/images');
+        }
     }
 
     function convert($number)

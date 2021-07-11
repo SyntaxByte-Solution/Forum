@@ -35,6 +35,15 @@ a, input, textarea {
     color: #03A9F4;
 }
 
+.fade-loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(230, 230, 230);
+}
+
 .zi1 {
     z-index: 1;
 }
@@ -2627,6 +2636,16 @@ tr:nth-child(2n) {
     background-color: white;
     border-radius: 0 0 6px 0 ;
 }
+
+.thread-media-container {
+    border-radius: 5px;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+/* --- --- --- */
 
 .follow-container {
     background-color: white;

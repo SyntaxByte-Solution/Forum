@@ -1909,3 +1909,50 @@ function validate_image_file_Type(files){
 
     return result;
 }
+
+handle_threads_medias_containers();
+function handle_threads_medias_containers() {
+    $('.thread-medias-container').each(function() {
+        handle_thread_medias_containers($(this));
+    })
+}
+
+function handle_thread_medias_containers(thread_medias_container) {
+    let media_count = thread_medias_container.find('.thread-media-container').length;
+    let medias = thread_medias_container.find('.thread-media-container');
+
+    if(media_count == 1) {
+        medias.css('width', '100%');
+        medias.height(medias.width());
+    } else if(media_count == 2) {
+        medias.each(function() {
+            let media_width = $('.thread-media-container').width();
+            $(this).css('width', '50%');
+            medias.css('height', );
+        });
+    }
+}
+
+$('.fade-loading').each(function() {
+    let faded_div = $(this);
+    $(this).parent().find('.image-that-fade-wait').on('load', function() {
+        faded_div.remove();
+    });
+})
+
+$('.fade-loading').each(function() {
+    let fade_item = $(this);
+    window.setInterval(function(){
+        let target_color;
+        console.log(fade_item.css('background-color'));
+        if(fade_item.css('background-color') == "rgb(250, 250, 250)") {
+            target_color = "rgb(200, 200, 200)";
+        } else {
+            target_color = "rgb(250, 250, 250)";
+        }
+        fade_item.css({
+            backgroundColor: target_color,
+            transition: "background-color 1.6s"
+        });
+    }, 1600);
+});

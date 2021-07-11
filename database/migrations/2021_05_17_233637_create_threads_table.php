@@ -19,6 +19,7 @@ class CreateThreadsTable extends Migration
             $table->longText('content');
             $table->integer('view_count')->default('0');
             $table->boolean('replies_off')->default('0');
+            $table->boolean('has_media')->default('0');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
 

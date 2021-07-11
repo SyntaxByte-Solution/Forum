@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
@@ -120,6 +121,7 @@ class ThreadController extends Controller
         }
 
 
+        // Prevent user from sharing two threads with the same subject in the same category
         $duplicated_thread;        
         $duplicated_thread_url;        
         try {
@@ -148,15 +150,15 @@ class ThreadController extends Controller
             return response()->json(['error' => '* ' . __("This title is already exists in your threads list") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>) , " . __("please choose another one or delete/edit the previous one!")], 422);
         }
 
+        // Verify category by preventing normal user to post on announcements
+        // Note: these check normally should be in thread policy because we do want the admins to post announcements
         $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();
-
         if(in_array($data['category_id'], $announcements_ids)) {
             throw new AccessDeniedException("Only admins could share announcements");
         }
         
-        $category_status_slug = CategoryStatus::
-                                    find(Category::find($data['category_id'])->status)
-                                    ->slug;
+        // Verify the category status before creating the thread
+        $category_status_slug = CategoryStatus::find(Category::find($data['category_id'])->status)->slug;
         if($category_status_slug == 'closed') {
             throw new CategoryClosedException("You can't post a thread on a closed category");
         }
@@ -165,13 +167,31 @@ class ThreadController extends Controller
         }
 
         $data['user_id'] = auth()->user()->id;
-        
-        // Verify if status is submitted before creating the thread !
+
+        // Verify if status is submitted !
         if($data['status_id']) {
             $data['status_id'] = ThreadStatus::where('slug', $data['status_id'])->first()->id;
         }
+        // Verify if medias are uploaded with thread !
+        if(request()->has('images') || request()->has('videos')) {
+            $data['has_media'] = 1;   
+        }
 
+        // Create the thread
         $thread = Thread::create($data);
+
+        // Create a folder inside thread_owner folder with its id as name
+        $path = public_path().'/users/' . $data['user_id'] . '/threads/' . $thread->id;
+        File::makeDirectory($path, 0777, true, true);
+
+        // Verify if there's uploaded images
+        if(request()->has('images')) {
+            foreach($request->images as $image) {
+                $image->store(
+                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/images', 'public'
+                );
+            }
+        }
 
         // Notify the followers
         foreach(auth()->user()->followers as $follower) {

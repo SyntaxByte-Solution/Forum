@@ -126,7 +126,7 @@
                     <input type="file" name="images[]" id="thread-photos" class="thread-add-file-input" multiple accept=".jpg,.jpeg,.png,.bmp,.gif">
                 </div>
                 <div class="flex align-center thread-add-button-hover-style relative">
-                    <div class="size24 sprite sprite-2-size image24-icon mr4"></div>
+                    <div class="size24 sprite sprite-2-size video24-icon mr4"></div>
                     <p class="no-margin fs13">Videos</p>
                     <input type="file" name="videos[]" id="thread-videos" class="thread-add-file-input" multiple accept=".mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi">
                 </div>

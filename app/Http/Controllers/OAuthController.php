@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\{User, UserPersonalInfos};
 use Socialite;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -63,11 +64,10 @@ class OAuthController extends Controller
             $personal = UserPersonalInfos::create([
                 'user'=>$user->id
             ]);
-            
             $user->update([
                 'personal_infos'=>$personal->id
             ]);
-
+            
             $user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>User::where('username', 'Gladiator Team')->first()->id,
@@ -93,6 +93,13 @@ class OAuthController extends Controller
             );
 
             Auth::login($user, true);
+
+            // Then we have to create folders that will hold avatars, covers, threads images ..
+            $path = public_path().'/users/' . $user->id;
+            File::makeDirectory($path, 0777, true, true);
+            File::makeDirectory($path.'/avatars', 0777, true, true);
+            File::makeDirectory($path.'/covers', 0777, true, true);
+            File::makeDirectory($path.'/threads', 0777, true, true);
         }
 
         return redirect('/home');

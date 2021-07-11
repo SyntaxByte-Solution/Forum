@@ -113,6 +113,10 @@ class ThreadController extends Controller
                     'images.*.max' => 'Sorry! Maximum allowed size for an image is 15MB',
                 ]
             );
+
+            if ($validator->fails()) {
+                abort(422, $validator->errors());
+            }
         }
 
 
@@ -167,29 +171,26 @@ class ThreadController extends Controller
             $data['status_id'] = ThreadStatus::where('slug', $data['status_id'])->first()->id;
         }
 
-        //$thread = Thread::create($data);
+        $thread = Thread::create($data);
 
         // Notify the followers
-        // foreach(auth()->user()->followers as $follower) {
-        //     $follower = User::find($follower->follower);
+        foreach(auth()->user()->followers as $follower) {
+            $follower = User::find($follower->follower);
             
-        //     $follower->notify(
-        //         new \App\Notifications\UserAction([
-        //             'action_user'=>auth()->user()->id,
-        //             'action_statement'=>"Shared a new thread: ",
-        //             'resource_string_slice'=>$thread->slice,
-        //             'action_type'=>'thread-action',
-        //             'action_date'=>now(),
-        //             'action_resource_id'=>$thread->id,
-        //             'action_resource_link'=>$thread->link,
-        //         ])
-        //     );
-        // }
+            $follower->notify(
+                new \App\Notifications\UserAction([
+                    'action_user'=>auth()->user()->id,
+                    'action_statement'=>"Shared a new thread: ",
+                    'resource_string_slice'=>$thread->slice,
+                    'action_type'=>'thread-action',
+                    'action_date'=>now(),
+                    'action_resource_id'=>$thread->id,
+                    'action_resource_link'=>$thread->link,
+                ])
+            );
+        }
 
-        // $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
-        // $categaory_slug = Category::find($data['category_id'])->slug;
-
-        // return $thread->link;
+        return $thread->link;
     }
 
     public function edit(User $user, Thread $thread) {
@@ -255,9 +256,7 @@ class ThreadController extends Controller
 
         $thread->update($data);
 
-        $forum_slug = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
-
-        return route('thread.show', ['forum'=>$forum_slug, 'category'=>$category, 'thread'=>$thread->id]);
+        return $thread->link;
     }
 
     public function update_status(Request $request) {

@@ -1543,8 +1543,10 @@ $('.thread-add-share').click(function(event) {
         success: function(response) {
             $('#subject').val('');
             simplemde.value('');
+            $('.thread-add-uploaded-media').slice(1).remove();
+            $('.uploaded-medias-counter').val('0');
             // Show notification flash
-            //window.location.href = response;
+            window.location.href = response;
         },
         error: function(response) {
             let er;
@@ -1758,7 +1760,7 @@ $("#thread-photos").change(function(event) {
         media_container.find('.tame-image-type').addClass('none');
     }
 
-    images = validate_image_file_Type(images);
+    // images = validate_image_file_Type(images);
     uploaded_thread_images_assets.push(...images);
     /**
      * Now we loop through the new files and append them to thread-add-uploaded-medias-container by cloning 
@@ -1894,7 +1896,7 @@ Array.prototype.contains = function(element){
 
 // Validate images upload
 function validate_image_file_Type(files){
-    let extensions = ["jpg", "jpeg", "png", "gif"];
+    let extensions = ["jpg", "jpeg", "png", "gif", "bmp"];
     let result = [];
     for(let i = 0; i<files.length;i++) {
         fileName = files[i].name;

@@ -181,16 +181,17 @@
                     @endforeach
                 </div>
                 @else
-                    @if(auth()->user() && $user->id == auth()->user()->id)
-                    <div class="full-center">
+                    <div class="full-center" style="margin-bottom: 36px">
                         <div>
-                            <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any thread for the moment !") }}</p>
+                            <div class="size28 move-to-middle sprite sprite-2-size binbox28-icon" style="margin: 16px auto 10px auto"></div>
+                            @if(auth()->user() && $user->id == auth()->user()->id)
+                            <p class="fs20 bold" style="margin: 2px 0">{{ __("You don't have any thread for the moment !") }}</p>
                             <p class="my4 text-center">{{ __("Try to start a discussion or question using the form above") }}</p>
+                            @else
+                            <p class="fs20 bold" style="margin: 2px 0">{{ __("This user has no thread for the moment !") }}</p>
+                            @endif
                         </div>
                     </div>
-                    @else
-
-                    @endif
                 @endif
             </div>
             <div style="position: fixed; top: 55px; right: 8px">

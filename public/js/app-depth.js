@@ -1564,7 +1564,7 @@ $('.thread-add-share').click(function(event) {
             button.attr('style', '');
             button.prop("disabled", false);
         }
-    })
+    });
     $('#thread-creation-forum').submit();
     
     return false;
@@ -1769,15 +1769,31 @@ $("#thread-photos").change(function(event) {
         let clone = $('.thread-add-uploaded-media-projection-model').clone(true);
         $('.thread-add-uploaded-medias-container').append(clone);
         // Increment the index
-        let upload_images_index = $('.thread-add-uploaded-medias-container').find('.uploaded-images-counter');
-        let images_counter = parseInt(upload_images_index.val()) + 1;
-        upload_images_index.val(images_counter);
+        let upload_medias_index = $('.thread-add-uploaded-medias-container').find('.uploaded-medias-counter');
+        let medias_counter = parseInt(upload_medias_index.val()) + 1;
+        upload_medias_index.val(medias_counter);
 
         // We get the last uploaded image container
         let last_uploaded_image = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").last();
-        last_uploaded_image.find('.uploaded-media-index').val(images_counter-1); // we want 0 based indexes here
+        last_uploaded_image.find('.uploaded-media-index').val(medias_counter-1); // we want 0 based indexes here
         last_uploaded_image.find('.uploaded-media-genre').val('image'); // this is useful when close button is pressed in order for us to know from where we should delete the uploaded file(either from videos array container/image array container)
-        last_uploaded_image.removeClass('none thread-add-uploaded-media-projection-model');
+
+        if (medias_counter <= 5) {
+            last_uploaded_image.removeClass('none thread-add-uploaded-media-projection-model');
+        }
+        else if(medias_counter >= 6) {
+            last_uploaded_image.removeClass('thread-add-uploaded-media-projection-model');
+            let fifth_component = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").eq(5);
+
+            if(medias_counter == 6) {
+                fifth_component.find('.thread-add-more-shadowed').removeClass('none');
+                fifth_component.find('.thread-add-more-counter').text('1');
+            } else {
+                let more_counter = fifth_component.find('.thread-add-more-counter').text();
+                fifth_component.find('.thread-add-more-counter').text(parseInt(more_counter) + 1);
+            }
+        }
+
         let img = last_uploaded_image.find(".thread-add-uploaded-image");
         img.removeClass('none');
 
@@ -1785,7 +1801,8 @@ $("#thread-photos").change(function(event) {
         load_image(images[i], img);
     }
 
-    console.log(uploaded_thread_images_assets);
+    // Clear the input because we don't need its value; we use arrays to store files
+    $(this).val('');
 });
 
 let load_image = function(file, image) {
@@ -1828,6 +1845,39 @@ $('.close-thread-media-upload').click(function() {
     }
     // After deleting the component we need to adjust indexes
     adjust_uploaded_medias_indexes();
+
+    console.log(uploaded_thread_images_assets);
+
+    // Check if there are more than 5 images
+    global_counter = container.find('.uploaded-medias-counter').val();
+    console.log(global_counter);
+    if(global_counter >= 5) {
+        if(global_counter == 5) {
+            $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").eq(4).find('.thread-add-more-shadowed').addClass('none');
+            $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").last().removeClass('none');
+        } else {
+            /**
+             * 1. first get the counter from the fifth component and decrement it
+             * 2. Then hide thread-add-upload-more-shadowed from the fourth because we delete one
+             * 3. then remove none from the fifth to make it visible
+             * 4. Then remove none from shadowed counter of the fifth element
+             * 5. update its counter to the decremented value
+             */
+
+            let fourth = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").eq(4);
+            let fifth = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").eq(5);
+
+            let tempCount = 
+                parseInt(fourth.find('.thread-add-more-counter').text()) - 1;
+
+            fourth.find('.thread-add-more-shadowed').addClass('none');
+
+            fifth.removeClass('none');
+
+            fifth.find('.thread-add-more-shadowed').removeClass('none');
+            fifth.find('.thread-add-more-counter').text(tempCount);
+        }
+    }
 });
 
 function adjust_uploaded_medias_indexes() {

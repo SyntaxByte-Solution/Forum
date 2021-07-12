@@ -1967,7 +1967,22 @@ function handle_thread_medias_containers(thread_medias_container) {
             count++;
         })
     } else {
-        
+        for(let i = 0;i<4;i++) {
+            $(medias[i]).width(half_media_width);
+            $(medias[i]).height(half_media_width);
+            if(i % 2 == 0) {
+                $(medias[i]).css('margin', '0 4px 8px 0');
+            } else {
+                $(medias[i]).css('margin', '0 0 4px 4px');
+            }
+        }
+        for(i=4;i<medias.length;i++) {
+            $(medias[i]).addClass('none');
+        }
+
+        let more = medias.length - 4;
+        $(medias[3]).find('.full-shadow-stretched').removeClass('none');
+        $(medias[3]).find('.thread-media-more-counter').text(more);
     }
 }
 
@@ -2093,14 +2108,13 @@ function handle_media_image_dimensions(image) {
     }
 }
 
-$('.fade-loading').each(function() {
+$('.fade-loading').each(function(event) {
     let faded_div = $(this);
-    $(this).parent().find('.image-that-fade-wait').on('load', function() {
+    let image = $(this).parent().find('.image-that-fade-wait');
+    image[0].addEventListener('load', function() {
         faded_div.remove();
     });
-})
 
-$('.fade-loading').each(function() {
     let fade_item = $(this);
     window.setInterval(function(){
         let target_color;

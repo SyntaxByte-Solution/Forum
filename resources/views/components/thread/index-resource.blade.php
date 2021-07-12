@@ -243,10 +243,19 @@
                 <!-- thread media -->
                 <div class="thread-medias-container">
                     @foreach($images_links as $image)
-                        <div class="thread-media-container relative">
+                        <a href="" class="thread-media-container relative">
+                            <div class="thread-image-options">
+                                <p class="white">see</p>
+                            </div>
+                            <div class="thread-image-viewer-container">
+
+                            </div>
                             <div class="fade-loading"></div>
                             <img src="{{ asset($image) }}" alt="" class="thread-media image-that-fade-wait">
-                        </div>
+                            <div class="full-shadow-stretched none">
+                                <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
+                            </div>
+                        </a>
                     @endforeach
                 </div>
                 @endif

@@ -6,7 +6,7 @@
 <header>
     <input type="hidden" class="uid" value="@auth{{ auth()->user()->id }}@endauth">
     <div id="header" class="relative">
-        <div id="header-logo-container">
+        <div id="header-logo-container" style="min-width: 133px">
             <a href="/">
                 <img src='{{ asset("assets/images/logos/large-logo.png") }}' alt="header logo" id="header-logo" loading="lazy">
             </a>

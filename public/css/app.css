@@ -1750,6 +1750,7 @@ tr:nth-child(2n) {
 .thread-main-section {
     width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .frt-error {
@@ -2637,7 +2638,16 @@ tr:nth-child(2n) {
     border-radius: 0 0 6px 0 ;
 }
 
+.thread-medias-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 4px 0;
+}
+
 .thread-media-container {
+    width: 100%;
+    max-height: 600px;
+    max-width: 550px;
     border-radius: 5px;
     overflow: hidden;
     box-sizing: border-box;

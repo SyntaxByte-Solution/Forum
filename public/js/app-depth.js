@@ -1920,16 +1920,176 @@ function handle_threads_medias_containers() {
 function handle_thread_medias_containers(thread_medias_container) {
     let media_count = thread_medias_container.find('.thread-media-container').length;
     let medias = thread_medias_container.find('.thread-media-container');
+    let full_media_width = thread_medias_container.width() - 3;
+    let half_media_width = (full_media_width / 2) - 3;
 
     if(media_count == 1) {
-        medias.css('width', '100%');
-        medias.height(medias.width());
+        medias.height(full_media_width);
+        medias.find('.thread-media').on('load', function() {
+            medias.css('justify-content', 'center');
+            let image = $(this);
+            if(image.height() > image.width()) {
+                medias.height($(this).height());
+                handle_media_image_dimensions($(this));
+            } else {
+                medias.height(medias.width());
+            }
+        })
     } else if(media_count == 2) {
         medias.each(function() {
-            let media_width = $('.thread-media-container').width();
-            $(this).css('width', '50%');
-            medias.css('height', );
-        });
+            $(this).width(half_media_width);
+            $(this).height(half_media_width);
+        })
+        $(medias[0]).css('margin-right', '4px');
+        $(medias[1]).css('margin-left', '4px');
+    } else if(media_count == 3) {
+        $(medias[0]).width(half_media_width);
+        $(medias[0]).height(half_media_width);
+        
+        $(medias[1]).width(half_media_width);
+        $(medias[1]).height(half_media_width);
+        
+        $(medias[2]).width(full_media_width);
+        $(medias[2]).height(half_media_width);
+
+        $(medias[0]).css('margin', '0 4px 8px 0');
+        $(medias[1]).css('margin', '0 0 8px 4px');
+    } else if(media_count == 4) {
+        let count = 0;
+        medias.each(function() {
+            $(this).width(half_media_width);
+            $(this).height(half_media_width);
+            if(count % 2 == 0) {
+                $(this).css('margin', '0 4px 8px 0');
+            } else {
+                $(this).css('margin', '0 0 4px 4px');
+            }
+            count++;
+        })
+    } else {
+        
+    }
+}
+
+$('.thread-media').each(function() {
+    $(this).on('load', function() {
+        handle_media_image_dimensions($(this));
+    });
+})
+
+/**
+ * This function take an image as its only parameter and stratch it to it container
+ * The container must be its first direct parent
+ * The function handle all image dimensions possibilities and container possibilities
+ * Container possibilities (3 possibilites):
+ *      container_width == container_height
+ *      container_width > container_height
+ *      container_width < container_height
+ * Image possibilities (10 possibilities)
+ *      case#1 = container_width < container_height && image_width > image_height
+ *      case#2 = container_width < container_height && image_width < image_height && image_height > container_height
+ *      case#3 = container_width < container_height && image_width < image_height && image_height > container_height
+ *      case#4 = container_width < container_height && image_width < image_height && image_height < container_height
+ * 
+ *      case#5 = container_width > container_height && image_width < image_height
+ *      case#6 = container_width > container_height && image_width > image_height && image_height < container_height
+ *      case#7 = container_width > container_height && image_width > image_height && image_height > container_height
+ *      case#8 = container_width > container_height && image_width > image_height && image_height < container_height
+ * 
+ *      case#9 = container_width == container_width && image_width >= image_height
+ *      case#10 = container_width == container_width && image_width < image_height
+ */
+function handle_media_image_dimensions(image) {
+    let image_container = image.parent();
+    let container_width = image_container.width();
+    let container_height = image_container.height();
+
+    let width = image.width();
+    let height = image.height();
+
+    if(container_width > container_height) {
+        if(height > width) {
+            if(height > container_height) {
+                if(width < container_width) {
+                    /** CASE #2 */
+                    console.log('case#2');
+                    image.width(container_width);
+                } else {
+                    /** CASE #3 */
+                    console.log('case#3');
+                    image.height(container_height);
+                    if(image.width() < container_width) {
+                        // Calculate the ratio
+                        let ratio = container_width / image.width();
+                        let new_height = image.height() * ratio;
+                        image.width(container_width);
+                        image.height(new_height);
+                    }
+                }
+            } else {
+                /** CASE #4 */
+                console.log('case#4');
+                image.height(container_height);
+                if(image.width() < container_width) {
+                    // Calculate the ratio
+                    let ratio = container_width / image.width();
+                    let new_height = image.height() * ratio;
+                    image.width(container_width);
+                    image.height(new_height);
+                }
+            }
+        } else {
+            /** CASE #1 */
+            console.log('case#1');
+            image.height(container_height);
+            image.css('width', 'max-content');
+        }
+    } else if(container_height < container_width) {
+        if(width > height) {
+            if(width > container_width) {
+                if(height < container_height) {
+                    /** CASE #2 */
+                    console.log('case#6');
+                    image.height(container_height);
+                } else {
+                    /** CASE #3 */
+                    console.log('case#7');
+                    image.width(container_width);
+                    if(image.height() < container_height) {
+                        // Calculate the ratio
+                        let ratio = container_height / image.height();
+                        let new_width = image.width() * ratio;
+                        image.height(container_height);
+                        image.height(new_width);
+                    }
+                }
+            } else {
+                /** CASE #4 */
+                console.log('case#8');
+                image.width(container_width);
+                if(image.height() < container_height) {
+                    // Calculate the ratio
+                    let ratio = container_height / image.height();
+                    let new_width = image.width() * ratio;
+                    image.height(container_height);
+                    image.height(new_width);
+                }
+            }
+        } else {
+            console.log('case#5');
+            image.width(container_width);
+            image.css('height', 'max-content');
+        }
+    } else {
+        if(width >= height) {
+            /** CASE #9 */
+            console.log("case#9");
+            image.height(container_height);
+        } else {
+            /** CASE #10 */
+            console.log("case#10");
+            image.width(container_width);
+        }
     }
 }
 
@@ -1944,15 +2104,14 @@ $('.fade-loading').each(function() {
     let fade_item = $(this);
     window.setInterval(function(){
         let target_color;
-        console.log(fade_item.css('background-color'));
-        if(fade_item.css('background-color') == "rgb(250, 250, 250)") {
+        if(fade_item.css('background-color') == "rgb(240, 240, 240)") {
             target_color = "rgb(200, 200, 200)";
         } else {
-            target_color = "rgb(250, 250, 250)";
+            target_color = "rgb(240, 240, 240)";
         }
         fade_item.css({
             backgroundColor: target_color,
-            transition: "background-color 1.6s"
+            transition: "background-color 1.2s"
         });
-    }, 1600);
+    }, 1200);
 });

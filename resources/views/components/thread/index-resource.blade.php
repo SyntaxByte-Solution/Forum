@@ -241,11 +241,11 @@
                 </div>
                 @if($thread->has_media)
                 <!-- thread media -->
-                <div class="thread-medias-container flex">
+                <div class="thread-medias-container">
                     @foreach($images_links as $image)
                         <div class="thread-media-container relative">
                             <div class="fade-loading"></div>
-                            <img src="{{ asset($image) }}" alt="" class="full-width thread-media image-that-fade-wait">
+                            <img src="{{ asset($image) }}" alt="" class="thread-media image-that-fade-wait">
                         </div>
                     @endforeach
                 </div>

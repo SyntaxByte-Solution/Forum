@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
+use App\View\Components\Thread\ViewerInfos;
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
@@ -393,5 +394,12 @@ class ThreadController extends Controller
         ->with(compact('categories'))
         ->with(compact('threads'))
         ->with(compact('pagesize'));
+    }
+
+    public function view_infos_component(Thread $thread) {
+        $thread_component = (new ViewerInfos($thread));
+        $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+
+        return $thread_component;
     }
 }

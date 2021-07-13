@@ -251,12 +251,14 @@ $('.login-signin-button').click(function() {
 $('#left-panel').height($(window).height() - $('header').height() - 30);
 if($('#thread-media-viewer').length) {
     $('#thread-media-viewer').height($(window).height() - $('header').height());
+    $('.thread-media-viewer-infos-content').height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 34);
 }
 
 window.onresize = function(event) {
     $('#left-panel').height($(window).height() - $('header').height() - 30);
     if($('#thread-media-viewer').length) {
         $('#thread-media-viewer').height($(window).height() - $('header').height());
+        $('.thread-media-viewer-infos-content').height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 34);
         handle_viewer_image_logic($("#thread-viewer-media-image"));
     }
 };
@@ -2000,15 +2002,33 @@ $('.thread-media').each(function() {
 
 let viewer_media_count = 0;
 let viewer_medias = [];
+let last_opened_thread = 0;
 $('.open-thread-image').on('click', function(event) {
     event.preventDefault();
     
+    let thread_id = $(this);
+    while(!thread_id.hasClass('thread-medias-container')) {
+        thread_id = thread_id.parent();
+    }
+    thread_id = thread_id.find('.thread-id').val();
+
+    if(last_opened_thread != thread_id) {
+        // First we send ajax request to get thread infos component
+        $.ajax({
+            url: `/threads/${thread_id}/viewer_infos_component`,
+            type: 'get',
+            success: function(thread_infos_section) {
+                $('.thread-media-viewer-infos-header-pattern').addClass('none');
+                $('.thread-media-viewer-infos-section').append(thread_infos_section);
+            }
+        });
+    }
+
     let media_viewer = $('#thread-media-viewer');
     let medias_container = $(this).parent();
     let selected_media = $(this).find('.media-count').val();
     
     let media_source;
-    let loaded_medias=0;
     medias_container.find('.thread-media-container').each(function() {
         media_source = $(this).find('.thread-media').attr('src');
         viewer_medias.push(media_source);
@@ -2026,7 +2046,12 @@ $('.open-thread-image').on('click', function(event) {
         if(selected_media != 0) {
             $('.thread-viewer-left').removeClass('none');
         }
-        $('.thread-viewer-right').removeClass('none');
+
+        if(selected_media == viewer_medias.length-1) {
+            $('.thread-viewer-right').addClass('none');
+        } else {
+            $('.thread-viewer-right').removeClass('none');
+        }
     }
 
     if(viewer_medias.length > 1) {
@@ -2034,6 +2059,7 @@ $('.open-thread-image').on('click', function(event) {
         media_viewer.find('.thread-counter-total-medias').text(viewer_medias.length);
         media_viewer.find('.thread-counter-current-index').text(parseInt(viewer_media_count)+1);
     }
+    
     /**
      * Before opening thread media viewer we need to make sure all medias are loaded
      */
@@ -2259,12 +2285,25 @@ $('.fade-loading').each(function(event) {
     }, 1200);
 });
 
-$('.image-that-fade-wait').on('load', function() {
-    console.log('loaded');
-    let fade_container = $(this);
-    while(!fade_container.hasClass('has-fade')) {
-        fade_container = fade_container.parent();
+// $('.image-that-fade-wait').on('load', function() {
+//     console.log('loaded');
+//     let fade_container = $(this);
+//     while(!fade_container.hasClass('has-fade')) {
+//         fade_container = fade_container.parent();
+//     }
+
+//     fade_container.find('.fade-loading').remove();
+// });
+
+$('.image-that-fade-wait').each(function() {
+    let fade_loading = $(this).parent().find('.fade-loading');
+    if($(this).complete) {
+        fade_loading.remove();
+    } else if($(this).height && $(this).height > 0) {
+        fade_loading.remove();
+    } else {
+        $(this).on('load', function() {
+            fade_loading.remove();
+        });
     }
-    
-    fade_container.find('.fade-loading').remove();
 });

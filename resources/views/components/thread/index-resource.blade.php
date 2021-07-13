@@ -87,10 +87,10 @@
             <div class="thread-header-section space-between">
                 <div class="flex">
                     <div class="flex">
-                        <img src="{{ $thread->user->avatar }}" class="flex size28 rounded mr4" alt="">
+                        <img src="{{ $thread->user->avatar }}" class="thread-owner-avatar flex size28 rounded mr4" alt="">
                         <div>
                             <div class="flex align-center follow-box">
-                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold fs13">{{ $thread->user->firstname }} {{ $thread->user->lastname }} - {{ $thread->user->username }}</a>
+                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->firstname }} {{ $thread->user->lastname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
                                 @if(auth()->user() && $thread->user->id != auth()->user()->id)
                                     <div class="button-mini-wraper-style ml8 @auth @if(!$followed) follow-resource @endif @endauth @guest login-signin-button @endguest">
                                         <div class="size14 sprite sprite-2-size follow-button-icon @if($followed) followed14-icon @else mr4 follow14-icon @endif" title="@if($followed){{ __('Followed')}}@endif"></div>
@@ -242,6 +242,7 @@
                 @if($thread->has_media)
                 <!-- thread media -->
                 <div class="thread-medias-container">
+                    <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                     @php
                         $media_count = 0;
                     @endphp

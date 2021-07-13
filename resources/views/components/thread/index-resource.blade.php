@@ -242,6 +242,9 @@
                 @if($thread->has_media)
                 <!-- thread media -->
                 <div class="thread-medias-container">
+                    @php
+                        $media_count = 0;
+                    @endphp
                     @foreach($images_links as $image)
                         <a href="" class="thread-media-container open-thread-image relative has-fade">
                             <div class="thread-image-options">
@@ -256,6 +259,10 @@
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
                             </div>
                             <input type="hidden" class="media-type" value="image">
+                            <input type="hidden" class="media-count" value="{{ $media_count }}">
+                            @php
+                                $media_count++;
+                            @endphp
                         </a>
                     @endforeach
                 </div>

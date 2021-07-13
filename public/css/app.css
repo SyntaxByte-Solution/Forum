@@ -2684,7 +2684,7 @@ tr:nth-child(2n) {
     align-items: center;
     justify-content: center;
     width: 100%;
-    background-color: #111;
+    background-color: black;
     overflow: hidden;
 }
 

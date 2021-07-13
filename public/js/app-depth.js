@@ -249,9 +249,16 @@ $('.login-signin-button').click(function() {
 });
 
 $('#left-panel').height($(window).height() - $('header').height() - 30);
+if($('#thread-media-viewer').length) {
+    $('#thread-media-viewer').height($(window).height() - $('header').height());
+}
 
 window.onresize = function(event) {
     $('#left-panel').height($(window).height() - $('header').height() - 30);
+    if($('#thread-media-viewer').length) {
+        $('#thread-media-viewer').height($(window).height() - $('header').height());
+        handle_viewer_image_logic($("#thread-viewer-media-image"));
+    }
 };
 
 $('.reply-to-thread').click(function() {
@@ -1930,7 +1937,6 @@ function handle_thread_medias_containers(thread_medias_container) {
             let image = $(this);
             if(image.height() > image.width()) {
                 medias.height($(this).height());
-                handle_media_image_dimensions($(this));
             } else {
                 medias.height(medias.width());
             }
@@ -1990,7 +1996,120 @@ $('.thread-media').each(function() {
     $(this).on('load', function() {
         handle_media_image_dimensions($(this));
     });
-})
+});
+
+let viewer_media_count = 0;
+let viewer_medias = [];
+$('.open-thread-image').on('click', function(event) {
+    event.preventDefault();
+    $('#thread-media-viewer').removeClass('none');
+
+    let medias_container = $(this).parent();
+
+    let images = [], videos = [];
+    let first_media = true;
+    let media_source, media_type;
+    medias_container.find('.thread-media-container').each(function() {
+        media_source = $(this).find('.thread-media').attr('src');
+        media_type = $(this).find('.media-type').val();
+
+        if(first_media) {
+            if(media_type == 'image') {
+                let viewer_image = $('#thread-viewer-media-image');
+                viewer_image.attr('src', media_source);
+                handle_thread_viewer_image(viewer_image);
+            } else if(media_type == 'video') {
+
+            }
+        }
+        first_media = false;
+
+        if(media_type == 'image') {
+            images.push(media_source);
+        } else if(media_type == 'video') {
+            videos.push(media_source);
+        }
+        viewer_medias.push(media_source);
+    });
+
+    let media_count = images.length + videos.length;
+    if(media_count >= 2) {
+        $('.thread-viewer-right').removeClass('none');
+    }
+});
+
+$('.close-thread-media-viewer').on('click', function() {
+    viewer_media_count = 0;
+    viewer_medias = [];
+    $('.thread-viewer-nav').addClass('none');
+    $('#thread-media-viewer').addClass('none');
+});
+
+$('.thread-viewer-left').click(function() {
+    if(viewer_media_count == 1) {
+        $('.thread-viewer-left').addClass('none');
+    } else {
+        $('.thread-viewer-right').removeClass('none');
+    }
+    let viewer_image = $('#thread-viewer-media-image');
+    viewer_image.attr('src', "");
+    viewer_image.attr('src', viewer_medias[--viewer_media_count]);
+});
+
+$('.thread-viewer-right').click(function() {
+    $('.thread-viewer-left').removeClass('none');
+    let viewer_image = $('#thread-viewer-media-image');
+    viewer_image.attr('src', "");
+    viewer_image.attr('src', viewer_medias[++viewer_media_count]);
+
+    if(viewer_media_count == viewer_medias.length-1) {
+        $('.thread-viewer-right').addClass('none');
+    }
+});
+
+
+function handle_thread_viewer_image(image) {
+    image.on('load', function() {
+        handle_viewer_image_logic(image);
+    });
+}
+
+function handle_viewer_image_logic(image) {
+    image.attr('style', '');
+    let container_height = image.parent().height();
+    let width = image.width();
+    let height = image.height();
+
+    if(width > height) {
+        image.css('width','100%');
+        if(height > container_height) {
+            /**
+             * It's very important to notice here that we have to set the dimensions as percentage
+             * because the image is stretched proportional to its container (resize event adjust the image to its container)
+             */
+            let old_width = image.width();
+            let ratio = image.height() / container_height;
+            let new_width = image.width() / ratio;
+            
+            let width_perc = (new_width * 100 / old_width) + "%";
+            image.css('height', '100%');
+            image.width(width_perc);
+        }
+    } else if(width < height) {
+        image.css('height','100%');
+        if(width > container_width) {
+            let old_height = image.height();
+            let ratio = image.width() / container_width;
+            let new_height = image.height() / ratio;
+            
+            let height_perc = (new_height * 100 / old_height) + "%";
+            image.css('width', '100%');
+            image.height(height_perc);
+        }
+    } else {
+        image.css('height', '100%');
+    }
+}
 
 /**
  * This function take an image as its only parameter and stratch it to it container
@@ -2027,11 +2146,10 @@ function handle_media_image_dimensions(image) {
             if(height > container_height) {
                 if(width < container_width) {
                     /** CASE #2 */
-                    console.log('case#2');
                     image.width(container_width);
+                    image.css('height', 'max-content');
                 } else {
                     /** CASE #3 */
-                    console.log('case#3');
                     image.height(container_height);
                     if(image.width() < container_width) {
                         // Calculate the ratio
@@ -2043,7 +2161,6 @@ function handle_media_image_dimensions(image) {
                 }
             } else {
                 /** CASE #4 */
-                console.log('case#4');
                 image.height(container_height);
                 if(image.width() < container_width) {
                     // Calculate the ratio
@@ -2055,7 +2172,6 @@ function handle_media_image_dimensions(image) {
             }
         } else {
             /** CASE #1 */
-            console.log('case#1');
             image.height(container_height);
             image.css('width', 'max-content');
         }
@@ -2064,11 +2180,9 @@ function handle_media_image_dimensions(image) {
             if(width > container_width) {
                 if(height < container_height) {
                     /** CASE #2 */
-                    console.log('case#6');
                     image.height(container_height);
                 } else {
                     /** CASE #3 */
-                    console.log('case#7');
                     image.width(container_width);
                     if(image.height() < container_height) {
                         // Calculate the ratio
@@ -2080,7 +2194,6 @@ function handle_media_image_dimensions(image) {
                 }
             } else {
                 /** CASE #4 */
-                console.log('case#8');
                 image.width(container_width);
                 if(image.height() < container_height) {
                     // Calculate the ratio
@@ -2091,30 +2204,20 @@ function handle_media_image_dimensions(image) {
                 }
             }
         } else {
-            console.log('case#5');
             image.width(container_width);
             image.css('height', 'max-content');
         }
     } else {
         if(width >= height) {
             /** CASE #9 */
-            console.log("case#9");
             image.height(container_height);
         } else {
             /** CASE #10 */
-            console.log("case#10");
             image.width(container_width);
         }
     }
 }
-
 $('.fade-loading').each(function(event) {
-    let faded_div = $(this);
-    let image = $(this).parent().find('.image-that-fade-wait');
-    image[0].addEventListener('load', function() {
-        faded_div.remove();
-    });
-
     let fade_item = $(this);
     window.setInterval(function(){
         let target_color;
@@ -2129,3 +2232,30 @@ $('.fade-loading').each(function(event) {
         });
     }, 1200);
 });
+
+$('.image-that-fade-wait').each(function() {
+    $(this).on('load', function() {
+        let fade_container = $(this);
+        while(!fade_container.hasClass('has-fade')) {
+            fade_container = fade_container.parent();
+        }
+        
+        fade_container.find('.fade-loading').remove();
+
+    });
+})
+
+function handle_fade_loading(fade_div) {
+    window.setInterval(function(){
+        let target_color;
+        if(fade_div.css('background-color') == "rgb(240, 240, 240)") {
+            target_color = "rgb(200, 200, 200)";
+        } else {
+            target_color = "rgb(240, 240, 240)";
+        }
+        fade_div.css({
+            backgroundColor: target_color,
+            transition: "background-color 1.2s"
+        });
+    }, 1200);
+}

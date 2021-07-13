@@ -243,11 +243,11 @@
                 <!-- thread media -->
                 <div class="thread-medias-container">
                     @foreach($images_links as $image)
-                        <a href="" class="thread-media-container relative">
+                        <a href="" class="thread-media-container open-thread-image relative has-fade">
                             <div class="thread-image-options">
                                 <p class="white">see</p>
                             </div>
-                            <div class="thread-image-viewer-container">
+                            <div class="thread-image-zoomer-container">
 
                             </div>
                             <div class="fade-loading"></div>
@@ -255,6 +255,7 @@
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
                             </div>
+                            <input type="hidden" class="media-type" value="image">
                         </a>
                     @endforeach
                 </div>
@@ -275,7 +276,7 @@
                 <div class="flex align-center">
                     <div class="relative mr8">
                         <a href="" class="link-without-underline-style button-with-suboptions copy-container-button" class="block" style="margin: 4px; font-size: 12px">Link ▾</a>
-                        <div class="absolute button-simple-container suboptions-container" style="z-index: 1; right: 0">
+                        <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 100%; bottom: 0">
                             <div class="flex">
                                 <input type="text" value="{{ $thread->link }}" class="simple-input" style="width: 240px; padding: 3px; ">
                                 <a href="" class="input-button-style flex align-center copy-button">

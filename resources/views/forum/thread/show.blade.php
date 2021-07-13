@@ -20,7 +20,7 @@
     @include('partials.header')
 @endsection
 @section('content')
-    
+    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex">

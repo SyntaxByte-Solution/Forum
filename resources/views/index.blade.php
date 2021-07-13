@@ -15,6 +15,7 @@
 @endsection
 
 @section('content')
+    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'home'])
     <div id="middle-container">
         <div class="full-width">

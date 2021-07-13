@@ -2670,6 +2670,75 @@ tr:nth-child(2n) {
     top: 3px;
 }
 
+#thread-media-viewer {
+    display: flex;
+    position: fixed;
+    top: 52px;
+    z-index: 100;
+    width: 100%;
+    left: 0;
+}
+
+.thread-media-viewer-content-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #111;
+    overflow: hidden;
+}
+
+.thread-media-viewer-infos-section {
+    overflow-y: scroll;
+    min-width: 350px;
+    max-width: 350px;
+    background-color: white;
+}
+
+.close-thread-media-viewer {
+    position: absolute;
+    z-index: 5;
+    right: 6px;
+    top: 6px;
+    color: white;
+    font-size: 25px;
+    padding: 4px 11.1px 6px 11.5px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.8s ease background-color;
+}
+
+.close-thread-media-viewer:hover {
+    background-color: #3e3e3e;
+}
+
+.thread-viewer-nav {
+    cursor: pointer;
+    color: white;
+    position: absolute;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 64px;
+    opacity: 0.4;
+    background-color: #35353552;
+}
+
+.thread-viewer-nav:hover {
+    background-color: #3535358e;
+    opacity: 1;
+}
+
+.thread-viewer-left {
+    left: 0;
+}
+
+.thread-viewer-right {
+    right: 0;
+}
+
 /* --- --- --- */
 
 .follow-container {

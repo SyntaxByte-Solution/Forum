@@ -2739,6 +2739,21 @@ tr:nth-child(2n) {
     right: 0;
 }
 
+.thread-viewer-medias-indicator {
+    color: #ffffffb0;
+    background-color: #0000000d;
+    position: absolute;
+    right: 70px;
+    top: 6px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+.thread-viewer-medias-indicator:hover {
+    color: white;
+}
+
 /* --- --- --- */
 
 .follow-container {

@@ -163,4 +163,7 @@
             </div>
         </div>
     </div>
+    <div id="loading-strip" class="none">
+        <div class="loading-strip-line"></div>
+    </div>
 </header>

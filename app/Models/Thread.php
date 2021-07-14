@@ -138,9 +138,9 @@ class Thread extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // public function isClosed() {
-    //     return $this->status->slug == 'closed';
-    // }
+    public function isClosed() {
+        return $this->status->slug == 'closed';
+    }
 
     public function posts() {
         return $this->hasMany(Post::class);

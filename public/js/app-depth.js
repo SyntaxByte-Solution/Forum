@@ -2024,7 +2024,7 @@ let viewer_medias = [];
 let last_opened_thread = 0;
 $('.open-thread-image').on('click', function(event) {
     event.preventDefault();
-    
+
     let thread_id = $(this);
     while(!thread_id.hasClass('thread-medias-container')) {
         thread_id = thread_id.parent();
@@ -2032,6 +2032,7 @@ $('.open-thread-image').on('click', function(event) {
     thread_id = thread_id.find('.thread-id').val();
     
     if(last_opened_thread != thread_id) {
+        start_loading_strip();
         $('.tmvis').html('');
         $('.thread-media-viewer-infos-header-pattern').removeClass('none');
         // First we send ajax request to get thread infos component
@@ -2045,6 +2046,7 @@ $('.open-thread-image').on('click', function(event) {
                 $('.tmvisc').html(thread_infos_section);
 
                 handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
+                stop_loading_strip();
             }
         });
     }
@@ -2318,3 +2320,24 @@ $(".has-fade").each(function() {
         fc.find('.fade-loading').remove();
     });
 });
+
+let strip_loading_interval;
+function start_loading_strip() {
+    console.log('starts');
+    let loading_strip = $('#loading-strip');
+    let loading_strip_line = loading_strip.find('.loading-strip-line');
+    loading_strip.removeClass('none');
+    strip_loading_interval = window.setInterval(function(){
+        console.log('starts');
+        loading_strip_line.animate({
+            left: '100%'
+        }, 2000, function() {
+            loading_strip_line.css('left', '-100%');
+        });
+    }, 1000);
+}
+
+function stop_loading_strip() {
+    $('#loading-strip').addClass('none');
+    clearInterval(strip_loading_interval);
+}

@@ -40,7 +40,7 @@
     </div>
     <div class="thread-media-viewer-infos-content">
         <div class="expand-box">
-            <span><a href="{{ $thread->link }}" class="expandable-text bold fs18 blue no-underline my4"><span class="black">Title: </span>{{ $thread->slice }}</a></span>
+            <span><a href="{{ $thread->link }}" class="expandable-text bold fs17 blue no-underline my4">{{ $thread->slice }}</a></span>
             @if($thread->slice != $thread->subject)
             <input type="hidden" class="expand-slice-text" value="{{ $thread->slice }}">
             <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
@@ -77,9 +77,9 @@
         </div>
         <div class="simple-line-separator my4"></div>
         <div>
-            <p class="my4 fs18 bold">Replies</p>
+            <p class="my4 fs15 bold">Replies ({{ $thread->posts->count() }})</p>
             @foreach($posts as $post)
-                
+
             @endforeach
         </div>
     </div>

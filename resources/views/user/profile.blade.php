@@ -21,6 +21,7 @@
 @endsection
 
 @section('content')
+    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'user', 'subpage'=>'user.profile'])
     <div class="fixed full-shadowed followers-viewer zi12">
         <div class="follow-container">

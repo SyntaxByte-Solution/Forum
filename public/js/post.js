@@ -180,6 +180,8 @@ function handle_post_events(post) {
     handle_close_shadowed_view(post.parent().find('.close-shadowed-view-button'));
     // Handle post best reply
     handle_post_reply_tick_button(post);
+    // Handle like button
+    handle_resource_like(post);
 }
 
 function handle_post_other_events(post) {

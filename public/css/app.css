@@ -757,7 +757,7 @@ a, input, textarea {
 }
 
 .eye17-icon {
-    background-position: 0px -373px;
+    background-position: 0px -374px;
 }
 
 .eyecrossed17-icon {
@@ -805,7 +805,7 @@ a, input, textarea {
 }
 
 .report17-icon:hover {
-    background-position: 17px -510px;
+    background-position: 17px -509px;
 }
 
 .repliesoff17-icon {
@@ -1214,6 +1214,11 @@ a, input, textarea {
 .size36 {
     height: 36px;
     width: 36px;
+}
+
+.size40 {
+    height: 40px;
+    width: 40px;
 }
 
 .size48 {
@@ -1789,7 +1794,7 @@ tr:nth-child(2n) {
 /* vs: vote section */
 .thread-vs, .post-vs {
     padding: 8px;
-    width: 32px;
+    width: 22px;
     border-radius: 6px 0 0 6px;
 }
 
@@ -2607,7 +2612,7 @@ tr:nth-child(2n) {
 .thread-views {
     display: flex;
     align-items: center;
-    padding: 5px 7px;
+    padding: 3px 6px;
     border-radius: 4px;
 
     border: 1px solid #d5d5d5;
@@ -2694,8 +2699,8 @@ tr:nth-child(2n) {
 }
 
 .thread-media-viewer-infos-section {
-    min-width: 350px;
-    max-width: 350px;
+    min-width: 360px;
+    max-width: 360px;
     background-color: white;
 }
 
@@ -2760,6 +2765,7 @@ tr:nth-child(2n) {
 
 .thread-media-viewer-infos-header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     max-height: 65px;
     height: 65px;

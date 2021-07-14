@@ -103,7 +103,7 @@
                         <a href="" class="black-link button-with-suboptions">
                             <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
                         </a>
-                        <div class="absolute suboptions-container suboption-style-left" style="margin-top: 8px">
+                        <div class="absolute suboptions-container suboption-style-left">
                             <a href="" class="button-style hide-post">Hide Post</a>
                             @can('update', $post)
                             <a href="" class="button-style edit-post">Edit Post</a>

@@ -87,17 +87,18 @@
             <div class="thread-header-section space-between">
                 <div class="flex">
                     <div class="flex">
-                        <img src="{{ $thread->user->avatar }}" class="thread-owner-avatar flex size28 rounded mr4" alt="">
+                        <img src="{{ $thread->user->avatar }}" class="thread-owner-avatar flex rounded mr4" style="height: 32px; width: 32px" alt="">
                         <div>
                             <div class="flex align-center follow-box">
-                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->firstname }} {{ $thread->user->lastname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
+                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="forum-color no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
+                                <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
                                 @if(auth()->user() && $thread->user->id != auth()->user()->id)
-                                    <div class="button-mini-wraper-style ml8 @auth @if(!$followed) follow-resource @endif @endauth @guest login-signin-button @endguest">
-                                        <div class="size14 sprite sprite-2-size follow-button-icon @if($followed) followed14-icon @else mr4 follow14-icon @endif" title="@if($followed){{ __('Followed')}}@endif"></div>
+                                    <div class="pointer @auth follow-resource @endauth @guest login-signin-button @endguest">
                                         @if($followed)
                                         <input type="hidden" class="status" value="1">
+                                        <p class="no-margin fs12 bold btn-txt gray unselectable">{{ __('Followed') }}</p>
                                         @else
-                                        <p class="no-margin btn-txt unselectable">{{ __('Follow') }}</p>
+                                        <p class="no-margin fs12 bold btn-txt blue unselectable">{{ __('Follow') }}</p>
                                         <input type="hidden" class="status" value="-1">
                                         @endif
                                         <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
@@ -106,9 +107,6 @@
                                         <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
                                         <input type="hidden" class="followable-id" value="{{ $thread->user->id }}">
                                         <input type="hidden" class="followable-type" value="user">
-
-                                        <input type="hidden" class="followed-icon" value="followed14-icon">
-                                        <input type="hidden" class="unfollowed-icon" value="follow14-icon">
                                     </div>
                                 @endif
                             </div>
@@ -228,13 +226,13 @@
                     <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
                     @endif
                 </div>
-                <div class="my4">
+                <div class="my4 expand-box">
                     <span class="expandable-text fs15 no-underline">{{ $thread->contentslice }}</span>
                     @if($thread->content != $thread->contentslice)
                     <input type="hidden" class="expand-slice-text" value="{{ $thread->contentslice }}">
                     <input type="hidden" class="expand-whole-text" value="{{ $thread->content }}">
                     <input type="hidden" class="expand-text-state" value="0">
-                    <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
+                    <span class="pointer expand-button fs12 inline-block blue">{{ __('see all') }}</span>
                     <input type="hidden" class="expand-text" value="{{ __('see all') }}">
                     <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
                     @endif
@@ -249,7 +247,7 @@
                     @foreach($images_links as $image)
                         <a href="" class="thread-media-container open-thread-image relative has-fade">
                             <div class="thread-image-options">
-                                <p class="white">see</p>
+                                <p class="white"></p>
                             </div>
                             <div class="thread-image-zoomer-container">
 

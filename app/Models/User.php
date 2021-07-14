@@ -251,6 +251,10 @@ class User extends UserAuthenticatable implements Authenticatable
             : $fullname;
     }
 
+    public function getFullnameAttribute() {
+        return $this->firstname . " " . $this->lastname;
+    }
+
     /**
      * The channels the user receives notification broadcasts on.
      *

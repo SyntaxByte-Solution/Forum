@@ -251,17 +251,21 @@ $('.login-signin-button').click(function() {
 $('#left-panel').height($(window).height() - $('header').height() - 30);
 if($('#thread-media-viewer').length) {
     $('#thread-media-viewer').height($(window).height() - $('header').height());
-    $('.thread-media-viewer-infos-content').height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 34);
+    handle_viewer_infos_height($('.thread-media-viewer-infos-content'));
 }
 
 window.onresize = function(event) {
     $('#left-panel').height($(window).height() - $('header').height() - 30);
     if($('#thread-media-viewer').length) {
         $('#thread-media-viewer').height($(window).height() - $('header').height());
-        $('.thread-media-viewer-infos-content').height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 34);
+        handle_viewer_infos_height($('.thread-media-viewer-infos-content'));
         handle_viewer_image_logic($("#thread-viewer-media-image"));
     }
 };
+
+function handle_viewer_infos_height(infos) {
+    infos.height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 34);
+}
 
 $('.reply-to-thread').click(function() {
     setTimeout(function(){$('textarea').focus();}, 200);
@@ -1685,7 +1689,9 @@ function handle_follow_resource(button) {
             follow_box = follow_box.parent();
         }
     
-        button.attr('style', 'background-color: #009fffad; border-color: #009fffad; cursor: default');
+        if(button.hasClass('button-mini-wraper-style')) {
+            button.attr('style', 'background-color: #009fffad; border-color: #009fffad; cursor: default');
+        }
     
         if(button.find('.status').val() == '1') {
             button.find('.btn-txt').text(button.find('.unfollowing-text').val());
@@ -1704,19 +1710,32 @@ function handle_follow_resource(button) {
             },
             success: function(response) {
                 let followers_counter = follow_box.find('.followers-counter');
-                let button_icon = button.find('.follow-button-icon');
-                let lastClass = button_icon.attr('class').trim().split(' ').pop();
-                button_icon.removeClass(lastClass);
+                let has_icon = button.find('.follow-button-icon').length;
+                let button_icon;
+
+                if(has_icon) {
+                    button_icon = button.find('.follow-button-icon');
+                    let lastClass = button_icon.attr('class').trim().split(' ').pop();
+                    button_icon.removeClass(lastClass);
+                }
                 if(response == -1) {
                     button.find('.status').val(-1);
-                    button_icon.addClass(button.find('.unfollowed-icon').val());
                     button.find('.btn-txt').text(button.find('.follow-text').val());
                     followers_counter.text(parseInt(followers_counter.text()) - 1);
+                    if(has_icon) {
+                        button_icon.addClass(button.find('.unfollowed-icon').val());
+                    } else {
+                        button.find('.btn-txt').removeClass('gray'); button.find('.btn-txt').addClass('blue');
+                    }
                 } else {
                     button.find('.status').val(1);
-                    button_icon.addClass(button.find('.followed-icon').val());
                     button.find('.btn-txt').text(button.find('.followed-text').val());
                     followers_counter.text(parseInt(followers_counter.text()) + 1);
+                    if(has_icon) {
+                        button_icon.addClass(button.find('.followed-icon').val());
+                    } else {
+                        button.find('.btn-txt').removeClass('blue'); button.find('.btn-txt').addClass('gray');
+                    }
                 }
             },
             complete: function() {
@@ -2011,15 +2030,21 @@ $('.open-thread-image').on('click', function(event) {
         thread_id = thread_id.parent();
     }
     thread_id = thread_id.find('.thread-id').val();
-
+    
     if(last_opened_thread != thread_id) {
+        $('.tmvis').html('');
+        $('.thread-media-viewer-infos-header-pattern').removeClass('none');
         // First we send ajax request to get thread infos component
         $.ajax({
             url: `/threads/${thread_id}/viewer_infos_component`,
             type: 'get',
             success: function(thread_infos_section) {
+                console.log(thread_infos_section);
+                last_opened_thread = thread_id;
                 $('.thread-media-viewer-infos-header-pattern').addClass('none');
-                $('.thread-media-viewer-infos-section').append(thread_infos_section);
+                $('.tmvisc').html(thread_infos_section);
+
+                handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
             }
         });
     }
@@ -2064,6 +2089,7 @@ $('.open-thread-image').on('click', function(event) {
      * Before opening thread media viewer we need to make sure all medias are loaded
      */
      medias_container.imagesLoaded( function() {
+         console.log('images loaded');
          media_viewer.removeClass('none');
     });
 });
@@ -2269,6 +2295,7 @@ function handle_media_image_dimensions(image) {
         }
     }
 }
+
 $('.fade-loading').each(function(event) {
     let fade_item = $(this);
     window.setInterval(function(){
@@ -2285,25 +2312,9 @@ $('.fade-loading').each(function(event) {
     }, 1200);
 });
 
-// $('.image-that-fade-wait').on('load', function() {
-//     console.log('loaded');
-//     let fade_container = $(this);
-//     while(!fade_container.hasClass('has-fade')) {
-//         fade_container = fade_container.parent();
-//     }
-
-//     fade_container.find('.fade-loading').remove();
-// });
-
-$('.image-that-fade-wait').each(function() {
-    let fade_loading = $(this).parent().find('.fade-loading');
-    if($(this).complete) {
-        fade_loading.remove();
-    } else if($(this).height && $(this).height > 0) {
-        fade_loading.remove();
-    } else {
-        $(this).on('load', function() {
-            fade_loading.remove();
-        });
-    }
+$(".has-fade").each(function() {
+    let fc = $(this);
+    fc.imagesLoaded( function() {
+        fc.find('.fade-loading').remove();
+    });
 });

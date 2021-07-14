@@ -1,6 +1,6 @@
 <div id="thread-media-viewer" class="none">
     <div class="thread-media-viewer-content-section relative has-fade">
-        <div class="close-thread-media-viewer">✖</div>
+        <div class="close-thread-media-viewer unselectable">✖</div>
         <div class="thread-viewer-medias-indicator unselectable block-click none"><span class="thread-counter-current-index"></span>/<span class="thread-counter-total-medias"></span></div>
         <div class="thread-viewer-nav thread-viewer-left unselectable fs18 none">◄</div>
         <div class="thread-viewer-nav thread-viewer-right unselectable fs18 none">►</div>
@@ -71,6 +71,9 @@
                     <a href="" class="bold no-underline blue fs15">lorem</a>
                 </div>
             </div>
+        </div>
+        <div class="tmvisc">
+            
         </div>
     </div>
 </div>

@@ -1,14 +1,14 @@
 <div>
     <div class="thread-media-viewer-infos-header">
         <div class="flex">
-            <div class="relative hidden-overflow rounded">
+            <a href="{{ $thread->user->profilelink }}" class="relative hidden-overflow rounded">
                 <img src="{{ $thread->user->avatar }}" class="size40 rounded">
-            </div>
+            </a>
             <div class="ml8">
                 <div class="flex align-end">
-                    <a href="" class="bold no-underline black fs15 mr4">{{ $owner_full_name }}</a>
-                    <span class="fs10 gray" style="margin: 0 4px 2px 0">•</span>
+                    <a href="{{ $thread->user->profilelink }}" class="bold no-underline blue fs15 mr4">{{ $owner_full_name }}</a>
                     @if(auth()->user() && $thread->user->id != auth()->user()->id)
+                    <span class="fs10 gray" style="margin: 0 4px 2px 0">•</span>
                     <div class="follow-box">
                         <div class="pointer @auth follow-resource @endauth @guest login-signin-button @endguest">
                             @if($followed)
@@ -61,14 +61,17 @@
             <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
             @endif
         </div>
-        <div class="flex align-center">
+        <div class="flex align-center thread-viewer-react-container">
+            <input type="hidden" class="likable-type" value="thread">
+            <input type="hidden" class="likable-id" value="{{ $thread->id }}">
+            <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
+                <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($thread->liked) none @endif"></div>
+                <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
+                <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
+            </div>
             <div class="thread-react-hover flex align-center">
                 <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
                 <p class="no-margin unselectable fs12">{{ $thread->posts->count() }} {{__('replies')}}</p>
-            </div>
-            <div class="thread-react-hover flex align-center">
-                <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($thread->liked) none @endif"></div>
-                <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
             </div>
             <div class="thread-react-hover flex align-center move-to-right">
                 <div class="small-image-2 sprite sprite-2-size eye17-icon mr4"></div>
@@ -78,9 +81,14 @@
         <div class="simple-line-separator my4"></div>
         <div>
             <p class="my4 fs15 bold">Replies ({{ $thread->posts->count() }})</p>
-            @foreach($posts as $post)
-
-            @endforeach
+            <div class="viewer-replies-container mt8">
+                @if($ticked = $thread->tickedPost())
+                    <x-thread.viewer-reply :post="$ticked"/>
+                @endif
+                @foreach($posts as $post)
+                    <x-thread.viewer-reply :post="$post"/>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>

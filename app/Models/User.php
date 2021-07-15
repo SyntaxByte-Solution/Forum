@@ -255,6 +255,10 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->firstname . " " . $this->lastname;
     }
 
+    public function getProfilelinkAttribute() {
+        return route('user.profile', ['user'=>$this->username]);
+    }
+
     /**
      * The channels the user receives notification broadcasts on.
      *

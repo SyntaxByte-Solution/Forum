@@ -439,7 +439,22 @@ $('.tooltip-section').on({
     'mouseleave': function() {
         $(this).parent().find('.tooltip').css('display', 'none');
     }
+});
+
+$('.tooltip-section').each(function() {
+    handle_tooltip($(this));
 })
+
+function handle_tooltip(item) {
+    item.on({
+        'mouseenter': function() {
+            $(this).parent().find('.tooltip').css('display', 'block');
+        },
+        'mouseleave': function() {
+            $(this).parent().find('.tooltip').css('display', 'none');
+        }
+    });
+}
 
 let mouse_over_button = false;
 let mouse_over_container = false;
@@ -1006,8 +1021,14 @@ function handle_hover_informer_display(element) {
     })
 }
 
+let like_lock = true;
 function handle_resource_like(resource) {
     resource.find('.like-resource').click(function() {
+        if(!like_lock) {
+            return;
+        }
+        like_lock=false;
+
         let resource_likes_counter = parseInt(resource.find('.resource-likes-counter').text());
         if($(this).find('.gray-love').hasClass('none')) {
             resource.find('.resource-likes-counter').text(resource_likes_counter - 1);
@@ -1041,18 +1062,11 @@ function handle_resource_like(resource) {
                 }
                 // If there's an error we simply set the old value
                 resource.find('.resource-likes-count').text(resource_likes_counter);
-    
-                let errorObject = JSON.parse(xhr.responseText);
-                let er = errorObject.message;
-
-
             },
             complete: function() {
-                vote_lock = true;
+                like_lock = true;
             }
         });
-    
-        event.preventDefault();
     });
 }
 
@@ -2019,37 +2033,21 @@ $('.thread-media').each(function() {
     });
 });
 
+
+let images_loaded = false;
+let infos_fetched = false;
 let viewer_media_count = 0;
 let viewer_medias = [];
 let last_opened_thread = 0;
 $('.open-thread-image').on('click', function(event) {
     event.preventDefault();
 
+    infos_fetched = images_loaded = false;
     let thread_id = $(this);
     while(!thread_id.hasClass('thread-medias-container')) {
         thread_id = thread_id.parent();
     }
     thread_id = thread_id.find('.thread-id').val();
-    
-    if(last_opened_thread != thread_id) {
-        start_loading_strip();
-        $('.tmvis').html('');
-        $('.thread-media-viewer-infos-header-pattern').removeClass('none');
-        // First we send ajax request to get thread infos component
-        $.ajax({
-            url: `/threads/${thread_id}/viewer_infos_component`,
-            type: 'get',
-            success: function(thread_infos_section) {
-                console.log(thread_infos_section);
-                last_opened_thread = thread_id;
-                $('.thread-media-viewer-infos-header-pattern').addClass('none');
-                $('.tmvisc').html(thread_infos_section);
-
-                handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
-                stop_loading_strip();
-            }
-        });
-    }
 
     let media_viewer = $('#thread-media-viewer');
     let medias_container = $(this).parent();
@@ -2091,9 +2089,40 @@ $('.open-thread-image').on('click', function(event) {
      * Before opening thread media viewer we need to make sure all medias are loaded
      */
      medias_container.imagesLoaded( function() {
-         console.log('images loaded');
-         media_viewer.removeClass('none');
+        images_loaded = true;
+        media_viewer.removeClass('none');
+        if(infos_fetched) {
+            stop_loading_strip();
+        }
     });
+
+    if(last_opened_thread != thread_id) {
+        start_loading_strip();
+        $('.tmvis').html('');
+        $('.thread-media-viewer-infos-header-pattern').removeClass('none');
+        // First we send ajax request to get thread infos component
+        $.ajax({
+            url: `/threads/${thread_id}/viewer_infos_component`,
+            type: 'get',
+            success: function(thread_infos_section) {
+                infos_fetched = true;
+                last_opened_thread = thread_id;
+                $('.thread-media-viewer-infos-header-pattern').addClass('none');
+                $('.tmvisc').html(thread_infos_section);
+
+                handle_resource_like($('.tmvisc').find('.thread-viewer-react-container'));
+                $('.tmvisc').find('.viewer-thread-reply').each(function() {
+                    handle_resource_like($(this));
+                    handle_tooltip($(this).find('.tooltip-section'));
+                });
+
+                handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
+                if(images_loaded) {
+                    stop_loading_strip();
+                }
+            }
+        });
+    }
 });
 
 $('.close-thread-media-viewer').on('click', function() {
@@ -2323,18 +2352,16 @@ $(".has-fade").each(function() {
 
 let strip_loading_interval;
 function start_loading_strip() {
-    console.log('starts');
     let loading_strip = $('#loading-strip');
     let loading_strip_line = loading_strip.find('.loading-strip-line');
     loading_strip.removeClass('none');
     strip_loading_interval = window.setInterval(function(){
-        console.log('starts');
         loading_strip_line.animate({
             left: '100%'
-        }, 2000, function() {
+        }, 800, function() {
             loading_strip_line.css('left', '-100%');
         });
-    }, 1000);
+    }, 800);
 }
 
 function stop_loading_strip() {

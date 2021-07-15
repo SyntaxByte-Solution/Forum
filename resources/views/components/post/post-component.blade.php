@@ -48,13 +48,13 @@
                     </div>
                 </div>
                 <a href="" class="hover-informer-display-element">
-                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size28 green-tick @if(!$post->ticked) none @endif" alt="">
-                    <img src="{{ asset('assets/images/icons/grey-tick.png') }}" class="size28 grey-tick @if($post->ticked) none @endif" alt="">
+                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size20 green-tick @if(!$post->ticked) none @endif" alt="">
+                    <img src="{{ asset('assets/images/icons/grey-tick.png') }}" class="size20 grey-tick @if($post->ticked) none @endif" alt="">
                 </a>
                 <input type="hidden" value="{{ $post->id }}" class="post-id">
                 @else
                     @if($post->ticked)
-                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size28 grey-tick" alt="">
+                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size20 grey-tick" alt="">
                     @endif
                 @endcan
             </div>

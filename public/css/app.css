@@ -2783,6 +2783,29 @@ tr:nth-child(2n) {
     height: 100%;
 }
 
+.viewer-thread-reply {
+    padding: 6px;
+}
+
+.thread-viewer-reply-content {
+    width: 100%;
+    margin-top: 4px;
+    padding: 6px 8px;
+    background-color: #eeeeee54;
+    border: 1px solid #dfdfdf96;
+    border-radius: 8px;
+}
+
+.thread-viewer-reply-content * {
+    margin: 0;
+}
+
+.viewer-ticked-reply {
+    background-color: #bdffaf3d;
+    border-radius: 6px;
+    border: 1px solid #5fa65f59;
+}
+
 /* --- --- --- */
 
 .follow-container {

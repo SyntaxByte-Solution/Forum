@@ -15,6 +15,7 @@ class ViewerInfos extends Component
     public $edit_link;
     public $owner_username;
     public $followed;
+    public $tickedPost;
 
     public $posts_switch;
 
@@ -36,7 +37,7 @@ class ViewerInfos extends Component
             $this->followed = false;
         }
 
-        $tickedPost = $thread->tickedPost();
+        $this->tickedPost = $tickedPost = $thread->tickedPost();
         if($tickedPost) {
             $this->posts = $thread->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->take(6)->get();
         } else {

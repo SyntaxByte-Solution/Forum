@@ -57,19 +57,19 @@ class Post extends Model
         return Markdown::parse($this->content);
     }
 
-    public function getCreationDateHumans() {
+    public function getCreationDateHumansAttribute() {
         return (new Carbon($this->created_at))->diffForHumans();
     }
 
-    public function getCreationDate() {
+    public function getCreationDateAttribute() {
         return (new Carbon($this->created_at))->toDayDateTimeString();
     }
 
-    public function getUpdateDateHumans() {
+    public function getUpdateDateHumansAttribute() {
         return (new Carbon($this->updated_at))->diffForHumans();
     }
 
-    public function getUpdateDate() {
+    public function getUpdateDateAttribute() {
         return (new Carbon($this->updated_at))->toDayDateTimeString();
     }
 

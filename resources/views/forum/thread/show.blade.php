@@ -22,7 +22,7 @@
 @section('content')
     @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
-    <div id="middle-container" class="middle-padding-1">
+    <div id="middle-container" class="middle-padding-1" style="width: 75%; margin: 0 auto;">
         <div class="flex">
             <div class="full-width">
                 <div class="flex space-between full-width align-end" style="margin-bottom: 20px">
@@ -82,11 +82,13 @@
                     @foreach($posts as $post)
                         <x-post-component :post="$post->id"/>
                     @endforeach
+                    @if($posts->count() > 5)
                     <div class="flex">
                         <div class="move-to-right">
                             {{ $posts->onEachSide(0)->links() }}
                         </div>
                     </div>
+                    @endif
                 </div>
                 <script>
                     $('textarea').each(function() {

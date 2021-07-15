@@ -211,20 +211,25 @@ $('.close-shadowed-view-button').click(function() {
     return false;
 });
 
-$('.expand-button').click(function() {
-    let button = $(this);
-    let state = button.parent().find('.expand-text-state').val();
-
-    if(state == '0') {
-        button.parent().find('.expandable-text').text(button.parent().find('.expand-whole-text').val());
-        button.parent().find('.expand-text-state').val(1);
-        button.parent().find('.expand-button').text(button.parent().find('.collapse-text').val());
-    } else {
-        button.parent().find('.expandable-text').text(button.parent().find('.expand-slice-text').val());
-        button.parent().find('.expand-text-state').val(0);
-        button.parent().find('.expand-button').text(button.parent().find('.expand-text').val());
-    }
+$('.expand-button').each(function() {
+    handle_expend($(this));
 });
+
+function handle_expend(expend_button) {
+    expend_button.on('click', function() {
+        let state = expend_button.parent().find('.expand-text-state').val();
+    
+        if(state == '0') {
+            expend_button.parent().find('.expandable-text').text(expend_button.parent().find('.expand-whole-text').val());
+            expend_button.parent().find('.expand-text-state').val(1);
+            expend_button.parent().find('.expand-button').text(expend_button.parent().find('.collapse-text').val());
+        } else {
+            expend_button.parent().find('.expandable-text').text(expend_button.parent().find('.expand-slice-text').val());
+            expend_button.parent().find('.expand-text-state').val(0);
+            expend_button.parent().find('.expand-button').text(expend_button.parent().find('.expand-text').val());
+        }
+    });
+}
 
 function heart_beating() {
     let heart = $('.heart-beating');
@@ -2090,6 +2095,7 @@ $('.open-thread-image').on('click', function(event) {
      */
      medias_container.imagesLoaded( function() {
         images_loaded = true;
+        $('body').css('overflow', 'hidden');
         media_viewer.removeClass('none');
         if(infos_fetched) {
             stop_loading_strip();
@@ -2110,13 +2116,31 @@ $('.open-thread-image').on('click', function(event) {
                 $('.thread-media-viewer-infos-header-pattern').addClass('none');
                 $('.tmvisc').html(thread_infos_section);
 
+                // ----- HANDLING EVENTS -----
+                $('.tmvisc').find('.follow-resource').each(function() {
+                    handle_follow_resource($(this));
+                });
+
+                $('.tmvisc').find('.expand-button').each(function() {
+                    console.log('found');
+                    handle_expend($(this));
+                })
+
+                
                 handle_resource_like($('.tmvisc').find('.thread-viewer-react-container'));
                 $('.tmvisc').find('.viewer-thread-reply').each(function() {
                     handle_resource_like($(this));
                     handle_tooltip($(this).find('.tooltip-section'));
                 });
 
+
+                if($('.tmvisc').find('#viewer-replies-load').length) {
+                    handle_viewer_replies_load($('.tmvisc').find('#viewer-replies-load'));
+                }
+
+
                 handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
+
                 if(images_loaded) {
                     stop_loading_strip();
                 }
@@ -2174,6 +2198,7 @@ function handle_viewer_closing() {
     $('.thread-viewer-nav').addClass('none');
     viewer.find('.thread-viewer-medias-indicator').addClass('none');
     viewer.addClass('none');
+    $('body').css('overflow-y', '');
 }
 
 function handle_thread_viewer_image(image) {
@@ -2367,4 +2392,56 @@ function start_loading_strip() {
 function stop_loading_strip() {
     $('#loading-strip').addClass('none');
     clearInterval(strip_loading_interval);
+}
+
+function handle_viewer_replies_load(button) {
+    button.click(function() {
+        let button_text_ing = button.parent().find('.button-text-ing').val();
+        let button_text_no_ing = button.parent().find('.button-text-no-ing').val();
+        
+        button.val(button_text_ing);
+        button.attr("disabled","disabled");
+        button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
+
+        let viewer_replies_container = button;
+        while(!viewer_replies_container.hasClass('viewer-replies-container')) {
+            viewer_replies_container = viewer_replies_container.parent();
+        }
+        
+        let present_replies_count = viewer_replies_container.find('.viewer-thread-reply').length;
+        let thread_id = button.parent().find('.thread-id').val();
+
+        $.ajax({
+            url: `/thread/${thread_id}/viewer/posts/load?range=6&skip=${present_replies_count}`,
+            type: 'get',
+            success: function(replies_payload) {
+                if(replies_payload.hasNext == false) {
+                    button.addClass('none');
+                }
+
+                if(replies_payload.content != "") {
+                    $(`${replies_payload.content}`).insertBefore(button);
+        
+                    /**
+                     * Notice here when we fetch the notifications we return the number of fetched notifs
+                     * because we need to handle the last count of appended components events
+                     * 
+                     */
+                    let unhandled_replies = 
+                        viewer_replies_container.find('.viewer-thread-reply').slice(replies_payload.count*(-1));
+                    
+                    console.log(viewer_replies_container)
+                    
+                    unhandled_replies.each(function() {
+                        console.log('Handling ..');
+                    });
+                }
+            },
+            complete: function() {
+                button.val(button_text_no_ing);
+                button.attr('style', '');
+                button.prop("disabled", false);
+            }
+        })
+    });
 }

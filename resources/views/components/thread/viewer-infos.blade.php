@@ -8,14 +8,14 @@
                 <div class="flex align-end">
                     <a href="{{ $thread->user->profilelink }}" class="bold no-underline blue fs15 mr4">{{ $owner_full_name }}</a>
                     @if(auth()->user() && $thread->user->id != auth()->user()->id)
-                    <span class="fs10 gray" style="margin: 0 4px 2px 0">•</span>
-                    <div class="follow-box">
+                    <span class="fs10 gray" style="margin: 0 4px 3px 0">•</span>
+                    <div class="follow-box" style="padding-bottom: 1px">
                         <div class="pointer @auth follow-resource @endauth @guest login-signin-button @endguest">
                             @if($followed)
                             <p class="fs12 no-margin bold gray btn-txt">{{ __('Followed') }}</p>
                             <input type="hidden" class="status" value="1">
                             @else
-                            <p class="fs12 no-margin bold blue btn-txt">{{ __('Follow') }}</p>
+                            <p class="fs12 no-margin bold blue btn-txt" style="margin-top=">{{ __('Follow') }}</p>
                             <input type="hidden" class="status" value="-1">
                             @endif
                             <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
@@ -39,8 +39,8 @@
         </div>
     </div>
     <div class="thread-media-viewer-infos-content">
-        <div class="expand-box">
-            <span><a href="{{ $thread->link }}" class="expandable-text bold fs17 blue no-underline my4">{{ $thread->slice }}</a></span>
+        <div class="expand-box mb8">
+            <span><a href="{{ $thread->link }}" class="expandable-text bold fs20 blue no-underline my4">{{ $thread->slice }}</a></span>
             @if($thread->slice != $thread->subject)
             <input type="hidden" class="expand-slice-text" value="{{ $thread->slice }}">
             <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
@@ -50,7 +50,7 @@
             <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
             @endif
         </div>
-        <div class="my8 expand-box">
+        <div class="mb8 expand-box">
             <span class="expandable-text fs15 no-underline">{{ $thread->contentslice }}</span>
             @if($thread->content != $thread->contentslice)
             <input type="hidden" class="expand-slice-text" value="{{ $thread->contentslice }}">
@@ -61,7 +61,7 @@
             <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
             @endif
         </div>
-        <div class="flex align-center thread-viewer-react-container">
+        <div class="flex align-center thread-viewer-react-container my8">
             <input type="hidden" class="likable-type" value="thread">
             <input type="hidden" class="likable-id" value="{{ $thread->id }}">
             <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
@@ -78,7 +78,8 @@
                 <p class="no-margin fs12 unselectable">{{ $thread->view_count }}</p>
             </div>
         </div>
-        <div class="simple-line-separator my4"></div>
+        <div class="simple-line-separator mb4"></div>
+        @if($thread->posts->count())
         <div>
             <p class="my4 fs15 bold">Replies ({{ $thread->posts->count() }})</p>
             <div class="viewer-replies-container mt8">
@@ -88,7 +89,16 @@
                 @foreach($posts as $post)
                     <x-thread.viewer-reply :post="$post"/>
                 @endforeach
+                @if($thread->posts->count() > $posts->count())
+                <div>
+                    <input type='button' class="see-all-full-style" id="viewer-replies-load" value="{{__('View more replies')}}">
+                    <input type="hidden" class="button-text-ing" value="{{ __('Loading replies') }}">
+                    <input type="hidden" class="button-text-no-ing" value="{{ __('View more replies') }}">
+                    <input type="hidden" class="thread-id" value="{{ $thread->id }}">
+                </div>
+                @endif
             </div>
         </div>
+        @endif
     </div>
 </div>

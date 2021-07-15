@@ -19,7 +19,7 @@
         {{ __('Reply hidden') }} [<a href="" class="show-post black-link bold">{{ __('click here to show it') }}</a>]
         <div class="line-separator"></div>
     </div>
-    <div class="flex post-main-component relative" style="@if($post->ticked) border-color: #1c8e19b3; @endif">
+    <div class="flex post-main-component relative" style="@if($post->ticked) border-color: #28882678; @endif">
         <div id="{{ $post_id }}" class="absolute" style="top: -65px">
         </div>
         <div class="vote-section post-vs relative">
@@ -59,8 +59,8 @@
                 @endcan
             </div>
         </div>
-        <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe44a; @endif">
-            <div class="flex space-between">
+        <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe438; @endif">
+            <div class="flex space-between px8 py8">
                 <div>
                     <div class="no-margin fs12 gray">
                         <div class="inline-block relative">
@@ -82,15 +82,14 @@
                             </div>
                         </div>
                         @if($post_updated_at)
-                            <span class="relative" style="margin-left: 8px">
-                                <span class="tooltip-section post-updated-date">(updated {{ $post_update_date }})</span>
+                            <span class="relative" style="margin-left: 4px">
+                                <span class="tooltip-section post-updated-date">({{ __('edited') }})</span>
                                 <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
                             </span>
                         @endif
                     </div>
-                    <div class="simple-line-separator my4"></div>
                 </div>
-                <div class="flex align-center relative">
+                <div class="flex align-center relative height-max-content">
                     @auth
                     <div class="resource-like-container like-resource pointer">
                         <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($post->liked_by(auth()->user())) none @endif"></div>
@@ -116,7 +115,8 @@
                     </div>
                 </div>
             </div>
-            <div class="post-content">{{ $post_content }}</div>
+            <div class="simple-line-separator mb4"></div>
+            <div class="post-content px8">{{ $post_content }}</div>
             @can('update', $post)
             <div class="post-edit-container none">
                 <p class="bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>

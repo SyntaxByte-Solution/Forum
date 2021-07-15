@@ -2,7 +2,6 @@ body {
     margin: 0;
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #F6F8FA;
 }
 
 a, input, textarea {
@@ -112,6 +111,10 @@ a, input, textarea {
 
 .fs18 {
     font-size: 18px !important;
+}
+
+.fs19 {
+    font-size: 19px !important;
 }
 
 .fs17 {
@@ -1851,9 +1854,10 @@ tr:nth-child(2n) {
 }
 
 .post-main-section {
-    padding: 8px 14px;
+    background-color: white;
     width: 100%;
     box-sizing: border-box;
+    border-radius: 6px;
 }
 
 .post-main-content {
@@ -2710,6 +2714,7 @@ tr:nth-child(2n) {
     right: 6px;
     top: 6px;
     color: white;
+    background-color: #0000003d;
     font-size: 25px;
     padding: 4px 11.1px 6px 11.5px;
     border-radius: 50%;
@@ -2785,14 +2790,15 @@ tr:nth-child(2n) {
 
 .viewer-thread-reply {
     padding: 6px;
+    border: 1px solid #e1e1e1;
+    border-radius: 6px;
 }
 
 .thread-viewer-reply-content {
     width: 100%;
     margin-top: 4px;
     padding: 6px 8px;
-    background-color: #eeeeee54;
-    border: 1px solid #dfdfdf96;
+    background-color: #c4c4c454;
     border-radius: 8px;
 }
 

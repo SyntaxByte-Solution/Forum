@@ -11,10 +11,10 @@
             <div>
                 <a href="{{ $post->user->profilelink }}" class="no-margin bold blue no-underline">Mouad Nassri</a>
                 <div class="flex align-center">
-                    <p class="no-margin fs13" style="margin-top: 1px">grotto_IV</p>
-                    <span class="fs10 gray" style="margin: 3px 4px 2px 4px">•</span>
-                    <span class="relative block">
-                        <span class="tooltip-section fs12 gray">{{ $post->creation_date_humans }}</span>
+                    <p class="no-margin fs12" style="margin-top: 1px">grotto_IV</p>
+                    <span class="fs10 gray mx4 unselectable">•</span>
+                    <span class="relative block" style="padding-bottom: 1px">
+                        <span class="tooltip-section fs11 gray">{{ $post->creation_date_humans }}</span>
                         <span class="tooltip tooltip-style-1">{{ $post->creation_date }}</span>
                     </span>
                 </div>
@@ -38,4 +38,3 @@
         </div>
     </div>
 </div>
-<div class="simple-line-separator"></div>

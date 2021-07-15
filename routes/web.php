@@ -54,8 +54,10 @@ Route::get('/users/search', [SearchController::class, 'users_search'])->name('us
  * get all forum threads
  */
 Route::get('/{forum:slug}/all', [ThreadController::class, 'forum_all_threads'])->name('forum.all.threads');
+
 Route::get('/forums/{forum}/categories/ids', [GeneralController::class, 'get_forum_categories_ids']);
 Route::get('/threads/{thread}/viewer_infos_component', [ThreadController::class, 'view_infos_component']);
+Route::get('/thread/{thread}/viewer/posts/load', [ThreadController::class, 'viewer_replies_load']);
 
 Route::middleware(['auth'])->group(function () {
     /** 

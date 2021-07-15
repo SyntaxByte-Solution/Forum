@@ -91,8 +91,8 @@
                         <div>
                             <div class="flex align-center follow-box">
                                 <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="forum-color no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
-                                <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
                                 @if(auth()->user() && $thread->user->id != auth()->user()->id)
+                                    <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
                                     <div class="pointer @auth follow-resource @endauth @guest login-signin-button @endguest">
                                         @if($followed)
                                         <input type="hidden" class="status" value="1">

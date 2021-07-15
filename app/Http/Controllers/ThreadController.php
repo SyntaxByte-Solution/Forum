@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
-use App\View\Components\Thread\ViewerInfos;
+use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
@@ -401,5 +401,28 @@ class ThreadController extends Controller
         $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
 
         return $thread_component;
+    }
+
+    public function viewer_replies_load(Request $request, Thread $thread) {
+        $data = $request->validate([
+            'range'=>'required|Numeric',
+            'skip'=>'required|Numeric',
+        ]);
+
+        $posts_to_return = $thread->posts->skip($data['skip'])->take($data['range']);
+        $payload = "";
+
+        foreach($posts_to_return as $post) {
+            $post_component = (new ViewerReply($post));
+            $post_component = $post_component->render(get_object_vars($post_component))->render();
+            $payload .= $post_component;
+        }
+
+        $hasnext = $thread->posts->skip($data['skip']+$data['range'])->count() > 0;
+        return [
+            "hasNext"=> $hasnext,
+            "content"=>$payload,
+            "count"=>$posts_to_return->count()
+        ];
     }
 }

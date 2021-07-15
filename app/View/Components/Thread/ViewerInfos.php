@@ -39,7 +39,7 @@ class ViewerInfos extends Component
 
         $this->tickedPost = $tickedPost = $thread->tickedPost();
         if($tickedPost) {
-            $this->posts = $thread->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->take(6)->get();
+            $this->posts = $thread->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->take(5)->get();
         } else {
             $this->posts = $thread->posts()->orderBy('created_at', 'desc')->take(6)->get();
         }

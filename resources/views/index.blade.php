@@ -19,8 +19,8 @@
     @include('partials.left-panel', ['page' => 'home'])
     <div id="middle-container">
         <div class="full-width">
-            <div>
-                <img src="{{ asset('assets/images/logos/welcome.png') }}" class="flex full-width" alt="">
+            <div style="height: 220px; background-color: #24292E">
+                
             </div>
             <div class="index-middle-width middle-container-style">
                 @auth

@@ -339,8 +339,8 @@ function handle_post_reply_tick_button(post) {
                     },
                     success: function(response) {
                         if(response == 1) {
-                            post.find('.post-main-component').attr('style', 'border-color: #1c8e19b3;');
-                            post.find('.post-main-section').attr('style', 'background-color: #e1ffe44a;');
+                            post.find('.post-main-component').attr('style', 'border-color: #28882678;');
+                            post.find('.post-main-section').attr('style', 'background-color: #e1ffe438;');
                             post.find('.best-reply-ticket').removeClass('none');
                             post.attr('id', 'ticked-post');
                             console.log('best reply below: ');

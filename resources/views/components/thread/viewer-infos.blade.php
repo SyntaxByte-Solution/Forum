@@ -66,6 +66,16 @@
         <div class="flex align-center thread-viewer-react-container px8 mb8">
             <input type="hidden" class="likable-type" value="thread">
             <input type="hidden" class="likable-id" value="{{ $thread->id }}">
+            <div class="relative">
+                <div class="suboptions-container suboptions-above-button-style">
+                    <!-- this will be thread voting -->
+                    <p>suboptions</p>
+                </div>
+                <div class="thread-react-hover button-with-suboptions @guest login-signin-button @endguest">
+                    <div class="small-image-2 sprite sprite-2-size votes17-icon"></div>
+                    <p class="gray no-margin fs12 resource-likes-counter unselectable" style="margin-left: 3px">{{ $thread->votevalue }}</p>
+                </div>
+            </div>
             <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
                 <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($thread->liked) none @endif"></div>
                 <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>

@@ -2116,6 +2116,10 @@ $('.open-thread-image').on('click', function(event) {
                     handle_follow_resource($(this));
                 });
 
+                $('.tmvisc').find('.button-with-suboptions').each(function() {
+                    handle_suboptions_container($(this));
+                });
+
                 $('.tmvisc').find('.expand-button').each(function() {
                     handle_expend($(this));
                 })
@@ -2481,10 +2485,7 @@ function handle_viewer_replies_load(button) {
         button.attr("disabled","disabled");
         button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
 
-        let viewer_replies_container = button;
-        while(!viewer_replies_container.hasClass('viewer-replies-container')) {
-            viewer_replies_container = viewer_replies_container.parent();
-        }
+        let viewer_replies_container = $('.viewer-replies-container');
         
         let present_replies_count = viewer_replies_container.find('.viewer-thread-reply').length;
         let thread_id = button.parent().find('.thread-id').val();
@@ -2499,19 +2500,13 @@ function handle_viewer_replies_load(button) {
 
                 if(replies_payload.content != "") {
                     $(`${replies_payload.content}`).insertBefore(button);
-        
-                    /**
-                     * Notice here when we fetch the notifications we return the number of fetched notifs
-                     * because we need to handle the last count of appended components events
-                     * 
-                     */
+
                     let unhandled_replies = 
-                        viewer_replies_container.find('.viewer-thread-reply').slice(replies_payload.count*(-1));
-                    
-                    console.log(viewer_replies_container)
+                        $('.viewer-thread-reply').slice(replies_payload.count*(-1));
                     
                     unhandled_replies.each(function() {
-                        console.log('Handling ..');
+                        handle_resource_like($(this));
+                        handle_tooltip($(this).find('.tooltip-section'));
                     });
                 }
             },

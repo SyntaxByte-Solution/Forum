@@ -820,6 +820,10 @@ a, input, textarea {
     background-position: 17px -68px;
 }
 
+.votes17-icon {
+    background-position: 0px -1360px;
+}
+
 .resource24-reply-icon {
     background-position: 0px -455px;
 }
@@ -1114,6 +1118,29 @@ a, input, textarea {
     background-color: white;
     border: 1px solid rgb(177, 177, 177);
     border-top: unset;
+}
+
+.suboptions-above-button-style {
+    position: absolute;
+    top: calc(-200% - 8px);
+    left: 0;
+    width: 180px;
+    background-color: white;
+    border: 1px solid rgb(177, 177, 177);
+}
+
+.above-middle-suboption-triangle {
+    z-index: 0;
+    position: absolute;
+    bottom: -14px;
+    left: 6px;
+    border-color: transparent transparent #a6a6a6 transparent;
+    border-style: solid;
+    border-width: 7px 7px 7px 7px;
+    height: 0px;
+    width: 0px;
+    display: inline-block;
+    transform: rotate(-180deg);
 }
 
 .triangle {

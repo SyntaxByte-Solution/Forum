@@ -77,7 +77,8 @@
                     </div>
                     <div class="relative">
                         <div class="flex align-center pointer button-with-suboptions">
-                            <div class='header-profile-button'>
+                            <div class='header-profile-button relative has-fade'>
+                                <div class="fade-loading"></div>
                                 <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning" loading="lazy">
                             </div>
                             <p class="no-margin fs13 mx4 light-gray">{{ $user->username }} <span>▾</span></p>

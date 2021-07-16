@@ -419,7 +419,6 @@ $('.copy-button').click(function() {
 
 $('.action-verification').click(function(event) {
     let action_type = $(this).find('.verification-action-type').val();
-    console.log(action_type);
     let container = $(this);
     while(!container.hasClass('shadow-contained-box')) {
         container = container.parent();
@@ -1687,7 +1686,6 @@ $('.thread-add-status').click(function(event) {
 
     status_ico.removeClass(lastClass);
     status_ico.addClass(icon_when_selected);
-    console.log($(this).parent());
     $(this).parent().css('display', 'none');
 });
 
@@ -1895,11 +1893,8 @@ $('.close-thread-media-upload').click(function() {
     // After deleting the component we need to adjust indexes
     adjust_uploaded_medias_indexes();
 
-    console.log(uploaded_thread_images_assets);
-
     // Check if there are more than 5 images
     global_counter = container.find('.uploaded-medias-counter').val();
-    console.log(global_counter);
     if(global_counter >= 5) {
         if(global_counter == 5) {
             $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").eq(4).find('.thread-add-more-shadowed').addClass('none');
@@ -2122,7 +2117,6 @@ $('.open-thread-image').on('click', function(event) {
                 });
 
                 $('.tmvisc').find('.expand-button').each(function() {
-                    console.log('found');
                     handle_expend($(this));
                 })
 
@@ -2137,6 +2131,90 @@ $('.open-thread-image').on('click', function(event) {
                 if($('.tmvisc').find('#viewer-replies-load').length) {
                     handle_viewer_replies_load($('.tmvisc').find('#viewer-replies-load'));
                 }
+
+                // ---- HANDLE REPLY ---- //
+                $('.tmvisc').find('.share-viewer-reply').on('click', function() {
+
+                    const $codemirror = $('#viewer-reply-input').nextAll('.CodeMirror')[0].CodeMirror;
+                    let button = $(this);
+                    let button_text_ing = $(this).parent().find('.button-text-ing').val();
+                    let button_text_no_ing = $(this).parent().find('.button-text-no-ing').val();
+                    
+                    let post_content = viewer_reply_simplemde.value();
+                    let thread_id = button.parent().find('.thread-id').val();
+
+                    let data = {
+                        '_token':csrf,
+                        'thread_id': thread_id,
+                        'content': post_content,
+                    };
+
+                    if(post_content == "") {
+                        $('.reply-error').removeClass('none');
+                        $('.reply-error').text(button.parent().find('.required-error').val());
+                        button.prop("disabled", false);
+                        button.attr('style', '');
+                    } else if(post_content.length < 2) {
+                        $('.reply-error').text(button.parent().find('.reply-size-error').val());
+                        $('.reply-error').removeClass('none');
+                        button.prop("disabled", false);
+                        button.attr('style', '');
+                    }
+                    else {
+                        button.val(button_text_ing);
+                        button.attr("disabled","disabled");
+                        button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
+                        $('.reply-error').addClass('none');
+                        // Disable editor while saving the reply
+                        $codemirror.options.readOnly = 'nocursor';
+
+                        $.ajax({
+                            type: 'post',
+                            data: data,
+                            url: '/post?from=thread-viewer',
+                            success: function(response) {
+                                if ($(".viewer-ticked-reply").length){
+                                    $(".viewer-replies-container .viewer-thread-reply:first-child").after(response);
+                                    pst = $('.viewer-replies-container .viewer-thread-reply:eq(1)');
+                                } else {
+                                    $('.viewer-replies-container').prepend(response);
+                                    pst = $('.viewer-replies-container .viewer-thread-reply').first();
+                                }
+                                handle_resource_like(pst);
+                                handle_tooltip(pst.find('.tooltip-section'));
+
+                                $codemirror.getDoc().setValue('');
+                                $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
+                            },
+                            error: function(response) {
+                                let errors = JSON.parse(response.responseText);
+                                let error;
+
+                                if(errors.message) {
+                                    error = errors.message
+                                } else {
+                                    // Here we get the errors of the response as an object
+                                    let errors = JSON.parse(response.responseText);
+                    
+                                    // The errors object hold errors keys as well as error values in form of array of errors
+                                    // because a field could have multiple validation constraints and then it could have multiple errors
+                                    // strings. In this case we only need the first error of the first validation
+                                    error = errors[Object.keys(errors)[0]][0];
+                                }
+                                $('.reply-error').removeClass('none');
+                                $('.reply-error').text(error);
+                            },
+                            complete: function() {
+                                button.val(button_text_no_ing);
+                                button.prop("disabled", false);
+                                button.attr('style', '');
+                                $codemirror.options.readOnly = false;
+                            }
+                        });
+                    }
+                });
+                
+                // ---------------------- //
 
 
                 handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));

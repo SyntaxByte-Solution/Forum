@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Exceptions\ThreadClosedException;
 use App\Models\{Post, ThreadStatus, Thread};
 use App\View\Components\PostComponent;
+use App\View\Components\Thread\ViewerReply;
 
 
 class PostController extends Controller
 {
-    public function store() {
+    public function store(Request $request) {
         
-        $data = request()->validate([
+        $data = $request->validate([
             'content'=>'required|min:2|max:40000',
             'thread_id'=>'required|exists:threads,id',
+            'from'=> [
+                'required',
+                Rule::in(['thread-show','thread-viewer']),
+            ]
         ]);
         $this->authorize('store', [Post::class, $data['thread_id']]);
 
@@ -69,16 +75,21 @@ class PostController extends Controller
 
         $data['user_id'] = auth()->user()->id;
         
-        
+        $from = $request->from;
+        unset($data['from']);
         $post = Post::create($data);
-
-        
-        // First we create a component class instance
-        $component = (new PostComponent($post->id));
-        // Then we pass the data to the render method on component class and pass that data to the component view
-        $component = $component->render(get_object_vars($component))->render();
-        // Then return that view
-        return $component;
+        if($from == 'thread-show') {
+            // First we create a component class instance
+            $component = (new PostComponent($post->id));
+            // Then we pass the data to the render method on component class and pass that data to the component view
+            $component = $component->render(get_object_vars($component))->render();
+            // Then return that view
+            return $component;
+        } else if($from == 'thread-viewer') {
+            $component = (new ViewerReply($post));
+            $component = $component->render(get_object_vars($component))->render();
+            return $component;
+        }
     }
 
     public function update(Post $post) {

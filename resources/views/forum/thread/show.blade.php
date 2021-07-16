@@ -58,8 +58,36 @@
                             <style>
                                 .CodeMirror,
                                 .CodeMirror-scroll {
-                                    max-height: 150px;
-                                    min-height: 150px;
+                                    max-height: 160px;
+                                    min-height: 160px;
+                                    border-color: #dbdbdb;
+                                }
+                                .CodeMirror-scroll:focus {
+                                    border-color: #64ceff;
+                                    box-shadow: 0 0 0px 3px #def2ff;
+                                }
+                                .editor-toolbar {
+                                    padding: 0 4px;
+                                    opacity: 0.8;
+                                    height: 38px;
+                                    border-top-color: #dbdbdb;
+
+                                    display: flex;
+                                    align-items: center;
+                                }
+                                .editor-toolbar .fa-arrows-alt {
+                                    margin-left: auto;
+                                }
+                                .editor-statusbar {
+                                    border-radius: 0px;
+                                }
+
+                                .fa-question-circle, .fa-link, .fa-picture-o, .fa-link {
+                                    display: none !important;
+                                }
+
+                                .share-post-form .separator:nth-of-type(2) {
+                                    display: none !important;
                                 }
                             </style>
                         </div>

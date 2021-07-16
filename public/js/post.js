@@ -218,7 +218,7 @@ $('.share-post').click(function() {
     let form = $(this).parent();
     let data = {
         '_token':csrf,
-        'thread_id': form.find('.thread_id').val()
+        'thread_id': form.find('.thread_id').val(),
     };
 
     if(post_content == "") {
@@ -241,20 +241,18 @@ $('.share-post').click(function() {
         $.ajax({
             type: 'post',
             data: data,
-            url: '/post',
+            url: '/post?from=thread-show',
             success: function(response) {
                 $('.replies_header_after_thread').removeClass('none');
                 $('#global-error').css('display', 'none');
                 let pst;
                 if ($("#ticked-post")[0]){
-                    console.log('here !');
                     $("#replies-container .resource-container:first-child").after(response);
                     pst = $('#replies-container .resource-container:eq(1)');
                 } else {
                     $('#replies-container').prepend(response);
                     pst = $('#replies-container .resource-container').first();
                 }
-                console.log(pst);
                 btn.val('Post your reply');
                 btn.prop("disabled", false);
                 btn.attr('style', '');
@@ -343,8 +341,6 @@ function handle_post_reply_tick_button(post) {
                             post.find('.post-main-section').attr('style', 'background-color: #e1ffe438;');
                             post.find('.best-reply-ticket').removeClass('none');
                             post.attr('id', 'ticked-post');
-                            console.log('best reply below: ');
-                            console.log(post.find('.best-reply-ticket'));
                         } else {
                             post.find('.post-main-component').attr('style', '');
                             post.find('.post-main-section').attr('style', '');
@@ -367,7 +363,6 @@ function handle_post_reply_tick_button(post) {
                         best_reply_container.parent().find('.informer-message').text(error);
 
                         setTimeout(function() {
-                            console.log('close');
                             best_reply_container.find('.informer-message').parent().parent().css('display', 'none');
                         }, 2000);
                     },

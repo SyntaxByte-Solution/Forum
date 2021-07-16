@@ -118,7 +118,7 @@
             <div class="simple-line-separator mb4"></div>
             <div class="post-content px8">{{ $post_content }}</div>
             @can('update', $post)
-            <div class="post-edit-container none">
+            <div class="post-edit-container px8 py8 none">
                 <p class="bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
                 <textarea name="content" class="reply-content" id="post-edit-content-{{ $post_id }}"></textarea>
                 <a href="" class="button-style inline-block exit-edit-post">{{ __('Discard') }}</a>

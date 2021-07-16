@@ -1,3 +1,8 @@
+
+.sprite {
+    background-image: url(../assets/images/icons/sp.png);
+}
+
 body {
     margin: 0;
     font-size: 14px;
@@ -162,7 +167,7 @@ a, input, textarea {
 }
 
 .ml8 {
-    margin-left: 8px;
+    margin-left: 8px !important;
 }
 
 .m4 {
@@ -672,7 +677,7 @@ a, input, textarea {
 }
 
 .more7-icon {
-    background-position: 0px -434px;
+    background-position: 0px -504px;
 }
 
 .forums20-icon {
@@ -684,7 +689,7 @@ a, input, textarea {
 }
 
 .menu20-icon {
-    background-position: 20px -2040px;
+    background-position: 20px -2440px;
 }
 
 .binbox28-icon {
@@ -736,7 +741,7 @@ a, input, textarea {
 }
 
 .statistics17-icon {
-    background-position: 17px -1037px;
+    background-position: 17px -1207px;
 }
 
 .fire17-icon {
@@ -756,7 +761,7 @@ a, input, textarea {
 }
 
 .replyfilled17-icon {
-    background-position: 17px -1309px;
+    background-position: 17px 1411px;
 }
 
 .eye17-icon {
@@ -788,11 +793,11 @@ a, input, textarea {
 }
 
 .forums17-icon {
-    background-position: 0px -1717px;
+    background-position: 0px -2057px;
 }
 
 .clock17-icon {
-    background-position: 0px -1734px;
+    background-position: 0px -2074px;
 }
 
 .author17-icon {
@@ -864,27 +869,27 @@ a, input, textarea {
 }
 
 .public18-icon {
-    background-position: 0px -1133px;
+    background-position: 0px -1314px;
 }
 
 .followers18-icon {
-    background-position: 0px -1151px;
+    background-position: 0px -1332px;
 }
 
 .private18-icon {
-    background-position: 0px -1170px;
+    background-position: 0px -1350px;
 }
 
 .follow14-icon {
-    background-position: 14px -658px;
+    background-position: 14px -798px;
 }
 
 .followed14-icon {
-    background-position: 14px -644px;
+    background-position: 14px -784px;
 }
 
 .public14-icon {
-    background-position: 0px -1371px;
+    background-position: 0px -392px;
 }
 
 .closed14-icon {
@@ -892,11 +897,11 @@ a, input, textarea {
 }
 
 .private14-icon {
-    background-position: 0px -1890px;
+    background-position: 0px -420px;
 }
 
 .followers14-icon {
-    background-position: 0px -1386px;
+    background-position: 0px -406px;
 }
 
 .votes14-icon {
@@ -2012,10 +2017,6 @@ tr:nth-child(2n) {
     background-size: 20px;
 }
 
-.sprite {
-    background-image: url(../assets/images/icons/sp.png);
-}
-
 .sprite-2-size {
     background-size: 200%;
 }
@@ -2655,6 +2656,7 @@ tr:nth-child(2n) {
     display: flex;
     flex-wrap: wrap;
     padding: 4px 0;
+    min-height: 240px;
 }
 
 .thread-media-container {
@@ -2782,7 +2784,6 @@ tr:nth-child(2n) {
 .thread-media-viewer-infos-content {
     display: flex;
     flex-direction: column;
-    padding: 8px;
     overflow-y: scroll;
 
     height: 100%;

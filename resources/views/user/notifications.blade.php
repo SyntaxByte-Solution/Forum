@@ -7,9 +7,6 @@
 
             $('.header-button-counter-indicator').css('opacity', '0');
             let element = $('.notification-button');
-            let icon = element.find('.notifications-icon');
-            icon.removeClass('notification-icon')
-            icon.css('background-position', '0px 0px');
             element.off();
 
             $(window).scroll(function() {

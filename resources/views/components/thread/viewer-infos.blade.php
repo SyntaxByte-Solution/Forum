@@ -39,29 +39,31 @@
         </div>
     </div>
     <div class="thread-media-viewer-infos-content">
-        <div class="expand-box mb8">
-            <span><a href="{{ $thread->link }}" class="expandable-text bold fs20 blue no-underline my4">{{ $thread->slice }}</a></span>
-            @if($thread->slice != $thread->subject)
-            <input type="hidden" class="expand-slice-text" value="{{ $thread->slice }}">
-            <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
-            <input type="hidden" class="expand-text-state" value="0">
-            <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
-            <input type="hidden" class="expand-text" value="{{ __('see all') }}">
-            <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
-            @endif
+        <div class="px8 py8">
+            <div class="expand-box mb8">
+                <span><a href="{{ $thread->link }}" class="expandable-text bold fs20 blue no-underline my4">{{ $thread->slice }}</a></span>
+                @if($thread->slice != $thread->subject)
+                <input type="hidden" class="expand-slice-text" value="{{ $thread->slice }}">
+                <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
+                <input type="hidden" class="expand-text-state" value="0">
+                <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
+                <input type="hidden" class="expand-text" value="{{ __('see all') }}">
+                <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
+                @endif
+            </div>
+            <div class="mb8 expand-box">
+                <span class="expandable-text fs15 no-underline">{{ $thread->contentslice }}</span>
+                @if($thread->content != $thread->contentslice)
+                <input type="hidden" class="expand-slice-text" value="{{ $thread->contentslice }}">
+                <input type="hidden" class="expand-whole-text" value="{{ $thread->content }}">
+                <input type="hidden" class="expand-text-state" value="0">
+                <span class="pointer expand-button fs12 inline-block blue">{{ __('see all') }}</span>
+                <input type="hidden" class="expand-text" value="{{ __('see all') }}">
+                <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
+                @endif
+            </div>
         </div>
-        <div class="mb8 expand-box">
-            <span class="expandable-text fs15 no-underline">{{ $thread->contentslice }}</span>
-            @if($thread->content != $thread->contentslice)
-            <input type="hidden" class="expand-slice-text" value="{{ $thread->contentslice }}">
-            <input type="hidden" class="expand-whole-text" value="{{ $thread->content }}">
-            <input type="hidden" class="expand-text-state" value="0">
-            <span class="pointer expand-button fs12 inline-block blue">{{ __('see all') }}</span>
-            <input type="hidden" class="expand-text" value="{{ __('see all') }}">
-            <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
-            @endif
-        </div>
-        <div class="flex align-center thread-viewer-react-container my8">
+        <div class="flex align-center thread-viewer-react-container px8 mb8">
             <input type="hidden" class="likable-type" value="thread">
             <input type="hidden" class="likable-id" value="{{ $thread->id }}">
             <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
@@ -79,9 +81,66 @@
             </div>
         </div>
         <div class="simple-line-separator mb4"></div>
+        <div id="viewer-reply-container">
+            <div class="flex space-between my4" id="reply-site">
+                <p class="bold fs15 my4 ml8 forum-color">{{ __('Reply') }}</p>
+                <input type="button" value="{{ __('Share reply') }}" class="share-viewer-reply button-style-1 height-max-content mr4">
+                <input type="hidden" class="button-text-ing" value="{{ __('Sharing your reply..') }}">
+                <input type="hidden" class="button-text-no-ing" value="{{ __('Share reply') }}">
+                <input type="hidden" class="thread-id" value="{{ $thread->id }}">
+
+                <input type="hidden" class="required-error" value="{{ __('* Reply field is required') }}">
+                <input type="hidden" class="reply-size-error" value="{{ __('* Reply must contain at least 2 characters') }}">
+            </div>
+            <p class="reply-error error ml8 none"></p>
+            <textarea name="content" id="viewer-reply-input"></textarea>
+            <script>
+                let viewer_reply_simplemde = new SimpleMDE({
+                    placeholder: '{{ __("Add a discussion content here..") }}',
+                    hideIcons: ["guide", "heading", "link", "image"],
+                    spellChecker: false,
+                });
+            </script>
+            <style>
+                .thread-media-viewer-infos-content .fa-arrows-alt, .thread-media-viewer-infos-content .fa-columns {
+                    display: none !important;
+                }
+                .thread-media-viewer-infos-content .separator:last-of-type {
+                    display: none !important;
+                }
+                .thread-media-viewer-infos-content .CodeMirror,
+                .thread-media-viewer-infos-content .CodeMirror-scroll {
+                    max-height: 100px !important;
+                    min-height: 100px !important;
+                    border-radius: 0;
+                    border-left: none;
+                    border-right: none;
+                    border-color: #dbdbdb;
+                }
+                .thread-media-viewer-infos-content .CodeMirror-scroll:focus {
+                    border-color: #64ceff;
+                    box-shadow: 0 0 0px 3px #def2ff;
+                }
+                .thread-media-viewer-infos-content .editor-toolbar {
+                    padding: 0 4px;
+                    opacity: 0.8;
+                    height: 38px;
+                    border-radius: 0;
+                    border-left: none;
+                    border-right: none;
+                    border-top-color: #dbdbdb;
+
+                    display: flex;
+                    align-items: center;
+                }
+                .thread-media-viewer-infos-content .editor-statusbar {
+                    border-radius: 0px !important;
+                }
+            </style>
+        </div>
         @if($thread->posts->count())
-        <div>
-            <p class="my4 fs15 bold">Replies ({{ $thread->posts->count() }})</p>
+        <div class="mx8">
+            <p class="my4 fs15 bold">Replies (<span class="thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
             <div class="viewer-replies-container mt8">
                 @if($ticked = $thread->tickedPost())
                     <x-thread.viewer-reply :post="$ticked"/>

@@ -180,6 +180,10 @@
                     <div class="relative">
                         <div class="pointer button-with-suboptions size20 sprite sprite-2-size menu20-icon mr4"></div>
                         <div class="suboptions-container suboptions-container-right-style">
+                            <div class="pointer simple-suboption thread-display-button flex align-center">
+                                <div class="small-image-2 sprite sprite-2-size eyecrossed17-icon mr4"></div>
+                                <div>{{ __('Save thread') }}</div>
+                            </div>
                             @can('update', $thread)
                             <div class="pointer simple-suboption flex align-center">
                                 <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
@@ -274,10 +278,10 @@
                         <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
                         <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                     </div>
-                    <div class="thread-react-hover flex align-center">
+                    <a href="{{ $thread->link }}" class="thread-react-hover flex align-center no-underline">
                         <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
-                        <p class="no-margin unselectable fs12">{{ $replies }} {{__('replies')}}</p>
-                    </div>
+                        <p class="no-margin unselectable fs12 black">{{ $replies }} {{__('replies')}}</p>
+                    </a>
                 </div>
                 <div class="flex align-center">
                     <div class="relative mr8">

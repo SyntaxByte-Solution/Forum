@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <div class="thread-media-viewer-infos-content">
+            <div class="thread-media-viewer-infos-content px8 py8">
                 <div class="relative hidden-overflow br4 width-max-content mb8">
                     <div class="fade-loading"></div>
                     <a href="" class="bold no-underline blue fs15">Lorem ipsum dolor sit amet consectetur</a>

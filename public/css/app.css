@@ -836,16 +836,32 @@ a, input, textarea {
     background-position: 0px -1343px;
 }
 
+.upvote20-icon {
+    background-position: 0px -1580px;
+}
+
 .upvotefilled17-icon {
     background-position: 17px -1343px;
+}
+
+.upvotefilled20-icon {
+    background-position: 20px -1580px;
 }
 
 .downvotefilled17-icon {
     background-position: 17px -1326px;
 }
 
+.downvotefilled20-icon {
+    background-position: 20px -1560px;
+}
+
 .downvote17-icon {
     background-position: 0px -1326px;
+}
+
+.downvote20-icon {
+    background-position: 0px -1560px;
 }
 
 .resource24-reply-icon {

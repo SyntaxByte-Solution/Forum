@@ -72,7 +72,7 @@
                 <input type="hidden" class="votable-id" value="{{ $thread->id }}">
                 <div class="informer-message-container absolute zi1" style="left: -1px; bottom: calc(100% + 2px)">
                     <div class="flex align-center">
-                        <p class="informer-message">{{__("you can't up vote your thread")}}</p>
+                        <p class="informer-message"></p>
                         <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                     </div>
                 </div>

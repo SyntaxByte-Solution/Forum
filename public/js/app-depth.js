@@ -843,38 +843,38 @@ function handle_up_vote(button) {
     }
     vote_lock = false;
 
-    let vote_count = parseInt(button.parent().find('.votable-count').text());
+    let vote_box = button;
+    while(!vote_box.hasClass('vote-box')) {
+        vote_box = vote_box.parent();
+    }
 
-    if(button.find('.vote-up-image').hasClass('none')) {
+    let vote_count = parseInt(vote_box.find('.votable-count').text());
+
+    if(button.find('.vote-icon').hasClass('upvotefilled20-icon')) {
         // In this case the user is already votes up and then press up again so we need to delete the vote record
-        button.parent().find('.votable-count').text(vote_count-1);
-        button.find('.vote-up-image').removeClass('none');
-        button.find('.vote-up-filled-image').addClass('none');
-    
-        button.parent().find('.vote-down-image').removeClass('none');
-        button.parent().find('.vote-down-filled-image').addClass('none');
+        vote_box.find('.votable-count').text(vote_count-1);
+        button.find('.vote-icon').removeClass('upvotefilled20-icon');
+        button.find('.vote-icon').addClass('upvote20-icon');
     } else {
         // here we have 2 cases:
         // 1- case where the user is not voted at all we only need to add 1
-        if(button.parent().find('.vote-up-filled-image').hasClass('none') && button.parent().find('.vote-down-filled-image').hasClass('none')) {
-            button.parent().find('.votable-count').text(vote_count+1);    
+        if(button.find('.vote-icon').hasClass('upvote20-icon') 
+        && button.parent().find('.votable-down-vote').find('.vote-icon').hasClass('downvote20-icon')){
+            vote_box.find('.votable-count').text(vote_count+1);
+            button.find('.vote-icon').removeClass('upvote20-icon');    
+            button.find('.vote-icon').addClass('upvotefilled20-icon');
         // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
         } else {
-            button.parent().find('.votable-count').text(vote_count+2);
+            vote_box.find('.votable-count').text(vote_count+2);
+            vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
+            vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
+            button.find('.vote-icon').removeClass('upvote20-icon');
+            button.find('.vote-icon').addClass('upvotefilled20-icon');
         }
-        button.find('.vote-up-image').addClass('none');
-        button.find('.vote-up-filled-image').removeClass('none');
-    
-        button.parent().find('.vote-down-image').removeClass('none');
-        button.parent().find('.vote-down-filled-image').addClass('none');
     }
 
-    let resource_container = button;
-    while(!resource_container.hasClass('resource-container')) {
-        resource_container = resource_container.parent();
-    }
-    let votable_id = resource_container.find('.votable-id').val();
-    let votable_type = resource_container.find('.votable-type').val();
+    let votable_id = vote_box.find('.votable-id').val();
+    let votable_type = vote_box.find('.votable-type').val();
 
     $.ajax({
         type: 'POST',
@@ -887,20 +887,21 @@ function handle_up_vote(button) {
             button.parent().find('.votable-count').text(response);
         },
         error: function(xhr, status, error) {
-            if(button.find('.vote-up-image').hasClass('none')) {
-                button.find('.vote-up-image').removeClass('none');
-                button.find('.vote-up-filled-image').addClass('none');
+            if(button.find('.vote-icon').hasClass('upvotefilled20-icon')) {
+                button.find('.vote-icon').removeClass('upvotefilled20-icon')
+                button.find('.vote-icon').addClass('upvote20-icon')
             } else {
-                button.find('.vote-up-image').addClass('none');
-                button.find('.vote-up-filled-image').removeClass('none');
+                button.find('.vote-icon').addClass('upvotefilled20-icon')
+                button.find('.vote-icon').removeClass('upvote20-icon')
             }
+
             // If there's an error we simply set the old value
-            button.parent().find('.votable-count').text(vote_count);
+            vote_box.find('.votable-count').text(vote_count);
 
             let errorObject = JSON.parse(xhr.responseText);
             let er = errorObject.message;
             // and then print the error returned in the informer-message-container
-            let vote_message_container = button.parent().find('.informer-message-container').first();
+            let vote_message_container = vote_box.find('.informer-message-container').first();
             vote_message_container.find('.informer-message').text(er);
             vote_message_container.css('display', 'block');
 
@@ -920,37 +921,38 @@ function handle_down_vote(button) {
     }
     vote_lock = false;
 
-    let vote_count = parseInt(button.parent().find('.votable-count').text());
+    let vote_box = button;
+    while(!vote_box.hasClass('vote-box')) {
+        vote_box = vote_box.parent();
+    }
 
-    if(button.find('.vote-down-image').hasClass('none')) {
-        button.parent().find('.votable-count').text(vote_count+1);
-        button.find('.vote-down-image').removeClass('none');
-        button.find('.vote-down-filled-image').addClass('none');
-    
-        button.parent().find('.vote-up-image').removeClass('none');
-        button.parent().find('.vote-up-filled-image').addClass('none');
+    let vote_count = parseInt(vote_box.find('.votable-count').text());
+
+    if(button.find('.vote-icon').hasClass('downvotefilled20-icon')) {
+        // In this case the user is already votes up and then press up again so we need to delete the vote record
+        vote_box.find('.votable-count').text(vote_count+1);
+        button.find('.vote-icon').removeClass('downvotefilled20-icon');
+        button.find('.vote-icon').addClass('downvote20-icon');
     } else {
-        // here alse we have 2 cases:
-        // 1- case where the user is not voted at all we only need to subtract 1
-        if(button.parent().find('.vote-up-filled-image').hasClass('none') && button.parent().find('.vote-down-filled-image').hasClass('none')) {
-            button.parent().find('.votable-count').text(vote_count-1);    
-        // 2- case where the user is already up voted the resource and then he press down vote, we need to subtract 2 in this case
+        // here we have 2 cases:
+        // 1- case where the user is not voted at all we only need to add 1
+        if(button.find('.vote-icon').hasClass('downvote20-icon') 
+        && button.parent().find('.votable-up-vote').find('.vote-icon').hasClass('upvote20-icon')){
+            vote_box.find('.votable-count').text(vote_count-1);
+            button.find('.vote-icon').removeClass('downvote20-icon');
+            button.find('.vote-icon').addClass('downvotefilled20-icon');
+        // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
         } else {
-            button.parent().find('.votable-count').text(vote_count-2);
+            vote_box.find('.votable-count').text(vote_count-2);
+            button.parent().find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
+            button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
+            button.find('.vote-icon').addClass('downvotefilled20-icon');
+            button.find('.vote-icon').removeClass('downvote20-icon');
         }
-        button.find('.vote-down-image').addClass('none');
-        button.find('.vote-down-filled-image').removeClass('none');
-    
-        button.parent().find('.vote-up-image').removeClass('none');
-        button.parent().find('.vote-up-filled-image').addClass('none');
     }
 
-    let resource_container = button;
-    while(!resource_container.hasClass('resource-container')) {
-        resource_container = resource_container.parent();
-    }
-    let votable_id = resource_container.find('.votable-id').val();
-    let votable_type = resource_container.find('.votable-type').val();
+    let votable_id = vote_box.find('.votable-id').val();
+    let votable_type = vote_box.find('.votable-type').val();
 
     $.ajax({
         type: 'POST',
@@ -963,18 +965,21 @@ function handle_down_vote(button) {
             button.parent().find('.votable-count').text(response);
         },
         error: function(xhr, status, error) {
-            button.find('.vote-up-filled-image').addClass('none');
-            button.find('.vote-down-filled-image').addClass('none');
-            button.find('.vote-up-image').removeClass('none');
-            button.find('.vote-down-image').removeClass('none');
+            if(button.find('.vote-icon').hasClass('downvotefilled20-icon')) {
+                button.find('.vote-icon').removeClass('downvotefilled20-icon')
+                button.find('.vote-icon').addClass('downvote20-icon')
+            } else {
+                button.find('.vote-icon').addClass('downvotefilled20-icon')
+                button.find('.vote-icon').removeClass('downvote20-icon')
+            }
 
             // If there's an error we simply set the old value
-            button.parent().find('.votable-count').text(vote_count);
+            vote_box.find('.votable-count').text(vote_count);
 
             let errorObject = JSON.parse(xhr.responseText);
             let er = errorObject.message;
-            // and then print the error returned in the vote-message-container
-            let vote_message_container = button.parent().find('.informer-message-container').first();
+            // and then print the error returned in the informer-message-container
+            let vote_message_container = vote_box.find('.informer-message-container').first();
             vote_message_container.find('.informer-message').text(er);
             vote_message_container.css('display', 'block');
 
@@ -1017,13 +1022,14 @@ function handle_viewer_up_vote(button) {
             if(button.find('.vote-icon').hasClass('upvote17-icon') 
             && button.parent().find('.votable-down-vote').find('.vote-icon').hasClass('downvote17-icon')){
                 vote_box.find('.votable-count').text(vote_count+1);
-                button.find('.vote-icon').removeClass('upvote17-icon');    
+                button.find('.vote-icon').removeClass('upvote17-icon');
                 button.find('.vote-icon').addClass('upvotefilled17-icon');
             // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
             } else {
                 vote_box.find('.votable-count').text(vote_count+2);
                 button.parent().find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
                 button.parent().find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+                button.find('.vote-icon').removeClass('upvote17-icon');
                 button.find('.vote-icon').addClass('upvotefilled17-icon');
 
                 vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
@@ -1102,18 +1108,17 @@ function handle_viewer_down_vote(button) {
             vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
             vote_box.find('.votes-button-icon').addClass('votes17-icon');
         } else {
-            // here we have 2 cases:
-            // 1- case where the user is not voted at all we only need to add 1
             if(button.find('.vote-icon').hasClass('downvote17-icon') 
-            && button.parent().find('.votable-up-vote').find('.vote-icon').hasClass('upvote17-icon')){
+            && vote_box.find('.votable-up-vote').find('.vote-icon').hasClass('upvote17-icon')) {
                 vote_box.find('.votable-count').text(vote_count-1);
                 button.find('.vote-icon').removeClass('downvote17-icon');    
                 button.find('.vote-icon').addClass('downvotefilled17-icon');
-            // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
             } else {
+                console.log("here's the problem");
                 vote_box.find('.votable-count').text(vote_count-2);
-                button.parent().find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
-                button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+                vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+                button.find('.vote-icon').removeClass('downvote17-icon');
                 button.find('.vote-icon').addClass('downvotefilled17-icon');
 
                 vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
@@ -2223,15 +2228,11 @@ let infos_fetched = false;
 let viewer_media_count = 0;
 let viewer_medias = [];
 let last_opened_thread = 0;
+let opened_thread_component;
 $('.open-thread-image').on('click', function(event) {
     event.preventDefault();
 
     infos_fetched = images_loaded = false;
-    let thread_id = $(this);
-    while(!thread_id.hasClass('thread-medias-container')) {
-        thread_id = thread_id.parent();
-    }
-    thread_id = thread_id.find('.thread-id').val();
 
     let media_viewer = $('#thread-media-viewer');
     let medias_container = $(this).parent();
@@ -2281,6 +2282,11 @@ $('.open-thread-image').on('click', function(event) {
         }
     });
 
+    opened_thread_component = $(this);
+    while(!opened_thread_component.hasClass('resource-container')) {
+        opened_thread_component = opened_thread_component.parent();
+    }
+    let thread_id = opened_thread_component.find('.thread-id').first().val();
     if(last_opened_thread != thread_id) {
         start_loading_strip();
         $('.tmvis').html('');

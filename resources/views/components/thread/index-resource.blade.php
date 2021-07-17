@@ -1,6 +1,4 @@
 <div class="resource-container thread-container-box relative shadow-contained-box">
-    <input type="hidden" class="votable-id" value="{{ $thread->id }}">
-    <input type="hidden" class="votable-type" value="thread">
     <input type="hidden" class="likable-id" value="{{ $thread->id }}">
     <input type="hidden" class="likable-type" value="thread">
     <div class="hidden-thread-section none px8 py8">
@@ -61,22 +59,22 @@
     </div>
     @endcan
     <div class="flex thread-component">
-        <div class="thread-vote-section">
+        <div class="thread-vote-section vote-box">
+            <input type="hidden" class="votable-type" value="thread">
+            <input type="hidden" class="votable-id" value="{{ $thread->id }}">
             <div class="informer-message-container absolute left100 zi1">
                 <div class="left-middle-triangle"></div>
                 <div class="flex align-center">
-                    <p class="informer-message">{{__("you can't up vote your thread")}}</p>
+                    <p class="informer-message"></p>
                     <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                 </div>
             </div>
             <div class="pointer @auth votable-up-vote @endauth @guest login-signin-button @endguest">
-                <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($thread, 'App\Models\Thread') @else none @endupvoted" alt="">
-                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($thread, 'App\Models\Thread') none @endupvoted" alt="">
+                <div class="small-image sprite sprite-2-size vote-icon @upvoted($thread, 'App\Models\Thread') upvotefilled20-icon @else upvote20-icon @endupvoted"></div>
             </div>
             <p class="bold fs15 no-margin text-center votable-count">{{ $thread->votevalue }}</p>
             <div class="pointer @auth votable-down-vote @endauth @guest login-signin-button @endguest">
-                <img src="{{ asset('assets/images/icons/down-filled.png') }}" class="small-image vote-down-filled-image @downvoted($thread, 'App\Models\Thread') @else none @enddownvoted" alt="">
-                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($thread, 'App\Models\Thread') none @enddownvoted" alt="">
+                <div class="small-image sprite sprite-2-size vote-icon @downvoted($thread, 'App\Models\Thread') downvotefilled20-icon @else downvote20-icon @enddownvoted"></div>
             </div>
             @if($thread->tickedPost())
             <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image mt8" title="{{ __('This thread has a ticked reply') }}" alt="">

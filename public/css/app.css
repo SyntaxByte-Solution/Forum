@@ -824,6 +824,30 @@ a, input, textarea {
     background-position: 0px -1360px;
 }
 
+.upvoted17-icon {
+    background-position: 0px -1377px;
+}
+
+.downvoted17-icon {
+    background-position: 17px -1377px;
+}
+
+.upvote17-icon {
+    background-position: 0px -1343px;
+}
+
+.upvotefilled17-icon {
+    background-position: 17px -1343px;
+}
+
+.downvotefilled17-icon {
+    background-position: 17px -1326px;
+}
+
+.downvote17-icon {
+    background-position: 0px -1326px;
+}
+
 .resource24-reply-icon {
     background-position: 0px -455px;
 }
@@ -1122,11 +1146,12 @@ a, input, textarea {
 
 .suboptions-above-button-style {
     position: absolute;
-    top: calc(-200% - 8px);
+    bottom: calc(100% + 2px);
     left: 0;
-    width: 180px;
+    padding: 6px 8px;
     background-color: white;
     border: 1px solid rgb(177, 177, 177);
+    border-radius: 6px;
 }
 
 .above-middle-suboption-triangle {
@@ -2267,7 +2292,8 @@ tr:nth-child(2n) {
     background-color: white;
     padding: 12px;
     border-radius: 5px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid #9542427d;
+    background-color: #ffe9e9;
 
     width: max-content;
 }
@@ -2290,7 +2316,7 @@ tr:nth-child(2n) {
     z-index: 0;
     left: -11px;
     position: absolute;
-    border-color: transparent transparent #a6a6a6 transparent;
+    border-color: transparent transparent #9542427d transparent;
     border-style: solid;
     border-width: 5px 5px 5px 5px;
     height: 0px;

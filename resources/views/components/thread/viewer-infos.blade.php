@@ -66,14 +66,32 @@
         <div class="flex align-center thread-viewer-react-container px8 mb8">
             <input type="hidden" class="likable-type" value="thread">
             <input type="hidden" class="likable-id" value="{{ $thread->id }}">
-            <div class="relative">
+
+            <div class="relative vote-box">
+                <input type="hidden" class="votable-type" value="thread">
+                <input type="hidden" class="votable-id" value="{{ $thread->id }}">
+                <div class="informer-message-container absolute zi1" style="left: -1px; bottom: calc(100% + 2px)">
+                    <div class="flex align-center">
+                        <p class="informer-message">{{__("you can't up vote your thread")}}</p>
+                        <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
+                    </div>
+                </div>
                 <div class="suboptions-container suboptions-above-button-style">
                     <!-- this will be thread voting -->
-                    <p>suboptions</p>
+                    <div class="flex align-center">
+                        <div class="pointer @auth votable-up-vote @endauth @guest login-signin-button @endguest">
+                            <div class="small-image-2 sprite sprite-2-size vote-icon @upvoted($thread, 'App\Models\Thread') upvotefilled17-icon @else upvote17-icon @endupvoted"></div>
+                        </div>
+                        <div class="fs10 gray mx4">•</div>
+                        <div class="pointer @auth votable-down-vote @endauth @guest login-signin-button @endguest">
+                            <div class="small-image-2 sprite sprite-2-size vote-icon @downvoted($thread, 'App\Models\Thread') downvotefilled17-icon @else downvote17-icon @enddownvoted"></div>
+                        </div>
+                        <p class="fs13 no-margin text-center ml8">(<span class="votable-count">{{ $thread->votevalue }}</span>)</p>
+                    </div>
                 </div>
-                <div class="thread-react-hover button-with-suboptions @guest login-signin-button @endguest">
-                    <div class="small-image-2 sprite sprite-2-size votes17-icon"></div>
-                    <p class="gray no-margin fs12 resource-likes-counter unselectable" style="margin-left: 3px">{{ $thread->votevalue }}</p>
+                <div class="thread-react-hover votes-button button-with-suboptions @guest login-signin-button @endguest">
+                    <div class="small-image-2 sprite sprite-2-size votes-button-icon @downvoted($thread, 'App\Models\Thread') downvoted17-icon @else votes17-icon @enddownvoted @upvoted($thread, 'App\Models\Thread') upvoted17-icon @else votes17-icon  @endupvoted"></div>
+                    <p class="gray no-margin fs12 votable-count unselectable" style="margin-left: 3px">{{ $thread->votevalue }}</p>
                 </div>
             </div>
             <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
@@ -81,11 +99,11 @@
                 <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
                 <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
             </div>
-            <div class="thread-react-hover flex align-center">
+            <div class="thread-react-hover move-to-thread-viewer-reply flex align-center">
                 <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
                 <p class="no-margin unselectable fs12">{{ $thread->posts->count() }} {{__('replies')}}</p>
             </div>
-            <div class="thread-react-hover flex align-center move-to-right">
+            <div class="flex align-center move-to-right mr4">
                 <div class="small-image-2 sprite sprite-2-size eye17-icon mr4"></div>
                 <p class="no-margin fs12 unselectable">{{ $thread->view_count }}</p>
             </div>
@@ -93,7 +111,7 @@
         <div class="simple-line-separator mb4"></div>
         <div id="viewer-reply-container">
             <div class="flex space-between my4" id="reply-site">
-                <p class="bold fs15 my4 ml8 forum-color">{{ __('Reply') }}</p>
+                <p class="bold fs15 my4 ml8 forum-color" id="viewer-reply-text-label">{{ __('Reply') }}</p>
                 <input type="button" value="{{ __('Share reply') }}" class="share-viewer-reply button-style-1 height-max-content mr4">
                 <input type="hidden" class="button-text-ing" value="{{ __('Sharing your reply..') }}">
                 <input type="hidden" class="button-text-no-ing" value="{{ __('Share reply') }}">
@@ -112,6 +130,9 @@
                 });
             </script>
             <style>
+                .thread-media-viewer-infos-content .editor-toolbar {
+                    background-color: #f1f9ff;
+                }
                 .thread-media-viewer-infos-content .fa-arrows-alt, .thread-media-viewer-infos-content .fa-columns {
                     display: none !important;
                 }

@@ -187,13 +187,16 @@ document.addEventListener("click", function(event) {
     $(".suboptions-container").css("display", "none");
 }, false);
 
-let subContainers = document.querySelectorAll('.suboptions-container');
-for(let i = 0;i<subContainers.length;i++) {
-    subContainers[i].addEventListener("click", function(evt) {
-        $(this).css("display", "block");
-        $(".nested-soc").css("display", "none");
-        evt.stopPropagation();
-    }, false);
+handle_document_suboptions_hiding();
+function handle_document_suboptions_hiding() {
+    let subContainers = document.querySelectorAll('.suboptions-container');
+    for(let i = 0;i<subContainers.length;i++) {
+        subContainers[i].addEventListener("click", function(evt) {
+            $(this).css("display", "block");
+            $(".nested-soc").css("display", "none");
+            evt.stopPropagation();
+        }, false);
+    }
 }
 
 $('.close-shadowed-view-button').click(function() {
@@ -984,6 +987,172 @@ function handle_down_vote(button) {
             vote_lock = true;
         }
     })
+}
+
+function handle_viewer_up_vote(button) {
+    button.click(function() {
+        if(!vote_lock) {
+            return false;
+        }
+        vote_lock = false;
+
+        let vote_box = button;
+        while(!vote_box.hasClass('vote-box')) {
+            vote_box = vote_box.parent();
+        }
+    
+        let vote_count = parseInt(vote_box.find('.votable-count').first().text());
+
+        if(button.find('.vote-icon').hasClass('upvotefilled17-icon')) {
+            // In this case the user is already votes up and then press up again so we need to delete the vote record
+            vote_box.find('.votable-count').text(vote_count-1);
+            button.find('.vote-icon').removeClass('upvotefilled17-icon');
+            button.find('.vote-icon').addClass('upvote17-icon');
+
+            vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
+            vote_box.find('.votes-button-icon').addClass('votes17-icon');
+        } else {
+            // here we have 2 cases:
+            // 1- case where the user is not voted at all we only need to add 1
+            if(button.find('.vote-icon').hasClass('upvote17-icon') 
+            && button.parent().find('.votable-down-vote').find('.vote-icon').hasClass('downvote17-icon')){
+                vote_box.find('.votable-count').text(vote_count+1);
+                button.find('.vote-icon').removeClass('upvote17-icon');    
+                button.find('.vote-icon').addClass('upvotefilled17-icon');
+            // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
+            } else {
+                vote_box.find('.votable-count').text(vote_count+2);
+                button.parent().find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
+                button.parent().find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+                button.find('.vote-icon').addClass('upvotefilled17-icon');
+
+                vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+            }
+
+            vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
+            vote_box.find('.votes-button-icon').removeClass('votes17-icon');
+        }
+    
+        let votable_id = vote_box.find('.votable-id').val();
+        let votable_type = vote_box.find('.votable-type').val();
+    
+        $.ajax({
+            type: 'POST',
+            url: '/' + votable_type + '/' + votable_id + '/vote',
+            data: {
+                _token: csrf,
+                'vote': 1
+            },
+            success: function(response) {
+                // Here we need to update the counter outside the viewer as well
+            },
+            error: function(xhr, status, error) {
+                if(button.find('.vote-icon').hasClass('upvotefilled17-icon')) {
+                    button.find('.vote-icon').removeClass('upvotefilled17-icon')
+                    button.find('.vote-icon').addClass('upvote17-icon')
+                } else {
+                    button.find('.vote-icon').addClass('upvotefilled17-icon')
+                    button.find('.vote-icon').removeClass('upvote17-icon')
+                }
+
+                vote_box.find('.suboptions-container').css('display', 'none');
+
+                vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
+                vote_box.find('.votes-button-icon').addClass('votes17-icon');
+                // If there's an error we simply set the old value
+                vote_box.find('.votable-count').text(vote_count);
+    
+                let errorObject = JSON.parse(xhr.responseText);
+                let er = errorObject.message;
+                // and then print the error returned in the informer-message-container
+                let vote_message_container = vote_box.find('.informer-message-container').first();
+                vote_message_container.find('.informer-message').text(er);
+                vote_message_container.css('display', 'block');
+    
+                informer_container_timeout = setTimeout( function(){ 
+                    vote_message_container.css('display', 'none');
+                }, 4000);
+            },
+            complete: function() {
+                vote_lock = true;
+            }
+        });
+    });
+}
+function handle_viewer_down_vote(button) {
+    button.click(function() {
+        if(!vote_lock) {
+            return false;
+        }
+        vote_lock = false;
+    
+        let votable_count = button.parent().find('.votable-count');
+        let vote_count = parseInt(votable_count.text());
+
+        if(button.find('.vote-icon').hasClass('downvotefilled17-icon')) {
+            button.parent().find('.votable-count').text(vote_count+1);
+            button.find('.vote-icon').removeClass('downvotefilled17-icon');
+            button.find('.vote-icon').addClass('downvote17-icon');
+        } else {
+            if(button.find('.vote-icon').hasClass('downvote17-icon') 
+            && button.parent().find('.votable-up-vote').find('vote-icon').hasClass('upvote17-icon')){
+                button.parent().find('.votable-count').text(vote_count-1);
+                button.find('.vote-icon').removeClass('downvote17-icon');    
+                button.find('.vote-icon').addClass('downvotefilled17-icon');
+            } else {
+                button.parent().find('.votable-count').text(vote_count-2);
+                button.parent().find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+
+                button.find('.vote-icon').addClass('downvotefilled17-icon');
+            }
+        }
+    
+        let vote_box = button;
+        while(!vote_box.hasClass('vote-box')) {
+            vote_box = vote_box.parent();
+        }
+        let votable_id = vote_box.find('.votable-id').val();
+        let votable_type = vote_box.find('.votable-type').val();
+    
+        $.ajax({
+            type: 'POST',
+            url: '/' + votable_type + '/' + votable_id + '/vote',
+            data: {
+                _token: csrf,
+                'vote': -1
+            },
+            success: function(response) {
+                button.parent().find('.votable-count').text(response);
+                // Here we need to update the counter outside the viewer as well
+            },
+            error: function(xhr, status, error) {
+                if(button.find('.vote-icon').hasClass('downvotefilled17-icon')) {
+                    button.find('.vote-icon').removeClass('downvotefilled17-icon');
+                    button.find('.vote-icon').addClass('downvote17-icon');
+                } else {
+                    button.find('.vote-icon').addClass('downvotefilled17-icon');
+                    button.find('.vote-icon').removeClass('downvote17-icon');
+                }
+                // If there's an error we simply set the old value
+                button.parent().find('.votable-count').text(vote_count);
+    
+                let errorObject = JSON.parse(xhr.responseText);
+                let er = errorObject.message;
+                // and then print the error returned in the informer-message-container
+                let vote_message_container = button.parent().find('.informer-message-container').first();
+                vote_message_container.find('.informer-message').text(er);
+                vote_message_container.css('display', 'block');
+    
+                informer_container_timeout = setTimeout( function(){ 
+                    vote_message_container.css('display', 'none');
+                }, 4000);
+            },
+            complete: function() {
+                vote_lock = true;
+            }
+        });
+    });
 }
 
 $('.remove-informer-message-container').click(function() {
@@ -2122,15 +2291,22 @@ $('.open-thread-image').on('click', function(event) {
 
                 $('.tmvisc').find('.expand-button').each(function() {
                     handle_expend($(this));
-                })
+                });
 
-                
+                $('.tmvisc').find('.move-to-thread-viewer-reply').on('click', function() {
+                    viewer_reply_simplemde.codemirror.focus();
+                    location.hash = "#"+"viewer-reply-text-label";
+                });
+
                 handle_resource_like($('.tmvisc').find('.thread-viewer-react-container'));
                 $('.tmvisc').find('.viewer-thread-reply').each(function() {
                     handle_resource_like($(this));
                     handle_tooltip($(this).find('.tooltip-section'));
                 });
-
+                handle_document_suboptions_hiding();
+                handle_remove_informer_message_container($('.tmvisc'));
+                handle_viewer_up_vote($('.tmvisc').find('.votable-up-vote'));
+                handle_viewer_down_vote($('.tmvisc').find('.votable-down-vote'));
 
                 if($('.tmvisc').find('#viewer-replies-load').length) {
                     handle_viewer_replies_load($('.tmvisc').find('#viewer-replies-load'));

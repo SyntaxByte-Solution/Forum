@@ -278,10 +278,10 @@
                         <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
                         <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                     </div>
-                    <a href="{{ $thread->link }}" class="thread-react-hover flex align-center no-underline">
+                    <div class="thread-react-hover flex align-center no-underline">
                         <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
-                        <p class="no-margin unselectable fs12 black">{{ $replies }} {{__('replies')}}</p>
-                    </a>
+                        <p class="no-margin unselectable fs12">{{ $replies }} {{__('replies')}}</p>
+                    </div>
                 </div>
                 <div class="flex align-center">
                     <div class="relative mr8">

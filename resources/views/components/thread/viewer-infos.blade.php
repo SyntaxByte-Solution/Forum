@@ -123,7 +123,7 @@
             <p class="reply-error error ml8 none"></p>
             <textarea name="content" id="viewer-reply-input"></textarea>
             <script>
-                let viewer_reply_simplemde = new SimpleMDE({
+                var viewer_reply_simplemde = new SimpleMDE({
                     placeholder: '{{ __("Add a discussion content here..") }}',
                     hideIcons: ["guide", "heading", "link", "image"],
                     spellChecker: false,
@@ -169,10 +169,10 @@
                 }
             </style>
         </div>
-        @if($thread->posts->count())
+        <p class="my4 ml8 fs15 bold thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
         <div class="mx8">
-            <p class="my4 fs15 bold">Replies (<span class="thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
             <div class="viewer-replies-container mt8">
+            @if($thread->posts->count())
                 @if($ticked = $thread->tickedPost())
                     <x-thread.viewer-reply :post="$ticked"/>
                 @endif
@@ -187,8 +187,8 @@
                     <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                 </div>
                 @endif
+            @endif
             </div>
         </div>
-        @endif
     </div>
 </div>

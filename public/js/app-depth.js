@@ -1085,33 +1085,44 @@ function handle_viewer_down_vote(button) {
             return false;
         }
         vote_lock = false;
-    
-        let votable_count = button.parent().find('.votable-count');
-        let vote_count = parseInt(votable_count.text());
 
-        if(button.find('.vote-icon').hasClass('downvotefilled17-icon')) {
-            button.parent().find('.votable-count').text(vote_count+1);
-            button.find('.vote-icon').removeClass('downvotefilled17-icon');
-            button.find('.vote-icon').addClass('downvote17-icon');
-        } else {
-            if(button.find('.vote-icon').hasClass('downvote17-icon') 
-            && button.parent().find('.votable-up-vote').find('vote-icon').hasClass('upvote17-icon')){
-                button.parent().find('.votable-count').text(vote_count-1);
-                button.find('.vote-icon').removeClass('downvote17-icon');    
-                button.find('.vote-icon').addClass('downvotefilled17-icon');
-            } else {
-                button.parent().find('.votable-count').text(vote_count-2);
-                button.parent().find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
-                button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
-
-                button.find('.vote-icon').addClass('downvotefilled17-icon');
-            }
-        }
-    
         let vote_box = button;
         while(!vote_box.hasClass('vote-box')) {
             vote_box = vote_box.parent();
         }
+    
+        let vote_count = parseInt(vote_box.find('.votable-count').first().text());
+
+        if(button.find('.vote-icon').hasClass('downvotefilled17-icon')) {
+            // In this case the user is already votes up and then press up again so we need to delete the vote record
+            vote_box.find('.votable-count').text(vote_count+1);
+            button.find('.vote-icon').removeClass('downvotefilled17-icon');
+            button.find('.vote-icon').addClass('downvote17-icon');
+
+            vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+            vote_box.find('.votes-button-icon').addClass('votes17-icon');
+        } else {
+            // here we have 2 cases:
+            // 1- case where the user is not voted at all we only need to add 1
+            if(button.find('.vote-icon').hasClass('downvote17-icon') 
+            && button.parent().find('.votable-up-vote').find('.vote-icon').hasClass('upvote17-icon')){
+                vote_box.find('.votable-count').text(vote_count-1);
+                button.find('.vote-icon').removeClass('downvote17-icon');    
+                button.find('.vote-icon').addClass('downvotefilled17-icon');
+            // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
+            } else {
+                vote_box.find('.votable-count').text(vote_count-2);
+                button.parent().find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+                button.find('.vote-icon').addClass('downvotefilled17-icon');
+
+                vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+            }
+
+            vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
+            vote_box.find('.votes-button-icon').removeClass('votes17-icon');
+        }
+    
         let votable_id = vote_box.find('.votable-id').val();
         let votable_type = vote_box.find('.votable-type').val();
     
@@ -1123,24 +1134,28 @@ function handle_viewer_down_vote(button) {
                 'vote': -1
             },
             success: function(response) {
-                button.parent().find('.votable-count').text(response);
                 // Here we need to update the counter outside the viewer as well
             },
             error: function(xhr, status, error) {
                 if(button.find('.vote-icon').hasClass('downvotefilled17-icon')) {
-                    button.find('.vote-icon').removeClass('downvotefilled17-icon');
-                    button.find('.vote-icon').addClass('downvote17-icon');
+                    button.find('.vote-icon').removeClass('downvotefilled17-icon')
+                    button.find('.vote-icon').addClass('downvote17-icon')
                 } else {
-                    button.find('.vote-icon').addClass('downvotefilled17-icon');
-                    button.find('.vote-icon').removeClass('downvote17-icon');
+                    button.find('.vote-icon').addClass('downvotefilled17-icon')
+                    button.find('.vote-icon').removeClass('downvote17-icon')
                 }
+
+                vote_box.find('.suboptions-container').css('display', 'none');
+
+                vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+                vote_box.find('.votes-button-icon').addClass('votes17-icon');
                 // If there's an error we simply set the old value
-                button.parent().find('.votable-count').text(vote_count);
+                vote_box.find('.votable-count').text(vote_count);
     
                 let errorObject = JSON.parse(xhr.responseText);
                 let er = errorObject.message;
                 // and then print the error returned in the informer-message-container
-                let vote_message_container = button.parent().find('.informer-message-container').first();
+                let vote_message_container = vote_box.find('.informer-message-container').first();
                 vote_message_container.find('.informer-message').text(er);
                 vote_message_container.css('display', 'block');
     
@@ -2294,8 +2309,9 @@ $('.open-thread-image').on('click', function(event) {
                 });
 
                 $('.tmvisc').find('.move-to-thread-viewer-reply').on('click', function() {
+                    location.hash = "#viewer-reply-text-label";
+                    location.hash = '';
                     viewer_reply_simplemde.codemirror.focus();
-                    location.hash = "#"+"viewer-reply-text-label";
                 });
 
                 handle_resource_like($('.tmvisc').find('.thread-viewer-react-container'));
@@ -2353,6 +2369,7 @@ $('.open-thread-image').on('click', function(event) {
                             data: data,
                             url: '/post?from=thread-viewer',
                             success: function(response) {
+                                $('.thread-replies-number-container').removeClass('none');
                                 if ($(".viewer-ticked-reply").length){
                                     $(".viewer-replies-container .viewer-thread-reply:first-child").after(response);
                                     pst = $('.viewer-replies-container .viewer-thread-reply:eq(1)');

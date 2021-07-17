@@ -914,7 +914,6 @@ function handle_up_vote(button) {
         }
     });
 }
-
 function handle_down_vote(button) {
     if(!vote_lock) {
         return false;
@@ -1016,6 +1015,11 @@ function handle_viewer_up_vote(button) {
 
             vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
             vote_box.find('.votes-button-icon').addClass('votes17-icon');
+
+            // Apply changes to the thread outside viewer
+            opened_thread_component.find('.votable-count').text(vote_count-1);
+            opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
+            opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
         } else {
             // here we have 2 cases:
             // 1- case where the user is not voted at all we only need to add 1
@@ -1024,6 +1028,10 @@ function handle_viewer_up_vote(button) {
                 vote_box.find('.votable-count').text(vote_count+1);
                 button.find('.vote-icon').removeClass('upvote17-icon');
                 button.find('.vote-icon').addClass('upvotefilled17-icon');
+                // Apply changes to the thread outside viewer
+                opened_thread_component.find('.votable-count').text(vote_count+1);
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
             // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
             } else {
                 vote_box.find('.votable-count').text(vote_count+2);
@@ -1033,6 +1041,14 @@ function handle_viewer_up_vote(button) {
                 button.find('.vote-icon').addClass('upvotefilled17-icon');
 
                 vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+                // Apply changes to the thread outside viewer
+                opened_thread_component.find('.votable-count').text(vote_count+2);
+                // remove down vote filled icon and set normal one
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
+                // set up vote icon ;)
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
             }
 
             vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
@@ -1100,19 +1116,26 @@ function handle_viewer_down_vote(button) {
         let vote_count = parseInt(vote_box.find('.votable-count').first().text());
 
         if(button.find('.vote-icon').hasClass('downvotefilled17-icon')) {
-            // In this case the user is already votes up and then press up again so we need to delete the vote record
             vote_box.find('.votable-count').text(vote_count+1);
             button.find('.vote-icon').removeClass('downvotefilled17-icon');
             button.find('.vote-icon').addClass('downvote17-icon');
 
             vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
             vote_box.find('.votes-button-icon').addClass('votes17-icon');
+            // Apply changes to the thread outside viewer
+            opened_thread_component.find('.votable-count').text(vote_count+1);
+            opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
+            opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
         } else {
             if(button.find('.vote-icon').hasClass('downvote17-icon') 
             && vote_box.find('.votable-up-vote').find('.vote-icon').hasClass('upvote17-icon')) {
                 vote_box.find('.votable-count').text(vote_count-1);
                 button.find('.vote-icon').removeClass('downvote17-icon');    
                 button.find('.vote-icon').addClass('downvotefilled17-icon');
+                // Apply changes to the thread outside viewer
+                opened_thread_component.find('.votable-count').text(vote_count-1);
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
             } else {
                 console.log("here's the problem");
                 vote_box.find('.votable-count').text(vote_count-2);
@@ -1121,7 +1144,15 @@ function handle_viewer_down_vote(button) {
                 button.find('.vote-icon').removeClass('downvote17-icon');
                 button.find('.vote-icon').addClass('downvotefilled17-icon');
 
-                vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+                vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
+                // Apply changes to the thread outside viewer
+                opened_thread_component.find('.votable-count').text(vote_count-2);
+
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
+
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
             }
 
             vote_box.find('.votes-button-icon').addClass('downvoted17-icon');

@@ -995,7 +995,6 @@ function handle_down_vote(button) {
             button.find('.vote-icon').addClass('downvotefilled20-icon');
 
             if(loaded_to_viewer) {
-                console.log('add down');
                 let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
                 viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
                 viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
@@ -1320,26 +1319,62 @@ function handle_hover_informer_display(element) {
 }
 
 let like_lock = true;
-function handle_resource_like(resource) {
-    resource.find('.like-resource').click(function() {
+function handle_resource_like(like_button) {
+    like_button.click(function() {
         if(!like_lock) {
             return;
         }
         like_lock=false;
+        
+        let loaded_to_viewer = (last_opened_thread 
+            && last_opened_thread == like_button.parent().find('.likable-id').val() 
+            && (like_button.parent().find('.likable-type').val() == "thread")) 
+            ? 1 : 0;
 
-        let resource_likes_counter = parseInt(resource.find('.resource-likes-counter').text());
-        if($(this).find('.gray-love').hasClass('none')) {
-            resource.find('.resource-likes-counter').text(resource_likes_counter - 1);
-            $(this).find('.gray-love').removeClass('none');
-            $(this).find('.red-love').addClass('none');
+        let resource_likes_counter = parseInt(like_button.find('.resource-likes-counter').text());
+
+        if(like_button.find('.like-icon').hasClass('resource17-like-ricon')) {
+            like_button.find('.resource-likes-counter').text(resource_likes_counter - 1);
+            like_button.find('.like-icon').removeClass('resource17-like-ricon');
+            like_button.find('.like-icon').addClass('resource17-like-gicon');
+
+            if(like_button.hasClass('like-resource-from-thread-thread-show')) {
+                // Handle viewer like entities
+                if(loaded_to_viewer) {
+                    let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
+                    viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-ricon');
+                    viewer_thread_like_box.find('.like-icon').addClass('resource17-like-gicon');
+                    viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter-1);
+                }
+            } else if(like_button.hasClass('like-resource-from-viewer')) {
+                // Handle thread show like entities
+                opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-ricon');
+                opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-gicon');
+                opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter-1);
+            }
         } else {
-            resource.find('.resource-likes-counter').text(resource_likes_counter + 1);
-            $(this).find('.gray-love').addClass('none');
-            $(this).find('.red-love').removeClass('none');
+            like_button.find('.resource-likes-counter').text(resource_likes_counter + 1);
+            like_button.find('.like-icon').removeClass('resource17-like-gicon');
+            like_button.find('.like-icon').addClass('resource17-like-ricon');
+
+            if(like_button.hasClass('like-resource-from-thread-thread-show')) {
+                // Handle viewer like entities
+                if(loaded_to_viewer) {
+                    let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
+                    viewer_thread_like_box.find('.like-icon').addClass('resource17-like-ricon');
+                    viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-gicon');
+                    viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter+1);
+                }
+            } else if(like_button.hasClass('like-resource-from-viewer')) {
+                // Handle thread show like entities
+                opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-gicon');
+                opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-ricon');
+                opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter+1);
+            }
         }
     
-        let likable_id = resource.find('.likable-id').val();
-        let likable_type = resource.find('.likable-type').val();
+        let likable_id = like_button.find('.likable-id').val();
+        let likable_type = like_button.find('.likable-type').val();
 
         $.ajax({
             type: 'POST',
@@ -1351,12 +1386,12 @@ function handle_resource_like(resource) {
                 
             },
             error: function(xhr, status, error) {
-                if($(this).find('.gray-love').hasClass('none')) {
-                    $(this).find('.gray-love').removeClass('none');
-                    $(this).find('.red-love').addClass('none');
+                if(like_button.find('.like-icon').hasClass('resource17-like-ricon')) {
+                    like_button.find('.like-icon').removeClass('resource17-like-ricon');
+                    like_button.find('.like-icon').addClass('resource17-like-gicon');
                 } else {
-                    $(this).find('.gray-love').addClass('none');
-                    $(this).find('.red-love').removeClass('none');
+                    like_button.find('.like-icon').removeClass('resource17-like-gicon');
+                    like_button.find('.like-icon').addClass('resource17-like-ricon');
                 }
                 // If there's an error we simply set the old value
                 resource.find('.resource-likes-count').text(resource_likes_counter);
@@ -1368,10 +1403,8 @@ function handle_resource_like(resource) {
     });
 }
 
-$(".resource-container").each(function() {
-    if($(this).find('.like-resource')[0]) {
-        handle_resource_like($(this));
-    }
+$('.like-resource').each(function() {
+    handle_resource_like($(this));
 });
 
 $('.set-lang').click(function(event) {
@@ -2425,11 +2458,14 @@ $('.open-thread-image').on('click', function(event) {
                     viewer_reply_simplemde.codemirror.focus();
                 });
 
-                handle_resource_like($('.tmvisc').find('.thread-viewer-react-container'));
-                $('.tmvisc').find('.viewer-thread-reply').each(function() {
+                $('.tmvisc').find('.like-resource').each(function() {
                     handle_resource_like($(this));
+                })
+
+                $('.tmvisc').find('.viewer-thread-reply').each(function() {
                     handle_tooltip($(this).find('.tooltip-section'));
                 });
+
                 handle_document_suboptions_hiding();
                 handle_remove_informer_message_container($('.tmvisc'));
                 handle_viewer_up_vote($('.tmvisc').find('.votable-up-vote'));
@@ -2488,7 +2524,7 @@ $('.open-thread-image').on('click', function(event) {
                                     $('.viewer-replies-container').prepend(response);
                                     pst = $('.viewer-replies-container .viewer-thread-reply').first();
                                 }
-                                handle_resource_like(pst);
+                                //handle_resource_like(pst);
                                 handle_tooltip(pst.find('.tooltip-section'));
 
                                 $codemirror.getDoc().setValue('');
@@ -2809,7 +2845,7 @@ function handle_viewer_replies_load(button) {
                         $('.viewer-thread-reply').slice(replies_payload.count*(-1));
                     
                     unhandled_replies.each(function() {
-                        handle_resource_like($(this));
+                        //handle_resource_like($(this));
                         handle_tooltip($(this).find('.tooltip-section'));
                     });
                 }

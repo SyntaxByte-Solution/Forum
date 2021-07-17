@@ -64,9 +64,6 @@
             </div>
         </div>
         <div class="flex align-center thread-viewer-react-container px8 mb8">
-            <input type="hidden" class="likable-type" value="thread">
-            <input type="hidden" class="likable-id" value="{{ $thread->id }}">
-
             <div class="relative vote-box thread-vote-box">
                 <input type="hidden" class="votable-type" value="thread">
                 <input type="hidden" class="votable-id" value="{{ $thread->id }}">
@@ -94,9 +91,10 @@
                     <p class="gray no-margin fs12 votable-count unselectable" style="margin-left: 3px">{{ $thread->votevalue }}</p>
                 </div>
             </div>
-            <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
-                <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($thread->liked) none @endif"></div>
-                <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
+            <div class="thread-react-hover @auth like-resource viewer-thread-like like-resource-from-viewer @endauth @guest login-signin-button @endguest">
+                <input type="hidden" class="likable-type" value="thread">
+                <input type="hidden" class="likable-id" value="{{ $thread->id }}">
+                <div class="small-image-2 sprite sprite-2-size like-icon @if($thread->liked) resource17-like-ricon @else resource17-like-gicon @endif"></div>
                 <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
             </div>
             <div class="thread-react-hover move-to-thread-viewer-reply flex align-center">

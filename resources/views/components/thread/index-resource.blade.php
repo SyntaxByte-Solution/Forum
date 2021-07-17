@@ -1,6 +1,4 @@
 <div class="resource-container thread-container-box relative shadow-contained-box">
-    <input type="hidden" class="likable-id" value="{{ $thread->id }}">
-    <input type="hidden" class="likable-type" value="thread">
     <div class="hidden-thread-section none px8 py8">
         <p class="my4 fs12">Thread hidden. If you want to show it again <span class="pointer blue thread-display-button">click here</span></p>
     </div>
@@ -271,9 +269,10 @@
             </div>
             <div class="thread-bottom-section space-between">
                 <div class="flex align-center">
-                    <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
-                        <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($thread->liked) none @endif"></div>
-                        <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$thread->liked) none @endif"></div>
+                    <div class="thread-react-hover @auth like-resource like-resource-from-thread-thread-show @endauth @guest login-signin-button @endguest">
+                        <input type="hidden" class="likable-id" value="{{ $thread->id }}">
+                        <input type="hidden" class="likable-type" value="thread">
+                        <div class="small-image-2 sprite sprite-2-size like-icon @if($thread->liked) resource17-like-ricon @else resource17-like-gicon @endif"></div>
                         <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                     </div>
                     <div class="thread-react-hover flex align-center no-underline">

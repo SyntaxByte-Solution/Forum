@@ -17,7 +17,9 @@ class ThreadController extends Controller
     public function show(Request $request, Forum $forum, Category $category, Thread $thread) {
         $thread_owner = User::find($thread->user_id);
         $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
-        
+        $thread->update([
+            'view_count'=>$thread->view_count+1
+        ]);
         $pagesize = 6;
         $pagesize_exists = false;
         

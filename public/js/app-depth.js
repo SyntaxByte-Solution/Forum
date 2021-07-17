@@ -848,6 +848,13 @@ function handle_up_vote(button) {
         vote_box = vote_box.parent();
     }
 
+    // Here we have to check if the viewer is already opened and the thread opened is the same as the voted thread
+    // before update the viewer voting items
+    let loaded_to_viewer = (last_opened_thread 
+        && last_opened_thread == vote_box.find('.votable-id').val() 
+        && (vote_box.find('.votable-type').val() == "thread")) 
+        ? 1 : 0;
+
     let vote_count = parseInt(vote_box.find('.votable-count').text());
 
     if(button.find('.vote-icon').hasClass('upvotefilled20-icon')) {
@@ -855,6 +862,14 @@ function handle_up_vote(button) {
         vote_box.find('.votable-count').text(vote_count-1);
         button.find('.vote-icon').removeClass('upvotefilled20-icon');
         button.find('.vote-icon').addClass('upvote20-icon');
+        if(loaded_to_viewer) {
+            let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+            viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+            viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+            viewer_vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
+            viewer_vote_box.find('.votes-button-icon').addClass('votes17-icon');
+            viewer_vote_box.find('.votable-count').text(vote_count-1);
+        }
     } else {
         // here we have 2 cases:
         // 1- case where the user is not voted at all we only need to add 1
@@ -863,6 +878,15 @@ function handle_up_vote(button) {
             vote_box.find('.votable-count').text(vote_count+1);
             button.find('.vote-icon').removeClass('upvote20-icon');    
             button.find('.vote-icon').addClass('upvotefilled20-icon');
+
+            if(loaded_to_viewer) {
+                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
+                viewer_vote_box.find('.votes-button-icon').removeClass('votes17-icon');
+                viewer_vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
+                viewer_vote_box.find('.votable-count').text(vote_count+1);
+            }
         // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
         } else {
             vote_box.find('.votable-count').text(vote_count+2);
@@ -870,6 +894,19 @@ function handle_up_vote(button) {
             vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
             button.find('.vote-icon').removeClass('upvote20-icon');
             button.find('.vote-icon').addClass('upvotefilled20-icon');
+
+            if(loaded_to_viewer) {
+                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
+
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+
+                viewer_vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+                viewer_vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
+                viewer_vote_box.find('.votable-count').text(vote_count+2);
+            }
         }
     }
 
@@ -925,6 +962,11 @@ function handle_down_vote(button) {
         vote_box = vote_box.parent();
     }
 
+    let loaded_to_viewer = (last_opened_thread 
+        && last_opened_thread == vote_box.find('.votable-id').val() 
+        && (vote_box.find('.votable-type').val() == "thread")) 
+        ? 1 : 0;
+    
     let vote_count = parseInt(vote_box.find('.votable-count').text());
 
     if(button.find('.vote-icon').hasClass('downvotefilled20-icon')) {
@@ -932,6 +974,17 @@ function handle_down_vote(button) {
         vote_box.find('.votable-count').text(vote_count+1);
         button.find('.vote-icon').removeClass('downvotefilled20-icon');
         button.find('.vote-icon').addClass('downvote20-icon');
+        if(loaded_to_viewer) {
+            console.log('remove down');
+            let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+            viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
+            viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+
+            viewer_vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+            viewer_vote_box.find('.votes-button-icon').addClass('votes17-icon');
+
+            viewer_vote_box.find('.votable-count').text(vote_count+1);
+        }
     } else {
         // here we have 2 cases:
         // 1- case where the user is not voted at all we only need to add 1
@@ -940,13 +993,36 @@ function handle_down_vote(button) {
             vote_box.find('.votable-count').text(vote_count-1);
             button.find('.vote-icon').removeClass('downvote20-icon');
             button.find('.vote-icon').addClass('downvotefilled20-icon');
+
+            if(loaded_to_viewer) {
+                console.log('add down');
+                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
+                viewer_vote_box.find('.votes-button-icon').removeClass('votes17-icon');
+                viewer_vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
+                viewer_vote_box.find('.votable-count').text(vote_count-1);
+            }
         // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
         } else {
+            console.log('remove up and add down');
             vote_box.find('.votable-count').text(vote_count-2);
             button.parent().find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
             button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
             button.find('.vote-icon').addClass('downvotefilled20-icon');
             button.find('.vote-icon').removeClass('downvote20-icon');
+            if(loaded_to_viewer) {
+                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
+
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+
+                viewer_vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
+                viewer_vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
+                viewer_vote_box.find('.votable-count').text(vote_count-2);
+            }
         }
     }
 
@@ -1147,10 +1223,8 @@ function handle_viewer_down_vote(button) {
                 vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
                 // Apply changes to the thread outside viewer
                 opened_thread_component.find('.votable-count').text(vote_count-2);
-
                 opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
                 opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
-
                 opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
                 opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
             }

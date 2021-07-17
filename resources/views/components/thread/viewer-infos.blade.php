@@ -67,7 +67,7 @@
             <input type="hidden" class="likable-type" value="thread">
             <input type="hidden" class="likable-id" value="{{ $thread->id }}">
 
-            <div class="relative vote-box">
+            <div class="relative vote-box thread-vote-box">
                 <input type="hidden" class="votable-type" value="thread">
                 <input type="hidden" class="votable-id" value="{{ $thread->id }}">
                 <div class="informer-message-container absolute zi1" style="left: -1px; bottom: calc(100% + 2px)">

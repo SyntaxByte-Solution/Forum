@@ -63,7 +63,8 @@
                 @endif
             </div>
         </div>
-        <div class="flex align-center thread-viewer-react-container px8 mb8">
+        <div class="simple-line-separator mb4"></div>
+        <div class="flex align-center thread-viewer-react-container px8">
             <div class="relative vote-box thread-vote-box">
                 <input type="hidden" class="votable-type" value="thread">
                 <input type="hidden" class="votable-id" value="{{ $thread->id }}">
@@ -106,7 +107,7 @@
                 <p class="no-margin fs12 unselectable">{{ $thread->view_count }}</p>
             </div>
         </div>
-        <div class="simple-line-separator mb4"></div>
+        <div class="simple-line-separator my4"></div>
         <div id="viewer-reply-container">
             <div class="flex space-between my4" id="reply-site">
                 <p class="bold fs15 my4 ml8 forum-color" id="viewer-reply-text-label">{{ __('Reply') }}</p>
@@ -177,7 +178,7 @@
                 @foreach($posts as $post)
                     <x-thread.viewer-reply :post="$post"/>
                 @endforeach
-                @if($thread->posts->count() > $posts->count())
+                @if($thread->posts->count() > ($thread->tickedPost() ? $posts->count()+1 : $posts->count()))
                 <div>
                     <input type='button' class="see-all-full-style" id="viewer-replies-load" value="{{__('View more replies')}}">
                     <input type="hidden" class="button-text-ing" value="{{ __('Loading replies') }}">

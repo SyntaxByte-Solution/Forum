@@ -1394,7 +1394,7 @@ function handle_resource_like(like_button) {
                     like_button.find('.like-icon').addClass('resource17-like-ricon');
                 }
                 // If there's an error we simply set the old value
-                resource.find('.resource-likes-count').text(resource_likes_counter);
+                like_button.find('.resource-likes-count').text(resource_likes_counter);
             },
             complete: function() {
                 like_lock = true;
@@ -2524,7 +2524,7 @@ $('.open-thread-image').on('click', function(event) {
                                     $('.viewer-replies-container').prepend(response);
                                     pst = $('.viewer-replies-container .viewer-thread-reply').first();
                                 }
-                                //handle_resource_like(pst);
+                                handle_resource_like(pst.find('.like-resource'));
                                 handle_tooltip(pst.find('.tooltip-section'));
 
                                 $codemirror.getDoc().setValue('');
@@ -2845,7 +2845,7 @@ function handle_viewer_replies_load(button) {
                         $('.viewer-thread-reply').slice(replies_payload.count*(-1));
                     
                     unhandled_replies.each(function() {
-                        //handle_resource_like($(this));
+                        handle_resource_like($(this).find('.like-resource'));
                         handle_tooltip($(this).find('.tooltip-section'));
                     });
                 }

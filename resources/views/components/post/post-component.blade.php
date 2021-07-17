@@ -1,6 +1,4 @@
 <div class="relative post-container resource-container" id="@if($post->ticked){{'ticked-post'}}@endif">
-    <input type="hidden" class="votable-type" value="post">
-    <input type="hidden" class="votable-id" value="{{ $post->id }}">
     <input type="hidden" class="likable-type" value="post">
     <input type="hidden" class="likable-id" value="{{ $post->id }}">
     <div class="absolute full-shadowed br6" style="z-index: 1">
@@ -20,25 +18,26 @@
         <div class="line-separator"></div>
     </div>
     <div class="flex post-main-component relative" style="@if($post->ticked) border-color: #28882678; @endif">
-        <div id="{{ $post_id }}" class="absolute" style="top: -65px">
-        </div>
+        <div id="{{ $post_id }}" class="absolute" style="top: -65px"></div>
         <div class="vote-section post-vs relative">
-            <div class="informer-message-container absolute left100 zi1">
-                <div class="left-middle-triangle"></div>
-                <div class="flex align-center">
-                    <p class="informer-message">{{ __("you can't up vote your thread") }}</p>
-                    <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
+            <div class="vote-box relative">
+                <input type="hidden" class="votable-id" value="{{ $post->id }}">
+                <input type="hidden" class="votable-type" value="post">
+                <div class="informer-message-container absolute zi1" style="left: calc(100% + 8px); top: 10px;">
+                    <div class="left-middle-triangle"></div>
+                    <div class="flex align-center">
+                        <p class="informer-message"></p>
+                        <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
+                    </div>
+                </div>
+                <div class="pointer @auth votable-up-vote @endauth @guest login-signin-button @endguest">
+                    <div class="small-image sprite sprite-2-size vote-icon @upvoted($post, 'App\Models\Post') upvotefilled20-icon @else upvote20-icon @endupvoted"></div>
+                </div>
+                <p class="bold fs16 no-margin text-center votable-count">{{ $post_votes }}</p>
+                <div class="pointer @auth votable-down-vote @endauth @guest login-signin-button @endguest">
+                    <div class="small-image sprite sprite-2-size vote-icon @downvoted($post, 'App\Models\Post') downvotefilled20-icon @else downvote20-icon @enddownvoted"></div>
                 </div>
             </div>
-            <a href="" class="@auth votable-up-vote @endauth @guest login-signin-button @endguest">
-                <img src="{{ asset('assets/images/icons/up-filled.png') }}" class="small-image vote-up-filled-image @upvoted($post, 'App\Models\Post') @else none @endupvoted" alt="">
-                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image vote-up-image @upvoted($post, 'App\Models\Post') none @endupvoted" alt="">
-            </a>
-            <p class="bold fs16 no-margin text-center votable-count">{{ $post_votes }}</p>
-            <a href="" class="@auth votable-down-vote @endauth @guest login-signin-button @endguest">
-                <img src="{{ asset('assets/images/icons/down-filled.png') }}" class="small-image vote-down-filled-image @downvoted($post, 'App\Models\Post') @else none @enddownvoted" alt="">
-                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image vote-down-image @downvoted($post, 'App\Models\Post') none @enddownvoted" alt="">
-            </a>
 
             <div class="mt8 relative informer-box tick-post-container">
                 @can('update', $post->thread)
@@ -54,13 +53,13 @@
                 <input type="hidden" value="{{ $post->id }}" class="post-id">
                 @else
                     @if($post->ticked)
-                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size20 grey-tick" alt="">
+                        <div class="sprite sprite-2-size size20 greentick20-icon" alt="{{ __('This is the best reply') }}"></div>
                     @endif
                 @endcan
             </div>
         </div>
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe438; @endif">
-            <div class="flex space-between px8 py8">
+            <div class="flex align-center space-between px8 py8">
                 <div>
                     <div class="no-margin fs12 gray">
                         <div class="inline-block relative">
@@ -90,13 +89,12 @@
                     </div>
                 </div>
                 <div class="flex align-center relative height-max-content">
-                    @auth
-                    <div class="resource-like-container like-resource pointer">
-                        <div class="small-image-2 sprite sprite-2-size resource17-like-gicon gray-love @if($post->liked_by(auth()->user())) none @endif"></div>
-                        <div class="small-image-2 sprite sprite-2-size resource17-like-ricon red-love @if(!$post->liked_by(auth()->user())) none @endif"></div>
+                    <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
+                        <input type="hidden" class="likable-id" value="{{ $post->id }}">
+                        <input type="hidden" class="likable-type" value="post">
+                        <div class="small-image-2 sprite sprite-2-size like-icon @if($post->liked_by(auth()->user())) resource17-like-ricon @else resource17-like-gicon @endif"></div>
                         <p class="no-margin mx4 fs13 resource-likes-counter">{{ $post->likes->count() }}</p>
                     </div>
-                    @endauth
                     <p class="best-reply-ticket unselectable @if(!$post->ticked) none @endif">{{ __('BEST REPLY') }}</p>
                     <div>
                         <a href="" class="black-link button-with-suboptions">

@@ -181,7 +181,7 @@ function handle_post_events(post) {
     // Handle post best reply
     handle_post_reply_tick_button(post);
     // Handle like button
-    handle_resource_like(post);
+    handle_resource_like(post.find('.like-resource'));
 }
 
 function handle_post_other_events(post) {

@@ -692,6 +692,10 @@ a, input, textarea {
     background-position: 20px -2440px;
 }
 
+.greentick20-icon {
+    background-position: 20px -2540px;
+}
+
 .binbox28-icon {
     background-position: 0px -476px;
 }
@@ -1253,6 +1257,7 @@ a, input, textarea {
 
 .simple-line-separator {
     height: 1px;
+    min-height: 1px;
     background-color: #e1e1e1;
 }
 
@@ -2305,11 +2310,10 @@ tr:nth-child(2n) {
 
 .informer-message-container {
     display: none;
-    background-color: white;
     padding: 12px;
     border-radius: 5px;
-    border: 1px solid #9542427d;
-    background-color: #ffe9e9;
+    border: 1px solid rgb(208, 208, 208);
+    background-color: white;
 
     width: max-content;
 }
@@ -2332,7 +2336,7 @@ tr:nth-child(2n) {
     z-index: 0;
     left: -11px;
     position: absolute;
-    border-color: transparent transparent #9542427d transparent;
+    border-color: transparent transparent rgb(173, 173, 173) transparent;
     border-style: solid;
     border-width: 5px 5px 5px 5px;
     height: 0px;

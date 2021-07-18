@@ -216,9 +216,9 @@
                     </div>
                 </div>
                 <div class="my8 expand-box">
-                    <span><a href="{{ $thread->link }}" class="expandable-text bold fs18 blue no-underline">{{ $thread->slice }}</a></span>
-                    @if($thread->slice != $thread->subject)
-                    <input type="hidden" class="expand-slice-text" value="{{ $thread->slice }}">
+                    <span><a href="{{ $thread->link }}" class="expandable-text bold fs18 blue no-underline">{{ $thread->mediumslice }}</a></span>
+                    @if($thread->mediumslice != $thread->subject)
+                    <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
                     <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
                     <input type="hidden" class="expand-text-state" value="0">
                     <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
@@ -227,9 +227,9 @@
                     @endif
                 </div>
                 <div class="my4 expand-box">
-                    <span class="expandable-text fs15 no-underline">{{ $thread->contentslice }}</span>
-                    @if($thread->content != $thread->contentslice)
-                    <input type="hidden" class="expand-slice-text" value="{{ $thread->contentslice }}">
+                    <span class="expandable-text fs15 no-underline">{{ $thread->mediumcontentslice }}</span>
+                    @if($thread->content != $thread->mediumcontentslice)
+                    <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumcontentslice }}">
                     <input type="hidden" class="expand-whole-text" value="{{ $thread->content }}">
                     <input type="hidden" class="expand-text-state" value="0">
                     <span class="pointer expand-button fs12 inline-block blue">{{ __('see all') }}</span>
@@ -277,7 +277,7 @@
                     </div>
                     <div class="thread-react-hover flex align-center no-underline">
                         <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
-                        <p class="no-margin unselectable fs12">{{ $replies }} {{__('replies')}}</p>
+                        <p class="no-margin unselectable fs12"><span class="thread-replies-counter">{{ $replies }}</span> {{__('replies')}}</p>
                     </div>
                 </div>
                 <div class="flex align-center">

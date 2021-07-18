@@ -2520,7 +2520,7 @@ $('.open-thread-image').on('click', function(event) {
                             data: data,
                             url: '/post?from=thread-viewer',
                             success: function(response) {
-                                $('.thread-replies-number-container').removeClass('none');
+                                $('.viewer-thread-replies-number-container').removeClass('none');
                                 if ($(".viewer-ticked-reply").length){
                                     $(".viewer-replies-container .viewer-thread-reply:first-child").after(response);
                                     pst = $('.viewer-replies-container .viewer-thread-reply:eq(1)');
@@ -2532,7 +2532,38 @@ $('.open-thread-image').on('click', function(event) {
                                 handle_tooltip(pst.find('.tooltip-section'));
 
                                 $codemirror.getDoc().setValue('');
-                                $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
+                                let new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)+1;
+                                $('.viewer-thread-replies-number').text(new_replies_counter);
+
+                                // 1. Handle replies counter
+                                opened_thread_component.find('.thread-replies-counter').text(new_replies_counter);
+                                // Handle thread replies outside the viewer, but just in case the user is located in thread show page
+                                // To verify that, we can check if thread show replies container exists
+                                if($('#replies-container').length) {
+                                    // 2. Handle reply appending to thread show page
+                                    let post_id = pst.find('.post-id').val();
+                                    $.ajax({
+                                        url: `/post/${post_id}/show/generate`,
+                                        type: 'get',
+                                        success: function(post) {
+                                            $('#replies-container').find('.replies_header_after_thread').removeClass('none');
+                                            $('#global-error').css('display', 'none');
+                                            let pst;
+                                            if ($("#ticked-post")[0]){
+                                                $("#replies-container .resource-container:first-child").after(post);
+                                                pst = $('#replies-container .resource-container:eq(1)');
+                                            } else {
+                                                $('#replies-container').prepend(post);
+                                                pst = $('#replies-container .resource-container').first();
+                                            }
+                                            $('.thread-replies-number').text(new_replies_counter);
+
+                                            // Handling all events of the newly appended component
+                                            handle_post_events(pst);
+                                            handle_post_other_events(pst);
+                                        }
+                                    })
+                                }
                             },
                             error: function(response) {
                                 let errors = JSON.parse(response.responseText);

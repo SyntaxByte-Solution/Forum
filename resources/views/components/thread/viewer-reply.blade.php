@@ -1,4 +1,5 @@
 <div class="viewer-thread-reply my8 @if($post->ticked) viewer-ticked-reply @endif">
+    <input type="hidden" class="post-id" value="{{ $post->id }}">
     <input type="hidden" class="votable-type" value="post">
     <input type="hidden" class="votable-id" value="{{ $post->id }}">
     <div class="viewer-thread-reply-header flex space-between">

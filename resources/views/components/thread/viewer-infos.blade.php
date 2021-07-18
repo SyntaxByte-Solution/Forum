@@ -100,7 +100,7 @@
             </div>
             <div class="thread-react-hover move-to-thread-viewer-reply flex align-center">
                 <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
-                <p class="no-margin unselectable fs12">{{ $thread->posts->count() }} {{__('replies')}}</p>
+                <p class="no-margin unselectable fs12"><span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span> {{__('replies')}}</p>
             </div>
             <div class="flex align-center move-to-right mr4">
                 <div class="small-image-2 sprite sprite-2-size eye17-icon mr4"></div>
@@ -168,7 +168,7 @@
                 }
             </style>
         </div>
-        <p class="my4 ml8 fs15 bold thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
+        <p class="my4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
         <div class="mx8">
             <div class="viewer-replies-container mt8">
             @if($thread->posts->count())

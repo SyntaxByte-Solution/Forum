@@ -848,27 +848,48 @@ function handle_up_vote(button) {
         vote_box = vote_box.parent();
     }
 
+    let votable_id = vote_box.find('.votable-id').val();
+    let votable_type = vote_box.find('.votable-type').val();
+    let vote_count = parseInt(vote_box.find('.votable-count').text());
+
     // Here we have to check if the viewer is already opened and the thread opened is the same as the voted thread
     // before update the viewer voting items
     let loaded_to_viewer = (last_opened_thread 
-        && last_opened_thread == vote_box.find('.votable-id').val() 
-        && (vote_box.find('.votable-type').val() == "thread")) 
+        && last_opened_thread == votable_id) 
         ? 1 : 0;
-
-    let vote_count = parseInt(vote_box.find('.votable-count').text());
 
     if(button.find('.vote-icon').hasClass('upvotefilled20-icon')) {
         // In this case the user is already votes up and then press up again so we need to delete the vote record
         vote_box.find('.votable-count').text(vote_count-1);
         button.find('.vote-icon').removeClass('upvotefilled20-icon');
         button.find('.vote-icon').addClass('upvote20-icon');
-        if(loaded_to_viewer) {
-            let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
-            viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
-            viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
-            viewer_vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
-            viewer_vote_box.find('.votes-button-icon').addClass('votes17-icon');
-            viewer_vote_box.find('.votable-count').text(vote_count-1);
+        if(votable_type == 'thread') {
+            if(loaded_to_viewer) {
+                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+                viewer_vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
+                viewer_vote_box.find('.votes-button-icon').addClass('votes17-icon');
+                viewer_vote_box.find('.votable-count').text(vote_count-1);
+            }
+        } else if(votable_type == 'post') {
+            // We only change viewer if it is open
+            if(last_opened_thread) {
+                let viewer_post;
+                $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                    console.log('searching ..');
+                    if($(this).find('.post-id').val() == votable_id) {
+                        viewer_post = $(this);
+                        return false;
+                    }
+                });
+
+                viewer_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                viewer_post.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+                viewer_post.find('.votes-button-icon').removeClass('upvoted17-icon');
+                viewer_post.find('.votes-button-icon').addClass('votes17-icon');
+                viewer_post.find('.votable-count').text(vote_count-1);
+            }
         }
     } else {
         // here we have 2 cases:
@@ -879,13 +900,32 @@ function handle_up_vote(button) {
             button.find('.vote-icon').removeClass('upvote20-icon');    
             button.find('.vote-icon').addClass('upvotefilled20-icon');
 
-            if(loaded_to_viewer) {
-                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
-                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
-                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
-                viewer_vote_box.find('.votes-button-icon').removeClass('votes17-icon');
-                viewer_vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
-                viewer_vote_box.find('.votable-count').text(vote_count+1);
+            if(votable_type == 'thread') {
+                if(loaded_to_viewer) {
+                    let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                    viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
+                    viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
+                    viewer_vote_box.find('.votes-button-icon').removeClass('votes17-icon');
+                    viewer_vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
+                    viewer_vote_box.find('.votable-count').text(vote_count+1);
+                }
+            } else if(votable_type == 'post') {
+                if(last_opened_thread) {
+                    let viewer_post;
+                    $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                        console.log('searching ..');
+                        if($(this).find('.post-id').val() == votable_id) {
+                            viewer_post = $(this);
+                            return false;
+                        }
+                    });
+
+                    viewer_post.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
+                    viewer_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
+                    viewer_post.find('.votes-button-icon').removeClass('votes17-icon');
+                    viewer_post.find('.votes-button-icon').addClass('upvoted17-icon');
+                    viewer_post.find('.votable-count').text(vote_count+1);
+                }
             }
         // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
         } else {
@@ -895,23 +935,42 @@ function handle_up_vote(button) {
             button.find('.vote-icon').removeClass('upvote20-icon');
             button.find('.vote-icon').addClass('upvotefilled20-icon');
 
-            if(loaded_to_viewer) {
-                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
-                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
-                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
+            if(votable_type == 'thread') {
+                if(loaded_to_viewer) {
+                    let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                    viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
+                    viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
+    
+                    viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
+                    viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+    
+                    viewer_vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+                    viewer_vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
+                    viewer_vote_box.find('.votable-count').text(vote_count+2);
+                }
+            } else if(votable_type == 'post') {
+                if(last_opened_thread) {
+                    let viewer_post;
+                    $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                        if($(this).find('.post-id').val() == votable_id) {
+                            viewer_post = $(this);
+                            return false;
+                        }
+                    });
 
-                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
-                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
-
-                viewer_vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
-                viewer_vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
-                viewer_vote_box.find('.votable-count').text(vote_count+2);
+                    viewer_post.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled17-icon');
+                    viewer_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvote17-icon');
+    
+                    viewer_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
+                    viewer_post.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+    
+                    viewer_post.find('.votes-button-icon').removeClass('downvoted17-icon');
+                    viewer_post.find('.votes-button-icon').addClass('upvoted17-icon');
+                    viewer_post.find('.votable-count').text(vote_count+2);
+                }
             }
         }
     }
-
-    let votable_id = vote_box.find('.votable-id').val();
-    let votable_type = vote_box.find('.votable-type').val();
 
     $.ajax({
         type: 'POST',
@@ -962,9 +1021,10 @@ function handle_down_vote(button) {
         vote_box = vote_box.parent();
     }
 
+    let votable_id = vote_box.find('.votable-id').val();
+    let votable_type = vote_box.find('.votable-type').val();
     let loaded_to_viewer = (last_opened_thread 
-        && last_opened_thread == vote_box.find('.votable-id').val() 
-        && (vote_box.find('.votable-type').val() == "thread")) 
+        && last_opened_thread == vote_box.find('.votable-id').val()) 
         ? 1 : 0;
     
     let vote_count = parseInt(vote_box.find('.votable-count').text());
@@ -974,16 +1034,33 @@ function handle_down_vote(button) {
         vote_box.find('.votable-count').text(vote_count+1);
         button.find('.vote-icon').removeClass('downvotefilled20-icon');
         button.find('.vote-icon').addClass('downvote20-icon');
-        if(loaded_to_viewer) {
-            console.log('remove down');
-            let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
-            viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
-            viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+        if(votable_type == 'thread') {
+            if(loaded_to_viewer) {
+                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
+                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+    
+                viewer_vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
+                viewer_vote_box.find('.votes-button-icon').addClass('votes17-icon');
+    
+                viewer_vote_box.find('.votable-count').text(vote_count+1);
+            }
+        } else if(votable_type == 'post') {
+            if(last_opened_thread) {
+                let viewer_post;
+                $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                    if($(this).find('.post-id').val() == votable_id) {
+                        viewer_post = $(this);
+                        return false;
+                    }
+                });
 
-            viewer_vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
-            viewer_vote_box.find('.votes-button-icon').addClass('votes17-icon');
-
-            viewer_vote_box.find('.votable-count').text(vote_count+1);
+                viewer_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled17-icon');
+                viewer_post.find('.votable-down-vote').find('.vote-icon').addClass('downvote17-icon');
+                viewer_post.find('.votes-button-icon').removeClass('downvoted17-icon');
+                viewer_post.find('.votes-button-icon').addClass('votes17-icon');
+                viewer_post.find('.votable-count').text(vote_count+1);
+            }
         }
     } else {
         // here we have 2 cases:
@@ -994,13 +1071,31 @@ function handle_down_vote(button) {
             button.find('.vote-icon').removeClass('downvote20-icon');
             button.find('.vote-icon').addClass('downvotefilled20-icon');
 
-            if(loaded_to_viewer) {
-                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
-                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
-                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
-                viewer_vote_box.find('.votes-button-icon').removeClass('votes17-icon');
-                viewer_vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
-                viewer_vote_box.find('.votable-count').text(vote_count-1);
+            if(votable_type == 'thread') {
+                if(loaded_to_viewer) {
+                    let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                    viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
+                    viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
+                    viewer_vote_box.find('.votes-button-icon').removeClass('votes17-icon');
+                    viewer_vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
+                    viewer_vote_box.find('.votable-count').text(vote_count-1);
+                }
+            } else if(votable_type == 'post') {
+                if(last_opened_thread) {
+                    let viewer_post;
+                    $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                        if($(this).find('.post-id').val() == votable_id) {
+                            viewer_post = $(this);
+                            return false;
+                        }
+                    });
+
+                    viewer_post.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
+                    viewer_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
+                    viewer_post.find('.votes-button-icon').removeClass('votes17-icon');
+                    viewer_post.find('.votes-button-icon').addClass('downvoted17-icon');
+                    viewer_post.find('.votable-count').text(vote_count-1);
+                }
             }
         // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
         } else {
@@ -1010,23 +1105,42 @@ function handle_down_vote(button) {
             button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
             button.find('.vote-icon').addClass('downvotefilled20-icon');
             button.find('.vote-icon').removeClass('downvote20-icon');
-            if(loaded_to_viewer) {
-                let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
-                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
-                viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
+            if(votable_type == 'thread') {
+                if(loaded_to_viewer) {
+                    let viewer_vote_box = $('#thread-media-viewer').find('.thread-vote-box');
+                    viewer_vote_box.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
+                    viewer_vote_box.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
+    
+                    viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                    viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+    
+                    viewer_vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
+                    viewer_vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
+                    viewer_vote_box.find('.votable-count').text(vote_count-2);
+                }
+            } else if(votable_type == 'post') {
+                if(last_opened_thread) {
+                    let viewer_post;
+                    $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                        if($(this).find('.post-id').val() == votable_id) {
+                            viewer_post = $(this);
+                            return false;
+                        }
+                    });
 
-                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
-                viewer_vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
-
-                viewer_vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
-                viewer_vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
-                viewer_vote_box.find('.votable-count').text(vote_count-2);
+                    viewer_post.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled17-icon');
+                    viewer_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvote17-icon');
+    
+                    viewer_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
+                    viewer_post.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
+    
+                    viewer_post.find('.votes-button-icon').removeClass('upvoted17-icon');
+                    viewer_post.find('.votes-button-icon').addClass('downvoted17-icon');
+                    viewer_post.find('.votable-count').text(vote_count-2);
+                }
             }
         }
     }
-
-    let votable_id = vote_box.find('.votable-id').val();
-    let votable_type = vote_box.find('.votable-type').val();
 
     $.ajax({
         type: 'POST',

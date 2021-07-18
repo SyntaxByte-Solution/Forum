@@ -2454,7 +2454,11 @@ $('.open-thread-image').on('click', function(event) {
 
                 $('.tmvisc').find('.move-to-thread-viewer-reply').on('click', function() {
                     location.hash = "#viewer-reply-text-label";
+                    // After taking the user to replying section we need to delete the anchor from url
                     location.hash = '';
+                    // and then get rid of the last hash in url
+                    history.replaceState({}, document.title, window.location.href.split('#')[0]);
+                    // and focus the editor
                     viewer_reply_simplemde.codemirror.focus();
                 });
 

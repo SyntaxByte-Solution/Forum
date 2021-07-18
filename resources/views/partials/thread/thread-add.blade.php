@@ -174,6 +174,7 @@
                 border-left: none;
                 border-right: none;
                 border-top-color: #dbdbdb;
+                background-color: #f1f9ff;
 
                 display: flex;
                 align-items: center;

@@ -502,7 +502,7 @@ a, input, textarea {
 }
 
 .white {
-    color: white;
+    color: white !important;
 }
 
 .blue {
@@ -698,6 +698,10 @@ a, input, textarea {
 
 .binbox28-icon {
     background-position: 0px -476px;
+}
+
+.vote28-icon {
+    background-position: 28px -980px;
 }
 
 .message17-icon {

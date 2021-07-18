@@ -253,7 +253,7 @@
 
                             </div>
                             <div class="fade-loading"></div>
-                            <img src="{{ asset($image) }}" alt="" class="thread-media image-that-fade-wait" loading="lazy">
+                            <img src="{{ asset($image) }}" alt="" class="thread-media image-that-fade-wait">
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
                             </div>

@@ -5,13 +5,13 @@
         </div>
 
         <div class="flex relative">
-            <a href="/" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected' }} @endif">{{ __('Home') }}</a>
+            <a href="/" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected bold' }} @endif">{{ __('Home') }}</a>
             @if($page == 'home')
                 <div class="selected-colored-slice"></div>
             @endif
         </div>
         <div class="relative toggle-box pb8">
-            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected' }} @endif">{{__('Search')}} <span class="toggle-arrow mx4">@if($page == 'search') ▾ @else ▸ @endif</span></a>
+            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected bold' }} @endif">{{__('Search')}} <span class="toggle-arrow mx4">@if($page == 'search') ▾ @else ▸ @endif</span></a>
             <div class="toggle-container" @isset($subpage) @if($page == 'search') style="display: block" @endif @endisset>
                 <div class="relative">
                     <a href="{{ route('search') }}" @isset($subpage) @if($subpage == 'search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">{{__('Search Index')}}</a>
@@ -65,7 +65,7 @@
         @endphp
         @auth
         <div class="relative toggle-box pb8">
-            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected' }} @endif">
+            <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected bold' }} @endif">
                 <div class="relative has-fade size24 mr8 rounded hidden-overflow full-center">
                     <div class="fade-loading"></div>
                     <img src="{{ auth()->user()->avatar }}" class="size24 handle-image-center-positioning" alt="" loading="lazy">
@@ -105,7 +105,7 @@
                 @php
                     $add_thread_link = route('thread.add');
                 @endphp
-                <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected' }} @endif">
+                <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected bold' }} @endif">
                     <div class="small-image sprite sprite-2-size plus17-icon mr4"></div>
                     {{__('Start discussion')}}
                 </a>
@@ -119,7 +119,7 @@
             <p class="left-panel-label">{{__('PUBLIC')}}</p>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
-                    <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected' }} @endif">
+                    <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected bold' }} @endif">
                         <div class="small-image sprite sprite-2-size forums20-icon mr4"></div>
                         {{__('Forums')}}
                     </a>
@@ -130,7 +130,7 @@
             </div>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
-                    <a href="" class="left-panel-item lp-padding @if($page == 'popular-posts') {{ 'lp-selected' }} @endif">
+                    <a href="" class="left-panel-item lp-padding @if($page == 'popular-posts') {{ 'lp-selected bold' }} @endif">
                         <div class="small-image sprite sprite-2-size fire17-icon mr4"></div>
                         {{__('Popular threads')}}
                     </a>
@@ -141,7 +141,7 @@
             </div>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
-                    <a href="" class="left-panel-item lp-padding @if($page == 'market') {{ 'lp-selected' }} @endif">
+                    <a href="" class="left-panel-item lp-padding @if($page == 'market') {{ 'lp-selected bold' }} @endif">
                         <div class="small-image sprite sprite-2-size market17-icon mr4"></div>
                         {{ __('Market place') }}
                     </a>
@@ -154,13 +154,13 @@
         <div>
             <p class="left-panel-label">{{__('MORE')}}</p>
             <div class="flex relative">
-                <a href="/" class="left-panel-item lp-wpadding @if($page == 'aboutus') {{ 'lp-selected' }} @endif">{{__('About Us')}}</a>
+                <a href="/" class="left-panel-item lp-wpadding @if($page == 'aboutus') {{ 'lp-selected bold' }} @endif">{{__('About Us')}}</a>
                 @if($page == 'aboutus')
                     <div class="selected-colored-slice"></div>
                 @endif
             </div>
             <div class="flex relative">
-                <a href="/" class="left-panel-item lp-wpadding @if($page == 'faqs') {{ 'lp-selected' }} @endif">{{__('FAQs')}}</a>
+                <a href="/" class="left-panel-item lp-wpadding @if($page == 'faqs') {{ 'lp-selected bold' }} @endif">{{__('FAQs')}}</a>
                 @if($page == 'faqs')
                     <div class="selected-colored-slice"></div>
                 @endif

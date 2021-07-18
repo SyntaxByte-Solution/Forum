@@ -1080,6 +1080,8 @@ function handle_viewer_up_vote(button) {
             vote_box = vote_box.parent();
         }
     
+        let votable_id = vote_box.find('.votable-id').val();
+        let votable_type = vote_box.find('.votable-type').val();
         let vote_count = parseInt(vote_box.find('.votable-count').first().text());
 
         if(button.find('.vote-icon').hasClass('upvotefilled17-icon')) {
@@ -1092,9 +1094,30 @@ function handle_viewer_up_vote(button) {
             vote_box.find('.votes-button-icon').addClass('votes17-icon');
 
             // Apply changes to the thread outside viewer
-            opened_thread_component.find('.votable-count').text(vote_count-1);
-            opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
-            opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
+            // Here before handling anything outside the viewer we have to know which type of resource the user voted on
+            if(votable_type == 'thread') {
+                opened_thread_component.find('.votable-count').text(vote_count-1);
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
+                opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
+            } else if(votable_type == 'post') {
+                // First we need to check if the user is located in thread show before doing anything
+                // Because regarding post voting, the only place we need to handle outside viewer is thread show page
+                if($('#replies-container').length) {
+                    let outside_post;
+                    $('#replies-container .post-container').each(function() {
+                        console.log('searching for ' + votable_id);
+                        console.log($(this));
+                        if($(this).find('.post-id').first().val() == votable_id) {
+                            outside_post = $(this);
+                            return false;
+                        }
+                    });
+
+                    outside_post.find('.votable-count').text(vote_count-1);
+                    outside_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
+                    outside_post.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
+                }
+            }
         } else {
             // here we have 2 cases:
             // 1- case where the user is not voted at all we only need to add 1
@@ -1103,10 +1126,28 @@ function handle_viewer_up_vote(button) {
                 vote_box.find('.votable-count').text(vote_count+1);
                 button.find('.vote-icon').removeClass('upvote17-icon');
                 button.find('.vote-icon').addClass('upvotefilled17-icon');
-                // Apply changes to the thread outside viewer
-                opened_thread_component.find('.votable-count').text(vote_count+1);
-                opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
-                opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
+
+                if(votable_type == 'thread') {
+                    opened_thread_component.find('.votable-count').text(vote_count+1);
+                    opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
+                    opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
+                } else if(votable_type == 'post') {
+                    if($('#replies-container').length) {
+                        let outside_post;
+                        $('#replies-container .post-container').each(function() {
+                            console.log('searching for ' + votable_id);
+                            console.log($(this));
+                            if($(this).find('.post-id').first().val() == votable_id) {
+                                outside_post = $(this);
+                                return false;
+                            }
+                        });
+    
+                        outside_post.find('.votable-count').text(vote_count+1);
+                        outside_post.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
+                        outside_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
+                    }
+                }
             // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
             } else {
                 vote_box.find('.votable-count').text(vote_count+2);
@@ -1116,22 +1157,39 @@ function handle_viewer_up_vote(button) {
                 button.find('.vote-icon').addClass('upvotefilled17-icon');
 
                 vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
-                // Apply changes to the thread outside viewer
-                opened_thread_component.find('.votable-count').text(vote_count+2);
-                // remove down vote filled icon and set normal one
-                opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
-                opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
-                // set up vote icon ;)
-                opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
-                opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
+                
+                if(votable_type == 'thread') {
+                    opened_thread_component.find('.votable-count').text(vote_count+2);
+                    // remove down vote filled icon and set normal one
+                    opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
+                    opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
+                    // set up vote icon ;)
+                    opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
+                    opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
+                } else if(votable_type == 'post') {
+                    if($('#replies-container').length) {
+                        let outside_post;
+                        $('#replies-container .post-container').each(function() {
+                            console.log('searching for ' + votable_id);
+                            console.log($(this));
+                            if($(this).find('.post-id').first().val() == votable_id) {
+                                outside_post = $(this);
+                                return false;
+                            }
+                        });
+    
+                        outside_post.find('.votable-count').text(vote_count+2);
+                        outside_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
+                        outside_post.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
+                        outside_post.find('.votable-up-vote').find('.vote-icon').addClass('upvotefilled20-icon');
+                        outside_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvote20-icon');
+                    }
+                }
             }
 
             vote_box.find('.votes-button-icon').addClass('upvoted17-icon');
             vote_box.find('.votes-button-icon').removeClass('votes17-icon');
         }
-    
-        let votable_id = vote_box.find('.votable-id').val();
-        let votable_type = vote_box.find('.votable-type').val();
     
         $.ajax({
             type: 'POST',
@@ -1187,7 +1245,9 @@ function handle_viewer_down_vote(button) {
         while(!vote_box.hasClass('vote-box')) {
             vote_box = vote_box.parent();
         }
-    
+
+        let votable_id = vote_box.find('.votable-id').val();
+        let votable_type = vote_box.find('.votable-type').val();
         let vote_count = parseInt(vote_box.find('.votable-count').first().text());
 
         if(button.find('.vote-icon').hasClass('downvotefilled17-icon')) {
@@ -1198,21 +1258,57 @@ function handle_viewer_down_vote(button) {
             vote_box.find('.votes-button-icon').removeClass('downvoted17-icon');
             vote_box.find('.votes-button-icon').addClass('votes17-icon');
             // Apply changes to the thread outside viewer
-            opened_thread_component.find('.votable-count').text(vote_count+1);
-            opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
-            opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
+            // Here before handling anything outside the viewer we have to know which type of resource the user voted on
+            if(votable_type == 'thread') {
+                opened_thread_component.find('.votable-count').text(vote_count+1);
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
+                opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
+            } else if(votable_type == 'post') {
+                if($('#replies-container').length) {
+                    let outside_post;
+                    $('#replies-container .post-container').each(function() {
+                        console.log('searching for ' + votable_id);
+                        console.log($(this));
+                        if($(this).find('.post-id').first().val() == votable_id) {
+                            outside_post = $(this);
+                            return false;
+                        }
+                    });
+
+                    outside_post.find('.votable-count').text(vote_count+1);
+                    outside_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvotefilled20-icon');
+                    outside_post.find('.votable-down-vote').find('.vote-icon').addClass('downvote20-icon');
+                }
+            }
         } else {
             if(button.find('.vote-icon').hasClass('downvote17-icon') 
             && vote_box.find('.votable-up-vote').find('.vote-icon').hasClass('upvote17-icon')) {
                 vote_box.find('.votable-count').text(vote_count-1);
                 button.find('.vote-icon').removeClass('downvote17-icon');    
                 button.find('.vote-icon').addClass('downvotefilled17-icon');
-                // Apply changes to the thread outside viewer
-                opened_thread_component.find('.votable-count').text(vote_count-1);
-                opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
-                opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
+                
+                if(votable_type == 'thread') {
+                    opened_thread_component.find('.votable-count').text(vote_count-1);
+                    opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
+                    opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
+                } else if(votable_type == 'post') {
+                    if($('#replies-container').length) {
+                        let outside_post;
+                        $('#replies-container .post-container').each(function() {
+                            console.log('searching for ' + votable_id);
+                            console.log($(this));
+                            if($(this).find('.post-id').first().val() == votable_id) {
+                                outside_post = $(this);
+                                return false;
+                            }
+                        });
+    
+                        outside_post.find('.votable-count').text(vote_count-1);
+                        outside_post.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
+                        outside_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
+                    }
+                }
             } else {
-                console.log("here's the problem");
                 vote_box.find('.votable-count').text(vote_count-2);
                 vote_box.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled17-icon');
                 vote_box.find('.votable-up-vote').find('.vote-icon').addClass('upvote17-icon');
@@ -1220,20 +1316,37 @@ function handle_viewer_down_vote(button) {
                 button.find('.vote-icon').addClass('downvotefilled17-icon');
 
                 vote_box.find('.votes-button-icon').removeClass('upvoted17-icon');
-                // Apply changes to the thread outside viewer
-                opened_thread_component.find('.votable-count').text(vote_count-2);
-                opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
-                opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
-                opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
-                opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
+                
+                if(votable_type == 'thread') {
+                    opened_thread_component.find('.votable-count').text(vote_count-2);
+                    opened_thread_component.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
+                    opened_thread_component.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
+                    opened_thread_component.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
+                    opened_thread_component.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
+                } else if(votable_type == 'post') {
+                    if($('#replies-container').length) {
+                        let outside_post;
+                        $('#replies-container .post-container').each(function() {
+                            console.log('searching for ' + votable_id);
+                            console.log($(this));
+                            if($(this).find('.post-id').first().val() == votable_id) {
+                                outside_post = $(this);
+                                return false;
+                            }
+                        });
+    
+                        outside_post.find('.votable-count').text(vote_count-2);
+                        outside_post.find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
+                        outside_post.find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
+                        outside_post.find('.votable-down-vote').find('.vote-icon').addClass('downvotefilled20-icon');
+                        outside_post.find('.votable-down-vote').find('.vote-icon').removeClass('downvote20-icon');
+                    }
+                }
             }
 
             vote_box.find('.votes-button-icon').addClass('downvoted17-icon');
             vote_box.find('.votes-button-icon').removeClass('votes17-icon');
         }
-    
-        let votable_id = vote_box.find('.votable-id').val();
-        let votable_type = vote_box.find('.votable-type').val();
     
         $.ajax({
             type: 'POST',

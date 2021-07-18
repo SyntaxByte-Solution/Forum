@@ -1,4 +1,5 @@
 <div class="relative post-container resource-container" id="@if($post->ticked){{'ticked-post'}}@endif">
+    <input type="hidden" class="post-id" value="{{ $post->id }}">
     <input type="hidden" class="likable-type" value="post">
     <input type="hidden" class="likable-id" value="{{ $post->id }}">
     <div class="absolute full-shadowed br6" style="z-index: 1">

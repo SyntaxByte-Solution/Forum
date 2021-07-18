@@ -76,6 +76,9 @@
                 </div>
                 <div class="suboptions-container suboptions-above-button-style width-max-content ">
                     <!-- this will be thread voting -->
+                    <div class="full-center">
+                        <div class="sprite sprite-2-size size28 vote28-icon"></div>
+                    </div>
                     <p class="no-margin bold fs13 mx4 my4 unselectable">{{ __('Vote this discussion') }}</p>
                     <div class="flex justify-center mb4">
                         <div class="flex align-center">

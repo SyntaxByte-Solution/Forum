@@ -111,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/post/{post}', [PostController::class, 'update']);
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
     Route::get('/post/{post}/show/generate', [PostController::class, 'thread_show_post_generate']);
+    Route::get('/post/{post}/viewer/generate', [PostController::class, 'thread_viewer_post_generate']);
     Route::post('/post/{post}/tick', [PostController::class, 'tick']);
 
     Route::get('/settings', [UserController::class, 'edit'])->name('user.settings');

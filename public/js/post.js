@@ -269,6 +269,27 @@ $('.share-post').click(function() {
                 handle_post_other_events(pst);
 
                 $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
+                let post_id = pst.find('.post-id').first().val();
+                if(last_opened_thread) {
+                    $.ajax({
+                        url: `/post/${post_id}/viewer/generate`,
+                        type: 'get',
+                        success: function(post) {
+                            $('.viewer-thread-replies-number-container').removeClass('none');
+                            if ($(".viewer-ticked-reply").length){
+                                $(".viewer-replies-container .viewer-thread-reply:first-child").after(post);
+                                pst = $('.viewer-replies-container .viewer-thread-reply:eq(1)');
+                            } else {
+                                $('.viewer-replies-container').prepend(post);
+                                pst = $('.viewer-replies-container .viewer-thread-reply').first();
+                            }
+                            handle_resource_like(pst.find('.like-resource'));
+                            handle_tooltip(pst.find('.tooltip-section'));
+                            let new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)+1;
+                            $('.viewer-thread-replies-number').text(new_replies_counter);
+                        }
+                    });
+                }
 
             },
             error: function(response) {

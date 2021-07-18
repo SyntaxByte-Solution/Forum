@@ -136,11 +136,14 @@ class PostController extends Controller
     }
 
     public function thread_show_post_generate(Post $post) {
-        // First we create a component class instance
         $component = (new PostComponent($post->id));
-        // Then we pass the data to the render method on component class and pass that data to the component view
         $component = $component->render(get_object_vars($component))->render();
-        // Then return that view
+        return $component;
+    }
+
+    public function thread_viewer_post_generate(Post $post) {
+        $component = (new ViewerReply($post));
+        $component = $component->render(get_object_vars($component))->render();
         return $component;
     }
 }

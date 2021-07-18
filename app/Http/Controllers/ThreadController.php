@@ -411,7 +411,12 @@ class ThreadController extends Controller
             'skip'=>'required|Numeric',
         ]);
 
-        $posts_to_return = $thread->posts->skip($data['skip'])->take($data['range']);
+        $ticked_post = $thread->tickedPost();
+        if($ticked_post) {
+            $posts_to_return = $thread->posts()->where('id', '<>', $ticked_post->id)->orderBy('created_at', 'desc')->get()->skip($data['skip'])->take($data['range']);
+        } else {
+            $posts_to_return = $thread->posts->sortByDesc('created_at')->skip($data['skip'])->take($data['range']);
+        }
         $payload = "";
 
         foreach($posts_to_return as $post) {

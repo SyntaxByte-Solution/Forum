@@ -45,6 +45,15 @@ class Post extends Model
         return false;
     }
 
+    public function getVotevalueAttribute() {
+        $count = 0;
+        foreach($this->votes as $vote) {
+            $count += $vote->vote;
+        }
+
+        return $count;
+    }
+
     public function getSliceAttribute() {
         return substr($this->content, 0, 30);
     }

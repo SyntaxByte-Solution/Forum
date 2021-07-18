@@ -41,9 +41,9 @@
     <div class="thread-media-viewer-infos-content">
         <div class="px8 py8">
             <div class="expand-box mb8">
-                <span><a href="{{ $thread->link }}" class="expandable-text bold fs20 blue no-underline my4">{{ $thread->slice }}</a></span>
-                @if($thread->slice != $thread->subject)
-                <input type="hidden" class="expand-slice-text" value="{{ $thread->slice }}">
+                <span><a href="{{ $thread->link }}" class="expandable-text bold fs20 blue no-underline my4">{{ $thread->mediumslice }}</a></span>
+                @if($thread->mediumslice != $thread->subject)
+                <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
                 <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
                 <input type="hidden" class="expand-text-state" value="0">
                 <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
@@ -52,9 +52,9 @@
                 @endif
             </div>
             <div class="mb8 expand-box">
-                <span class="expandable-text fs15 no-underline">{{ $thread->contentslice }}</span>
-                @if($thread->content != $thread->contentslice)
-                <input type="hidden" class="expand-slice-text" value="{{ $thread->contentslice }}">
+                <span class="expandable-text fs15 no-underline">{{ $thread->mediumcontentslice }}</span>
+                @if($thread->content != $thread->mediumcontentslice)
+                <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumcontentslice }}">
                 <input type="hidden" class="expand-whole-text" value="{{ $thread->content }}">
                 <input type="hidden" class="expand-text-state" value="0">
                 <span class="pointer expand-button fs12 inline-block blue">{{ __('see all') }}</span>
@@ -74,17 +74,20 @@
                         <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                     </div>
                 </div>
-                <div class="suboptions-container suboptions-above-button-style">
+                <div class="suboptions-container suboptions-above-button-style width-max-content ">
                     <!-- this will be thread voting -->
-                    <div class="flex align-center">
-                        <div class="pointer @auth votable-up-vote @endauth @guest login-signin-button @endguest">
-                            <div class="small-image-2 sprite sprite-2-size vote-icon @upvoted($thread, 'App\Models\Thread') upvotefilled17-icon @else upvote17-icon @endupvoted"></div>
+                    <p class="no-margin bold fs13 mx4 my4 unselectable">{{ __('Vote this discussion') }}</p>
+                    <div class="flex justify-center mb4">
+                        <div class="flex align-center">
+                            <div class="pointer @auth votable-up-vote @endauth @guest login-signin-button @endguest">
+                                <div class="small-image-2 sprite sprite-2-size vote-icon @upvoted($thread, 'App\Models\Thread') upvotefilled17-icon @else upvote17-icon @endupvoted"></div>
+                            </div>
+                            <div class="fs10 gray mx4">•</div>
+                            <div class="pointer @auth votable-down-vote @endauth @guest login-signin-button @endguest">
+                                <div class="small-image-2 sprite sprite-2-size vote-icon @downvoted($thread, 'App\Models\Thread') downvotefilled17-icon @else downvote17-icon @enddownvoted"></div>
+                            </div>
+                            <p class="fs12 no-margin text-center bold ml8">(<span class="votable-count">{{ $thread->votevalue }}</span>)</p>
                         </div>
-                        <div class="fs10 gray mx4">•</div>
-                        <div class="pointer @auth votable-down-vote @endauth @guest login-signin-button @endguest">
-                            <div class="small-image-2 sprite sprite-2-size vote-icon @downvoted($thread, 'App\Models\Thread') downvotefilled17-icon @else downvote17-icon @enddownvoted"></div>
-                        </div>
-                        <p class="fs13 no-margin text-center ml8">(<span class="votable-count">{{ $thread->votevalue }}</span>)</p>
                     </div>
                 </div>
                 <div class="thread-react-hover votes-button button-with-suboptions @guest login-signin-button @endguest">

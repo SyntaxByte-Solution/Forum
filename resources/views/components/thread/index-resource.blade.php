@@ -83,7 +83,7 @@
             <div class="thread-header-section space-between">
                 <div class="flex">
                     <div class="flex">
-                        <img src="{{ $thread->user->avatar }}" class="thread-owner-avatar flex rounded mr4" style="height: 32px; width: 32px" alt="">
+                        <img src="{{ $thread->user->avatar }}" class="thread-owner-avatar flex rounded mr4" style="height: 32px; width: 32px" alt="" loading="lazy">
                         <div>
                             <div class="flex align-center follow-box">
                                 <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="forum-color no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
@@ -208,7 +208,7 @@
             <div class="thread-content-section">
                 <!-- thread content: header FORUM->category -->
                 <div class="flex align-center">
-                    <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-size mr4" alt="">
+                    <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-size mr4" alt="" loading="lazy">
                     <div class="flex align-center">
                         <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
                         <span class="mx4 fs13 gray">▸</span>
@@ -253,7 +253,7 @@
 
                             </div>
                             <div class="fade-loading"></div>
-                            <img src="{{ asset($image) }}" alt="" class="thread-media image-that-fade-wait">
+                            <img src="{{ asset($image) }}" alt="" class="thread-media image-that-fade-wait" loading="lazy">
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
                             </div>
@@ -275,7 +275,7 @@
                         <div class="small-image-2 sprite sprite-2-size like-icon @if($thread->liked) resource17-like-ricon @else resource17-like-gicon @endif"></div>
                         <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                     </div>
-                    <div class="thread-react-hover flex align-center no-underline">
+                    <div class="thread-react-hover move-to-thread-replies flex align-center no-underline">
                         <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
                         <p class="no-margin unselectable fs12"><span class="thread-replies-counter">{{ $replies }}</span> {{__('replies')}}</p>
                     </div>

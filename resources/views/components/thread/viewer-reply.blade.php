@@ -21,22 +21,46 @@
         </div>
         <div class="flex align-center">
             <p class="best-reply-ticket unselectable @if(!$post->ticked) none @endif" style="margin-right: 4px; padding: 6px; font-size: 11px">{{ __('BEST REPLY') }}</p>
-            <div>
-                <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
-                    <input type="hidden" class="likable-type" value="post">
-                    <input type="hidden" class="likable-id" value="{{ $post->id }}">
-                    <div class="small-image-2 sprite sprite-2-size like-icon @if($post->liked_by(auth()->user())) resource17-like-ricon @else resource17-like-gicon @endif"></div>
-                    <p class="no-margin mx4 fs13 resource-likes-counter">{{ $post->likes->count() }}</p>
-                </div>
-            </div>
         </div>
     </div>
     <div class="flex">
         <div style="width: 44px" class="flex justify-center">
-            <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size20 mt8 @if(!$post->ticked) none @endif" alt="">
+            @if($post->ticked)
+            <div class="sprite sprite-2-size size20 mt8 greentick20-icon" alt="{{ __('This is the best reply') }}"></div>
+            @endif
         </div>
-        <div class="thread-viewer-reply-content">
-            {{ $post->parsed_content }}
+        <div class="border-box full-width">
+            <div class="thread-viewer-reply-content ">
+                {{ $post->parsed_content }}
+            </div>
+            <div class="flex align-center" style="margin-top: 2px">
+                <div class="flex align-center mr8 vote-box relative">
+                    <input type="hidden" class="votable-type" value="post">
+                    <input type="hidden" class="votable-id" value="{{ $post->id }}">
+                    <div class="informer-message-container absolute zi1" style="left: -1px; bottom: calc(100% + 2px)">
+                        <div class="flex align-center">
+                            <p class="informer-message"></p>
+                            <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
+                        </div>
+                    </div>
+                    <div class="pointer @auth votable-up-vote @endauth @guest login-signin-button @endguest">
+                        <div class="small-image-2 sprite sprite-2-size vote-icon @upvoted($post, 'App\Models\Post') upvotefilled17-icon @else upvote17-icon @endupvoted"></div>
+                    </div>
+                    <div class="fs10 gray" style="margin: 0 2px">•</div>
+                    <div class="pointer @auth votable-down-vote @endauth @guest login-signin-button @endguest">
+                        <div class="small-image-2 sprite sprite-2-size vote-icon @downvoted($post, 'App\Models\Post') downvotefilled17-icon @else downvote17-icon @enddownvoted"></div>
+                    </div>
+                    <p class="fs12 no-margin text-center bold ml4">(<span class="votable-count">{{ $post->votevalue }}</span>)</p>
+                </div>
+                <div>
+                    <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
+                        <input type="hidden" class="likable-type" value="post">
+                        <input type="hidden" class="likable-id" value="{{ $post->id }}">
+                        <div class="small-image-2 sprite sprite-2-size like-icon @if($post->liked_by(auth()->user())) resource17-like-ricon @else resource17-like-gicon @endif"></div>
+                        <p class="no-margin mx4 fs13 resource-likes-counter">{{ $post->likes->count() }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

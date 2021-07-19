@@ -177,7 +177,7 @@
                         <div class="pointer button-with-suboptions size20 sprite sprite-2-size menu20-icon mr4"></div>
                         <div class="suboptions-container suboptions-container-right-style">
                             <div class="pointer simple-suboption thread-display-button flex align-center">
-                                <div class="small-image-2 sprite sprite-2-size eyecrossed17-icon mr4"></div>
+                                <div class="small-image-2 sprite sprite-2-size bookmark17-icon mr4"></div>
                                 <div>{{ __('Save thread') }}</div>
                             </div>
                             @can('update', $thread)
@@ -276,6 +276,7 @@
                         <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                     </div>
                     <div class="thread-react-hover move-to-thread-replies flex align-center no-underline">
+                        <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                         <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
                         <p class="no-margin unselectable fs12"><span class="thread-replies-counter">{{ $replies }}</span> {{__('replies')}}</p>
                     </div>

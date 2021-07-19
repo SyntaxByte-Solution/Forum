@@ -33,8 +33,8 @@ if($('#right-panel').height() > $(window).height()) {
     });
 } else {
     $('#right-panel').css({
-        position: 'fixed',
-        top: '48px',
+        position: 'absolute',
+        top: '0px',
     });
 }
 
@@ -2594,6 +2594,7 @@ let viewer_media_count = 0;
 let viewer_medias = [];
 let last_opened_thread = 0;
 let opened_thread_component;
+let viewer_loading_finished = false;
 $('.open-thread-image').on('click', function(event) {
     event.preventDefault();
 
@@ -2644,6 +2645,7 @@ $('.open-thread-image').on('click', function(event) {
         media_viewer.removeClass('none');
         if(infos_fetched) {
             stop_loading_strip();
+            viewer_loading_finished = true;
         }
     });
 
@@ -2653,6 +2655,7 @@ $('.open-thread-image').on('click', function(event) {
     }
     let thread_id = opened_thread_component.find('.thread-id').first().val();
     if(last_opened_thread != thread_id) {
+        viewer_loading_finished = false;
         start_loading_strip();
         $('.tmvis').html('');
         $('.thread-media-viewer-infos-header-pattern').removeClass('none');
@@ -2828,9 +2831,12 @@ $('.open-thread-image').on('click', function(event) {
                 handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
                 if(images_loaded) {
                     stop_loading_strip();
+                    viewer_loading_finished = true;
                 }
             }
         });
+    } else {
+        viewer_loading_finished = true;
     }
 });
 
@@ -2884,6 +2890,7 @@ function handle_viewer_closing() {
     viewer.find('.thread-viewer-medias-indicator').addClass('none');
     viewer.addClass('none');
     $('body').css('overflow-y', '');
+    stop_loading_strip();
 }
 
 function handle_thread_viewer_image(image) {
@@ -3128,6 +3135,40 @@ $('.move-to-thread-replies').each(function() {
 
 function handle_move_to_thread_replies(button) {
     button.click(function() {
-        console.log('move to replies section');
+        if($('#thread-show-replies-section').length) {
+            location.hash = "#thread-show-replies-section";
+            // we scroll to top by 50 because header's height is 52px and header is absolute (50 and not 52 because 50 look better :=D )
+            window.scrollBy(0,-50);
+        } else {
+            let container = button;
+            while(!container.hasClass('resource-container')) {
+                container = container.parent();
+            }
+
+            // Only open thread viewer if there's a media
+            if(container.find('.thread-medias-container').length) {
+                // Here also we check if the viewer is opened for the same thread
+                let c = container.find('.thread-media-container').first();
+                container.find('.thread-media-container').first().click();
+                if(last_opened_thread && last_opened_thread == container.find('.thread-id').first().val()) {
+                    console.log('already opened for the same thread');
+
+                    document.getElementById("viewer-replies-site").scrollIntoView(true);
+                } else {
+                    /**
+                     * If the viewer is not opened at all we have to wait for viewer infos to be loaded
+                     * and then we scroll to the replies secction
+                     */
+                    var wait_for_viewer_infos = window.setInterval(function() {
+                        console.log("wait");
+                        if($('.tmvisc').find('.thread-media-viewer-infos-content').length) {
+                            document.getElementById("viewer-replies-site").scrollIntoView(true);
+                            clearInterval(wait_for_viewer_infos);
+                        }
+                    }, 400);
+                }
+                
+            }
+        }
     });
 }

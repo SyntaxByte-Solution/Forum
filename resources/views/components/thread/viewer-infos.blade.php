@@ -74,7 +74,7 @@
                         <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
                     </div>
                 </div>
-                <div class="suboptions-container suboptions-above-button-style width-max-content ">
+                <div class="suboptions-container suboptions-above-button-style width-max-content " style="top: calc(100% + 2px); bottom: unset;">
                     <!-- this will be thread voting -->
                     <div class="full-center">
                         <div class="sprite sprite-2-size size28 vote28-icon"></div>
@@ -174,7 +174,7 @@
                 }
             </style>
         </div>
-        <p class="my4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
+        <p id="viewer-replies-site" class="my4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
         <div class="mx8">
             <div class="viewer-replies-container mt8">
             @if($thread->posts->count())

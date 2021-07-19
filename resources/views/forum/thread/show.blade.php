@@ -97,7 +97,7 @@
                 </div>
                 @endif
                 
-                <div class="flex space-between align-end replies_header_after_thread @if($posts->count() == 0) none @endif">
+                <div class="flex space-between align-end replies_header_after_thread @if($posts->count() == 0) none @endif" id="thread-show-replies-section">
                     <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
                     <div>
                         {{ $posts->onEachSide(0)->links() }}

@@ -174,7 +174,7 @@
                 }
             </style>
         </div>
-        <p id="viewer-replies-site" class="my4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
+        <p id="viewer-replies-site" class="my4 py4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
         <div class="mx8">
             <div class="viewer-replies-container mt8">
             @if($thread->posts->count())

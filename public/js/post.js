@@ -203,10 +203,6 @@ function handle_post_other_events(post) {
     handle_remove_informer_message_container(post);
 }
 
-$('.post-container').each(function() {
-    handle_post_events($(this));
-})
-
 $('.share-post').click(function() {
     let btn = $(this);
     $(this).attr("disabled","disabled");

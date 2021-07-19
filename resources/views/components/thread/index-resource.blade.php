@@ -269,7 +269,7 @@
             </div>
             <div class="thread-bottom-section space-between">
                 <div class="flex align-center">
-                    <div class="thread-react-hover @auth like-resource like-resource-from-thread-thread-show @endauth @guest login-signin-button @endguest">
+                    <div class="thread-react-hover @auth like-resource like-resource-from-outside-viewer @endauth @guest login-signin-button @endguest">
                         <input type="hidden" class="likable-id" value="{{ $thread->id }}">
                         <input type="hidden" class="likable-type" value="thread">
                         <div class="small-image-2 sprite sprite-2-size like-icon @if($thread->liked) resource17-like-ricon @else resource17-like-gicon @endif"></div>

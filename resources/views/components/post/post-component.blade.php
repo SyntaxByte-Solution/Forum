@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 <div class="flex align-center relative height-max-content">
-                    <div class="thread-react-hover @auth like-resource @endauth @guest login-signin-button @endguest">
+                    <div class="thread-react-hover @auth like-resource like-resource-from-outside-viewer @endauth @guest login-signin-button @endguest">
                         <input type="hidden" class="likable-id" value="{{ $post->id }}">
                         <input type="hidden" class="likable-type" value="post">
                         <div class="small-image-2 sprite sprite-2-size like-icon @if($post->liked_by(auth()->user())) resource17-like-ricon @else resource17-like-gicon @endif"></div>

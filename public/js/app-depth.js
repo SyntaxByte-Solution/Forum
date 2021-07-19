@@ -1553,9 +1553,11 @@ function handle_resource_like(like_button) {
         }
         like_lock=false;
         
+        let likable_id = like_button.find('.likable-id').val();
+        let likable_type = like_button.find('.likable-type').val();
         let loaded_to_viewer = (last_opened_thread 
-            && last_opened_thread == like_button.parent().find('.likable-id').val() 
-            && (like_button.parent().find('.likable-type').val() == "thread")) 
+            && last_opened_thread == likable_id 
+            && (likable_type == "thread")) 
             ? 1 : 0;
 
         let resource_likes_counter = parseInt(like_button.find('.resource-likes-counter').text());
@@ -1565,43 +1567,107 @@ function handle_resource_like(like_button) {
             like_button.find('.like-icon').removeClass('resource17-like-ricon');
             like_button.find('.like-icon').addClass('resource17-like-gicon');
 
-            if(like_button.hasClass('like-resource-from-thread-thread-show')) {
+            if(like_button.hasClass('like-resource-from-outside-viewer')) {
                 // Handle viewer like entities
-                if(loaded_to_viewer) {
-                    let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
-                    viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-ricon');
-                    viewer_thread_like_box.find('.like-icon').addClass('resource17-like-gicon');
-                    viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter-1);
+                if(likable_type == "thread") {
+                    // In case of like a thread from outside viewer we only want to update viewer if it is opened
+                    if(last_opened_thread) {
+                        let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
+                        viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-ricon');
+                        viewer_thread_like_box.find('.like-icon').addClass('resource17-like-gicon');
+                        viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter-1);
+                    }
+                } else if(likable_type == "post") {
+                    // Here is the same thing, we only need to u^pdate viewer reply if the viewer is opened
+                    if(last_opened_thread) {
+                        let viewer_post;
+                        $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                            if($(this).find('.post-id').val() == likable_id) {
+                                viewer_post = $(this);
+                                return false;
+                            }
+                        });
+    
+                        viewer_post.find('.like-icon').removeClass('resource17-like-ricon');
+                        viewer_post.find('.like-icon').addClass('resource17-like-gicon');
+                        viewer_post.find('.resource-likes-counter').text(resource_likes_counter-1);
+                    }
                 }
             } else if(like_button.hasClass('like-resource-from-viewer')) {
-                // Handle thread show like entities
-                opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-ricon');
-                opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-gicon');
-                opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter-1);
+                if(likable_type == "thread") {
+                    // Handle thread show like entities
+                    opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-ricon');
+                    opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-gicon');
+                    opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter-1);
+                } else if(likable_type == "post") {
+                    // Only update post in thread show if the user is located in thread show page
+                    // We check that by checking the existance of element with id: #replies-container 
+                    if($('#replies-container').length) {
+                        let outside_post;
+                        $('#replies-container .post-container').each(function() {
+                            if($(this).find('.post-id').first().val() == likable_id) {
+                                outside_post = $(this);
+                                return false;
+                            }
+                        });
+    
+                        outside_post.find('.like-resource').find('.like-icon').removeClass('resource17-like-ricon');
+                        outside_post.find('.like-resource').find('.like-icon').addClass('resource17-like-gicon');
+                        outside_post.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter-1);
+                    }
+                }
             }
         } else {
             like_button.find('.resource-likes-counter').text(resource_likes_counter + 1);
             like_button.find('.like-icon').removeClass('resource17-like-gicon');
             like_button.find('.like-icon').addClass('resource17-like-ricon');
 
-            if(like_button.hasClass('like-resource-from-thread-thread-show')) {
-                // Handle viewer like entities
-                if(loaded_to_viewer) {
-                    let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
-                    viewer_thread_like_box.find('.like-icon').addClass('resource17-like-ricon');
-                    viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-gicon');
-                    viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter+1);
+            if(like_button.hasClass('like-resource-from-outside-viewer')) {
+                if(likable_type == "thread") {
+                    if(last_opened_thread) {
+                        let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
+                        viewer_thread_like_box.find('.like-icon').addClass('resource17-like-ricon');
+                        viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-gicon');
+                        viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter+1);
+                    }
+                } else if(likable_type == "post") {
+                    if(last_opened_thread) {
+                        let viewer_post;
+                        $('.viewer-replies-container .viewer-thread-reply').each(function() {
+                            if($(this).find('.post-id').val() == likable_id) {
+                                viewer_post = $(this);
+                                return false;
+                            }
+                        });
+
+                        viewer_post.find('.like-icon').addClass('resource17-like-ricon');
+                        viewer_post.find('.like-icon').removeClass('resource17-like-gicon');
+                        viewer_post.find('.resource-likes-counter').text(resource_likes_counter+1);
+                    }
                 }
             } else if(like_button.hasClass('like-resource-from-viewer')) {
-                // Handle thread show like entities
-                opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-gicon');
-                opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-ricon');
-                opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter+1);
+                if(likable_type == "thread") {
+                    // Handle thread show like entities
+                    opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-gicon');
+                    opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-ricon');
+                    opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter+1);
+                } else if(likable_type == "post") {
+                    if($('#replies-container').length) {
+                        let outside_post;
+                        $('#replies-container .post-container').each(function() {
+                            if($(this).find('.post-id').first().val() == likable_id) {
+                                outside_post = $(this);
+                                return false;
+                            }
+                        });
+    
+                        outside_post.find('.like-resource').find('.like-icon').removeClass('resource17-like-gicon');
+                        outside_post.find('.like-resource').find('.like-icon').addClass('resource17-like-ricon');
+                        outside_post.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter+1);
+                    }
+                }
             }
         }
-    
-        let likable_id = like_button.find('.likable-id').val();
-        let likable_type = like_button.find('.likable-type').val();
 
         $.ajax({
             type: 'POST',

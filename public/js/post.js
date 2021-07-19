@@ -4,19 +4,34 @@ let vote_tick_lock = true;
 
 function handle_post_display_buttons(post) {
     post.find('.hide-post').click(function() {
-        $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)-1);
-    
-        post.find('.post-main-component').css('display', 'none');
-        post.find('.show-post-container').css('display', 'block');
-        $(this).parent().css('display', 'none');
+        if($(this).hasClass('hide-post-from-viewer')) {
+            $('.viewer-thread-replies-number').text(parseInt($('.viewer-thread-replies-number').first().text(), 10)-1);
+            
+            post.find('.viewer-post-main-component').css('display', 'none');
+            post.find('.show-post-container').css('display', 'block');
+            $(this).parent().css('display', 'none');
+        } else if($(this).hasClass('hide-post-from-outside-viewer')) {
+            $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)-1);
+            
+            post.find('.post-main-component').css('display', 'none');
+            post.find('.show-post-container').css('display', 'block');
+            $(this).parent().css('display', 'none');
+        }
         
         return false;
     });
 
     post.find('.show-post').click(function() {
-        $(this).parent().css('display', 'none');
-        $(this).parent().parent().find('.post-main-component').css('display', 'flex');
-        $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
+        if($(this).hasClass('show-post-from-viewer')) {
+            console.log('show from viewer');
+            post.find('.viewer-post-main-component').css('display', 'block');
+            $('.viewer-thread-replies-number').text(parseInt($('.viewer-thread-replies-number').first().text(), 10)+1);
+            $(this).parent().css('display', 'none');
+        } else if($(this).hasClass('show-post-from-outside-viewer')) {
+            $(this).parent().parent().find('.post-main-component').css('display', 'flex');
+            $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
+            $(this).parent().css('display', 'none');
+        }
 
         return false;
     });
@@ -180,8 +195,7 @@ function handle_post_events(post) {
     handle_close_shadowed_view(post.parent().find('.close-shadowed-view-button'));
     // Handle post best reply
     handle_post_reply_tick_button(post);
-    // Handle like button
-    handle_resource_like(post.find('.like-resource'));
+    // posts like buttons are already handled from app-depth script
 }
 
 function handle_post_other_events(post) {
@@ -202,6 +216,10 @@ function handle_post_other_events(post) {
     // Handle informer message container close button
     handle_remove_informer_message_container(post);
 }
+
+$('.post-container').each(function() {
+    handle_post_events($(this));
+});
 
 $('.share-post').click(function() {
     let btn = $(this);

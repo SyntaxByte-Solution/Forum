@@ -2737,7 +2737,6 @@ tr:nth-child(2n) {
     display: flex;
     flex-wrap: wrap;
     padding: 4px 0;
-    min-height: 240px;
 }
 
 .thread-media-container {

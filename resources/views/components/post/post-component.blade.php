@@ -15,7 +15,7 @@
     </div>
     <div class="show-post-container fs11">
         <div class="line-separator"></div>
-        {{ __('Reply hidden') }} [<a href="" class="show-post black-link bold">{{ __('click here to show it') }}</a>]
+        {{ __('Reply hidden') }} [<a href="" class="show-post show-post-from-outside-viewer black-link bold">{{ __('click here to show it') }}</a>]
         <div class="line-separator"></div>
     </div>
     <div class="flex post-main-component relative" style="@if($post->ticked) border-color: #28882678; @endif">
@@ -102,7 +102,7 @@
                             <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
                         </a>
                         <div class="absolute suboptions-container suboption-style-left">
-                            <a href="" class="button-style hide-post">Hide Post</a>
+                            <a href="" class="button-style hide-post hide-post-from-outside-viewer">Hide Post</a>
                             @can('update', $post)
                             <a href="" class="button-style edit-post">Edit Post</a>
                             @endcan

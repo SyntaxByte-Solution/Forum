@@ -6,6 +6,10 @@
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
 @endpush
 
+@push('scripts')
+    <script src="{{ asset('js/post.js') }}" defer></script>
+@endpush
+
 @section('header')
     @guest
         @include('partials.hidden-login-viewer')

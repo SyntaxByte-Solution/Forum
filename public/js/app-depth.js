@@ -1548,10 +1548,6 @@ function handle_hover_informer_display(element) {
 let like_lock = true;
 function handle_resource_like(like_button) {
     like_button.click(function() {
-        if(!like_lock) {
-            return;
-        }
-        like_lock=false;
         
         let likable_id = like_button.find('.likable-id').val();
         let likable_type = like_button.find('.likable-type').val();
@@ -1679,18 +1675,10 @@ function handle_resource_like(like_button) {
                 
             },
             error: function(xhr, status, error) {
-                if(like_button.find('.like-icon').hasClass('resource17-like-ricon')) {
-                    like_button.find('.like-icon').removeClass('resource17-like-ricon');
-                    like_button.find('.like-icon').addClass('resource17-like-gicon');
-                } else {
-                    like_button.find('.like-icon').removeClass('resource17-like-gicon');
-                    like_button.find('.like-icon').addClass('resource17-like-ricon');
-                }
                 // If there's an error we simply set the old value
                 like_button.find('.resource-likes-count').text(resource_likes_counter);
             },
             complete: function() {
-                like_lock = true;
             }
         });
     });
@@ -2764,6 +2752,7 @@ $('.open-thread-image').on('click', function(event) {
 
                 $('.tmvisc').find('.viewer-thread-reply').each(function() {
                     handle_tooltip($(this).find('.tooltip-section'));
+                    handle_post_display_buttons($(this));
                 });
 
                 handle_document_suboptions_hiding();

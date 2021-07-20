@@ -22,6 +22,7 @@
                             <span class="tooltip-section fs11 gray">{{ $post->creation_date_humans }}</span>
                             <span class="tooltip tooltip-style-1">{{ $post->creation_date }}</span>
                         </span>
+                        <span class="@if(!$post->is_updated) none @endif gray fs11 ml4 post-updated-date">({{ __('edited') }})</span>
                     </div>
                 </div>
             </div>
@@ -60,7 +61,7 @@
                 @endif
             </div>
             <div class="border-box full-width">
-                <div class="thread-viewer-reply-content">
+                <div class="thread-viewer-reply-content post-content">
                     {{ $post->parsed_content }}
                 </div>
                 @can('update', $post)
@@ -74,6 +75,7 @@
                     </div>
                     <textarea name="content" class="reply-content" id="post-edit-content-{{ $post->id }}"></textarea>
                     <input type="hidden" class="post_id" value="{{ $post->id }}">
+                    <input type="hidden" class="edited-text" value="({{ __('edited') }})">
                 </div>
                 @endcan
                 <div class="flex align-center" style="margin-top: 2px">

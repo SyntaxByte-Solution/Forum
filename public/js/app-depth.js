@@ -2754,6 +2754,8 @@ $('.open-thread-image').on('click', function(event) {
                     handle_tooltip($(this).find('.tooltip-section'));
                     handle_post_display_buttons($(this));
                     handle_edit_post($(this));
+                    handle_save_edit_post($(this));
+                    handle_exit_edit_changes($(this));
                 });
 
                 handle_document_suboptions_hiding();

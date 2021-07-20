@@ -33,10 +33,7 @@ class PostComponent extends Component
         $this->post_id = $post->id;
         $this->post_content = Markdown::parse($post->content);
         $this->post_created_at = (new Carbon($post->created_at))->toDayDateTimeString();
-        if($post->created_at != $post->updated_at) {
-            $this->post_updated_at = (new Carbon($post->updated_at))->toDayDateTimeString();
-            $this->post_update_date = (new Carbon($post->updated_at))->diffForHumans();
-        }
+
         $this->post_date = (new Carbon($post->created_at))->diffForHumans();
 
         $this->post_owner_avatar = $post_owner->avatar;

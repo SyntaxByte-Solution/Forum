@@ -81,9 +81,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if($post_updated_at)
-                            <span class="post-updated-date">({{ __('edited') }})</span>
-                        @endif
+                        <span class="@if(!$post->is_updated) none @endif post-updated-date">({{ __('edited') }})</span>
                     </div>
                 </div>
                 <div class="flex align-center relative height-max-content">
@@ -129,10 +127,14 @@
             </div>
             @can('update', $post)
             <div class="post-edit-container px8 py8 none">
-                <p class="bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
+                <div class="flex align-center space-between">
+                    <p class="fs12 bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
+                    <div class="flex align-center">
+                        <a href="" class="simple-white-button save-edit-post" style="background-color: #a8d8ff">{{ __('Save') }}</a>
+                        <a href="" class="simple-white-button exit-edit-post ml4">✖</a>
+                    </div>
+                </div>
                 <textarea name="content" class="reply-content" id="post-edit-content-{{ $post_id }}"></textarea>
-                <a href="" class="button-style inline-block exit-edit-post">{{ __('Discard') }}</a>
-                <a href="" class="button-style inline-block save-edit-post">{{ __('Save Changes') }}</a>
                 <input type="hidden" class="post_id" value="{{ $post_id }}">
             </div>
             @endcan

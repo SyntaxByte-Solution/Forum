@@ -38,6 +38,7 @@ function handle_post_display_buttons(post) {
 }
 
 let edit_post_lock = true;
+let old_post_edit_value;
 function handle_edit_post(post) {
     let post_id = post.find('.post-id').first().val();
     let post_edit_loading_anim = post.find('.edit-post .loading-dots-anim');
@@ -49,6 +50,7 @@ function handle_edit_post(post) {
             type: 'get',
             url: `/post/${post_id}/content/fetch`,
             success: function(post_content) {
+                old_post_edit_value = post_content;
                 /**
                  * Here before displaying the editor to edit the reply we need first to get the original value of the reply
                  * which is in form of markdown and then show the editor by appending that value to it
@@ -94,25 +96,23 @@ function handle_edit_post(post) {
 function handle_save_edit_post(post) {
     post.find('.save-edit-post').click(function() {
         let btn = $(this);
-        let error = $(this).parent().find('.error');
-
-        let old_value = post.find('.post-content').text();
+        let error = post.find('.post-edit-container .error');
 
         const $codemirror = $(post).find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
-        let v = $codemirror.getDoc().getValue();
+        let v = $codemirror.getValue();
 
         // Check for the value before submit it
         if(v == '') {
             error.html('* This field is required.');
-        } else if(old_value == v){
+        } else if(old_post_edit_value == v){
             post.find('.post-edit-container').css('display', 'none');
-            post.find('.post-content').css('display', 'block');
+            post.find('.post-content').removeClass('none');
         } else {
             btn.attr("disabled","disabled");
             btn.text('Saving Changes ..');
             btn.attr('style', 'background-color: #acacac; cursor: default');
 
-            let post_id = $(this).parent().find('.post_id').val();
+            let post_id = post.find('.post-id').first().val();
             
             error.text('');
             $.ajax({
@@ -135,8 +135,7 @@ function handle_save_edit_post(post) {
                             post.find('.post-edit-container').addClass('none');
                             post.find('.post-content').removeClass('none');
         
-                            post.find('.post-updated-date').text('updated 1s ago');
-                            post.find('.post-updated-date-human').text('Now');
+                            post.find('.post-updated-date').removeClass('none');
                         }
                     })
                 },
@@ -163,7 +162,12 @@ function handle_save_edit_post(post) {
 
 function handle_exit_edit_changes(post) {
     post.find('.exit-edit-post').click(function() {
-        $(this).parent().addClass('none');
+        let post_edit_container = $(this);
+        while(!post_edit_container.hasClass('post-edit-container')) {
+            post_edit_container = post_edit_container.parent();
+        }
+
+        post_edit_container.addClass('none');
         post.find('.post-content').removeClass('none');
     
         return false;    

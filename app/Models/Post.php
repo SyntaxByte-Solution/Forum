@@ -54,6 +54,10 @@ class Post extends Model
         return $count;
     }
 
+    public function getIsUpdatedAttribute() {
+        return $this->created_at != $this->updated_at;
+    }
+
     public function getSliceAttribute() {
         return substr($this->content, 0, 30);
     }

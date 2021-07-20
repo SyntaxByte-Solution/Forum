@@ -173,6 +173,18 @@
                 .thread-media-viewer-infos-content .editor-statusbar {
                     border-radius: 0px !important;
                 }
+                
+                .viewer-thread-reply .CodeMirror {
+                    border-left: 1px solid #dbdbdb;
+                    border-right: 1px solid #dbdbdb;
+                    border-color: #dbdbdb;
+                }
+
+                .viewer-thread-reply .editor-toolbar {
+                    border-left: 1px solid #dbdbdb;
+                    border-right: 1px solid #dbdbdb;
+                    border-top-color: #dbdbdb;
+                }
             </style>
         </div>
         <p id="viewer-replies-site" class="my4 py4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>

@@ -1,7 +1,22 @@
-<div class="viewer-thread-reply my8 @if($post->ticked) viewer-ticked-reply @endif">
+<div class="relative viewer-thread-reply my8 @if($post->ticked) viewer-ticked-reply @endif">
     <input type="hidden" class="post-id" value="{{ $post->id }}">
     <input type="hidden" class="votable-type" value="post">
     <input type="hidden" class="votable-id" value="{{ $post->id }}">
+
+    @can('destroy', $post)
+    <div class="absolute full-shadowed br6" style="z-index: 1">
+        @can('destroy', $post)
+        <div class="full-center full-width full-height">
+            <div class="flex align-center">
+                <input type="button" class="simple-white-button pointer delete-post delete-from-viewer" value="{{ __('Delete') }}">
+                <a href="" class="simple-link close-shadowed-view-button" style="text-decoration: none; margin-left: 6px; font-size: 10px">CANCEL</a>
+                <input type="hidden" class="post-id" value="{{ $post->id }}">
+                <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
+            </div>
+        </div>
+        @endcan
+    </div>
+    @endcan
 
     <div class="show-post-container fs11 mx4 my4">
         {{ __('Reply hidden') }} [<a href="" class="show-post show-post-from-viewer black-link bold">{{ __('click here to show it') }}</a>]

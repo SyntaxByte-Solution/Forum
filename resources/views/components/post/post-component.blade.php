@@ -6,9 +6,10 @@
         @can('destroy', $post)
         <div class="full-center full-width full-height">
             <div class="flex align-center">
-                <input type="button" class="simple-white-button pointer delete-post" value="Delete">
+                <input type="button" class="simple-white-button pointer delete-post delete-from-outside-viewer" value="Delete">
                 <a href="" class="simple-link close-shadowed-view-button" style="text-decoration: none; margin-left: 6px; font-size: 10px">CANCEL</a>
-                <input type="hidden" class="post-id" value="{{ $post_id }}">
+                <input type="hidden" class="post-id" value="{{ $post->id }}">
+                <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
             </div>
         </div>
         @endcan
@@ -19,7 +20,7 @@
         <div class="line-separator"></div>
     </div>
     <div class="flex post-main-component relative" style="@if($post->ticked) border-color: #28882678; @endif">
-        <div id="{{ $post_id }}" class="absolute" style="top: -65px"></div>
+        <div id="{{ $post->id }}" class="absolute" style="top: -65px"></div>
         <div class="vote-section post-vs relative">
             <div class="vote-box relative">
                 <input type="hidden" class="votable-id" value="{{ $post->id }}">
@@ -134,8 +135,8 @@
                         <a href="" class="simple-white-button exit-edit-post ml4">✖</a>
                     </div>
                 </div>
-                <textarea name="content" class="reply-content" id="post-edit-content-{{ $post_id }}"></textarea>
-                <input type="hidden" class="post_id" value="{{ $post_id }}">
+                <textarea name="content" class="reply-content" id="post-edit-content-{{ $post->id }}"></textarea>
+                <input type="hidden" class="post_id" value="{{ $post->id }}">
             </div>
             @endcan
         </div>

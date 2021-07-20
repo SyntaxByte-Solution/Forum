@@ -43,13 +43,13 @@
                 @else
                 <div>
                     <div class="share-post-form">
-                        @csrf
                         <div class="input-container">
                             <div class="fs14" style="margin: 20px 0 8px 0">
                                 <div class="relative">
                                     <span class="absolute" id="reply-site" style="margin-top: -70px"></span>
                                 </div>
-                                <label for="reply-content" class="flex bold">Your reply 
+                                <label for="reply-content" class="flex bold">
+                                    {{__('Your reply')}} 
                                     <span class="error frt-error reply-content-error">  *</span>
                                 </label>
                             </div>
@@ -98,7 +98,7 @@
                 @endif
                 
                 <div class="flex space-between align-end replies_header_after_thread @if($posts->count() == 0) none @endif" id="thread-show-replies-section">
-                    <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
+                    <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number thread-replies-counter">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
                     <div>
                         {{ $posts->onEachSide(0)->links() }}
                     </div>
@@ -119,7 +119,7 @@
                     @endif
                 </div>
                 <script>
-                    $('textarea').each(function() {
+                    $('.share-post-form textarea').each(function() {
                         var simplemde = new SimpleMDE({
                             element: this,
                             placeholder: "{{ __('Your reply here') }}",

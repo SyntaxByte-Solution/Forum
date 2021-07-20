@@ -200,10 +200,12 @@ function handle_tooltips(post) {
 
 function handle_delete_post(post) {
     post.find('.delete-post').click(function() {
-        $(this).attr("disabled","disabled");
-        $(this).val('Deleting ..');
+        let delete_button = $(this);
+        delete_button.val(delete_button.parent().find('.button-ing-text').val());
+        delete_button.attr("disabled","disabled");
+        delete_button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
 
-        let pid = $(this).parent().find('.post-id').val();
+        let pid = post.find('.post-id').first().val();
 
         $.ajax({
             url: '/post/'+pid,
@@ -213,10 +215,19 @@ function handle_delete_post(post) {
             },
             success: function(response) {
                 post.remove();
-                $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)-1);
+
+                let new_replies_counter;
+                if(delete_button.hasClass('delete-from-outside-viewer')) {
+                    new_replies_counter = parseInt($('.thread-replies-number').first().text(), 10)-1;
+                    $('.thread-replies-counter').text(new_replies_counter);
+                } else if(delete_button.hasClass('delete-from-viewer')) {
+                    new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)-1;
+                    $('.viewer-thread-replies-number').text(new_replies_counter);
+                }
             },
             error: function(response) {
                 $(this).attr("disabled","");
+                $(this).attr("style","");
             }
         });
 
@@ -228,6 +239,16 @@ function handle_post_events(post) {
     // Hide/show post
     handle_post_display_buttons(post);
     // Editing post
+    post.find('textarea').each(function() {
+        var simplemde = new SimpleMDE({
+            element: this,
+            placeholder: "{{ __('Edit Your reply') }}",
+            hideIcons: ["guide", "heading", "link", "image"],
+            spellChecker: false,
+            status: false,
+        });
+    })
+    // Handle post edit editor
     handle_edit_post(post);
     handle_save_edit_post(post);
     handle_exit_edit_changes(post);

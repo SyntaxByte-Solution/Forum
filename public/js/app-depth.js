@@ -1519,8 +1519,7 @@ $('.remove-informer-message-container').click(function() {
 });
 
 function handle_remove_informer_message_container(element) {
-    button = element.find('.remove-informer-message-container');
-    button.click(function(event) {
+    element.find('.remove-informer-message-container').click(function(event) {
         let vote_container = $(this);
         while(!vote_container.hasClass('informer-message-container')) {
             vote_container = vote_container.parent();
@@ -2724,18 +2723,16 @@ $('.open-thread-image').on('click', function(event) {
                 $('.tmvisc').html(thread_infos_section);
 
                 // ----- HANDLING EVENTS -----
-                $('.tmvisc').find('.follow-resource').each(function() {
+                
+                $('.tmvisc').find('.follow-resource').not('#viewer-replies-box .follow-resource').each(function() {
                     handle_follow_resource($(this));
                 });
-
-                $('.tmvisc').find('.button-with-suboptions').each(function() {
+                $('.tmvisc').find('.button-with-suboptions').not('#viewer-replies-box .button-with-suboptions').each(function() {
                     handle_suboptions_container($(this));
                 });
-
-                $('.tmvisc').find('.expand-button').each(function() {
+                $('.tmvisc').find('.expand-button').not('#viewer-replies-box .expand-button').each(function() {
                     handle_expend($(this));
                 });
-
                 $('.tmvisc').find('.move-to-thread-viewer-reply').on('click', function() {
                     location.hash = "#viewer-reply-text-label";
                     // After taking the user to replying section we need to delete the anchor from url
@@ -2745,31 +2742,25 @@ $('.open-thread-image').on('click', function(event) {
                     // and focus the editor
                     viewer_reply_simplemde.codemirror.focus();
                 });
-
-                $('.tmvisc').find('.like-resource').each(function() {
+                $('.tmvisc').find('.like-resource').not('.viewer-thread-reply .like-resource').each(function() {
                     handle_resource_like($(this));
-                })
-
-                $('.tmvisc').find('.viewer-thread-reply').each(function() {
-                    handle_tooltip($(this).find('.tooltip-section'));
-                    handle_post_display_buttons($(this));
-                    handle_edit_post($(this));
-                    handle_save_edit_post($(this));
-                    handle_exit_edit_changes($(this));
                 });
 
                 handle_document_suboptions_hiding();
                 handle_remove_informer_message_container($('.tmvisc'));
-                $('.tmvisc').find('.votable-up-vote').each(function() {
+                $('.tmvisc').find('.votable-up-vote').not('.viewer-thread-reply .votable-up-vote').each(function() {
                     handle_viewer_up_vote($(this));
                 })
-                $('.tmvisc').find('.votable-down-vote').each(function() {
+                $('.tmvisc').find('.votable-down-vote').not('.viewer-thread-reply .votable-down-vote').each(function() {
                     handle_viewer_down_vote($(this));
                 })
-
                 if($('.tmvisc').find('#viewer-replies-load').length) {
                     handle_viewer_replies_load($('.tmvisc').find('#viewer-replies-load'));
                 }
+
+                $('.tmvisc').find('.viewer-thread-reply').each(function() {
+                    handle_viewer_reply_events($(this));
+                });
 
                 // ---- HANDLE REPLY ---- //
                 $('.tmvisc').find('.share-viewer-reply').on('click', function() {
@@ -2820,8 +2811,8 @@ $('.open-thread-image').on('click', function(event) {
                                     $('.viewer-replies-container').prepend(response);
                                     pst = $('.viewer-replies-container .viewer-thread-reply').first();
                                 }
-                                handle_resource_like(pst.find('.like-resource'));
-                                handle_tooltip(pst.find('.tooltip-section'));
+                                
+                                handle_viewer_reply_events(pst);
 
                                 $codemirror.getDoc().setValue('');
                                 let new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)+1;
@@ -2897,6 +2888,46 @@ $('.open-thread-image').on('click', function(event) {
         viewer_loading_finished = true;
     }
 });
+
+function handle_viewer_reply_events(reply_component) {
+    handle_resource_like(reply_component.find('.like-resource'));
+    handle_tooltip(reply_component.find('.tooltip-section'));
+    handle_post_display_buttons(reply_component);
+    // Handle reply edit editor
+    reply_component.find('textarea').each(function() {
+        var simplemde = new SimpleMDE({
+            element: this,
+            placeholder: "{{ __('Edit Your reply') }}",
+            hideIcons: ["guide", "heading", "link", "image"],
+            spellChecker: false,
+            status: false,
+        });
+    });
+    // ------------------------
+    handle_edit_post(reply_component);
+    handle_save_edit_post(reply_component);
+    handle_exit_edit_changes(reply_component);
+    handle_delete_post_button(reply_component);
+    handle_delete_post(reply_component);
+    handle_close_shadowed_view(reply_component.find('.close-shadowed-view-button'));
+    handle_remove_informer_message_container(reply_component);
+
+    reply_component.find('.button-with-suboptions').each(function() {
+        handle_suboptions_container($(this));
+    });
+    reply_component.find('.follow-resource').each(function() {
+        handle_follow_resource($(this));
+    });
+    reply_component.find('.votable-up-vote').each(function() {
+        handle_viewer_up_vote($(this));
+    })
+    reply_component.find('.votable-down-vote').each(function() {
+        handle_viewer_down_vote($(this));
+    });
+    reply_component.find('.expand-button').each(function() {
+        handle_expend($(this));
+    });
+}
 
 $('.close-thread-media-viewer').on('click', function() {
     handle_viewer_closing();

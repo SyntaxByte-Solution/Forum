@@ -210,17 +210,15 @@
         </div>
     </div>
     <script>
-        console.log("get all textareas and figure out how to render their editors");
-        $('#viewer-replies-box textarea').each(function() {
-            console.log('fetch');
-            var simplemde = new SimpleMDE({
-                element: this,
-                placeholder: "{{ __('Edit Your reply') }}",
-                hideIcons: ["guide", "heading", "link", "image"],
-                spellChecker: false,
-                status: false,
-            });
-            simplemde.render();
-        });
+        // $('#viewer-replies-box textarea').each(function() {
+        //     var simplemde = new SimpleMDE({
+        //         element: this,
+        //         placeholder: "{{ __('Edit Your reply') }}",
+        //         hideIcons: ["guide", "heading", "link", "image"],
+        //         spellChecker: false,
+        //         status: false,
+        //     });
+        //     simplemde.render();
+        // });
     </script>
 </div>

@@ -30,7 +30,7 @@
                         @foreach($forums as $forum)
                             <div class="thread-add-suboption thread-add-forum flex align-center">
                                 <span class="thread-add-forum-val">{{ $forum->forum }}</span>
-                                    <div class="loading-dots-anim ml4 none">.</div>
+                                <div class="loading-dots-anim ml4 none">.</div>
                                 <input type="hidden" class="forum-id" value="{{ $forum->id }}">
                             </div>
                         @endforeach

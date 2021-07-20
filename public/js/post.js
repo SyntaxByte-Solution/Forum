@@ -37,21 +37,55 @@ function handle_post_display_buttons(post) {
     });
 }
 
+let edit_post_lock = true;
 function handle_edit_post(post) {
+    let post_id = post.find('.post-id').first().val();
+    let post_edit_loading_anim = post.find('.edit-post .loading-dots-anim');
     post.find('.edit-post').click(function() {
-        $('.post-content').css('display', 'block');
-        $('.post-edit-container').css('display', 'none');
-    
-        $(this).parent().css('display', 'none');
-    
-        post.find('.post-content').addClass('none');
-        post.find('.post-edit-container').removeClass('none');
-        post.find('.post-edit-container').css('display', 'block');
-    
-        let old_value = post.find('.post-content').text();
-        
-        const $codemirror = post.find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
-        $codemirror.getDoc().setValue(old_value);
+        let edit_button = $(this);
+        post_edit_loading_anim.removeClass('none');
+        start_loading_anim(post_edit_loading_anim);
+        $.ajax({
+            type: 'get',
+            url: `/post/${post_id}/content/fetch`,
+            success: function(post_content) {
+                /**
+                 * Here before displaying the editor to edit the reply we need first to get the original value of the reply
+                 * which is in form of markdown and then show the editor by appending that value to it
+                 */
+                if(edit_button.hasClass('edit-post-from-viewer')) {
+                    console.log('edit from viewer');
+                    $('.thread-viewer-reply-content').css('display', 'block');
+                    $('.post-edit-container').css('display', 'none');
+                
+                    edit_button.parent().css('display', 'none');
+                
+                    post.find('.thread-viewer-reply-content').addClass('none');
+                    post.find('.post-edit-container').removeClass('none');
+                    post.find('.post-edit-container').css('display', 'block');
+
+                    const $codemirror = post.find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
+                    $codemirror.getDoc().setValue(post_content);
+                } else if(edit_button.hasClass('edit-post-from-outside-viewer')) {
+                    console.log('edit from outside viewer');
+                    $('.post-content').css('display', 'block');
+                    $('.post-edit-container').css('display', 'none');
+                
+                    edit_button.parent().css('display', 'none');
+                
+                    post.find('.post-content').addClass('none');
+                    post.find('.post-edit-container').removeClass('none');
+                    post.find('.post-edit-container').css('display', 'block');
+                    
+                    const $codemirror = post.find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
+                    $codemirror.getDoc().setValue(post_content);
+                }
+            },
+            complete: function() {
+                post_edit_loading_anim.addClass('none');
+                stop_loading_anim();
+            }
+        })
     
         return false;
     });
@@ -77,9 +111,10 @@ function handle_save_edit_post(post) {
             btn.attr("disabled","disabled");
             btn.text('Saving Changes ..');
             btn.attr('style', 'background-color: #acacac; cursor: default');
-            error.text('');
 
             let post_id = $(this).parent().find('.post_id').val();
+            
+            error.text('');
             $.ajax({
                 url: '/post/'+post_id,
                 type:"patch",
@@ -88,16 +123,22 @@ function handle_save_edit_post(post) {
                     'content': v
                 },
                 success: function(response) {
-                    btn.text('Save Changes');
-                    btn.attr('style', '');
-                    btn.prop("disabled", false);
-                    post.find('.post-content').html('<p>'+v+'</p>');
-
-                    post.find('.post-edit-container').addClass('none');
-                    post.find('.post-content').removeClass('none');
-
-                    post.find('.post-updated-date').text('updated 1s ago');
-                    post.find('.post-updated-date-human').text('Now');
+                    $.ajax({
+                        type: 'get',
+                        url: `/post/${post_id}/content/parsed/fetch`,
+                        success: function(post_content) {
+                            btn.text('Save Changes');
+                            btn.attr('style', '');
+                            btn.prop("disabled", false);
+                            post.find('.post-content').html(post_content);
+        
+                            post.find('.post-edit-container').addClass('none');
+                            post.find('.post-content').removeClass('none');
+        
+                            post.find('.post-updated-date').text('updated 1s ago');
+                            post.find('.post-updated-date-human').text('Now');
+                        }
+                    })
                 },
                 error: function(response) {
                     btn.text('Save Changes');

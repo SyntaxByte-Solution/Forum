@@ -2268,7 +2268,7 @@ $('.thread-status-button').click(function() {
         },
         complete: function() {
             thread_status_lock = true;
-            stop_loading_anim(loading);
+            stop_loading_anim();
             loading.addClass('none');
             thread_container_box.find('.thread-status-button').attr('style','');
 
@@ -2753,6 +2753,7 @@ $('.open-thread-image').on('click', function(event) {
                 $('.tmvisc').find('.viewer-thread-reply').each(function() {
                     handle_tooltip($(this).find('.tooltip-section'));
                     handle_post_display_buttons($(this));
+                    handle_edit_post($(this));
                 });
 
                 handle_document_suboptions_hiding();

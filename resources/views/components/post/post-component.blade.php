@@ -82,10 +82,7 @@
                             </div>
                         </div>
                         @if($post_updated_at)
-                            <span class="relative" style="margin-left: 4px">
-                                <span class="tooltip-section post-updated-date">({{ __('edited') }})</span>
-                                <span class="tooltip tooltip-style-1 post-updated-date-human">{{ $post_updated_at }}</span>
-                            </span>
+                            <span class="post-updated-date">({{ __('edited') }})</span>
                         @endif
                     </div>
                 </div>
@@ -101,21 +98,35 @@
                         <a href="" class="black-link button-with-suboptions">
                             <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
                         </a>
-                        <div class="absolute suboptions-container suboption-style-left">
-                            <a href="" class="button-style hide-post hide-post-from-outside-viewer">Hide Post</a>
+                        <div class="suboptions-container suboptions-container-right-style">
+                            <div class="simple-suboption hide-post hide-post-from-outside-viewer flex align-center">
+                                <div class="small-image-2 sprite sprite-2-size eyecrossed17-icon mr4"></div>
+                                {{ __('Hide reply') }}
+                            </div>
                             @can('update', $post)
-                            <a href="" class="button-style edit-post">Edit Post</a>
+                            <div class="simple-suboption edit-post edit-post-from-outside-viewer flex align-center">
+                                <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
+                                {{ __('Edit reply') }}
+                                <div style="width: 8px">
+                                    <div class="loading-dots-anim ml4 none">•</div>
+                                </div>
+                            </div>
                             @endcan
                             @can('destroy', $post)
                             <div class="simple-line-separator my4" style="background-color: #474c5e"></div>
-                            <a href="" class="button-style delete-post-button">Delete Post</a>
+                            <div class="simple-suboption delete-post-button flex align-center">
+                                <div class="small-image-2 sprite sprite-2-size delete17b-icon mr4"></div>
+                                {{ __('Delete reply') }}
+                            </div>
                             @endcan
                         </div>
                     </div>
                 </div>
             </div>
             <div class="simple-line-separator mb4"></div>
-            <div class="post-content px8">{{ $post_content }}</div>
+            <div class="post-content px8">
+                {{ $post->parsed_content }}
+            </div>
             @can('update', $post)
             <div class="post-edit-container px8 py8 none">
                 <p class="bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>

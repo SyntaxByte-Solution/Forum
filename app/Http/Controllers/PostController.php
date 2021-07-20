@@ -8,7 +8,7 @@ use App\Exceptions\ThreadClosedException;
 use App\Models\{Post, ThreadStatus, Thread};
 use App\View\Components\PostComponent;
 use App\View\Components\Thread\ViewerReply;
-
+use Markdown;
 
 class PostController extends Controller
 {
@@ -133,6 +133,14 @@ class PostController extends Controller
             $post->save();
             return 1;
         }
+    }
+
+    public function post_raw_content_fetch(Post $post) {
+        return $post->content;
+    }
+
+    public function post_parsed_content_fetch(Post $post) {
+        return Markdown::parse($post->content);
     }
 
     public function thread_show_post_generate(Post $post) {

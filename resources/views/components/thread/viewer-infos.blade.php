@@ -129,9 +129,10 @@
             <textarea name="content" id="viewer-reply-input"></textarea>
             <script>
                 var viewer_reply_simplemde = new SimpleMDE({
-                    placeholder: '{{ __("Add a discussion content here..") }}',
+                    placeholder: '{{ __("Your reply here..") }}',
                     hideIcons: ["guide", "heading", "link", "image"],
                     spellChecker: false,
+                    showMarkdownLineBreaks: true,
                 });
             </script>
             <style>
@@ -176,7 +177,7 @@
         </div>
         <p id="viewer-replies-site" class="my4 py4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
         <div class="mx8">
-            <div class="viewer-replies-container mt8">
+            <div class="viewer-replies-container mt8" id="viewer-replies-box">
             @if($thread->posts->count())
                 @if($ticked = $thread->tickedPost())
                     <x-thread.viewer-reply :post="$ticked"/>
@@ -196,4 +197,18 @@
             </div>
         </div>
     </div>
+    <script>
+        console.log("get all textareas and figure out how to render their editors");
+        $('#viewer-replies-box textarea').each(function() {
+            console.log('fetch');
+            var simplemde = new SimpleMDE({
+                element: this,
+                placeholder: "{{ __('Edit Your reply') }}",
+                hideIcons: ["guide", "heading", "link", "image"],
+                spellChecker: false,
+                status: false,
+            });
+            simplemde.render();
+        });
+    </script>
 </div>

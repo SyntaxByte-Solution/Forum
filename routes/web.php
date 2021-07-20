@@ -110,6 +110,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/post', [PostController::class, 'store']);
     Route::patch('/post/{post}', [PostController::class, 'update']);
     Route::delete('/post/{post}', [PostController::class, 'destroy']);
+    Route::get('/post/{post}/content/fetch', [PostController::class, 'post_raw_content_fetch']);
+    Route::get('/post/{post}/content/parsed/fetch', [PostController::class, 'post_parsed_content_fetch']);
     Route::get('/post/{post}/show/generate', [PostController::class, 'thread_show_post_generate']);
     Route::get('/post/{post}/viewer/generate', [PostController::class, 'thread_viewer_post_generate']);
     Route::post('/post/{post}/tick', [PostController::class, 'tick']);

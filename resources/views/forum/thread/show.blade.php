@@ -122,7 +122,7 @@
                     $('textarea').each(function() {
                         var simplemde = new SimpleMDE({
                             element: this,
-                            placeholder: "{{ __('Your reply here') }}"
+                            placeholder: "{{ __('Your reply here') }}",
                         });
                         simplemde.render();
                     });

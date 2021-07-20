@@ -35,13 +35,15 @@
                             {{ __('Hide reply') }}
                         </div>
                         @can('update', $post)
-                        <div class="simple-suboption pointer edit-post flex align-center">
+                        <div class="simple-suboption pointer edit-post edit-post-from-viewer flex align-center">
                             <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
                             {{ __('Edit reply') }}
+                            <div style="width: 8px">
+                                <div class="loading-dots-anim ml4 none">•</div>
+                            </div>
                         </div>
                         @endcan
                         @can('destroy', $post)
-                        <div class="simple-line-separator my4" style="background-color: #474c5e"></div>
                         <div class="simple-suboption pointer delete-post-button flex align-center">
                             <div class="small-image-2 sprite sprite-2-size delete17b-icon mr4"></div>
                             {{ __('Delete reply') }}
@@ -58,9 +60,22 @@
                 @endif
             </div>
             <div class="border-box full-width">
-                <div class="thread-viewer-reply-content ">
+                <div class="thread-viewer-reply-content">
                     {{ $post->parsed_content }}
                 </div>
+                @can('update', $post)
+                <div class="post-edit-container px8 py8 none">
+                    <div class="flex align-center space-between">
+                        <p class="fs12 bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
+                        <div class="flex align-center">
+                            <a href="" class="simple-white-button save-edit-post" style="background-color: #a8d8ff">{{ __('Save') }}</a>
+                            <a href="" class="simple-white-button exit-edit-post ml4">✖</a>
+                        </div>
+                    </div>
+                    <textarea name="content" class="reply-content" id="post-edit-content-{{ $post->id }}"></textarea>
+                    <input type="hidden" class="post_id" value="{{ $post->id }}">
+                </div>
+                @endcan
                 <div class="flex align-center" style="margin-top: 2px">
                     <div class="flex align-center mr8 vote-box relative">
                         <input type="hidden" class="votable-type" value="post">

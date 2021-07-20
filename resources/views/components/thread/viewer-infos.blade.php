@@ -93,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="thread-react-hover votes-button button-with-suboptions @guest login-signin-button @endguest">
+                <div class="thread-react-hover votes-button @auth button-with-suboptions @endauth @guest login-signin-button @endguest">
                     <div class="small-image-2 sprite sprite-2-size votes-button-icon @downvoted($thread, 'App\Models\Thread') downvoted17-icon @else votes17-icon @enddownvoted @upvoted($thread, 'App\Models\Thread') upvoted17-icon @else votes17-icon  @endupvoted"></div>
                     <p class="gray no-margin fs12 votable-count unselectable" style="margin-left: 3px">{{ $thread->votevalue }}</p>
                 </div>

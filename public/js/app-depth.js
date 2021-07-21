@@ -254,11 +254,11 @@ $('.login-signin-button').each(function() {
 });
 
 function handle_login_lock(button) {
-    button.on('click', function() {
+    button.on('click', function(event) {
         $('#login-view').parent().css('display', 'block');
         $('#login-view').parent().css('opacity', '1');
 
-        return false;
+        event.preventDefault();
     });
 }
 

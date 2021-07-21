@@ -178,12 +178,20 @@
                         <div class="suboptions-container suboptions-container-right-style">
                             @can('save', $thread)
                             <div class="pointer simple-suboption save-thread flex align-center">
-                                <div class="small-image-2 sprite sprite-2-size bookmark17-icon mr4"></div>
-                                <div>{{ __('Save thread') }}</div>
+                                <div class="small-image-2 sprite sprite-2-size icon @if($thread->is_saved) xbookmark17-icon @else bookmark17-icon @endif mr4"></div>
+                                <div class="button-text">
+                                    @if($thread->is_saved)
+                                        {{ __('Unsave thread') }}
+                                    @else
+                                        {{ __('Save thread') }}
+                                    @endif
+                                </div>
                                 <div style="width: 12px">
                                     <div class="loading-dots-anim ml4 none">•</div>
                                 </div>
-                                <input type="hidden" class="status" value="save">
+                                <input type="hidden" class="button-text-save" value="{{ __('Save thread') }}">
+                                <input type="hidden" class="button-text-unsave" value="{{ __('Unsave thread') }}">
+                                <input type="hidden" class="status" value="@if($thread->is_saved) unsave @else save @endif">
                             </div>
                             @endcan
                             @can('update', $thread)

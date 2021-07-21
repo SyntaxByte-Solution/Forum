@@ -3304,8 +3304,21 @@ function handle_save_threads(save_button) {
                 _token: csrf,
                 save_switch: save_switch
             },
-            success: function() {
+            success: function(response) {
+                loading.addClass('none');
                 stop_loading_anim();
+
+                if(response == 1) {
+                    save_button.find('.status').val('unsave');
+                    save_button.find('.icon').removeClass('bookmark17-icon');
+                    save_button.find('.icon').addClass('xbookmark17-icon');
+                    save_button.find('.button-text').text(save_button.find('.button-text-unsave').val());
+                } else {
+                    save_button.find('.status').val('save');
+                    save_button.find('.icon').removeClass('xbookmark17-icon');
+                    save_button.find('.icon').addClass('bookmark17-icon');
+                    save_button.find('.button-text').text(save_button.find('.button-text-save').val());
+                }
             }
         });
     });

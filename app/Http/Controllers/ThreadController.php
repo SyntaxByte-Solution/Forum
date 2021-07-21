@@ -344,14 +344,26 @@ class ThreadController extends Controller
     }
 
     public function thread_save_switch(Request $request, Thread $thread) {
+        $this->authorize('save', $thread);
+
         $data = $request->validate([
             'save_switch'=>[
                 'required',
                 Rule::in(['save', 'unsave']),
             ]
         ]);
-
         
+        $current_user = auth()->user();
+        if($data['save_switch'] == 'save') {
+            // Check first if it exists; only save it if it's not exist
+            if(!$current_user->savedthreads->contains($thread->id)) {
+                $current_user->savedthreads()->attach($thread->id);
+            }
+
+            return 1;
+        }
+        $current_user->savedthreads()->detach($thread->id);
+        return -1;
     }
 
     public function forum_all_threads(Forum $forum) {

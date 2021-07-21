@@ -11,6 +11,5 @@ class SavedThread extends Model
 
     protected $table = 'saved_threads';
     protected $guarded = [];
-    public $timestamps = false;
     
 }

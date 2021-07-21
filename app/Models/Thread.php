@@ -128,6 +128,10 @@ class Thread extends Model
         return $count;
     }
 
+    public function getIsSavedAttribute() {
+        return $this->users_who_save->contains(auth()->user()->id);
+    }
+
     public function scopeToday($builder){
         return $builder->where('created_at', '>', today());
     }

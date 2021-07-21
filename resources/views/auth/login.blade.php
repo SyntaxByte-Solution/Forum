@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<div class="auth-card">
+<div class="auth-card" style="border-radius: 0; margin: 60px auto 8px auto">
     <div>
         <a href="../"><img id="login-top-logo" class="move-to-middle" src="/assets/images/logos/b-large-logo.png" alt="logo"></a>
     </div>

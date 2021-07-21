@@ -116,7 +116,7 @@
                         <div class="thread-react-hover @auth like-resource like-resource-from-viewer @endauth @guest login-signin-button @endguest">
                             <input type="hidden" class="likable-type" value="post">
                             <input type="hidden" class="likable-id" value="{{ $post->id }}">
-                            <div class="small-image-2 sprite sprite-2-size like-icon @if($post->liked_by(auth()->user())) resource17-like-ricon @else resource17-like-gicon @endif"></div>
+                            <div class="small-image-2 sprite sprite-2-size like-icon @auth @if($post->liked_by(auth()->user())) resource17-like-ricon @else resource17-like-gicon @endif @endauth @guest resource17-like-gicon @endguest"></div>
                             <p class="no-margin mx4 fs13 resource-likes-counter">{{ $post->likes->count() }}</p>
                         </div>
                     </div>

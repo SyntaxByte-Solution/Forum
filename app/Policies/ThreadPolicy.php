@@ -77,6 +77,17 @@ class ThreadPolicy
         return $thread->user_id == $user->id;
     }
 
+    public function save(User $user, Thread $thread) {
+        /**
+         * 1. User should not be banned
+         */
+        if($user->isBanned()) {
+            return $this->deny("You can't save threads because you're currently banned");
+        }
+
+        return true;
+    }
+
     public function destroy(User $user, Thread $thread)
     {
         if($user->isBanned()) {

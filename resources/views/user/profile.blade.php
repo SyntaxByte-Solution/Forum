@@ -7,6 +7,7 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('js/post.js') }}" defer></script>
     <script src="{{ asset('js/profile.js') }}" defer></script>
 @endpush
 

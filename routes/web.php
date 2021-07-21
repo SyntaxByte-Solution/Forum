@@ -25,9 +25,7 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 Route::get('/test', function() {
-    if (Auth::check()) {
-        $user = auth()->user();
-    }
+    $user = auth()->user();
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -104,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/thread/status/patch', [ThreadController::class, 'update_status']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
+    Route::post('/thread/{thread}/save', [ThreadController::class, 'thread_save_switch']);
     Route::delete('/thread/{thread}/force', [ThreadController::class, 'destroy'])->name('thread.destroy');
     Route::post('/thread/{thread}/posts/switch', [ThreadController::class, 'thread_posts_switch'])->name('thread.posts.turn.off');
     

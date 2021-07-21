@@ -249,12 +249,18 @@ function heart_beating() {
 
 var t=setInterval(heart_beating,500);
 
-$('.login-signin-button').click(function() {
-    $('#login-view').parent().css('display', 'block');
-    $('#login-view').parent().css('opacity', '1');
-
-    return false;
+$('.login-signin-button').each(function() {
+    handle_login_lock($(this));
 });
+
+function handle_login_lock(button) {
+    button.on('click', function() {
+        $('#login-view').parent().css('display', 'block');
+        $('#login-view').parent().css('opacity', '1');
+
+        return false;
+    });
+}
 
 $('#left-panel').height($(window).height() - $('header').height() - 30);
 if($('#thread-media-viewer').length) {
@@ -1694,7 +1700,9 @@ $('.like-resource').each(function() {
 
 $('.set-lang').click(function(event) {
     let language = $(this).find('.lang-value').val();
-    
+    let loading = $(this).find('.loading-dots-anim');
+    loading.removeClass('none');
+    start_loading_anim(loading);
     $.ajax({
         type: 'post',
         url: '/setlang',
@@ -1703,6 +1711,7 @@ $('.set-lang').click(function(event) {
             lang: language
         },
         success: function() {
+            stop_loading_anim();
             location.reload();
         }
     });
@@ -2750,6 +2759,9 @@ $('.open-thread-image').on('click', function(event) {
                 $('.tmvisc').find('.like-resource').not('.viewer-thread-reply .like-resource').each(function() {
                     handle_resource_like($(this));
                 });
+                $('.tmvisc').find('.login-signin-button').not('.viewer-thread-reply .login-signin-button').each(function() {
+                    handle_login_lock($(this));
+                });
 
                 handle_document_suboptions_hiding();
                 handle_remove_informer_message_container($('.tmvisc'));
@@ -2916,6 +2928,7 @@ function handle_viewer_reply_events(reply_component) {
     handle_delete_post(reply_component);
     handle_close_shadowed_view(reply_component.find('.close-shadowed-view-button'));
     handle_remove_informer_message_container(reply_component);
+    handle_login_lock(reply_component);
 
     reply_component.find('.button-with-suboptions').each(function() {
         handle_suboptions_container($(this));
@@ -3209,8 +3222,7 @@ function handle_viewer_replies_load(button) {
                         $('.viewer-thread-reply').slice(replies_payload.count*(-1));
                     
                     unhandled_replies.each(function() {
-                        handle_resource_like($(this).find('.like-resource'));
-                        handle_tooltip($(this).find('.tooltip-section'));
+                        handle_viewer_reply_events($(this));
                     });
                 }
             },
@@ -3264,5 +3276,37 @@ function handle_move_to_thread_replies(button) {
                 
             }
         }
+    });
+}
+
+$('.save-thread').each(function() {
+    handle_save_threads($(this));
+});
+
+function handle_save_threads(save_button) {
+    save_button.click(function() {
+        let container = save_button;
+        while(!container.hasClass('resource-container')) {
+            container = container.parent();
+        }
+
+        let loading = save_button.find('.loading-dots-anim');
+        loading.removeClass('none');
+        start_loading_anim(loading);
+
+        let thread_id = container.find('.thread-id').first().val();
+        let save_switch = save_button.find('.status').val();
+
+        $.ajax({
+            type: 'post',
+            url: `/thread/${thread_id}/save`,
+            data: {
+                _token: csrf,
+                save_switch: save_switch
+            },
+            success: function() {
+                stop_loading_anim();
+            }
+        });
     });
 }

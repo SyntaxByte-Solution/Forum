@@ -45,6 +45,10 @@ class Thread extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function users_who_save() {
+        return $this->belongsToMany(User::class, 'saved_threads', 'thread', 'user');
+    }
+
     public function status() {
         return $this->belongsTo(ThreadStatus::class);
     }

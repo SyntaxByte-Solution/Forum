@@ -343,6 +343,17 @@ class ThreadController extends Controller
         return route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$thread->id]);
     }
 
+    public function thread_save_switch(Request $request, Thread $thread) {
+        $data = $request->validate([
+            'save_switch'=>[
+                'required',
+                Rule::in(['save', 'unsave']),
+            ]
+        ]);
+
+        
+    }
+
     public function forum_all_threads(Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $category = $forum->categories->first();

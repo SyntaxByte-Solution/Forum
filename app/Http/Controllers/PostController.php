@@ -136,10 +136,12 @@ class PostController extends Controller
     }
 
     public function post_raw_content_fetch(Post $post) {
+        $this->authorize('fetch', $post);
         return $post->content;
     }
 
     public function post_parsed_content_fetch(Post $post) {
+        $this->authorize('fetch', $post);
         return Markdown::parse($post->content);
     }
 

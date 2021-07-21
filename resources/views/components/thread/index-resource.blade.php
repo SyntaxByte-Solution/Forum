@@ -176,10 +176,16 @@
                     <div class="relative">
                         <div class="pointer button-with-suboptions size20 sprite sprite-2-size menu20-icon mr4"></div>
                         <div class="suboptions-container suboptions-container-right-style">
-                            <div class="pointer simple-suboption thread-display-button flex align-center">
+                            @can('save', $thread)
+                            <div class="pointer simple-suboption save-thread flex align-center">
                                 <div class="small-image-2 sprite sprite-2-size bookmark17-icon mr4"></div>
                                 <div>{{ __('Save thread') }}</div>
+                                <div style="width: 12px">
+                                    <div class="loading-dots-anim ml4 none">•</div>
+                                </div>
+                                <input type="hidden" class="status" value="save">
                             </div>
+                            @endcan
                             @can('update', $thread)
                             <div class="pointer simple-suboption flex align-center">
                                 <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>

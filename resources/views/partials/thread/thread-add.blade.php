@@ -174,7 +174,7 @@
                 border-left: none;
                 border-right: none;
                 border-top-color: #dbdbdb;
-                background-color: #f1f9ff;
+                background-color: rgb(244, 244, 244);
 
                 display: flex;
                 align-items: center;

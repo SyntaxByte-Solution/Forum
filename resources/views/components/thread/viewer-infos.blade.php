@@ -104,7 +104,7 @@
                 <div class="small-image-2 sprite sprite-2-size like-icon @if($thread->liked) resource17-like-ricon @else resource17-like-gicon @endif"></div>
                 <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
             </div>
-            <div class="thread-react-hover move-to-thread-viewer-reply flex align-center">
+            <div class="thread-react-hover @auth move-to-thread-viewer-reply @endauth flex align-center">
                 <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
                 <p class="no-margin unselectable fs12"><span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span> {{__('replies')}}</p>
             </div>
@@ -114,6 +114,7 @@
             </div>
         </div>
         <div class="simple-line-separator my4"></div>
+        @auth
         <div id="viewer-reply-container">
             <div class="flex space-between my4" id="reply-site">
                 <p class="bold fs15 my4 ml8 forum-color" id="viewer-reply-text-label">{{ __('Reply') }}</p>
@@ -187,6 +188,7 @@
                 }
             </style>
         </div>
+        @endauth
         <p id="viewer-replies-site" class="my4 py4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
         <div class="mx8">
             <div class="viewer-replies-container mt8" id="viewer-replies-box">

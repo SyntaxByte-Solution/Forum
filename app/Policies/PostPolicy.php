@@ -58,6 +58,14 @@ class PostPolicy
         return $post->user_id == $user->id || $user->id == $post->thread->user->id;
     }
 
+    public function fetch(User $user, Post $post) {
+        if($user->isBanned()) {
+            return $this->deny("You can't update your threads because you're currently banned");
+        }
+        
+        return $post->user_id == $user->id;
+    }
+
     public function tick(User $user, Post $post) {
         if($user->isBanned()) {
             return $this->deny("You can't update your threads because you're currently banned");

@@ -3313,13 +3313,28 @@ function handle_save_threads(save_button) {
                     save_button.find('.icon').removeClass('bookmark17-icon');
                     save_button.find('.icon').addClass('xbookmark17-icon');
                     save_button.find('.button-text').text(save_button.find('.button-text-unsave').val());
+                    basic_notification_show(save_button.find('.saved-message').val());
                 } else {
                     save_button.find('.status').val('save');
                     save_button.find('.icon').removeClass('xbookmark17-icon');
                     save_button.find('.icon').addClass('bookmark17-icon');
                     save_button.find('.button-text').text(save_button.find('.button-text-save').val());
+                    basic_notification_show(save_button.find('.unsaved-message').val());
                 }
+
+                save_button.parent().css('display', 'none');
             }
         });
     });
+}
+
+let basic_notification;
+function basic_notification_show(message) {
+    $('.basic-notification-container').removeClass('none');
+    $('.basic-notification-container').find('.basic-notification-content').text(message);
+
+    setTimeout(function() {
+        $('.basic-notification-container').addClass('none');
+        $('.basic-notification-container').find('.basic-notification-content').text('');
+   }, 5000);
 }

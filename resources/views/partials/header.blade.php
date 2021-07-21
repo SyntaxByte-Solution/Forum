@@ -38,7 +38,7 @@
                     <div class="relative">
                         <div class="header-button-counter-indicator @if(!$unread_notifications_counter) none @endif">{{ $unread_notifications_counter }}</div>
                         <div class="header-button button-with-suboptions pointer notification-button" title="Notifications">
-                            <div class="small-image-2 sprite sprite-2-size notifications-icon"></div>
+                            <div class="small-image-2 basic-sprite sprite-2-size notifications-icon"></div>
                         </div>    
                         <div class="suboptions-container suboptions-header-button-style">
                             <div class="triangle"></div>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="relative">
                         <div class="header-button button-with-suboptions pointer" title="Messages">
-                            <div class="small-image-2 sprite sprite-2-size message17-icon"></div>
+                            <div class="small-image-2 basic-sprite sprite-2-size message17-icon"></div>
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="triangle"></div>
@@ -140,7 +140,7 @@
                 @endphp
                 <div class="flex align-center no-underline button-with-suboptions pointer" title="{{ __('Languages') }}">
                     <div class='header-profile-button'>
-                        <div class="size24 sprite sprite-2-size languages24-icon"></div>
+                        <div class="size24 basic-sprite sprite-2-size languages24-icon"></div>
                     </div>
                 </div>
                 <div class="suboptions-container suboptions-account-style">

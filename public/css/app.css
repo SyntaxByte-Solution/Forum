@@ -1,4 +1,8 @@
 
+.basic-sprite {
+    background-image: url(../assets/images/icons/basic-sprite.png);
+}
+
 .sprite {
     background-image: url(../assets/images/icons/sp.png);
 }
@@ -665,7 +669,7 @@ a, input, textarea {
 /* -------------------- NEW SPRITE -------------------- */
 
 .notifications-icon {
-    background-position: -17px 0px;
+    background-position: 0 0;
 }
 
 .messages-icon {
@@ -673,7 +677,7 @@ a, input, textarea {
 }
 
 .languages24-icon {
-    background-position: -24px -192px;
+    background-position: 0px -24px;
 }
 
 .more7-icon {
@@ -681,7 +685,7 @@ a, input, textarea {
 }
 
 .forums20-icon {
-    background-position: -20px -280px;
+    background-position: -20px -40px;
 }
 
 .rating20-icon {
@@ -705,7 +709,7 @@ a, input, textarea {
 }
 
 .message17-icon {
-    background-position: 17px -85px;
+    background-position: 17px 0px;
 }
 
 .english17-flag {
@@ -744,20 +748,20 @@ a, input, textarea {
     background-position: 0px -187px;
 }
 
-.plus17-icon {
-    background-position: -20px -260px;
+.discussion17-icon {
+    background-position: 0px -40px;
 }
 
 .statistics17-icon {
     background-position: 17px -1207px;
 }
 
-.fire17-icon {
-    background-position: -20px -300px;
+.fire20-icon {
+    background-position: 0px -60px;
 }
 
-.market17-icon {
-    background-position: -20px -320px;
+.market20-icon {
+    background-position: -20px -60px;
 }
 
 .inbox17-icon {
@@ -876,8 +880,12 @@ a, input, textarea {
     background-position: 17px -1411px;
 }
 
+.tick17-icon {
+    background-position: 0 -1445px;
+}
+
 .wsearch20-icon {
-    background-position: 20px -1680px;
+    background-position: 20px -20px;
 }
 
 .downvote20-icon {
@@ -2425,6 +2433,22 @@ tr:nth-child(2n) {
     right: -2px;
     width: 24px;
     height: 24px;
+}
+
+.basic-notification-container {
+    position: fixed;
+    display: flex;
+    z-index: 10;
+    bottom: 26px;
+    left: 26px;
+
+    padding: 16px;
+    max-width: 340px;
+    min-width: 290px;
+    box-sizing: border-box;
+    color: white;
+    background-color: #0e0e0ee6;
+    border-radius: 8px;
 }
 
 .x-close-container-style {

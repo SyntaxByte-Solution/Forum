@@ -12,7 +12,7 @@
         </div>
         <div class="relative toggle-box pb8">
             <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected bold white white' }} @endif">
-                <div class="size20 sprite sprite-2-size wsearch20-icon mr4"></div>
+                <div class="size20 basic-sprite sprite-2-size wsearch20-icon mr4"></div>
                 {{__('Search')}} <span class="toggle-arrow mx4">@if($page == 'search') ▾ @else ▸ @endif</span>
             </a>
             <div class="toggle-container" @isset($subpage) @if($page == 'search') style="display: block" @endif @endisset>
@@ -109,7 +109,7 @@
                     $add_thread_link = route('thread.add');
                 @endphp
                 <a href="{{ $add_thread_link }}" class="left-panel-item lp-padding @if($page == 'add-thread') {{ 'lp-selected bold white white' }} @endif">
-                    <div class="small-image sprite sprite-2-size plus17-icon mr4"></div>
+                    <div class="small-image basic-sprite sprite-2-size discussion17-icon mr4"></div>
                     {{__('Start discussion')}}
                 </a>
             </div>
@@ -123,7 +123,7 @@
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected bold white' }} @endif">
-                        <div class="small-image sprite sprite-2-size forums20-icon mr4"></div>
+                        <div class="small-image basic-sprite sprite-2-size forums20-icon mr4"></div>
                         {{__('Forums')}}
                     </a>
                 </div>
@@ -134,7 +134,7 @@
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="" class="left-panel-item lp-padding @if($page == 'popular-posts') {{ 'lp-selected bold white' }} @endif">
-                        <div class="small-image sprite sprite-2-size fire17-icon mr4"></div>
+                        <div class="small-image basic-sprite sprite-2-size fire20-icon mr4"></div>
                         {{__('Popular threads')}}
                     </a>
                 </div>
@@ -145,7 +145,7 @@
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="" class="left-panel-item lp-padding @if($page == 'market') {{ 'lp-selected bold white' }} @endif">
-                        <div class="small-image sprite sprite-2-size market17-icon mr4"></div>
+                        <div class="small-image basic-sprite sprite-2-size market20-icon mr4"></div>
                         {{ __('Market place') }}
                     </a>
                 </div>

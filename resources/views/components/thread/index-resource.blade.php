@@ -189,9 +189,11 @@
                                 <div style="width: 12px">
                                     <div class="loading-dots-anim ml4 none">•</div>
                                 </div>
+                                <input type="hidden" class="status" value="@if($thread->is_saved) unsave @else save @endif">
                                 <input type="hidden" class="button-text-save" value="{{ __('Save thread') }}">
                                 <input type="hidden" class="button-text-unsave" value="{{ __('Unsave thread') }}">
-                                <input type="hidden" class="status" value="@if($thread->is_saved) unsave @else save @endif">
+                                <input type="hidden" class="saved-message" value="{{ __('Thread saved successfully.') }}">
+                                <input type="hidden" class="unsaved-message" value="{{ __('Thread unsaved successfully.') }}">
                             </div>
                             @endcan
                             @can('update', $thread)

@@ -1,4 +1,4 @@
-<div class="report-resource-container thread-report-container">
+<div class="report-resource-container thread-report-container none">
     <div class="close-report-container x-close-container-style" style="top: 12px; right: 12px">
         <span class="x-close">✖</span>
     </div>
@@ -46,7 +46,10 @@
     </div>
     <p class="fs12 my8">Please check carefully your report before submit it, because inappropriate or random reports could affect <strong>your account to be banned</strong> !</p>
     <div class="flex align-center">
-        <input type="button" class="button-style mr8" value="{{ __('Submit') }}" disabled style="background-color: #a6d5ff; cursor: default">
+        <input type="button" class="submit-report button-style mr8" value="{{ __('Submit') }}" disabled style="background-color: #a6d5ff; cursor: default">
+        <input type="hidden" class="button-ing-text" value="{{ __('Submit') }}">
+        <input type="hidden" class="button-ing-text" value="{{ __('Submitting ..') }}">
+        <input type="hidden" class="button-no-ing-text">
         <div class="pointer close-report-container link-path">{{ __('Cancel') }}</div>
     </div>
 </div>

@@ -513,6 +513,10 @@ a, input, textarea {
     color: #2ca0ff !important;
 }
 
+.blue-background {
+    background-color: #2d8aee !important;
+}
+
 .gray {
     color: rgb(63, 63, 63) !important;
 }
@@ -2994,7 +2998,8 @@ tr:nth-child(2n) {
     padding: 20px;
     border: 1px solid rgb(179, 179, 179);
     background-color: white;
-    border-radius: 4px; 
+    border-radius: 4px;
+    box-shadow: 0 0 5px 0px #0000001f;
 }
 
 .report-section-textarea {

@@ -53,7 +53,6 @@
             @yield('content')
             @include('partials.notification')
             @include('partials.general.tick-notification')
-            @include('partials.thread.report')
         </main>
     </div>
 </body>

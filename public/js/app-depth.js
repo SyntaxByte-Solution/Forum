@@ -3379,28 +3379,55 @@ $('.resource-report-option').each(function() {
         $(this).css('background-color', 'rgb(242, 242, 242)');
         let value = $(this).find('.report-input').val();
 
+        let report_container = $(this);
+        while(!report_container.hasClass('report-resource-container')) {
+            report_container = report_container.parent();
+        }
+
         if(value == 'moderator-intervention') {
             $(this).find('.child-to-be-opened').animate({
                 height: '100%'
             }, 400);
+
+            let report_button = report_container.find('.submit-report');
+            report_button.attr("disabled","disabled");
+            report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
+            report_button.removeClass('blue-background');
         } else {
+            report_container.find('.report-section-textarea').val('');
             $('.child-to-be-opened').animate({
                 height: '0'
             }, 400);
+
+            let report_button = report_container.find('.submit-report');
+            report_button.attr('style', '');
+            report_button.prop("disabled", false);
+            report_button.addClass('blue-background');
         }
     });
 });
 
 $('.report-section-textarea').on('input', function() {
+    let report_container = $(this);
+    while(!report_container.hasClass('report-resource-container')) {
+        report_container = report_container.parent();
+    }
+
     let counter_container = $(this).parent().find('.report-content-counter');
     let maxlength = 200;
     let currentLength = $(this).val().length;
+
+    let report_button = report_container.find('.submit-report');
 
     counter_container.addClass('gray');
     if(currentLength == 0) {
         counter_container.attr('style', '');
         counter_container.find('.report-content-count').text('');
-        counter_container.find('.report-content-count-phrase').text(counter_container.parent().find('.first-phrase-text').val());
+        counter_container.find('.report-content-count-phrase').text(counter_container.parent().find('.first-phrase-text').val());        
+
+        // Disable submit report button
+        report_button.attr("disabled","disabled");
+        report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
     } else if(currentLength > maxlength ){
         let more_than_max = currentLength - maxlength;
         let chars_text = more_than_max > 1 ? counter_container.parent().find('.characters-text').val() : counter_container.parent().find('.characters-text').val().slice(0, -1);
@@ -3411,6 +3438,11 @@ $('.report-section-textarea').on('input', function() {
 
         counter_container.removeClass('gray');
         counter_container.css('color', '#e83131');
+
+        // Disable submit report button
+        report_button.attr("disabled","disabled");
+        report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
+        report_button.removeClass('blue-background');
     } else {
         counter_container.attr('style', '');
         if(currentLength < 10) {
@@ -3418,11 +3450,20 @@ $('.report-section-textarea').on('input', function() {
             let counter_phrase = counter_container.parent().find('.more-to-go-text').val();
             counter_container.find('.report-content-count').text(left_to_10);
             counter_container.find('.report-content-count-phrase').text(counter_phrase);
+
+            // Disable submit report button
+            report_button.attr("disabled","disabled");
+            report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
+            report_button.removeClass('blue-background');
         } else {
             let chars_left = maxlength - currentLength;
             let counter_phrase = counter_container.parent().find('.chars-left-text').val();
             counter_container.find('.report-content-count').text(chars_left);
             counter_container.find('.report-content-count-phrase').text(counter_phrase);
+
+            report_button.attr('style', '');
+            report_button.prop("disabled", false);
+            report_button.addClass('blue-background');
         }
     }
 });

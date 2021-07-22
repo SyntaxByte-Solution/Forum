@@ -3344,10 +3344,11 @@ function basic_notification_show(message, icon='') {
 }
 
 $('.close-report-container').click(function() {
-    let container = $(this);
-    while(!container.hasClass('report-resource-container')) {
-        container = container.parent();
-    }
+    close_report_container();
+});
+
+function close_report_container() {
+    let container = $('.report-resource-container');
 
     container.animate({
         opacity: 0
@@ -3355,7 +3356,9 @@ $('.close-report-container').click(function() {
         container.addClass('none');
         container.css('opacity', '1');
     })
-});
+}
+
+
 
 $('.open-thread-report').click(function() {
     let container = $('.report-resource-container');
@@ -3368,9 +3371,17 @@ $('.open-thread-report').click(function() {
     $('.resource-report-option').css('background-color', '');
     $('.report-section-textarea').val('');
 
+    let report_button = container.find('.submit-thread-report');
+    report_button.attr("disabled","disabled");
+    report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
+    report_button.removeClass('blue-background');
+
     container.animate({
         opacity: 1
     }, 300);
+
+    container.find('.reportable-id').val($(this).find('.thread-id').val());
+    container.find('.reportable-type').val('thread');
 });
 
 $('.resource-report-option').each(function() {
@@ -3383,23 +3394,23 @@ $('.resource-report-option').each(function() {
         while(!report_container.hasClass('report-resource-container')) {
             report_container = report_container.parent();
         }
+        let report_button = report_container.find('.submit-thread-report');
 
         if(value == 'moderator-intervention') {
             $(this).find('.child-to-be-opened').animate({
                 height: '100%'
             }, 400);
 
-            let report_button = report_container.find('.submit-report');
             report_button.attr("disabled","disabled");
             report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
             report_button.removeClass('blue-background');
+
+            handle_report_textarea(report_container.find('.report-section-textarea'));
         } else {
-            report_container.find('.report-section-textarea').val('');
             $('.child-to-be-opened').animate({
                 height: '0'
             }, 400);
 
-            let report_button = report_container.find('.submit-report');
             report_button.attr('style', '');
             report_button.prop("disabled", false);
             report_button.addClass('blue-background');
@@ -3408,16 +3419,20 @@ $('.resource-report-option').each(function() {
 });
 
 $('.report-section-textarea').on('input', function() {
-    let report_container = $(this);
+    handle_report_textarea($(this));
+});
+
+function handle_report_textarea(textarea) {
+    let report_container = textarea;
     while(!report_container.hasClass('report-resource-container')) {
         report_container = report_container.parent();
     }
 
-    let counter_container = $(this).parent().find('.report-content-counter');
-    let maxlength = 200;
-    let currentLength = $(this).val().length;
+    let counter_container = textarea.parent().find('.report-content-counter');
+    let maxlength = 500;
+    let currentLength = textarea.val().length;
 
-    let report_button = report_container.find('.submit-report');
+    let report_button = report_container.find('.submit-thread-report');
 
     counter_container.addClass('gray');
     if(currentLength == 0) {
@@ -3466,4 +3481,47 @@ $('.report-section-textarea').on('input', function() {
             report_button.addClass('blue-background');
         }
     }
+}
+
+$('.submit-thread-report').on('click', function() {
+    let button = $(this);
+    let button_text_ing = $(this).parent().find('.button-ing-text').val();
+    let button_text_no_ing = $(this).parent().find('.button-no-ing-text').val();
+    
+    button.val(button_text_ing);
+    button.attr("disabled","disabled");
+    button.attr('style', 'background-color: #a6d5ff; cursor: default; font-weight: bold');
+
+    let report_container = $(this);
+    while(!report_container.hasClass('report-resource-container')) {
+        report_container = report_container.parent();
+    }
+
+    let reportable_type = report_container.find('.reportable-type').val();
+    let reportable_id = report_container.find('.reportable-id').val();
+    let report_type = report_container.find('input[name="report"]:checked').val();
+
+    let data = {
+        _token: csrf,
+        report_type: report_type  
+    };
+
+    if(report_type == "moderator-intervention") {
+        data.body = report_container.find('.report-section-textarea').val();
+    }
+
+    $.ajax({
+        type: 'post',
+        url: `/${reportable_type}/${reportable_id}/report`,
+        data: data,
+        success: function(response) {
+            close_report_container();
+            basic_notification_show(button.parent().find('.reported-text').val(), 'tick17-icon');
+        },
+        complete: function() {
+            button.val(button_text_no_ing);
+            button.attr("disabled",false);
+            button.attr('style', '');
+        }
+    });
 });

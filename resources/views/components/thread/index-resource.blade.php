@@ -310,15 +310,18 @@
                         </div>
                     </div>
                     <div class="flex align-center">
-                        <div class="none @auth open-thread-report @endauth @guest login-signin-button @endguest pointer small-image-2 sprite sprite-2-size report17-icon mr8"></div>
-                        @auth
+                        <div class="none open-thread-report @guest login-signin-button @endguest pointer small-image-2 sprite sprite-2-size report17-icon mr8">
+                            <input type="hidden" class="thread-id" value="{{ $thread->id }}">
+                        </div>
                         <script>
                             // Here we need to only report thread from thread show page
                             if($('.page').first().val() == 'thread-show') {
                                 $('.open-thread-report').removeClass('none');
+                                @guest
+                                $('.open-thread-report').removeClass('open-thread-report');
+                                @endguest
                             }
                         </script>
-                        @endauth
                     </div>
                 </div>
             </div>

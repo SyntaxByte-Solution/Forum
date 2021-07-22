@@ -35,6 +35,10 @@ class Post extends Model
         return $this->morphMany(NotificationDisable::class, 'disabled');
     }
 
+    public function reports() {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
     public function liked_by($user) {
         foreach($this->likes as $like) {
             if($like->likable_id == $this->id && $like->likable_type == 'App\Models\Post' && $like->user_id == $user->id) {

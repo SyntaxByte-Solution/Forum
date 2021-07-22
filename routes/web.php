@@ -9,8 +9,8 @@ use App\Http\Controllers\
     IndexController, UserController, OAuthController,
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController, MultilanguageHelperController,
-    NotificationController, FollowController};
-use App\Models\{User, Thread, ThreadStatus};
+    NotificationController, FollowController, ReportController};
+use App\Models\{User, Thread, Report};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -26,6 +26,14 @@ use App\Http\Middleware\AccountActivationCheck;
 
 Route::get('/test', function() {
     $user = auth()->user();
+    $thread = Thread::first();
+
+    $report['body'] = "It's not important to use Report model";
+    $report['user_id'] = $user->id;
+
+    $thread->reports()->save($report);
+
+    dd(Thread::first()->reports);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -102,6 +110,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/thread/status/patch', [ThreadController::class, 'update_status']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
+    Route::post('/thread/{thread}/report', [ReportController::class, 'thread_report']);
     Route::post('/thread/{thread}/save', [ThreadController::class, 'thread_save_switch']);
     Route::delete('/thread/{thread}/force', [ThreadController::class, 'destroy'])->name('thread.destroy');
     Route::post('/thread/{thread}/posts/switch', [ThreadController::class, 'thread_posts_switch'])->name('thread.posts.turn.off');

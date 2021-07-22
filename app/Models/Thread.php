@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Scopes\ExcludePrivateScope;
-use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like};
+use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like, Report};
 
 class Thread extends Model
 {
@@ -63,6 +63,10 @@ class Thread extends Model
 
     public function disables() {
         return $this->morphMany(NotificationDisable::class, 'disabled');
+    }
+
+    public function reports() {
+        return $this->morphMany(Report::class, 'reportable');
     }
 
     public function getLikedAttribute() {

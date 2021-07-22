@@ -3313,13 +3313,13 @@ function handle_save_threads(save_button) {
                     save_button.find('.icon').removeClass('bookmark17-icon');
                     save_button.find('.icon').addClass('xbookmark17-icon');
                     save_button.find('.button-text').text(save_button.find('.button-text-unsave').val());
-                    basic_notification_show(save_button.find('.saved-message').val());
+                    basic_notification_show(save_button.find('.saved-message').val(), 'tick17-icon');
                 } else {
                     save_button.find('.status').val('save');
                     save_button.find('.icon').removeClass('xbookmark17-icon');
                     save_button.find('.icon').addClass('bookmark17-icon');
                     save_button.find('.button-text').text(save_button.find('.button-text-save').val());
-                    basic_notification_show(save_button.find('.unsaved-message').val());
+                    basic_notification_show(save_button.find('.unsaved-message').val(), 'tick17-icon');
                 }
 
                 save_button.parent().css('display', 'none');
@@ -3329,7 +3329,11 @@ function handle_save_threads(save_button) {
 }
 
 let basic_notification;
-function basic_notification_show(message) {
+function basic_notification_show(message, icon='') {
+    if(icon != '') {
+        $('.basic-notification-container').find('.icon').addClass(icon);
+        $('.basic-notification-container').find('.icon').removeClass('none');
+    }
     $('.basic-notification-container').removeClass('none');
     $('.basic-notification-container').find('.basic-notification-content').text(message);
 
@@ -3338,3 +3342,46 @@ function basic_notification_show(message) {
         $('.basic-notification-container').find('.basic-notification-content').text('');
    }, 5000);
 }
+
+$('.close-report-container').click(function() {
+    let container = $(this);
+    while(!container.hasClass('report-resource-container')) {
+        container = container.parent();
+    }
+
+    container.animate({
+        opacity: 0
+    }, 500, function() {
+        container.addClass('none');
+        container.css('opacity', '1');
+    })
+});
+
+$('.open-thread-report').click(function() {
+    let container = $('.report-resource-container');
+
+    container.css('opacity', '0');
+    container.removeClass('none');
+    
+    container.animate({
+        opacity: 1
+    }, 300);
+});
+
+$('.resource-report-option').each(function() {
+    $(this).on('click', function() {
+        $('.resource-report-option').css('background-color', '');
+        $(this).css('background-color', 'rgb(242, 242, 242)');
+        let value = $(this).find('.report-input').val();
+
+        if(value == 'moderator-intervention') {
+            $(this).find('.child-to-be-opened').animate({
+                height: '100%'
+            }, 400);
+        } else {
+            $('.child-to-be-opened').animate({
+                height: '0'
+            }, 400);
+        }
+    });
+});

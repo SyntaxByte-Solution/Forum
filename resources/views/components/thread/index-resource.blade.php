@@ -300,7 +300,7 @@
                 <div class="flex align-center">
                     <div class="relative mr8">
                         <a href="" class="link-without-underline-style button-with-suboptions copy-container-button" class="block" style="margin: 4px; font-size: 12px">Link ▾</a>
-                        <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 100%; bottom: 0">
+                        <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 0;">
                             <div class="flex">
                                 <input type="text" value="{{ $thread->link }}" class="simple-input" style="width: 240px; padding: 3px; ">
                                 <a href="" class="input-button-style flex align-center copy-button">
@@ -310,7 +310,15 @@
                         </div>
                     </div>
                     <div class="flex align-center">
-                        <div class="@auth thread-report @endauth @guest login-signin-button @endguest pointer small-image-2 sprite sprite-2-size report17-icon mr8"></div>
+                        <div class="none @auth open-thread-report @endauth @guest login-signin-button @endguest pointer small-image-2 sprite sprite-2-size report17-icon mr8"></div>
+                        @auth
+                        <script>
+                            // Here we need to only report thread from thread show page
+                            if($('.page').first().val() == 'thread-show') {
+                                $('.open-thread-report').removeClass('none');
+                            }
+                        </script>
+                        @endauth
                     </div>
                 </div>
             </div>

@@ -129,7 +129,7 @@
             @guest
             <div id="login" class="flex align-center">
                 <a href="" class="flex align-center login-signin-button fs13 light-gray no-underline">
-                    <div class="small-image sprite sprite-2-size wprofile17-icon mr4"></div>
+                    <div class="small-image basic-sprite sprite-2-size wprofile20-icon mr4"></div>
                     {{__('Sign-in')}}
                 </a>
             </div>

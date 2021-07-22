@@ -728,8 +728,8 @@ a, input, textarea {
     background-position: 0px -34px;
 }
 
-.wprofile17-icon {
-    background-position: -20px -40px;
+.wprofile20-icon {
+    background-position: -20px -80px;
 }
 
 .activities17-icon {
@@ -1862,9 +1862,8 @@ tr:nth-child(2n) {
 }
 
 .thread-main-section {
-    width: 100%;
+    width: calc(100% - 37px);
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 .frt-error {
@@ -2697,6 +2696,8 @@ tr:nth-child(2n) {
     border-radius: 6px 0 0 6px;
     background-color: #f2f2f2;
     border-right: 1px solid #d0d0d0;
+    width: 37px;
+    box-sizing: border-box;
 }
 
 .thread-header-section {
@@ -2981,4 +2982,49 @@ tr:nth-child(2n) {
 
 .follow-box-item:hover {
     background-color: #f9f9f9;
+}
+
+.report-resource-container {
+    position: fixed;
+    z-index: 80;
+    top: 70px;
+    left: 0;
+    transform: translate(calc(50vw - 50%));
+    width: 600px;
+    padding: 20px;
+    border: 1px solid rgb(179, 179, 179);
+    background-color: white;
+    border-radius: 4px; 
+}
+
+.report-section-textarea {
+    resize: none;
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 2px 0;
+    box-sizing: border-box;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 4px;
+}
+
+.report-section-textarea:focus {
+    box-shadow: 0 0 0px 3px #def2ff;
+    border-color: #64ceff;
+}
+
+.resource-report-option {
+    display: flex;
+    cursor: pointer;
+    margin: 4px 0;
+    padding: 8px;
+
+}
+
+.resource-report-option:hover {
+    background-color: #f7f7f7;
+}
+
+.child-to-be-opened {
+    height: 0;
+    overflow: hidden;
 }

@@ -3363,6 +3363,11 @@ $('.open-thread-report').click(function() {
     container.css('opacity', '0');
     container.removeClass('none');
     
+    container.find('.report-input').prop('checked', false);
+    container.find('.child-to-be-opened').css('height', '0');
+    $('.resource-report-option').css('background-color', '');
+    $('.report-section-textarea').val('');
+
     container.animate({
         opacity: 1
     }, 300);
@@ -3384,4 +3389,40 @@ $('.resource-report-option').each(function() {
             }, 400);
         }
     });
+});
+
+$('.report-section-textarea').on('input', function() {
+    let counter_container = $(this).parent().find('.report-content-counter');
+    let maxlength = 200;
+    let currentLength = $(this).val().length;
+
+    counter_container.addClass('gray');
+    if(currentLength == 0) {
+        counter_container.attr('style', '');
+        counter_container.find('.report-content-count').text('');
+        counter_container.find('.report-content-count-phrase').text(counter_container.parent().find('.first-phrase-text').val());
+    } else if(currentLength > maxlength ){
+        let more_than_max = currentLength - maxlength;
+        let chars_text = more_than_max > 1 ? counter_container.parent().find('.characters-text').val() : counter_container.parent().find('.characters-text').val().slice(0, -1);
+        let counter_phrase = counter_container.parent().find('.too-long-text').val() + ' ' + more_than_max + ' ' + chars_text;
+        counter_container.find('.report-content-count').text('');
+        counter_container.find('.report-content-count-phrase').text(counter_phrase);
+        console.log('more');
+
+        counter_container.removeClass('gray');
+        counter_container.css('color', '#e83131');
+    } else {
+        counter_container.attr('style', '');
+        if(currentLength < 10) {
+            let left_to_10 = 10 - currentLength;
+            let counter_phrase = counter_container.parent().find('.more-to-go-text').val();
+            counter_container.find('.report-content-count').text(left_to_10);
+            counter_container.find('.report-content-count-phrase').text(counter_phrase);
+        } else {
+            let chars_left = maxlength - currentLength;
+            let counter_phrase = counter_container.parent().find('.chars-left-text').val();
+            counter_container.find('.report-content-count').text(chars_left);
+            counter_container.find('.report-content-count-phrase').text(counter_phrase);
+        }
+    }
 });

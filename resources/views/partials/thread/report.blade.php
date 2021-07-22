@@ -1,11 +1,9 @@
 <div class="report-resource-container thread-report-container">
-    <div class="flex align-center space-between">
-        <div style="width: calc(100% - 20px);">
-            <h3 class="my8">{{ __('I am flagging to report this discussion as') }}... </h3>
-        </div>
-        <div class="close-report-container x-close-container-style">
-            <span class="x-close">✖</span>
-        </div>
+    <div class="close-report-container x-close-container-style" style="top: 12px; right: 12px">
+        <span class="x-close">✖</span>
+    </div>
+    <div style="width: calc(100% - 20px);">
+        <h3 class="no-margin mb8">{{ __('I am flagging to report this discussion as') }}... </h3>
     </div>
     <div>
         <label class="resource-report-option">
@@ -36,12 +34,17 @@
                 <p class="no-margin gray">A problem not listed above that requires action by a moderator. <i>Be specific and detailed!</i></p>
                 <div class="child-to-be-opened">
                     <textarea name="content" class="report-section-textarea" placeholder="{{ __('Be specific and detailed') }}"></textarea>
-                    <p class="no-margin ml4 fs12 gray"><span class="report-content-counter"></span><span class="report-content-counter-phrase">{{ __('Enter at least 10 characters') }}</span></p>
+                    <p class="no-margin ml4 fs12 gray report-content-counter"><span class="report-content-count"></span> <span class="report-content-count-phrase">{{ __('Enter at least 10 characters') }}</span></p>
+                    <input type="hidden" class="first-phrase-text" value="{{ __('Enter at least 10 characters') }}">
+                    <input type="hidden" class="more-to-go-text" value="{{ __('more to go..') }}">
+                    <input type="hidden" class="chars-left-text" value="{{ __('characters left') }}">
+                    <input type="hidden" class="too-long-text" value="{{ __('Too long by ') }}">
+                    <input type="hidden" class="characters-text" value="{{ __('characters') }}">
                 </div>
             </div>
         </label>
     </div>
-    <p class="fs12" style="margin: 2px 0">Please check carefully your report before submit it, because inappropriate or random reports could affect <strong>your account to be banned</strong> !</p>
+    <p class="fs12 my8">Please check carefully your report before submit it, because inappropriate or random reports could affect <strong>your account to be banned</strong> !</p>
     <div class="flex align-center">
         <input type="button" class="button-style mr8" value="{{ __('Submit') }}" disabled style="background-color: #a6d5ff; cursor: default">
         <div class="pointer close-report-container link-path">{{ __('Cancel') }}</div>

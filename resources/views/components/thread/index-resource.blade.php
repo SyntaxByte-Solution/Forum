@@ -310,7 +310,9 @@
                         </div>
                     </div>
                     <div class="flex align-center">
-                        <div class="none open-thread-report @guest login-signin-button @endguest pointer small-image-2 sprite sprite-2-size report17-icon mr8">
+                        <div class="none open-thread-report @guest login-signin-button @endguest thread-react-hover">
+                            <div class="small-image-2 sprite sprite-2-size report17filled-icon mr4"></div>
+                            <div class="fs13">report</div>
                             <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                         </div>
                         <script>

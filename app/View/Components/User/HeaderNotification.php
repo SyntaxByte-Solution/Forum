@@ -16,11 +16,11 @@ class HeaderNotification extends Component
     public $action_takers;
     public $action_statement;
     public $resource_string_slice;
-    public $action_type;
     public $resource_action_icon;
     public $action_date;
     public $notif_read;
     public $disabled;
+    public $could_be_disabled;
 
     /**
      * Create a new component instance.
@@ -39,7 +39,16 @@ class HeaderNotification extends Component
         $this->resource_action_icon = $notification['resource_action_icon'];
         $this->notif_read = $notification['notif_read'];
         $this->disabled = isset($notification['disabled']) ? $notification['disabled'] : false;
-
+        $this->could_be_disabled = false;
+        $resources_could_be_disabled = ['thread', 'reply', 'post'];
+        $action_type = $notification['action_type'];
+        
+        foreach ($resources_could_be_disabled as $resource_type) {
+            if (strstr($action_type, $resource_type)) {
+                $this->could_be_disabled = true;
+                break;
+            }
+        }
     }
 
     /**

@@ -32,10 +32,13 @@ class LikesController extends Controller
         $like->user_id = $current_user->id;
         if($founded_like) {
             $founded_like->delete();
-
+            $resource_type = strtolower(substr($type, strrpos($type, '\\') + 1));
+            if($resource_type == 'post') {
+                $resource_type = 'reply';
+            }
             // Check if there's a notification of like before
             foreach($resource->user->notifications as $notification) {
-                if($notification->data['action_type'] == "resource-like" 
+                if($notification->data['action_type'] == $resource_type."-like" 
                 && $notification->data['action_user'] == $current_user->id
                 && $notification->data['action_resource_id'] == $resource->id) {
                     $notification->delete();

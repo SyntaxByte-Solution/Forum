@@ -39,7 +39,7 @@ class NotificationController extends Controller
         ]);
 
         $notification['action_user'] = User::find($notification['action_user']);
-        $notification['action_takers'] = User::find($notification['action_user'])->first()->minified_name;
+        $notification['action_takers'] = $notification['action_user']->minified_name;
         $notification['notif_read'] = false;
 
         $notification_component = (new HeaderNotification($notification));

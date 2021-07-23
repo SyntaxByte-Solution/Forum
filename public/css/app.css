@@ -1014,26 +1014,6 @@ a, input, textarea {
     background-position: 0 -359.9px;
 }
 
-.question-icon {
-    background-position: -0px -198px;
-}
-
-.fire-icon {
-    background-image: url(../assets/images/icons/fire.png);
-}
-
-.article-icon {
-    background-image: url(../assets/images/icons/article.png);
-}
-
-.settings-icon {
-    background-image: url(../assets/images/icons/settings.png);
-}
-
-.bsettings-icon {
-    background-position: -0px -97px;
-}
-
 .calendar-icon {
     background-image: url(../assets/images/icons/calendar.png);
 }
@@ -1184,7 +1164,7 @@ a, input, textarea {
 
 .suboptions-account-style {
     position: absolute;
-    top: 45px;
+    top: 44px;
     right: 0;
     width: 180px;
     background-color: white;

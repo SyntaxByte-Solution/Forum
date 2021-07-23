@@ -1,8 +1,8 @@
 <div>
     <div class="right-panel-header-container">
-        <div class="flex align-end">
+        <div class="flex align-center">
             <div class="small-image-2 sprite sprite-2-size forums17-icon mr4"></div>
-            <p class="no-margin bold">{{ __('Forums') }}</p>
+            <p class="no-margin bold fs16">{{ __('Forums') }}</p>
         </div>
         <div class="move-to-right">
             <a href="/forums" class="link-style">see all</a>

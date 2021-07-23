@@ -20,6 +20,7 @@
                 <span class="button-text">{{ __('Delete this notification') }}</span>
                 <input type="hidden" class="message-ing" value="{{ __('Deleting notification..') }}">
             </a>
+            @if($could_be_disabled)
             <a href="" class="suboption-style-1 fs13 disable-switch-notification @if($disabled) enable-notification @else disable-notification @endif align-center" style="width: 230px;">
                 <div class="notif-switch-icon small-image-2 sprite sprite-2-size @if($disabled) enablenotif17b-icon @else disablenotif17b-icon @endif disablenotif17b-icon mr4"></div>
                 @if($disabled)
@@ -32,6 +33,7 @@
                 <input type="hidden" class="disable-action-text" value="{{ __('Disable notifications on this post') }}">
                 <input type="hidden" class="enable-action-text" value="{{ __('Enable notifications on this post') }}">
             </a>
+            @endif
         </div>
     </div>
 </div>

@@ -70,10 +70,14 @@ class Thread extends Model
     }
 
     public function getAlreadyReportedAttribute() {
-        return $this->reports->where('user_id', auth()->user()->id)
-            ->where('reportable_id', $this->id)
-            ->where('reportable_type', 'App\Models\Thread')
-            ->count();
+        if(auth()->user()) {
+            return $this->reports->where('user_id', auth()->user()->id)
+                ->where('reportable_id', $this->id)
+                ->where('reportable_type', 'App\Models\Thread')
+                ->count();
+        }
+
+        return false;
     }
 
     public function getLikedAttribute() {

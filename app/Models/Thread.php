@@ -69,6 +69,13 @@ class Thread extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    public function getAlreadyReportedAttribute() {
+        return $this->reports->where('user_id', auth()->user()->id)
+            ->where('reportable_id', $this->id)
+            ->where('reportable_type', 'App\Models\Thread')
+            ->count();
+    }
+
     public function getLikedAttribute() {
         if($current_user = auth()->user()) {
             return Like::where('user_id', $current_user->id)

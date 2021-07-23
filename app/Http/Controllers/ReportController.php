@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 class ReportController extends Controller
 {
     public function thread_report(Request $request, Thread $thread) {
+        $this->authorize('thread_report', [Report::class, $thread->id]);
         $data = $request->validate([
             'body'=>'sometimes|max:500|min:10',
             'report_type'=>Rule::in([

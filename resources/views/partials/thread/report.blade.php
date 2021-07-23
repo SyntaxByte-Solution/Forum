@@ -4,6 +4,15 @@
     <div class="close-report-container x-close-container-style" style="top: 12px; right: 12px">
         <span class="x-close">✖</span>
     </div>
+    @if($thread->already_reported)
+    <div>
+        <div class="flex move-to-middle">
+            <div class="small-image-2 sprite sprite-2-size report17filled-icon mr8" style="margin-top: 1px"></div>
+            <h2 class="text-center gray my8">{{ __('You already report this discussion.') }}</h2>
+        </div>
+        <p class="text-center my8">{{ __('We have received your report submit and we are going to verify if this discussion respects our guidelines and standards as soon as possible.') }}</p>
+    </div>
+    @else
     <div style="width: calc(100% - 20px);">
         <div class="flex">
             <div class="small-image-2 sprite sprite-2-size report17filled-icon mr8" style="margin-top: 1px"></div>
@@ -58,4 +67,5 @@
         <input type="hidden" class="button-no-ing-text">
         <div class="pointer close-report-container link-path">{{ __('Cancel') }}</div>
     </div>
+    @endif
 </div>

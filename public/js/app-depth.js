@@ -2410,13 +2410,14 @@ $("#thread-photos").change(function(event) {
      }
 
     let images = event.originalEvent.target.files;
+    let validated_images = validate_image_file_Type(images);
 
     /** First let's limit the number of uploaded files */
-    if(images.length > 30) {
+    if(images.length + uploaded_thread_images_assets.length > 30) {
         images = images.slice(0, 30);
         media_container.find('.tame-image-limit').removeClass('none');
     }
-    if(images.length != validate_image_file_Type(images).length) {
+    if(images.length != validated_images.length) {
         /**
          * Print error: Only jpeg, png .. are supported
          * (tame: thread add media error)
@@ -2424,9 +2425,10 @@ $("#thread-photos").change(function(event) {
         media_container.find('.tame-image-type').removeClass('none');
     } else {
         media_container.find('.tame-image-type').addClass('none');
+        media_container.find('.tame-video-type').addClass('none');
     }
 
-    // images = validate_image_file_Type(images);
+    images = validated_images;
     uploaded_thread_images_assets.push(...images);
     /**
      * Now we loop through the new files and append them to thread-add-uploaded-medias-container by cloning 
@@ -2446,20 +2448,14 @@ $("#thread-photos").change(function(event) {
         last_uploaded_image.find('.uploaded-media-index').val(medias_counter-1); // we want 0 based indexes here
         last_uploaded_image.find('.uploaded-media-genre').val('image'); // this is useful when close button is pressed in order for us to know from where we should delete the uploaded file(either from videos array container/image array container)
 
-        if (medias_counter <= 5) {
-            last_uploaded_image.removeClass('none thread-add-uploaded-media-projection-model');
-        }
-        else if(medias_counter >= 6) {
-            last_uploaded_image.removeClass('thread-add-uploaded-media-projection-model');
-            let fifth_component = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").eq(5);
+        last_uploaded_image.removeClass('none thread-add-uploaded-media-projection-model');
+        if(medias_counter >= 6) {
+            if(medias_counter == 6)
+                $('.thread-add-uploaded-medias-container').addClass('scrollx');
 
-            if(medias_counter == 6) {
-                fifth_component.find('.thread-add-more-shadowed').removeClass('none');
-                fifth_component.find('.thread-add-more-counter').text('1');
-            } else {
-                let more_counter = fifth_component.find('.thread-add-more-counter').text();
-                fifth_component.find('.thread-add-more-counter').text(parseInt(more_counter) + 1);
-            }
+            // Scroll to the end position of x axe
+            let c = $('.thread-add-uploaded-medias-container');
+            c[0].scrollLeft = c[0].scrollWidth;
         }
 
         let img = last_uploaded_image.find(".thread-add-uploaded-image");
@@ -2467,6 +2463,68 @@ $("#thread-photos").change(function(event) {
 
         // Preview the image
         load_image(images[i], img);
+    }
+
+    // Clear the input because we don't need its value; we use arrays to store files
+    $(this).val('');
+});
+
+$("#thread-videos").change(function(event) {
+    /**
+     * IMPORTANT: see notices inside thread-image change event handler above
+     */
+     let media_container = $(this);
+     while(!media_container.hasClass('thread-add-media-section')) {
+         media_container = media_container.parent();    
+     }
+
+    let videos = event.originalEvent.target.files;
+    let validated_videos = validate_video_file_Type(videos);
+
+    /** First let's limit the number of uploaded files */
+    if(videos.length + uploaded_thread_videos_assets.length > 10) {
+        videos = videos.slice(0, 100);
+        media_container.find('.tame-video-limit').removeClass('none');
+    }
+
+    if(videos.length != validated_videos.length) {
+        media_container.find('.tame-video-type').removeClass('none');
+    } else {
+        media_container.find('.tame-video-type').addClass('none');
+        media_container.find('.tame-image-type').addClass('none');
+    }
+
+    videos = validated_videos;
+    uploaded_thread_videos_assets.push(...videos);
+    
+    for (let i = 0; i < videos.length; i++) {
+        let clone = $('.thread-add-uploaded-media-projection-model').clone(true);
+        $('.thread-add-uploaded-medias-container').append(clone);
+        // Increment the index
+        let upload_medias_index = $('.thread-add-uploaded-medias-container').find('.uploaded-medias-counter');
+        let medias_counter = parseInt(upload_medias_index.val()) + 1;
+        upload_medias_index.val(medias_counter);
+
+        // We get the last uploaded video container
+        let last_uploaded_video = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").last();
+        last_uploaded_video.find('.uploaded-media-index').val(medias_counter-1); // we want 0 based indexes here
+        last_uploaded_video.find('.uploaded-media-genre').val('video'); // this is useful when close button is pressed in order for us to know from where we should delete the uploaded file(either from videos array container/image array container)
+
+        last_uploaded_video.removeClass('none thread-add-uploaded-media-projection-model');
+        if(medias_counter >= 6) {
+            if(medias_counter == 6)
+                $('.thread-add-uploaded-medias-container').addClass('scrollx');
+
+            // Scroll to the end position of x axe
+            let c = $('.thread-add-uploaded-medias-container');
+            c[0].scrollLeft = c[0].scrollWidth;
+        }
+
+        let img = last_uploaded_video.find(".thread-add-uploaded-image");
+        img.removeClass('none');
+
+        // Preview the image (here image should be a snapshot from the video uploaded)
+        //load_image(videos[i], img);
     }
 
     // Clear the input because we don't need its value; we use arrays to store files
@@ -2572,6 +2630,23 @@ function validate_image_file_Type(files){
 
     return result;
 }
+// Validate videos upload
+function validate_video_file_Type(files) {
+    let result = [];
+    for(let i = 0; i<files.length;i++) {
+        fileName = files[i].name;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="mp3" || extFile=="webm" || extFile=="mpg" 
+        || extFile=="mp2"|| extFile=="mpeg"|| extFile=="mpe" 
+        || extFile=="mpv"|| extFile=="ogg"|| extFile=="mp4" 
+        || extFile=="m4p"|| extFile=="m4v"|| extFile=="avi"){
+            result.push(files[i]);
+        }
+    }
+
+    return result;
+}
 
 handle_threads_medias_containers();
 function handle_threads_medias_containers() {
@@ -2653,7 +2728,6 @@ $('.thread-media').each(function() {
         handle_media_image_dimensions($(this));
     });
 });
-
 
 let images_loaded = false;
 let infos_fetched = false;

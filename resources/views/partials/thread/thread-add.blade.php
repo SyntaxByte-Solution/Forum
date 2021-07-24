@@ -116,8 +116,9 @@
         <div class="thread-add-media-section px8">
             <div class="thread-add-media-error px8 my8">
                 <p class="error tame-image-type none">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported') }}.</p>
-                <p class="error tame-image-limit none">* {{ __('You couldonly upload 30 images max') }}.</p>
+                <p class="error tame-image-limit none">* {{ __('You could only upload 30 images max') }}.</p>
                 <p class="error tame-video-type none">* {{ __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported') }}.</p>
+                <p class="error tame-video-limit none">* {{ __('You could only upload 10 videos max') }}.</p>
             </div>
             <div class="flex">
                 <div class="flex align-center thread-add-button-hover-style mr8 relative">
@@ -131,16 +132,13 @@
                     <input type="file" name="videos[]" id="thread-videos" class="thread-add-file-input" multiple accept=".mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi">
                 </div>
             </div>
-            <div class="thread-add-uploaded-medias-container flex flex-wrap my4">
-                <input type="hidden" class="uploaded-medias-counter" value="0">
+            <div class="thread-add-uploaded-medias-container flex my4">
+                <input type="hidden" class="uploaded-medias-counter" value="0" autocomplete="off">
                 <!-- the following div will be used to clone uploaded images -->
                 <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
                     <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">
                     <div class="close-thread-media-upload x-close-container-style remove">
                         <span class="x-close">✖</span>
-                    </div>
-                    <div class="thread-add-more-shadowed none">
-                        <p class="white no-margin fs20 bold">+<span class="thread-add-more-counter">0</span></p>
                     </div>
                     <input type="hidden" class="uploaded-media-index" value="-1">
                     <input type="hidden" class="uploaded-media-genre" value="">

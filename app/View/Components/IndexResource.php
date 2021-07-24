@@ -57,6 +57,8 @@ class IndexResource extends Component
         if($thread->has_media) {
             $this->images_links = 
                 Storage::disk('public')->files('users/' . $thread->user->id . '/threads/' . $thread->id . '/images');
+            $this->videos_links = 
+                Storage::disk('public')->files('users/' . $thread->user->id . '/threads/' . $thread->id . '/videos');
         }
     }
 

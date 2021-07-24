@@ -133,7 +133,8 @@
                 </div>
             </div>
             <div class="thread-add-uploaded-medias-container flex my4">
-                <input type="hidden" class="uploaded-medias-counter" value="0" autocomplete="off">
+                <input type="hidden" class="uploaded-images-counter" value="0" autocomplete="off">
+                <input type="hidden" class="uploaded-videos-counter" value="0" autocomplete="off">
                 <!-- the following div will be used to clone uploaded images -->
                 <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
                     <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">

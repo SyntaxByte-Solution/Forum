@@ -83,15 +83,17 @@ main {
     height: 100%;
     font-size: 13px;
     border-left: 1px solid #343B48;
+
+    transition: 0.4s ease background-color;
 }
 
 .menu-button-style:last-child {
-    border-right: 1px solid #343B48;
+    border-right: 1px solid #2B313E;
 }
 
 .menu-button-style:hover {
     color: white;
-    background-color: #343B48;
+    background-color: #2B313E;
 }
 
 .header-button-counter-indicator {
@@ -109,6 +111,16 @@ main {
     color: white;
     font-size: 9px;
     font-weight: bold;
+}
+
+.header-search-field-icon {
+    fill: #444;
+    position: absolute;
+    top: 8px;
+    left: 9px;
+
+    width: 15px;
+    height: 15px;
 }
 
 .suboptions-container-header {

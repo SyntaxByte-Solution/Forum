@@ -5,7 +5,7 @@
     </div>
     <div class="mx8 px8 my8">
         @canemoji
-        <div class="full-center">
+        <div class="flex space-between">
             <a href="" class="mx4 emoji-button">
                 <img src="{{ asset('assets/images/icons/emoji-sad.svg') }}" class="mx4 size28 emoji-unfilled" alt="">
                 <img src="{{ asset('assets/images/icons/emoji-sad-filled.png') }}" class="mx4 size28 none emoji-filled" alt="">

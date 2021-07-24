@@ -11,6 +11,6 @@ function preloadImages(srcs) {
 }
 
 // then to call it, you would use this
-var imageSrcs = ["/assets/images/icons/basic-sprite.png", "/assets/images/icons/sp.png", '/assets/images/logos/large-logo.png'];
+var imageSrcs = ["/assets/images/icons/sp.png", '/assets/images/logos/large-logo.png'];
 
 preloadImages(imageSrcs);

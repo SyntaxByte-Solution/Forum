@@ -15,7 +15,7 @@
 <div>
     <div class="right-panel-header-container">
         <div class="small-image-2 sprite sprite-2-size clock17-icon mr4"></div>
-        <p class="bold no-margin">{{ __('Recent threads') }}</p>
+        <p class="bold no-margin fs16">{{ __('Recent threads') }}</p>
     </div>
     @foreach($recent_threads as $thread)
     <div class="my8 mx8">

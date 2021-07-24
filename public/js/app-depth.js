@@ -3358,8 +3358,6 @@ function close_report_container() {
     })
 }
 
-
-
 $('.open-thread-report').click(function() {
     let container = $('.report-resource-container');
 

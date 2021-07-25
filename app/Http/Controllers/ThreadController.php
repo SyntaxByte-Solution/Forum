@@ -112,7 +112,7 @@ class ThreadController extends Controller
             $validator = Validator::make(
                 $request->all(), [
                 'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000',
-                'images' => 'max:10',
+                'images' => 'max:20',
                 ],[
                     'images.*.mimes' => __('Only jpg,jpeg,png,gif and bmp images are alowed'),
                     'images.*.max' => __('Sorry! Maximum allowed size for an image is 12MB'),

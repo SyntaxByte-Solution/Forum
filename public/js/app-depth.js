@@ -2508,6 +2508,8 @@ $("#thread-videos").change(function(event) {
     if(videos.length + uploaded_thread_videos_assets.length > 4) {
         videos = videos.slice(0, 4-uploaded_thread_videos_assets.length);
         media_container.find('.tame-video-limit').removeClass('none');
+    } else {
+        media_container.find('.tame-video-limit').addClass('none');
     }
 
     uploaded_thread_videos_assets.push(...videos);
@@ -2546,10 +2548,11 @@ $("#thread-videos").change(function(event) {
         // Preview the image (here image should be a snapshot from the video uploaded)
         let img = last_uploaded_video.find(".thread-add-uploaded-image");
         img.removeClass('none');
-        let thumbnail = "";
         try {
             // get the frame at 1.5 seconds of the video file
-            get_thumbnail(videos[i], 1.5, last_uploaded_video);
+            get_thumbnail(videos[i], 1.5, img.parent()).then(value => {
+                last_uploaded_video.find(".thread-add-uploaded-image").attr("src", value);
+            });
         } catch(e) {
             
         }
@@ -2632,19 +2635,19 @@ function adjust_uploaded_medias_indexes() {
 }
 
 // The following three functions used to fetch image thumbnail from the uploaded video if user upload a video
-const get_thumbnail = async function(file, seekTo, component) {
-    let response = await getVideoCover(file, seekTo);
+const get_thumbnail = async function(file, seekTo, thumbnail_container) {
+    let response = await getVideoCover(file, seekTo, thumbnail_container);
 
-    component.find(".thread-add-uploaded-image").attr("src", response);
+    return response;
 }
-function createPoster($video) {
+function createPoster(video) {
     var canvas = document.createElement("canvas");
-    canvas.width = 350;
-    canvas.height = 350;
-    canvas.getContext("2d").drawImage($video, 0, 0, canvas.width, canvas.height);
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
     return canvas.toDataURL("image/jpeg");;
 }
-function getVideoCover(file, seekTo = 0.0) {
+function getVideoCover(file, seekTo = 0.0, thumbnail_container) {
     return new Promise((resolve, reject) => {
         // load the file to a video player
         const videoPlayer = document.createElement('video');
@@ -2666,7 +2669,6 @@ function getVideoCover(file, seekTo = 0.0) {
             }, 200);
             // extract video thumbnail once seeking is complete
             videoPlayer.addEventListener('seeked', () => {
-                console.log('video is now paused at %ss.', seekTo);
                 // define a canvas to have the same dimension as the video
                 const canvas = document.createElement("canvas");
                 canvas.width = videoPlayer.videoWidth;

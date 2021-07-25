@@ -27,6 +27,7 @@ class IndexResource extends Component
     public $at_hummans;
 
     public $images_links;
+    public $videos_links;
 
     public function __construct(Thread $thread)
     {

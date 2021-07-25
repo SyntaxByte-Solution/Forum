@@ -116,9 +116,9 @@
         <div class="thread-add-media-section px8">
             <div class="thread-add-media-error px8 my8">
                 <p class="error tame-image-type none">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported') }}.</p>
-                <p class="error tame-image-limit none">* {{ __('You could only upload 30 images max') }}.</p>
-                <p class="error tame-video-type none">* {{ __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported') }}.</p>
-                <p class="error tame-video-limit none">* {{ __('You could only upload 10 videos max') }}.</p>
+                <p class="error tame-image-limit none">* {{ __('You could only upload 20 images max per post') }}.</p>
+                <p class="error tame-video-type none">* {{ __('Only .MP4, .WEBM, .MPG, .MP2, .MPEG, .MPE, .MPV, .OGG, .M4P, .M4V, .AVI video formats are supported') }}.</p>
+                <p class="error tame-video-limit none">* {{ __('You could only upload 4 videos max per post') }}.</p>
             </div>
             <div class="flex">
                 <div class="flex align-center thread-add-button-hover-style mr8 relative">
@@ -139,7 +139,10 @@
                 <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
                     <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">
                     <div class="close-thread-media-upload x-close-container-style remove">
-                        <span class="x-close">✖</span>
+                        <span class="x-close unselectable">✖</span>
+                    </div>
+                    <div class="thread-add-video-indicator full-center none">
+                        <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
                     </div>
                     <input type="hidden" class="uploaded-media-index" value="-1">
                     <input type="hidden" class="uploaded-media-genre" value="">

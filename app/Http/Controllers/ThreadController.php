@@ -111,10 +111,26 @@ class ThreadController extends Controller
         if(request()->has('images')) {
             $validator = Validator::make(
                 $request->all(), [
-                'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000'
+                'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000',
+                'images' => 'max:10',
                 ],[
                     'images.*.mimes' => __('Only jpg,jpeg,png,gif and bmp images are alowed'),
-                    'images.*.max' => 'Sorry! Maximum allowed size for an image is 15MB',
+                    'images.*.max' => __('Sorry! Maximum allowed size for an image is 12MB'),
+                ]
+            );
+
+            if ($validator->fails()) {
+                abort(422, $validator->errors());
+            }
+        }
+        if(request()->has('videos')) {
+            $validator = Validator::make(
+                $request->all(), [
+                'videos.*' => 'file|mimes:mp4,webm,mpg,mp2,mpeg,mpe,mpv,ogg,mp4,m4p,m4v,avi|max:500000',
+                'videos' => 'max:4',
+                ],[
+                    'videos.*.mimes' => __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported'),
+                    'videos.*.max' => __('Sorry! Maximum allowed size for a video is 500MB'),
                 ]
             );
 
@@ -192,6 +208,14 @@ class ThreadController extends Controller
             foreach($request->images as $image) {
                 $image->store(
                     'users/' . $data['user_id'] . '/threads/' . $thread->id . '/images', 'public'
+                );
+            }
+        }
+        // Verify if there's uploaded videos
+        if(request()->has('videos')) {
+            foreach($request->videos as $video) {
+                $video->store(
+                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/videos', 'public'
                 );
             }
         }

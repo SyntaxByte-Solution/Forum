@@ -2180,6 +2180,13 @@ $('.thread-add-share').click(function(event) {
             form_data.append('images[]', uploaded_thread_images_assets[i]);
         }
     }
+    // Checking videos existence in the thread
+    if(uploaded_thread_videos_assets.length) {
+        // Append videos files
+        for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
+            form_data.append('videos[]', uploaded_thread_videos_assets[i]);
+        }
+    }
 
     button.val(button.parent().find('.message-ing').val());
     button.attr("disabled","disabled");
@@ -2202,17 +2209,18 @@ $('.thread-add-share').click(function(event) {
             window.location.href = response;
         },
         error: function(response) {
-            let er;
-            let error = JSON.parse(response.responseText).error;
-            if(error) {
-                er = JSON.parse(response.responseText).error;
-            } else {
-                let errorObject = JSON.parse(response.responseText).errors;
-                er = errorObject[Object.keys(errorObject)[0]][0];
-            }
+            console.log(response);
+            // let er;
+            // let error = JSON.parse(response.responseText).error;
+            // if(error) {
+            //     er = JSON.parse(response.responseText).error;
+            // } else {
+            //     let errorObject = JSON.parse(response.responseText).errors;
+            //     er = errorObject[Object.keys(errorObject)[0]][0];
+            // }
 
-            container.find('.thread-add-error').removeClass('none');
-            container.find('.thread-add-error').html(er);
+            // container.find('.thread-add-error').removeClass('none');
+            // container.find('.thread-add-error').html(er);
         },
         complete: function(response) {
             button.val(button.parent().find('.message-no-ing').val());
@@ -2413,11 +2421,7 @@ $("#thread-photos").change(function(event) {
     let images = event.originalEvent.target.files;
     let validated_images = validate_image_file_Type(images);
 
-    /** First let's limit the number of uploaded files */
-    if(images.length + uploaded_thread_images_assets.length > 30) {
-        images = images.slice(0, 30);
-        media_container.find('.tame-image-limit').removeClass('none');
-    }
+    // First we check if all images passes image type by comparing uploaded images with validated images lengths
     if(images.length != validated_images.length) {
         /**
          * Print error: Only jpeg, png .. are supported
@@ -2429,6 +2433,12 @@ $("#thread-photos").change(function(event) {
         media_container.find('.tame-video-type').addClass('none');
     }
 
+    /** then we check the limit of uploaded images */
+    if(validated_images.length + uploaded_thread_images_assets.length > 20) {
+        media_container.find('.tame-image-limit').removeClass('none');
+        validated_images = validated_images.slice(0, 20-uploaded_thread_images_assets.length);
+    }
+    
     images = validated_images;
     uploaded_thread_images_assets.push(...images);
     /**
@@ -2485,12 +2495,6 @@ $("#thread-videos").change(function(event) {
     let videos = event.originalEvent.target.files;
     let validated_videos = validate_video_file_Type(videos);
 
-    /** First let's limit the number of uploaded files */
-    if(videos.length + uploaded_thread_videos_assets.length > 10) {
-        videos = videos.slice(0, 10);
-        media_container.find('.tame-video-limit').removeClass('none');
-    }
-
     if(videos.length != validated_videos.length) {
         media_container.find('.tame-video-type').removeClass('none');
     } else {
@@ -2499,6 +2503,13 @@ $("#thread-videos").change(function(event) {
     }
 
     videos = validated_videos;
+
+    /** First let's limit the number of uploaded files */
+    if(videos.length + uploaded_thread_videos_assets.length > 4) {
+        videos = videos.slice(0, 4-uploaded_thread_videos_assets.length);
+        media_container.find('.tame-video-limit').removeClass('none');
+    }
+
     uploaded_thread_videos_assets.push(...videos);
     
     for (let i = 0; i < videos.length; i++) {
@@ -2516,6 +2527,9 @@ $("#thread-videos").change(function(event) {
         let last_uploaded_video = $(".thread-add-uploaded-medias-container .thread-add-uploaded-media").last();
         last_uploaded_video.find('.uploaded-media-index').val(videos_counter-1); // we want 0 based indexes here
         last_uploaded_video.find('.uploaded-media-genre').val('video'); // this is useful when close button is pressed in order for us to know from where we should delete the uploaded file(either from videos array container/image array container)
+        
+        last_uploaded_video.find('.thread-add-video-indicator').removeClass('none');
+
 
 
         last_uploaded_video.removeClass('none thread-add-uploaded-media-projection-model');
@@ -2528,11 +2542,17 @@ $("#thread-videos").change(function(event) {
             c[0].scrollLeft = c[0].scrollWidth;
         }
 
+        
+        // Preview the image (here image should be a snapshot from the video uploaded)
         let img = last_uploaded_video.find(".thread-add-uploaded-image");
         img.removeClass('none');
-
-        // Preview the image (here image should be a snapshot from the video uploaded)
-        //load_image(videos[i], img);
+        let thumbnail = "";
+        try {
+            // get the frame at 1.5 seconds of the video file
+            get_thumbnail(videos[i], 1.5, last_uploaded_video);
+        } catch(e) {
+            
+        }
     }
 
     // Clear the input because we don't need its value; we use arrays to store files
@@ -2608,6 +2628,62 @@ function adjust_uploaded_medias_indexes() {
             $(this).find('.uploaded-media-index').val(videos_count);
             videos_count++;
         }
+    });
+}
+
+// The following three functions used to fetch image thumbnail from the uploaded video if user upload a video
+const get_thumbnail = async function(file, seekTo, component) {
+    let response = await getVideoCover(file, seekTo);
+
+    component.find(".thread-add-uploaded-image").attr("src", response);
+}
+function createPoster($video) {
+    var canvas = document.createElement("canvas");
+    canvas.width = 350;
+    canvas.height = 350;
+    canvas.getContext("2d").drawImage($video, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/jpeg");;
+}
+function getVideoCover(file, seekTo = 0.0) {
+    return new Promise((resolve, reject) => {
+        // load the file to a video player
+        const videoPlayer = document.createElement('video');
+        videoPlayer.setAttribute('src', URL.createObjectURL(file));
+        videoPlayer.load();
+        videoPlayer.addEventListener('error', (ex) => {
+            reject("error when loading video file", ex);
+        });
+        // load metadata of the video to get video duration and dimensions
+        videoPlayer.addEventListener('loadedmetadata', () => {
+            // seek to user defined timestamp (in seconds) if possible
+            if (videoPlayer.duration < seekTo) {
+                reject("video is too short.");
+                return;
+            }
+            // delay seeking or else 'seeked' event won't fire on Safari
+            setTimeout(() => {
+              videoPlayer.currentTime = seekTo;
+            }, 200);
+            // extract video thumbnail once seeking is complete
+            videoPlayer.addEventListener('seeked', () => {
+                console.log('video is now paused at %ss.', seekTo);
+                // define a canvas to have the same dimension as the video
+                const canvas = document.createElement("canvas");
+                canvas.width = videoPlayer.videoWidth;
+                canvas.height = videoPlayer.videoHeight;
+                // draw the video frame to canvas
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(videoPlayer, 0, 0, canvas.width, canvas.height);
+                // return the canvas image as a blob
+                ctx.canvas.toBlob(
+                    blob => {
+                        resolve(createPoster(videoPlayer));
+                    },
+                    "image/jpeg",
+                    0.75 /* quality */
+                );
+            });
+        });
     });
 }
 

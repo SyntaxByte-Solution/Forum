@@ -26,11 +26,9 @@ class IndexResource extends Component
     public $at;
     public $at_hummans;
 
-    public $images_links;
-    public $videos_links;
+    public $medias_links;
 
-    public function __construct(Thread $thread)
-    {
+    public function __construct(Thread $thread) {
         $this->thread = $thread;
         $this->forum = Forum::find($thread->category->forum_id);
         $this->category = Category::find($thread->category_id);
@@ -56,10 +54,8 @@ class IndexResource extends Component
 
         // Thread medias
         if($thread->has_media) {
-            $this->images_links = 
-                Storage::disk('public')->files('users/' . $thread->user->id . '/threads/' . $thread->id . '/images');
-            $this->videos_links = 
-                Storage::disk('public')->files('users/' . $thread->user->id . '/threads/' . $thread->id . '/videos');
+            $this->medias_links = 
+                Storage::disk('public')->files('users/' . $thread->user->id . '/threads/' . $thread->id . '/medias');
         }
     }
 

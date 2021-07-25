@@ -207,7 +207,7 @@ class ThreadController extends Controller
         if(request()->has('images')) {
             foreach($request->images as $image) {
                 $image->store(
-                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/images', 'public'
+                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/medias', 'public'
                 );
             }
         }
@@ -215,7 +215,7 @@ class ThreadController extends Controller
         if(request()->has('videos')) {
             foreach($request->videos as $video) {
                 $video->store(
-                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/videos', 'public'
+                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/medias', 'public'
                 );
             }
         }

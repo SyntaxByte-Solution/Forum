@@ -2740,16 +2740,15 @@ function handle_thread_medias_containers(thread_medias_container) {
     let half_media_width = (full_media_width / 2) - 3;
 
     if(media_count == 1) {
-        medias.height(full_media_width);
+        medias.height(full_media_width+3);
         medias.find('.thread-media').on('load', function() {
             medias.css('justify-content', 'center');
             let image = $(this);
-            if(image.height() > image.width()) {
-                medias.height($(this).height());
-            } else {
-                medias.height(medias.width());
+            if(image.height() > full_media_width) {
+                console.log('image height > ontainer height');
+
             }
-        })
+        });
     } else if(media_count == 2) {
         medias.each(function() {
             $(this).width(half_media_width);
@@ -2803,8 +2802,28 @@ function handle_thread_medias_containers(thread_medias_container) {
 
 $('.thread-media').each(function() {
     $(this).on('load', function() {
-        console.log('loaded');
         handle_media_image_dimensions($(this));
+        
+        // Following code handle thread with one image
+        let image = $(this);
+        let thread_medias_container = $(this);
+        while(!thread_medias_container.hasClass('thread-medias-container')) {
+            thread_medias_container = thread_medias_container.parent();
+        }
+
+        if(thread_medias_container.find('.thread-media-container').length == 1) {
+            if(image.height() > thread_medias_container.height()) {
+                let thread_media_container = thread_medias_container.find('.thread-media-container');
+                let max_height = parseInt(image.parent().css('max-height'), 10);
+                let container_height = thread_media_container.height();
+
+                while(container_height < max_height && container_height < image.height()) {
+                    thread_media_container.height(container_height+1);
+                    container_height++;
+                }
+                handle_media_image_dimensions(image);
+            }
+        }
     });
 });
 
@@ -3259,8 +3278,7 @@ function handle_media_image_dimensions(image) {
         } else {
             /** CASE #1 */
             console.log('case #1');
-            image.height(container_height);
-            image.css('width', 'max-content');
+            image.css('width', '100%');
         }
     } else if(container_height < container_width) {
         if(width > height) {

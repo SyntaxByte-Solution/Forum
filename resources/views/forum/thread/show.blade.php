@@ -23,7 +23,7 @@
     @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
     @include('partials.thread.report')
-    <div id="middle-container" class="middle-padding-1" style="width: 75%; margin: 0 auto;">
+    <div id="middle-container" class="middle-padding-1" style="width: 70%; margin: 0 auto;">
         <input type="hidden" class="page" value="thread-show">
         <div class="flex">
             <div class="full-width">

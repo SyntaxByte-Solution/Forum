@@ -274,7 +274,6 @@ window.onresize = function(event) {
         $('#thread-media-viewer').height($(window).height() - $('header').height());
         handle_viewer_infos_height($('.thread-media-viewer-infos-content'));
         handle_viewer_media_logic($("#thread-viewer-media-image"));
-        handle_viewer_media_logic($("#thread-viewer-media-video"));
     }
 };
 
@@ -3205,9 +3204,27 @@ $('.thread-viewer-left').click(function(event) {
     } else {
         $('.thread-viewer-right').removeClass('none');
     }
-    let viewer_image = $('#thread-viewer-media-image');
-    viewer_image.attr('src', "");
-    viewer_image.attr('src', viewer_medias[--viewer_media_count]);
+
+    let previous_media_url = viewer_medias[parseInt(viewer_media_count)-1];
+    if(is_image(previous_media_url)) {
+        let viewer_image = $('#thread-viewer-media-image');
+
+        $('#thread-viewer-media-video').addClass('none');
+        viewer_image.removeClass('none');
+
+        viewer_image.attr('src', "");
+        viewer_image.attr('src', viewer_medias[--viewer_media_count]);
+    } else if(is_video(previous_media_url)) {
+        let viewer_video = $('#thread-viewer-media-video');
+
+        $('#thread-viewer-media-image').addClass('none');
+        viewer_video.removeClass('none');
+
+        viewer_video.attr('src', "");
+        viewer_video.attr('src', viewer_medias[--viewer_media_count]);
+        viewer_video[0].load();
+    }
+
     $('#thread-media-viewer').find('.thread-counter-current-index').text(parseInt(viewer_media_count)+1);
 });
 
@@ -3215,9 +3232,25 @@ $('.thread-viewer-right').click(function(event) {
     event.stopPropagation();
 
     $('.thread-viewer-left').removeClass('none');
-    let viewer_image = $('#thread-viewer-media-image');
-    viewer_image.attr('src', "");
-    viewer_image.attr('src', viewer_medias[++viewer_media_count]);
+    let next_media_url = viewer_medias[parseInt(viewer_media_count)+1];
+    if(is_image(next_media_url)) {
+        let viewer_image = $('#thread-viewer-media-image');
+
+        $('#thread-viewer-media-video').addClass('none');
+        viewer_image.removeClass('none');
+
+        viewer_image.attr('src', "");
+        viewer_image.attr('src', viewer_medias[++viewer_media_count]);
+    } else if(is_video(next_media_url)) {
+        let viewer_video = $('#thread-viewer-media-video');
+
+        $('#thread-viewer-media-image').addClass('none');
+        viewer_video.removeClass('none');
+
+        viewer_video.attr('src', "");
+        viewer_video.attr('src', viewer_medias[++viewer_media_count]);
+        viewer_video[0].load();
+    }
     $('#thread-media-viewer').find('.thread-counter-current-index').text(parseInt(viewer_media_count)+1);
 
     if(viewer_media_count == viewer_medias.length-1) {
@@ -3238,6 +3271,8 @@ function handle_viewer_closing() {
     viewer_medias = [];
     
     let viewer = $('#thread-media-viewer');
+    let viewer_video = $('#thread-viewer-media-video');
+    viewer_video[0].pause();
     $('.thread-viewer-nav').addClass('none');
     viewer.find('.thread-viewer-medias-indicator').addClass('none');
     viewer.addClass('none');
@@ -3499,20 +3534,25 @@ function handle_move_to_thread_replies(button) {
             if(container.find('.thread-medias-container').length) {
                 // Here also we check if the viewer is opened for the same thread
                 let c = container.find('.thread-media-container').first();
-                container.find('.thread-media-container').first().click();
-                if(last_opened_thread && last_opened_thread == container.find('.thread-id').first().val()) {
-                    document.getElementById("viewer-replies-site").scrollIntoView(true);
-                } else {
-                    /**
-                     * If the viewer is not opened at all we have to wait for viewer infos to be loaded
-                     * and then we scroll to the replies secction
-                     */
-                    var wait_for_viewer_infos = window.setInterval(function() {
-                        if($('.tmvisc').find('.thread-media-viewer-infos-content').length) {
-                            document.getElementById("viewer-replies-site").scrollIntoView(true);
-                            clearInterval(wait_for_viewer_infos);
-                        }
-                    }, 400);
+                let c_type = c.find('.media-type').val();
+                if(c_type == 'image') {
+                    container.find('.thread-media-container').first().click();
+                    if(last_opened_thread && last_opened_thread == container.find('.thread-id').first().val()) {
+                        document.getElementById("viewer-replies-site").scrollIntoView(true);
+                    } else {
+                        /**
+                         * If the viewer is not opened at all we have to wait for viewer infos to be loaded
+                         * and then we scroll to the replies secction
+                         */
+                        var wait_for_viewer_infos = window.setInterval(function() {
+                            if($('.tmvisc').find('.thread-media-viewer-infos-content').length) {
+                                document.getElementById("viewer-replies-site").scrollIntoView(true);
+                                clearInterval(wait_for_viewer_infos);
+                            }
+                        }, 400);
+                    }
+                } else if(c_type == 'video') {
+                    c.find('.open-thread-image').click();
                 }
                 
             }

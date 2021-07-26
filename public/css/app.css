@@ -1398,7 +1398,7 @@ a, input, textarea {
 }
 
 .index-middle-width {
-    width: 70%;
+    width: 66%;
     margin: 30px auto;
 }
 
@@ -1830,7 +1830,7 @@ tr:nth-child(2n) {
 
 .pagination-item {
     display: flex;
-    padding: 6px 10px;
+    padding: 3px 7px;
     text-decoration: none;
     border: 1px solid #ccc;
     color: black;
@@ -2782,9 +2782,13 @@ tr:nth-child(2n) {
     right: 3px;
     top: 3px;
 
-    background-color: white;
+    background-color: #ffffffb3;
     padding: 4px;
     border-radius: 4px;
+}
+
+.thread-media-options:hover {
+    background-color: white;
 }
 
 #thread-media-viewer {

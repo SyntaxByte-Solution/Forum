@@ -2803,6 +2803,7 @@ function handle_thread_medias_containers(thread_medias_container) {
 
 $('.thread-media').each(function() {
     $(this).on('load', function() {
+        console.log('loaded');
         handle_media_image_dimensions($(this));
     });
 });
@@ -3257,6 +3258,7 @@ function handle_media_image_dimensions(image) {
             }
         } else {
             /** CASE #1 */
+            console.log('case #1');
             image.height(container_height);
             image.css('width', 'max-content');
         }

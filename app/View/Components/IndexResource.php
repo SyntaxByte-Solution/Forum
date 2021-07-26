@@ -8,6 +8,8 @@ use App\Models\{Thread, User, Category, Forum, Follow};
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Markdown;
+use FFMpeg;
+
 
 class IndexResource extends Component
 {
@@ -26,7 +28,7 @@ class IndexResource extends Component
     public $at;
     public $at_hummans;
 
-    public $medias_links;
+    public $medias;
 
     public function __construct(Thread $thread) {
         $this->thread = $thread;
@@ -54,11 +56,26 @@ class IndexResource extends Component
 
         // Thread medias
         if($thread->has_media) {
-            $this->medias_links = 
+            $medias_links = 
                 Storage::disk('public')->files('users/' . $thread->user->id . '/threads/' . $thread->id . '/medias');
+
+            $medias = [];
+            foreach($medias_links as $media) {
+                $media_type = 'image';
+                $media_source = $media;
+                $mime = mime_content_type($media);
+                if(strstr($mime, "video/")){
+                    $media_type = 'video';
+                }else if(strstr($mime, "image/")){
+                    $media_source = $media;
+                }
+
+                $medias[] = ['frame'=>$media_source, 'type'=>$media_type];
+            }
+            $this->medias = $medias;
         }
     }
-
+        
     function convert($number)
     {
         if($number < 1000) return $number;

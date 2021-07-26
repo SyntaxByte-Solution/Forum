@@ -260,22 +260,8 @@
                     @php
                         $media_count = 0;
                     @endphp
-                    @foreach($medias_links as $media)
-                        <!-- 
-                            here we need to know whether the media is an image or a video 
-                            in case of image we just replace the $media into the img tag, but in case of video we
-                            need to take help of some javascript to extract the thumbnail and then past it as src data
-                        -->
-                        @php
-                            $media_source = $media;
-                            $media_type = 'image';
-                            $mime = mime_content_type($media);
-                            if(strstr($mime, "video/")){
-                                $media_type = 'video';
-                            }else if(strstr($mime, "image/")){
-                                $media_source = $media;
-                            }
-                        @endphp
+                    @foreach($medias as $media)
+                        @if($media['type'] == 'image')
                         <a href="" class="thread-media-container open-thread-image relative has-fade">
                             <div class="thread-image-options">
                                 <p class="white"></p>
@@ -284,16 +270,36 @@
 
                             </div>
                             <div class="fade-loading"></div>
-                            <img src="{{ asset($media_source) }}" alt="" class="thread-media image-that-fade-wait">
+                            <img src="{{ asset($media['frame']) }}" alt="" class="thread-media image-that-fade-wait">
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
                             </div>
-                            <input type="hidden" class="media-type" value="{{ $media_type }}">
+                            <input type="hidden" class="media-type" value="{{ $media['type'] }}">
                             <input type="hidden" class="media-count" value="{{ $media_count }}">
-                            @php
-                                $media_count++;
-                            @endphp
                         </a>
+                        @elseif($media['type'] == 'video')
+                        <a href="" class="thread-media-container relative" style="background-color: #0f0f0f">
+                            <div class="thread-image-options">
+                                <p class="white"></p>
+                            </div>
+                            <div class="thread-image-zoomer-container">
+
+                            </div>
+                            <video class="full-width full-height" controls>
+                                <source src="{{ asset($media['frame']) }}" type="video/mp4">
+                                <source src="{{ asset($media['frame']) }}" type="video/ogg">
+                                Your browser does not support HTML video.
+                            </video>
+                            <div class="full-shadow-stretched none">
+                                <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
+                            </div>
+                            <input type="hidden" class="media-type" value="{{ $media['type'] }}">
+                            <input type="hidden" class="media-count" value="{{ $media_count }}">
+                        </a>
+                        @endif
+                        @php
+                            $media_count++;
+                        @endphp
                     @endforeach
                 </div>
                 @endif

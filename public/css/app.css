@@ -2757,12 +2757,11 @@ tr:nth-child(2n) {
 
 .thread-media-container {
     width: 100%;
-    max-height: 600px;
     border-radius: 5px;
     overflow: hidden;
     box-sizing: border-box;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 

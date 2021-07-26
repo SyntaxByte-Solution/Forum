@@ -6,11 +6,11 @@
         <div class="thread-viewer-nav thread-viewer-right unselectable fs18 none">►</div>
 
         <img src="" id="thread-viewer-media-image" class="image-that-fade-wait" alt="">
-        <!-- <video width="320" height="240" controls class="none thread-viewer-media-video">
+        <video id="thread-viewer-media-video" class="full-height" controls class="none">
             <source src="" type="video/mp4">
             <source src="" type="video/ogg">
             Your browser does not support the video tag.
-        </video> -->
+        </video>
 
     </div>
     <div class="thread-media-viewer-infos-section">

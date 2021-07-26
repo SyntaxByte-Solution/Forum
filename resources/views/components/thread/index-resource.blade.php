@@ -262,7 +262,7 @@
                     @endphp
                     @foreach($medias as $media)
                         @if($media['type'] == 'image')
-                        <a href="" class="thread-media-container open-thread-image relative has-fade">
+                        <div class="thread-media-container open-thread-image relative pointer has-fade">
                             <div class="thread-image-options">
                                 <p class="white"></p>
                             </div>
@@ -276,14 +276,13 @@
                             </div>
                             <input type="hidden" class="media-type" value="{{ $media['type'] }}">
                             <input type="hidden" class="media-count" value="{{ $media_count }}">
-                        </a>
+                        </div>
                         @elseif($media['type'] == 'video')
-                        <a href="" class="thread-media-container relative" style="background-color: #0f0f0f">
-                            <div class="thread-image-options">
-                                <p class="white"></p>
-                            </div>
-                            <div class="thread-image-zoomer-container">
-
+                        <div class="thread-media-container relative" style="background-color: #0f0f0f">
+                            <div class="thread-media-options full-center">
+                                @if($thread->has_media)
+                                <svg class="size17 pointer open-thread-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0,180V56A23.94,23.94,0,0,1,24,32H148a12,12,0,0,1,12,12V84a12,12,0,0,1-12,12H64v84a12,12,0,0,1-12,12H12A12,12,0,0,1,0,180ZM288,44V84a12,12,0,0,0,12,12h84v84a12,12,0,0,0,12,12h40a12,12,0,0,0,12-12V56a23.94,23.94,0,0,0-24-24H300A12,12,0,0,0,288,44ZM436,320H396a12,12,0,0,0-12,12v84H300a12,12,0,0,0-12,12v40a12,12,0,0,0,12,12H424a23.94,23.94,0,0,0,24-24V332A12,12,0,0,0,436,320ZM160,468V428a12,12,0,0,0-12-12H64V332a12,12,0,0,0-12-12H12A12,12,0,0,0,0,332V456a23.94,23.94,0,0,0,24,24H148A12,12,0,0,0,160,468Z"/></svg>
+                                @endif
                             </div>
                             <video class="full-width full-height" controls>
                                 <source src="{{ asset($media['frame']) }}" type="video/mp4">
@@ -295,7 +294,7 @@
                             </div>
                             <input type="hidden" class="media-type" value="{{ $media['type'] }}">
                             <input type="hidden" class="media-count" value="{{ $media_count }}">
-                        </a>
+                        </div>
                         @endif
                         @php
                             $media_count++;

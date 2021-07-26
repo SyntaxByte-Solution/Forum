@@ -273,7 +273,8 @@ window.onresize = function(event) {
     if($('#thread-media-viewer').length) {
         $('#thread-media-viewer').height($(window).height() - $('header').height());
         handle_viewer_infos_height($('.thread-media-viewer-infos-content'));
-        handle_viewer_image_logic($("#thread-viewer-media-image"));
+        handle_viewer_media_logic($("#thread-viewer-media-image"));
+        handle_viewer_media_logic($("#thread-viewer-media-video"));
     }
 };
 
@@ -1103,7 +1104,6 @@ function handle_down_vote(button) {
             }
         // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
         } else {
-            console.log('remove up and add down');
             vote_box.find('.votable-count').text(vote_count-2);
             button.parent().find('.votable-up-vote').find('.vote-icon').removeClass('upvotefilled20-icon');
             button.parent().find('.votable-up-vote').find('.vote-icon').addClass('upvote20-icon');
@@ -1382,8 +1382,6 @@ function handle_viewer_down_vote(button) {
 
         if($('#replies-container').length) {
             $('#replies-container .post-container').each(function() {
-                console.log('searching for ' + votable_id);
-                console.log($(this));
                 if($(this).find('.post-id').first().val() == votable_id) {
                     outside_post = $(this);
                     return false;
@@ -2209,7 +2207,6 @@ $('.thread-add-share').click(function(event) {
             window.location.href = response;
         },
         error: function(response) {
-            console.log(response);
             // let er;
             // let error = JSON.parse(response.responseText).error;
             // if(error) {
@@ -2591,7 +2588,6 @@ function handle_close_uploaded_media(container) {
         let component_genre = $(this).parent().find('.uploaded-media-genre').val();
         let index_to_remove = $(this).parent().find('.uploaded-media-index').val();
 
-        console.log('index to remove: ' + index_to_remove);
         // Then we have to know the genre of component(image/video) in rorder to delete it from the array container type
         if(component_genre == 'image') {
             // decrement the uploaded images counter
@@ -2708,6 +2704,17 @@ function validate_image_file_Type(files){
 
     return result;
 }
+function is_image(url) {
+    let extensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+
+    var idxDot = url.lastIndexOf(".") + 1;
+    var extFile = url.substr(idxDot, url.length).toLowerCase();
+    if(extensions.contains(extFile)) {
+        return true;
+    }
+
+    return false;
+}
 // Validate videos upload
 function validate_video_file_Type(files) {
     let result = [];
@@ -2724,6 +2731,16 @@ function validate_video_file_Type(files) {
     }
 
     return result;
+}
+function is_video(url) {
+    let extensions = ["mp3", "webm", "mpg", "mp2", "mpeg", "mpe", "mpv", "ogg", "mp4", "m4p", "m4v", "avi"];
+    var idxDot = url.lastIndexOf(".") + 1;
+    var extFile = url.substr(idxDot, url.length).toLowerCase();
+    if(extensions.contains(extFile)) {
+        return true;
+    }
+
+    return false;
 }
 
 handle_threads_medias_containers();
@@ -2745,8 +2762,7 @@ function handle_thread_medias_containers(thread_medias_container) {
             medias.css('justify-content', 'center');
             let image = $(this);
             if(image.height() > full_media_width) {
-                console.log('image height > ontainer height');
-
+                
             }
         });
     } else if(media_count == 2) {
@@ -2828,10 +2844,8 @@ function handle_thread_medias_containers(thread_medias_container) {
 // });
 
 $('.thread-media-container').each(function() {
-    console.log('new image handling');
     let media_container = $(this);
     media_container.imagesLoaded(function() {
-        console.log('image is ready to be handled !');
         let frame = media_container.find('.thread-media');
         handle_media_image_dimensions(frame);
         
@@ -2867,19 +2881,51 @@ $('.open-thread-image').on('click', function(event) {
     infos_fetched = images_loaded = false;
 
     let media_viewer = $('#thread-media-viewer');
-    let medias_container = $(this).parent();
-    let selected_media = $(this).find('.media-count').val();
+
+    // all thread medias container
+    let medias_container = $(this);
+    while(!medias_container.hasClass('thread-medias-container')) {
+        medias_container = medias_container.parent();
+    }
+    // selected media container
+    let media_container = $(this);
+    while(!media_container.hasClass('thread-media-container')) {
+        media_container = media_container.parent();
+    }
+    let selected_media = media_container.find('.media-count').val();
     
-    let media_source;
     medias_container.find('.thread-media-container').each(function() {
-        media_source = $(this).find('.thread-media').attr('src');
+        // Here before pushing the sources, we need to check media type
+        let media_type = $(this).find('.media-type').val();
+        let media_source;
+        if(media_type == "image") {
+            media_source = $(this).find('.thread-media').attr('src');
+        } else if(media_type == "video") {
+            media_source = $(this).find('video source').attr('src');
+        }
         viewer_medias.push(media_source);
     });
 
     viewer_media_count = selected_media;
-    let viewer_image = $('#thread-viewer-media-image');
-    viewer_image.attr('src', viewer_medias[selected_media]);
-    handle_thread_viewer_image(viewer_image);
+    let selected_media_url = viewer_medias[selected_media];
+    // Check type of media
+    if(is_image(selected_media_url)) {
+        // It's an image
+        let viewer_image = $('#thread-viewer-media-image');
+        let viewer_video = $('#thread-viewer-media-video');
+        viewer_image.removeClass('none');
+        viewer_video.addClass('none');
+        viewer_image.attr('src', viewer_medias[selected_media]);
+        handle_thread_viewer_image(viewer_image);
+    } else if(is_video(selected_media_url)) {
+        // It's a video
+        let viewer_image = $('#thread-viewer-media-image');
+        let viewer_video = $('#thread-viewer-media-video');
+        viewer_image.addClass('none');
+        viewer_video.removeClass('none');
+        viewer_video.attr('src', selected_media_url);
+        viewer_video[0].load();
+    }
 
     if(viewer_medias.length == 1) {
         $('.thread-viewer-right').addClass('none');
@@ -2906,10 +2952,12 @@ $('.open-thread-image').on('click', function(event) {
      * Before opening thread media viewer we need to make sure all medias are loaded
      */
      medias_container.imagesLoaded( function() {
+        console.log('viewer images loaded');
         images_loaded = true;
         $('body').css('overflow', 'hidden');
         media_viewer.removeClass('none');
         if(infos_fetched) {
+            console.log('stop strip loading :(');
             stop_loading_strip();
             viewer_loading_finished = true;
         }
@@ -2930,13 +2978,13 @@ $('.open-thread-image').on('click', function(event) {
             url: `/threads/${thread_id}/viewer_infos_component`,
             type: 'get',
             success: function(thread_infos_section) {
+                console.log('info fetched');
                 infos_fetched = true;
                 last_opened_thread = thread_id;
                 $('.thread-media-viewer-infos-header-pattern').addClass('none');
                 $('.tmvisc').html(thread_infos_section);
 
                 // ----- HANDLING EVENTS -----
-                
                 $('.tmvisc').find('.follow-resource').not('#viewer-replies-box .follow-resource').each(function() {
                     handle_follow_resource($(this));
                 });
@@ -2973,11 +3021,9 @@ $('.open-thread-image').on('click', function(event) {
                 if($('.tmvisc').find('#viewer-replies-load').length) {
                     handle_viewer_replies_load($('.tmvisc').find('#viewer-replies-load'));
                 }
-
                 $('.tmvisc').find('.viewer-thread-reply').each(function() {
                     handle_viewer_reply_events($(this));
                 });
-
                 // ---- HANDLE REPLY ---- //
                 $('.tmvisc').find('.share-viewer-reply').on('click', function() {
 
@@ -3090,11 +3136,11 @@ $('.open-thread-image').on('click', function(event) {
                             }
                         });
                     }
-                });
-                
+                });           
                 // ---------------------- //
                 handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
                 if(images_loaded) {
+                    console.log('stop strip loading from infos f :(');
                     stop_loading_strip();
                     viewer_loading_finished = true;
                 }
@@ -3201,11 +3247,11 @@ function handle_viewer_closing() {
 
 function handle_thread_viewer_image(image) {
     image.on('load', function() {
-        handle_viewer_image_logic(image);
+        handle_viewer_media_logic(image);
     });
 }
 
-function handle_viewer_image_logic(image) {
+function handle_viewer_media_logic(image) {
     image.attr('style', '');
     let container_height = image.parent().height();
     let container_width = image.parent().width();
@@ -3304,7 +3350,6 @@ function handle_media_image_dimensions(image) {
             }
         } else {
             /** CASE #1 */
-            console.log('case #1');
             image.css('width', '100%');
         }
     } else if(container_height < container_width) {
@@ -3456,8 +3501,6 @@ function handle_move_to_thread_replies(button) {
                 let c = container.find('.thread-media-container').first();
                 container.find('.thread-media-container').first().click();
                 if(last_opened_thread && last_opened_thread == container.find('.thread-id').first().val()) {
-                    console.log('already opened for the same thread');
-
                     document.getElementById("viewer-replies-site").scrollIntoView(true);
                 } else {
                     /**
@@ -3465,7 +3508,6 @@ function handle_move_to_thread_replies(button) {
                      * and then we scroll to the replies secction
                      */
                     var wait_for_viewer_infos = window.setInterval(function() {
-                        console.log("wait");
                         if($('.tmvisc').find('.thread-media-viewer-infos-content').length) {
                             document.getElementById("viewer-replies-site").scrollIntoView(true);
                             clearInterval(wait_for_viewer_infos);
@@ -3646,7 +3688,6 @@ function handle_report_textarea(textarea) {
         let counter_phrase = counter_container.parent().find('.too-long-text').val() + ' ' + more_than_max + ' ' + chars_text;
         counter_container.find('.report-content-count').text('');
         counter_container.find('.report-content-count-phrase').text(counter_phrase);
-        console.log('more');
 
         counter_container.removeClass('gray');
         counter_container.css('color', '#e83131');

@@ -2800,31 +2800,58 @@ function handle_thread_medias_containers(thread_medias_container) {
     }
 }
 
-$('.thread-media').each(function() {
-    $(this).on('load', function() {
-        handle_media_image_dimensions($(this));
+// $('.thread-media').each(function() {
+//     $(this).on('load', function() {
+//         handle_media_image_dimensions($(this));
+        
+//         // Following code handle thread with one image
+//         let image = $(this);
+//         let thread_medias_container = $(this);
+//         while(!thread_medias_container.hasClass('thread-medias-container')) {
+//             thread_medias_container = thread_medias_container.parent();
+//         }
+
+//         if(thread_medias_container.find('.thread-media-container').length == 1) {
+//             if(image.height() > thread_medias_container.height()) {
+//                 let thread_media_container = thread_medias_container.find('.thread-media-container');
+//                 let max_height = parseInt(image.parent().css('max-height'), 10);
+//                 let container_height = thread_media_container.height();
+
+//                 while(container_height < max_height && container_height < image.height()) {
+//                     thread_media_container.height(container_height+1);
+//                     container_height++;
+//                 }
+//                 handle_media_image_dimensions(image);
+//             }
+//         }
+//     });
+// });
+
+$('.thread-media-container').each(function() {
+    console.log('new image handling');
+    let media_container = $(this);
+    media_container.imagesLoaded(function() {
+        console.log('image is ready to be handled !');
+        let frame = media_container.find('.thread-media');
+        handle_media_image_dimensions(frame);
         
         // Following code handle thread with one image
-        let image = $(this);
-        let thread_medias_container = $(this);
-        while(!thread_medias_container.hasClass('thread-medias-container')) {
-            thread_medias_container = thread_medias_container.parent();
-        }
+        let thread_medias_container = media_container.parent();
 
         if(thread_medias_container.find('.thread-media-container').length == 1) {
-            if(image.height() > thread_medias_container.height()) {
-                let thread_media_container = thread_medias_container.find('.thread-media-container');
-                let max_height = parseInt(image.parent().css('max-height'), 10);
-                let container_height = thread_media_container.height();
+            if(frame.height() > media_container.height()) {
+                let max_height = parseInt(media_container.css('max-height'), 10);
+                let container_height = media_container.height();
 
-                while(container_height < max_height && container_height < image.height()) {
-                    thread_media_container.height(container_height+1);
-                    container_height++;
+                let count = 1;
+                while(container_height < max_height && container_height < frame.height()) {
+                    media_container.height(container_height++);
                 }
-                handle_media_image_dimensions(image);
+                handle_media_image_dimensions(frame);
+                media_container.css('align-items', 'flex-start');
             }
         }
-    });
+    })
 });
 
 let images_loaded = false;

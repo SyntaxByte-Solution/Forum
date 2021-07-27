@@ -3410,7 +3410,7 @@ function handle_viewer_media_logic(image) {
  *      container_width == container_height
  *      container_width > container_height
  *      container_width < container_height
- * Image possibilities (10 possibilities)
+ * Image possibilities (10 possibilities) ----------- THE CASES IN DOCS ARE MESSY THEY NEED TO BE UPDATED BECAUSE I UPDATED THE LOGIC -------------
  *      case#1 = container_width < container_height && image_width > image_height
  *      case#2 = container_width < container_height && image_width < image_height && image_height > container_height
  *      case#3 = container_width < container_height && image_width < image_height && image_height > container_height
@@ -3437,10 +3437,12 @@ function handle_media_image_dimensions(image) {
             if(height > container_height) {
                 if(width < container_width) {
                     /** CASE #2 */
+                    console.log('case#2');
                     image.width(container_width);
                     image.css('height', 'max-content');
                 } else {
                     /** CASE #3 */
+                    console.log('case#3');
                     image.height(container_height);
                     if(image.width() < container_width) {
                         // Calculate the ratio
@@ -3452,6 +3454,7 @@ function handle_media_image_dimensions(image) {
                 }
             } else {
                 /** CASE #4 */
+                console.log('case#4');
                 image.height(container_height);
                 if(image.width() < container_width) {
                     // Calculate the ratio
@@ -3461,9 +3464,27 @@ function handle_media_image_dimensions(image) {
                     image.height(new_height);
                 }
             }
-        } else {
+        } else if(height < width) {
             /** CASE #1 */
+            console.log('case#1');
+            if(height > container_height) {
+                if(width < container_width) {
+                    /** CASE #2 */
+                    console.log('case#2');
+                    image.css('width', '100%');
+                    image.css('height', 'max-content');
+                } else {
+                    /** CASE #3 */
+                    image.css('height', '100%');
+                    image.css('width', 'max-content');
+                }
+            } else {
+                image.height('100%');
+                image.css('width', '100%');
+            }
+        } else {
             image.css('width', '100%');
+            image.css('height', 'max-content');
         }
     } else if(container_height < container_width) {
         if(width > height) {

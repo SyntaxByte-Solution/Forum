@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Scopes\ExcludePrivateScope;
-use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like, Report};
+use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like, Report, Notification};
 
 class Thread extends Model
 {
@@ -31,8 +31,18 @@ class Thread extends Model
                 }
                 $thread->votes()->delete();
                 $thread->posts()->forceDelete();
+
+                foreach(Notification::all() as $notification) {
+                    $data = json_decode($notification->data, true);
+                    $resource_type = explode('-', $data['action_type'])[0];
+                    if($data['action_resource_id'] == $thread->id
+                    && $resource_type == 'thread') {
+                        $notification->delete();
+                    }
+                }
             } else {
-                $thread->posts()->delete();
+                // Here there's no need to soft delete posts as the thread is sift deleted
+                // $thread->posts()->delete();
             }
         });
     }

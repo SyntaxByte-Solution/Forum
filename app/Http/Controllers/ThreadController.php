@@ -249,7 +249,7 @@ class ThreadController extends Controller
         $forum = Forum::find($category->forum_id);
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $categories = $forum->categories->where('slug', '<>', 'announcements');
-        $medias;
+        $medias = [];
         if($thread->has_media) {
             $medias_urls = Storage::disk('public')->files('users/' . $user->id . '/threads/' . $thread->id . '/medias');
             $medias = [];
@@ -313,6 +313,14 @@ class ThreadController extends Controller
             return route('thread.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
         }
 
+        $data = request()->validate([
+            'subject'=>'sometimes|min:2|max:1000',
+            'content'=>'sometimes|min:2|max:40000',
+            'replies_off'=>'sometimes|boolean',
+            'category_id'=>'sometimes|exists:categories,id',
+            'status_id'=>'sometimes|exists:thread_status,id',
+        ]);
+
         // If the user add images to thread we have to validate them
         if(request()->has('images')) {
             $validator = Validator::make(
@@ -333,6 +341,8 @@ class ThreadController extends Controller
                         'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', 'public'
                     );
                 }
+
+                $data['has_media'] = 1;
             }
         }
         if(request()->has('videos')) {
@@ -354,16 +364,10 @@ class ThreadController extends Controller
                         'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', 'public'
                     );
                 }
+
+                $data['has_media'] = 1;
             }
         }
-
-        $data = request()->validate([
-            'subject'=>'sometimes|min:2|max:1000',
-            'content'=>'sometimes|min:2|max:40000',
-            'replies_off'=>'sometimes|boolean',
-            'category_id'=>'sometimes|exists:categories,id',
-            'status_id'=>'sometimes|exists:thread_status,id',
-        ]);
 
         if($request->has('removed_medias')) {
             // Here we don't have to delete files directly, because we have to check if the deleted files blong to the thread
@@ -421,9 +425,7 @@ class ThreadController extends Controller
 
     public function delete(Thread $thread) {
         $this->authorize('delete', $thread);
-
-        $forum_slug = Forum::find(Category::find($thread['category_id'])->forum_id)->slug;
-
+        
         /**
          * Notice here we don't have to delete the related resource because we used soft
          * deleting so the user could restore the post later. But we need to clean up when the

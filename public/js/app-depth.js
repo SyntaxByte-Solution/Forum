@@ -72,12 +72,15 @@ $('.handle-image-center-positioning').each(function() {
 function handle_image_dimensions(image) {
     width = image.width();
     height = image.height();
-    if(width >= height) {
+    if(width > height) {
         image.height('100%');
         image.css('width', 'max-content');
-    } else {
+    } else if(width < height) {
         image.width('100%');
         image.css('height', 'max-content');
+    } else {
+        image.width('100%');
+        image.height('100%');
     }
 }
 function handle_complexe_image_dimensions(image) {
@@ -3913,4 +3916,15 @@ $('.close-thread-media-upload-edit').click(function() {
     console.log(edit_deleted_medias);
 
     $(this).parent().remove();
+});
+
+$('.thread-media-options .open-thread-image').click(function() {
+    let medias_container = $(this);
+    while(!medias_container.hasClass('thread-medias-container')) {
+        medias_container = medias_container.parent();
+    }
+
+    medias_container.find('video').each(function() {
+        $(this)[0].pause();
+    });
 });

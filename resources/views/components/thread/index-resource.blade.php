@@ -28,30 +28,28 @@
             </div>
         </div>
     </div>
-    <div class="fixed full-shadowed zi12 thread-deletion-viewer">
-        <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
-        <div class="shadowed-view-section-style">
-            <h2>{{ __('Please make sure you want to delete the thread !') }}</h2>
-            <div class="flex">
-                <div class="half-width my8 mx4">
-                    <form action="{{ route('thread.delete', ['thread'=>$thread->id]) }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <input type="submit" class="button-style mr8" value='DELETE'>
-                    </form>
-                    <p class="fs12">{{ __('This will throw the thread to the trash. However It will not be deleted completely, you can restore it later if you want by going to your archive and select the thread to restore it !') }}</p>
-                </div>
-                <div class="half-width my8 mx4">
-                    <form action="{{ route('thread.destroy', ['thread'=>$thread->id]) }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <input type="submit" class="button-style mr8" value='FORCE DELETE'>
-                    </form>
-                    <p class="fs12">{{ __('This will remove the thread completely from our system. If you choose this option the thread will be removed permanently as well as all related replies') }}</p>
-                </div>
+    <div class="absolute full-shadowed zi12 thread-deletion-viewer br6">
+        <a href="" class="close-shadowed-view close-shadowed-view-button" style="top: 6px; right: 6px; width: 30px; height: 30px"></a>
+        <div class="white px8 py8 full-height flex flex-column justify-center border-box">
+            <h2 class="no-margin fs18">{{ __('Please make sure you want to delete the thread !') }}</h2>
+            <div class="my8 mx4 flex space-between">
+                <form action="{{ route('thread.delete', ['thread'=>$thread->id]) }}" class="trash-form" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit" class="simple-white-button move-to-trash mr8" value='{{ __("Move to trash") }}'>
+                </form>
+                <p class="fs12 no-margin" style="width: 75%">{{ __('This will throw the thread to the trash. However you can restore it later by going to your archive to restore it !') }}</p>
+            </div>
+            <div class="my8 mx4 flex space-between">
+                <form action="{{ route('thread.destroy', ['thread'=>$thread->id]) }}" class="delete-permanent-form" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit" class="simple-white-button mr8" value='{{ __("Delete permanently") }}'>
+                </form>
+                <p class="fs12 no-margin" style="width: 75%">{{ __('This will remove the thread permanently. By removing the thread, everything related to it will be deleted (replies, votes ..)') }}</p>
             </div>
             <div>
-                <a href="" class="button-style close-shadowed-view-button move-to-right" style="display: block; text-align: center; width: 60px">Exit</a>
+                <a href="" class="simple-white-button close-shadowed-view-button move-to-right" style="display: block; text-align: center; width: 60px">Exit</a>
             </div>
         </div>
     </div>

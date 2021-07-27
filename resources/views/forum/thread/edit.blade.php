@@ -102,7 +102,6 @@
                     @endforeach
                 </select>
             </div>
-            @if($thread->has_media)
             <div class="input-container">
                 <label for="category" class="label-style-1">{{ __('Medias') }}</label>
                 <div class="thread-add-media-section px8">
@@ -144,68 +143,69 @@
                     @php
                         $count = 0;
                     @endphp
-                    @foreach($medias as $media)
-                    <div class="thread-add-uploaded-media relative">
-                        <img src="@if($media['type'] == 'image'){{ asset($media['frame']) }}@endif" class="thread-add-uploaded-image move-to-middle" id="media{{ $count }}" alt="">
-                        <div class="close-thread-media-upload-edit x-close-container-style remove">
-                            <span class="x-close unselectable">✖</span>
-                        </div>
-                        @if($media['type'] == 'video')
-                        <div class="thread-add-video-indicator full-center">
-                            <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
-                        </div>
-                        <script type="module" defer>
-                            let image = $('#media{{ $count }}');
-                            let video_url = "{{ asset($media['frame']) }}";
+                    @if($thread->has_media)
+                        @foreach($medias as $media)
+                        <div class="thread-add-uploaded-media relative">
+                            <img src="@if($media['type'] == 'image'){{ asset($media['frame']) }}@endif" class="thread-add-uploaded-image move-to-middle" id="media{{ $count }}" alt="">
+                            <div class="close-thread-media-upload-edit x-close-container-style remove">
+                                <span class="x-close unselectable">✖</span>
+                            </div>
+                            @if($media['type'] == 'video')
+                            <div class="thread-add-video-indicator full-center">
+                                <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
+                            </div>
+                            <script type="module" defer>
+                                let image = $('#media{{ $count }}');
+                                let video_url = "{{ asset($media['frame']) }}";
 
-                            var GetFileBlobUsingURL = function (url, convertBlob) {
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open("GET", url);
-                                    xhr.responseType = "blob";
-                                    xhr.addEventListener('load', function() {
-                                        convertBlob(xhr.response);
+                                var GetFileBlobUsingURL = function (url, convertBlob) {
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open("GET", url);
+                                        xhr.responseType = "blob";
+                                        xhr.addEventListener('load', function() {
+                                            convertBlob(xhr.response);
+                                        });
+                                        xhr.send();
+                                };
+                                var blobToFile = function (blob, name) {
+                                        blob.lastModifiedDate = new Date();
+                                        blob.name = name;
+                                        return blob;
+                                };
+                                var GetFileObjectFromURL = function(filePathOrUrl, convertBlob) {
+                                    GetFileBlobUsingURL(filePathOrUrl, function (blob) {
+                                        convertBlob(blobToFile(blob, 'testFile.jpg'));
                                     });
-                                    xhr.send();
-                            };
-                            var blobToFile = function (blob, name) {
-                                    blob.lastModifiedDate = new Date();
-                                    blob.name = name;
-                                    return blob;
-                            };
-                            var GetFileObjectFromURL = function(filePathOrUrl, convertBlob) {
-                                GetFileBlobUsingURL(filePathOrUrl, function (blob) {
-                                    convertBlob(blobToFile(blob, 'testFile.jpg'));
-                                });
-                            };
+                                };
 
-                            GetFileObjectFromURL(video_url, function (fileObject) {
-                                get_thumbnail(fileObject, 1.5, image.parent()).then(value => {
-                                    image.attr("src", value);
+                                GetFileObjectFromURL(video_url, function (fileObject) {
+                                    get_thumbnail(fileObject, 1.5, image.parent()).then(value => {
+                                        image.attr("src", value);
+                                    });
                                 });
-                            });
-                            image.parent().imagesLoaded(function() {
-                                handle_image_dimensions(image);
-                            });
-                            already_uploaded_thread_videos_assets.push(video_url);
-                        </script>
-                        @elseif($media['type'] == 'image')
-                        <script type="module" defer>
-                            let image = $('#media{{ $count }}');
-                            let image_url = "{{ asset($media['frame']) }}";
-                            image.parent().imagesLoaded(function() {
-                                handle_image_dimensions(image);
-                            });
-                            already_uploaded_thread_images_assets.push(image_url);
-                        </script>
-                        @endif
-                        <input type="hidden" class="uploaded-media-index" value="-1">
-                        <input type="hidden" class="uploaded-media-genre" value="">
-                        <input type="hidden" class="uploaded-media-url" value="{{ $media['frame'] }}">
-                    </div>
-                    @php $count++; @endphp
-                @endforeach
+                                image.parent().imagesLoaded(function() {
+                                    handle_image_dimensions(image);
+                                });
+                                already_uploaded_thread_videos_assets.push(video_url);
+                            </script>
+                            @elseif($media['type'] == 'image')
+                            <script type="module" defer>
+                                let image = $('#media{{ $count }}');
+                                let image_url = "{{ asset($media['frame']) }}";
+                                image.parent().imagesLoaded(function() {
+                                    handle_image_dimensions(image);
+                                });
+                                already_uploaded_thread_images_assets.push(image_url);
+                            </script>
+                            @endif
+                            <input type="hidden" class="uploaded-media-index" value="-1">
+                            <input type="hidden" class="uploaded-media-genre" value="">
+                            <input type="hidden" class="uploaded-media-url" value="{{ $media['frame'] }}">
+                        </div>
+                        @php $count++; @endphp
+                    @endforeach
+                @endif
             </div>
-            @endif
             <script type="module" defer>
                 console.log('uploaded images: ');
                 console.log(already_uploaded_thread_images_assets);

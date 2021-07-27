@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\Filesystem;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
@@ -312,34 +313,6 @@ class ThreadController extends Controller
             return route('thread.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
         }
 
-        $data = request()->validate([
-            'subject'=>'sometimes|min:2|max:1000',
-            'content'=>'sometimes|min:2|max:40000',
-            'replies_off'=>'sometimes|boolean',
-            'category_id'=>'sometimes|exists:categories,id',
-            'status_id'=>'sometimes|exists:thread_status,id',
-        ]);
-
-        $thread->update($data);
-
-        if($request->has('removed_medias')) {
-            // Here we don't have to delete files directly, because we have to check if the deleted files blong to the thread
-            $removed_medias_urls = json_decode($request->removed_medias);
-
-            foreach($removed_medias_urls as $media_url) {
-                $file_name = basename($media_url);
-                $file_path = 'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias/' . $file_name;
-                $exists = Storage::disk('public')->exists($file_path);
-                
-                if($exists) {
-                    Storage::disk('public')->move(
-                        $file_path, 
-                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/trash/' . $file_name
-                    );
-                }
-            }
-        }
-
         // If the user add images to thread we have to validate them
         if(request()->has('images')) {
             $validator = Validator::make(
@@ -383,6 +356,49 @@ class ThreadController extends Controller
                 }
             }
         }
+
+        $data = request()->validate([
+            'subject'=>'sometimes|min:2|max:1000',
+            'content'=>'sometimes|min:2|max:40000',
+            'replies_off'=>'sometimes|boolean',
+            'category_id'=>'sometimes|exists:categories,id',
+            'status_id'=>'sometimes|exists:thread_status,id',
+        ]);
+
+        if($request->has('removed_medias')) {
+            // Here we don't have to delete files directly, because we have to check if the deleted files blong to the thread
+            $removed_medias_urls = json_decode($request->removed_medias);
+
+            foreach($removed_medias_urls as $media_url) {
+                $file_name = basename($media_url);
+                $file_path = 'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias/' . $file_name;
+                $exists = Storage::disk('public')->exists($file_path);
+                
+                if($exists) {
+                    Storage::disk('public')->move(
+                        $file_path, 
+                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/trash/' . $file_name
+                    );
+                }
+            }
+
+            $FileSystem = new Filesystem();
+            // Target directory.
+            $directory = public_path('users/' . $thread->user->id . '/threads/' . $thread->id . '/medias');
+
+            // Check if the directory exists.
+            if ($FileSystem->exists($directory)) {
+                // Get all files in this directory.
+                $files = $FileSystem->files($directory);
+
+                // Check if media directory is empty.
+                if(empty($files)) {
+                    $data['has_media'] = 0;  
+                }
+            }
+        }
+
+        $thread->update($data);
 
         return $thread->link;
     }

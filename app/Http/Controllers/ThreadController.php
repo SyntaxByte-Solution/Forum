@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
@@ -247,16 +248,34 @@ class ThreadController extends Controller
         $forum = Forum::find($category->forum_id);
         $forums = Forum::where('id', '<>', $forum->id)->get();
         $categories = $forum->categories->where('slug', '<>', 'announcements');
+        $medias;
+        if($thread->has_media) {
+            $medias_urls = Storage::disk('public')->files('users/' . $user->id . '/threads/' . $thread->id . '/medias');
+            $medias = [];
+            foreach($medias_urls as $media) {
+                $media_type;
+                $media_source = $media;
+                $mime = mime_content_type($media);
+                if(strstr($mime, "video/")){
+                    $media_type = 'video';
+                }else if(strstr($mime, "image/")){
+                    $media_type = 'image';
+                }
+
+                $medias[] = ['frame'=>$media_source, 'type'=>$media_type];
+            }
+        }
 
         return view('forum.thread.edit')
             ->with(compact('forums'))
             ->with(compact('forum'))
             ->with(compact('category'))
             ->with(compact('categories'))
+            ->with(compact('medias'))
             ->with(compact('thread'));
     }
 
-    public function update(Thread $thread) {
+    public function update(Request $request, Thread $thread) {
         $this->authorize('update', $thread);
 
         $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;
@@ -302,6 +321,11 @@ class ThreadController extends Controller
         ]);
 
         $thread->update($data);
+
+        if($request->has('removed_medias')) {
+            $removed_medias_urls = $request->removed_medias;
+            Storage::disk('public')->delete($removed_medias_urls);
+        }
 
         return $thread->link;
     }

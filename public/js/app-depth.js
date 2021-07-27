@@ -354,16 +354,21 @@ $('.turn-off-posts').click(function() {
 });
 
 $('.edit-thread').click(function() {
-    
+    let button = $(this);
+    let button_text_ing = button.parent().find('.text-button-ing').val();
+    let button_text_no_ing = button.parent().find('.text-button-no-ing').val();
     let thread_id = $(this).parent().find('.thread_id').val();
     let data = {
         '_token':csrf,
         'subject': $('#subject').val(),
         'category_id': $('#category').val(),
         'content':simplemde.value(),
-        'thread_type': $('#thread_type').val(),
-        '_method': $(this).parent().find('._method').val()
+        '_method': 'patch'
     };
+
+    if(edit_deleted_medias.length) {
+        data.removed_medias = edit_deleted_medias;
+    }
 
     if($('#thread-post-switch').prop("checked") == true) {
         data.replies_off = 1;
@@ -372,29 +377,59 @@ $('.edit-thread').click(function() {
     }
 
     if(data.subject == '') {
-        $('#subject').parent().find('.frt-error').css('display', 'flex');
+        $('#subject').parent().find('.error').removeClass('none');
+        $('.error-container').removeClass('none');
+        $('.error-message').text(button.parent().find('.subject-required-error').val());
+        window.scrollTo(0, 0);
         return;
     } else {
-        $('#subject').parent().find('.frt-error').css('display', 'none');
+        $('#subject').parent().find('.error').addClass('none');
     }
 
     if(data.category_id == '' || data.category_id == 0) {
-        $('#category').parent().find('.frt-error').css('display', 'flex');
+        $('#category').parent().find('.error').removeClass('none');
+        window.scrollTo(0, 0);
         return;
     } else {
-        $('#category').parent().find('.frt-error').css('display', 'none');
+        $('#category').parent().find('.error').addClass('none');
+        $('.error-container').addClass('none');
     }
 
     if(data.content == '') {
-        $('#content').parent().find('.frt-error').css('display', 'flex');
+        $('#content').parent().find('.error').removeClass('none');
+        $('.error-container').removeClass('none');
+        $('.error-message').text(button.parent().find('.content-required-error').val());
+        window.scrollTo(0, 0);
         return;
     } else {
+        $('.error-container').addClass('none');
+        $('#content').parent().find('.error').addClass('none');
+        
+        button.val()
+        button.attr("disabled","disabled");
+        button.attr('style', 'background-color: #acacac; cursor: default');
+
         $.ajax({
             type: 'post',
             data: data,
             url: '/thread/'+thread_id,
             success: function(response) {
                 document.location.href = response;
+            },
+            error: function(response) {
+                let er;
+                let error = JSON.parse(response.responseText).error;
+                if(error) {
+                    er = JSON.parse(response.responseText).error;
+                } else {
+                    let errorObject = JSON.parse(response.responseText).errors;
+                    er = errorObject[Object.keys(errorObject)[0]][0];
+                }
+
+                
+                $('.error-container').removeClass('none');
+                $('.error-message').text(er);
+                window.scrollTo(0, 0);
             }
         })
     }
@@ -2460,8 +2495,8 @@ $("#thread-photos").change(function(event) {
         last_uploaded_image.find('.uploaded-media-genre').val('image'); // this is useful when close button is pressed in order for us to know from where we should delete the uploaded file(either from videos array container/image array container)
 
         last_uploaded_image.removeClass('none thread-add-uploaded-media-projection-model');
-        if(global_medias_count >= 6) {
-            if(global_medias_count == 6)
+        if(global_medias_count >= 5) {
+            if(global_medias_count == 5)
                 $('.thread-add-uploaded-medias-container').addClass('scrollx');
                 
                 // Scroll to the end position of x axe
@@ -2845,14 +2880,17 @@ function handle_thread_medias_containers(thread_medias_container) {
 $('.thread-media-container').each(function() {
     let media_container = $(this);
     media_container.imagesLoaded(function() {
+        
         let frame = media_container.find('.thread-media');
-        handle_media_image_dimensions(frame);
+        if(frame.parent().find('.media-type').val() == 'image') {
+            handle_media_image_dimensions(frame);
+        }
         
         // Following code handle thread with one image
         let thread_medias_container = media_container.parent();
 
         if(thread_medias_container.find('.thread-media-container').length == 1) {
-            if(frame.height() > media_container.height()) {
+            if(frame.height() > media_container.height() && frame.parent().find('.media-type').val() == 'image') {
                 let max_height = parseInt(media_container.css('max-height'), 10);
                 let container_height = media_container.height();
 
@@ -3802,4 +3840,12 @@ $('.submit-thread-report').on('click', function() {
             button.attr('style', '');
         }
     });
+});
+
+let edit_deleted_medias = [];
+$('.close-thread-media-upload-edit').click(function() {
+    edit_deleted_medias.push($(this).parent().find('.uploaded-media-url').val());
+    console.log(edit_deleted_medias);
+
+    $(this).parent().remove();
 });

@@ -197,10 +197,10 @@
                             </div>
                             @endcan
                             @can('update', $thread)
-                            <div class="pointer simple-suboption flex align-center">
+                            <a href="{{ $edit_link }}" target="_blank" class="no-underline simple-suboption flex align-center">
                                 <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
-                                <a href="{{ $edit_link }}" target="_blank" class="no-underline black">{{ __('Edit thread') }}</a>
-                            </div>
+                                <div class="black">{{ __('Edit thread') }}</div>
+                            </a>
                             <div class="pointer simple-suboption flex align-center action-verification">
                                 <div class="small-image-2 sprite sprite-2-size delete17b-icon mr4"></div>
                                 <div class="no-underline black">{{ __('Delete thread') }}</div>

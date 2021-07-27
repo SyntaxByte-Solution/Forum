@@ -72,10 +72,10 @@ function handle_image_dimensions(image) {
     width = image.width();
     height = image.height();
     if(width >= height) {
-        image.height(image_container.height());
+        image.height('100%');
         image.css('width', 'max-content');
     } else {
-        image.width(image_container.width());
+        image.width('100%');
         image.css('height', 'max-content');
     }
 }
@@ -353,30 +353,47 @@ $('.turn-off-posts').click(function() {
     return false;
 });
 
+let already_uploaded_thread_images_assets = [];
+let already_uploaded_thread_videos_assets = [];
 $('.edit-thread').click(function() {
     let button = $(this);
     let button_text_ing = button.parent().find('.text-button-ing').val();
     let button_text_no_ing = button.parent().find('.text-button-no-ing').val();
     let thread_id = $(this).parent().find('.thread_id').val();
-    let data = {
-        '_token':csrf,
-        'subject': $('#subject').val(),
-        'category_id': $('#category').val(),
-        'content':simplemde.value(),
-        '_method': 'patch'
-    };
+
+    let form_data = new FormData();
+    form_data.append('_token' ,csrf);
+    form_data.append('subject' ,$('#subject').val());
+    form_data.append('category_id' ,$('#category').val());
+    form_data.append('content' , simplemde.value());
+    form_data.append('_method', 'patch');
 
     if(edit_deleted_medias.length) {
-        data.removed_medias = edit_deleted_medias;
+        form_data.append('removed_medias', JSON.stringify(edit_deleted_medias));
+    }
+
+    // Checking if the user add new images
+    if(uploaded_thread_images_assets.length) {
+        // Append image files
+        for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
+            form_data.append('images[]', uploaded_thread_images_assets[i]);
+        }
+    }
+    // Checking if the user add new videos
+    if(uploaded_thread_videos_assets.length) {
+        // Append videos files
+        for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
+            form_data.append('videos[]', uploaded_thread_videos_assets[i]);
+        }
     }
 
     if($('#thread-post-switch').prop("checked") == true) {
-        data.replies_off = 1;
+        form_data.append('replies_off', 1);
     } else {
-        data.replies_off = 0;
+        form_data.append('replies_off', 0);
     }
 
-    if(data.subject == '') {
+    if(form_data.get('subject') == '') {
         $('#subject').parent().find('.error').removeClass('none');
         $('.error-container').removeClass('none');
         $('.error-message').text(button.parent().find('.subject-required-error').val());
@@ -386,7 +403,7 @@ $('.edit-thread').click(function() {
         $('#subject').parent().find('.error').addClass('none');
     }
 
-    if(data.category_id == '' || data.category_id == 0) {
+    if(form_data.get('category_id') == '' || form_data.get('category_id') == 0) {
         $('#category').parent().find('.error').removeClass('none');
         window.scrollTo(0, 0);
         return;
@@ -395,7 +412,7 @@ $('.edit-thread').click(function() {
         $('.error-container').addClass('none');
     }
 
-    if(data.content == '') {
+    if(form_data.get('content') == '') {
         $('#content').parent().find('.error').removeClass('none');
         $('.error-container').removeClass('none');
         $('.error-message').text(button.parent().find('.content-required-error').val());
@@ -405,31 +422,40 @@ $('.edit-thread').click(function() {
         $('.error-container').addClass('none');
         $('#content').parent().find('.error').addClass('none');
         
-        button.val()
+        button.val(button_text_ing);
         button.attr("disabled","disabled");
         button.attr('style', 'background-color: #acacac; cursor: default');
 
         $.ajax({
             type: 'post',
-            data: data,
+            data: form_data,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
             url: '/thread/'+thread_id,
             success: function(response) {
                 document.location.href = response;
             },
             error: function(response) {
-                let er;
-                let error = JSON.parse(response.responseText).error;
-                if(error) {
-                    er = JSON.parse(response.responseText).error;
-                } else {
-                    let errorObject = JSON.parse(response.responseText).errors;
-                    er = errorObject[Object.keys(errorObject)[0]][0];
-                }
+                console.log(response);
+                // let er;
+                // let error = JSON.parse(response.responseText).error;
+                // if(error) {
+                //     er = JSON.parse(response.responseText).error;
+                // } else {
+                //     let errorObject = JSON.parse(response.responseText).errors;
+                //     er = errorObject[Object.keys(errorObject)[0]][0];
+                // }
 
                 
-                $('.error-container').removeClass('none');
-                $('.error-message').text(er);
-                window.scrollTo(0, 0);
+                // $('.error-container').removeClass('none');
+                // $('.error-message').text(er);
+                // window.scrollTo(0, 0);
+            },
+            complete: function() {
+                button.val(button_text_no_ing);
+                button.attr("disabled","disabled");
+                button.attr('style', 'background-color: #acacac; cursor: default');
             }
         })
     }
@@ -2430,6 +2456,8 @@ let uploaded_thread_images_assets = [];
 let uploaded_thread_videos_assets = [];
 // This will track image uploads --- [Now it is possible to share more than one image] ---
 $("#thread-photos").change(function(event) {
+    // First we close the error if it is opened
+    $('.thread-add-media-error p').addClass('none');
     /**
      * IMPORTANT: Because this is input file, if it gets clicked two times a row, then it will remove all the first files and
      * replace them with the new files so we will handle the situation where we upload more than one file; then we put them in an array;
@@ -2464,10 +2492,18 @@ $("#thread-photos").change(function(event) {
         media_container.find('.tame-video-type').addClass('none');
     }
 
-    /** then we check the limit of uploaded images */
-    if(validated_images.length + uploaded_thread_images_assets.length > 20) {
+    /** 
+     * then we check the limit of uploaded images 
+     * Notice: already uploaded videos and images is useful in edit page where the user has already upload images
+     * we place those uploaded medias in separate arrays and then we check if the global number of medias is passable
+     * ex: If user already uploaded 5 images, and then later he want to edit the thread by adding
+     * 18 images, here we have to check if 18 + 5 < 20; If so then OK
+     * Otherwise: we have to take only 15 from 18
+     */
+    if(validated_images.length + uploaded_thread_images_assets.length > 20
+        || validated_images.length + already_uploaded_thread_images_assets.length > 20) {
         media_container.find('.tame-image-limit').removeClass('none');
-        validated_images = validated_images.slice(0, 20-uploaded_thread_images_assets.length);
+        validated_images = validated_images.slice(0, 20-(uploaded_thread_images_assets.length+already_uploaded_thread_images_assets.length));
     }
     
     images = validated_images;
@@ -2515,6 +2551,8 @@ $("#thread-photos").change(function(event) {
     $(this).val('');
 });
 $("#thread-videos").change(function(event) {
+    // First we close the error if it is opened
+    $('.thread-add-media-error p').addClass('none');
     /**
      * IMPORTANT: see notices inside thread-image change event handler above
      */
@@ -2536,8 +2574,9 @@ $("#thread-videos").change(function(event) {
     videos = validated_videos;
 
     /** First let's limit the number of uploaded files */
-    if(videos.length + uploaded_thread_videos_assets.length > 4) {
-        videos = videos.slice(0, 4-uploaded_thread_videos_assets.length);
+    if(videos.length + uploaded_thread_videos_assets.length > 4 
+        || videos.length + already_uploaded_thread_videos_assets.length > 4) {
+        videos = videos.slice(0, 4-(uploaded_thread_videos_assets.length+already_uploaded_thread_videos_assets.length));
         media_container.find('.tame-video-limit').removeClass('none');
     } else {
         media_container.find('.tame-video-limit').addClass('none');
@@ -2611,10 +2650,12 @@ $('.thread-add-uploaded-media').each(function() {
 
 function handle_close_uploaded_media(container) {
     container.find('.close-thread-media-upload').on('click', function() {
+        // First we close the error if it is opened
+        $('.thread-add-media-error p').addClass('none');
         /**
-             * Before deleting the component we need the whole components container to decrement the 
-             * global upload media counter and the genre of the component whether it's an image or video
-             */
+         * Before deleting the component we need the whole components container to decrement the 
+         * global upload media counter and the genre of the component whether it's an image or video
+         */
         let container = $(this);
         while(!container.hasClass('thread-add-uploaded-medias-container')) {
             container = container.parent();
@@ -2880,7 +2921,6 @@ function handle_thread_medias_containers(thread_medias_container) {
 $('.thread-media-container').each(function() {
     let media_container = $(this);
     media_container.imagesLoaded(function() {
-        
         let frame = media_container.find('.thread-media');
         if(frame.parent().find('.media-type').val() == 'image') {
             handle_media_image_dimensions(frame);
@@ -3844,6 +3884,9 @@ $('.submit-thread-report').on('click', function() {
 
 let edit_deleted_medias = [];
 $('.close-thread-media-upload-edit').click(function() {
+    // First we close the error if it is opened
+    $('.thread-add-media-error p').addClass('none');
+
     edit_deleted_medias.push($(this).parent().find('.uploaded-media-url').val());
     console.log(edit_deleted_medias);
 

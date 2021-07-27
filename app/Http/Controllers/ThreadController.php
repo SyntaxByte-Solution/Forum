@@ -323,8 +323,65 @@ class ThreadController extends Controller
         $thread->update($data);
 
         if($request->has('removed_medias')) {
-            $removed_medias_urls = $request->removed_medias;
-            Storage::disk('public')->delete($removed_medias_urls);
+            // Here we don't have to delete files directly, because we have to check if the deleted files blong to the thread
+            $removed_medias_urls = json_decode($request->removed_medias);
+
+            foreach($removed_medias_urls as $media_url) {
+                $file_name = basename($media_url);
+                $file_path = 'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias/' . $file_name;
+                $exists = Storage::disk('public')->exists($file_path);
+                
+                if($exists) {
+                    Storage::disk('public')->move(
+                        $file_path, 
+                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/trash/' . $file_name
+                    );
+                }
+            }
+        }
+
+        // If the user add images to thread we have to validate them
+        if(request()->has('images')) {
+            $validator = Validator::make(
+                $request->all(), [
+                'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000',
+                'images' => 'max:20',
+                ],[
+                    'images.*.mimes' => __('Only jpg,jpeg,png,gif and bmp images are alowed'),
+                    'images.*.max' => __('Sorry! Maximum allowed size for an image is 12MB'),
+                ]
+            );
+
+            if ($validator->fails()) {
+                abort(422, $validator->errors());
+            } else {
+                foreach($request->images as $image) {
+                    $image->store(
+                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', 'public'
+                    );
+                }
+            }
+        }
+        if(request()->has('videos')) {
+            $validator = Validator::make(
+                $request->all(), [
+                'videos.*' => 'file|mimes:mp4,webm,mpg,mp2,mpeg,mpe,mpv,ogg,mp4,m4p,m4v,avi|max:500000',
+                'videos' => 'max:4',
+                ],[
+                    'videos.*.mimes' => __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported'),
+                    'videos.*.max' => __('Sorry! Maximum allowed size for a video is 500MB'),
+                ]
+            );
+
+            if ($validator->fails()) {
+                abort(422, $validator->errors());
+            } else {
+                foreach($request->videos as $video) {
+                    $video->store(
+                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', 'public'
+                    );
+                }
+            }
         }
 
         return $thread->link;

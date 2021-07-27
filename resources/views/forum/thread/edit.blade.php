@@ -104,9 +104,6 @@
             </div>
             @if($thread->has_media)
             <div class="input-container">
-                @error('category_id')
-                    <p class="error" role="alert">{{ $message }}</p>
-                @enderror
                 <label for="category" class="label-style-1">{{ __('Medias') }}</label>
                 <div class="thread-add-media-section px8">
                     <div class="thread-add-media-error px8 my8">
@@ -115,7 +112,8 @@
                         <p class="error tame-video-type none">* {{ __('Only .MP4, .WEBM, .MPG, .MP2, .MPEG, .MPE, .MPV, .OGG, .M4P, .M4V, .AVI video formats are supported') }}.</p>
                         <p class="error tame-video-limit none">* {{ __('You could only upload 4 videos max per post') }}.</p>
                     </div>
-                    <div class="flex">
+                    <div class="flex align-center">
+                        <p class="no-margin fs13">{{ __('Add media') }}: </p>
                         <div class="flex align-center thread-add-button-hover-style mr8 relative">
                             <div class="size24 sprite sprite-2-size image24-icon mr4"></div>
                             <p class="no-margin fs13">Photos</p>
@@ -127,27 +125,22 @@
                             <input type="file" name="videos[]" id="thread-videos" class="thread-add-file-input" multiple accept=".mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi">
                         </div>
                     </div>
-                    <div class="thread-add-uploaded-medias-container flex my4">
-                        <input type="hidden" class="uploaded-images-counter" value="0" autocomplete="off">
-                        <input type="hidden" class="uploaded-videos-counter" value="0" autocomplete="off">
-                        <!-- the following div will be used to clone uploaded images -->
-                        <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
-                            <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">
-                            <div class="close-thread-media-upload x-close-container-style remove">
-                                <span class="x-close unselectable">✖</span>
-                            </div>
-                            <div class="thread-add-video-indicator full-center none">
-                                <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
-                            </div>
-                            <input type="hidden" class="uploaded-media-index" value="-1">
-                            <input type="hidden" class="uploaded-media-genre" value="">
-                        </div>
-                    </div>
                 </div>
                 <div class="thread-add-uploaded-medias-container flex my4">
                     <input type="hidden" class="uploaded-images-counter" value="0" autocomplete="off">
                     <input type="hidden" class="uploaded-videos-counter" value="0" autocomplete="off">
                     <!-- the following div will be used to clone uploaded images -->
+                    <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
+                        <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">
+                        <div class="close-thread-media-upload x-close-container-style remove">
+                            <span class="x-close unselectable">✖</span>
+                        </div>
+                        <div class="thread-add-video-indicator full-center none">
+                            <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
+                        </div>
+                        <input type="hidden" class="uploaded-media-index" value="-1">
+                        <input type="hidden" class="uploaded-media-genre" value="">
+                    </div>
                     @php
                         $count = 0;
                     @endphp
@@ -174,13 +167,11 @@
                                     });
                                     xhr.send();
                             };
-
                             var blobToFile = function (blob, name) {
                                     blob.lastModifiedDate = new Date();
                                     blob.name = name;
                                     return blob;
                             };
-
                             var GetFileObjectFromURL = function(filePathOrUrl, convertBlob) {
                                 GetFileBlobUsingURL(filePathOrUrl, function (blob) {
                                     convertBlob(blobToFile(blob, 'testFile.jpg'));
@@ -192,7 +183,19 @@
                                     image.attr("src", value);
                                 });
                             });
-                            
+                            image.parent().imagesLoaded(function() {
+                                handle_image_dimensions(image);
+                            });
+                            already_uploaded_thread_videos_assets.push(video_url);
+                        </script>
+                        @elseif($media['type'] == 'image')
+                        <script type="module" defer>
+                            let image = $('#media{{ $count }}');
+                            let image_url = "{{ asset($media['frame']) }}";
+                            image.parent().imagesLoaded(function() {
+                                handle_image_dimensions(image);
+                            });
+                            already_uploaded_thread_images_assets.push(image_url);
                         </script>
                         @endif
                         <input type="hidden" class="uploaded-media-index" value="-1">
@@ -203,6 +206,12 @@
                 @endforeach
             </div>
             @endif
+            <script type="module" defer>
+                console.log('uploaded images: ');
+                console.log(already_uploaded_thread_images_assets);
+                console.log('uploaded videos: ');
+                console.log(already_uploaded_thread_videos_assets);
+            </script>
             <div class="input-container" style='margin-top: 10px'>
                 <label for="content" class="label-style-1">{{ __('Content') }} <span class="error ml4 none">*</span></label>
                 <p class="mini-label" style='margin-bottom: 6px'>Include all the information someone would need to answer your question</p>

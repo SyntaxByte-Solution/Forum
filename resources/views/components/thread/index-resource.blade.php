@@ -83,7 +83,9 @@
             <div class="thread-header-section space-between">
                 <div class="flex">
                     <div class="flex">
-                        <img src="{{ $thread->user->avatar }}" class="thread-owner-avatar flex rounded mr4" style="height: 32px; width: 32px" alt="" loading="lazy">
+                        <div style="width: 32px; height: 32px" class="rounded mr4 hidden-overflow">
+                            <img src="{{ $thread->user->avatar }}" class="thread-owner-avatar flex handle-image-center-positioning" alt="">
+                        </div>
                         <div>
                             <div class="flex align-center follow-box">
                                 <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="forum-color no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>

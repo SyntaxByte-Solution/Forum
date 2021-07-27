@@ -18,7 +18,9 @@
         <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
         <input type="hidden" class="category" value="{{ $category->id }}">
         <div class="thread-add-header flex align-center">
-            <img src="{{ auth()->user()->avatar }}" class="size28 rounded mr4" alt="">
+            <div class="size28 rounded hidden-overflow">
+                <img src="{{ auth()->user()->avatar }}" class="mr4 handle-image-center-positioning" alt="">
+            </div>
             <div class="relative">
                 <div>
                     <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to fs12">

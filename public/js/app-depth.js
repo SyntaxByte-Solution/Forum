@@ -63,12 +63,13 @@ $('.x-close-container').click(function(event) {
 })
 
 $('.handle-image-center-positioning').each(function() {
-    handle_image_dimensions($(this));
+    let image = $(this);
+    $(this).parent().imagesLoaded(function() {
+        handle_image_dimensions(image);
+    });
 });
 
 function handle_image_dimensions(image) {
-    let image_container = image.parent();
-
     width = image.width();
     height = image.height();
     if(width >= height) {

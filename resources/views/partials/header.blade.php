@@ -79,16 +79,16 @@
                     </div>
                     <div class="relative">
                         <div class="flex align-center pointer button-with-suboptions">
-                            <div class='header-profile-button relative has-fade'>
+                            <div class='header-profile-button relative has-fade' style="align-items: flex-start">
                                 <div class="fade-loading"></div>
-                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning" loading="lazy">
+                                <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="header-profile-picture handle-image-center-positioning">
                             </div>
                             <p class="no-margin fs13 mx4 light-gray">{{ $user->username }} <span>▾</span></p>
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="flex first-profile-container-part">
                                 <a href="{{ route('user.profile', ['user'=>$user->username]) }}">
-                                    <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded size36 mr8" loading="lazy">
+                                    <img src="{{ auth()->user()->avatar }}" alt="profile picture" class="rounded size36 mr8">
                                 </a>
                                 <div>
                                     <p class="no-margin fs15 bold unselectable">{{ $user->firstname . ' ' . $user->lastname }}</p>

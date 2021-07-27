@@ -220,12 +220,15 @@ class UserController extends Controller
         ]);
 
         if($request->avatar_removed) {
-            $data['avatar'] = null;
-            $data['provider_avatar'] = null;
+            if($user->avatar == null) {
+                $data['provider_avatar'] = null;
+            } else {
+                $data['avatar'] = null;
+            }
         }
         else if($request->hasFile('avatar')){
-            $path = $request->file('avatar')->store(
-                'users/' . $user->id . '/avatars', 'public'
+            $path = $request->file('avatar')->storeAs(
+                'users/avatars', $request->user()->id.'.png', 'public'
             );
 
             $data['avatar'] = $path;
@@ -251,8 +254,8 @@ class UserController extends Controller
             $data['cover'] = null;
         }
         else if($request->hasFile('cover')){
-            $path = $request->file('cover')->store(
-                'users/' . $user->id . '/covers', 'public'
+            $path = $request->file('cover')->storeAs(
+                'users/covers', $user->id.'cover.png', 'public'
             );
 
             $data['cover'] = $path;

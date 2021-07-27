@@ -9,8 +9,8 @@
 
     <title>@yield('title', 'Moroccan Gladiator')</title>
     
-    <script src="{{ asset('js/bootstrap.js') }}" async></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/bootstrap.js') }}" async></script>
     
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

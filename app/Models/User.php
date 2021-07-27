@@ -41,6 +41,7 @@ class User extends UserAuthenticatable implements Authenticatable
 
     // Mutators
     public function getAvatarAttribute($value) {
+        $user = $this;
         if(!$value) {
             if($this->provider_avatar) {
                 return $this->provider_avatar;

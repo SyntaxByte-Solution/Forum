@@ -96,6 +96,7 @@ class UserAction extends Notification implements ShouldBroadcast
             'resource_date'=>$this->action_date,
             'action_resource_link'=>$this->action_resource_link,
             'resource_action_icon'=>$resource_action_icon,
+            'action_type'=>$this->action_type
         ]));
     }
 

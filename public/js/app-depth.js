@@ -1903,6 +1903,7 @@ if(userId != "") {
                     action_resource_link: notification.action_resource_link,
                     resource_action_icon: notification.resource_action_icon,
                     notif_read: notification.notif_read,
+                    action_type: notification.action_type
                 },
                 success: function(response) {
                     $('.notifs-box').prepend(response);
@@ -1914,6 +1915,12 @@ if(userId != "") {
                     handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
                 }
             })
+
+            if($("#page").length) {
+                if($("#page").val() == "notifications-page") {
+                    handle_mark_as_read();
+                }
+            }
         });
 }
 

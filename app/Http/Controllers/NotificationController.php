@@ -36,6 +36,7 @@ class NotificationController extends Controller
             'action_date'=>'required|max:400',
             'action_resource_link'=>'required|max:400',
             'resource_action_icon'=>'required|max:400',
+            'action_type'=>'required|max:800'
         ]);
 
         $notification['action_user'] = User::find($notification['action_user']);

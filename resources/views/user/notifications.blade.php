@@ -34,6 +34,7 @@
 @endsection
 
 @section('content')
+    <input type="hidden" id="page" value="notifications-page">
     @include('partials.left-panel', ['page' => '', 'subpage'=>''])
     <div id="middle-container" class="middle-padding-1">
         <div class="flex">

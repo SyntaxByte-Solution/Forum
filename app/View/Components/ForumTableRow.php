@@ -7,6 +7,7 @@ use App\Models\{Forum, Category, Post, Thread, User};
 
 class ForumTableRow extends Component
 {
+    public $forum;
     public $forum_icon;
     public $forum_slug;
     public $forum_forum;
@@ -22,7 +23,7 @@ class ForumTableRow extends Component
 
     public function __construct(Forum $forum)
     {
-        $this->forum_icon = $forum->icon;
+        $this->forum = $forum;
         $this->forum_slug = $forum->slug;
         $this->forum_forum = $forum->forum;
         $this->forum_description = $forum->description;
@@ -40,11 +41,6 @@ class ForumTableRow extends Component
             $this->last_thread_title = strlen($last_thread->subject) > 80 ? substr($last_thread->subject, 0, 80) : $last_thread->subject;
             $this->last_thread_owner_username = User::find($last_thread->user_id)->username;
             $this->last_thread_date = $last_thread->created_at;
-            if($last_thread->thread_type == 1) {
-                $this->last_thread_link = route('thread.show', ['forum'=>$forum->slug, 'category'=>$category->slug, 'thread'=>$last_thread->id]);
-            } else if($last_thread->thread_type == 2) {
-
-            }
         }
     }
 

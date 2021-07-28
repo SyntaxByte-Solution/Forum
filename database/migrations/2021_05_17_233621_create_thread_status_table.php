@@ -17,6 +17,7 @@ class CreateThreadStatusTable extends Migration
             $table->id();
             $table->string('status')->unique();
             $table->string('slug')->unique();
+            $table->string('icon')->nullable();
             $table->timestamps();
         });
     }

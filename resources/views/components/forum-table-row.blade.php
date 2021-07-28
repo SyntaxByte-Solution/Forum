@@ -2,7 +2,9 @@
     <td>
         <div class="flex">
             <div>
-                <img src="{{ asset('assets/images/icons') . '/' . $forum_icon }}" class="small-image-1 mx8" alt="">
+                <svg class="small-image-1 mr8" style="margin-top: 2px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    {!! $forum->icon !!}
+                </svg>
             </div>
             <div class="flex">
                 <div class="forum-category-icon-container">

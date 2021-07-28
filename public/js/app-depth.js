@@ -2126,6 +2126,9 @@ $('.thread-add-forum').click(function() {
         url: `/forums/${forum_id}/categories/ids`,
         type: 'get',
         success: function(response) {
+            // First change the icon
+            $('.thread-add-forum-icon').html(button.find('.forum-ico').html());
+
             let categories = JSON.parse(response);
             $('.thread-add-category:not(:first)').remove();
 
@@ -2152,7 +2155,7 @@ $('.thread-add-forum').click(function() {
         complete: function() {
             // Stop loading animation
             loading_anim.addClass('none');
-            loading_anim.text('.');
+            loading_anim.text('•');
             stop_loading_anim();
 
             thread_add_container.find('.forum').val(forum_id);
@@ -2351,10 +2354,10 @@ $('.thread-status-button').click(function() {
             status_slug: status_slug
         },
         success: function() {
-            let button_ico = thread_container_box.find('.thread-status-button-14icon');
-            let lastClass = button_ico.attr('class').split(' ').pop();
-            button_ico.removeClass(lastClass);
-            button_ico.addClass(button.find('.icon-when-selected').val());
+            let button_ico = thread_container_box.find('.thread-resource-status-icon');
+            let new_path = button.find('.icon-path-when-selected').val();
+            
+            button_ico.find('path').attr('d', new_path);
         },
         complete: function() {
             thread_status_lock = true;
@@ -2378,12 +2381,11 @@ $('.thread-add-status').click(function(event) {
 
     container.find('.thread-add-status-slug').val($(this).find('.thread-state').val())
 
-    let icon_when_selected = $(this).find('.icon-when-selected').val();
+    let selected_icon_path = $(this).find('.selected-icon-path').val();
     let status_ico = container.find('.thread-add-status-icon');
-    let lastClass = status_ico.attr('class').split(' ').pop();
 
-    status_ico.removeClass(lastClass);
-    status_ico.addClass(icon_when_selected);
+    status_ico.find('path').attr('d', selected_icon_path);
+    
     $(this).parent().css('display', 'none');
 });
 

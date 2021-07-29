@@ -7,7 +7,7 @@
         </div>
     </div>
     @unless(auth()->user() && $follower->id ==auth()->user()->id)
-    <div class="move-to-right height-max-content button-wraper-style @auth follow-resource @endauth @guest login-signin-button @endguest">
+    <div class="move-to-right height-max-content button-wraper-style @auth follow-resource follow-from-profile @endauth @guest login-signin-button @endguest">
         <div class="size14 sprite sprite-2-size follow-button-icon mr4 @if($followed) followed14-icon @else follow14-icon @endif"></div>
         @if($followed)
         <p class="no-margin btn-txt unselectable">{{ __('Followed') }}</p>

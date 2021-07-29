@@ -2407,14 +2407,22 @@ function handle_follow_resource(button) {
             button.attr('style', 'background-color: #009fffad; border-color: #009fffad; cursor: default');
         }
     
-        if(button.find('.status').val() == '1') {
-            button.find('.btn-txt').text(button.find('.unfollowing-text').val());
-        } else {
-            button.find('.btn-txt').text(button.find('.following-text').val());
+        if(button.hasClass('follow-from-profile')) {
+            if(follow_box.find('.status').val() == '1') {
+                button.find('.btn-txt').text(button.find('.unfollowing-text').val());
+            } else {
+                button.find('.btn-txt').text(button.find('.following-text').val());
+            }
+        } else if(button.hasClass('follow-from-index-resource')) {
+            if(follow_box.find('.status').val() == '-1') {
+                button.find('.btn-txt').text(button.find('.following-text').val());
+            } else {
+                button.find('.btn-txt').text(button.find('.unfollowing-text').val());
+            }
         }
     
-        let followable_id = button.find('.followable-id').val();
-        let followable_type = button.find('.followable-type').val();
+        let followable_id = follow_box.find('.followable-id').val();
+        let followable_type = follow_box.find('.followable-type').val();
     
         $.ajax({
             type: 'post',
@@ -2423,32 +2431,47 @@ function handle_follow_resource(button) {
                 _token: csrf
             },
             success: function(response) {
-                let followers_counter = follow_box.find('.followers-counter');
-                let has_icon = button.find('.follow-button-icon').length;
-                let button_icon;
-
-                if(has_icon) {
-                    button_icon = button.find('.follow-button-icon');
-                    let lastClass = button_icon.attr('class').trim().split(' ').pop();
-                    button_icon.removeClass(lastClass);
-                }
-                if(response == -1) {
-                    button.find('.status').val(-1);
-                    button.find('.btn-txt').text(button.find('.follow-text').val());
-                    followers_counter.text(parseInt(followers_counter.text()) - 1);
-                    if(has_icon) {
-                        button_icon.addClass(button.find('.unfollowed-icon').val());
+                if(button.hasClass('follow-from-index-resource')) {
+                    if(follow_box.find('.status').val() == '1') {
+                        button.find('.btn-txt').text(button.find('.unfollow-text').val());
+                        follow_box.find('.status').val(-1);
+                        follow_box.find('.follow-notif-container').addClass('none');
+                        follow_box.find('.follow-text-button').removeClass('none');
                     } else {
-                        button.find('.btn-txt').removeClass('gray'); button.find('.btn-txt').addClass('blue');
+                        follow_box.find('.status').val(1);
+                        button.find('.btn-txt').text(button.find('.follow-text').val());
+                        button.parent().find('.follow-notif-container').removeClass('none');
+                        button.addClass('none');
+                        basic_notification_show(button.find('.follow-success-text').val(), 'tick17-icon');
                     }
-                } else {
-                    button.find('.status').val(1);
-                    button.find('.btn-txt').text(button.find('.followed-text').val());
-                    followers_counter.text(parseInt(followers_counter.text()) + 1);
+                } else if(button.hasClass('follow-from-profile')) {
+                    let followers_counter = follow_box.find('.followers-counter');
+                    let has_icon = button.find('.follow-button-icon').length;
+                    let button_icon;
+    
                     if(has_icon) {
-                        button_icon.addClass(button.find('.followed-icon').val());
+                        button_icon = button.find('.follow-button-icon');
+                        let lastClass = button_icon.attr('class').trim().split(' ').pop();
+                        button_icon.removeClass(lastClass);
+                    }
+                    if(response == -1) {
+                        button.find('.status').val(-1);
+                        button.find('.btn-txt').text(button.find('.follow-text').val());
+                        followers_counter.text(parseInt(followers_counter.text()) - 1);
+                        if(has_icon) {
+                            button_icon.addClass(button.find('.unfollowed-icon').val());
+                        } else {
+                            button.find('.btn-txt').removeClass('gray'); button.find('.btn-txt').addClass('blue');
+                        }
                     } else {
-                        button.find('.btn-txt').removeClass('blue'); button.find('.btn-txt').addClass('gray');
+                        button.find('.status').val(1);
+                        button.find('.btn-txt').text(button.find('.followed-text').val());
+                        followers_counter.text(parseInt(followers_counter.text()) + 1);
+                        if(has_icon) {
+                            button_icon.addClass(button.find('.followed-icon').val());
+                        } else {
+                            button.find('.btn-txt').removeClass('blue'); button.find('.btn-txt').addClass('gray');
+                        }
                     }
                 }
             },

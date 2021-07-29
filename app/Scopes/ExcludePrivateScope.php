@@ -21,12 +21,12 @@ class ExcludePrivateScope implements Scope
     {
         // Only show private threads owned by the current user
         if(!Auth::check()) {
-            $builder->where('status_id', '<>', 4);
+            $builder->where('visibility_id', '<>', 3);
         } else {
             $builder->where(function($query) {
-                $query->where('status_id', '<>', 4)
+                $query->where('visibility_id', '<>', 3)
                 ->orWhere(function($query) {
-                    $query->where('status_id', 4)
+                    $query->where('visibility_id', 3)
                     ->where('user_id', auth()->user()->id);
                 });
             });

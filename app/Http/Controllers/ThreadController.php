@@ -105,7 +105,7 @@ class ThreadController extends Controller
             'subject'=>'required|min:2|max:1000',
             'content'=>'required|min:2|max:40000',
             'category_id'=>'required|exists:categories,id',
-            'status_id'=>'sometimes|exists:thread_status,slug',
+            'visibility_id'=>'sometimes|exists:thread_visibility,slug',
             'content'=>'required|min:2|max:40000',
         ]);
 
@@ -190,8 +190,8 @@ class ThreadController extends Controller
         $data['user_id'] = auth()->user()->id;
 
         // Verify if status is submitted !
-        if($data['status_id']) {
-            $data['status_id'] = ThreadStatus::where('slug', $data['status_id'])->first()->id;
+        if($data['visibility_id']) {
+            $data['visibility_id'] = ThreadVisibility::where('slug', $data['visibility_id'])->first()->id;
         }
         // Verify if medias are uploaded with thread !
         if(request()->has('images') || request()->has('videos')) {

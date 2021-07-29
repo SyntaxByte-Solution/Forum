@@ -2212,7 +2212,7 @@ $('.thread-add-share').click(function(event) {
     form_data.append('_token' ,csrf);
     form_data.append('subject' ,$('#subject').val());
     form_data.append('category_id' ,$('.category').val());
-    form_data.append('status_id' ,$('.thread-add-status-slug').val());
+    form_data.append('visibility_id' ,$('.thread-add-visibility-slug').val());
     form_data.append('content' ,simplemde.value());
 
     let button = $(this);
@@ -2257,6 +2257,7 @@ $('.thread-add-share').click(function(event) {
         }
     }
 
+    $('#subject').attr('disabled', 'disabled');
     button.val(button.parent().find('.message-ing').val());
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #acacac; cursor: default');
@@ -2269,7 +2270,6 @@ $('.thread-add-share').click(function(event) {
         contentType: false,
         data: form_data,
         success: function(response) {
-            $('#subject').val('');
             simplemde.value('');
             $('.thread-add-uploaded-media').slice(1).remove();
             $('.uploaded-images-counter').val('0');

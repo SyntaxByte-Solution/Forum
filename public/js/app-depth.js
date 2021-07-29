@@ -2319,48 +2319,47 @@ function handle_thread_display(thread_container_box) {
     });
 }
 
-let thread_status_lock = true;
-$('.thread-status-button').click(function() {
-    if(!thread_status_lock) {
+let thread_visibility_lock = true;
+$('.thread-visibility-button').click(function() {
+    if(!thread_visibility_lock) {
         return;
     }
-    thread_status_lock = false;
+    thread_visibility_lock = false;
 
-    thread_container_box = $(this);
-    while(!thread_container_box.hasClass('status-box')) {
-        thread_container_box = thread_container_box.parent();
+    let button = $(this);
+    let visibility_box = $(this);
+    while(!visibility_box.hasClass('visibility-box')) {
+        visibility_box = visibility_box.parent();
     }
 
-    thread_container_box.find('.thread-status-button').attr('style','background-color: rgb(250, 250, 250); color: gray');
-    $(this).attr('style', 'background-color: rgb(240, 240, 240); color: black');
-    let loading = $(this).find('.loading-dots-anim');
+    visibility_box.find('.thread-visibility-button').attr('style','background-color: rgb(250, 250, 250); color: gray');
+    button.attr('style', 'background-color: rgb(240, 240, 240); color: black');
+    let loading = button.find('.loading-dots-anim');
     loading.removeClass('none');
     start_loading_anim(loading);
-    
-    let button = $(this);
 
-    let thread_id = $(this).parent().find('.thread-id').val();
-    let status_slug = $(this).find('.thread-add-status-slug').val();
+    let thread_id = visibility_box.find('.thread-id').val();
+    let visibility_slug = button.find('.thread-add-visibility-slug').val();
 
     $.ajax({
-        url: `/thread/status/patch`,
+        url: `/thread/visibility/patch`,
         type: 'patch',
         data: {
             _token: csrf,
             thread_id: thread_id,
-            status_slug: status_slug
+            visibility_slug: visibility_slug
         },
         success: function() {
-            let button_ico = thread_container_box.find('.thread-resource-status-icon');
+            let button_ico = visibility_box.find('.thread-resource-visibility-icon');
             let new_path = button.find('.icon-path-when-selected').val();
             
             button_ico.find('path').attr('d', new_path);
         },
         complete: function() {
-            thread_status_lock = true;
+            thread_visibility_lock = true;
             stop_loading_anim();
             loading.addClass('none');
-            thread_container_box.find('.thread-status-button').attr('style','');
+            visibility_box.find('.thread-visibility-button').attr('style','');
 
             button.parent().css('display', 'none');
         }
@@ -2368,7 +2367,7 @@ $('.thread-status-button').click(function() {
 
 });
 
-$('.thread-add-status').click(function(event) {
+$('.thread-add-visibility').on('click', function(event) {
     event.stopPropagation();
 
     let container = $(this);
@@ -2376,10 +2375,10 @@ $('.thread-add-status').click(function(event) {
         container = container.parent();
     }
 
-    container.find('.thread-add-status-slug').val($(this).find('.thread-state').val())
+    container.find('.thread-add-visibility-slug').val($(this).find('.thread-visibility').val())
 
     let selected_icon_path = $(this).find('.selected-icon-path').val();
-    let status_ico = container.find('.thread-add-status-icon');
+    let status_ico = container.find('.thread-add-visibility-icon');
 
     status_ico.find('path').attr('d', selected_icon_path);
     
@@ -3757,12 +3756,15 @@ function basic_notification_show(message, icon='') {
 }
 
 $('.close-report-container').click(function() {
-    close_report_container();
+    let report_container = $(this);
+    while(!report_container.hasClass('report-resource-container')) {
+        report_container = report_container.parent();
+    }
+
+    close_report_container(report_container);
 });
 
-function close_report_container() {
-    let container = $('.report-resource-container');
-
+function close_report_container(container) {
     container.animate({
         opacity: 0
     }, 500, function() {
@@ -3925,7 +3927,9 @@ $('.submit-thread-report').on('click', function() {
         url: `/${reportable_type}/${reportable_id}/report`,
         data: data,
         success: function(response) {
-            close_report_container();
+            close_report_container(report_container);
+            report_container.find('.report-section').remove();
+            report_container.find('.already-reported-container').removeClass('none');
             basic_notification_show(button.parent().find('.reported-text').val(), 'tick17-icon');
         },
         complete: function() {

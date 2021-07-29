@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Scopes\ExcludePrivateScope;
-use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, Like, Report, Notification};
+use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, ThreadVisibility, Like, Report, Notification};
 
 class Thread extends Model
 {
@@ -61,6 +61,10 @@ class Thread extends Model
 
     public function status() {
         return $this->belongsTo(ThreadStatus::class);
+    }
+
+    public function visibility() {
+        return $this->belongsTo(ThreadVisibility::class);
     }
 
     public function votes() {

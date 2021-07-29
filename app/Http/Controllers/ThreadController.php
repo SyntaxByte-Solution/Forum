@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
-use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadStatus, Post};
+use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post};
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\Http\Controllers\PostController;
 
@@ -407,19 +407,19 @@ class ThreadController extends Controller
         return $thread->link;
     }
 
-    public function update_status(Request $request) {
+    public function update_visibility(Request $request) {
         $data = $request->validate([
             'thread_id'=>'required|exists:threads,id',
-            'status_slug'=>'required|exists:thread_status,slug'
+            'visibility_slug'=>'required|exists:thread_visibility,slug'
         ]);
         $thread = Thread::find($data['thread_id']);
 
         $this->authorize('update', $thread);
 
-        $thread_status_id = ThreadStatus::where('slug', $data['status_slug'])->first()->id;
+        $thread_status_id = ThreadVisibility::where('slug', $data['visibility_slug'])->first()->id;
 
         $thread->update([
-            'status_id'=>$thread_status_id
+            'visibility_id'=>$thread_status_id
         ]);
     }
 

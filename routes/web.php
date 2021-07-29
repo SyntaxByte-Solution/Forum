@@ -28,8 +28,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     $thread = Thread::first();
 
-    $top = \App\Models\Post::top_today_poster();
-    dd($top);
+    dd($thread->visibility->icon);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -103,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/forums/{forum}', [ForumController::class, 'destroy']);
     
     Route::post('/thread', [ThreadController::class, 'store']);
-    Route::patch('/thread/status/patch', [ThreadController::class, 'update_status']);
+    Route::patch('/thread/visibility/patch', [ThreadController::class, 'update_visibility']);
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
     Route::post('/thread/{thread}/report', [ReportController::class, 'thread_report']);

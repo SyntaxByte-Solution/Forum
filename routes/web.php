@@ -10,7 +10,7 @@ use App\Http\Controllers\
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController, MultilanguageHelperController,
     NotificationController, FollowController, ReportController};
-use App\Models\{User, Thread, Report};
+use App\Models\{User, Thread, Post};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -28,12 +28,8 @@ Route::get('/test', function() {
     $user = auth()->user();
     $thread = Thread::first();
 
-    $report['body'] = "It's not important to use Report model";
-    $report['user_id'] = $user->id;
-
-    $thread->reports()->save($report);
-
-    dd(Thread::first()->reports);
+    $top = \App\Models\Post::top_today_poster();
+    dd($top);
 });
 
 Route::get('/', [IndexController::class, 'index']);

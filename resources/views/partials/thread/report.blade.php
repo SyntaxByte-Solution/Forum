@@ -7,7 +7,7 @@
     @if($thread->already_reported)
     <div>
         <div class="flex move-to-middle">
-            <div class="small-image-2 sprite sprite-2-size report17filled-icon mr8" style="margin-top: 1px"></div>
+            <svg class="size17 mr4" style="fill: #1d1d1d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>
             <h2 class="text-center gray my8">{{ __('You already report this discussion.') }}</h2>
         </div>
         <p class="text-center my8">{{ __('We have received your report submit and we are going to verify if this discussion respects our guidelines and standards as soon as possible.') }}</p>
@@ -15,7 +15,7 @@
     @else
     <div style="width: calc(100% - 20px);">
         <div class="flex">
-            <div class="small-image-2 sprite sprite-2-size report17filled-icon mr8" style="margin-top: 1px"></div>
+            <svg class="size17 mr4" style="fill: #1d1d1d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>
             <h3 class="no-margin mb8">{{ __('I am flagging to report this discussion as') }}... </h3>
         </div>
     </div>

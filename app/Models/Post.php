@@ -39,6 +39,29 @@ class Post extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>', today());
+    }
+
+    public static function top_today_poster() {
+        $users_replies = Post::where('created_at', '>', today())->get()->sortBy('created_at')->groupBy('user_id');
+
+        if($users_replies->count()) {
+            $top_today_poster;
+            $ur = -1;
+            foreach($users_replies as $user_replies) {
+                if($user_replies->count() > $ur) {
+                    $top_today_poster = $user_replies->first()->user;
+                    $ur = $user_replies->count();
+                }
+            }
+
+            return $top_today_poster;
+        }
+
+        return false;
+    }
+
     public function liked_by($user) {
         foreach($this->likes as $like) {
             if($like->likable_id == $this->id && $like->likable_type == 'App\Models\Post' && $like->user_id == $user->id) {

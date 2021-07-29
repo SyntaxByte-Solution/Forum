@@ -313,7 +313,7 @@
                     </div>
                     <div class="thread-react-hover move-to-thread-replies flex align-center no-underline">
                         <input type="hidden" class="thread-id" value="{{ $thread->id }}">
-                        <div class="small-image-2 sprite sprite-2-size replyfilled17-icon mr4"></div>
+                        <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448,0H64A64.06,64.06,0,0,0,0,64V352a64.06,64.06,0,0,0,64,64h96v84a12,12,0,0,0,12,12,11.48,11.48,0,0,0,7.1-2.4L304,416H448a64.06,64.06,0,0,0,64-64V64A64.06,64.06,0,0,0,448,0Zm16,352a16,16,0,0,1-16,16H288l-12.8,9.6L208,428V368H64a16,16,0,0,1-16-16V64A16,16,0,0,1,64,48H448a16,16,0,0,1,16,16Z"/></svg>
                         <p class="no-margin unselectable fs12"><span class="thread-replies-counter">{{ $replies }}</span> {{__('replies')}}</p>
                     </div>
                 </div>
@@ -331,7 +331,7 @@
                     </div>
                     <div class="flex align-center">
                         <div class="none open-thread-report @guest login-signin-button @endguest thread-react-hover">
-                            <div class="small-image-2 sprite sprite-2-size report17filled-icon mr4"></div>
+                            <svg class="size17 mr4" style="fill: #1d1d1d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>
                             <div class="fs13">report</div>
                             <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                         </div>

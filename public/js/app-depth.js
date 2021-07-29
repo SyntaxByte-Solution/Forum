@@ -873,16 +873,13 @@ $('.emoji-button').click(function(event) {
     event.preventDefault();
     let emoji_button = $(this);
 
-    $(this).find('.emoji-unfilled').css('display', 'none');
+    $(this).find('.emoji-unfilled').addClass('none');
     $('.emoji-unfilled').animate({
         opacity: '0.5'
     }, 300);
     $(this).find('.emoji-filled').removeClass('none');
 
-    $('.emoji-button').off('click');
-    $('.emoji-button').click(function() {
-        return false;
-    });
+    $(this).parent().find('.emoji-button').off('click');
 
     $.ajax({
         url: '/emojifeedback',

@@ -1293,6 +1293,11 @@ a, input, textarea {
     width: 28px;
 }
 
+.size34 {
+    height: 34px;
+    width: 34px;
+}
+
 .size36 {
     height: 36px;
     width: 36px;
@@ -1346,6 +1351,11 @@ a, input, textarea {
 .size7 {
     height: 7px;
     width: 7px;
+}
+
+.size4 {
+    height: 4px;
+    width: 4px;
 }
 
 .rounded {
@@ -2606,7 +2616,7 @@ tr:nth-child(2n) {
 }
 
 .thread-add-share {
-    display: flex;
+    display: inline-block;
     border: none;
     cursor: pointer;
     text-decoration: none;

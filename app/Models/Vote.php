@@ -17,4 +17,8 @@ class Vote extends Model
     public function votable() {
         return $this->morphTo();
     }
+
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>', today());
+    }
 }

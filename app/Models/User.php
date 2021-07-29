@@ -133,6 +133,10 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->has_role('admin');
     }
 
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>', today());
+    }
+
     public function today_posts_count() {
         $count = 0;
         foreach($this->threads as $thread) {

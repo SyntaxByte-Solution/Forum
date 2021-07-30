@@ -3961,3 +3961,16 @@ $('.thread-media-options .open-thread-image').click(function() {
         $(this)[0].pause();
     });
 });
+
+$('.inline-button-style').on('click', function() {
+    $(this).parent().find('.inline-button-style').removeClass('selected-inline-button-style');
+    $(this).addClass('selected-inline-button-style');
+});
+
+let activities_sections_apperance_switch = new Map([
+    ['threads', true],
+    ['saved-threads', false],
+    ['liked-threads', false],
+    ['voted-threads', false],
+    ['activity-log', false],
+]);

@@ -2234,7 +2234,6 @@ tr:nth-child(2n) {
 }
 
 .us-user-media-container {
-    margin-top: 14px;
     border-radius: 6px;
     overflow: hidden;
 }
@@ -3103,4 +3102,5 @@ tr:nth-child(2n) {
 #activities-sections-content {
     overflow-y: scroll;
     max-height: 390px;
+    min-height: 390px;
 }

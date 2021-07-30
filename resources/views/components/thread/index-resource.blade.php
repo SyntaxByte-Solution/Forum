@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="flex align-center">
-                    <div class="thread-views mr8 flex align-center">
+                    <div class="simple-border-container mr8 flex align-center">
                         <svg class="mr4 size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><path class="cls-1" d="M1,12S5,4,12,4s11,8,11,8-4,8-11,8S1,12,1,12ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z"/></svg>
                         <p class="no-margin fs12 unselectable" style="margin-top: 1px">{{ $views }}</p>
                     </div>
@@ -232,7 +232,7 @@
                     </svg>
                     <div class="flex align-center">
                         <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
-                        <span class="mx4 fs13 gray">▸</span>
+                        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
                         <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ $category->category }}</a>
                     </div>
                 </div>

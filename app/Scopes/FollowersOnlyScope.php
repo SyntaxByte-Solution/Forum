@@ -40,7 +40,7 @@ class FollowersOnlyScope implements Scope
                 $query->where('visibility_id', 2)
                 ->where(function($query) {
                     $query->where('user_id', auth()->user()->id)
-                    ->orWhere('user_id', auth()->user()->followed_users->pluck('followable_id'));
+                    ->orWhereIn('user_id', auth()->user()->followed_users->pluck('followable_id'));
                 });
             });;
         }

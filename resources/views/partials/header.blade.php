@@ -13,6 +13,9 @@
         </div>
         <div class="flex align-center full-height">
             <a href="/" class="menu-button-style">{{ __('Home') }}</a>
+            @auth
+            <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" class="menu-button-style">{{ __('Activities') }}</a>
+            @endauth
             <a href="{{ route('user.notifications') }}" class="menu-button-style">{{ __('Notifications') }}</a>
             <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
             <a href="" class="menu-button-style">{{ __('Contact') }}</a>

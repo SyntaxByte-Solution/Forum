@@ -24,7 +24,7 @@
         <section class="flex">
             <div class="full-width">
                 @include('partials.user-space.basic-header', ['page' => 'settings'])
-                <h1 class="">Update Profile & Settings</h1>
+                <h1 class="fs22 my8">Update Profile & Settings</h1>
 
                 @if($errors->any())
                 <div class="error-container">

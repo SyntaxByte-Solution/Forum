@@ -96,7 +96,6 @@
         <section class="flex">  
             <div class="full-width">
                 @include('partials.user-space.basic-header', ['page' => 'profile'])
-                <h1 class="">User Profile</h1>
                 <div class="relative us-user-media-container mx8">
                     <div class="us-cover-container full-center">
                         @if(!$user->cover)

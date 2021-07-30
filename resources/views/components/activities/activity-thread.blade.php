@@ -25,7 +25,7 @@
                 <span class="bold">{{ $thread->votes->count() }}</span>
                 <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M431.34,133H80.7c-31.52,0-47.29,38.15-25,60.4L231,368.67a35.21,35.21,0,0,0,49.94,0L456.24,193.35C478.63,171.1,462.87,133,431.34,133Z" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:66px"/></svg>
             </div>
-            <div class="gray height-max-content mx4 fs10">•</div>
+            <div class="gray height-max-content mx4 fs10 unselectable">•</div>
         </div>
         <div>
             <div>

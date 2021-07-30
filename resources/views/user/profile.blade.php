@@ -103,7 +103,7 @@
                             @if(auth()->user() && $user->id == auth()->user()->id)
                             <a href="{{ route('user.settings') }}" class="no-underline change-cover full-center full-width full-height">
                                 <div class="flex align-center">
-                                    <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
+                                    <svg class="size20 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464,64H48A48,48,0,0,0,0,112V400a48,48,0,0,0,48,48H464a48,48,0,0,0,48-48V112A48,48,0,0,0,464,64Zm-6,336H54a6,6,0,0,1-6-6V118a6,6,0,0,1,6-6H458a6,6,0,0,1,6,6V394A6,6,0,0,1,458,400ZM128,152a40,40,0,1,0,40,40A40,40,0,0,0,128,152ZM96,352H416V272l-87.52-87.51a12,12,0,0,0-17,0L192,304l-39.51-39.52a12,12,0,0,0-17,0L96,304Z" style="fill:#fff"/></svg>
                                     <p class="fs17 white">Add a cover image</p>
                                 </div>
                             </a>
@@ -129,10 +129,10 @@
                             <div class="move-to-right flex align-center height-max-content follow-box">
                                 <div class="flex align-center">
                                     <div class="flex align-center px8 py4 pointer followers-display light-border" style="margin: 0 14px">
-                                        <div class="gray">{{ _('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers->count() }}</span></div>
+                                        <div class="forum-color">{{ _('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers->count() }}</span></div>
                                     </div>
                                     <div class="flex align-center px8 py4 pointer follows-display light-border mr8">
-                                        <div class="gray">{{ _('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->followed_users->count() }}</span></div>
+                                        <div class="forum-color">{{ _('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->followed_users->count() }}</span></div>
                                     </div>
                                 </div>
                                 @if(auth()->user() && $user->id != auth()->user()->id)
@@ -160,49 +160,60 @@
                         </div>
                     </div>
                 </div>
-                @if(auth()->user() && $user->id == auth()->user()->id)
-                <div class="my8">
-                    @auth
-                        @include('partials.thread.thread-add', ['editor_height'=>100])
-                    @endauth
-                </div>
-                @endif
-                @if($threads->count())
-                <div style="margin-top: 20px">
-                    <div class="flex align-center space-between">
-                        @if(auth()->user() && $user->id == auth()->user()->id)
-                        <h2>{{ __('Your Threads') }}</h2>
-                        @else
-                        <h2>{{ __('Threads') }}</h2>
-                        @endif
-
-                        {{ $threads->onEachSide(0)->links() }}
-                    </div>
-                    @foreach($threads as $thread)
-                        <x-index-resource :thread="$thread"/>
-                    @endforeach
-                </div>
-                @else
-                    <div class="full-center" style="margin-bottom: 36px">
-                        <div>
-                            <div class="size28 move-to-middle sprite sprite-2-size binbox28-icon" style="margin: 16px auto 10px auto"></div>
-                            @if(auth()->user() && $user->id == auth()->user()->id)
-                            <p class="fs20 bold" style="margin: 2px 0">{{ __("You don't have any thread for the moment !") }}</p>
-                            <p class="my4 text-center">{{ __("Try to start a discussion or question using the form above") }}</p>
-                            @else
-                            <p class="fs20 bold" style="margin: 2px 0">{{ __("This user has no thread for the moment !") }}</p>
-                            @endif
+                <div style="margin-top: 20px" class="index-middle-width">
+                    @if(auth()->user() && $user->id == auth()->user()->id)
+                    <div style="margin-top: 20px">
+                        <a href="{{ route('thread.add') }}" class="no-underline" target="_blank">
+                            <div class="button-style width-max-content">
+                                <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#fff" d="M512,0C460.22,3.56,96.44,38.2,71,287.61c-3.09,26.66-4.84,53.44-6,80.24L243.89,189.16a16,16,0,0,1,22.65,22.63L7,471A24,24,0,0,0,41,505L98.15,447.9a1130.36,1130.36,0,0,0,126-7.36c53.48-5.44,97-26.47,132.58-56.54H255.74l146.79-48.88A396.77,396.77,0,0,0,433,288H351.84l106.54-53.21C500.29,132.86,510.19,26.26,512,0Z"/></svg>
+                                {{ __('Start a discussion') }}
+                            </div>
+                        </a>
+                        <div class="none">
+                            @include('partials.thread.thread-add', ['editor_height'=>100])
                         </div>
                     </div>
-                @endif
+                    @endif
+                    @if($threads->count())
+                        <div class="flex align-center space-between">
+                            @if(auth()->user() && $user->id == auth()->user()->id)
+                            <h2>{{ __('Your Threads') }}</h2>
+                            @else
+                            <h2>{{ __('Threads') }}</h2>
+                            @endif
+
+                            {{ $threads->onEachSide(0)->links() }}
+                        </div>
+                        @foreach($threads as $thread)
+                            <x-index-resource :thread="$thread"/>
+                        @endforeach
+                        <div class="flex">
+                            <div class="move-to-right">
+                                {{ $threads->onEachSide(0)->links() }}
+                            </div>
+                        </div>
+                    @else
+                        <div class="full-center" style="margin-bottom: 36px">
+                            <div>
+                                <div class="size28 move-to-middle sprite sprite-2-size binbox28-icon" style="margin: 16px auto 10px auto"></div>
+                                @if(auth()->user() && $user->id == auth()->user()->id)
+                                <p class="fs20 bold" style="margin: 2px 0">{{ __("You don't have any thread for the moment !") }}</p>
+                                <p class="my4 text-center">{{ __("Try to start a discussion or question using the form above") }}</p>
+                                @else
+                                <p class="fs20 bold" style="margin: 2px 0">{{ __("This user has no thread for the moment !") }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
-            <div style="position: fixed; top: 55px; right: 8px">
+            <div style="position: fixed; top: 60px; right: 8px">
                 @include('partials.user-space.user-card')
                 <div class="ms-right-panel my8">
                     <div class="relative">
                         @can('update', $user)
                         <a href="{{ route('change.user.settings.personal') }}" class="absolute" style="top: 0; right: 0">
-                            <img src="{{ asset('assets/images/icons/bedit.png') }}" class="small-image-size" alt="">
+                            <svg class="size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.87,93.92,438,178.5a9.52,9.52,0,0,1,0,12.94L243.91,396.23l-82.49,9.66c-11,1.31-20.35-8.53-19.11-20.16l9.16-87L345.6,93.92a8.38,8.38,0,0,1,12.27,0Zm144-21.47L458.49,26.69a33.51,33.51,0,0,0-49.07,0L378,59.88a9.52,9.52,0,0,0,0,12.94l80.17,84.58a8.37,8.37,0,0,0,12.27,0l31.47-33.19C515.38,109.86,515.38,86.7,501.87,72.45ZM341.33,340.53V436H56.89V135.93H261.16a10.64,10.64,0,0,0,7.55-3.28l35.56-37.51c6.75-7.13,2-19.22-7.56-19.22h-254C19.11,75.92,0,96.08,0,120.93V451c0,24.85,19.11,45,42.67,45H355.56c23.55,0,42.66-20.16,42.66-45V303c0-10-11.46-15-18.22-8l-35.56,37.51A11.9,11.9,0,0,0,341.33,340.53Z"/></svg>
                         </a>
                         @endcan
                         <p class="bold forum-color" style="margin-bottom: 12px; margin-top: 0">Personal informations</p>
@@ -213,13 +224,13 @@
                     <div class="simple-line-separator my8"></div>
                     @isset($user->personal->birth)
                     <div class="flex align-center">
-                        <img src="{{ asset('assets/images/icons/birth.svg') }}" class="small-image-2 mr4" alt="">
+                        <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480,384c-28,0-31.26-32-74.5-32-43.43,0-46.83,32-74.75,32-27.7,0-31.45-32-74.75-32-42.84,0-47.22,32-74.5,32-28.15,0-31.2-32-74.75-32S60.1,384,32,384V304a48,48,0,0,1,48-48H96V112h64V256h64V112h64V256h64V112h64V256h16a48,48,0,0,1,48,48Zm0,128H32V416c43.36,0,46.77-32,74.75-32S138,416,181.5,416c42.84,0,47.22-32,74.5-32,28.15,0,31.2,32,74.75,32,43.36,0,46.77-32,74.75-32,27.49,0,31.25,32,74.5,32ZM128,96A31.9,31.9,0,0,1,96,64c0-31,32-23,32-64,12,0,32,29.5,32,56S145.75,96,128,96Zm128,0a31.9,31.9,0,0,1-32-32c0-31,32-23,32-64,12,0,32,29.5,32,56S273.75,96,256,96Zm128,0a31.9,31.9,0,0,1-32-32c0-31,32-23,32-64,12,0,32,29.5,32,56S401.75,96,384,96Z"/></svg>
                         <p class="fs13 mr4 my4"><span class="bold fs13 gray">Birth: {{ (new \Carbon\Carbon($user->personal->birth))->format('l jS \\of F Y') }}</span></p>
                     </div>
                     @endisset
                     @isset($user->personal->country)
                     <div class="flex align-center my8">
-                        <img src="{{ asset('assets/images/icons/pin.svg') }}" class="small-image-2 mr4" alt="">
+                        <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M236.27,501.67C91,291,64,269.41,64,192,64,86,150,0,256,0S448,86,448,192c0,77.41-27,99-172.27,309.67a24,24,0,0,1-39.46,0ZM256,272a80,80,0,1,0-80-80A80,80,0,0,0,256,272Z"/></svg>
                         <p class="fs13 mr4 my4"><span class="bold fs13 gray">From: {{ $user->personal->country }}@isset($user->personal->city), {{ $user->personal->city }}  @endisset</span></p>
                     </div>
                     @endisset

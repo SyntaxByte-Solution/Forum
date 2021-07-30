@@ -15,56 +15,35 @@ use Carbon\Carbon;
 class UserController extends Controller
 {
     public function activities(Request $request, User $user) {
-        $is_current = false;
-        if($current_user = auth()->user()) {
-            $is_current = ($current_user->id == $user->id) ? true : false;
+        $is_current = Auth::check() ? auth()->user()->id == $user->id : false;
+        $announcements_ids = Category::where('slug', 'announcements')->pluck('id');
+        // Take 6 threads created by the current user (the profile owner)
+        $threads = Thread::whereNotIn('category_id', $announcements_ids)->where('user_id', $user->id)->orderBy('created_at', 'desc')->take(6)->get();
+        // Take 6 liked threads
+        $liked_threads = 
+            Thread::whereIn('id', 
+                Like::where('user_id', $user->id)
+                ->where('likable_type', 'App\Models\Thread')
+                ->pluck('likable_id')
+            )->orderBy('created_at', 'desc')->take(6)->get();
+        // Take 6 threads that the profile owner voted on
+        $voted_threads = collect([]);
+        $c = 0;
+        foreach(Vote::where('user_id', $user->id)->where('votable_type', 'App\Models\Thread')->get(['votable_id', 'vote']) as $votable) {
+            $voted_threads->push([Thread::find($votable['votable_id']), $votable['vote']]);
+            if($c == 6) break;
         }
-
-        $pagesize = 6;
-        $pagesize_exists = false;
-        $all = false;
-        if($request->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = $request->input('pagesize');
-        }
-
-        $announcements = Category::where('slug', 'announcements')->pluck('id');
-
-        $threads;
-        $liked_threads = false;
-        if($pagesize == 'all') {
-            $all = true;
-            $threads = Thread::whereNotIn('category_id', $announcements)
-                ->where('user_id', $user->id)
-                ->orderBy('created_at', 'desc')->lazy();
-        } else {
-            $threads = Thread::whereNotIn('category_id', $announcements)->where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate($pagesize);
-            
-            $liked_threads = Thread::whereIn('id', 
-            Like::where('user_id', $user->id)->where('likable_type', 'App\Models\Thread')->pluck('likable_id'))
-            ->orderBy('created_at', 'desc')->get();
-
-            $voted_threads = collect([]);
-            foreach(Vote::where('user_id', $user->id)->where('votable_type', 'App\Models\Thread')->get(['votable_id', 'vote']) as $votable) {
-                $voted_threads->push([Thread::find($votable['votable_id']), $votable['vote']]);
-            }
-
-            
-        }
-
+        // Take 6 saved threads (this will be visibile to only the current user)
+        $saved_threads = $user->savedthreads->take(6);
         $threads_count = $user->threads->count();
-        $posts_count = $user->posts_count();
 
         return view('user.activities')
             ->with(compact('user'))
             ->with(compact('is_current'))
             ->with(compact('threads_count'))
-            ->with(compact('posts_count'))
-            ->with(compact('pagesize'))
-            ->with(compact('pagesize_exists'))
-            ->with(compact('all'))
             ->with(compact('voted_threads'))
             ->with(compact('liked_threads'))
+            ->with(compact('saved_threads'))
             ->with(compact('threads'));
     }
 

@@ -177,6 +177,10 @@ a, input, textarea {
     margin-left: 8px !important;
 }
 
+.pl8 {
+    padding-left: 8px !important;
+}
+
 .m4 {
     margin: 4px;
 }
@@ -353,7 +357,7 @@ a, input, textarea {
 }
 
 .regular-menu-button {
-    display: block;
+    display: flex;
     margin: 0 2px;
     text-decoration: none;
     padding: 8px 12px;
@@ -2234,11 +2238,6 @@ tr:nth-child(2n) {
     height: 100px;
     border-radius: 8px;
     overflow: hidden;
-}
-
-.us-profile-picture {
-    padding: 8px;
-    border-radius: 8px;
 }
 
 .us-settings-profile-picture {

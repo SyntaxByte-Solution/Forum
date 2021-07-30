@@ -27,80 +27,80 @@
                     @endif
                 </div>
                 <div class="simple-line-separator my8"></div>
-                <div>
-                    <div class="flex flex-end space-between">
-                        <p class="no-margin my8 fs17 bold forum-color">Threads ({{$threads->total()}})</p>
-                        <div class="mr8">
-                            @unless($all)
-                                {{ $threads->onEachSide(0)->links() }}
-                            @endunless
-                        </div>
-                    </div>
-                    @foreach($threads as $thread)
-                        @php
-                            $is_ticked = $thread->posts->where('ticked', 1)->count();
-
-                            $forum = $thread->forum();
-                            $category = $thread->category;
-
-                            $forum_slug = $thread->forum()->slug;
-                            $category_slug = $thread->category->slug;
-                        @endphp
-                        <div class="my8 p4 br4" style="@if($is_ticked) background-color: #cfffcf3d; border: 1px solid #89c489bd; @endif">
-                            <div class="flex align-center">
-                                <img src="{{ asset('assets/images/icons/' . $forum->icon) }}" class="small-image-size mr4" alt="">
-                                <div class="flex align-center">
-                                    <a href="{{ route('forum.all.threads', ['forum'=>$forum_slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
-                                    <span class="mx4 fs13 gray">▸</span>
-                                    <a href="{{ route('category.threads', ['forum'=>$forum_slug, 'category'=>$category_slug]) }}" class="fs11 black-link">{{ $category->category }}</a>
-                                </div>
-                                @if($is_ticked)
-                                <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="ml8 small-image" alt="">
-                                @endif
-                            </div>
-                            <div class="flex align-center">
-                                <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-2" alt="">
-                                <span class="fs13 mr4">{{ $thread->votes->where('vote', '1')->count() }}</span>
-                                <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image-2" alt="">
-                                <span class="fs13">{{ $thread->votes->where('vote', '-1')->count() }}</span>
-                                <a href="{{ $thread->link }}" class="link-path flex ml8">{{ $thread->subject }}</a>
-
-                                <div class="move-to-right flex align-center">
-                                    @if($lc = $thread->likes->count())
-                                    <div class="flex align-center mx8">
-                                        <img src="{{ asset('assets/images/icons/love-gray.png') }}" class="small-image-2 mr4" alt="">
-                                        <p class="fs12 no-margin">{{ $lc }} likes</p>
-                                    </div>
-                                    @endif
-                                    @if($pc = $thread->posts->count())
-                                    <div class="flex align-center mx8">
-                                        <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
-                                        <p class="fs12 no-margin">{{ $pc }} replies</p>
-                                    </div>
-                                    @endif
-                                    <div class="flex align-center mx8">
-                                        <img src="{{ asset('assets/images/icons/gray-eye.png') }}" class="small-image-2 mr4" alt="">
-                                        <p class="fs12 no-margin">{{ $thread->view_count }} {{ __('views') }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="simple-line-separator my4"></div>
-                        </div>
-                    @endforeach
-                </div>
-                @if(!$threads->total())
-                    <div class="full-center">
+                <div class="flex">
+                    <div class="half-width">
+                        <h2 class="no-margin">@if($is_current) {{ __('My threads') }} @else {{ __('Threads') }} @endif</h2>
                         <div>
-                            <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
-                            @php
-                                $forum = \App\Models\Forum::first();
-                                $forum_slug = $forum->slug;
-                                $category_slug = $forum->categories->first()->slug;
-                            @endphp
-                            <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('thread')}}</a></p>
+                            @foreach($threads as $thread)
+                                @php
+                                    $is_ticked = $thread->posts->where('ticked', 1)->count();
+        
+                                    $forum = $thread->forum();
+                                    $category = $thread->category;
+        
+                                    $forum_slug = $thread->forum()->slug;
+                                    $category_slug = $thread->category->slug;
+                                @endphp
+                                <div class="my8 px8 py8 br4" style="@if($is_ticked) background-color: #cfffcf21; border: 1px solid #a7cca7bd; @endif">
+                                    <div class="flex align-center">
+                                        <svg class="small-image-size mr4" style="margin-top: 2px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            {!! $forum->icon !!}
+                                        </svg>
+                                        <div class="flex align-center">
+                                            <a href="{{ route('forum.all.threads', ['forum'=>$forum_slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
+                                            <span class="mx4 fs13 gray">▸</span>
+                                            <a href="{{ route('category.threads', ['forum'=>$forum_slug, 'category'=>$category_slug]) }}" class="fs11 black-link">{{ $category->category }}</a>
+                                        </div>
+                                        @if($is_ticked)
+                                        <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="ml8 small-image" alt="">
+                                        @endif
+                                    </div>
+                                    <div class="flex align-center">
+                                        <img src="{{ asset('assets/images/icons/up-arrow.png') }}" class="small-image-2" alt="">
+                                        <span class="fs13 mr4">{{ $thread->votes->where('vote', '1')->count() }}</span>
+                                        <img src="{{ asset('assets/images/icons/down-arrow.png') }}" class="small-image-2" alt="">
+                                        <span class="fs13">{{ $thread->votes->where('vote', '-1')->count() }}</span>
+                                        <a href="{{ $thread->link }}" class="link-path flex ml8">{{ $thread->subject }}</a>
+        
+                                        <div class="move-to-right flex align-center">
+                                            @if($lc = $thread->likes->count())
+                                            <div class="flex align-center mx8">
+                                                <img src="{{ asset('assets/images/icons/love-gray.png') }}" class="small-image-2 mr4" alt="">
+                                                <p class="fs12 no-margin">{{ $lc }} likes</p>
+                                            </div>
+                                            @endif
+                                            @if($pc = $thread->posts->count())
+                                            <div class="flex align-center mx8">
+                                                <img src="{{ asset('assets/images/icons/disc.png') }}" class="small-image-2 mr4" alt="">
+                                                <p class="fs12 no-margin">{{ $pc }} replies</p>
+                                            </div>
+                                            @endif
+                                            <div class="flex align-center mx8">
+                                                <img src="{{ asset('assets/images/icons/gray-eye.png') }}" class="small-image-2 mr4" alt="">
+                                                <p class="fs12 no-margin">{{ $thread->view_count }} {{ __('views') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="simple-line-separator my4"></div>
+                                </div>
+                            @endforeach
                         </div>
+                        @if(!$threads->count())
+                            <div class="full-center">
+                                <div>
+                                    <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("You don't have any discussions or question for the moment !") }}</p>
+                                    @php
+                                        $forum = \App\Models\Forum::first();
+                                        $forum_slug = $forum->slug;
+                                        $category_slug = $forum->categories->first()->slug;
+                                    @endphp
+                                    <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('thread')}}</a></p>
+                                </div>
+                            </div>
+                        @endif
                     </div>
-                @endif
+                </div>
+                
                 <div class="flex">
                     <div class="half-width">
                         <p class="no-margin my8 fs17 bold forum-color">Voted Threads ({{$voted_threads->count()}})</p>

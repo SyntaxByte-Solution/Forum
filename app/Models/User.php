@@ -107,6 +107,10 @@ class User extends UserAuthenticatable implements Authenticatable
         return Vote::where('user_id', $this->id)->get();
     }
 
+    public function voted_threads() {
+        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->get();
+    }
+
     public function votes_count() {
         return $this->votes()->count();
     }

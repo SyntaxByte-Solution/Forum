@@ -66,7 +66,7 @@
                     <div id="activities-sections-content" style="padding: 12px">
                         <div class="activities-section-body">
                             <!-- <x-activities.sections.threads :user="$user" :threads="$threads"/> -->
-                            <x-activities.sections.liked-threads :user="$user" :likedthreads="$liked_threads"/>
+                            <x-activities.sections.voted-threads :user="$user" :votedthreads="$voted_threads"/>
                         </div>
                     </div>
                 </div>

@@ -30,8 +30,10 @@ class UserController extends Controller
         $voted_threads = collect([]);
         $c = 0;
         foreach(Vote::where('user_id', $user->id)->where('votable_type', 'App\Models\Thread')->get(['votable_id', 'vote']) as $votable) {
-            $voted_threads->push([Thread::find($votable['votable_id']), $votable['vote']]);
             if($c == 6) break;
+            $voted_threads->push(Thread::find($votable['votable_id']));
+
+            $c++;
         }
         // Take 6 saved threads (this will be visibile to only the current user)
         $saved_threads = $user->savedthreads->take(6);

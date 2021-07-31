@@ -3976,7 +3976,9 @@ let activities_sections_apperance_switch = new Map([
     ['activity-log', false],
 ]);
 
+let section_switcher_lock = true;
 $('.activity-section-switcher').on('click', function() {
+    let spinner = $('#activities-sections-loading-container').find('.spinner');
     let section = $(this).find('.activity-section-name').val();
 
     // If the section is already opened we don't to do anything
@@ -3991,8 +3993,14 @@ $('.activity-section-switcher').on('click', function() {
         $('.activities-' + section + '-section').removeClass('none');
         activities_section_opened = section;
     } else {
+        if(!section_switcher_lock) {
+            return;
+        }
+        section_switcher_lock = false;
+
+        start_spinner(spinner, 'activities-sections-switcher');
+        
         $('#activities-sections-loading-container').removeClass('none');
-        start_spinner($('#activities-sections-loading-container').find('.spinner'), 'activities-sections');
         let user =  $('.activities-user').val()
         $.ajax({
             url: `/users/${user}/activities/sections/${section}/generate`,
@@ -4001,23 +4009,43 @@ $('.activity-section-switcher').on('click', function() {
                 $('#activities-sections-content').append(payload);
                 $('#activities-sections-content').find('.activities-section').addClass('none');
                 $('#activities-sections-content').find('.activities-' + section + '-section').removeClass('none');
-
+            },
+            complete: function() {
                 activities_sections_apperance_switch.set(section, true);
                 activities_section_opened = section;
-
                 $('#activities-sections-loading-container').addClass('none');
+                stop_spinner($('#activities-sections-loading-container').find('.spinner'), 'activities-sections-switcher');
+                section_switcher_lock = true;
             }
               
         })
     }
 });
 
+jQuery.fn.rotate = function(degrees) {
+    console.log('inside rotator');
+    $(this).css({   
+        '-webkit-transform' : 'rotate('+ degrees +'deg)',
+        '-moz-transform' : 'rotate('+ degrees +'deg)',
+        '-ms-transform' : 'rotate('+ degrees +'deg)',
+        'transform' : 'rotate('+ degrees +'deg)',
+    });
+    return $(this);
+};
+
 let spinners_intervals = new Map();
-function start_spinner(spiner, spinner_interval_name) {
-    spinners_intervals.set(spinner_interval_name, 'okey');
-    console.log(spinners_intervals);
+let spinner_rotation = 0;
+function start_spinner(spinner, spinner_interval_name) {
+    spinners_intervals.set(spinner_interval_name, 
+        setInterval(function() {
+            spinner_rotation+=40;
+            spinner.rotate(spinner_rotation);
+        }, 200)
+    );
 }
 
-function stop_spinner(spiner, spinner_interval_name) {
-    
+function stop_spinner(spinner, spinner_interval_name) {
+    clearInterval(spinners_intervals.get(spinner_interval_name));
+    spinner.rotate(0);
+    spinner_rotation = 0;
 }

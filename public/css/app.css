@@ -1239,6 +1239,10 @@ a, input, textarea {
     display: inline-block;
 }
 
+.spinner {
+    transition: transform 0.2s ease;
+}
+
 .full-shadowed {
     z-index: 2;
     display: none;

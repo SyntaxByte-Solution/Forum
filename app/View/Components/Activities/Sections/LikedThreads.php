@@ -3,17 +3,21 @@
 namespace App\View\Components\Activities\Sections;
 
 use Illuminate\View\Component;
-use App\Models\User;
+use App\Models\{User, Like, Thread};
 
 class LikedThreads extends Component
 {
     public $user;
     public $likedthreads;
 
-    public function __construct(User $user, $likedthreads)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->likedthreads = $likedthreads;
+        $this->likedthreads = Thread::whereIn('id', 
+        Like::where('user_id', $user->id)
+        ->where('likable_type', 'App\Models\Thread')
+        ->pluck('likable_id')
+        )->orderBy('created_at', 'desc')->take(6)->get();
     }
 
     /**
@@ -21,8 +25,8 @@ class LikedThreads extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.activities.sections.liked-threads');
+        return view('components.activities.sections.liked-threads', $data);
     }
 }

@@ -12,6 +12,7 @@ use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post};
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
+use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
@@ -577,5 +578,40 @@ class ThreadController extends Controller
             "content"=>$payload,
             "count"=>$posts_to_return->count()
         ];
+    }
+
+    // --------------- Activity sections and components generating (section/range of components) ---------------
+    public function generate_section(User $user, $section) {
+        
+        if( is_null($section) ) {
+            abort(422, __('Section is required'));
+        }
+        
+        $sections = ['threads', 'saved-threads', 'liked-threads', 'voted-threads', 'activity-log'];
+        if(!in_array($section, $sections)) {
+            abort(422, __('Invalide section name'));
+        }
+
+        switch($section) {
+            case 'threads':
+                $threads_section = (new Threads($user));
+                return $threads_section->render(get_object_vars($threads_section))->render();
+                break;
+            case 'saved-threads':
+                $saved_threads_section = (new SavedThreads($user));
+                return $saved_threads_section->render(get_object_vars($saved_threads_section))->render();
+                break;
+            case 'liked-threads':
+                $liked_threads_section = (new LikedThreads($user));
+                return $liked_threads_section->render(get_object_vars($liked_threads_section))->render();
+                break;
+            case 'voted-threads':
+                $voted_threads_section = (new VotedThreads($user));
+                return $voted_threads_section->render(get_object_vars($voted_threads_section))->render();
+                break;
+            case 'activity-log':
+
+                break;
+        }
     }
 }

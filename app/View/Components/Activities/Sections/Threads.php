@@ -10,10 +10,10 @@ class Threads extends Component
     public $user;
     public $threads;
 
-    public function __construct(User $user, $threads)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->threads = $threads;
+        $this->threads = $user->threads->take(6);
     }
 
     /**
@@ -21,8 +21,8 @@ class Threads extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.activities.sections.threads');
+        return view('components.activities.sections.threads', $data);
     }
 }

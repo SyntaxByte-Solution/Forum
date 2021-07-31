@@ -3967,6 +3967,7 @@ $('.inline-button-style').on('click', function() {
     $(this).addClass('selected-inline-button-style');
 });
 
+let activities_section_opened = 'threads';
 let activities_sections_apperance_switch = new Map([
     ['threads', true],
     ['saved-threads', false],
@@ -3974,3 +3975,38 @@ let activities_sections_apperance_switch = new Map([
     ['voted-threads', false],
     ['activity-log', false],
 ]);
+
+$('.activity-section-switcher').on('click', function() {
+    let section = $(this).find('.activity-section-name').val();
+    console.log(activities_sections_apperance_switch);
+    // If the section is already opened we don't to do anything
+    if(section == activities_section_opened) {
+        return;
+    }
+
+    // If the section is already fetched we only need to hide the other opened sections and show it
+    // If the section doesn't exists we need to send GET request to fetch the section
+    if(activities_sections_apperance_switch.get(section)) {
+        $('#activities-sections-content').find('.activities-section').addClass('none');
+        $('.activities-' + section + '-section').removeClass('none');
+        activities_section_opened = section;
+    } else {
+        let user =  $('.activities-user').val()
+        $.ajax({
+            url: `/users/${user}/activities/sections/${section}/generate`,
+            type: 'get',
+            success: function(payload) {
+                $('#activities-sections-content').append(payload);
+                $('#activities-sections-content').find('.activities-section').addClass('none');
+                $('#activities-sections-content').find('.activities-' + section + '-section').removeClass('none');
+
+                activities_sections_apperance_switch.set(section, true);
+                activities_section_opened = section;
+            }
+              
+        })
+    }
+
+    console.log(section);
+    console.log(activities_sections_apperance_switch.get(section));
+});

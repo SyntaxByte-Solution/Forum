@@ -147,6 +147,7 @@ Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::get('/users/{user:username}/activities', [UserController::class, 'activities'])->name('user.activities');
+Route::get('/users/{user}/activities/sections/{section}/generate', [ThreadController::class, 'generate_section']);
 
 Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/users/username/check', [UserController::class, 'username_check']);

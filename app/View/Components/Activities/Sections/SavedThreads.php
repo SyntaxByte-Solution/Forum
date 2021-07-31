@@ -10,10 +10,10 @@ class SavedThreads extends Component
     public $user;
     public $savedthreads;
 
-    public function __construct(User $user, $savedthreads)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->savedthreads = $savedthreads;
+        $this->savedthreads = $user->savedthreads->take(6);
     }
 
     /**
@@ -21,8 +21,8 @@ class SavedThreads extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.activities.sections.saved-threads');
+        return view('components.activities.sections.saved-threads', $data);
     }
 }

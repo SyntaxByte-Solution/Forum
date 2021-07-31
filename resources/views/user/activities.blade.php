@@ -69,7 +69,13 @@
                             @endif
                         </div>
                     </div>
-                    <div id="activities-sections-content" style="padding: 12px">
+                    <div id="activities-sections-content" class="relative" style="padding: 12px">
+                        <div id="activities-sections-loading-container" class="none full-center">
+                            <div class="flex flex-column">
+                                <svg class="size48 move-to-middle spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M304,48A48,48,0,1,1,256,0,48,48,0,0,1,304,48ZM256,416a48,48,0,1,0,48,48A48,48,0,0,0,256,416ZM464,208a48,48,0,1,0,48,48A48,48,0,0,0,464,208ZM96,256a48,48,0,1,0-48,48A48,48,0,0,0,96,256Zm12.92,99.08a48,48,0,1,0,48,48A48,48,0,0,0,108.92,355.08Zm294.16,0a48,48,0,1,0,48,48A48,48,0,0,0,403.08,355.08ZM108.92,60.92a48,48,0,1,0,48,48A48,48,0,0,0,108.92,60.92Z"/></svg>
+                                <p>{{ __('Please wait') }}</p>
+                            </div>
+                        </div>
                         <x-activities.sections.threads :user="$user"/>
                     </div>
                 </div>

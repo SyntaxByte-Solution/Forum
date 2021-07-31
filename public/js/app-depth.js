@@ -3978,7 +3978,7 @@ let activities_sections_apperance_switch = new Map([
 
 $('.activity-section-switcher').on('click', function() {
     let section = $(this).find('.activity-section-name').val();
-    console.log(activities_sections_apperance_switch);
+
     // If the section is already opened we don't to do anything
     if(section == activities_section_opened) {
         return;
@@ -3991,6 +3991,8 @@ $('.activity-section-switcher').on('click', function() {
         $('.activities-' + section + '-section').removeClass('none');
         activities_section_opened = section;
     } else {
+        $('#activities-sections-loading-container').removeClass('none');
+        start_spinner($('#activities-sections-loading-container').find('.spinner'), 'activities-sections');
         let user =  $('.activities-user').val()
         $.ajax({
             url: `/users/${user}/activities/sections/${section}/generate`,
@@ -4002,11 +4004,20 @@ $('.activity-section-switcher').on('click', function() {
 
                 activities_sections_apperance_switch.set(section, true);
                 activities_section_opened = section;
+
+                $('#activities-sections-loading-container').addClass('none');
             }
               
         })
     }
-
-    console.log(section);
-    console.log(activities_sections_apperance_switch.get(section));
 });
+
+let spinners_intervals = new Map();
+function start_spinner(spiner, spinner_interval_name) {
+    spinners_intervals.set(spinner_interval_name, 'okey');
+    console.log(spinners_intervals);
+}
+
+function stop_spinner(spiner, spinner_interval_name) {
+    
+}

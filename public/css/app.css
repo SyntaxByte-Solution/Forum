@@ -623,10 +623,7 @@ a, input, textarea {
 }
 
 .selected-inline-button-style {
-    background-color: #ececec;
-}
-
-.selected-inline-button-style {
+    background-color: #f0f0f0;
     pointer-events: none;
 }
 
@@ -3108,4 +3105,16 @@ tr:nth-child(2n) {
     overflow-y: scroll;
     max-height: 390px;
     min-height: 390px;
+}
+
+#activities-sections-loading-container {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+
+    background-color: #ecececad;
+    
+    width: 100%;
+    height: 100%;
 }

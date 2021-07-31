@@ -13,7 +13,7 @@ class SavedThreads extends Component
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->savedthreads = $user->savedthreads->take(6);
+        $this->savedthreads = $user->savedthreads->sortByDesc('created_at')->take(6);
     }
 
     /**

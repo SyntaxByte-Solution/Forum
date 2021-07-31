@@ -15,7 +15,7 @@ class VotedThreads extends Component
         $this->user = $user;
         $voted_threads = collect([]);
         $c = 0;
-        foreach(Vote::where('user_id', $user->id)->where('votable_type', 'App\Models\Thread')->get(['votable_id', 'vote']) as $votable) {
+        foreach(Vote::where('user_id', $user->id)->where('votable_type', 'App\Models\Thread')->orderBy('created_at', 'desc')->get(['votable_id', 'vote']) as $votable) {
             if($c == 6) break;
             $voted_threads->push(Thread::find($votable['votable_id']));
 

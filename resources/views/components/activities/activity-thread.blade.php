@@ -51,7 +51,21 @@
         <div>
             <div class="flex">
                 <img src="{{ asset($thread->user->avatar) }}" class="size24 rounded hidden-overflow mr4" alt="" style="min-width: 24px">
-                <a href="{{ $thread->link }}" class="blue no-underline bold flex ml4 fs15">{{ $thread->subject }}</a>
+                <div class="ml4">
+                    <a href="{{ $thread->link }}" class="blue no-underline bold flex fs15">{{ $thread->subject }}</a>
+                    <div class="relative flex align-center" style="margin-top: 2px">
+                        <div class="size14" title="{{ $thread->visibility->visibility }}">
+                            <svg class="size14 thread-resource-visibility-icon" style="fill: #202020; margin-right: 2px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                {!! $thread->visibility->icon !!}
+                            </svg>
+                        </div>
+                        <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
+                        <p class="no-margin fs11 flex align-center tooltip-section gray" style="margin-top:1px">{{ __('Posted') }} {{ $at_hummans }}</p>
+                        <div class="tooltip tooltip-style-1">
+                            {{ $at }}
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="flex align-center mt8">
                 <div class="simple-border-container mr4">

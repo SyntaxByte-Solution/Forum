@@ -4,6 +4,7 @@ namespace App\View\Components\Activities;
 
 use Illuminate\View\Component;
 use App\Models\Thread;
+use Carbon\Carbon;
 
 class ActivityThread extends Component
 {
@@ -12,6 +13,9 @@ class ActivityThread extends Component
     public $forum;
     public $category;
     public $edit_link;
+
+    public $at;
+    public $at_hummans;
     
     public function __construct(Thread $thread)
     {
@@ -20,6 +24,9 @@ class ActivityThread extends Component
         $this->is_ticked = $thread->posts->where('ticked', 1)->count();
         $this->forum = $thread->forum();
         $this->category = $thread->category;
+
+        $this->at = (new Carbon($thread->created_at))->toDayDateTimeString();
+        $this->at_hummans = (new Carbon($thread->created_at))->diffForHumans();
     }
 
     /**

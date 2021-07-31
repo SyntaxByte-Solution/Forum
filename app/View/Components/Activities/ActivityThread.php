@@ -11,10 +11,12 @@ class ActivityThread extends Component
     public $is_ticked;
     public $forum;
     public $category;
+    public $edit_link;
     
     public function __construct(Thread $thread)
     {
         $this->thread = $thread;
+        $this->edit_link = route('thread.edit', ['user'=>$thread->user->username, 'thread'=>$thread->id]);
         $this->is_ticked = $thread->posts->where('ticked', 1)->count();
         $this->forum = $thread->forum();
         $this->category = $thread->category;

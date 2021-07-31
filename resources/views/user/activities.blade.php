@@ -65,7 +65,8 @@
                     </div>
                     <div id="activities-sections-content" style="padding: 12px">
                         <div class="activities-section-body">
-                            <x-activities.sections.threads :user="$user" :threads="$threads"/>
+                            <!-- <x-activities.sections.threads :user="$user" :threads="$threads"/> -->
+                            <x-activities.sections.saved-threads :user="$user" :savedthreads="$saved_threads"/>
                         </div>
                     </div>
                 </div>

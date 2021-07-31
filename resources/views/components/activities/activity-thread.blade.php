@@ -1,5 +1,5 @@
 <div class="activity-thread-wrapper" style="@if($is_ticked) background-color: #cfffcf21; border: 1px solid #a7cca7bd; @endif">
-    <div class="flex align-center mb8">
+    <div class="flex align-center space-between mb8">
         <div class="flex align-center">
             <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 {!! $forum->icon !!}
@@ -13,9 +13,30 @@
                 <svg class="size20 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/></svg>
             @endif
         </div>
-        <div class="simple-border-container move-to-right">
-            <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><path class="cls-1" d="M1,12S5,4,12,4s11,8,11,8-4,8-11,8S1,12,1,12ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z"/></svg>
-            <p class="fs12 no-margin unselectable">{{ $thread->view_count }} {{ __('views') }}</p>
+        <div class="flex align-center move-to-right">
+            <div class="simple-border-container">
+                <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><path class="cls-1" d="M1,12S5,4,12,4s11,8,11,8-4,8-11,8S1,12,1,12ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z"/></svg>
+                <p class="fs12 no-margin unselectable">{{ $thread->view_count }} {{ __('views') }}</p>
+            </div>
+            <div class="relative ml8">
+                <svg class="pointer button-with-suboptions size20 mr4" style="margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
+                <div class="suboptions-container suboptions-container-right-style">
+                    @can('update', $thread)
+                    <a href="{{ $edit_link }}" target="_blank" class="no-underline simple-suboption flex align-center">
+                        <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
+                        <div class="black">{{ __('Edit thread') }}</div>
+                    </a>
+                    @endcan
+                    <div class="pointer simple-suboption thread-display-button flex align-center">
+                        <svg class="size17 mr4" style="fill: #1d1d1d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M336.17,80C287,80,242.87,48,174.26,48A221.86,221.86,0,0,0,93.54,63.17,48,48,0,1,0,24,89.56V496a16,16,0,0,0,16,16H56a16,16,0,0,0,16-16V412.56C109.87,395.28,143.26,384,199.83,384c49.13,0,93.3,32,161.91,32,58.48,0,102-22.62,128.55-40A48,48,0,0,0,512,335.86V95.94c0-34.46-35.26-57.77-66.9-44.12C409.19,67.31,371.64,80,336.17,80ZM464,336c-21.78,15.41-60.82,32-102.26,32-59.95,0-102-32-161.91-32-43.36,0-96.38,9.4-127.83,24V128c21.78-15.41,60.82-32,102.26-32,60,0,102,32,161.91,32,43.28,0,96.32-17.37,127.83-32Z"/></svg>
+                        <div>{{ __('Report thread') }}</div>
+                    </div>
+                    <div class="pointer simple-suboption thread-display-button flex align-center">
+                        <div class="small-image-2 sprite sprite-2-size eyecrossed17-icon mr4"></div>
+                        <div>{{ __('Hide thread') }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="flex">
@@ -28,7 +49,8 @@
             <div class="gray height-max-content mx4 fs10 unselectable">•</div>
         </div>
         <div>
-            <div>
+            <div class="flex">
+                <img src="{{ asset($thread->user->avatar) }}" class="size24 rounded hidden-overflow mr4" alt="" style="min-width: 24px">
                 <a href="{{ $thread->link }}" class="blue no-underline bold flex ml4 fs15">{{ $thread->subject }}</a>
             </div>
             <div class="flex align-center mt8">

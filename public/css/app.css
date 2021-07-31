@@ -3087,6 +3087,10 @@ tr:nth-child(2n) {
     box-shadow: 0 0 4px 0px #00000012;
 }
 
+.activity-thread-wrapper:last-child {
+    margin-bottom: 0;
+}
+
 .activities-sections-container {
     border-radius: 4px;
     border: 1px solid #c6c6c6;

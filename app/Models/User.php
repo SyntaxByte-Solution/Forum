@@ -19,6 +19,7 @@ class User extends UserAuthenticatable implements Authenticatable
     use HasFactory, Notifiable, HasPermissionsTrait, SoftDeletes;
 
     protected $guarded = [];
+    private $avatar_dims = [26, 36, 100, 160, 200, 300, 400];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -45,11 +46,21 @@ class User extends UserAuthenticatable implements Authenticatable
             if($this->provider_avatar) {
                 return $this->provider_avatar;
             } else {
-                return asset('users/defaults/medias/avatar.png');
+                return asset('users/defaults/medias/avatars/avatar.png');
             }
         }
 
         return asset($value);
+    }
+
+    public function sizedavatar($size, $quality="-h") {
+        $avatar_path = asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
+
+        if(in_array($size, $this->avatar_dims) && $this->avatar != asset('users/defaults/medias/avatars/avatar.png')) {
+            return asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
+        }
+        
+        return asset('users/defaults/medias/avatars/100-l.png');
     }
 
     public function getReachAttribute() {

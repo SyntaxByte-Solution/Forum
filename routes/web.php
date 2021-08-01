@@ -27,7 +27,8 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     $avatar = $user->sizedavatar(48);
-    echo("<img src='$avatar'/>");
+
+    dd($avatar);
 });
 
 Route::get('/', [IndexController::class, 'index']);

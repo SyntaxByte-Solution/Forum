@@ -20,7 +20,7 @@
         <div class="thread-add-header flex align-center">
             <div class="size28 rounded hidden-overflow mr4 relative has-fade">
                 <div class="fade-loading"></div>
-                <img src="{{ auth()->user()->avatar }}" class="handle-image-center-positioning" alt="">
+                <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="">
             </div>
             <div class="relative">
                 <div>

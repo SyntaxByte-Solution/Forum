@@ -34,7 +34,7 @@
                 </div>
                 @endif
                 @if(Session::has('message'))
-                    <div class="green-message-container">
+                    <div class="green-message-container mb8">
                         <p class="green-message">{{ Session::get('message') }}</p>
                     </div>
                 @endif

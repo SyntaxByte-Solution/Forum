@@ -11,7 +11,7 @@ use App\Rules\IsValidPassword;
 use App\Models\{Thread, Category, User, ProfileView, Like, Vote, Follow};
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-use App\Classes\ImageHelper;
+use App\Classes\ImageResize;
 
 class UserController extends Controller
 {
@@ -190,8 +190,24 @@ class UserController extends Controller
         }
         else if($request->hasFile('avatar')){
             $path = $request->file('avatar')->storeAs(
-                'users/avatars', $request->user()->id.'.png', 'public'
+                'users/' . $user->id. '/usermedia/avatars', 'avatar.png', 'public'
             );
+
+            $avatar_dims = [[48, 60], [96, 60], [160, 70], [250, 80], [400, 100]];
+
+            foreach($avatar_dims as $avatar_dim) {
+                $src = 'users/'. $user->id. '/usermedia/avatars/avatar' .'.png';
+                $destination = public_path('/users/' . $user->id . '/usermedia/avatars/' . $avatar_dim[0] . '.png');
+                
+                // *** 1) Initialise / load image
+                $resizeObj = new ImageResize($src);
+    
+                // *** 2) Resize image (options: exact, portrait, landscape, auto, crop)
+                $resizeObj -> resizeImage($avatar_dim[0], $avatar_dim[0], 'crop');
+    
+                // *** 3) Save image ('image-name', 'quality [int]')
+                $resizeObj -> saveImage($destination, $avatar_dim[1]);
+            }
 
             $data['avatar'] = $path;
             // Here we need to notify all the followers about avatar change

@@ -607,9 +607,7 @@ a, input, textarea {
     color: #313131;
     font-size: 13px;
     font-weight: bold;
-    border: 1px solid rgb(175, 175, 175);
-    border-right: none;
-    border-bottom: none;
+    border-right: 1px solid rgb(175, 175, 175);
     user-select: none;
 }
 
@@ -619,7 +617,7 @@ a, input, textarea {
 }
 
 .inline-buttons-container .inline-button-style:last-child {
-    border-right: 1px solid rgb(175, 175, 175);
+    border-right: none;
 }
 
 .selected-inline-button-style {
@@ -1240,7 +1238,7 @@ a, input, textarea {
 }
 
 .spinner {
-    transition: transform 0.2s ease;
+    transition: transform 0.2s linear;
 }
 
 .full-shadowed {
@@ -1402,6 +1400,8 @@ a, input, textarea {
 .size4 {
     height: 4px;
     width: 4px;
+
+    min-width: 4px;
 }
 
 .rounded {
@@ -1445,6 +1445,21 @@ a, input, textarea {
 }
 
 /* middle content */
+
+.closer-style {
+    position: absolute;
+    cursor: pointer;
+    top: 6px;
+    right: 6px;
+}
+
+.fill-opacity-style {
+    opacity: 0.7;
+}
+
+.fill-opacity-style:hover {
+    opacity: 1;
+}
 
 .dropdown-style {
     padding: 6px;
@@ -2551,6 +2566,17 @@ tr:nth-child(2n) {
 
     height: 24px;
     width: 24px;
+}
+
+.simple-information-suboptions-container {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    background-color: #f9fbff;
+    border: 1px solid #93bad2;
+    border-radius: 4px;
+    padding: 10px 25px 10px 10px;
 }
 
 .suboptions-container-right-style {

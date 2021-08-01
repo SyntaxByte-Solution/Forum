@@ -9,19 +9,21 @@ class VotedThreads extends Component
 {
     public $user;
     public $votedthreads;
+    public $votedthreads_count;
 
     public function __construct(User $user)
     {
         $this->user = $user;
-        $voted_threads = collect([]);
-        $c = 0;
-        foreach(Vote::where('user_id', $user->id)->where('votable_type', 'App\Models\Thread')->orderBy('created_at', 'desc')->get(['votable_id', 'vote']) as $votable) {
-            if($c == 6) break;
-            $voted_threads->push(Thread::find($votable['votable_id']));
 
-            $c++;
-        }
-        $this->votedthreads = $voted_threads;
+        $votedthreads = Thread::whereIn('id', 
+        Vote::where('user_id', $user->id)
+        ->where('votable_type', 'App\Models\Thread')
+        ->orderBy('created_at', 'desc')
+        ->pluck('votable_id')
+        )->orderBy('created_at', 'desc');
+
+        $this->votedthreads_count = $votedthreads->count();
+        $this->votedthreads = $votedthreads->take(6)->get();
     }
 
     /**

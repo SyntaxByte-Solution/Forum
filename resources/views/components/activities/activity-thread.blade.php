@@ -40,36 +40,39 @@
         </div>
     </div>
     <div class="flex">
-        <div class="flex align-center height-max-content">
+        <div class="flex align-center height-max-content mr8">
             <div class="flex flex-column align-center">
-                <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M431.34,379.05H80.7c-31.52,0-47.29-38.15-25-60.4L231,143.33a35.21,35.21,0,0,1,49.94,0L456.24,318.65C478.63,340.9,462.87,379.05,431.34,379.05Z" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:66px"/></svg>
+                <div class="size24 rounded hidden-overflow mb4" style="min-width: 24px">
+                    <img src="{{ asset($thread->user->avatar) }}" class="handle-image-center-positioning" alt="">
+                </div>
+                <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M431.34,379.05H80.7c-31.52,0-47.29-38.15-25-60.4L231,143.33a35.21,35.21,0,0,1,49.94,0L456.24,318.65C478.63,340.9,462.87,379.05,431.34,379.05Z" style="@if($thread->voted_by($activity_user, 'up')) fill: #2ca0ff; stroke: #2ca0ff; @else fill:none; stroke:#000; @endif stroke-miterlimit:10;stroke-width:66px"/></svg>
                 <span class="bold">{{ $thread->votes->count() }}</span>
-                <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M431.34,133H80.7c-31.52,0-47.29,38.15-25,60.4L231,368.67a35.21,35.21,0,0,0,49.94,0L456.24,193.35C478.63,171.1,462.87,133,431.34,133Z" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:66px"/></svg>
+                <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M431.34,133H80.7c-31.52,0-47.29,38.15-25,60.4L231,368.67a35.21,35.21,0,0,0,49.94,0L456.24,193.35C478.63,171.1,462.87,133,431.34,133Z" style="@if($thread->voted_by($activity_user, 'down')) fill: #2ca0ff; stroke: #2ca0ff; @else fill:none; stroke:#000; @endif stroke-miterlimit:10;stroke-width:66px"/></svg>
             </div>
-            <div class="gray height-max-content mx4 fs10 unselectable">•</div>
         </div>
         <div>
-            <div class="flex">
-                <img src="{{ asset($thread->user->avatar) }}" class="size24 rounded hidden-overflow mr4" alt="" style="min-width: 24px">
-                <div class="ml4">
-                    <a href="{{ $thread->link }}" class="blue no-underline bold flex fs15">{{ $thread->subject }}</a>
-                    <div class="relative flex align-center" style="margin-top: 2px">
-                        <div class="size14" title="{{ $thread->visibility->visibility }}">
-                            <svg class="size14 thread-resource-visibility-icon" style="fill: #202020; margin-right: 2px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                {!! $thread->visibility->icon !!}
-                            </svg>
-                        </div>
-                        <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
-                        <p class="no-margin fs11 flex align-center tooltip-section gray" style="margin-top:1px">{{ __('Posted') }} {{ $at_hummans }}</p>
-                        <div class="tooltip tooltip-style-1">
-                            {{ $at }}
-                        </div>
+            <div>
+                <a href="{{ $thread->link }}" class="blue no-underline bold flex fs15">{{ $thread->subject }}</a>
+                <div class="relative flex align-center" style="margin-top: 2px">
+                    <div class="size14" title="{{ $thread->visibility->visibility }}">
+                        <svg class="size14 thread-resource-visibility-icon" style="fill: #202020; margin-right: 2px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            {!! $thread->visibility->icon !!}
+                        </svg>
+                    </div>
+                    <span class="fs10 gray" style="margin: 2px 4px">•</span>
+                    <p class="no-margin fs11 flex align-center tooltip-section gray" style="margin-top:1px">{{ __('Posted') }}: {{ $at_hummans }}</p>
+                    <div class="tooltip tooltip-style-1">
+                        {{ $at }}
                     </div>
                 </div>
             </div>
             <div class="flex align-center mt8">
                 <div class="simple-border-container mr4">
+                    @if($thread->liked_by($activity_user))
+                    <svg class="size14 mr4" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path style="fill: #D7443E;" d="M462.3,62.6C407.5,15.9,326,24.3,275.7,76.2L256,96.5,236.3,76.2C186.1,24.3,104.5,15.9,49.7,62.6c-62.8,53.6-66.1,149.8-9.9,207.9L233.3,470.3a31.35,31.35,0,0,0,45.3,0L472.1,270.5c56.3-58.1,53-154.3-9.8-207.9Z"/></svg>
+                    @else
                     <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M458.4,64.3C400.6,15.7,311.3,23,256,79.3,200.7,23,111.4,15.6,53.6,64.3-21.6,127.6-10.6,230.8,43,285.5L218.4,464.2a52.52,52.52,0,0,0,75.2.1L469,285.6C522.5,230.9,533.7,127.7,458.4,64.3ZM434.8,251.8,259.4,430.5c-2.4,2.4-4.4,2.4-6.8,0L77.2,251.8c-36.5-37.2-43.9-107.6,7.3-150.7,38.9-32.7,98.9-27.8,136.5,10.5l35,35.7,35-35.7c37.8-38.5,97.8-43.2,136.5-10.6,51.1,43.1,43.5,113.9,7.3,150.8Z"/></svg>
+                    @endif
                     <p class="fs12 no-margin unselectable">{{ $thread->likes->count() }} likes</p>
                 </div>
                 <div class="simple-border-container mr4">

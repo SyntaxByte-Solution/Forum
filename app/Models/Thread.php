@@ -105,6 +105,24 @@ class Thread extends Model
         return false;
     }
 
+    public function liked_by($user) {
+        $d = Like::where('user_id', $user->id)
+            ->where('likable_type', 'App\Models\Thread')
+            ->where('likable_id', $this->id)
+            ->count();
+
+        return $d;
+    }
+
+    public function voted_by($user, $vote) {
+        $vote = ($vote == 'up') ? 1 : -1;
+        return Vote::where('vote', $vote)
+                ->where('user_id', $user->id)
+                ->where('votable_id', $this->id)
+                ->where('votable_type', 'App\Models\Thread')
+                ->count();
+    }
+
     public function getUpvotesAttribute() {
         $count = 0;
         foreach($this->votes as $vote) {

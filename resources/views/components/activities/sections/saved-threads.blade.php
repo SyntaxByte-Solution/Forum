@@ -4,7 +4,7 @@
         {{ __('Saved threads') }} [<span class="current-thread-count mx4">{{ 6 * ($savedthreads->count() / 6) }}</span> / {{ $user->savedthreads->count() }} ]
     </h3>
     @foreach($savedthreads as $thread)
-        <x-activities.activity-thread :thread="$thread"/>
+        <x-activities.activity-thread :thread="$thread" :user="$user"/>
     @endforeach
     @if(!$savedthreads->count())
         <div class="full-center">

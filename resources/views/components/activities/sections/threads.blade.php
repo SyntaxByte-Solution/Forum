@@ -4,7 +4,7 @@
         {{ __('Threads area') }} [<span class="current-thread-count mx4">{{ 6 * ($threads->count() / 6) }}</span> / {{ $user->threads->count() }} ]
     </h3>
     @foreach($threads as $thread)
-        <x-activities.activity-thread :thread="$thread"/>
+        <x-activities.activity-thread :thread="$thread" :user="$user"/>
     @endforeach
     @if(!$threads->count())
         <div class="full-center">

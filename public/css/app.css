@@ -1238,7 +1238,7 @@ a, input, textarea {
 }
 
 .spinner {
-    transition: transform 0.2s linear;
+    transition: transform 0.4s linear;
 }
 
 .full-shadowed {

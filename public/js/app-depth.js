@@ -4040,7 +4040,7 @@ function start_spinner(spinner, spinner_interval_name) {
         setInterval(function() {
             spinner_rotation+=40;
             spinner.rotate(spinner_rotation);
-        }, 200)
+        }, 400)
     );
 }
 

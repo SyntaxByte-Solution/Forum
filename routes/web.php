@@ -26,9 +26,6 @@ use App\Http\Middleware\AccountActivationCheck;
 
 Route::get('/test', function() {
     $user = auth()->user();
-    $thread = Thread::first();
-
-    dd($thread->visibility->icon);
 });
 
 Route::get('/', [IndexController::class, 'index']);

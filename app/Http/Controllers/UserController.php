@@ -11,6 +11,7 @@ use App\Rules\IsValidPassword;
 use App\Models\{Thread, Category, User, ProfileView, Like, Vote, Follow};
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Classes\ImageHelper;
 
 class UserController extends Controller
 {
@@ -176,8 +177,8 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),   
             ],
             'about'=>'sometimes|max:1400',
-            'avatar'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,svg,png|max:5000|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000',
-            'cover'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,svg,png|max:5000|dimensions:min_width=50,min_height=50,max_width=1280,max_height=2050',
+            'avatar'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,png|max:5000|dimensions:min_width=200,min_height=200,max_width=1000,max_height=1000',
+            'cover'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,png|max:5000|dimensions:min_width=200,min_height=200,max_width=1280,max_height=2050',
         ]);
 
         if($request->avatar_removed) {

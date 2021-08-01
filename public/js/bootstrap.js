@@ -9,8 +9,11 @@ function preloadImages(srcs) {
         preloadImages.cache.push(img);
     }
 }
-
 // then to call it, you would use this
-var imageSrcs = ["/assets/images/icons/sp.png", '/assets/images/logos/large-logo.png'];
+var imageSrcs = [];
+if(uid != '') {
+    imageSrcs.push(`/users/${uid}/usermedia/avatars/36-l.png`);
+}
+imageSrcs.push(["/assets/images/icons/sp.png"]);
 
 preloadImages(imageSrcs);

@@ -5,7 +5,7 @@
     @endphp
     <div class="flex px8 py8">
         <div class="small-image-1 br6 mr8 hidden-overflow">
-            <img src="{{ $user->avatar }}" class="handle-image-center-positioning" alt="">
+            <img src="{{ $user->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="">
         </div>
         <div class="mr8">
             <h2 class="no-margin">{{ $user->firstname . ' ' . $user->lastname }}</h2>

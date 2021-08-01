@@ -27,7 +27,7 @@
             </div>
             <div class="flex">
                 <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="small-image-3 rounded mr4 hidden-overflow" style="min-width: 22px">
-                    <img src="{{ $thread->user->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="">
+                    <img src="{{ $thread->user->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="" loading="lazy">
                 </a>
                 <div class="full-width">
                     <a href="{{ $thread->link }}" class="no-margin bold no-underline forum-color fs13">{{ $thread->slice }}</a>

@@ -102,6 +102,7 @@
             </div>
             <div>
                 @include('partials.user-space.user-card')
+                @include('partials.ads.w300h250')
             </div>
         </div>
     </div>

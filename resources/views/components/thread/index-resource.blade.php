@@ -83,7 +83,7 @@
                     <div class="flex">
                         <div style="width: 32px; height: 32px" class="relative rounded mr4 hidden-overflow has-fade">
                             <div class="fade-loading"></div>
-                            <img src="{{ auth()->user()->sizedavatar(36) }}" class="thread-owner-avatar flex handle-image-center-positioning" alt="">
+                            <img src="{{ $thread->user->sizedavatar(36) }}" class="thread-owner-avatar flex handle-image-center-positioning" alt="">
                         </div>
                         <div>
                             <div class="flex align-center follow-box">

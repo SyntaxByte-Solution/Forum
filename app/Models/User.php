@@ -55,9 +55,11 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function sizedavatar($size, $quality="-h") {
         $avatar_path = asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
-
-        if(in_array($size, $this->avatar_dims) && $this->avatar != asset('users/defaults/medias/avatars/avatar.png')) {
-            return asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
+        if($this->provider_avatar) {
+            return $this->provider_avatar;
+        }
+        if($this->avatar != asset('users/defaults/medias/avatars/avatar.png')) {
+            return $avatar_path;
         }
         
         return asset('users/defaults/medias/avatars/100-l.png');

@@ -3133,8 +3133,8 @@ tr:nth-child(2n) {
 
 #activities-sections-content {
     overflow-y: scroll;
-    max-height: 390px;
-    min-height: 390px;
+    max-height: 450px;
+    min-height: 450px;
 }
 
 #activities-sections-loading-container {

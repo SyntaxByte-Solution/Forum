@@ -82,13 +82,9 @@ main {
     padding: 0 16px;
     height: 100%;
     font-size: 13px;
-    border-left: 1px solid #343B48;
+    font-weight: bold;
 
     transition: 0.4s ease background-color;
-}
-
-.menu-button-style:last-child {
-    border-right: 1px solid #343B48;
 }
 
 .menu-button-style:hover {

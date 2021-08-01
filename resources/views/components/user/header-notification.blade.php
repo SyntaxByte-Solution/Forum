@@ -1,7 +1,9 @@
 <div class="notification-container flex align-center relative" style="margin: 2px 0">
     <a href="{{ $action_resource_link }}" class="link-wraper notification-component-container" style="@if(!$notif_read) background-color:#ccebf74a @endif">
         <div class="relative" style="height: max-content">
-            <img src="{{ $action_user->avatar }}" class="action_takers_image size48 rounded mr8" alt="{{ $action_user->firstname . ' ' . $action_user->lastname . ' profile picture' }}">
+            <div class="size48 rounded hidden-overflow mr8">
+                <img src="{{ $action_user->sizedavatar(100, '-l') }}" class="action_takers_image handle-image-center-positioning" alt="{{ $action_user->firstname . ' ' . $action_user->lastname . ' profile picture' }}">
+            </div>
             <div class="action_type_icon notification-type-icon sprite sprite-2-size {{ $resource_action_icon }}"></div>
         </div>
         <div>

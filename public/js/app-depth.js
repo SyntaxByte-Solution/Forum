@@ -254,15 +254,17 @@ function heart_beating() {
 var t=setInterval(heart_beating,500);
 
 $('.login-signin-button').each(function() {
-    handle_login_lock($(this));
+    handle_login_lock($(this).parent());
 });
 
-function handle_login_lock(button) {
-    button.on('click', function(event) {
-        $('#login-view').parent().css('display', 'block');
-        $('#login-view').parent().css('opacity', '1');
-
-        event.preventDefault();
+function handle_login_lock(container) {
+    container.find('.login-signin-button').each(function() {
+        $(this).on('click', function(event) {
+            $('#login-view').parent().css('display', 'block');
+            $('#login-view').parent().css('opacity', '1');
+    
+            event.preventDefault();
+        });
     });
 }
 
@@ -3116,7 +3118,7 @@ $('.open-thread-image').on('click', function(event) {
                     handle_resource_like($(this));
                 });
                 $('.tmvisc').find('.login-signin-button').not('.viewer-thread-reply .login-signin-button').each(function() {
-                    handle_login_lock($(this));
+                    handle_login_lock($(this).parent());
                 });
 
                 handle_document_suboptions_hiding();

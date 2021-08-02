@@ -4058,10 +4058,39 @@ function stop_spinner(spinner, spinner_interval_name) {
 }
 
 $('.activity-threads-section-load-more').on('click', function() {
-    // $(this).find('.spinner').removeClass('opacity0');
-    // start_spinner($(this).find('.spinner'), 'threads-section-load-more');
+    let button = $(this);
+    button.find('.spinner').removeClass('opacity0');
+    start_spinner(button.find('.spinner'), 'threads-section-load-more');
 
-    // setTimeout(function() {
-    //     stop_spinner($(this).find('.spinner'), 'threads-section-load-more');
-    // }, 3000);
+    let activity_user = $('.activities-user').val();
+    let present_threads_in_section = $('#activities-sections-content').find('.thread-container-box').length;
+
+    $.ajax({
+        url: `/users/${activity_user}/activities/sections/generate?section=threads&range=6&skip=${present_threads_in_section}`,
+        type: 'get',
+        success: function(response) {
+            $(`${response.content}`).insertBefore(button);
+
+            let unhandled_activities_threads = 
+            $('#activities-sections-content .thread-container-box').slice(response.count*(-1));
+            
+            unhandled_activities_threads.each(function() {
+                handle_element_suboption_containers($(this));
+                handle_thread_display($(this));
+                handle_tooltip($(this).find('.tooltip-section'));
+            });
+
+            let section_container = button;
+            while(!section_container.hasClass('activities-section')) {
+                section_container = section_container.parent();
+            }
+
+            let c = parseInt(section_container.find('.current-section-thread-count').text()) + parseInt(response.count);
+            section_container.find('.current-section-thread-count').text(c);
+        },
+        complete: function() {
+            stop_spinner(button.find('.spinner'), 'threads-section-load-more');
+            button.find('.spinner').addClass('opacity0');
+        }
+    })
 });

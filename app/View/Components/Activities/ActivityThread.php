@@ -36,8 +36,8 @@ class ActivityThread extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.activities.activity-thread');
+        return view('components.activities.activity-thread', $data);
     }
 }

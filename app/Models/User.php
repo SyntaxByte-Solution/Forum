@@ -62,7 +62,7 @@ class User extends UserAuthenticatable implements Authenticatable
             return $avatar_path;
         }
         
-        return asset('users/defaults/medias/avatars/100-l.png');
+        return asset("users/defaults/medias/avatars/$size-l.png");
     }
 
     public function getReachAttribute() {

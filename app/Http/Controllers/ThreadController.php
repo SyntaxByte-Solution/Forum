@@ -7,11 +7,13 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Filesystem\Filesystem;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post};
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
+use App\View\Components\Activities\ActivityThread;
 use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads};
 use App\Http\Controllers\PostController;
 
@@ -580,14 +582,20 @@ class ThreadController extends Controller
         ];
     }
 
-    // --------------- Activity sections and components generating (section/range of components) ---------------
+    // --------------- Activity sections and components generating ---------------
+    // sections
     public function generate_section(User $user, $section) {
         
         if( is_null($section) ) {
             abort(422, __('Section is required'));
         }
         
-        $sections = ['threads', 'saved-threads', 'liked-threads', 'voted-threads', 'activity-log'];
+        $sections = ['threads', 'liked-threads', 'voted-threads'];
+        if(auth()->user()->id == $user->id) {
+            $sections[] = 'saved-threads';
+            $sections[] = 'activity-log';
+        }
+
         if(!in_array($section, $sections)) {
             abort(422, __('Invalide section name'));
         }
@@ -612,6 +620,45 @@ class ThreadController extends Controller
             case 'activity-log':
 
                 break;
+        }
+    }
+
+    // range of section's threads
+    public function generate_section_range(Request $request, User $user) {
+        $sections = ['threads', 'liked-threads', 'voted-threads'];
+        if(Auth::check()) {
+            if(auth()->user()->id == $user->id) {
+                $sections[] = 'saved-threads';
+                $sections[] = 'activity-log';
+            }
+        }
+        $data = $request->validate([
+            'section'=>[
+                'required',
+                Rule::in($sections)
+            ],
+            'range'=>'required|Numeric',
+            'skip'=>'required|Numeric',
+        ]);
+
+        switch($data['section']) {
+            case 'threads':
+                $threads = $user->threads()->orderBy('created_at', 'desc')->skip($data['skip'])->take($data['range'])->get();
+
+                $payload = "";
+
+                foreach($threads as $thread) {
+                    $thread_component = (new ActivityThread($thread, $thread->user));
+                    $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+                    $payload .= $thread_component;
+                }
+
+                $e = $user->threads->skip($data['skip'] + $data['range'])->count();
+                return [
+                    "hasNext"=> $user->threads->skip($data['skip'] + $data['range'])->count() > 0,
+                    "content"=>$payload,
+                    "count"=>$threads->count()
+                ];
         }
     }
 }

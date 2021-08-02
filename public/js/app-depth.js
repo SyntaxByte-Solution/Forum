@@ -3999,7 +3999,6 @@ $('.activity-section-switcher').on('click', function() {
             return;
         }
         section_switcher_lock = false;
-        $('#activities-sections-content').css('overflow-y', 'unset');
         $('#activities-sections-loading-container').removeClass('none');
         setTimeout(function() {
             start_spinner(spinner, 'activities-sections-switcher');
@@ -4017,7 +4016,7 @@ $('.activity-section-switcher').on('click', function() {
 
                 let appended_section = $('.activities-section').last();
                 handle_activity_load_more_button(appended_section.find('.activity-section-load-more'));
-                $('#activities-sections-content').find('.thread-container-box').each(function() {
+                appended_section.find('.thread-container-box').each(function() {
                     let thread_container = $(this);
                     handle_element_suboption_containers($(this));
                     handle_thread_display($(this));
@@ -4030,7 +4029,6 @@ $('.activity-section-switcher').on('click', function() {
                 });
             },
             complete: function() {
-                $('#activities-sections-content').css('overflow-y', 'scroll');
                 activities_sections_apperance_switch.set(section, true);
                 activities_section_opened = section;
                 $('#activities-sections-loading-container').addClass('none');
@@ -4102,6 +4100,12 @@ function handle_activity_load_more_button(button) {
                     handle_element_suboption_containers($(this));
                     handle_thread_display($(this));
                     handle_tooltip($(this).find('.tooltip-section'));
+                    $(this).find('.handle-image-center-positioning').each(function() {
+                        let image = $(this);
+                        $(this).parent().imagesLoaded(function() {
+                            handle_image_dimensions(image);
+                        });
+                    });
                 });
     
                 let c = parseInt(section_container.find('.current-section-thread-count').text()) + parseInt(response.count);

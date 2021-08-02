@@ -89,7 +89,7 @@
                             @endif
                         </div>
                     </div>
-                    <div id="activities-sections-content" class="relative" style="padding: 12px">
+                    <div id="activities-sections-content" class="relative">
                         <div id="activities-sections-loading-container" class="none full-center">
                             <div class="flex flex-column align-center">
                                 <div class="spinner size24">

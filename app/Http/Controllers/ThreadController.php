@@ -14,7 +14,7 @@ use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDen
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post, Like};
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\View\Components\Activities\ActivityThread;
-use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads};
+use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads, ActivityLog};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
@@ -620,7 +620,8 @@ class ThreadController extends Controller
                 return $voted_threads_section->render(get_object_vars($voted_threads_section))->render();
                 break;
             case 'activity-log':
-
+                $activity_logs = (new ActivityLog);
+                return $activity_logs->render();
                 break;
         }
     }
@@ -711,6 +712,8 @@ class ThreadController extends Controller
                     "content"=>$payload,
                     "count"=>$votedthreads->count()
                 ];
+                break;
+            case "activity-log":
                 break;
         }
     }

@@ -3116,21 +3116,21 @@ tr:nth-child(2n) {
 
 .activities-sections-container {
     border-radius: 4px;
-    border: 1px solid #c6c6c6;
+    border: 1px solid rgb(175, 175, 175);
     box-shadow: 0 0 4px 0px #00000012;
-
-    overflow: hidden;
 }
 
 .activities-sections-header {
-    margin: -1px;
     border-bottom: 1px solid rgb(175, 175, 175);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
 }
 
-#activities-sections-content {
+.activities-section-content {
+    padding: 12px;
     overflow-y: scroll;
-    max-height: 450px;
-    min-height: 450px;
+    max-height: 346px;
+    min-height: 346px;
 }
 
 #activities-sections-loading-container {
@@ -3153,4 +3153,10 @@ tr:nth-child(2n) {
 
 .activity-section-load-more:hover {
     background-color: #f2f2f2;
+}
+
+.activities-section-content-header {
+    background-color: #f0f0f0;
+    padding: 12px;
+    border-bottom: 1px solid rgb(175, 175, 175);
 }

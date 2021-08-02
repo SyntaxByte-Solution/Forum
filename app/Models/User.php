@@ -91,7 +91,7 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function savedthreads() {
-        return $this->belongsToMany(Thread::class, 'saved_threads', 'user', 'thread');
+        return $this->belongsToMany(Thread::class, 'saved_threads', 'user', 'thread')->withTimestamps()->withPivot('created_at')->orderBy('saved_threads.created_at', 'desc');
     }
 
     public function disables() {
@@ -109,18 +109,24 @@ class User extends UserAuthenticatable implements Authenticatable
             ->get();
     }
 
-    public function liked_threads() {
-        $threads_ids = Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Thread')->pluck('likable_id');
+    public function liked_threads($order="desc") {
+        $threads_ids = Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Thread')->orderBy('created_at', $order)->pluck('likable_id');
 
-        return Thread::whereIn('id', $threads_ids)->get();
+        return $threads_ids->map(function($value) {
+            return Thread::find($value);
+        });
     }
 
     public function votes() {
         return Vote::where('user_id', $this->id)->get();
     }
 
-    public function voted_threads() {
-        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->get();
+    public function voted_threads($order="desc") {
+        $threads_ids = Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->orderBy('created_at', $order)->pluck('votable_id');
+
+        return $threads_ids->map(function($value) {
+            return Thread::find($value);
+        });
     }
 
     public function votes_count() {

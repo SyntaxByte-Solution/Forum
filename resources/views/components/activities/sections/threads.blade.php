@@ -6,8 +6,9 @@
     @foreach($threads as $thread)
         <x-activities.activity-thread :thread="$thread" :user="$user"/>
     @endforeach
-    @if($user->threads->count() > 6)
-    <div class="flex activity-section-load-more activity-threads-section-load-more">
+    @if($user->threads->count() > 10)
+    <div class="flex activity-section-load-more">
+        <input type="hidden" class="section" value="threads">
         <div class="flex align-center move-to-middle">
             <p class="bold no-margin mr8 fs15 blue">{{ __('Load More') }}</p>
             <div class="spinner size17 opacity0">

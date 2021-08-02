@@ -49,7 +49,7 @@
                     <div class="flex flex-column align-center">
                         <div class="size24 rounded hidden-overflow mb4" style="min-width: 24px">
                             <a href="{{ $thread->user->link }}">
-                                <img src="{{ asset($thread->user->sizedavatar(36, '-l')) }}" class="handle-image-center-positioning" alt="">
+                                <img src="{{ asset($thread->user->sizedavatar(36, '-l')) }}" class="activity-thread-user-image handle-image-center-positioning" alt="">
                             </a>
                         </div>
                         <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M431.34,379.05H80.7c-31.52,0-47.29-38.15-25-60.4L231,143.33a35.21,35.21,0,0,1,49.94,0L456.24,318.65C478.63,340.9,462.87,379.05,431.34,379.05Z" style="@if($thread->voted_by($activity_user, 'up')) fill: #2ca0ff; stroke: #2ca0ff; @else fill:none; stroke:#000; @endif stroke-miterlimit:10;stroke-width:66px"/></svg>

@@ -4014,6 +4014,20 @@ $('.activity-section-switcher').on('click', function() {
                 $('#activities-sections-content').append(payload);
                 $('#activities-sections-content').find('.activities-section').addClass('none');
                 $('#activities-sections-content').find('.activities-' + section + '-section').removeClass('none');
+
+                let appended_section = $('.activities-section').last();
+                handle_activity_load_more_button(appended_section.find('.activity-section-load-more'));
+                $('#activities-sections-content').find('.thread-container-box').each(function() {
+                    let thread_container = $(this);
+                    handle_element_suboption_containers($(this));
+                    handle_thread_display($(this));
+                    handle_tooltip($(this).find('.tooltip-section'));
+                    $(this).imagesLoaded(function() {
+                        thread_container.find('.activity-thread-user-image').each(function(){
+                            handle_image_dimensions($(this));
+                        });
+                    });
+                });
             },
             complete: function() {
                 $('#activities-sections-content').css('overflow-y', 'scroll');
@@ -4029,7 +4043,6 @@ $('.activity-section-switcher').on('click', function() {
 });
 
 jQuery.fn.rotate = function(degrees) {
-    console.log('inside rotator');
     $(this).css({   
         '-webkit-transform' : 'rotate('+ degrees +'deg)',
         '-moz-transform' : 'rotate('+ degrees +'deg)',
@@ -4058,43 +4071,46 @@ function stop_spinner(spinner, spinner_interval_name) {
     spinner_rotation = 0;
 }
 
-$('.activity-threads-section-load-more').on('click', function() {
-    let button = $(this);
-    let section_container = button;
-    while(!section_container.hasClass('activities-section')) {
-        section_container = section_container.parent();
-    }
-
-    button.find('.spinner').removeClass('opacity0');
-    start_spinner(button.find('.spinner'), 'threads-section-load-more');
-
-    let activity_user = $('.activities-user').val();
-    let present_threads_in_section = section_container.find('.thread-container-box').length;
-
-    $.ajax({
-        url: `/users/${activity_user}/activities/sections/generate?section=threads&range=6&skip=${present_threads_in_section}`,
-        type: 'get',
-        success: function(response) {
-            if(response.hasNext == false) {
-                button.addClass('none');
-            }
-
-            $(`${response.content}`).insertBefore(button);
-
-            let unhandled_activities_threads = section_container.find('.thread-container-box').slice(response.count*(-1));
-            
-            unhandled_activities_threads.each(function() {
-                handle_element_suboption_containers($(this));
-                handle_thread_display($(this));
-                handle_tooltip($(this).find('.tooltip-section'));
-            });
-
-            let c = parseInt(section_container.find('.current-section-thread-count').text()) + parseInt(response.count);
-            section_container.find('.current-section-thread-count').text(c);
-        },
-        complete: function() {
-            stop_spinner(button.find('.spinner'), 'threads-section-load-more');
-            button.find('.spinner').addClass('opacity0');
+handle_activity_load_more_button($('#activities-sections-content').find('.activity-section-load-more'));
+function handle_activity_load_more_button(button) {
+    button.on('click', function() {
+        let section_container = button;
+        while(!section_container.hasClass('activities-section')) {
+            section_container = section_container.parent();
         }
+    
+        button.find('.spinner').removeClass('opacity0');
+        start_spinner(button.find('.spinner'), 'threads-section-load-more');
+    
+        let activity_user = $('.activities-user').val();
+        let present_threads_in_section = section_container.find('.thread-container-box').length;
+        let section = button.find('.section').val();
+    
+        $.ajax({
+            url: `/users/${activity_user}/activities/sections/generate?section=${section}&range=10&skip=${present_threads_in_section}`,
+            type: 'get',
+            success: function(response) {
+                if(response.hasNext == false) {
+                    button.addClass('none');
+                }
+    
+                $(`${response.content}`).insertBefore(button);
+    
+                let unhandled_activities_threads = section_container.find('.thread-container-box').slice(response.count*(-1));
+                
+                unhandled_activities_threads.each(function() {
+                    handle_element_suboption_containers($(this));
+                    handle_thread_display($(this));
+                    handle_tooltip($(this).find('.tooltip-section'));
+                });
+    
+                let c = parseInt(section_container.find('.current-section-thread-count').text()) + parseInt(response.count);
+                section_container.find('.current-section-thread-count').text(c);
+            },
+            complete: function() {
+                stop_spinner(button.find('.spinner'), 'threads-section-load-more');
+                button.find('.spinner').addClass('opacity0');
+            }
+        });
     })
-});
+}

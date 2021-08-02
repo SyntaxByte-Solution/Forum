@@ -3,7 +3,7 @@
 namespace App\View\Components\Activities\Sections;
 
 use Illuminate\View\Component;
-use App\Models\{User, Like, Thread};
+use App\Models\{User, Like};
 
 class LikedThreads extends Component
 {
@@ -13,11 +13,8 @@ class LikedThreads extends Component
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->likedthreads = Thread::whereIn('id', 
-        Like::where('user_id', $user->id)
-        ->where('likable_type', 'App\Models\Thread')
-        ->pluck('likable_id')
-        )->orderBy('created_at', 'desc')->take(6)->get();
+        
+        $this->likedthreads = $user->liked_threads()->take(10);
     }
 
     /**

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Filesystem\Filesystem;
 use Request as Rqst;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
-use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post};
+use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post, Like};
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\View\Components\Activities\ActivityThread;
 use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads};
@@ -648,17 +648,68 @@ class ThreadController extends Controller
                 $payload = "";
 
                 foreach($threads as $thread) {
-                    $thread_component = (new ActivityThread($thread, $thread->user));
+                    $thread_component = (new ActivityThread($thread, $user));
                     $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
                     $payload .= $thread_component;
                 }
 
-                $e = $user->threads->skip($data['skip'] + $data['range'])->count();
                 return [
                     "hasNext"=> $user->threads->skip($data['skip'] + $data['range'])->count() > 0,
                     "content"=>$payload,
                     "count"=>$threads->count()
                 ];
+                break;
+            case 'saved-threads':
+                $savedthreads = $user->savedthreads()->skip($data['skip'])->take($data['range'])->get();
+
+                $payload = "";
+
+                foreach($savedthreads as $thread) {
+                    $thread_component = (new ActivityThread($thread, $user));
+                    $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+                    $payload .= $thread_component;
+                }
+
+                return [
+                    "hasNext"=> $user->savedthreads->skip($data['skip'] + $data['range'])->count() > 0,
+                    "content"=>$payload,
+                    "count"=>$savedthreads->count()
+                ];
+                break;
+            case 'liked-threads':
+                $likedthreads = $user->liked_threads()->skip($data['skip'])->take(10);
+
+                $payload = "";
+
+                foreach($likedthreads as $thread) {
+                    $thread_component = (new ActivityThread($thread, $user));
+                    $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+                    $payload .= $thread_component;
+                }
+
+                return [
+                    "hasNext"=> $user->liked_threads()->skip($data['skip'] + $data['range'])->count() > 0,
+                    "content"=>$payload,
+                    "count"=>$likedthreads->count()
+                ];
+                break;
+            case 'voted-threads':
+                $votedthreads = $user->voted_threads()->skip($data['skip'])->take(10);
+
+                $payload = "";
+
+                foreach($votedthreads as $thread) {
+                    $thread_component = (new ActivityThread($thread, $user));
+                    $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+                    $payload .= $thread_component;
+                }
+
+                return [
+                    "hasNext"=> $user->voted_threads()->skip($data['skip'] + $data['range'])->count() > 0,
+                    "content"=>$payload,
+                    "count"=>$votedthreads->count()
+                ];
+                break;
         }
     }
 }

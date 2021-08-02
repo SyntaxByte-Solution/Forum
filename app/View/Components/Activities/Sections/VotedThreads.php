@@ -14,16 +14,8 @@ class VotedThreads extends Component
     public function __construct(User $user)
     {
         $this->user = $user;
-
-        $votedthreads = Thread::whereIn('id', 
-        Vote::where('user_id', $user->id)
-        ->where('votable_type', 'App\Models\Thread')
-        ->orderBy('created_at', 'desc')
-        ->pluck('votable_id')
-        )->orderBy('created_at', 'desc');
-
-        $this->votedthreads_count = $votedthreads->count();
-        $this->votedthreads = $votedthreads->take(6)->get();
+        
+        $this->votedthreads = $user->voted_threads()->take(10);
     }
 
     /**

@@ -15,7 +15,7 @@ class Threads extends Component
         $this->user = $user;
         
         // Take 6 threads created by the current user
-        $this->threads = $user->threads()->orderBy('created_at', 'desc')->take(6)->get();
+        $this->threads = $user->threads()->orderBy('created_at', 'desc')->take(10)->get();
     }
 
     /**

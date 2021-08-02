@@ -616,10 +616,6 @@ a, input, textarea {
     background: linear-gradient(0deg, rgba(233,233,233,1) 0%, rgba(249,249,249,1) 100%);
 }
 
-.inline-buttons-container .inline-button-style:last-child {
-    border-right: none;
-}
-
 .selected-inline-button-style {
     background-color: #f0f0f0;
     pointer-events: none;

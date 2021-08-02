@@ -84,7 +84,7 @@
                         <div class="flex align-center pointer button-with-suboptions">
                             <div class='header-profile-button relative has-fade' style="align-items: flex-start">
                                 <div class="fade-loading"></div>
-                                <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="header-profile-picture">
+                                <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="header-profile-picture size36">
                             </div>
                             <p class="no-margin fs13 mx4 light-gray">{{ $user->username }} <span>▾</span></p>
                         </div>

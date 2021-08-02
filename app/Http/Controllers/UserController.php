@@ -101,7 +101,7 @@ class UserController extends Controller
         $threads_count = $user->threads->count();
         $posts_count = $user->posts_count();
         $threads = $user->threads()
-        ->orderBy('created_at', 'desc')->paginate(6);
+        ->orderBy('created_at', 'desc')->paginate(10);
 
         $followers = $user->followers;
         $followers = $followers->map(function($item, $key) {

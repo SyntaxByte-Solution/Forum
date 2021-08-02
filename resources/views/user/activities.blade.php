@@ -67,8 +67,9 @@
                                 <input type="hidden" class="activity-section-name" value="activity-log">
                             </div>
                             @endif
-
+                            @if(!(\Illuminate\Support\Facades\Auth::check() && auth()->user()->id == $user->id))
                             <div class="move-to-right flex align-center relative">
+                                <!-- this button will be displayed only to other users and not to the activities profile owner -->
                                 <svg class="size17 pointer button-with-suboptions" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                                 <div class="suboptions-container simple-information-suboptions-container" style="width: 480px">
                                     <!-- container closer -->
@@ -85,6 +86,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                     <div id="activities-sections-content" class="relative" style="padding: 12px">

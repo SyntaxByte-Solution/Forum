@@ -111,10 +111,16 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function liked_threads($order="desc") {
         $threads_ids = Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Thread')->orderBy('created_at', $order)->pluck('likable_id');
-
-        return $threads_ids->map(function($value) {
-            return Thread::find($value);
-        });
+        /**
+         * The reason why we add reject is because sometimes the fetched threads from likes table are private or follower only threads and the
+         * visitor is not a follower of the owners of these threads so the global scopes(ExcludePrivate and Followersonly) return null
+         */
+        return $threads_ids
+            ->map(function($value) {
+                return Thread::find($value);
+            })->reject(function($value) {
+                return $value == null;
+            });
     }
 
     public function votes() {
@@ -123,9 +129,15 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function voted_threads($order="desc") {
         $threads_ids = Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->orderBy('created_at', $order)->pluck('votable_id');
-
-        return $threads_ids->map(function($value) {
+        /**
+         * The reason why we add reject is because sometimes the fetched threads from votes table are private or follower only threads and the
+         * visitor is not a follower of the owners of these threads so the global scopes(ExcludePrivate and Followersonly) return null
+         */
+        return $threads_ids
+        ->map(function($value) {
             return Thread::find($value);
+        })->reject(function($value) {
+            return $value == null;
         });
     }
 

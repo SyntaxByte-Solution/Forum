@@ -6,6 +6,16 @@
     @foreach($threads as $thread)
         <x-activities.activity-thread :thread="$thread" :user="$user"/>
     @endforeach
+    @if($user->threads->count() > 6)
+    <div class="flex activity-section-load-more activity-threads-section-load-more">
+        <div class="flex align-center move-to-middle">
+            <p class="bold no-margin mr4 fs15 blue">{{ __('Load More') }}</p>
+            <div class="spinner size20 opacity0">
+                <svg class="size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path fill="#2ca0ff" d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+            </div>
+        </div>
+    </div>
+    @endif
     @if(!$threads->count())
         <div class="full-center">
             <div>

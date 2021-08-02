@@ -20,7 +20,7 @@
         <div class="thread-add-header flex align-center">
             <div class="size28 rounded hidden-overflow mr4 relative has-fade">
                 <div class="fade-loading"></div>
-                <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="">
+                <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size28" alt="">
             </div>
             <div class="relative">
                 <div>
@@ -30,7 +30,7 @@
                             <path d="M161.12,362.63c-8.69-8.69-4.16-6.24-25.12-11.85-9.51-2.55-17.87-7.45-25.43-13.32L65.2,448.7a16,16,0,0,0,15.43,22l52.69-2L169.56,507A16,16,0,0,0,196,502l52-127.62a71.76,71.76,0,0,1-86.92-11.79ZM446.8,448.7,401.43,337.46c-7.56,5.88-15.92,10.77-25.43,13.32-21.07,5.64-16.45,3.18-25.12,11.85A71.78,71.78,0,0,1,264,374.42L316,502a16,16,0,0,0,26.43,5l36.25-38.28,52.69,2A16,16,0,0,0,446.8,448.7ZM327,340c15.28-15.55,17-14.21,38.79-20.14a40.64,40.64,0,0,0,28.47-29c7.48-28.4,5.54-25,25.95-45.75a41.48,41.48,0,0,0,10.42-39.58c-7.47-28.38-7.48-24.42,0-52.83a41.48,41.48,0,0,0-10.42-39.58c-20.41-20.78-18.47-17.36-25.95-45.75a40.64,40.64,0,0,0-28.47-29c-27.88-7.61-24.52-5.62-45-26.41A39.79,39.79,0,0,0,282,1.39c-27.87,7.6-24,7.61-51.9,0A39.77,39.77,0,0,0,191.16,12c-20.41,20.78-17,18.8-44.94,26.41a40.64,40.64,0,0,0-28.47,29c-7.47,28.39-5.54,25-25.95,45.75a41.46,41.46,0,0,0-10.42,39.58c7.47,28.36,7.48,24.4,0,52.82A41.51,41.51,0,0,0,91.8,245.13c20.41,20.78,18.47,17.35,26,45.75a40.64,40.64,0,0,0,28.47,29C168.6,326,170.27,325,185,340a39.74,39.74,0,0,0,49.74,5.82,39.68,39.68,0,0,1,42.53,0A39.73,39.73,0,0,0,327,340ZM161.66,176c0-53,42.24-96,94.34-96s94.34,43,94.34,96S308.1,272,256,272s-94.34-43-94.34-96Z"/>
                         </svg>
                         <span class="thread-add-selected-forum">{{ $forums->first()->forum }}</span>
-                        <div class="size7 sprite sprite-2-size more7-icon mx4"></div>
+                        <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                     </div>
                     <div class="suboptions-container thread-add-suboptions-container">
                         @foreach($forums as $forum)
@@ -52,7 +52,7 @@
                     <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to fs12">
                         <span class="mr4">{{ __('Category') }}:</span>
                         <span class="thread-add-selected-category">{{ $category->category }}</span>
-                        <div class="size7 sprite sprite-2-size more7-icon mx4"></div>
+                        <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                     </div>
                     <div class="suboptions-container thread-add-suboptions-container" style="width: 190px">
                         <div class="thread-add-categories-container">

@@ -4000,9 +4000,12 @@ $('.activity-section-switcher').on('click', function() {
         }
         section_switcher_lock = false;
 
-        start_spinner(spinner, 'activities-sections-switcher');
-        
         $('#activities-sections-loading-container').removeClass('none');
+        setTimeout(function() {
+            start_spinner(spinner, 'activities-sections-switcher');
+        }, 10);
+
+        
         let user =  $('.activities-user').val()
         $.ajax({
             url: `/users/${user}/activities/sections/${section}/generate`,
@@ -4016,7 +4019,7 @@ $('.activity-section-switcher').on('click', function() {
                 activities_sections_apperance_switch.set(section, true);
                 activities_section_opened = section;
                 $('#activities-sections-loading-container').addClass('none');
-                stop_spinner($('#activities-sections-loading-container').find('.spinner'), 'activities-sections-switcher');
+                stop_spinner(spinner, 'activities-sections-switcher');
                 section_switcher_lock = true;
             }
               
@@ -4038,11 +4041,13 @@ jQuery.fn.rotate = function(degrees) {
 let spinners_intervals = new Map();
 let spinner_rotation = 0;
 function start_spinner(spinner, spinner_interval_name) {
+    spinner_rotation = 360;
+    spinner.rotate(spinner_rotation);
     spinners_intervals.set(spinner_interval_name, 
         setInterval(function() {
-            spinner_rotation+=40;
+            spinner_rotation+= 360;
             spinner.rotate(spinner_rotation);
-        }, 400)
+        }, 1500, true)
     );
 }
 
@@ -4051,3 +4056,12 @@ function stop_spinner(spinner, spinner_interval_name) {
     spinner.rotate(0);
     spinner_rotation = 0;
 }
+
+$('.activity-threads-section-load-more').on('click', function() {
+    // $(this).find('.spinner').removeClass('opacity0');
+    // start_spinner($(this).find('.spinner'), 'threads-section-load-more');
+
+    // setTimeout(function() {
+    //     stop_spinner($(this).find('.spinner'), 'threads-section-load-more');
+    // }, 3000);
+});

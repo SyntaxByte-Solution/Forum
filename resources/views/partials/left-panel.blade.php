@@ -69,9 +69,9 @@
         @auth
         <div class="relative toggle-box pb8">
             <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected bold white white' }} @endif">
-                <div class="relative has-fade size24 mr8 rounded hidden-overflow">
+                <div class="relative size24 has-fade mr8 rounded hidden-overflow">
                     <div class="fade-loading"></div>
-                    <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="" loading="lazy">
+                    <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size24" alt="{{ __('your profile picture') }}">
                 </div>
                 {{__('My Space')}} 
                 <span class="toggle-arrow mx4">@if($page == 'user' && $same_user) ▾ @else ▸ @endif</span>

@@ -1238,7 +1238,7 @@ a, input, textarea {
 }
 
 .spinner {
-    transition: transform 0.4s linear;
+    transition: transform 1.5s linear;
 }
 
 .full-shadowed {
@@ -3147,4 +3147,14 @@ tr:nth-child(2n) {
     
     width: 100%;
     height: 100%;
+}
+
+.activity-section-load-more {
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.activity-section-load-more:hover {
+    background-color: #f2f2f2;
 }

@@ -3999,7 +3999,7 @@ $('.activity-section-switcher').on('click', function() {
             return;
         }
         section_switcher_lock = false;
-
+        $('#activities-sections-content').css('overflow-y', 'unset');
         $('#activities-sections-loading-container').removeClass('none');
         setTimeout(function() {
             start_spinner(spinner, 'activities-sections-switcher');
@@ -4016,6 +4016,7 @@ $('.activity-section-switcher').on('click', function() {
                 $('#activities-sections-content').find('.activities-' + section + '-section').removeClass('none');
             },
             complete: function() {
+                $('#activities-sections-content').css('overflow-y', 'scroll');
                 activities_sections_apperance_switch.set(section, true);
                 activities_section_opened = section;
                 $('#activities-sections-loading-container').addClass('none');
@@ -4059,31 +4060,34 @@ function stop_spinner(spinner, spinner_interval_name) {
 
 $('.activity-threads-section-load-more').on('click', function() {
     let button = $(this);
+    let section_container = button;
+    while(!section_container.hasClass('activities-section')) {
+        section_container = section_container.parent();
+    }
+
     button.find('.spinner').removeClass('opacity0');
     start_spinner(button.find('.spinner'), 'threads-section-load-more');
 
     let activity_user = $('.activities-user').val();
-    let present_threads_in_section = $('#activities-sections-content').find('.thread-container-box').length;
+    let present_threads_in_section = section_container.find('.thread-container-box').length;
 
     $.ajax({
         url: `/users/${activity_user}/activities/sections/generate?section=threads&range=6&skip=${present_threads_in_section}`,
         type: 'get',
         success: function(response) {
+            if(response.hasNext == false) {
+                button.addClass('none');
+            }
+
             $(`${response.content}`).insertBefore(button);
 
-            let unhandled_activities_threads = 
-            $('#activities-sections-content .thread-container-box').slice(response.count*(-1));
+            let unhandled_activities_threads = section_container.find('.thread-container-box').slice(response.count*(-1));
             
             unhandled_activities_threads.each(function() {
                 handle_element_suboption_containers($(this));
                 handle_thread_display($(this));
                 handle_tooltip($(this).find('.tooltip-section'));
             });
-
-            let section_container = button;
-            while(!section_container.hasClass('activities-section')) {
-                section_container = section_container.parent();
-            }
 
             let c = parseInt(section_container.find('.current-section-thread-count').text()) + parseInt(response.count);
             section_container.find('.current-section-thread-count').text(c);

@@ -1,6 +1,6 @@
 <div class="follow-box-item follow-box">
     <div class="flex align-center">
-        <img src="{{ $followed_by_current_user->avatar }}" class="size36 rounded mr8" alt="{{ $followed_by_current_user->username . ' ' . __(' avatar') }}">
+        <img src="{{ $followed_by_current_user->sizedavatar(36) }}" class="size36 rounded mr8" alt="{{ $followed_by_current_user->username . ' ' . __('avatar') }}">
         <div>
             <a href="{{ route('user.profile', ['user'=>$followed_by_current_user->username]) }}" class="bold no-underline blue">{{ $followed_by_current_user->username }}</a>
             <p class="fs13 gray no-margin">{{ $followed_by_current_user->firstname . ' ' . $followed_by_current_user->lastname }}</p>

@@ -15,7 +15,7 @@ if(urlParams.has('action')) {
 
 // -------------------------------
 
-if($('#right-panel').height() > $(window).height()) {
+if($('#right-panel').height() > $(window).height()-52) {
     $(document).scroll(function() {
         if (document.documentElement.scrollTop + $(window).height() > 54 + $('#right-panel').height()) { 
             $('#right-panel').css({

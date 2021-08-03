@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div>
-                @include('partials.user-space.user-card')
+                @include('partials.user-space.user-card', ['withcover'=>true])
                 @include('partials.ads.w300h250')
             </div>
         </div>

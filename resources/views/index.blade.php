@@ -23,9 +23,6 @@
     @include('partials.left-panel', ['page' => 'home'])
     <div id="middle-container">
         <div class="full-width">
-            <div style="height: 220px; background-color: #24292E">
-                
-            </div>
             <div class="index-middle-width middle-container-style">
                 @auth
                     @include('partials.thread.thread-add', ['editor_height'=>100])

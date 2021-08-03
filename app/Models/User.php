@@ -40,29 +40,16 @@ class User extends UserAuthenticatable implements Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Mutators
-    public function getAvatarAttribute($value) {
-        if(!$value) {
+    public function sizedavatar($size, $quality="-h") {
+        if(!is_null($this->avatar)) {
+            return asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
+        } else {
             if($this->provider_avatar) {
                 return $this->provider_avatar;
             } else {
-                return asset('users/defaults/medias/avatars/avatar.png');
+                return asset("users/defaults/medias/avatars/$size-l.png");
             }
         }
-
-        return asset($value);
-    }
-
-    public function sizedavatar($size, $quality="-h") {
-        $avatar_path = asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
-        if($this->provider_avatar) {
-            return $this->provider_avatar;
-        }
-        if($this->avatar != asset('users/defaults/medias/avatars/avatar.png')) {
-            return $avatar_path;
-        }
-        
-        return asset("users/defaults/medias/avatars/$size-l.png");
     }
 
     public function getReachAttribute() {

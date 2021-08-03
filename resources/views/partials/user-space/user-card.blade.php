@@ -1,8 +1,51 @@
-<div class="ms-right-panel">
+<div class="ms-right-panel my8">
     @php
         $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
         $login_status = Cache::has('user-is-online-' . $user->id) ? 'online' : 'offline';
     @endphp
+    @isset($withcover)
+    <div class="flex">
+        <div class="relative us-user-media-container full-width">
+            <div class="us-cover-container full-center" style="height: 90px">
+                <img src="{{ $user->cover }}"  class="us-cover" alt="">
+            </div>
+            <div class="us-after-cover-section flex" style="margin-left: 20px; margin-top: -40px">
+                <div style="padding: 6px; background-color: white;" class="rounded">
+                    <a href="{{ route('user.profile', ['user'=>$user->username]) }}">
+                        <div class="image-size-1 full-center rounded hidden-overflow">
+                            <img src="{{ $user->avatar }}" class="handle-image-center-positioning" alt="">
+                        </div>
+                    </a>
+                </div>
+                <div class="ms-profile-infos-container" style="margin-top: 45px">
+                    <h4 class="no-margin forum-color flex align-center">
+                        {{ $user->firstname . ' ' . $user->lastname }}
+                    </h4>
+                    <p class="fs12 bold no-margin">[{{ $user->username }}]</p>
+                </div>
+            </div>
+            <div class="my8">
+                <p class="fs12 gray no-margin">Join Date: <span class="black">{{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</span></p>
+                <div class="flex my8">
+                    @php
+                        $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
+                    @endphp
+                    <p class="fs12 gray no-margin mr4">Status:</p>
+                    <div class="flex align-center">
+                        <div class="flex align-center">
+                        @if($ustatus == 'active')
+                            <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#25BD54"/></svg>
+                            @else
+                            <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#919191"/></svg>
+                            @endif
+                        </div>
+                        <p class="fs12 no-margin">@if(Cache::has('user-is-online-' . $user->id)) Online @else Offline @endif</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @else
     <div class="flex px8 py8">
         <div class="small-image-1 br6 mr8 hidden-overflow">
             <img src="{{ $user->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="">
@@ -22,6 +65,7 @@
             </div>
         </div>
     </div>
+    @endisset
     <div>
         <div>
             <p class="bold fs12 gray" style="margin-bottom: 0">{{ __('IMPACT') }}</p>

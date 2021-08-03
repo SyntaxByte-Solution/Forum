@@ -46,7 +46,7 @@
                         <div class="size36 sprite sprite-2-size nofollow36-icon" style="margin-top: 16px"></div>
                         @if(auth()->user() && $user->id == auth()->user()->id)
                         <p class="bold fs17 gray mb8 unselectable">{{ __("You don't have any followers at that time") }}</h2>
-                        <p class="no-margin forum-color unselectable text-center">{{ __("tip: Try to follow people and react to others's discussions to get more followers attention.") }}</p>
+                        <p class="no-margin forum-color unselectable text-center">{{ __("Try to follow people and react to others's discussions to get more followers.") }}</p>
                         @else
                         <p class="bold fs17 gray my8 unselectable">{{ $user->username . __(" has no followers") }}</h2>
                         <p class="no-margin forum-color unselectable text-center">{{ __("Be his first follower :)") }}</p>
@@ -96,7 +96,7 @@
         <section class="flex">  
             <div class="full-width">
                 @include('partials.user-space.basic-header', ['page' => 'profile'])
-                <div class="relative us-user-media-container mx8">
+                <div class="relative us-user-media-container">
                     <div class="us-cover-container full-center">
                         @if(!$user->cover)
                             @if(auth()->user() && $user->id == auth()->user()->id)
@@ -115,15 +115,14 @@
                         <div style="padding: 7px; background-color: white" class="rounded">
                             <a href="{{ route('user.activities', ['user'=>$user->username]) }}">
                                 <div class="us-profile-picture-container full-center rounded">
-                                    <img src="{{ $user->sizedavatar(160) }}" class="us-profile-picture handle-image-center-positioning" alt="">
+                                    <img src="{{ $user->sizedavatar(160, '-h') }}" class="us-profile-picture handle-image-center-positioning" alt="">
                                 </div>
                             </a>
                         </div>
                         <div class="ms-profile-infos-container flex full-width">
                             <div style="max-width: 220px">
-                                <h2 class="no-margin forum-color flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
-                                <p class="bold no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>
-                                <p class="fs12 gray no-margin" style="margin: 2px 0">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
+                                <h2 class="no-margin flex align-center">{{ $user->firstname . ' ' . $user->lastname }}</h2>
+                                <p class="bold forum-color no-margin"><span style="margin-right: 2px">@</span>{{ $user->username }}</p>
                             </div>
                             <div class="move-to-right flex align-center height-max-content follow-box">
                                 <div class="flex align-center">
@@ -160,19 +159,6 @@
                     </div>
                 </div>
                 <div style="margin-top: 20px" class="index-middle-width">
-                    @if(auth()->user() && $user->id == auth()->user()->id)
-                    <div style="margin-top: 20px">
-                        <a href="{{ route('thread.add') }}" class="no-underline" target="_blank">
-                            <div class="button-style width-max-content">
-                                <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#fff" d="M512,0C460.22,3.56,96.44,38.2,71,287.61c-3.09,26.66-4.84,53.44-6,80.24L243.89,189.16a16,16,0,0,1,22.65,22.63L7,471A24,24,0,0,0,41,505L98.15,447.9a1130.36,1130.36,0,0,0,126-7.36c53.48-5.44,97-26.47,132.58-56.54H255.74l146.79-48.88A396.77,396.77,0,0,0,433,288H351.84l106.54-53.21C500.29,132.86,510.19,26.26,512,0Z"/></svg>
-                                {{ __('Start a discussion') }}
-                            </div>
-                        </a>
-                        <div class="none">
-                            @include('partials.thread.thread-add', ['editor_height'=>100])
-                        </div>
-                    </div>
-                    @endif
                     @if($threads->count())
                         <div class="flex align-center space-between">
                             @if(auth()->user() && $user->id == auth()->user()->id)
@@ -193,11 +179,14 @@
                         </div>
                     @else
                         <div class="full-center" style="margin-bottom: 36px">
-                            <div>
-                                <div class="size28 move-to-middle sprite sprite-2-size binbox28-icon" style="margin: 16px auto 10px auto"></div>
+                            <div class="flex flex-column align-center">
+                                <svg class="size48 my4" viewBox="0 0 442 442"><path d="M442,268.47V109.08a11.43,11.43,0,0,0-.1-1.42,2.51,2.51,0,0,0,0-.27,10.11,10.11,0,0,0-.29-1.3v0c-.1-.31-.21-.62-.34-.92l-.12-.26-.15-.32c-.17-.34-.36-.67-.56-1a.57.57,0,0,1-.08-.13,10.33,10.33,0,0,0-.81-1l-.17-.18a8,8,0,0,0-.84-.81l-.14-.12a9.65,9.65,0,0,0-1.05-.76l-.26-.15a8.61,8.61,0,0,0-1.05-.53.67.67,0,0,0-.12-.06l-236-99-.06,0-.28-.1a10,10,0,0,0-4.4-.61h-.08a10.59,10.59,0,0,0-1.94.39l-.12,0c-.27.09-.55.18-.82.29l0,0-69.22,29a10,10,0,0,0,0,18.44L186,74.73v88.16L6.13,238.37l-.36.17-.36.17c-.28.15-.55.31-.82.48l-.13.07s0,0,0,0a9.86,9.86,0,0,0-1,.72l-.09.08c-.25.23-.49.46-.72.71l-.2.22a8.19,8.19,0,0,0-.53.67c-.07.08-.13.17-.19.25-.18.27-.34.54-.5.81l-.09.15c-.17.33-.32.67-.46,1,0,.09-.07.19-.1.28-.09.26-.18.53-.25.79l-.09.35c-.06.28-.12.55-.16.83,0,.1,0,.19,0,.28A11.87,11.87,0,0,0,0,247.62V333a10,10,0,0,0,6.13,9.22l235.92,99a9.8,9.8,0,0,0,1.95.6l.19,0c.26.05.52.09.79.12s.66.05,1,.05.67,0,1-.05.53-.07.79-.12l.19,0a9.8,9.8,0,0,0,2-.6l186-78A10,10,0,0,0,442,354V268.47ZM330.23,300.4l-63.15-26.49a10,10,0,0,0-7.74,18.44l45,18.9L246,335.75,137.62,290.29l58.4-24.5,35.53,14.9a10,10,0,1,0,7.74-18.44l-33.27-14V184.58l200.13,84ZM186,248.29l-74.25,31.16L35.85,247.59l150.17-63v63.71ZM196,20.84,406.15,109l-43.37,18.2L200,58.89l-.09,0L152.65,39Zm162.82,126.4a10,10,0,0,0,7.81,0L422,124.05V253.51L206,162.89V83.13ZM20,262.63l216,90.62V417L20,326.34ZM422,347.3,256,417V353.25l166-69.66Z"/></svg>
                                 @if(auth()->user() && $user->id == auth()->user()->id)
                                 <p class="fs20 bold" style="margin: 2px 0">{{ __("You don't have any thread for the moment !") }}</p>
-                                <p class="my4 text-center">{{ __("Try to start a discussion or question using the form above") }}</p>
+                                <div class="flex align-center">
+                                    <p class="my4 text-center">{{ __("If you want to start a new discussion or question") }}</p>
+                                    <a href="{{ route('thread.add') }}" class="light-border blue no-underline px8 py4 ml4" target="_blank">click here</a>
+                                </div>
                                 @else
                                 <p class="fs20 bold" style="margin: 2px 0">{{ __("This user has no thread for the moment !") }}</p>
                                 @endif
@@ -206,7 +195,7 @@
                     @endif
                 </div>
             </div>
-            <div style="position: fixed; top: 60px; right: 8px">
+            <div id="right-panel">
                 @include('partials.user-space.user-card')
                 <div class="ms-right-panel my8">
                     <div class="relative">
@@ -217,8 +206,11 @@
                         @endcan
                         <p class="bold forum-color" style="margin-bottom: 12px; margin-top: 0">Personal informations</p>
                     </div>
-                    <div class="ml4">
+                    <div class="ml4 my8">
                         <p class="fs13 my4"><span class="bold fs13 gray">Join date: </span> {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
+                    </div>
+                    <div class="ml4">
+                        <p class="fs13 my4"><span class="bold fs13 gray">About: </span> @isset($user->about) {{ $user->about }} @else <i>{{ __('NOT SET') }}</i> @endisset</p>
                     </div>
                     <div class="simple-line-separator my8"></div>
                     @isset($user->personal->birth)

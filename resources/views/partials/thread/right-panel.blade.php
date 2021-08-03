@@ -7,7 +7,7 @@
             </div>
             <a href="{{ route('user.profile', ['user'=>$thread_owner->username]) }}" class="link-style">profile</a>
         </div>
-        <div class="relative us-user-media-container mx8">
+        <div class="relative us-user-media-container mx8 my8">
             <div class="us-cover-container full-center" style="height: 90px">
                 <img src="{{ $thread_owner->cover }}"  class="us-cover" alt="">
             </div>

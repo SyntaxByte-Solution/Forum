@@ -2860,6 +2860,17 @@ tr:nth-child(2n) {
     justify-content: center;
 }
 
+.thread-media-video {
+    width: 100%;
+    max-height: 620px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
 .full-shadow-stretched {
     position: absolute;
     display: flex;

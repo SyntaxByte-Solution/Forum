@@ -9,11 +9,11 @@
 
     <title>@yield('title', 'Moroccan Gladiator')</title>
     
-    <script src="{{ asset('js/jquery-3.6.0.min.js') }}" defer></script>
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <script>
         let uid = "@auth{{ auth()->user()->id }}@endauth";
     </script>
-    <script src="{{ asset('js/bootstrap.js') }}" defer></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     
     <!-- Styles -->

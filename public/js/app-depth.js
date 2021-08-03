@@ -245,6 +245,31 @@ function handle_login_lock(container) {
     });
 }
 
+if($('#right-panel').height() > $(window).height()-52) {
+    $(document).scroll(function() {
+        if (document.documentElement.scrollTop + $(window).height() > 54 + $('#right-panel').height()) { 
+            $('#right-panel').css({
+                position: 'fixed',
+                bottom: '0',
+                top: 'unset'
+            });
+        } else {
+            $('#right-panel').css({
+                position: 'absolute',
+                top: '0',
+                bottom: 'unset'
+            });
+        }
+    });
+} else {
+    $('#right-panel').css({
+        position: 'fixed',
+        height: '100%',
+        top: '52px',
+        bottom: 'unset'
+    });
+}
+
 $('#left-panel').height($(window).height() - $('header').height() - 30);
 if($('#thread-media-viewer').length) {
     $('#thread-media-viewer').height($(window).height() - $('header').height());
@@ -2996,25 +3021,8 @@ $('.open-thread-image').on('click', function(event) {
 
     viewer_media_count = selected_media;
     let selected_media_url = viewer_medias[selected_media];
-    // Check type of media
-    if(is_image(selected_media_url)) {
-        // It's an image
-        let viewer_image = $('#thread-viewer-media-image');
-        let viewer_video = $('#thread-viewer-media-video');
-        viewer_image.removeClass('none');
-        viewer_video.addClass('none');
-        viewer_image.attr('src', viewer_medias[selected_media]);
-        handle_thread_viewer_image(viewer_image);
-    } else if(is_video(selected_media_url)) {
-        // It's a video
-        let viewer_image = $('#thread-viewer-media-image');
-        let viewer_video = $('#thread-viewer-media-video');
-        viewer_image.addClass('none');
-        viewer_video.removeClass('none');
-        viewer_video.attr('src', selected_media_url);
-        viewer_video[0].load();
-    }
 
+    // Viewer navigation buttons
     if(viewer_medias.length == 1) {
         $('.thread-viewer-right').addClass('none');
         $('.thread-viewer-left').addClass('none');
@@ -3029,7 +3037,7 @@ $('.open-thread-image').on('click', function(event) {
             $('.thread-viewer-right').removeClass('none');
         }
     }
-
+    // media index indicator
     if(viewer_medias.length > 1) {
         media_viewer.find('.thread-viewer-medias-indicator').removeClass('none');
         media_viewer.find('.thread-counter-total-medias').text(viewer_medias.length);
@@ -3040,12 +3048,28 @@ $('.open-thread-image').on('click', function(event) {
      * Before opening thread media viewer we need to make sure all medias are loaded
      */
      medias_container.imagesLoaded( function() {
-        console.log('viewer images loaded');
         images_loaded = true;
         $('body').css('overflow', 'hidden');
         media_viewer.removeClass('none');
+        // Check type of media
+        if(is_image(selected_media_url)) {
+            // It's an image
+            let viewer_image = $('#thread-viewer-media-image');
+            let viewer_video = $('#thread-viewer-media-video');
+            viewer_image.removeClass('none');
+            viewer_video.addClass('none');
+            viewer_image.attr('src', viewer_medias[selected_media]);
+            handle_thread_viewer_image(viewer_image);
+        } else if(is_video(selected_media_url)) {
+            // It's a video
+            let viewer_image = $('#thread-viewer-media-image');
+            let viewer_video = $('#thread-viewer-media-video');
+            viewer_image.addClass('none');
+            viewer_video.removeClass('none');
+            viewer_video.attr('src', selected_media_url);
+            viewer_video[0].load();
+        }
         if(infos_fetched) {
-            console.log('stop strip loading :(');
             stop_loading_strip();
             viewer_loading_finished = true;
         }
@@ -3066,7 +3090,6 @@ $('.open-thread-image').on('click', function(event) {
             url: `/threads/${thread_id}/viewer_infos_component`,
             type: 'get',
             success: function(thread_infos_section) {
-                console.log('info fetched');
                 infos_fetched = true;
                 last_opened_thread = thread_id;
                 $('.thread-media-viewer-infos-header-pattern').addClass('none');
@@ -3228,7 +3251,6 @@ $('.open-thread-image').on('click', function(event) {
                 // ---------------------- //
                 handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
                 if(images_loaded) {
-                    console.log('stop strip loading from infos f :(');
                     stop_loading_strip();
                     viewer_loading_finished = true;
                 }
@@ -3284,7 +3306,7 @@ $('.close-thread-media-viewer').on('click', function() {
     handle_viewer_closing();
 });
 
-$('.thread-viewer-left').click(function(event) {
+$('.thread-viewer-left').on('click', function(event) {
     event.stopPropagation();
     
     if(viewer_media_count == 1) {
@@ -3303,6 +3325,7 @@ $('.thread-viewer-left').click(function(event) {
 
         viewer_image.attr('src', "");
         viewer_image.attr('src', viewer_medias[--viewer_media_count]);
+        handle_thread_viewer_image(viewer_image);
     } else if(is_video(previous_media_url)) {
         let viewer_video = $('#thread-viewer-media-video');
 
@@ -3317,7 +3340,7 @@ $('.thread-viewer-left').click(function(event) {
     $('#thread-media-viewer').find('.thread-counter-current-index').text(parseInt(viewer_media_count)+1);
 });
 
-$('.thread-viewer-right').click(function(event) {
+$('.thread-viewer-right').on('click', function(event) {
     event.stopPropagation();
 
     $('.thread-viewer-left').removeClass('none');
@@ -3330,6 +3353,7 @@ $('.thread-viewer-right').click(function(event) {
 
         viewer_image.attr('src', "");
         viewer_image.attr('src', viewer_medias[++viewer_media_count]);
+        handle_thread_viewer_image(viewer_image);
     } else if(is_video(next_media_url)) {
         let viewer_video = $('#thread-viewer-media-video');
 
@@ -3370,43 +3394,31 @@ function handle_viewer_closing() {
 }
 
 function handle_thread_viewer_image(image) {
-    image.on('load', function() {
+    image.parent().imagesLoaded(function() {
+        console.log('handling ..');
         handle_viewer_media_logic(image);
     });
 }
 
+/**
+ * Keep in mind that the result dimensions for the passed image must be in percentage (%)
+ * because we call this handler in resize event of browser
+ */
 function handle_viewer_media_logic(image) {
     image.attr('style', '');
     let container_height = image.parent().height();
-    let container_width = image.parent().width();
     let width = image.width();
     let height = image.height();
 
     if(width > height) {
-        image.css('width','100%');
+        image.css('width', '100%');
+        height = image.height(); // get newer height dimension because width is changed and affect the height
+
         if(height > container_height) {
-            /**
-             * It's very important to notice here that we have to set the dimensions as percentage
-             * because the image is stretched proportional to its container (resize event adjust the image to its container)
-             */
-            let old_width = image.width();
-            let ratio = image.height() / container_height;
-            let new_width = image.width() / ratio;
-            
-            let width_perc = (new_width * 100 / old_width) + "%";
+            let ratio = 100 * ((height / container_height) - 1);
+            ratio = 100 - ratio;
+            image.css('width', ratio + '%');
             image.css('height', '100%');
-            image.width(width_perc);
-        }
-    } else if(width < height) {
-        image.css('height','100%');
-        if(width > container_width) {
-            let old_height = image.height();
-            let ratio = image.width() / container_width;
-            let new_height = image.height() / ratio;
-            
-            let height_perc = (new_height * 100 / old_height) + "%";
-            image.css('width', '100%');
-            image.height(height_perc);
         }
     } else {
         image.css('height', '100%');
@@ -3448,12 +3460,10 @@ function handle_media_image_dimensions(image) {
             if(height > container_height) {
                 if(width < container_width) {
                     /** CASE #2 */
-                    console.log('case#2');
                     image.width(container_width);
                     image.css('height', 'max-content');
                 } else {
                     /** CASE #3 */
-                    console.log('case#3');
                     image.height(container_height);
                     if(image.width() < container_width) {
                         // Calculate the ratio
@@ -3465,7 +3475,6 @@ function handle_media_image_dimensions(image) {
                 }
             } else {
                 /** CASE #4 */
-                console.log('case#4');
                 image.height(container_height);
                 if(image.width() < container_width) {
                     // Calculate the ratio
@@ -3477,11 +3486,9 @@ function handle_media_image_dimensions(image) {
             }
         } else if(height < width) {
             /** CASE #1 */
-            console.log('case#1');
             if(height > container_height) {
                 if(width < container_width) {
                     /** CASE #2 */
-                    console.log('case#2');
                     image.css('width', '100%');
                     image.css('height', 'max-content');
                 } else {
@@ -3925,7 +3932,6 @@ $('.close-thread-media-upload-edit').click(function() {
     $('.thread-add-media-error p').addClass('none');
 
     edit_deleted_medias.push($(this).parent().find('.uploaded-media-url').val());
-    console.log(edit_deleted_medias);
 
     $(this).parent().remove();
 });

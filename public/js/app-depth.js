@@ -3407,18 +3407,20 @@ function handle_thread_viewer_image(image) {
 function handle_viewer_media_logic(image) {
     image.attr('style', '');
     let container_height = image.parent().height();
-    let width = image.width();
-    let height = image.height();
+    let original_width = image.width();
+    let original_height = image.height();
 
-    if(width > height) {
+    if(original_width > original_height) {
         image.css('width', '100%');
-        height = image.height(); // get newer height dimension because width is changed and affect the height
+        let new_width = image.width(); // get the new width after setting it to 100%
+        let new_height = image.height(); // get newer height dimension because width is changed and affect the height
 
-        if(height > container_height) {
-            let ratio = 100 * ((height / container_height) - 1);
-            ratio = 100 - ratio;
-            image.css('width', ratio + '%');
+        if(new_height > container_height) {
             image.css('height', '100%');
+            let ratio = container_height * original_width / original_height;
+            image.css('width', ratio + 'px');
+        } else {
+            console.log('not right !');
         }
     } else {
         image.css('height', '100%');
@@ -3669,7 +3671,7 @@ function handle_move_to_thread_replies(button) {
                         }, 400);
                     }
                 } else if(c_type == 'video') {
-                    c.find('.open-thread-image').click();
+                    $('.open-thread-image').click();
                 }
                 
             }
@@ -3936,12 +3938,7 @@ $('.close-thread-media-upload-edit').click(function() {
     $(this).parent().remove();
 });
 
-$('.thread-media-options .open-thread-image').click(function() {
-    let medias_container = $(this);
-    while(!medias_container.hasClass('thread-medias-container')) {
-        medias_container = medias_container.parent();
-    }
-
+$('.thread-media-options .open-thread-image').on('click', function() {
     medias_container.find('video').each(function() {
         $(this)[0].pause();
     });

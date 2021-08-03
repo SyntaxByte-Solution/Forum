@@ -9,18 +9,15 @@
 
     <title>@yield('title', 'Moroccan Gladiator')</title>
     
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}" defer></script>
     <script>
         let uid = "@auth{{ auth()->user()->id }}@endauth";
     </script>
-    <script src="{{ asset('js/bootstrap.js') }}" async></script>
+    <script src="{{ asset('js/bootstrap.js') }}" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-            crossorigin="anonymous"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

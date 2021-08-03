@@ -21,7 +21,7 @@
 @section('content')
     @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'home'])
-    <div id="middle-container">
+    <div id="middle-container" style="padding-top: 30px">
         <div class="full-width">
             <div class="index-middle-width middle-container-style">
                 @auth

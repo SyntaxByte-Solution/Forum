@@ -1470,7 +1470,6 @@ a, input, textarea {
 .index-middle-width {
     width: 72%;
     margin: 0 auto;
-    padding-top: 30px;
 }
 
 .link-wraper {
@@ -1902,9 +1901,10 @@ tr:nth-child(2n) {
 
 .pagination-item {
     display: flex;
-    padding: 3px 7px;
+    padding: 3px 8px;
+    font-weight: bold;
     text-decoration: none;
-    color: black;
+    color: rgb(17, 17, 17);
     background-color: white;
     border: 1px solid #ccc;
     margin: 0 2px;
@@ -2465,13 +2465,11 @@ tr:nth-child(2n) {
     z-index: 10;
     bottom: 26px;
     left: 26px;
-
     padding: 8px 38px 8px 8px;
     width: 340px;
     height: max-content;
     max-height: 90px;
     box-sizing: border-box;
-    
     background-color: #f9f9f9;
     border: 1px solid #b8b8b8;
     border-radius: 8px;
@@ -2491,7 +2489,6 @@ tr:nth-child(2n) {
     z-index: 10;
     bottom: 26px;
     left: 26px;
-
     padding: 16px;
     max-width: 340px;
     min-width: 290px;
@@ -2569,7 +2566,6 @@ tr:nth-child(2n) {
     position: absolute;
     top: 100%;
     right: 0;
-
     background-color: #f9fbff;
     border: 1px solid #93bad2;
     border-radius: 4px;
@@ -2701,8 +2697,27 @@ tr:nth-child(2n) {
     opacity: 0;
     height: 100%;
     width: 100%;
-
     cursor: pointer;
+}
+
+.thread-add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #2ca0ff;
+    border-radius: 8px;
+
+    background-color: #F6F8FA68;
+    border: 1px solid #e3e3e391;
+    box-shadow: 0 0 5px 2px #BFBFBF21;
+    transition: all 0.2s ease;
+}
+
+.thread-add-button:hover {
+    background-color: #e3e3e36b;
 }
 
 .thread-add-button-hover-style {

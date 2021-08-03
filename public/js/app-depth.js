@@ -15,29 +15,6 @@ if(urlParams.has('action')) {
 
 // -------------------------------
 
-if($('#right-panel').height() > $(window).height()-52) {
-    $(document).scroll(function() {
-        if (document.documentElement.scrollTop + $(window).height() > 54 + $('#right-panel').height()) { 
-            $('#right-panel').css({
-                position: 'fixed',
-                bottom: '0',
-                top: 'unset'
-            });
-        } else {
-            $('#right-panel').css({
-                position: 'absolute',
-                top: '0',
-                bottom: 'unset'
-            });
-        }
-    });
-} else {
-    $('#right-panel').css({
-        position: 'absolute',
-        top: '0px',
-    });
-}
-
 $('.button-with-strip').on({
     mouseenter: function() {
         $(this).find('.menu-botton-bottm-strip').css('display', 'block');

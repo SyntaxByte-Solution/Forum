@@ -789,12 +789,14 @@ $('.remove-cover-button').click(function() {
 });
 
 $('.avatar-upload-button').change(function(event) {
-    if (event.target.files[0]) {
+    if(validate_image_file_Type(event.target.files[0])) {
         $('.us-settings-profile-picture').first().attr('src', URL.createObjectURL(event.target.files[0]));
         $('.us-settings-profile-picture').first().css('display', 'block');
         $('.us-settings-profile-picture').last().css('display', 'none');
         $('.remove-profile-avatar').removeClass('none');
         $('.avatar-removed').val('0');
+    } else {
+        
     }
 });
 
@@ -819,18 +821,24 @@ $('.discard-cover-upload').on('click', function() {
 
 $('.cover-upload-button').on('change', function(event) {
     let update_text = $('.change-cover-cont').find('.update-btn-text').val();
-    if (event.target.files[0]) {
-        $('.cover-upload-button-text').text(update_text);
-        $('.us-cover').addClass('none');
-        $('.uploaded-us-cover').attr('src', URL.createObjectURL(event.target.files[0]));
-        $('.uploaded-us-cover').removeClass('none');
-
-        $('.discard-cover-upload').removeClass('none');
-        $('.change-cover-back-container').addClass('none');
-        $('.remove-profile-cover').addClass('none');
-
-        // $('.cover-removed').val('0');
+    // validate_image function accept an array
+    let uploaded_cover = [event.target.files[0]];
+    if(validate_image_file_Type(uploaded_cover).length == 1) {
+        $('.cover-error').addClass('none');
+    } else {
+        $('.cover-error').removeClass('none');
+        return;
     }
+
+    // for now validating image size is done in the backend side
+    $('.cover-upload-button-text').text(update_text);
+    $('.us-cover').addClass('none');
+    $('.uploaded-us-cover').attr('src', URL.createObjectURL(event.target.files[0]));
+    $('.uploaded-us-cover').removeClass('none');
+
+    $('.discard-cover-upload').removeClass('none');
+    $('.change-cover-back-container').addClass('none');
+    $('.remove-profile-cover').addClass('none');
 });
 
 $('.delete-account').click(function() {

@@ -38,7 +38,7 @@
                         <p class="green-message">{{ Session::get('message') }}</p>
                     </div>
                 @endif
-
+                <p class="error cover-error none">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported') }}.</p>
                 <div class="relative us-user-media-container">
                     <div class="us-settings-cover-container full-center relative" style="height: 185px">
                         <div class="absolute full-shadowed remove-cover-dialog flex flex-column align-center justify-center br6">

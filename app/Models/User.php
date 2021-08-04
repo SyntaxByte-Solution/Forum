@@ -20,6 +20,7 @@ class User extends UserAuthenticatable implements Authenticatable
 
     protected $guarded = [];
     private $avatar_dims = [26, 36, 100, 160, 200, 300, 400];
+    protected $raw_avatar;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -40,6 +41,18 @@ class User extends UserAuthenticatable implements Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getAvatarAttribute($value) {
+        $this->raw_avatar = $value;
+
+        if(is_null($value)) {
+            if(!is_null($this->provider_avatar)) {
+                return $this->provider_avatar;
+            }
+        }
+
+        return $value;
+    }
+
     public function sizedavatar($size, $quality="-h") {
         if(!is_null($this->avatar)) {
             return asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
@@ -50,6 +63,10 @@ class User extends UserAuthenticatable implements Authenticatable
                 return asset("users/defaults/medias/avatars/$size-l.png");
             }
         }
+    }
+
+    public static function sizeddefaultavatar($size, $quality="-h") {
+        return asset("users/defaults/medias/avatars/" . $size . $quality . ".png");
     }
 
     public function getReachAttribute() {

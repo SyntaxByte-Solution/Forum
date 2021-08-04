@@ -1247,6 +1247,8 @@ a, input, textarea {
     height: 100%;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.78);
+
+    transition: all 0.4s ease;
 }
 
 .close-shadowed-view {
@@ -2291,6 +2293,7 @@ tr:nth-child(2n) {
     height: 100px;
     border-radius: 8px;
     overflow: hidden;
+    background-color: #666d8a;
 }
 
 .us-settings-profile-picture {
@@ -2356,21 +2359,32 @@ tr:nth-child(2n) {
     border-radius: 4px;
 }
 
-.update-avatar-bottom-section {
-    opacity: 0.6;
-    background-color: #181a22;
-    border-radius: 8px;
+.update-avatar-section-button {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #181a2252;
+    padding: 10px;
+    z-index: 3;
     position: absolute;
     bottom: 0;
-
-    padding: 10px 0;
-
-    width: 100%;
-    z-index: 2;
+    border-radius: 0 0 8px 8px;
 }
 
-.update-avatar-bottom-section:hover {
-    opacity: 1;
+.update-avatar-section-button:hover {
+    background-color: #181a22bd;
+}
+
+.simple-icon-button-style {
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #0000004a;
+    user-select: none;
+    cursor: pointer;
+}
+
+.simple-icon-button-style:hover {
+    background-color: #0000008a;
 }
 
 .simple-button-style {

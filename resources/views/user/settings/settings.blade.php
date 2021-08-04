@@ -38,9 +38,9 @@
                         <p class="green-message">{{ Session::get('message') }}</p>
                     </div>
                 @endif
-                <p class="error cover-error none">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported') }}.</p>
                 <div class="relative us-user-media-container">
                     <div class="us-settings-cover-container full-center relative" style="height: 185px">
+                        <p class="error cover-error none">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported') }}.</p>
                         <div class="absolute full-shadowed remove-cover-dialog flex flex-column align-center justify-center br6">
                             <p class="white bold fs17 my4 text-center">{{__('Remove cover')}} ?</p>
                             <div class="flex align-center">
@@ -58,7 +58,7 @@
                         <img src="{{ $user->cover }}" class="original-cover us-cover @if(!$user->cover) none @endif" alt="">
                         <div class="absolute flex align-center update-cover-box" style="bottom: 6px; right: 6px">
                             <div class="simple-button-style change-cover-cont">
-                                <input type="hidden" name="cover_removed" value="0" class="cover-removed" form="profile-edit-form">
+                                <input type="hidden" name="cover_removed" autocomplete="off" value="0" class="cover-removed" form="profile-edit-form">
                                 <input type="file" name="cover" form="profile-edit-form" autocomplete="off" class="opacity0 absolute full-dimensions bottom0 pointer cover-upload-button" style="height: 200%; left: 0">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464,64H48A48,48,0,0,0,0,112V400a48,48,0,0,0,48,48H464a48,48,0,0,0,48-48V112A48,48,0,0,0,464,64Zm-6,336H54a6,6,0,0,1-6-6V118a6,6,0,0,1,6-6H458a6,6,0,0,1,6,6V394A6,6,0,0,1,458,400ZM128,152a40,40,0,1,0,40,40A40,40,0,0,0,128,152ZM96,352H416V272l-87.52-87.51a12,12,0,0,0-17,0L192,304l-39.51-39.52a12,12,0,0,0-17,0L96,304Z" style="fill:#fff"/></svg>
                                 <p class="cover-upload-button-text fs14 no-margin white">@if(!$user->cover) {{__('Upload')}} @else {{__('Update')}} @endif</p>
@@ -74,29 +74,30 @@
                             </div>
                         </div>
                     </div>
+                    <p class="error avatar-error none" style="margin-top: 10px">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported for avatar') }}.</p>
                     <div class="flex my8">
-                        <div class="relative" style="height: max-content;">
-                            <div class="absolute full-shadowed full-center br6">
+                        <div class="relative full-center" id="settings-avatar-area" style="height: max-content;">
+                            <div class="absolute full-shadowed full-center remove-avatar-dialog br6" style="z-index: 5">
                                 <p class="white bold my4 text-center">Remove avatar ?</p>
                                 <div class="flex flex-column align-center">
-                                    <a href="" class="simple-white-button remove-avatar-button">Delete</a>
+                                    <div class="simple-white-button remove-avatar-button">Delete</div>
                                     <a href="" class="white no-underline my4 fs13 close-shadowed-view-button">cancel</a>
                                 </div>
                             </div>
-                            <a href="" class="absolute x-button remove-profile-avatar rounded full-center @if(!$user->getRawOriginal('avatar')) none @endif" style="z-index: 2">
-                                <img src="{{ asset('assets/images/icons/wx.png') }}" style="height: 8px; width: 8px" alt="">
-                            </a>
-                            <div class="absolute full-center update-avatar-bottom-section hidden-overflow">
-                                <input type="hidden" name="avatar_removed" value="0" class="avatar-removed" form="profile-edit-form">
-                                <input type="file" name="avatar" form='profile-edit-form' class="absolute bottom0 opacity0 pointer full-width full-height block avatar-upload-button" style="height: 200%">
-                                <a href="" class="white simple-link no-underline">{{__('Update Avatar')}}</a>
+                            <div class="absolute" style="z-index: 2; right: 4px; top: 4px;">
+                                <svg class="size10 remove-profile-avatar simple-icon-button-style @if(is_null($user->avatar)) none @endif" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"/></svg>
+                                <svg class="size10 undo-avatar-upload simple-icon-button-style none" style="padding:6px;" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 512.01 512.01"><path d="M511.14,286.26C502.08,194.86,419.84,128,328,128H192V48A16,16,0,0,0,166,35.5L6,163.5a16.05,16.05,0,0,0,0,25l160,128A16,16,0,0,0,192,304V224H331.39c41.86,0,80,30.08,84.19,71.72A80,80,0,0,1,336,384H208a16,16,0,0,0-16,16v64a16,16,0,0,0,16,16H336C438.82,480,521.47,391.15,511.14,286.26Z"/></svg>
                             </div>
-                            <a href="{{ route('user.activities', ['user'=>$user->username]) }}">
-                                <div class="us-settings-profile-picture-container full-center relative">
-                                    <img src="{{ $user->avatar }}" class="us-settings-profile-picture handle-image-center-positioning" alt="">
-                                    <img src="{{ asset('storage') . '/' . 'users/defaults/avatar-default.png' }}" class="us-settings-profile-picture default-avatar none" alt="">
-                                </div>
-                            </a>
+                            <div class="full-center none update-avatar-section-button hidden-overflow">
+                                <input type="hidden" name="avatar_removed" autocomplete="off" value="0" class="avatar-removed" form="profile-edit-form">
+                                <input type="file" name="avatar" autocomplete="off" form='profile-edit-form' class="absolute bottom0 opacity0 pointer full-width full-height block avatar-upload-button" style="height: 200%">
+                                <svg class="size20" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 512 512"><path d="M464,64H48A48,48,0,0,0,0,112V400a48,48,0,0,0,48,48H464a48,48,0,0,0,48-48V112A48,48,0,0,0,464,64Zm-6,336H54a6,6,0,0,1-6-6V118a6,6,0,0,1,6-6H458a6,6,0,0,1,6,6V394A6,6,0,0,1,458,400ZM128,152a40,40,0,1,0,40,40A40,40,0,0,0,128,152ZM96,352H416V272l-87.52-87.51a12,12,0,0,0-17,0L192,304l-39.51-39.52a12,12,0,0,0-17,0L96,304Z"/></svg>
+                            </div>
+                            <div class="us-settings-profile-picture-container full-center relative">
+                                <img src="{{ \App\Models\User::sizeddefaultavatar(100, '-l') }}" class="default-avatar us-settings-profile-picture @if(!is_null($user->avatar)) none @endif" alt="">
+                                <img src="{{ $user->avatar }}" class="original-avatar us-settings-profile-picture handle-image-center-positioning" alt="">
+                                <img src="" class="uploaded-avatar @if(!$user->avatar) none @endif us-settings-profile-picture " alt="">
+                            </div>
                         </div>
                         <div class="ml8 full-width">
                             <h2 class="no-margin forum-color">{{ $firstname . ' ' . $lastname }}</h2>

@@ -735,30 +735,69 @@ $('.check-username').click(function() {
     return false;
 });
 
-$('.remove-profile-avatar').click(function() {
-    $(this).parent().find('.full-shadowed').css("display", 'block');
-    $(this).parent().find('.full-shadowed').css("opacity", '1');
-
-    return false;
+$('#settings-avatar-area').on({
+    mouseenter: function() {
+        $(this).find('.update-avatar-section-button').removeClass('none');
+    },
+    mouseleave: function() {
+        $(this).find('.update-avatar-section-button').addClass('none');
+    }
 })
 
-$('.remove-avatar-button').click(function() {
-    $('.us-settings-profile-picture').first().css('display', 'none');
-    let shadowed_container = $(this);
+$('.remove-profile-avatar').click(function() {
+    $('.remove-avatar-dialog').css("display", 'block');
+    $('.remove-avatar-dialog').css("opacity", '1');
+})
 
-    while(!shadowed_container.hasClass('full-shadowed')) {
-        shadowed_container = shadowed_container.parent();
-    }
-    shadowed_container.css('display', 'none');
+$('.remove-avatar-button').on('click', function() {
+    $('.original-avatar,.uploaded-avatar').addClass("none");
+    $('.default-avatar').removeClass("none");
+    $('.remove-profile-avatar').addClass("none");
+    
+    $('.remove-avatar-dialog').css('display', 'none');
     $('.suboptions-container').css('display', 'none');
 
-    $('.us-settings-profile-picture').last().removeClass('none');
-    $('.us-settings-profile-picture').last().css('display', 'block');
-    $('.remove-profile-avatar').css('display', 'none');
-
-    $('.avatar-upload-button').value = '';
+    $('.original-avatar').attr('src', '');
+    $('.avatar-upload-button').val('');
     $('.avatar-removed').val('1');
-    return false;
+});
+
+$('.avatar-upload-button').change(function(event) {
+    let avatar = [event.target.files[0]];
+    if(validate_image_file_Type(avatar).length == 1) {
+        $('.avatar-error,.default-avatar,.original-avatar').addClass('none');
+        $('.uploaded-avatar').removeClass('none');
+
+        $('.uploaded-avatar').attr('src', URL.createObjectURL(event.target.files[0]));
+        $('.uploaded-avatar').removeClass('none');
+        $('.uploaded-avatar').parent().imagesLoaded(function() {
+            handle_image_dimensions($('.uploaded-avatar'));
+        });
+
+        $('.remove-profile-avatar').addClass('none');
+        $('.undo-avatar-upload').removeClass('none');
+    } else {
+        $('.avatar-error').removeClass('none');
+    }
+});
+
+$('.undo-avatar-upload').on('click', function() {
+    $('.avatar-error').addClass('none');
+    $('.uploaded-avatar').addClass('none');
+    
+    let original_avatar = $('.original-avatar');
+    if(original_avatar.attr('src') == '') {
+        original_avatar.addClass('none');
+        $('.default-avatar').removeClass('none');
+        $('.remove-profile-avatar').addClass('none');
+    } else {
+        original_avatar.removeClass('none');
+        $('.default-avatar').addClass('none');
+        $('.remove-profile-avatar').removeClass('none');
+    }
+
+    $('.avatar-upload-button').val('');
+    $(this).addClass('none');
 });
 
 $('.remove-profile-cover').click(function() {
@@ -786,18 +825,6 @@ $('.remove-cover-button').click(function() {
     $('.cover-upload-button').value = '';
     $('.cover-removed').val('1');
     return false;
-});
-
-$('.avatar-upload-button').change(function(event) {
-    if(validate_image_file_Type(event.target.files[0])) {
-        $('.us-settings-profile-picture').first().attr('src', URL.createObjectURL(event.target.files[0]));
-        $('.us-settings-profile-picture').first().css('display', 'block');
-        $('.us-settings-profile-picture').last().css('display', 'none');
-        $('.remove-profile-avatar').removeClass('none');
-        $('.avatar-removed').val('0');
-    } else {
-        
-    }
 });
 
 $('.discard-cover-upload').on('click', function() {

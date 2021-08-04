@@ -3,11 +3,6 @@
 @push('styles')
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-@endpush
-
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 @endpush
 
 @section('header')
@@ -148,14 +143,15 @@
                         <div class="input-container full-width">
                             <span class="error frt-error"></span>
                             <label for="username" class="label-style-1 gray mr4">{{ __('About me') }} </label>
-                            <textarea name="about" id="about" form="profile-edit-form"></textarea>
-                            <style>
-                                .CodeMirror,
-                                .CodeMirror-scroll {
-                                    max-height: 200px;
-                                    min-height: 200px;
-                                }
-                            </style>
+                            <div class="countable-textarea-container">
+                                <textarea name="about" id="about" class="block styled-textarea move-to-middle countable-textarea" maxlength="1400" spellcheck="false" autocomplete="off" form="profile-edit-form" placeholder="{{ __('Something about you') }}">{{ $user->about }}</textarea>
+                                <p class="block my4 mr4 unselectable fs12 gray textarea-counter-box move-to-right width-max-content"><span class="textarea-chars-counter"></span>/1400</p>
+                                <input type="hidden" class="max-textarea-characters" value="1400">
+                                <script>
+                                    $('.textarea-chars-counter').text($('#about').val().length);
+                                </script>
+                            </div>
+                            
                         </div>
                         <div>
                             <form action="{{ route('change.user.settings.profile') }}" method="POST" id="profile-edit-form" class="flex align-center" enctype="multipart/form-data">
@@ -164,17 +160,6 @@
                                 <input type="submit" value="{{ __('Save') }}" class="button-style">
                                 <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="black-link ml8">{{__('Cancel')}}</a>
                             </form>
-                            <script>
-                                var simplemde = new SimpleMDE({ element: document.getElementById('about') });
-                                simplemde.value(htmlDecode(`{{ $user->about }}`));
-
-                                function htmlDecode(input){
-                                    var e = document.createElement('textarea');
-                                    e.innerHTML = input;
-                                    // handle case of empty input
-                                    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-                                }
-                            </script>
                         </div>
                     </div>
                 </div>

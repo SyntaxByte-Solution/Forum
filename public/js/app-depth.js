@@ -4173,3 +4173,29 @@ function handle_activity_load_more_button(button) {
         });
     })
 }
+
+$('.countable-textarea').on('input', function() {
+    let textarea = $(this);
+    let container = $(this);
+    while(!container.hasClass('countable-textarea-container')) {
+        container = container.parent();
+    }
+
+    let counter_container = container.find('.textarea-counter-box');
+    let counter = container.find('.textarea-chars-counter');
+    let maxlength = container.find('.max-textarea-characters').val();
+    let currentLength = textarea.val().length;
+
+    counter_container.addClass('gray');
+    counter.text(currentLength);
+    if(currentLength <= maxlength) {
+        counter_container.attr('style', '');
+    } else {
+        counter_container.removeClass('gray');
+        counter_container.css('color', '#e83131');
+    }
+});
+
+function handle_countale_textarea() {
+    
+}

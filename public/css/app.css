@@ -3132,6 +3132,23 @@ tr:nth-child(2n) {
     border-color: #64ceff;
 }
 
+.styled-textarea {
+    resize: vertical;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    width: calc(100% - 6px);
+    max-height: 400px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 4px;
+}
+
+.styled-textarea:focus {
+    box-shadow: 0 0 0px 3px #def2ff;
+    border-color: #64ceff;
+}
+
 .resource-report-option {
     display: flex;
     cursor: pointer;

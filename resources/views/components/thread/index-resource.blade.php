@@ -283,15 +283,13 @@
                             <input type="hidden" class="media-count" value="{{ $media_count }}">
                         </div>
                         @elseif($media['type'] == 'video')
-                        <div class="thread-media-container relative" style="background-color: #0f0f0f">
+                        <div class="thread-media-box thread-media-container relative" style="background-color: #0f0f0f">
                             <div class="thread-media-options full-center">
+                                @if($thread->has_media)
                                 <svg class="size17 pointer open-thread-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0,180V56A23.94,23.94,0,0,1,24,32H148a12,12,0,0,1,12,12V84a12,12,0,0,1-12,12H64v84a12,12,0,0,1-12,12H12A12,12,0,0,1,0,180ZM288,44V84a12,12,0,0,0,12,12h84v84a12,12,0,0,0,12,12h40a12,12,0,0,0,12-12V56a23.94,23.94,0,0,0-24-24H300A12,12,0,0,0,288,44ZM436,320H396a12,12,0,0,0-12,12v84H300a12,12,0,0,0-12,12v40a12,12,0,0,0,12,12H424a23.94,23.94,0,0,0,24-24V332A12,12,0,0,0,436,320ZM160,468V428a12,12,0,0,0-12-12H64V332a12,12,0,0,0-12-12H12A12,12,0,0,0,0,332V456a23.94,23.94,0,0,0,24,24H148A12,12,0,0,0,160,468Z"/></svg>
+                                @endif
                             </div>
-                            <video
-                                class="video-js vjs-big-play-centered"
-                                controls
-                                preload="auto"
-                                data-setup="{}">
+                            <video class="thread-media" controls>
                                 <source src="{{ asset($media['frame']) }}" type="video/mp4">
                                 <source src="{{ asset($media['frame']) }}" type="video/ogg">
                                 <source src="{{ asset($media['frame']) }}" type="video/mp4">
@@ -303,13 +301,7 @@
                                 <source src="{{ asset($media['frame']) }}" type="video/mpeg">
                                 <source src="{{ asset($media['frame']) }}" type="video/mpv">
                                 <source src="{{ asset($media['frame']) }}" type="video/m4p">
-                                <p class="vjs-no-js">
-                                To view this video please enable JavaScript, and consider upgrading to a
-                                web browser that
-                                <a href="https://videojs.com/html5-video-support/" target="_blank"
-                                    >supports HTML5 video</a
-                                >
-                                </p>
+                                Your browser does not support HTML video.
                             </video>
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>

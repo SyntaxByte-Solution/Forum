@@ -234,9 +234,9 @@ class UserController extends Controller
         if($request->cover_removed) {
             $data['cover'] = null;
         }
-        else if($request->hasFile('cover')){
+        if($request->hasFile('cover')){
             $path = $request->file('cover')->storeAs(
-                'users/covers', $user->id.'cover.png', 'public'
+                'users/' . $user->id. '/usermedia/covers', 'cover.png', 'public'
             );
 
             $data['cover'] = $path;
@@ -259,7 +259,7 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        return redirect()->route('user.settings')->with('message','Profile updated successfully !');
+        return redirect()->route('user.settings')->with('message', __('Profile updated successfully') . '!');
     }
 
     public function update_personal(Request $request) {

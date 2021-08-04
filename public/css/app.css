@@ -2373,13 +2373,19 @@ tr:nth-child(2n) {
     opacity: 1;
 }
 
-.change-cover-cont {
+.simple-button-style {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 8px;
     border-radius: 6px;
-    background-color: #00000024;
+    background-color: #0000004a;
+    user-select: none;
+    cursor: pointer;
 }
 
-.change-cover-cont:hover {
-    background-color: #0000003f;
+.simple-button-style:hover {
+    background-color: #0000008a;
 }
 
 .informer-message-container {

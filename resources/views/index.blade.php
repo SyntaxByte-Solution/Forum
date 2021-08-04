@@ -69,8 +69,6 @@
                     @foreach($threads as $thread)
                         <x-index-resource :thread="$thread"/>
                     @endforeach
-                    <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
-                    <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
                 </div>
                 @if(!$threads->count())
                     <div class="full-center">

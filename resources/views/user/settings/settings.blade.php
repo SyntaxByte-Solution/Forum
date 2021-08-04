@@ -25,7 +25,7 @@
             <div class="full-width">
                 @include('partials.user-space.basic-header', ['page' => 'settings'])
                 <div class="flex">
-                    <h1 class="fs22 my8">Update Profile & Settings</h1>
+                    <h1 class="fs22 my8">{{__('Update Profile & Settings')}}</h1>
                 </div>
 
                 @if($errors->any())
@@ -40,32 +40,37 @@
                 @endif
 
                 <div class="relative us-user-media-container">
-                    <div class="us-settings-cover-container full-center relative">
-                        <div class="absolute full-shadowed flex flex-column align-center justify-center br6">
-                            <p class="white bold fs17 my4 text-center">Remove cover ?</p>
+                    <div class="us-settings-cover-container full-center relative" style="height: 185px">
+                        <div class="absolute full-shadowed remove-cover-dialog flex flex-column align-center justify-center br6">
+                            <p class="white bold fs17 my4 text-center">{{__('Remove cover')}} ?</p>
                             <div class="flex align-center">
-                                <a href="" class="simple-white-button remove-cover-button">Remove</a>
-                                <a href="" class="white no-underline my4 fs14 close-shadowed-view-button ml8">cancel</a>
+                                <a href="" class="simple-white-button remove-cover-button">{{ __('Remove') }}</a>
+                                <a href="" class="white no-underline my4 fs14 close-shadowed-view-button ml8">{{ __('cancel') }}</a>
                             </div>
                         </div>
-                        <div class="full-center full-dimensions @if($user->cover) none @endif">
-                            <div class="flex align-center change-cover-back-container @if($user->cover) none @endif">
-                                <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
-                                <p class="fs17 white unselectable">ADD A COVER</p>
+                        <div class="full-center full-dimensions change-cover-back-container @if($user->cover) none @endif">
+                            <div class="flex align-center">
+                                <svg class="size20 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464,64H48A48,48,0,0,0,0,112V400a48,48,0,0,0,48,48H464a48,48,0,0,0,48-48V112A48,48,0,0,0,464,64Zm-6,336H54a6,6,0,0,1-6-6V118a6,6,0,0,1,6-6H458a6,6,0,0,1,6,6V394A6,6,0,0,1,458,400ZM128,152a40,40,0,1,0,40,40A40,40,0,0,0,128,152ZM96,352H416V272l-87.52-87.51a12,12,0,0,0-17,0L192,304l-39.51-39.52a12,12,0,0,0-17,0L96,304Z" style="fill:#fff"/></svg>
+                                <p class="fs17 white unselectable">{{__('ADD COVER')}}</p>
                             </div>
                         </div>
-                        <img src="{{ $user->cover }}" class="us-cover @if(!$user->cover) none @endif" alt="">
+                        <img src="" class="uploaded-us-cover us-cover none" alt="">
+                        <img src="{{ $user->cover }}" class="original-cover us-cover @if(!$user->cover) none @endif" alt="">
                         <div class="absolute flex align-center update-cover-box" style="bottom: 6px; right: 6px">
-                            <div class="flex align-center px8 py8 change-cover-cont relative">
+                            <div class="simple-button-style change-cover-cont">
                                 <input type="hidden" name="cover_removed" value="0" class="cover-removed" form="profile-edit-form">
-                                <input type="file" name="cover" form="profile-edit-form" class="opacity0 absolute full-dimensions bottom0 pointer cover-upload-button" style="height: 200%">
-                                <img src="{{ asset('assets/images/icons/image.png') }}" class="small-image mr4" alt="">
-                                <p class="fs14 no-margin white">@if(!$user->cover) {{__('Add')}} @else {{__('Update')}} @endif {{__('Cover')}}</p>
+                                <input type="file" name="cover" form="profile-edit-form" autocomplete="off" class="opacity0 absolute full-dimensions bottom0 pointer cover-upload-button" style="height: 200%; left: 0">
+                                <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M464,64H48A48,48,0,0,0,0,112V400a48,48,0,0,0,48,48H464a48,48,0,0,0,48-48V112A48,48,0,0,0,464,64Zm-6,336H54a6,6,0,0,1-6-6V118a6,6,0,0,1,6-6H458a6,6,0,0,1,6,6V394A6,6,0,0,1,458,400ZM128,152a40,40,0,1,0,40,40A40,40,0,0,0,128,152ZM96,352H416V272l-87.52-87.51a12,12,0,0,0-17,0L192,304l-39.51-39.52a12,12,0,0,0-17,0L96,304Z" style="fill:#fff"/></svg>
+                                <p class="cover-upload-button-text fs14 no-margin white">@if(!$user->cover) {{__('Upload')}} @else {{__('Update')}} @endif</p>
+                                <input type="hidden" class="update-btn-text" value="{{ __('Update') }}">
+                                <input type="hidden" class="upload-btn-text" value="{{ __('Upload') }}">
+                            </div>
+                            <div class="simple-button-style discard-cover-upload none ml4">
+                                <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm0,448A200,200,0,1,1,456,256,199.94,199.94,0,0,1,256,456ZM357.8,193.8,295.6,256l62.2,62.2a12,12,0,0,1,0,17l-22.6,22.6a12,12,0,0,1-17,0L256,295.6l-62.2,62.2a12,12,0,0,1-17,0l-22.6-22.6a12,12,0,0,1,0-17L216.4,256l-62.2-62.2a12,12,0,0,1,0-17l22.6-22.6a12,12,0,0,1,17,0L256,216.4l62.2-62.2a12,12,0,0,1,17,0l22.6,22.6a12,12,0,0,1,0,17Z"/></svg>
+                                <p class="fs14 no-margin white">{{ __('Discard') }}</p>
                             </div>
                             <div>
-                                <a href="" class="remove-profile-cover @if(!$user->cover) none @endif">
-                                    <img src="{{ asset('assets/images/icons/wx.png') }}" class="small-image-size flex mr4 ml8 rounded" alt="" style="background-color: #0000004d; padding: 4px">
-                                </a>
+                                <svg class="size17 ml4 mr4 simple-button-style rounded remove-profile-cover @if(!$user->cover) none @endif" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"/></svg>
                             </div>
                         </div>
                     </div>

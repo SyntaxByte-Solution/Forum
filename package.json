@@ -15,8 +15,7 @@
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
-        "pusher-js": "^7.0.3",
-        "video.js": "^7.14.3"
+        "pusher-js": "^7.0.3"
     },
     "dependencies": {
         "imagesloaded": "^4.1.4"

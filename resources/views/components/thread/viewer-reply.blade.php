@@ -26,7 +26,7 @@
         <div class="viewer-thread-reply-header flex space-between">
             <div class="flex">
                 <a href="{{ $post->user->profilelink }}" class="button-with-container forum-style-link fs12 flex">
-                    <img src="{{ $post->user->avatar }}" class="size36 mr8 rounded" alt="">
+                    <img src="{{ $post->user->sizedavatar(36) }}" class="size36 mr8 rounded" alt="">
                 </a>
                 <div>
                     <a href="{{ $post->user->profilelink }}" class="no-margin bold blue no-underline">Mouad Nassri</a>

@@ -38,9 +38,9 @@
                             <p class="no-margin" style="margin-right: 8px">●</p>
                             <p class="no-margin fs13" style="line-height: 150%">{{ __("Your're currently using ") }} <b> {{ $user->provider }} </b> {{ __(" service and you can access your account by choosing this service in the login section without using a password. However If you intend to create a password for your account, this will allow you to loggin using normal authentication(email & password) or login directly using your social network service") }}.</p>
                         </div>
-                        <div class="flex">
-                            <p class="no-margin" style="margin-right: 8px">●</p>
-                            <p class="no-margin fs13" style="line-height: 150%">{{ __("Keep in mind that If you close the browser, later you need to login again using your social account. To fix this issue, try to create a password to your account below to allow your account to use normal authentication (email & password) and then use REMEMBER ME feature to keep your account logged-in") }}.</p>
+                        <div class="flex" style="margin-top: 12px;">
+                            <p class="no-margin mr8">●</p>
+                            <p class="no-margin fs13" style="line-height: 150%">{{ __("However, If you close the browser, and you come back later you need to login again using your social account. To keep your account logged-in, try to create a password to your account below and connect normally using your email and password and then use REMEMBER ME feature to keep your account logged-in") }}.</p>
                         </div>
                         <div class="flex" style="margin-top: 12px">
                             <p class="no-margin" style="margin-right: 8px">●</p>
@@ -84,10 +84,6 @@
                         <div class="flex" style="margin-top: 18px">
                             <p class="no-margin bold" style="margin-right: 8px">+</p>
                             <p class="no-margin fs13" style="line-height: 150%">{{ __("Your password has been set previously. If you forgot your password you still can login using your social network account or wait until we add password reset feature") }}.</p>
-                        </div>
-                        <div class="flex" style="margin-top: 18px">
-                            <p class="no-margin bold" style="margin-right: 8px">+</p>
-                            <p class="no-margin fs13" style="line-height: 150%">{{ __("Now you can loggin with using your email and password and check remmeber me option to enable the website to remmeber you unless you disconnect.") }}.</p>
                         </div>
                     @endif
                 </div>

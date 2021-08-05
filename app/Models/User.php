@@ -55,6 +55,9 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function sizedavatar($size, $quality="-h") {
         if(!is_null($this->avatar)) {
+            if($this->avatar == $this->provider_avatar) {
+                return $this->avatar;
+            }
             return asset('/users/' . $this->id . '/usermedia/avatars/' . $size . $quality . '.png');
         } else {
             if($this->provider_avatar) {

@@ -24,6 +24,11 @@
     <div id="middle-container" style="padding-top: 30px">
         <div class="full-width">
             <div class="index-middle-width middle-container-style">
+                @if(Session::has('message'))
+                    <div class="green-message-container mb8">
+                        <p class="green-message">{{ Session::get('message') }}</p>
+                    </div>
+                @endif
                 @auth
                     @include('partials.thread.thread-add', ['editor_height'=>100])
                 @endauth

@@ -2,7 +2,7 @@
     <div class="thread-media-viewer-infos-header">
         <div class="flex">
             <a href="{{ $thread->user->profilelink }}" class="relative hidden-overflow rounded">
-                <img src="{{ $thread->user->avatar }}" class="size40 rounded">
+                <img src="{{ $thread->user->sizedavatar(100) }}" class="size40 rounded">
             </a>
             <div class="ml8">
                 <div class="flex align-end">

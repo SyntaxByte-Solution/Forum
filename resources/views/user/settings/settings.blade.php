@@ -171,7 +171,7 @@
                         <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Settings rules <span class="toggle-arrow">▾</span></a>
                         <div class="toggle-container ml8 block">
                             <p class="bold forum-color fs13" style="margin-bottom: 12px;">Cover</p>
-                            <p class="fs12 my4">• {{__('Supported types')}}: PNG, SVG, BMP, GIF or JPG. At most 5MB.</p>
+                            <p class="fs12 my4">• {{__('Supported types')}}: PNG, BMP, GIF or JPG. At most 5MB.</p>
                             <p class="fs12 my4">• {{ __('Maximum dimensions:') }}</p>
                             <div class="ml8">
                                 <p class="fs12 my4">* Height: 1280px max</p>
@@ -182,7 +182,7 @@
                     <div class="toggle-box">
                         <div class="toggle-container ml8 block">
                             <p class="bold forum-color fs13" style="margin-bottom: 12px;">Avatar</p>
-                            <p class="fs12 my4">• {{__('Supported types')}}: PNG, SVG, BMP, GIF or JPG. At most 5MB.</p>
+                            <p class="fs12 my4">• {{__('Supported types')}}: PNG, BMP, GIF or JPG. At most 5MB.</p>
                             <p class="fs12 my4">• {{ __('Maximum dimensions:') }}</p>
                             <div class="ml8">
                                 <p class="fs12 my4">* Height: 1000px max</p>

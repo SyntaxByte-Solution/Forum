@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\IsValidPassword;
-use App\Models\{Thread, Category, User, ProfileView, Like, Vote, Follow};
+use App\Models\{Thread, Category, User, ProfileView, Like, Vote, Follow, AccountStatus};
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Classes\ImageResize;
@@ -168,10 +168,10 @@ class UserController extends Controller
 
 
         $data = $request->validate([
-            'firstname'=>'sometimes|alpha|max:266',
+            'firstname'=>'required|alpha|max:266',
             'lastname'=>'sometimes|alpha|max:266',
             'username'=> [
-                'sometimes',
+                'required',
                 'min:6',
                 'max:256',
                 Rule::unique('users')->ignore($user->id),   
@@ -286,8 +286,6 @@ class UserController extends Controller
         $user = auth()->user();
         $this->authorize('update', $user);
 
-        // dd($request);
-
         $data = $request->validate([
             'password' => [
                 'required',
@@ -296,10 +294,11 @@ class UserController extends Controller
                 new IsValidPassword(),
             ]
         ]);
-
         $data['password'] = Hash::make($data['password']);
+        
         $user->update($data);
-        return redirect()->route('user.passwords.settings')->with('message','Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !');
+
+        return redirect()->route('user.passwords.settings')->with('message', __('Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !'));
     }
 
     public function account_settings(Request $request) {
@@ -316,9 +315,15 @@ class UserController extends Controller
         $this->authorize('delete', $user);
 
         if(Hash::check($request->password, $user->password)) {
-            // Here we need to delete all resources related to this user before deleting the user record
-            $user->delete();
-            return redirect('/home')->with('message', 'Your account is deactivated successfully !');
+            // // Here we need to delete all resources related to this user before deleting the user record
+            // foreach($user->threads as $thread){
+            //     $thread->delete();
+            // }
+
+            // // Here we chenge the user's account status from active to deactivated
+            // $user->set_account_status('deactivated');
+            Auth::logout();
+            return redirect("/home")->with('message', 'Your account is deactivated successfully !');
         } else {
             return redirect()->back()->with('error', 'Invalid password !');
         }
@@ -328,7 +333,7 @@ class UserController extends Controller
         $user = auth()->user();
         $this->authorize('delete', $user);
 
-        $request->validate([
+        $data = $request->validate([
             'password'=>'required',
                 'confirmed',
                 'string',
@@ -336,21 +341,11 @@ class UserController extends Controller
         ]);
 
         if(Hash::check($request->password, $user->password)) {
-            // Here we need to delete all resources related to this user before deleting the user record
-            foreach($user->threads as $thread){
-                foreach($thread->posts as $post) {
-                    $post->delete();
-                }
-            }
-
-            foreach($user->threads as $thread){
-                $thread->delete();
-            }
-
             // Here we chenge the user's account status from active to deactivated
             $user->set_account_status('deactivated');
+
             Auth::logout();
-            return redirect("/home")->with('message', 'Your account is deactivated successfully !');
+            return redirect("/")->with('message', __('Your account is deactivated successfully !'));
         } else {
             return redirect()->back()->with('errordeactiv', 'Invalid password !');
         }

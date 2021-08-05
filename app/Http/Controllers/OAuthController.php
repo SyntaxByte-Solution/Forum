@@ -56,6 +56,7 @@ class OAuthController extends Controller
             $user->provider = $provider;
             $user->avatar = NULL;
             $user->provider_avatar = $u->avatar_original;
+            $user->account_status = 1;
 
             $user->save();
             $user->refresh();

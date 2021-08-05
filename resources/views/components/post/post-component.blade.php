@@ -68,7 +68,7 @@
                             <div class="flex">
                                 <div class="relative">
                                     <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="button-with-container forum-style-link fs12 flex">
-                                        <img src="{{ $post_owner->avatar }}" class="size28 mr4 rounded" alt="">
+                                        <img src="{{ $post_owner->sizedavatar(36) }}" class="size28 mr4 rounded" alt="">
                                     </a>
                                     
                                     @include('partials.user-profile-card', ['user'=>$post_owner])
@@ -94,9 +94,7 @@
                     </div>
                     <p class="best-reply-ticket unselectable @if(!$post->ticked) none @endif">{{ __('BEST REPLY') }}</p>
                     <div>
-                        <a href="" class="black-link button-with-suboptions">
-                            <img src="{{ asset('assets/images/icons/dotted-menu.svg') }}" class="small-image" alt="">
-                        </a>
+                        <svg class="pointer button-with-suboptions size20 mr4" style="margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
                         <div class="suboptions-container suboptions-container-right-style">
                             <div class="simple-suboption hide-post hide-post-from-outside-viewer flex align-center">
                                 <div class="small-image-2 sprite sprite-2-size eyecrossed17-icon mr4"></div>

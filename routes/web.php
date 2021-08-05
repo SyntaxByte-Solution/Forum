@@ -26,6 +26,8 @@ use App\Http\Middleware\AccountActivationCheck;
 
 Route::get('/test', function() {
     $user = auth()->user();
+
+    dd(\App\Models\Like::first()->user);
 });
 
 Route::get('/', [IndexController::class, 'index']);

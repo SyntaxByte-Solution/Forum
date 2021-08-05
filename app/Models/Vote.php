@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\ExcludeDeactivatedUserData;
+use App\Models\User;
 
 class Vote extends Model
 {
@@ -16,6 +18,14 @@ class Vote extends Model
      */
     public function votable() {
         return $this->morphTo();
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    protected static function booted() {
+        static::addGlobalScope(new ExcludeDeactivatedUserData);
     }
 
     public function scopeToday($builder){

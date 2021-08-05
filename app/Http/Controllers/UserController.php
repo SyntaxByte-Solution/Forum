@@ -369,9 +369,9 @@ class UserController extends Controller
 
         if($user->account_deactivated()) {
             $user->set_account_status('active');
-            return redirect('/')->with('message', "Your account is activated successfully !");
+            return redirect('/')->with('message', __("Your account is activated successfully !"));
         }
-
+        
         abort(404);
     }
 

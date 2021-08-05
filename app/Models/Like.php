@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\ExcludeDeactivatedUserData;
+use App\Models\User;
 
 class Like extends Model
 {
@@ -16,4 +18,11 @@ class Like extends Model
         return $this->morphTo();
     }
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    protected static function booted() {
+        static::addGlobalScope(new ExcludeDeactivatedUserData);
+    }
 }

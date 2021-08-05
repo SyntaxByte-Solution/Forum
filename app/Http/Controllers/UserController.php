@@ -63,6 +63,9 @@ class UserController extends Controller
     }
 
     public function profile(Request $request, User $user) {
+        if($user->account_status->id == 2) {
+            return view('errors.custom.deactivated-account');
+        }
 
         $profile_view = new ProfileView;
         $profile_view->visitor_ip = $request->ip();

@@ -13,6 +13,7 @@ use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView,
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Scopes\ExcludeDeactivatedUser;
 
 class User extends UserAuthenticatable implements Authenticatable
 {
@@ -40,6 +41,17 @@ class User extends UserAuthenticatable implements Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted() {
+        // Infinite call fore applying global scope to user model
+        // static::addGlobalScope(new ExcludeDeactivatedUser);
+    }
+
+    // Even though using local scopes needs a lot of code update like prefixing user fetch queries but
+    // it gives me what I need and it doesn't cause infinite (nested) calls to the global scope like in global scopes
+    public function scopeExcludedeactivatedaccount($query) {
+        return $query->where('account_status', '<>', 2);
+    }
 
     public function getAvatarAttribute($value) {
         $this->raw_avatar = $value;
@@ -78,7 +90,7 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function getCoverAttribute($value) {
         if($value) {
-            return asset('storage') . '/' . $value;
+            return asset($value);
         }
 
         return $value;
@@ -213,80 +225,87 @@ class User extends UserAuthenticatable implements Authenticatable
 
         foreach($groups_by_resource_id as $group_by_resource_id) {
             foreach($group_by_resource_id->groupBy('action_resource_id') as $group) {
-                $action_takers_count = $group->count();
-                $action_takers = '';
-                switch($action_takers_count) {
-                    case 1:
-                        $action_takers = User::find($group->first()['action_user'])->minified_name;
-                        break;
-                    case 2:
-                        $action_takers = User::find($group->first()['action_user'])->minified_name;
-                        $action_takers .= __(' and ') . User::find($group[1]['action_user'])->minified_name;
-                        break;
-                    default:
-                        $c = 0;
-                        $i = 0;
-                        foreach($group as $notification_data_record) {
-                            if($c == 0) {
-                                $action_takers = User::find($notification_data_record['action_user'])->minified_name;
-                            } else if($c == 1) {
-                                $action_takers .= ', ' . User::find($notification_data_record['action_user'])->minified_name;
-                            } else {
-                                $i++;
-                            }
-                            $c++;
-                        }
-                        $action_takers .= __(' and ') . $i . (($i>1) ? __(' others ') : __(' other '));
-                }
-
-                $cloned_notification_data = $this->notifications->where('data', $group[0])->first();
                 
-                $resource_action_icon = '';
-                if($cloned_notification_data->data['action_type'] == 'thread-reply') {
-                    $resource_action_icon = 'resource24-reply-icon';
-                } else if($cloned_notification_data->data['action_type'] == 'thread-vote' || $cloned_notification_data->data['action_type'] == 'reply-vote') {
-                    $resource_action_icon = 'resource24-vote-icon';
-                } else if($cloned_notification_data->data['action_type'] == 'reply-like' || $cloned_notification_data->data['action_type'] == 'thread-like') {
-                    $resource_action_icon = 'resource24-like-icon';
-                } else if($cloned_notification_data->data['action_type'] == 'warning-warning') {
-                    $resource_action_icon = 'warning24-icon';
-                } else if($cloned_notification_data->data['action_type'] == 'user-follow') {
-                    $resource_action_icon = 'followfilled24-icon';
-                } else if($cloned_notification_data->data['action_type'] == 'image-action') {
-                    $resource_action_icon = 'image24-icon';
-                } else {
-                    $resource_action_icon = 'notification24-icon';
+                $group = $group->filter(function($g) {
+                    return !is_null(User::find($g['action_user'])); 
+                });
+
+                $action_takers_count = $group->count();
+                if($action_takers_count) {
+                    $action_takers = '';
+                    switch($action_takers_count) {
+                        case 0:
+                            break;
+                        case 1:
+                            $action_takers = User::find($group->first()['action_user'])->minified_name;
+                            break;
+                        case 2:
+                            $action_takers = User::find($group->first()['action_user'])->minified_name;
+                            $action_takers .= __(' and ') . User::find($group[1]['action_user'])->minified_name;
+                            break;
+                        default:
+                            $c = 0;
+                            $i = 0;
+                            foreach($group as $notification_data_record) {
+                                if($c == 0) {
+                                    $action_takers = User::find($notification_data_record['action_user'])->minified_name;
+                                } else if($c == 1) {
+                                    $action_takers .= ', ' . User::find($notification_data_record['action_user'])->minified_name;
+                                } else {
+                                    $i++;
+                                }
+                                $c++;
+                            }
+                            $action_takers .= __(' and ') . $i . (($i>1) ? __(' others ') : __(' other '));
+                    }
+                    $cloned_notification_data = $this->notifications->where('data', $group->first())->first();
+                    $resource_action_icon = '';
+                    if($cloned_notification_data->data['action_type'] == 'thread-reply') {
+                        $resource_action_icon = 'resource24-reply-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'thread-vote' || $cloned_notification_data->data['action_type'] == 'reply-vote') {
+                        $resource_action_icon = 'resource24-vote-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'reply-like' || $cloned_notification_data->data['action_type'] == 'thread-like') {
+                        $resource_action_icon = 'resource24-like-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'warning-warning') {
+                        $resource_action_icon = 'warning24-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'user-follow') {
+                        $resource_action_icon = 'followfilled24-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'image-action') {
+                        $resource_action_icon = 'image24-icon';
+                    } else {
+                        $resource_action_icon = 'notification24-icon';
+                    }
+    
+                    $resource_type = explode('-', $cloned_notification_data->data['action_type'])[0];
+                    if($resource_type == 'thread') {
+                        $resource_type = "App\Models\Thread";
+                    } else if($resource_type == 'reply') {
+                        $resource_type = "App\Models\Post";
+                    }
+    
+                    $resource_id = $cloned_notification_data->data['action_resource_id'];
+                    $disabled = (bool)
+                        $this->disables
+                        ->where('disabled_type', $resource_type)
+                        ->where('disabled_id', $resource_id)
+                        ->count();
+    
+                    $notifications->push([
+                        'notif_id'=>$cloned_notification_data->id,
+                        'action_takers'=>$action_takers,
+                        'action_statement'=> __($cloned_notification_data->data['action_statement']),
+                        'resource_string_slice'=>$cloned_notification_data->data['resource_string_slice'],
+                        'action_date'=>(new Carbon($cloned_notification_data->created_at))->diffForHumans(),
+                        'action_real_date'=>$cloned_notification_data->created_at,
+                        'action_type'=>$cloned_notification_data->data['action_type'],
+                        'action_resource_link'=>$cloned_notification_data->data['action_resource_link'],
+                        'action_user' => User::find($cloned_notification_data->data['action_user']),
+                        'resource_id' => $cloned_notification_data->data['action_resource_id'],
+                        'resource_action_icon' => $resource_action_icon,
+                        'notif_read' => $cloned_notification_data->read(),
+                        'disabled'=>$disabled
+                    ]);
                 }
-
-                $resource_type = explode('-', $cloned_notification_data->data['action_type'])[0];
-                if($resource_type == 'thread') {
-                    $resource_type = "App\Models\Thread";
-                } else if($resource_type == 'reply') {
-                    $resource_type = "App\Models\Post";
-                }
-
-                $resource_id = $cloned_notification_data->data['action_resource_id'];
-                $disabled = (bool)
-                    $this->disables
-                    ->where('disabled_type', $resource_type)
-                    ->where('disabled_id', $resource_id)
-                    ->count();
-
-                $notifications->push([
-                    'notif_id'=>$cloned_notification_data->id,
-                    'action_takers'=>$action_takers,
-                    'action_statement'=> __($cloned_notification_data->data['action_statement']),
-                    'resource_string_slice'=>$cloned_notification_data->data['resource_string_slice'],
-                    'action_date'=>(new Carbon($cloned_notification_data->created_at))->diffForHumans(),
-                    'action_real_date'=>$cloned_notification_data->created_at,
-                    'action_type'=>$cloned_notification_data->data['action_type'],
-                    'action_resource_link'=>$cloned_notification_data->data['action_resource_link'],
-                    'action_user' => User::find($cloned_notification_data->data['action_user']),
-                    'resource_id' => $cloned_notification_data->data['action_resource_id'],
-                    'resource_action_icon' => $resource_action_icon,
-                    'notif_read' => $cloned_notification_data->read(),
-                    'disabled'=>$disabled
-                ]);
             }
         }
 

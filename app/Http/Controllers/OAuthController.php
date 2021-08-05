@@ -8,6 +8,7 @@ use Socialite;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Scopes\ExcludeDeactivatedUser;
 
 class OAuthController extends Controller
 {
@@ -36,7 +37,7 @@ class OAuthController extends Controller
         }
         
         $u = Socialite::driver($provider)->user();
-        $user = User::where('email', $u->email)->first();
+        $user = User::withoutGlobalScope(ExcludeDeactivatedUser::class)->where('email', $u->email)->first();
 
         if($user){
             Auth::login($user, true);

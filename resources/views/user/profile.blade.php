@@ -166,6 +166,9 @@
                         </a>
                     @endif
                 
+                    @if($user->account_status->slug == 'deactivated')
+                    <h2 class="text-center">DEACTIVATED ACCOUNT</h2>
+                    @endif
                     @if($threads->count())
                         <div class="flex align-center space-between forum-color">
                             @if(auth()->user() && $user->id == auth()->user()->id)

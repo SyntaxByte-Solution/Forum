@@ -13,7 +13,7 @@ main {
     min-width: 250px;
     box-sizing: border-box;
 
-    background-color: #5d6275;
+    background-color: #4c5371;
 }
 
 .lp-padding {
@@ -44,7 +44,7 @@ main {
 }
 
 .lp-selected, .lp-sub-selected {
-    background-color: #4d5264;
+    background-color: #3b4157;
 }
 
 .selected-colored-slice {

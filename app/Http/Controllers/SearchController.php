@@ -51,7 +51,7 @@ class SearchController extends Controller
 
         $threads = $threads->paginate($pagesize);
 
-        $users = User::whereIn('id', array_column(
+        $users = User::excludedeactivatedaccount()->whereIn('id', array_column(
             DB::select(
                 $this->search_query_generator('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE'], ['OR'])
             ), 'id'
@@ -316,7 +316,7 @@ class SearchController extends Controller
 
         
         $forums = Forum::all();
-        $users = User::whereIn('id', array_column(
+        $users = User::excludedeactivatedaccount()->whereIn('id', array_column(
             DB::select(
                 $this->search_query_generator('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE'], ['OR'])
             ), 'id'

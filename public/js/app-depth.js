@@ -671,17 +671,15 @@ $('.toggle-container-button').click(function() {
     return false;
 });
 
-$('.row-num-changer').change(function() {
-    let page_size = $(this).val();
-    
-    let urlObj = new URL(window.location.href.split('?')[0]);
-    let url = '';
+$('.row-num-changer').on('change', function() {
+    let pagesize = $(this).val();
 
-    urlObj.searchParams.set('pagesize', page_size);
-    url = urlObj.href;
+    let url = new URL(window.location.href);
+    url.searchParams.append('pagesize', pagesize);
 
     window.location.href = url;
 });
+
 
 $('.check-username').click(function() {
     let button = $(this);

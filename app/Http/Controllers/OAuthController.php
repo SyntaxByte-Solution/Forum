@@ -37,7 +37,7 @@ class OAuthController extends Controller
         }
         
         $u = Socialite::driver($provider)->user();
-        $user = User::withoutGlobalScope(ExcludeDeactivatedUser::class)->where('email', $u->email)->first();
+        $user = User::where('email', $u->email)->first();
 
         if($user){
             Auth::login($user, true);

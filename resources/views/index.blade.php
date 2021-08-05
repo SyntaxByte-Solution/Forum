@@ -60,7 +60,7 @@
                         <div class="flex">
                             <div class="flex align-center my4 move-to-right">
                                 <span class="mr4 fs13 gray">posts/page :</span>
-                                <select name="" class="small-dropdown row-num-changer">
+                                <select name="" class="small-dropdown row-num-changer" autocomplete="off">
                                     <option value="10" @if($pagesize == 10) selected @endif>10</option>
                                     <option value="20" @if($pagesize == 20) selected @endif>20</option>
                                     <option value="50" @if($pagesize == 50) selected @endif>50</option>

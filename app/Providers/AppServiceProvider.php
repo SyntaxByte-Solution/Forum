@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
-use  Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Auth;
 use App\Models\{Thread, EmojiFeedback, Vote};
 
 class AppServiceProvider extends ServiceProvider
@@ -36,7 +37,11 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::if('canemoji', function () {
             $ip = request()->ip();
-            return EmojiFeedback::where('ip', $ip)->where('created_at', '>', today())->count() == 0;
+            if(Auth::check()) {
+                return EmojiFeedback::where('user_id', Auth::id())->where('created_at', '>', today())->count() == 0;
+            } else {
+                return EmojiFeedback::where('ip', $ip)->where('created_at', '>', today())->count() == 0;
+            }
         });
 
         Blade::if('upvoted', function ($resource, $type) {

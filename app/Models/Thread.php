@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
-use App\Scopes\{ExcludePrivateScope, FollowersOnlyScope};
+use App\Scopes\{ExcludePrivateScope, FollowersOnlyScope, ExcludeDeactivatedUserData};
 use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, ThreadVisibility, Like, Report, Notification};
 
 class Thread extends Model
@@ -50,6 +50,7 @@ class Thread extends Model
     protected static function booted() {
         static::addGlobalScope(new ExcludePrivateScope);
         static::addGlobalScope(new FollowersOnlyScope);
+        static::addGlobalScope(new ExcludeDeactivatedUserData);
     }
 
     public function user() {

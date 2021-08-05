@@ -8,6 +8,7 @@ use Markdown;
 use Carbon\Carbon;
 use App\Models\{Thread, Vote, Like};
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Scopes\ExcludeDeactivatedUserData;
 
 class Post extends Model
 {
@@ -121,5 +122,9 @@ class Post extends Model
             $post->likes()->delete();
             $post->votes()->delete();
         });
+    }
+
+    protected static function booted() {
+        static::addGlobalScope(new ExcludeDeactivatedUserData);
     }
 }

@@ -651,6 +651,14 @@ $('.hide-parent').click(function() {
     return false;
 });
 
+function handle_hide_parent(item) {
+    item.find('.hide-parent').each(function() {
+        $(this).on('click', function() {
+            $(this).parent().css('display', 'none');
+        });
+    })
+}
+
 $('.toggle-container-button').click(function() {
     let box = $(this);
     while(!box.hasClass('toggle-box')) {
@@ -4087,6 +4095,8 @@ $('.activity-section-switcher').on('click', function() {
                             handle_image_dimensions($(this));
                         });
                     });
+                    handle_permanent_delete($(this));
+                    handle_hide_parent($(this));
                 });
             },
             complete: function() {
@@ -4167,6 +4177,8 @@ function handle_activity_load_more_button(button) {
                             handle_image_dimensions(image);
                         });
                     });
+                    handle_permanent_delete($(this));
+                    handle_hide_parent($(this));
                 });
     
                 let c = parseInt(section_container.find('.current-section-thread-count').text()) + parseInt(response.count);
@@ -4204,4 +4216,19 @@ $('.countable-textarea').on('input', function() {
 
 function handle_countale_textarea() {
     
+}
+
+function handle_permanent_delete(item) {
+    item.find('.thread-permanent-delete').on('click', function() {
+        let container = $(this);
+        while(!container.hasClass('thread-container-box')) {
+            container = container.parent();
+        }
+        
+        console.log(container);
+        container.find('.thread-permanent-deletion-dialog').css('display', 'block');
+        container.find('.thread-permanent-deletion-dialog').animate({
+            opacity: 1
+        }, 200);
+    });
 }

@@ -13,7 +13,7 @@
                 <div style="padding: 6px; background-color: white;" class="rounded">
                     <a href="{{ route('user.profile', ['user'=>$user->username]) }}">
                         <div class="image-size-1 full-center rounded hidden-overflow">
-                            <img src="{{ $user->avatar }}" class="handle-image-center-positioning" alt="">
+                            <img src="{{ $user->sizedavatar(100) }}" class="handle-image-center-positioning" alt="">
                         </div>
                     </a>
                 </div>

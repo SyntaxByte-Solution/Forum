@@ -64,6 +64,7 @@ class User extends UserAuthenticatable implements Authenticatable
              * 7. avatars
              * 8. cover
              */
+            
             // foreach ($user->threads as $thread) {
             //     $thread->delete();
             // }
@@ -163,6 +164,22 @@ class User extends UserAuthenticatable implements Authenticatable
             })->reject(function($value) {
                 return $value == null;
             });
+    }
+
+    public function likes_on_threads() {
+        return Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Thread')->get();
+    }
+
+    public function likes_on_posts() {
+        return Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Post')->get();
+    }
+    
+    public function votes_on_threads() {
+        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->get();
+    }
+
+    public function votes_on_posts() {
+        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Post')->get();
     }
 
     public function votes() {
@@ -347,6 +364,10 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function getProfilelinkAttribute() {
         return route('user.profile', ['user'=>$this->username]);
+    }
+
+    public function getArchivedthreadsAttribute() {
+        return $this->threads()->onlyTrashed()->get();
     }
 
     /**

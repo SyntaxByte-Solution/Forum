@@ -27,7 +27,7 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
 
-    dd(\App\Models\SavedThread::first()->user);
+    dd($user->archivedthreads);
 });
 
 Route::get('/', [IndexController::class, 'index']);

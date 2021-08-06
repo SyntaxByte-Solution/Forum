@@ -30,7 +30,7 @@
                 <div class="activities-sections-container">
                     <div class="activities-sections-header" style="padding-right: 8px;">
                         <div class="flex inline-buttons-container">
-                            <div class="inline-button-style align-center selected-inline-button-style activity-section-switcher">
+                            <div class="inline-button-style align-center selected-inline-button-style activity-section-switcher" style="border-top-left-radius: 4px">
                                 <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M492.21,3.82a21.45,21.45,0,0,0-22.79-1l-448,256a21.34,21.34,0,0,0,3.84,38.77L171.77,346.4l9.6,145.67a21.3,21.3,0,0,0,15.48,19.12,22,22,0,0,0,5.81.81,21.37,21.37,0,0,0,17.41-9l80.51-113.67,108.68,36.23a21,21,0,0,0,6.74,1.11,21.39,21.39,0,0,0,21.06-17.84l64-384A21.31,21.31,0,0,0,492.21,3.82ZM184.55,305.7,84,272.18,367.7,110.06ZM220,429.28,215.5,361l42.8,14.28Zm179.08-52.07-170-56.67L447.38,87.4Z"/></svg>
                                 {{ __('Threads') }}
                                 <input type="hidden" class="activity-section-name" value="threads">
@@ -60,6 +60,13 @@
                                 @endif
                                 <input type="hidden" class="activity-section-name" value="voted-threads">
                             </div>
+                            @if(\Illuminate\Support\Facades\Auth::check() && auth()->user()->id == $user->id)
+                            <div class="inline-button-style align-center activity-section-switcher">
+                                <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 331.53 331.53"><path d="M197.07,216.42a11,11,0,0,1-11,11H145.46a11,11,0,0,1,0-22h40.61A11,11,0,0,1,197.07,216.42ZM331.53,51.9v68.32a11,11,0,0,1-11,11H313.4V279.63a11,11,0,0,1-11,11H29.13a11,11,0,0,1-11-11V131.22H11a11,11,0,0,1-11-11V51.9a11,11,0,0,1,11-11H320.53A11,11,0,0,1,331.53,51.9ZM291.4,131.22H221.24a56.55,56.55,0,0,1-110.94,0H40.13V268.63H291.4ZM165.77,154.77a34.61,34.61,0,0,0,32.75-23.55H133A34.6,34.6,0,0,0,165.77,154.77ZM309.53,62.9H22v46.32H309.53Z"/></svg>
+                                {{ __('Archive') }}
+                                <input type="hidden" class="activity-section-name" value="archived-threads">
+                            </div>
+                            @endif
                             @if(\Illuminate\Support\Facades\Auth::check() && auth()->user()->id == $user->id)
                             <div class="inline-button-style align-center activity-section-switcher">
                                 <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M48,48A48,48,0,1,0,96,96,48,48,0,0,0,48,48Zm0,160a48,48,0,1,0,48,48A48,48,0,0,0,48,208Zm0,160a48,48,0,1,0,48,48A48,48,0,0,0,48,368Zm448,16H176a16,16,0,0,0-16,16v32a16,16,0,0,0,16,16H496a16,16,0,0,0,16-16V400A16,16,0,0,0,496,384Zm0-320H176a16,16,0,0,0-16,16v32a16,16,0,0,0,16,16H496a16,16,0,0,0,16-16V80A16,16,0,0,0,496,64Zm0,160H176a16,16,0,0,0-16,16v32a16,16,0,0,0,16,16H496a16,16,0,0,0,16-16V240A16,16,0,0,0,496,224Z"/></svg>

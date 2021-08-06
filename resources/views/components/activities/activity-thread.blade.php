@@ -1,9 +1,23 @@
 <div class="activity-thread-wrapper thread-container-box relative" style="@if($is_ticked) background-color: #cfffcf21; border: 1px solid #a7cca7bd; @endif">
+    <div class="absolute full-shadowed zi12 thread-permanent-deletion-dialog br6">
+        <svg class="size14 simple-button-style rounded hide-parent" style="position: absolute; top: 6px; right: 6px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"/></svg>
+        <div class="white px8 py8 full-height flex flex-column justify-center border-box">
+            <h2 class="no-margin fs18">{{ __('Please make sure you want to delete permanently the thread !') }}</h2>
+            <p class="fs12 no-margin" style="width: 75%">{{ __('This will remove the thread permanently. By removing the thread, everything related to it will be deleted (replies, votes ..)') }}</p>
+            <div class="my8 mx4 flex space-between">
+                <form action="{{ route('thread.destroy', ['thread'=>$thread->id]) }}" class="delete-permanent-form" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit" class="simple-white-button mr8" value='{{ __("Delete permanently") }}'>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="hidden-thread-section none px8 py8">
         <p class="my4 fs12">Thread hidden. If you want to show it again <span class="pointer blue thread-display-button">click here</span></p>
     </div>
     <div class="thread-component">
-        <div>
+        <div class="full-width">
             <div class="flex align-center space-between mb8">
                 <div class="flex align-center">
                     <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -26,16 +40,25 @@
                     <div class="relative ml8">
                         <svg class="pointer button-with-suboptions size20 mr4" style="margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
                         <div class="suboptions-container suboptions-container-right-style">
-                            <a href="{{ $thread->link }}" target="_blank" class="no-underline simple-suboption flex align-center">
-                                <svg class="mr4 size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><path class="cls-1" d="M1,12S5,4,12,4s11,8,11,8-4,8-11,8S1,12,1,12ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z"/></svg>
-                                <div class="black">{{ __('See thread') }}</div>
-                            </a>
-                            @can('update', $thread)
-                            <a href="{{ $edit_link }}" target="_blank" class="no-underline simple-suboption flex align-center">
-                                <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
-                                <div class="black">{{ __('Edit thread') }}</div>
-                            </a>
-                            @endcan
+                            @if(is_null($thread->deleted_at))
+                                <a href="{{ $thread->link }}" target="_blank" class="no-underline simple-suboption flex align-center">
+                                    <svg class="mr4 size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><path class="cls-1" d="M1,12S5,4,12,4s11,8,11,8-4,8-11,8S1,12,1,12ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z"/></svg>
+                                    <div class="black">{{ __('See thread') }}</div>
+                                </a>
+                                <a href="{{ $edit_link }}" target="_blank" class="no-underline simple-suboption flex align-center">
+                                    <div class="small-image-2 sprite sprite-2-size pen17-icon mr4"></div>
+                                    <div class="black">{{ __('Edit thread') }}</div>
+                                </a>
+                            @else
+                                <div class="no-underline simple-suboption flex align-center">
+                                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 448"><path d="M234.67,138.67V245.33L326,299.52l15.36-25.92-74.66-44.27V138.67ZM255.89,32C149.76,32,64,118,64,224H0l83.09,83.09,1.5,3.1L170.67,224h-64a149.68,149.68,0,1,1,43.84,105.49l-30.19,30.19A190.8,190.8,0,0,0,255.89,416C362,416,448,330,448,224S362,32,255.89,32Z"/></svg>
+                                    <div class="black">{{ __('Restore thread') }}</div>
+                                </div>
+                                <div class="thread-permanent-delete no-underline simple-suboption flex align-center" style="background-color: #ffa3a3">
+                                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                                    <div class="black">{{ __('Delete permanently') }}</div>
+                                </div>
+                            @endif
                             <div class="pointer simple-suboption thread-display-button flex align-center">
                                 <div class="small-image-2 sprite sprite-2-size eyecrossed17-icon mr4"></div>
                                 <div>{{ __('Hide thread') }}</div>

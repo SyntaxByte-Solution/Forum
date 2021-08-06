@@ -602,10 +602,10 @@ a, input, textarea {
     display: flex;
     cursor: pointer;
     width: max-content;
-    padding: 8px 12px;
+    padding: 8px 10px;
     background-color: #f9f9f9;
     color: #313131;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     border-right: 1px solid rgb(175, 175, 175);
     user-select: none;
@@ -3187,7 +3187,6 @@ tr:nth-child(2n) {
 .activities-sections-header {
     border-bottom: 1px solid rgb(175, 175, 175);
     border-radius: 8px 8px 0 0;
-    overflow: hidden;
 }
 
 .activities-section-content {

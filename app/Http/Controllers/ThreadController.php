@@ -14,7 +14,7 @@ use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDen
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post, Like};
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\View\Components\Activities\ActivityThread;
-use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads, ActivityLog};
+use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads, ArchivedThreads, ActivityLog};
 use App\Http\Controllers\PostController;
 
 class ThreadController extends Controller
@@ -595,6 +595,7 @@ class ThreadController extends Controller
         $sections = ['threads', 'liked-threads', 'voted-threads'];
         if(Auth::check() && auth()->user()->id == $user->id) {
             $sections[] = 'saved-threads';
+            $sections[] = 'archived-threads';
             $sections[] = 'activity-log';
         }
 
@@ -618,6 +619,10 @@ class ThreadController extends Controller
             case 'voted-threads':
                 $voted_threads_section = (new VotedThreads($user));
                 return $voted_threads_section->render(get_object_vars($voted_threads_section))->render();
+                break;
+            case 'archived-threads':
+                $archived_threads = (new ArchivedThreads);
+                return $archived_threads->render(get_object_vars($archived_threads))->render();
                 break;
             case 'activity-log':
                 $activity_logs = (new ActivityLog);

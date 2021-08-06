@@ -454,6 +454,18 @@ class ThreadController extends Controller
         return route('user.activities', ['user'=>auth()->user()->username]);
     }
 
+    public function restore($thread) {
+        /**
+         * The reason why we didn't use route model binding see the method above docs
+         */
+        $thread = Thread::withTrashed()->where('id', $thread)->get()->first();
+        $this->authorize('update', $thread);
+
+        $thread->restore();
+
+        return $thread->link;
+    }
+
     public function thread_posts_switch(Request $request, Thread $thread) {
         $this->authorize('update', $thread);
 

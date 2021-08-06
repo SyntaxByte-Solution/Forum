@@ -4104,6 +4104,7 @@ $('.activity-section-switcher').on('click', function() {
                             handle_image_dimensions($(this));
                         });
                     });
+                    handle_restore_thread_button($(this));
                     handle_permanent_delete($(this));
                     handle_permanent_destroy_button($(this));
                     handle_hide_parent($(this));
@@ -4188,6 +4189,7 @@ function handle_activity_load_more_button(button) {
                             handle_image_dimensions(image);
                         });
                     });
+                    handle_restore_thread_button($(this));
                     handle_permanent_delete($(this));
                     handle_permanent_destroy_button($(this));
                     handle_hide_parent($(this));
@@ -4298,6 +4300,45 @@ function handle_permanent_destroy_button(thread) {
                 button.text(button_text_ing);
                 button.attr("disabled",false);
                 button.attr('style', 'background-color: #d03535; color: white');
+            }
+        });
+
+        return false;
+    });
+}
+
+function handle_restore_thread_button(thread) {
+    thread.find('.restore-thread-button').on('click', function() {
+        let button = $(this);
+        let button_text_no_ing = button.find('.btn-text-no-ing').val();
+        let button_text_ing = button.find('.btn-text-ing').val();
+
+        button.find('.btn-text').text(button_text_ing);
+        button.find('.btn-text').attr("disabled","disabled");
+        button.find('.btn-text').attr('style', 'cursor: default');
+
+        let spinner = button.find('.spinner');
+        start_spinner(spinner, 'restore-thread-inline-button');
+
+        spinner.removeClass('opacity0');
+
+        $.ajax({
+            type: 'post',
+            url: button.find('.restore-link').val(),
+            data: {
+                _token: csrf
+            },
+            success: function(response) {
+                window.location.href = response;
+            },
+            error: function() {
+                button.find('.btn-text').text(button_text_no_ing);
+                button.find('.btn-text').attr("disabled",false);
+                button.find('.btn-text').attr('style', '');
+            },
+            complete: function() {
+                spinner.addClass('opacity0');
+                stop_spinner(spinner, 'restore-thread-inline-button');
             }
         });
 

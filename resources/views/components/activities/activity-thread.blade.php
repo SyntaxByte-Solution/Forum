@@ -54,9 +54,16 @@
                                     <div class="black">{{ __('Edit thread') }}</div>
                                 </a>
                             @else
-                                <div class="simple-suboption flex align-center">
+                                <div class="simple-suboption restore-thread-button flex align-center">
                                     <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 448"><path d="M234.67,138.67V245.33L326,299.52l15.36-25.92-74.66-44.27V138.67ZM255.89,32C149.76,32,64,118,64,224H0l83.09,83.09,1.5,3.1L170.67,224h-64a149.68,149.68,0,1,1,43.84,105.49l-30.19,30.19A190.8,190.8,0,0,0,255.89,416C362,416,448,330,448,224S362,32,255.89,32Z"/></svg>
-                                    <div>{{ __('Restore thread') }}</div>
+                                    <div class="btn-text">{{ __('Restore thread') }}</div>
+                                    <div class="spinner size17 ml4 opacity0">
+                                        <svg class="size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+                                    </div>
+
+                                    <input type="hidden" class="restore-link" value="{{ route('thread.restore', ['thread'=>$thread->id]) }}">
+                                    <input type="hidden" class="btn-text-no-ing" value="{{ __('Restore thread') }}">
+                                    <input type="hidden" class="btn-text-ing" value="{{ __('Restoring') }}..">
                                 </div>
                                 <div class="thread-permanent-delete simple-suboption flex align-center" style="background-color: #d03535; color: white;">
                                     <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>

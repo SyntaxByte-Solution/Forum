@@ -433,12 +433,12 @@ class ThreadController extends Controller
         
         /**
          * Notice here we don't have to delete the related resource because we used soft
-         * deleting so the user could restore the post later. But we need to clean up when the
-         * use choose to permanently delete the thread !
+         * deleting so the user could restore the thread later. But we need to clean things up when the
+         * user choose permanent delete !
          */
 
         $thread->delete();
-        return redirect(route('user.activities', ['user'=>auth()->user()->username]));
+        return route('user.activities', ['user'=>auth()->user()->username, 'section'=>'archived-threads']);
     }
 
     public function destroy($thread) {

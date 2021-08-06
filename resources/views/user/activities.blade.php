@@ -115,4 +115,17 @@
             </div>
         </div>
     </div>
+    <script defer>
+        window.onload = function() {
+            let urlParams = new URLSearchParams(window.location.search);
+
+            if(urlParams.has('section')) {
+                $('.activity-section-name').each(function() {
+                    if($(this).val() == urlParams.get('section')) {
+                        $(this).parent().click();
+                    }
+                })
+            }
+        };
+    </script>
 @endsection

@@ -14,7 +14,7 @@ class ArchivedThreads extends Component
         $user = auth()->user();
 
         $this->user = $user;
-        $this->archivedthreads = $user->archivedthreads->take(10);
+        $this->archivedthreads = $user->archivedthreads->sortByDesc('deleted_at')->take(10);
     }
 
     /**

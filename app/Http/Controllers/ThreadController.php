@@ -640,6 +640,7 @@ class ThreadController extends Controller
         if(Auth::check()) {
             if(auth()->user()->id == $user->id) {
                 $sections[] = 'saved-threads';
+                $sections[] = 'archived-threads';
                 $sections[] = 'activity-log';
             }
         }
@@ -719,6 +720,23 @@ class ThreadController extends Controller
                     "hasNext"=> $user->voted_threads()->skip($data['skip'] + $data['range'])->count() > 0,
                     "content"=>$payload,
                     "count"=>$votedthreads->count()
+                ];
+                break;
+            case 'archived-threads':
+                $archivedthreads = $user->archivedthreads->sortByDesc('deleted_at')->skip($data['skip'])->take(10);
+
+                $payload = "";
+
+                foreach($archivedthreads as $thread) {
+                    $thread_component = (new ActivityThread($thread, $user));
+                    $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+                    $payload .= $thread_component;
+                }
+
+                return [
+                    "hasNext"=> $user->archivedthreads->skip($data['skip'] + $data['range'])->count() > 0,
+                    "content"=>$payload,
+                    "count"=>$archivedthreads->count()
                 ];
                 break;
             case "activity-log":

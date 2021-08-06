@@ -7,18 +7,22 @@
             $current_page_number = $paginator->currentPage();
             $current_page_url = url()->full();
             $next_page_url = '';
+            
+            $pagesize = '';
+            $tab = '';
 
-            if(str_contains($current_page_url, 'page')) {
-                if(request()->has('pagesize')) {
-                    $ps = request()->input('pagesize');
-                    $previous_page_url = $paginator->url($current_page_number-1) . '&pagesize=' . $ps;
-                    $next_page_url = $paginator->url($current_page_number+1) . '&pagesize=' . $ps;
-                } else {
-                    $previous_page_url = $paginator->url($current_page_number-1);
-                    $next_page_url = $paginator->url($current_page_number+1);
-                }
-            } else {
-                $next_page_url = $paginator->url($current_page_number+1);
+            $previous_page_url = $paginator->url($current_page_number-1);
+            $next_page_url = $paginator->url($current_page_number+1);
+
+            if(request()->has('tab')) {
+                $tab = request()->input('tab');
+                $previous_page_url = $previous_page_url . "&tab=" . $tab;
+                $next_page_url = $next_page_url . "&tab=" . $tab;
+            }
+            if(request()->has('pagesize')) {
+                $pagesize = request()->input('pagesize');
+                $previous_page_url = $previous_page_url . "&pagesize=" . $pagesize;
+                $next_page_url = $next_page_url . "&pagesize=" . $pagesize;
             }
 
         @endphp
@@ -31,15 +35,18 @@
         @foreach ($elements as $element)
             {{-- "Three Dots" Separator --}}
             @if (is_string($element))
-                <span class="pagination-disabled pagination-item" aria-disabled="true">..</span>
+                <span class="pagination-disabled pagination-item unselectable" aria-disabled="true">..</span>
             @endif
 
             {{-- Array Of Links --}}
             @if (is_array($element))
                 @foreach ($element as $page => $url)
                     @php
+                        if(request()->has('tab')) {
+                            $url = $url . "&tab=" . $tab;
+                        }
                         if(request()->has('pagesize')) {
-                            $url = $url . '&pagesize=' . $ps;
+                            $url = $url . "&pagesize=" . $pagesize;
                         }
                     @endphp
                     @if ($page == $paginator->currentPage())

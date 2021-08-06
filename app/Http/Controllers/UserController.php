@@ -318,15 +318,10 @@ class UserController extends Controller
         $this->authorize('delete', $user);
 
         if(Hash::check($request->password, $user->password)) {
-            // // Here we need to delete all resources related to this user before deleting the user record
-            // foreach($user->threads as $thread){
-            //     $thread->delete();
-            // }
+            $user->delete();
 
-            // // Here we chenge the user's account status from active to deactivated
-            // $user->set_account_status('deactivated');
             Auth::logout();
-            return redirect("/home")->with('message', 'Your account is deactivated successfully !');
+            return redirect("/home")->with('message', __('Your account has been deleted successfully.'));
         } else {
             return redirect()->back()->with('error', 'Invalid password !');
         }

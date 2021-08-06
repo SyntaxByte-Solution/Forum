@@ -47,6 +47,29 @@ class User extends UserAuthenticatable implements Authenticatable
         // static::addGlobalScope(new ExcludeDeactivatedUser);
     }
 
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function(User $user) {
+            /**
+             * Before deleting a user we have to delete everything related to that user
+             * first we are goinf to delete: 
+             * 1. likes on posts && likes on threads
+             * 2. votes on posts && votes on threads
+             * 3. saved threads
+             * 4. saved threads of other users who saved the deleted user's threads
+             * 4. followers
+             * 5. followings
+             * 6. threads -threads also will delete attached posts/likes/votes of other users -
+             * 7. avatars
+             * 8. cover
+             */
+            // foreach ($user->threads as $thread) {
+            //     $thread->delete();
+            // }
+        });
+    }
+
     // Even though using local scopes needs a lot of code update like prefixing user fetch queries but
     // it gives me what I need and it doesn't cause infinite (nested) calls to the global scope like in global scopes
     public function scopeExcludedeactivatedaccount($query) {

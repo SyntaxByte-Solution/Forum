@@ -674,12 +674,20 @@ $('.toggle-container-button').click(function() {
 $('.row-num-changer').on('change', function() {
     let pagesize = $(this).val();
 
-    let url = new URL(window.location.href);
-    url.searchParams.append('pagesize', pagesize);
-
-    window.location.href = url;
+    window.location.href = updateQueryStringParameter(window.location.href, 'pagesize', pagesize);
 });
 
+function updateQueryStringParameter(uri, key, value) {
+    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+
+    if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + "=" + value + '$2');
+    }
+    else {
+        return uri + separator + key + "=" + value;
+    }
+}
 
 $('.check-username').click(function() {
     let button = $(this);

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Scopes\{ExcludePrivateScope, FollowersOnlyScope, ExcludeDeactivatedUserData};
-use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, ThreadVisibility, Like, Report, Notification};
+use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, ThreadVisibility, Like, Report, Notification, SavedThread};
 
 class Thread extends Model
 {
@@ -19,19 +19,30 @@ class Thread extends Model
         parent::boot();
 
         /**
-         * Before deleting the thread, we need to clear all posts related to this thread
-         * as well as deleting the related votes to this thread and its posts
+         * Before deleting the thread, we need to clear everything related to this thread
          */
         static::deleting(function($thread) {
-            // Delete registry_detail
             if ($thread->isForceDeleting()) {
+                // delete related posts with their resources
                 foreach($thread->posts as $post) {
                     $post->votes()->delete();
                     $post->likes()->delete();
+                    $post->forceDelete();
                 }
-                $thread->votes()->delete();
-                $thread->posts()->forceDelete();
 
+                // Delete associated votes & likes
+                $thread->votes()->delete();
+                $thread->likes()->delete();
+
+                // Delete saved threads of people who already saved this thread
+                foreach(SavedThread::where('thread', $thread->id)->get() as $savedthread) {
+                    $savedthread->delete();
+                }
+                
+                // Maybe in future, reports related to deleted thread must not be deleted
+                $thread->reports()->delete();
+
+                // Delete all the notifications for this thread
                 foreach(Notification::all() as $notification) {
                     $data = json_decode($notification->data, true);
                     $resource_type = explode('-', $data['action_type'])[0];
@@ -40,9 +51,6 @@ class Thread extends Model
                         $notification->delete();
                     }
                 }
-            } else {
-                // Here there's no need to soft delete posts as the thread is sift deleted
-                // $thread->posts()->delete();
             }
         });
     }

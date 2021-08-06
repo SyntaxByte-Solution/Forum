@@ -180,6 +180,14 @@ function handle_document_suboptions_hiding() {
     }
 }
 
+function handle_section_suboptions_hinding(section) {
+    section.find('.suboptions-container').each(function() {
+        $(this).on('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+}
+
 $('.close-shadowed-view-button').click(function() {
     let shadowed_container = $(this);
 
@@ -4088,6 +4096,7 @@ $('.activity-section-switcher').on('click', function() {
                 appended_section.find('.thread-container-box').each(function() {
                     let thread_container = $(this);
                     handle_element_suboption_containers($(this));
+                    handle_section_suboptions_hinding($(this));
                     handle_thread_display($(this));
                     handle_tooltip($(this).find('.tooltip-section'));
                     $(this).imagesLoaded(function() {
@@ -4096,6 +4105,7 @@ $('.activity-section-switcher').on('click', function() {
                         });
                     });
                     handle_permanent_delete($(this));
+                    handle_permanent_destroy_button($(this));
                     handle_hide_parent($(this));
                 });
             },
@@ -4169,6 +4179,7 @@ function handle_activity_load_more_button(button) {
                 
                 unhandled_activities_threads.each(function() {
                     handle_element_suboption_containers($(this));
+                    handle_section_suboptions_hinding($(this));
                     handle_thread_display($(this));
                     handle_tooltip($(this).find('.tooltip-section'));
                     $(this).find('.handle-image-center-positioning').each(function() {
@@ -4178,6 +4189,7 @@ function handle_activity_load_more_button(button) {
                         });
                     });
                     handle_permanent_delete($(this));
+                    handle_permanent_destroy_button($(this));
                     handle_hide_parent($(this));
                 });
     
@@ -4218,17 +4230,77 @@ function handle_countale_textarea() {
     
 }
 
-function handle_permanent_delete(item) {
-    item.find('.thread-permanent-delete').on('click', function() {
+function handle_permanent_delete(thread) {
+    thread.find('.thread-permanent-delete').on('click', function() {
         let container = $(this);
-        while(!container.hasClass('thread-container-box')) {
+        while(!container.hasClass('suboptions-container')) {
             container = container.parent();
         }
-        
-        console.log(container);
-        container.find('.thread-permanent-deletion-dialog').css('display', 'block');
-        container.find('.thread-permanent-deletion-dialog').animate({
+        container.css('display', 'none');
+
+        let thread_container = $(this);
+        while(!thread_container.hasClass('thread-container-box')) {
+            thread_container = thread_container.parent();
+        }
+
+        thread_container.find('.thread-permanent-deletion-dialog').css('display', 'block');
+        thread_container.find('.thread-permanent-deletion-dialog').animate({
             opacity: 1
         }, 200);
+    });
+}
+
+function handle_permanent_destroy_button(thread) {
+    thread.find('.destroy-thread-button').on('click', function(event) {
+        let button = $(this);
+        let button_text_ing = button.parent().find('.btn-text-ing').val();
+
+        button.text(button_text_ing);
+        button.attr("disabled","disabled");
+        button.attr('style', 'background-color: #acacac; cursor: default');
+
+        let spinner = $(this).parent().parent().find('.spinner');
+        start_spinner(spinner, 'destroy-thread');
+        spinner.removeClass('opacity0');
+
+        let data = {
+            _token: csrf,
+            _method: 'DELETE',
+        };
+
+        $.ajax({
+            type: 'post',
+            url: button.parent().find('.thread-destroy-link').val(),
+            data: data,
+            success: function() {
+                let container = button;
+                while(!container.hasClass('thread-container-box')) {
+                    container = container.parent();
+                }
+
+                let section = container;
+                while(!section.hasClass('activities-section')) {
+                    section = section.parent();
+                }
+
+                container.remove();
+
+                let present_threads_count = section.find('.current-section-thread-count');
+                let global_threads_count = section.find('.current-section-global-threads-count');
+                let present_t_c = parseInt(present_threads_count.text()) - 1;
+                let global_t_c = parseInt(global_threads_count.text()) - 1;
+                
+                present_threads_count.text(present_t_c);
+                global_threads_count.text(global_t_c);
+            },
+            complete: function() {
+                stop_spinner(spinner, 'destroy-thread');
+                button.text(button_text_ing);
+                button.attr("disabled",false);
+                button.attr('style', 'background-color: #d03535; color: white');
+            }
+        });
+
+        return false;
     });
 }

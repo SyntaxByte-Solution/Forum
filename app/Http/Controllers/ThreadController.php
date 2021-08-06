@@ -441,14 +441,17 @@ class ThreadController extends Controller
         return redirect(route('user.activities', ['user'=>auth()->user()->username]));
     }
 
-    public function destroy(Thread $thread) {
+    public function destroy($thread) {
+        /**
+         * The reason why we didn't use route model binding is because the model is already soft deleted
+         * and we're gonna get an error while fetching the model. se we get only the id 
+         */
+        $thread = Thread::withTrashed()->where('id', $thread)->get()->first();
         $this->authorize('destroy', $thread);
-
-        $forum_slug = Forum::find(Category::find($thread['category_id'])->forum_id)->slug;
 
         // You may be wondering about deleting the related resources: look at the boot method in Thread model
         $thread->forceDelete();
-        return redirect(route('user.activities', ['user'=>auth()->user()->username]));
+        return route('user.activities', ['user'=>auth()->user()->username]);
     }
 
     public function thread_posts_switch(Request $request, Thread $thread) {

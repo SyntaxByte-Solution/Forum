@@ -344,13 +344,14 @@ $('.share-post').click(function() {
                     });
                     sm.render();
                 })
-                // Handling all events of the newly appended component
+                // Handling all events of the newly appended reply
                 handle_post_events(pst);
                 handle_post_other_events(pst);
+                handle_resource_like(pst.find('.like-resource'));
 
                 $('.thread-replies-number').text(parseInt($('.thread-replies-number').first().text(), 10)+1);
-                let post_id = pst.find('.post-id').first().val();
                 if(last_opened_thread) {
+                    let post_id = pst.find('.post-id').first().val();
                     $.ajax({
                         url: `/post/${post_id}/viewer/generate`,
                         type: 'get',

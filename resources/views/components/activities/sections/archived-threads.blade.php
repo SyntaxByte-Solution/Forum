@@ -2,7 +2,7 @@
     <div class="activities-section-content-header flex">
         <h3 class="move-to-middle forum-color flex align-center unselectable">
             <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 331.53 331.53"><path d="M197.07,216.42a11,11,0,0,1-11,11H145.46a11,11,0,0,1,0-22h40.61A11,11,0,0,1,197.07,216.42ZM331.53,51.9v68.32a11,11,0,0,1-11,11H313.4V279.63a11,11,0,0,1-11,11H29.13a11,11,0,0,1-11-11V131.22H11a11,11,0,0,1-11-11V51.9a11,11,0,0,1,11-11H320.53A11,11,0,0,1,331.53,51.9ZM291.4,131.22H221.24a56.55,56.55,0,0,1-110.94,0H40.13V268.63H291.4ZM165.77,154.77a34.61,34.61,0,0,0,32.75-23.55H133A34.6,34.6,0,0,0,165.77,154.77ZM309.53,62.9H22v46.32H309.53Z"/></svg>
-            {{ __('Archived threads') }} [<span class="current-section-thread-count mx4">{{ 10 * ($archivedthreads->count() / 10) }}</span> / {{ $user->archivedthreads->count() }} ]
+            {{ __('Archived threads') }} [<span class="current-section-thread-count mx4">{{ 10 * ($archivedthreads->count() / 10) }}</span> / <span class="current-section-global-threads-count mx4">{{ $user->archivedthreads->count() }}</span> ]
         </h3>
     </div>
     <div class="activities-section-content">

@@ -15,7 +15,7 @@
                 <div style="padding: 6px; background-color: white;" class="rounded">
                     <a href="{{ route('user.profile', ['user'=>$thread_owner->username]) }}">
                         <div class="image-size-1 full-center rounded hidden-overflow">
-                            <img src="{{ $thread_owner->avatar }}" class="handle-image-center-positioning" alt="">
+                            <img src="{{ $thread_owner->sizedavatar(100) }}" class="handle-image-center-positioning" alt="">
                         </div>
                     </a>
                 </div>

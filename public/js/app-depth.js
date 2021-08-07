@@ -675,13 +675,21 @@ $('.toggle-container-button').click(function() {
     let container = box.find('.toggle-container');
 
     if(container.css('display') == 'none') {
+        console.log('down');
         container.removeClass('none');
         container.addClass('block');
-        $(this).find('.toggle-arrow').text('▾');
+
+        box.find('.toggle-arrow').css({
+            rotate: '90deg'
+        });
     } else {
+        console.log('up');
         container.removeClass('block');
         container.addClass('none');
-        $(this).find('.toggle-arrow').text('▸');
+
+        box.find('.toggle-arrow').css({
+            rotate: '0deg'
+        });
     }
     
     return false;
@@ -3802,14 +3810,12 @@ function handle_save_threads(save_button) {
 
                 if(response == 1) {
                     save_button.find('.status').val('unsave');
-                    save_button.find('.icon').removeClass('bookmark17-icon');
-                    save_button.find('.icon').addClass('xbookmark17-icon');
+                    save_button.find('.icon').attr('d', save_button.find('.unsave-icon').val());
                     save_button.find('.button-text').text(save_button.find('.button-text-unsave').val());
                     basic_notification_show(save_button.find('.saved-message').val(), 'tick17-icon');
                 } else {
                     save_button.find('.status').val('save');
-                    save_button.find('.icon').removeClass('xbookmark17-icon');
-                    save_button.find('.icon').addClass('bookmark17-icon');
+                    save_button.find('.icon').attr('d', save_button.find('.save-icon').val());
                     save_button.find('.button-text').text(save_button.find('.button-text-save').val());
                     basic_notification_show(save_button.find('.unsaved-message').val(), 'tick17-icon');
                 }

@@ -47,6 +47,10 @@ a, input, textarea {
     background-color: rgb(230, 230, 230);
 }
 
+.toggle-arrow {
+    transition: all 0.2s ease;   
+}
+
 .zi1 {
     z-index: 1;
 }

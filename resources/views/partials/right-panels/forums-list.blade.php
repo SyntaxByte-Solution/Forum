@@ -11,12 +11,14 @@
     <div class="ml8">
         @foreach($forums as $forum)
         <div class="my8 py4 toggle-box">
-            <div class="px8 flex align-center toggle-container-button pointer">
+            <div class="px8 flex align-center toggle-container-button pointer unselectable">
                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     {!! $forum->icon !!}
                 </svg>
                 {{ $forum->forum }}
-                <span class="toggle-arrow ml4">▸</span>
+                <svg class="toggle-arrow mx8 size7" style="margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                    <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
+                </svg>
                 <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="stop-propagation move-to-right link-style fs13 mr8">visit</a>
             </div>
             <div class="toggle-container mx8 px8">

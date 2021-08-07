@@ -1,7 +1,3 @@
-
-
-let vote_tick_lock = true;
-
 function handle_post_display_buttons(post) {
     post.find('.hide-post').click(function() {
         if($(this).hasClass('hide-post-from-viewer')) {
@@ -23,7 +19,6 @@ function handle_post_display_buttons(post) {
 
     post.find('.show-post').click(function() {
         if($(this).hasClass('show-post-from-viewer')) {
-            console.log('show from viewer');
             post.find('.viewer-post-main-component').css('display', 'block');
             $('.viewer-thread-replies-number').text(parseInt($('.viewer-thread-replies-number').first().text(), 10)+1);
             $(this).parent().css('display', 'none');
@@ -56,7 +51,6 @@ function handle_edit_post(post) {
                  * which is in form of markdown and then show the editor by appending that value to it
                  */
                 if(edit_button.hasClass('edit-post-from-viewer')) {
-                    console.log('edit from viewer');
                     $('.thread-viewer-reply-content').css('display', 'block');
                     $('.post-edit-container').css('display', 'none');
                 
@@ -69,7 +63,6 @@ function handle_edit_post(post) {
                     const $codemirror = post.find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
                     $codemirror.getDoc().setValue(post_content);
                 } else if(edit_button.hasClass('edit-post-from-outside-viewer')) {
-                    console.log('edit from outside viewer');
                     $('.post-content').css('display', 'block');
                     $('.post-edit-container').css('display', 'none');
                 
@@ -403,31 +396,45 @@ $('.share-post').click(function() {
 
 function handle_post_reply_tick_button(post) {
     if(post.find('.best-reply-container')) {
-        let best_reply_container = post.find('.tick-post-container');
-        best_reply_container.find('.hover-informer-display-element').on({
-            mouseenter: function() {
-                if(post.attr('id') == "ticked-post") {
-                    $(this).parent().find('.informer-message').text('Remove best reply');
-                } else {
-                    $(this).parent().find('.informer-message').text('Mark this reply as the best reply');
-                }
-                $(this).parent().find('.informer-message-container').css('display', 'block');
-            },
-            mouseleave: function() {
-                $(this).parent().find('.informer-message-container').css('display', 'none');
-            },
-            click: function(event) {
-                if(vote_tick_lock == false) {
-                    return false;
-                }
-                vote_tick_lock = false;
 
-                if(post.find('.grey-tick').hasClass('none')) {
-                    post.find('.grey-tick').removeClass('none');
-                    post.find('.green-tick').addClass('none');
+        let best_reply_container = post.find('.tick-post-container');
+        let remove_best_reply = best_reply_container.find('.remove-best-reply').val();
+        let mark_best_reply = best_reply_container.find('.mark-best-reply').val();
+
+        best_reply_container.find('.post-tick-button').on({
+            click: function(event) {
+                let button = $(this);
+                $('.post-tick-button').addClass('none');
+                button.removeClass('none');
+
+                let grey_tick = button.find('.grey-tick');
+                let green_tick = button.find('.green-tick');
+
+                if(grey_tick.hasClass('none')) {
+                    $('.post-tick-button').removeClass('none');
+                    $('.post-tick-button .grey-tick').removeClass('none');
+                    
+                    grey_tick.removeClass('none');
+                    green_tick.addClass('none');
+
+                    $(this).attr('title', mark_best_reply);
+                    post.find('.post-main-component').attr('style', '');
+                    post.find('.post-main-section').attr('style', '');
+                    post.find('.best-reply-ticket').addClass('none');
+                    post.attr('id', '');
+
+                    $('.thread-component-tick').addClass('none');
                 } else {
-                    post.find('.grey-tick').addClass('none');
-                    post.find('.green-tick').removeClass('none');
+                    grey_tick.addClass('none');
+                    green_tick.removeClass('none');
+
+                    $(this).attr('title', remove_best_reply);
+                    post.find('.post-main-component').attr('style', 'border-color: #28882678;');
+                    post.find('.post-main-section').attr('style', 'background-color: #e1ffe438;');
+                    post.find('.best-reply-ticket').removeClass('none');
+                    post.attr('id', 'ticked-post');
+
+                    $('.thread-component-tick').removeClass('none');
                 }
 
                 let post_id = $(this).parent().find('.post-id').val();
@@ -438,22 +445,15 @@ function handle_post_reply_tick_button(post) {
                         _token: csrf
                     },
                     success: function(response) {
-                        if(response == 1) {
-                            post.find('.post-main-component').attr('style', 'border-color: #28882678;');
-                            post.find('.post-main-section').attr('style', 'background-color: #e1ffe438;');
-                            post.find('.best-reply-ticket').removeClass('none');
-                            post.attr('id', 'ticked-post');
-                        } else {
-                            post.find('.post-main-component').attr('style', '');
-                            post.find('.post-main-section').attr('style', '');
-                            post.find('.best-reply-ticket').addClass('none');
-                            post.attr('id', '');
-                        }
+                        
                     },
                     error: function(response) {
-                        if(post.find('.grey-tick').hasClass('none')) {
-                            post.find('.grey-tick').removeClass('none');
-                            post.find('.green-tick').addClass('none');
+                        if(grey_tick.hasClass('none')) {
+                            grey_tick.removeClass('none');
+                            green_tick.addClass('none');
+                            
+                            post.find('.post-main-component').attr('style', '');
+                            post.find('.post-main-section').attr('style', '');
                             post.find('.best-reply-ticket').addClass('none');
                         } else {
                             post.find('.grey-tick').addClass('none');

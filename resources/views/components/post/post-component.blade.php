@@ -42,20 +42,26 @@
             </div>
 
             <div class="mt8 relative informer-box tick-post-container">
+                <input type="hidden" value="{{ $post->id }}" class="post-id">
+                <input type="hidden" class="remove-best-reply" value="{{ __('Remove best reply') }}">
+                <input type="hidden" class="mark-best-reply" value="{{ __('Mark this reply as the best reply') }}">
                 @can('update', $post->thread)
                 <div class="informer-message-container absolute zi1" style="left: 126%; top: -10px">
                     <div>
                         <p class="informer-message"></p>
                     </div>
                 </div>
-                <a href="" class="hover-informer-display-element">
-                    <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="size20 green-tick @if(!$post->ticked) none @endif" alt="">
-                    <img src="{{ asset('assets/images/icons/grey-tick.png') }}" class="size20 grey-tick @if($post->ticked) none @endif" alt="">
-                </a>
-                <input type="hidden" value="{{ $post->id }}" class="post-id">
+                <div class="pointer hover-informer-display-element post-tick-button" title="@if($post->ticked){{ __('Best reply. click to remove') }}@else{{ __('Mark this reply as the best reply') }}@endif">
+                    <svg class="size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path class="green-tick @if(!$post->ticked) none @endif" d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/>
+                        <path class="grey-tick @if($post->thread->tickedPost()) none @endif" d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#808080"/>
+                    </svg>
+                </div>
                 @else
                     @if($post->ticked)
-                        <div class="sprite sprite-2-size size20 greentick20-icon" alt="{{ __('This is the best reply') }}"></div>
+                    <svg class="size20 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path class="green-tick" d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/>
+                    </svg>
                     @endif
                 @endcan
             </div>
@@ -63,7 +69,7 @@
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe438; @endif">
             <div class="flex align-center space-between px8 py8">
                 <div>
-                    <div class="no-margin fs12 gray">
+                    <div class="no-margin fs12">
                         <div class="inline-block relative">
                             <div class="flex">
                                 <div class="relative">

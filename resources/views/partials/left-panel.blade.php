@@ -4,7 +4,7 @@
             <a href="" class="quick-links-button">{{__('Quick links')}} ▸</a>
         </div>
 
-        <div class="flex relative">
+        <div class="flex relative mb8">
             <a href="/" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected bold white white' }} @endif">{{ __('Home') }}</a>
             @if($page == 'home')
                 <div class="selected-colored-slice"></div>

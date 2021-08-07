@@ -2,7 +2,7 @@
     <div>
         <div class="right-panel-header-container space-between">
             <div class="flex align-center">
-                <div class="small-image-2 sprite sprite-2-size author17-icon mr4"></div>
+                <svg class="small-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397.15 397.15"><path d="M390.88,12.37c-4.14-4.15-10.13-6.25-17.78-6.25-26.78,0-70.16,26-93.64,41.55l-1.91,1.27-5.28,41.68-14-28.34-4.81,3.52a763.05,763.05,0,0,0-85.75,73.26c-4.62,4.62-9.16,9.31-13.5,13.94l-.93,1-18.7,82.35-9.86-49.17L118,196.36c-3.84,5.26-7.46,10.53-10.78,15.65l-.62,1-8,62.92L86.17,250.56,82.63,263.1c-4.3,15.28-4.5,28.32-.67,38.5l-80,80a5.52,5.52,0,0,0-1.55,6.22A5.21,5.21,0,0,0,5.24,391a6.85,6.85,0,0,0,2.46-.49l36.94-14a15.23,15.23,0,0,0,5.11-3.41l49.61-52.77A44.27,44.27,0,0,0,118,324h0a82.94,82.94,0,0,0,22.18-3.4l12.54-3.54-25.33-12.49,62.92-8,.95-.62c5.12-3.31,10.39-6.94,15.66-10.79l9.19-6.7-49.17-9.86,82.34-18.71,1-.92c4.64-4.35,9.33-8.89,13.94-13.5,35.17-35.17,70.11-78.39,95.85-118.59l3-4.7L338.24,100,373,95.59l1.23-2.2C397.46,51.81,403.07,24.56,390.88,12.37Z"/></svg>
                 <p class="no-margin bold unselectable">Author</p>
             </div>
             <a href="{{ route('user.profile', ['user'=>$thread_owner->username]) }}" class="link-style">profile</a>
@@ -34,7 +34,13 @@
                     @endphp
                     <p class="fs12 gray no-margin mr4">Status:</p>
                     <div class="flex align-center">
-                        <img src='{{ asset("assets/images/icons/$ustatus.png") }}' class="tiny-image mr4" alt="">
+                        <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            @if($ustatus == 'active')
+                            <path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#25BD54"/>
+                            @else
+                            <path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#919191"/>
+                            @endif
+                        </svg>
                         <p class="fs12 no-margin">@if(Cache::has('user-is-online-' . $thread_owner->id)) Online @else Offline @endif</p>
                     </div>
                 </div>

@@ -50,7 +50,7 @@
                                 <div class="relative">
                                     <span class="absolute" id="reply-site" style="margin-top: -70px"></span>
                                 </div>
-                                <label for="reply-content" class="flex bold">
+                                <label for="reply-content" class="flex bold fs16">
                                     {{__('Your reply')}} 
                                     <span class="error frt-error reply-content-error">  *</span>
                                 </label>
@@ -125,6 +125,7 @@
                         var simplemde = new SimpleMDE({
                             element: this,
                             placeholder: "{{ __('Your reply here') }}",
+                            spellChecker: false,
                         });
                         simplemde.render();
                     });

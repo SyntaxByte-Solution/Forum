@@ -1700,7 +1700,6 @@ function handle_hover_informer_display(element) {
 let like_lock = true;
 function handle_resource_like(like_button) {
     like_button.click(function() {
-        
         let likable_id = like_button.find('.likable-id').val();
         let likable_type = like_button.find('.likable-type').val();
         let loaded_to_viewer = (last_opened_thread 
@@ -1709,20 +1708,23 @@ function handle_resource_like(like_button) {
             ? 1 : 0;
 
         let resource_likes_counter = parseInt(like_button.find('.resource-likes-counter').text());
+        let grey_icon = like_button.find('.grey-like');
+        let red_icon = like_button.find('.red-like');
 
-        if(like_button.find('.like-icon').hasClass('resource17-like-ricon')) {
+        // Grey has none means resource is liked so we need to take one from counter and make it grey
+        if(grey_icon.hasClass('none')) {
             like_button.find('.resource-likes-counter').text(resource_likes_counter - 1);
-            like_button.find('.like-icon').removeClass('resource17-like-ricon');
-            like_button.find('.like-icon').addClass('resource17-like-gicon');
+            grey_icon.removeClass('none');
+            red_icon.addClass('none');
 
             if(like_button.hasClass('like-resource-from-outside-viewer')) {
                 // Handle viewer like entities
                 if(likable_type == "thread") {
-                    // In case of like a thread from outside viewer we only want to update viewer if it is opened
-                    if(last_opened_thread) {
+                    // We only need to update the viewer thread like if the liked thread is the same thread loaded in viewer
+                    if(loaded_to_viewer) {
                         let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
-                        viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-ricon');
-                        viewer_thread_like_box.find('.like-icon').addClass('resource17-like-gicon');
+                        viewer_thread_like_box.find('.like-icon .red-like').addClass('none');
+                        viewer_thread_like_box.find('.like-icon .grey-like').removeClass('none');
                         viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter-1);
                     }
                 } else if(likable_type == "post") {
@@ -1736,17 +1738,17 @@ function handle_resource_like(like_button) {
                             }
                         });
     
-                        viewer_post.find('.like-icon').removeClass('resource17-like-ricon');
-                        viewer_post.find('.like-icon').addClass('resource17-like-gicon');
+                        viewer_post.find('.like-icon .red-like').addClass('none');
+                        viewer_post.find('.like-icon .grey-like').removeClass('none');
                         viewer_post.find('.resource-likes-counter').text(resource_likes_counter-1);
                     }
                 }
             } else if(like_button.hasClass('like-resource-from-viewer')) {
                 if(likable_type == "thread") {
                     // Handle thread show like entities
-                    opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-ricon');
-                    opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-gicon');
-                    opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter-1);
+                    opened_thread_component.find('.like-resource .like-icon .red-like').addClass('none');
+                    opened_thread_component.find('.like-resource .like-icon .grey-like').removeClass('none');
+                    opened_thread_component.find('.resource-likes-counter').text(resource_likes_counter-1);
                 } else if(likable_type == "post") {
                     // Only update post in thread show if the user is located in thread show page
                     // We check that by checking the existance of element with id: #replies-container 
@@ -1759,23 +1761,24 @@ function handle_resource_like(like_button) {
                             }
                         });
     
-                        outside_post.find('.like-resource').find('.like-icon').removeClass('resource17-like-ricon');
-                        outside_post.find('.like-resource').find('.like-icon').addClass('resource17-like-gicon');
-                        outside_post.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter-1);
+                        outside_post.find('.like-icon .red-like').addClass('none');
+                        outside_post.find('.like-icon .grey-like').removeClass('none');
+                        outside_post.find('.resource-likes-counter').text(resource_likes_counter-1);
                     }
                 }
             }
         } else {
             like_button.find('.resource-likes-counter').text(resource_likes_counter + 1);
-            like_button.find('.like-icon').removeClass('resource17-like-gicon');
-            like_button.find('.like-icon').addClass('resource17-like-ricon');
+            grey_icon.addClass('none');
+            red_icon.removeClass('none');
 
             if(like_button.hasClass('like-resource-from-outside-viewer')) {
                 if(likable_type == "thread") {
-                    if(last_opened_thread) {
+                    // We only need to update the viewer thread like if the liked thread is the same thread loaded in viewer
+                    if(loaded_to_viewer) {
                         let viewer_thread_like_box = $('#thread-media-viewer').find('.viewer-thread-like');
-                        viewer_thread_like_box.find('.like-icon').addClass('resource17-like-ricon');
-                        viewer_thread_like_box.find('.like-icon').removeClass('resource17-like-gicon');
+                        viewer_thread_like_box.find('.like-icon .red-like').removeClass('none');
+                        viewer_thread_like_box.find('.like-icon .grey-like').addClass('none');
                         viewer_thread_like_box.find('.resource-likes-counter').text(resource_likes_counter+1);
                     }
                 } else if(likable_type == "post") {
@@ -1788,17 +1791,17 @@ function handle_resource_like(like_button) {
                             }
                         });
 
-                        viewer_post.find('.like-icon').addClass('resource17-like-ricon');
-                        viewer_post.find('.like-icon').removeClass('resource17-like-gicon');
+                        viewer_post.find('.like-icon .red-like').removeClass('none');
+                        viewer_post.find('.like-icon .grey-like').addClass('none');
                         viewer_post.find('.resource-likes-counter').text(resource_likes_counter+1);
                     }
                 }
             } else if(like_button.hasClass('like-resource-from-viewer')) {
                 if(likable_type == "thread") {
                     // Handle thread show like entities
-                    opened_thread_component.find('.like-resource').find('.like-icon').removeClass('resource17-like-gicon');
-                    opened_thread_component.find('.like-resource').find('.like-icon').addClass('resource17-like-ricon');
-                    opened_thread_component.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter+1);
+                    opened_thread_component.find('.like-resource .like-icon .red-like').removeClass('none');
+                    opened_thread_component.find('.like-resource .like-icon .grey-like').addClass('none');
+                    opened_thread_component.find('.resource-likes-counter').text(resource_likes_counter+1);
                 } else if(likable_type == "post") {
                     if($('#replies-container').length) {
                         let outside_post;
@@ -1809,9 +1812,9 @@ function handle_resource_like(like_button) {
                             }
                         });
     
-                        outside_post.find('.like-resource').find('.like-icon').removeClass('resource17-like-gicon');
-                        outside_post.find('.like-resource').find('.like-icon').addClass('resource17-like-ricon');
-                        outside_post.find('.like-resource').find('.resource-likes-counter').text(resource_likes_counter+1);
+                        outside_post.find('.like-icon .red-like').removeClass('none');
+                        outside_post.find('.like-icon .grey-like').addClass('none');
+                        outside_post.find('.resource-likes-counter').text(resource_likes_counter+1);
                     }
                 }
             }

@@ -980,226 +980,225 @@ $('.emoji-button').click(function(event) {
 });
 
 let vote_lock = true;
-$('.votable-up-vote').click(function(event) {
+$('.votable-up-vote').each(function() {
     handle_up_vote($(this));
-
-    event.preventDefault();
 });
 
-$('.votable-down-vote').click(function(event) {
+$('.votable-down-vote').each(function() {
     handle_down_vote($(this));
-
-    event.preventDefault();
 });
 
 let informer_container_timeout;
 
 function handle_up_vote(button) {
-    if(!vote_lock) {
-        return false;
-    }
-    vote_lock = false;
-
-    let vote_icons_state = '';
-    let new_vote_count;
-    let vote_box = button;
-    while(!vote_box.hasClass('vote-box')) {
-        vote_box = vote_box.parent();
-    }
-
-    let votable_id = vote_box.find('.votable-id').val();
-    let votable_type = vote_box.find('.votable-type').val();
-    let vote_count = parseInt(vote_box.find('.votable-count').text());
-
-    $.ajax({
-        type: 'POST',
-        url: '/' + votable_type + '/' + votable_id + '/vote',
-        data: {
-            _token: csrf,
-            'vote': 1
-        },
-        success: function(response) {
-            // button.parent().find('.votable-count').text(response);
-        },
-        error: function(xhr, status, error) {
-            if(!up_vote_filled.hasClass('none')) {
-                up_vote_filled.addClass('none');
-                up_vote.removeClass('none');
-                vote_icons_state = 'remove-up';
-            } else {
-                up_vote_filled.removeClass('none');
-                up_vote.addClass('none');
-                vote_icons_state = 'fill-up';
+    button.on('click', function() {
+        if(!vote_lock) {
+            return false;
+        }
+        vote_lock = false;
+    
+        let vote_icons_state = '';
+        let new_vote_count;
+        let vote_box = button;
+        while(!vote_box.hasClass('vote-box')) {
+            vote_box = vote_box.parent();
+        }
+    
+        let votable_id = vote_box.find('.votable-id').val();
+        let votable_type = vote_box.find('.votable-type').val();
+        let vote_count = parseInt(vote_box.find('.votable-count').text());
+    
+        $.ajax({
+            type: 'POST',
+            url: '/' + votable_type + '/' + votable_id + '/vote',
+            data: {
+                _token: csrf,
+                'vote': 1
+            },
+            success: function(response) {
+                // button.parent().find('.votable-count').text(response);
+            },
+            error: function(xhr, status, error) {
+                if(!up_vote_filled.hasClass('none')) {
+                    up_vote_filled.addClass('none');
+                    up_vote.removeClass('none');
+                    vote_icons_state = 'remove-up';
+                } else {
+                    up_vote_filled.removeClass('none');
+                    up_vote.addClass('none');
+                    vote_icons_state = 'fill-up';
+                }
+    
+                // If there's an error we simply set the old value
+                vote_box.find('.votable-count').text(vote_count);
+                new_vote_count = vote_count;
+    
+                let errorObject = JSON.parse(xhr.responseText);
+                let er = errorObject.message;
+                // and then print the error returned in the informer-message-container
+                let vote_message_container = vote_box.find('.informer-message-container').first();
+                vote_message_container.find('.informer-message').text(er);
+                vote_message_container.css('display', 'block');
+    
+                informer_container_timeout = setTimeout( function(){ 
+                    vote_message_container.css('display', 'none');
+                }, 4000);
+            },
+            complete: function() {
+                vote_lock = true;
             }
-
-            // If there's an error we simply set the old value
-            vote_box.find('.votable-count').text(vote_count);
-            new_vote_count = vote_count;
-
-            let errorObject = JSON.parse(xhr.responseText);
-            let er = errorObject.message;
-            // and then print the error returned in the informer-message-container
-            let vote_message_container = vote_box.find('.informer-message-container').first();
-            vote_message_container.find('.informer-message').text(er);
-            vote_message_container.css('display', 'block');
-
-            informer_container_timeout = setTimeout( function(){ 
-                vote_message_container.css('display', 'none');
-            }, 4000);
-        },
-        complete: function() {
-            vote_lock = true;
-        }
-    });
-
-    let up_vote = button.find('.up-vote');
-    let up_vote_filled = button.find('.up-vote-filled');
-    let down_vote = vote_box.find('.down-vote');
-    let down_vote_filled = vote_box.find('.down-vote-filled');
-
-    if(!up_vote_filled.hasClass('none')) {
-        // In this case the user is already votes up and then press up again so we need to delete the vote record
-        vote_box.find('.votable-count').text(vote_count-1);
-        up_vote_filled.addClass('none');
-        up_vote.removeClass('none');
-
-        vote_icons_state = 'remove-up';
-        new_vote_count = vote_count-1;
-
-    } else {
-        // here we have 2 cases:
-        // 1- case where the user is not voted at all we only need to add 1
-        if(!up_vote.hasClass('none') && !down_vote.hasClass('none')){
-            console.log('up not voted at all');
-            vote_box.find('.votable-count').text(vote_count+1);
-            up_vote.addClass('none');
-            up_vote_filled.removeClass('none');
-
-            vote_icons_state = 'fill-up';
-            new_vote_count = vote_count+1;
-        // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
-        } else {
-            vote_box.find('.votable-count').text(vote_count+2);
-            down_vote_filled.addClass('none');
-            down_vote.removeClass('none');
-            up_vote.addClass('none');
-            up_vote_filled.removeClass('none');
-
-            vote_icons_state = 'remove-down-fill-up';
-            new_vote_count = vote_count+2;
-        }
-    }
-
-    handle_vote_sync(button, vote_icons_state, new_vote_count);
-}
-function handle_down_vote(button) {
-    if(!vote_lock) {
-        return false;
-    }
-    vote_lock = false;
-
-    let vote_icons_state = '';
-    let new_vote_count;
-    let vote_box = button;
-    while(!vote_box.hasClass('vote-box')) {
-        vote_box = vote_box.parent();
-    }
-
-    let votable_id = vote_box.find('.votable-id').val();
-    let votable_type = vote_box.find('.votable-type').val();
-    let vote_count = parseInt(vote_box.find('.votable-count').text());
-    // Send the request
-    $.ajax({
-        type: 'POST',
-        url: '/' + votable_type + '/' + votable_id + '/vote',
-        data: {
-            _token: csrf,
-            'vote': -1
-        },
-        success: function(response) {
-            // button.parent().find('.votable-count').text(response);
-        },
-        error: function(xhr, status, error) {
-            if(!down_vote_filled.hasClass('none')) {
-                down_vote_filled.addClass('none');
-                down_vote.removeClass('none');
-                vote_icons_state = 'remove-down';
-            } else {
-                down_vote_filled.removeClass('none');
-                down_vote.addClass('none');
-                vote_icons_state = 'fill-down';
-            }
-
-            // If there's an error we simply set the old value
-            vote_box.find('.votable-count').text(vote_count);
-            new_vote_count = vote_count;
-
-            let errorObject = JSON.parse(xhr.responseText);
-            let er = errorObject.message;
-            // and then print the error returned in the informer-message-container
-            let vote_message_container = vote_box.find('.informer-message-container').first();
-            vote_message_container.find('.informer-message').text(er);
-            vote_message_container.css('display', 'block');
-
-            informer_container_timeout = setTimeout( function(){ 
-                vote_message_container.css('display', 'none');
-            }, 4000);
-
-        },
-        complete: function() {
-            vote_lock = true;
-        }
-    });
-    // Then we handle the ui components
-    let down_vote = button.find('.down-vote');
-    let down_vote_filled = button.find('.down-vote-filled');
-    let up_vote = vote_box.find('.up-vote');
-    let up_vote_filled = vote_box.find('.up-vote-filled');
-
-    if(!down_vote_filled.hasClass('none')) {
-        // In this case the user is already voted down and then press down again so we need to add 1 
-        // (because the previous down change the counter to -1 no we need to rewind to 0 by adding 1)
-        vote_box.find('.votable-count').text(vote_count+1);
-        down_vote_filled.addClass('none');
-        down_vote.removeClass('none');
-        new_vote_count = vote_count+1;
-        vote_icons_state = 'remove-down';
-    } else {
-        // here we have 2 cases:
-        // 1- case where the user is not voted at all we only need to subtract 1
-        if(!down_vote.hasClass('none') && !up_vote.hasClass('none')) {
+        });
+    
+        let up_vote = button.find('.up-vote');
+        let up_vote_filled = button.find('.up-vote-filled');
+        let down_vote = vote_box.find('.down-vote');
+        let down_vote_filled = vote_box.find('.down-vote-filled');
+    
+        if(!up_vote_filled.hasClass('none')) {
+            // In this case the user is already votes up and then press up again so we need to delete the vote record
             vote_box.find('.votable-count').text(vote_count-1);
-            down_vote.addClass('none');
-            down_vote_filled.removeClass('none');
-            new_vote_count = vote_count-1;
-            vote_icons_state = 'fill-down';
-        // 2- case where the user is already up voted the resource and then he press down vote, we need to subtract 2 in this case
-        } else {
-            vote_box.find('.votable-count').text(vote_count-2);
             up_vote_filled.addClass('none');
             up_vote.removeClass('none');
-            down_vote.addClass('none');
-            down_vote_filled.removeClass('none');
-
-            new_vote_count = vote_count-2;
-            vote_icons_state = 'remove-up-fill-down';
+    
+            vote_icons_state = 'remove-up';
+            new_vote_count = vote_count-1;
+    
+        } else {
+            // here we have 2 cases:
+            // 1- case where the user is not voted at all we only need to add 1
+            if(!up_vote.hasClass('none') && !down_vote.hasClass('none')){
+                console.log('up not voted at all');
+                vote_box.find('.votable-count').text(vote_count+1);
+                up_vote.addClass('none');
+                up_vote_filled.removeClass('none');
+    
+                vote_icons_state = 'fill-up';
+                new_vote_count = vote_count+1;
+            // 2- case where the user is already down voted the resource and then he press up vote, we need to add 2 in this case
+            } else {
+                vote_box.find('.votable-count').text(vote_count+2);
+                down_vote_filled.addClass('none');
+                down_vote.removeClass('none');
+                up_vote.addClass('none');
+                up_vote_filled.removeClass('none');
+    
+                vote_icons_state = 'remove-down-fill-up';
+                new_vote_count = vote_count+2;
+            }
         }
-    }
-
-    handle_vote_sync(button, vote_icons_state, new_vote_count);
+    
+        handle_vote_sync(button, vote_icons_state, new_vote_count);
+    });
+}
+function handle_down_vote(button) {
+    button.on('click', function() {
+        if(!vote_lock) {
+            return false;
+        }
+        vote_lock = false;
+    
+        let vote_icons_state = '';
+        let new_vote_count;
+        let vote_box = button;
+        while(!vote_box.hasClass('vote-box')) {
+            vote_box = vote_box.parent();
+        }
+    
+        let votable_id = vote_box.find('.votable-id').val();
+        let votable_type = vote_box.find('.votable-type').val();
+        let vote_count = parseInt(vote_box.find('.votable-count').text());
+        // Send the request
+        $.ajax({
+            type: 'POST',
+            url: '/' + votable_type + '/' + votable_id + '/vote',
+            data: {
+                _token: csrf,
+                'vote': -1
+            },
+            success: function(response) {
+                // button.parent().find('.votable-count').text(response);
+            },
+            error: function(xhr, status, error) {
+                if(!down_vote_filled.hasClass('none')) {
+                    down_vote_filled.addClass('none');
+                    down_vote.removeClass('none');
+                    vote_icons_state = 'remove-down';
+                } else {
+                    down_vote_filled.removeClass('none');
+                    down_vote.addClass('none');
+                    vote_icons_state = 'fill-down';
+                }
+    
+                // If there's an error we simply set the old value
+                vote_box.find('.votable-count').text(vote_count);
+                new_vote_count = vote_count;
+    
+                let errorObject = JSON.parse(xhr.responseText);
+                let er = errorObject.message;
+                // and then print the error returned in the informer-message-container
+                let vote_message_container = vote_box.find('.informer-message-container').first();
+                vote_message_container.find('.informer-message').text(er);
+                vote_message_container.css('display', 'block');
+    
+                informer_container_timeout = setTimeout( function(){ 
+                    vote_message_container.css('display', 'none');
+                }, 4000);
+    
+            },
+            complete: function() {
+                vote_lock = true;
+            }
+        });
+        // Then we handle the ui components
+        let down_vote = button.find('.down-vote');
+        let down_vote_filled = button.find('.down-vote-filled');
+        let up_vote = vote_box.find('.up-vote');
+        let up_vote_filled = vote_box.find('.up-vote-filled');
+    
+        if(!down_vote_filled.hasClass('none')) {
+            // In this case the user is already voted down and then press down again so we need to add 1 
+            // (because the previous down change the counter to -1 no we need to rewind to 0 by adding 1)
+            vote_box.find('.votable-count').text(vote_count+1);
+            down_vote_filled.addClass('none');
+            down_vote.removeClass('none');
+            new_vote_count = vote_count+1;
+            vote_icons_state = 'remove-down';
+        } else {
+            // here we have 2 cases:
+            // 1- case where the user is not voted at all we only need to subtract 1
+            if(!down_vote.hasClass('none') && !up_vote.hasClass('none')) {
+                vote_box.find('.votable-count').text(vote_count-1);
+                down_vote.addClass('none');
+                down_vote_filled.removeClass('none');
+                new_vote_count = vote_count-1;
+                vote_icons_state = 'fill-down';
+            // 2- case where the user is already up voted the resource and then he press down vote, we need to subtract 2 in this case
+            } else {
+                vote_box.find('.votable-count').text(vote_count-2);
+                up_vote_filled.addClass('none');
+                up_vote.removeClass('none');
+                down_vote.addClass('none');
+                down_vote_filled.removeClass('none');
+    
+                new_vote_count = vote_count-2;
+                vote_icons_state = 'remove-up-fill-down';
+            }
+        }
+    
+        handle_vote_sync(button, vote_icons_state, new_vote_count);
+    });
 };
-
 function handle_vote_sync(button, vote_icons_state, new_vote_count) {
     let from = button.hasClass('outside-viewer') ? 'outside' : 'inside';
     let votable_id = button.parent().find('.votable-id').val();
     let votable_type = button.parent().find('.votable-type').val();
+    let votable_box;
 
     switch(from) {
         case 'outside':
             // If the thread viewer is not opened we have to stop the execution flow
             if(!last_opened_thread) return;
 
-            let votable_box;
             if(votable_type == 'thread') {
                 /**
                  * Here we have to check if the viewer is already opened and the thread opened is the same as the 
@@ -1222,52 +1221,62 @@ function handle_vote_sync(button, vote_icons_state, new_vote_count) {
                 });
             }
 
-            // First we change the counter
-            votable_box.find('.votable-count').text(new_vote_count);
-            // votable paths that we have to change their none class when thread vote get clicked from outside
-            let up_vote = votable_box.find('.up-vote');
-            let up_vote_filled = votable_box.find('.up-vote-filled');
-            let down_vote = votable_box.find('.down-vote');
-            let down_vote_filled = votable_box.find('.down-vote-filled');
-            switch(vote_icons_state) {
-                case 'remove-up':
-                    up_vote_filled.addClass('none');
-                    up_vote.removeClass('none');
-                    break;
-                case 'fill-up':
-                    up_vote_filled.removeClass('none');
-                    up_vote.addClass('none');
-                    break;
-                case 'remove-down-fill-up':
-                    down_vote_filled.addClass('none');
-                    down_vote.removeClass('none');
-                    up_vote_filled.removeClass('none');
-                    up_vote.addClass('none');
-                    break;
-                case 'remove-down':
-                    down_vote_filled.addClass('none');
-                    down_vote.removeClass('none');
-                    break;
-                case 'fill-down':
-                    down_vote_filled.removeClass('none');
-                    down_vote.addClass('none');
-                    break;
-                case 'remove-up-fill-down':
-                    up_vote_filled.addClass('none');
-                    up_vote.removeClass('none');
-                    down_vote_filled.removeClass('none');
-                    down_vote.addClass('none');
-                    break;
+            break;
+        case 'inside':
+            console.log('from inside');
+            console.log(opened_thread_component);
+            if(votable_type == 'thread') {
+                votable_box = opened_thread_component.find('.vote-box');
+            } else if(votable_type == 'post') {
+                if($('#replies-container').length) {
+                    $('#replies-container .post-container').each(function() {
+                        if($(this).find('.post-id').first().val() == votable_id) {
+                            votable_box = $(this).find('.vote-box');
+                            return false;
+                        }
+                    });
+                }
+
             }
 
             break;
-        case 'inside':
-            if(votable_type == 'thread') {
+    }
 
-            } else if(votable_type == 'post') {
-                
-            }
-
+    // After getting the votable box of the inside or outside section, we begin by editing the counter
+    votable_box.find('.votable-count').text(new_vote_count);
+    // votable paths that we have to change their none class when thread vote get clicked from outside
+    let up_vote = votable_box.find('.up-vote');
+    let up_vote_filled = votable_box.find('.up-vote-filled');
+    let down_vote = votable_box.find('.down-vote');
+    let down_vote_filled = votable_box.find('.down-vote-filled');
+    switch(vote_icons_state) {
+        case 'remove-up':
+            up_vote_filled.addClass('none');
+            up_vote.removeClass('none');
+            break;
+        case 'fill-up':
+            up_vote_filled.removeClass('none');
+            up_vote.addClass('none');
+            break;
+        case 'remove-down-fill-up':
+            down_vote_filled.addClass('none');
+            down_vote.removeClass('none');
+            up_vote_filled.removeClass('none');
+            up_vote.addClass('none');
+            break;
+        case 'remove-down':
+            down_vote_filled.addClass('none');
+            down_vote.removeClass('none');
+            break;
+        case 'fill-down':
+            down_vote_filled.removeClass('none');
+            down_vote.addClass('none');
+            break;
+        case 'remove-up-fill-down':
+            up_vote_filled.addClass('none');
+            up_vote.removeClass('none');
+            down_vote_filled.removeClass('none');
+            down_vote.addClass('none');
             break;
     }
 }

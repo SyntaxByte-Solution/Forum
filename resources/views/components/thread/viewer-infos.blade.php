@@ -66,8 +66,6 @@
         <div class="simple-line-separator mb4"></div>
         <div class="flex align-center thread-viewer-react-container px8">
             <div class="relative vote-box thread-vote-box">
-                <input type="hidden" class="votable-type" value="thread">
-                <input type="hidden" class="votable-id" value="{{ $thread->id }}">
                 <div class="informer-message-container absolute zi1" style="left: -1px; bottom: calc(100% + 2px)">
                     <div class="flex align-center">
                         <p class="informer-message"></p>
@@ -76,6 +74,8 @@
                 </div>
 
                 <div class="flex align-center mx4 pr8" style="border-right: 1px solid #c1c1c1">
+                    <input type="hidden" class="votable-type" value="thread">
+                    <input type="hidden" class="votable-id" value="{{ $thread->id }}">
                     <svg class="size15 pointer @auth votable-up-vote inside-viewer @endauth @guest login-signin-button @endguest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                         <title>{{ __('UP') }}</title>
                         <path class="up-vote-filled @unlessupvoted($thread, 'App\Models\Thread') none @endupvoted" d="M63.89,55.78v28.3h-28V55.78H24.09V88.5a7.56,7.56,0,0,0,7.53,7.58H68.21a7.56,7.56,0,0,0,7.53-7.58V55.78ZM97.8,53.5,57.85,7.29A10.28,10.28,0,0,0,50,3.92a10.25,10.25,0,0,0-7.87,3.37L2.23,53.52A6.9,6.9,0,0,0,1,61.14c1.46,3.19,5,5.25,9.09,5.25h14V55.78H19.83a1.83,1.83,0,0,1-1.67-1A1.61,1.61,0,0,1,18.42,53L48.61,18a1.9,1.9,0,0,1,2.78.05L81.57,53a1.61,1.61,0,0,1,.26,1.75,1.83,1.83,0,0,1-1.67,1H75.74v10.6H89.88c4.05,0,7.61-2.06,9.08-5.24A6.92,6.92,0,0,0,97.8,53.5Zm-16,1.24a1.83,1.83,0,0,1-1.67,1H63.89v28.3h-28V55.78H19.83a1.83,1.83,0,0,1-1.67-1A1.61,1.61,0,0,1,18.42,53L48.61,18a1.9,1.9,0,0,1,2.78.05L81.57,53A1.61,1.61,0,0,1,81.83,54.74Z" style="fill:#28b1e7"/>

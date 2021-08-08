@@ -3404,13 +3404,13 @@ $('.thread-viewer-left').on('click', function(event) {
     let previous_media_url = viewer_medias[parseInt(viewer_media_count)-1];
     if(is_image(previous_media_url)) {
         let viewer_image = $('#thread-viewer-media-image');
+        handle_thread_viewer_image(viewer_image);
 
         $('#thread-viewer-media-video').addClass('none');
         viewer_image.removeClass('none');
 
         viewer_image.attr('src', "");
         viewer_image.attr('src', viewer_medias[--viewer_media_count]);
-        handle_thread_viewer_image(viewer_image);
     } else if(is_video(previous_media_url)) {
         let viewer_video = $('#thread-viewer-media-video');
 
@@ -3432,13 +3432,12 @@ $('.thread-viewer-right').on('click', function(event) {
     let next_media_url = viewer_medias[parseInt(viewer_media_count)+1];
     if(is_image(next_media_url)) {
         let viewer_image = $('#thread-viewer-media-image');
-
+        handle_thread_viewer_image(viewer_image);
         $('#thread-viewer-media-video').addClass('none');
         viewer_image.removeClass('none');
 
         viewer_image.attr('src', "");
         viewer_image.attr('src', viewer_medias[++viewer_media_count]);
-        handle_thread_viewer_image(viewer_image);
     } else if(is_video(next_media_url)) {
         let viewer_video = $('#thread-viewer-media-video');
 

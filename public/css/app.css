@@ -194,7 +194,7 @@ a, input, textarea {
 }
 
 .p8 {
-    margin: 8px;
+    padding: 8px;
 }
 
 .p4 {
@@ -650,87 +650,7 @@ a, input, textarea {
     background-position: 10px center;
 }
 
-.login-icon {
-    background-position: 0px -138px;
-}
-
-.general-icon {
-    background-position: 0px -480px;
-}
-
-.bb-icon {
-    background-position: -0px -384px;
-}
-
-.calisthenics-icon {
-    background-position: -0px -320px;
-}
-
-.tennis-icon {
-    background-position: -0px -416px;
-}
-
-.football-icon {
-    background-position: -0px -512px;
-}
-
-.more-icon {
-    background-image: url(../assets/images/icons/more.png);
-}
-
-.report-icon {
-    background-image: url(../assets/images/icons/report.png);
-}
-
-.up-icon {
-    background-image: url(../assets/images/icons/up-arrow.png);
-}
-
-.down-icon {
-    background-image: url(../assets/images/icons/down-arrow.png);
-}
-
-.report-icon {
-    background-image: url(../assets/images/icons/report-red.png);
-}
-
-.reply-icon {
-    background-image: url(../assets/images/icons/reply.png);
-}
-
-.discussion-icon {
-    background-image: url(../assets/images/icons/disc.png);
-}
-
-.right-arrow-icon {
-    background-position: -0px -319px;
-}
-
 /* -------------------- NEW SPRITE -------------------- */
-
-.languages24-icon {
-    background-position: 0px -24px;
-}
-
-.more7-icon {
-    background-position: 0px -504px;
-}
-
-.forums20-icon {
-    background-position: -20px -40px;
-}
-
-.rating20-icon {
-    background-position: 0px -360px;
-}
-
-.menu20-icon {
-    background-position: 20px -2440px;
-}
-
-.greentick20-icon {
-    background-position: 20px -2540px;
-}
 
 .binbox28-icon {
     background-position: 0px -476px;
@@ -738,10 +658,6 @@ a, input, textarea {
 
 .vote28-icon {
     background-position: 28px -980px;
-}
-
-.message17-icon {
-    background-position: 17px 0px;
 }
 
 .english17-flag {
@@ -756,76 +672,8 @@ a, input, textarea {
     background-position: 0px -102px;
 }
 
-.profile17-icon {
-    background-position: 0px -34px;
-}
-
-.wprofile20-icon {
-    background-position: -20px -80px;
-}
-
-.activities17-icon {
-    background-position: 0px -153px;
-}
-
-.help17-icon {
-    background-position: 0px -170px;
-}
-
-.settings17-icon {
-    background-position: 0px -51px;
-}
-
-.logout17-icon {
-    background-position: 0px -187px;
-}
-
-.discussion17-icon {
-    background-position: 0px -40px;
-}
-
-.statistics17-icon {
-    background-position: 17px -1207px;
-}
-
-.fire20-icon {
-    background-position: 0px -60px;
-}
-
-.market20-icon {
-    background-position: -20px -60px;
-}
-
 .inbox17-icon {
     background-position: -20px -340px;
-}
-
-.reply17-icon {
-    background-position: 0px -17px;
-}
-
-.replyfilled17-icon {
-    background-position: 17px 1411px;
-}
-
-.eye17-icon {
-    background-position: 0px -374px;
-}
-
-.eyecrossed17-icon {
-    background-position: 17px -390px;
-}
-
-.resource17-like-gicon {
-    background-position: 0px -357px;
-}
-
-.resource17-like-ricon {
-    background-position: -17px -357px;
-}
-
-.delete17b-icon {
-    background-position: -17px -408px;
 }
 
 .disablenotif17b-icon {
@@ -834,30 +682,6 @@ a, input, textarea {
 
 .enablenotif17b-icon {
     background-position: -17px -425px;
-}
-
-.forums17-icon {
-    background-position: 0px -2057px;
-}
-
-.clock17-icon {
-    background-position: 0px -2074px;
-}
-
-.author17-icon {
-    background-position: 0px -238px;
-}
-
-.pen17-icon {
-    background-position: 17px -475px;
-}
-
-.report17-icon {
-    background-position: 17px -492px;
-}
-
-.report17filled-icon {
-    background-position: 17px -509px;
 }
 
 .repliesoff17-icon {
@@ -904,22 +728,6 @@ a, input, textarea {
     background-position: 0px -1326px;
 }
 
-.bookmark17-icon {
-    background-position: 0px -1411px;
-}
-
-.xbookmark17-icon {
-    background-position: 17px -1411px;
-}
-
-.tick17-icon {
-    background-position: 0 -1445px;
-}
-
-.wsearch20-icon {
-    background-position: 20px -20px;
-}
-
 .downvote20-icon {
     background-position: 0px -1560px;
 }
@@ -964,20 +772,8 @@ a, input, textarea {
     background-position: 0px -624px;
 }
 
-.image24-icon {
-    background-position: 0px -384px;
-}
-
-.video24-icon {
-    background-position: 24px -432px;
-}
-
-.public18-icon {
-    background-position: 0px -1314px;
-}
-
-.followers18-icon {
-    background-position: 0px -1332px;
+.reply17-icon {
+    background-position: 0px -17px;
 }
 
 .private18-icon {
@@ -990,22 +786,6 @@ a, input, textarea {
 
 .followed14-icon {
     background-position: 14px -784px;
-}
-
-.public14-icon {
-    background-position: 0px -392px;
-}
-
-.closed14-icon {
-    background-position: 12px -1295px;
-}
-
-.private14-icon {
-    background-position: 0px -420px;
-}
-
-.followers14-icon {
-    background-position: 0px -406px;
 }
 
 .votes14-icon {
@@ -1021,50 +801,6 @@ a, input, textarea {
 }
 
 /* ----------------------------------------------------- */
-
-.wedit-icon {
-    background-position: -0px -60px;
-}
-
-.wmenu-icon {
-    background-image: url(../assets/images/icons/wmenu.png);
-}
-
-.edit-icon {
-    background-image: url(../assets/images/icons/edit.png);
-}
-
-.bedit-icon {
-    background-position: 0 -340.9px;
-}
-
-.bdelete-icon {
-    background-position: 0 -359.9px;
-}
-
-.calendar-icon {
-    background-image: url(../assets/images/icons/calendar.png);
-}
-
-.feather-icon {
-    background-image: url(../assets/images/icons/feather.png);
-}
-
-.qst-icon {
-    background-image: url(../assets/images/icons/qst.png);
-}
-
-.bqst-icon {
-    background-position: -0px -359px;
-}
-
-.popular-icon {
-    background-position: -0px -298px;
-}
-
-.users-icon {
-    background-position: 0 0;
-}
 
 .user-container-image {
     width: 46px;
@@ -1379,6 +1115,11 @@ a, input, textarea {
     height: 20px;
 }
 
+.size15 {
+    height: 15px;
+    width: 15px;
+}
+
 .size14 {
     height: 14px;
     width: 14px;
@@ -1574,26 +1315,6 @@ a, input, textarea {
     font-size: 13px;
     border-radius: 4px;
     min-width: 260px;
-}
-
-.search-forum-button {
-    width: 40px;
-    height: 30px;
-    border: none;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-
-    cursor: pointer;
-
-    background-color: #353946;
-    background-image: url(../assets/images/icons/search.png);
-    background-repeat: no-repeat;
-    background-size: 18px;
-    background-position: center;
-}
-
-.search-forum-button:hover {
-    background-color: #181a22;
 }
 
 .middle-padding-1 {
@@ -2146,14 +1867,6 @@ tr:nth-child(2n) {
     width: 10px;
 }
 
-.white-sprite {
-    background-image: url(../assets/images/icons/white-sprite.png);
-}
-
-.black-sprite-icon {
-    background-image: url(../assets/images/icons/sprite.png);
-}
-
 .sprite-size {
     min-width: 20px;
     height: 20px;
@@ -2166,14 +1879,6 @@ tr:nth-child(2n) {
     height: 32px;
     
     background-size: 32px;
-}
-
-.sprite-icon {
-    min-width: 20px;
-    height: 20px;
-
-    background-image: url(../assets/images/icons/white-sprite.png);
-    background-size: 20px;
 }
 
 .sprite-2-size {

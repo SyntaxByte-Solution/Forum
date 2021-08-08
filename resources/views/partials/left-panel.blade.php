@@ -1,11 +1,11 @@
 <div id="left-panel" class="flex flex-column">
     <div>
-        <div class="flex align-center" style="margin-bottom: 20px">
-            <a href="" class="quick-links-button">{{__('Quick links')}} ▸</a>
+        <div class="flex align-center p8 mb4 unselectable" style="margin-bottom: 20px">
+            {{__('Quick links')}} ▸
         </div>
 
         <div class="flex relative mb8">
-            <a href="/" class="left-panel-item lp-wpadding @if($page == 'home') {{ 'lp-selected bold white white' }} @endif">{{ __('Home') }}</a>
+            <a href="/" class="left-panel-item p8 @if($page == 'home') {{ 'lp-selected bold white white' }} @endif">{{ __('Home') }}</a>
             @if($page == 'home')
                 <div class="selected-colored-slice"></div>
             @endif

@@ -111,7 +111,9 @@
             </div>
             <div>
                 @include('partials.user-space.user-card', ['withcover'=>true])
-                @include('partials.ads.w300h250')
+                @if(!(auth()->user() && auth()->user()->id == $user->id))
+                    @include('partials.ads.w300h250')
+                @endif
             </div>
         </div>
     </div>

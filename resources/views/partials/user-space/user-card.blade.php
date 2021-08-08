@@ -1,4 +1,4 @@
-<div class="ms-right-panel my8">
+<div class="ms-right-panel">
     @php
         $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
         $login_status = Cache::has('user-is-online-' . $user->id) ? 'online' : 'offline';

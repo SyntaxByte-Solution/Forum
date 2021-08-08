@@ -18,7 +18,7 @@
         <div class="suboptions-container nested-soc simple-button-suboptions-container">
             <input type="hidden" class="notif-id" value="{{ $notification_id }}">
             <a href="" class="suboption-style-1 fs13 delete-notification align-center" style="width: 230px;">
-                <div class="small-image-2 sprite sprite-2-size delete17b-icon mr4"></div>
+                <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
                 <span class="button-text">{{ __('Delete this notification') }}</span>
                 <input type="hidden" class="message-ing" value="{{ __('Deleting notification..') }}">
             </a>

@@ -2158,6 +2158,7 @@ if(userId != "") {
                 success: function(response) {
                     $('.notifs-box').prepend(response);
                     let appended_component = $('.notifs-box').last().find('.notification-container').first();
+                    handle_image_dimensions(appended_component.find('.action_takers_image'));
                     handle_notification_menu_appearence(appended_component);
                     handle_notification_menu_buttons(appended_component.find('.notification-menu-button'));
                     handle_nested_soc(appended_component.find('.notification-menu-button'));
@@ -2217,6 +2218,7 @@ function loadNotifications(button) {
                     handle_nested_soc($(this).find('.notification-menu-button'));
                     handle_delete_notification($(this).find('.delete-notification'));
                     handle_disable_switch_notification($(this).find('.disable-switch-notification'));
+                    handle_image_dimensions($(this).find('.action_takers_image'));
                 });
             }
         },

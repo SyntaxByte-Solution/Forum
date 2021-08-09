@@ -11,7 +11,7 @@
     @endif
 @endif
 
-<div class="fixed full-shadowed" style="{{ $show_login_view }}z-index:90">
+<div class="fixed full-shadowed" style="{{ $show_login_view }}z-index:90; margin-top: 52px">
         <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
         <div id="login-view" class="auth-card">
             <div>

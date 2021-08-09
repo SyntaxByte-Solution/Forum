@@ -54,8 +54,8 @@
                             </div>
                         </div>
                         <div class="input-container">
-                            <script src="{{ asset('js/jq-plugins/country-picker-flags/build/js/countrySelect.js') }}"></script>
-                            <link rel="stylesheet" href="{{ asset('js/jq-plugins/country-picker-flags/build/css/countrySelect.css') }}">
+                            <script src="{{ asset('js/jq-plugins/country-picker-flags/build/js/countrySelect.min.js') }}"></script>
+                            <link rel="stylesheet" href="{{ asset('js/jq-plugins/country-picker-flags/build/css/countrySelect.min.css') }}">
                             <div class="flex align-center">
                                 <label for="subject" class="label-style-2 mr8">{{ __('Country') }} @error('country') <span class="error ml4">*</span> @enderror</label>
                                 <input id="country_selector" form="personal-infos-form" name="country" type="text" class="basic-input">
@@ -67,7 +67,7 @@
                                         @endif
                                     });
 
-                                    @if($user->personal->birth)
+                                    @if($user->personal->country)
                                         $("#country_selector").countrySelect("setCountry", "{{ $user->personal->country }}");
                                     @endif
                                 </script>

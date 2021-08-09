@@ -35,7 +35,7 @@
         <main class="relative">
             @yield('content')
             @include('partials.notification')
-            @include('partials.general.tick-notification')
+            @include('partials.general.basic-notification')
         </main>
     </div>
 </body>

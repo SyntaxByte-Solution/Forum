@@ -2069,22 +2069,25 @@ function handle_follow_resource(button) {
         while(!follow_box.hasClass('follow-box')) {
             follow_box = follow_box.parent();
         }
-    
-        if(button.hasClass('button-mini-wraper-style')) {
-            button.attr('style', 'background-color: #009fffad; border-color: #009fffad; cursor: default');
-        }
-    
-        if(button.hasClass('follow-from-profile')) {
+
+        let follow_text = button.find('.follow-text').val();
+        let unfollow_text = button.find('.unfollow-text').val();
+        let following_text = button.find('.following-text').val();
+        let unfollowing_text = button.find('.unfollowing-text').val();
+
+        if(button.hasClass('follow-button-with-icon')) {
+            button.attr('style', 'background: rgb(207, 239, 255); border-color: rgb(207, 239, 255); cursor: default');
+            
             if(follow_box.find('.status').val() == '1') {
-                button.find('.btn-txt').text(button.find('.unfollowing-text').val());
+                button.find('.btn-txt').text(unfollowing_text);
             } else {
-                button.find('.btn-txt').text(button.find('.following-text').val());
+                button.find('.btn-txt').text(following_text);
             }
-        } else if(button.hasClass('follow-from-index-resource')) {
+        } else if(button.hasClass('follow-button-toggle-with-bell')) {
             if(follow_box.find('.status').val() == '-1') {
-                button.find('.btn-txt').text(button.find('.following-text').val());
+                button.find('.btn-txt').text(following_text);
             } else {
-                button.find('.btn-txt').text(button.find('.unfollowing-text').val());
+                button.find('.btn-txt').text(unfollowing_text);
             }
         }
     
@@ -2098,47 +2101,34 @@ function handle_follow_resource(button) {
                 _token: csrf
             },
             success: function(response) {
-                if(button.hasClass('follow-from-index-resource')) {
+                if(button.hasClass('follow-button-toggle-with-bell')) {
                     if(follow_box.find('.status').val() == '1') {
-                        button.find('.btn-txt').text(button.find('.unfollow-text').val());
                         follow_box.find('.status').val(-1);
+                        button.find('.btn-txt').text(unfollow_text);
                         follow_box.find('.follow-notif-container').addClass('none');
                         follow_box.find('.follow-text-button').removeClass('none');
                     } else {
                         follow_box.find('.status').val(1);
-                        button.find('.btn-txt').text(button.find('.follow-text').val());
+                        button.find('.btn-txt').text(follow_text);
                         button.parent().find('.follow-notif-container').removeClass('none');
                         button.addClass('none');
-                        basic_notification_show(button.find('.follow-success-text').val(), 'tick17-icon');
+                        basic_notification_show(button.find('.follow-success-text').val(), 'basic-notification-round-tick');
                     }
-                } else if(button.hasClass('follow-from-profile')) {
+                } else if(button.hasClass('follow-button-with-icon')) {
                     let followers_counter = follow_box.find('.followers-counter');
-                    let has_icon = button.find('.follow-button-icon').length;
-                    let button_icon;
     
-                    if(has_icon) {
-                        button_icon = button.find('.follow-button-icon');
-                        let lastClass = button_icon.attr('class').trim().split(' ').pop();
-                        button_icon.removeClass(lastClass);
-                    }
                     if(response == -1) {
                         button.find('.status').val(-1);
-                        button.find('.btn-txt').text(button.find('.follow-text').val());
+                        button.find('.btn-txt').text(follow_text);
                         followers_counter.text(parseInt(followers_counter.text()) - 1);
-                        if(has_icon) {
-                            button_icon.addClass(button.find('.unfollowed-icon').val());
-                        } else {
-                            button.find('.btn-txt').removeClass('gray'); button.find('.btn-txt').addClass('blue');
-                        }
+                        button.find('.follow').removeClass('none');
+                        button.find('.followed').addClass('none');
                     } else {
                         button.find('.status').val(1);
                         button.find('.btn-txt').text(button.find('.followed-text').val());
                         followers_counter.text(parseInt(followers_counter.text()) + 1);
-                        if(has_icon) {
-                            button_icon.addClass(button.find('.followed-icon').val());
-                        } else {
-                            button.find('.btn-txt').removeClass('blue'); button.find('.btn-txt').addClass('gray');
-                        }
+                        button.find('.follow').addClass('none');
+                        button.find('.followed').removeClass('none');
                     }
                 }
             },
@@ -3045,7 +3035,6 @@ $('#thread-viewer-media-image').click(function(event) {
 $('.thread-media-viewer-content-section').click(function() {
     handle_viewer_closing();
 })
-
 function handle_viewer_closing() {
     viewer_media_count = 0;
     viewer_medias = [];
@@ -3059,7 +3048,6 @@ function handle_viewer_closing() {
     $('body').css('overflow-y', '');
     stop_loading_strip();
 }
-
 function handle_thread_viewer_image(image) {
     image.parent().imagesLoaded(function() {
         console.log('handling ..');
@@ -3241,7 +3229,6 @@ $('.fade-loading').each(function(event) {
         });
     }, 1200);
 });
-
 $(".has-fade").each(function() {
     let fc = $(this);
     fc.imagesLoaded( function() {
@@ -3262,7 +3249,6 @@ function start_loading_strip() {
         });
     }, 800);
 }
-
 function stop_loading_strip() {
     $('#loading-strip').addClass('none');
     clearInterval(strip_loading_interval);
@@ -3389,12 +3375,12 @@ function handle_save_threads(save_button) {
                     save_button.find('.status').val('unsave');
                     save_button.find('.icon').attr('d', save_button.find('.unsave-icon').val());
                     save_button.find('.button-text').text(save_button.find('.button-text-unsave').val());
-                    basic_notification_show(save_button.find('.saved-message').val(), 'tick17-icon');
+                    basic_notification_show(save_button.find('.saved-message').val(), 'basic-notification-round-tick');
                 } else {
                     save_button.find('.status').val('save');
                     save_button.find('.icon').attr('d', save_button.find('.save-icon').val());
                     save_button.find('.button-text').text(save_button.find('.button-text-save').val());
-                    basic_notification_show(save_button.find('.unsaved-message').val(), 'tick17-icon');
+                    basic_notification_show(save_button.find('.unsaved-message').val(), 'basic-notification-round-tick');
                 }
 
                 save_button.parent().css('display', 'none');
@@ -3406,9 +3392,9 @@ function handle_save_threads(save_button) {
 let basic_notification;
 function basic_notification_show(message, icon='') {
     if(icon != '') {
-        $('.basic-notification-container').find('.icon').addClass(icon);
-        $('.basic-notification-container').find('.icon').removeClass('none');
+        $('.basic-notification-container').find('.'+icon).removeClass('none');
     }
+
     $('.basic-notification-container').removeClass('none');
     $('.basic-notification-container').find('.basic-notification-content').text(message);
 
@@ -3418,6 +3404,7 @@ function basic_notification_show(message, icon='') {
    }, 5000);
 }
 
+// reporting section
 $('.close-report-container').click(function() {
     let report_container = $(this);
     while(!report_container.hasClass('report-resource-container')) {
@@ -3426,7 +3413,6 @@ $('.close-report-container').click(function() {
 
     close_report_container(report_container);
 });
-
 function close_report_container(container) {
     container.animate({
         opacity: 0
@@ -3435,7 +3421,6 @@ function close_report_container(container) {
         container.css('opacity', '1');
     })
 }
-
 $('.open-thread-report').click(function() {
     let container = $('.report-resource-container');
 
@@ -3459,7 +3444,6 @@ $('.open-thread-report').click(function() {
     container.find('.reportable-id').val($(this).find('.thread-id').val());
     container.find('.reportable-type').val('thread');
 });
-
 $('.resource-report-option').each(function() {
     $(this).on('click', function() {
         $('.resource-report-option').css('background-color', '');
@@ -3493,11 +3477,9 @@ $('.resource-report-option').each(function() {
         }
     });
 });
-
 $('.report-section-textarea').on('input', function() {
     handle_report_textarea($(this));
 });
-
 function handle_report_textarea(textarea) {
     let report_container = textarea;
     while(!report_container.hasClass('report-resource-container')) {
@@ -3557,7 +3539,6 @@ function handle_report_textarea(textarea) {
         }
     }
 }
-
 $('.submit-thread-report').on('click', function() {
     let button = $(this);
     let button_text_ing = $(this).parent().find('.button-ing-text').val();
@@ -3593,7 +3574,7 @@ $('.submit-thread-report').on('click', function() {
             close_report_container(report_container);
             report_container.find('.report-section').remove();
             report_container.find('.already-reported-container').removeClass('none');
-            basic_notification_show(button.parent().find('.reported-text').val(), 'tick17-icon');
+            basic_notification_show(button.parent().find('.reported-text').val(), 'basic-notification-round-tick');
         },
         complete: function() {
             button.val(button_text_no_ing);
@@ -3734,7 +3715,8 @@ function stop_spinner(spinner, spinner_interval_name) {
     spinner_rotation = 0;
 }
 
-handle_activity_load_more_button($('#activities-sections-content').find('.activity-section-load-more'));
+handle_activity_load_more_button(
+    $('#activities-sections-content').find('.activity-section-load-more'));
 function handle_activity_load_more_button(button) {
     button.on('click', function() {
         let section_container = button;
@@ -3811,10 +3793,6 @@ $('.countable-textarea').on('input', function() {
     }
 });
 
-function handle_countale_textarea() {
-    
-}
-
 function handle_permanent_delete(thread) {
     thread.find('.thread-permanent-delete').on('click', function() {
         let container = $(this);
@@ -3834,7 +3812,6 @@ function handle_permanent_delete(thread) {
         }, 200);
     });
 }
-
 function handle_permanent_destroy_button(thread) {
     thread.find('.destroy-thread-button').on('click', function(event) {
         let button = $(this);
@@ -3889,7 +3866,6 @@ function handle_permanent_destroy_button(thread) {
         return false;
     });
 }
-
 function handle_restore_thread_button(thread) {
     thread.find('.restore-thread-button').on('click', function() {
         let button = $(this);
@@ -3928,37 +3904,41 @@ function handle_restore_thread_button(thread) {
     });
 }
 
-$('.move-to-trash-button').on('click', function() {
-    let button = $(this);
-    let button_text_no_ing = button.find('.btn-text-no-ing').val();
-    let button_text_ing = button.find('.btn-text-ing').val();
-
-    button.find('.btn-text').text(button_text_ing);
-    button.find('.btn-text').attr("disabled","disabled");
-    button.find('.btn-text').attr('style', 'cursor: default');
-
-    let spinner = button.parent().find('.spinner');
-    start_spinner(spinner, 'restore-thread-inline-button');
-    spinner.removeClass('opacity0');
-
-    $.ajax({
-        type: 'post',
-        url: button.find('.trash-move-link').val(),
-        data: {
-            _token: csrf,
-            _method: 'DELETE'
-        },
-        success: function(response) {
-            window.location.href = response;
-        },
-        error: function() {
-            button.find('.btn-text').text(button_text_no_ing);
-            button.find('.btn-text').attr("disabled",false);
-            button.find('.btn-text').attr('style', '');
-        },
-        complete: function() {
-            spinner.addClass('opacity0');
-            stop_spinner(spinner, 'restore-thread-inline-button');
-        }
-    });
+$('.move-to-trash-button').each(function() {
+    handle_move_to_trash($(this));
 });
+function handle_move_to_trash(button) {
+    button.click(function() {
+        let button_text_no_ing = button.find('.btn-text-no-ing').val();
+        let button_text_ing = button.find('.btn-text-ing').val();
+    
+        button.find('.btn-text').text(button_text_ing);
+        button.find('.btn-text').attr("disabled","disabled");
+        button.find('.btn-text').attr('style', 'cursor: default');
+    
+        let spinner = button.parent().find('.spinner');
+        start_spinner(spinner, 'restore-thread-inline-button');
+        spinner.removeClass('opacity0');
+    
+        $.ajax({
+            type: 'post',
+            url: button.find('.trash-move-link').val(),
+            data: {
+                _token: csrf,
+                _method: 'DELETE'
+            },
+            success: function(response) {
+                window.location.href = response;
+            },
+            error: function() {
+                button.find('.btn-text').text(button_text_no_ing);
+                button.find('.btn-text').attr("disabled",false);
+                button.find('.btn-text').attr('style', '');
+            },
+            complete: function() {
+                spinner.addClass('opacity0');
+                stop_spinner(spinner, 'restore-thread-inline-button');
+            }
+        });
+    });
+}

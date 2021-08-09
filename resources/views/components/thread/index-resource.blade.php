@@ -92,40 +92,44 @@
                             <img src="{{ $thread->user->sizedavatar(36) }}" class="thread-owner-avatar flex" alt="" style="width: 32px; height: 32px">
                         </div>
                         <div>
-                            <div class="flex align-center follow-box">
+                            <div class="flex align-center">
                                 <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="forum-color no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
-                                @if(auth()->user() && $thread->user->id != auth()->user()->id)
-                                    <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
-                                    <div class="pointer @guest login-signin-button @endguest">
-
-                                        <div class="relative follow-notif-container @if(!$followed) none @endif">
-                                            <svg class="button-with-suboptions" style="fill: #1e1e1e; height: 15px; width: 15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,512a64,64,0,0,0,64-64H192A64,64,0,0,0,256,512ZM471.39,362.29c-19.32-20.76-55.47-52-55.47-154.29,0-77.7-54.48-139.9-127.94-155.16V32a32,32,0,1,0-64,0V52.84C150.56,68.1,96.08,130.3,96.08,208c0,102.3-36.15,133.53-55.47,154.29A31.24,31.24,0,0,0,32,384c.11,16.4,13,32,32.1,32H447.9c19.12,0,32-15.6,32.1-32A31.23,31.23,0,0,0,471.39,362.29Z"/></svg>
-                                            <div class="suboptions-container suboptions-container-right-style" style="left: 0; width:max-content">
-                                                <div class="pointer follow-resource follow-from-index-resource simple-suboption flex align-center">
-                                                    <svg class="size17 mr4" style="fill: #202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M151.17,177.29c50.51,0,91.61-39.76,91.61-88.64S201.68,0,151.17,0,59.55,39.77,59.55,88.65,100.65,177.29,151.17,177.29Zm0-141.83c30.31,0,55,23.86,55,53.19s-24.65,53.18-55,53.18-55-23.86-55-53.18S120.85,35.46,151.17,35.46ZM353.9,206a160.45,160.45,0,0,0-106.62,40.12,155,155,0,0,0-96.11-33.41C67.81,212.75,0,278.37,0,359v17.73H196.86C206,452.78,272.92,512,353.9,512,441.08,512,512,443.37,512,359S441.08,206,353.9,206ZM151.17,248.21a115.66,115.66,0,0,1,72.11,24.71,149,149,0,0,0-26.42,68.37H38.11C46.91,288.59,94.26,248.21,151.17,248.21ZM353.9,476.54c-67,0-121.46-52.72-121.46-117.52S286.92,241.5,353.9,241.5,475.35,294.22,475.35,359,420.87,476.54,353.9,476.54ZM408.66,269,353.9,323.78,299.14,269,263.9,304.26,318.66,359,263.9,413.78,299.14,449l54.76-54.76L408.66,449l35.24-35.24L389.14,359l54.76-54.76Z"/></svg>
-                                                    <div class="fs13 btn-txt">{{ __('Unfollow') }}</div>
-                                                    <input type="hidden" class="unfollow-text" value="{{ __('Unfollow') }}">
-                                                    <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing') }}..">
-                                                    <input type="hidden" class="icon-path-when-selected" value="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8ZM456,256a199.12,199.12,0,0,1-10.8,64.4H424.9a15.8,15.8,0,0,1-11.4-4.8l-32-32.6a11.92,11.92,0,0,1,.1-16.7l12.5-12.5v-8.7a11.36,11.36,0,0,0-3.3-8l-9.4-9.4a11.36,11.36,0,0,0-8-3.3h-16a11.31,11.31,0,0,1-8-19.3l9.4-9.4a11.36,11.36,0,0,1,8-3.3h32a11.35,11.35,0,0,0,11.3-11.3v-9.4a11.35,11.35,0,0,0-11.3-11.3H362.1a16,16,0,0,0-16,16v4.5a16,16,0,0,1-10.9,15.2l-31.6,10.5a8,8,0,0,0-5.5,7.6v2.2a8,8,0,0,1-8,8h-16a8,8,0,0,1-8-8,8,8,0,0,0-8-8H255a8.15,8.15,0,0,0-7.2,4.4l-9.4,18.7a15.92,15.92,0,0,1-14.3,8.8H202a16,16,0,0,1-16-16V199a16.06,16.06,0,0,1,4.7-11.3l20.1-20.1a24.74,24.74,0,0,0,7.2-17.5,8,8,0,0,1,5.5-7.6l40-13.3a11.64,11.64,0,0,0,4.4-2.7l26.8-26.8a11.31,11.31,0,0,0-8-19.3H266l-16,16v8a8,8,0,0,1-8,8H226a8,8,0,0,1-8-8v-20a8.05,8.05,0,0,1,3.2-6.4l28.9-21.7c1.9-.1,3.8-.3,5.7-.3C366.3,56,456,145.7,456,256ZM138.1,149.1a11.36,11.36,0,0,1,3.3-8l25.4-25.4a11.31,11.31,0,0,1,19.3,8v16a11.36,11.36,0,0,1-3.3,8l-9.4,9.4a11.36,11.36,0,0,1-8,3.3h-16A11.35,11.35,0,0,1,138.1,149.1Zm128,306.4v-7.1a16,16,0,0,0-16-16H229.9c-10.8,0-26.7-5.3-35.4-11.8l-22.2-16.7a45.42,45.42,0,0,1-18.2-36.4V343.6a45.44,45.44,0,0,1,22.1-39l42.9-25.7a46.1,46.1,0,0,1,23.4-6.5h31.2a45.62,45.62,0,0,1,29.6,10.9l43.2,37.1h18.3a31.94,31.94,0,0,1,22.6,9.4l17.3,17.3a18.32,18.32,0,0,0,12.9,5.3H431A199.64,199.64,0,0,1,266.1,455.5Z">
+                                <div class="follow-box thread-component-follow-box flex align-center">
+                                    @if(auth()->user() && $thread->user->id != auth()->user()->id)
+                                        <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
+                                        <div class="pointer @guest login-signin-button @endguest">
+                                            <div class="relative follow-notif-container @if(!$followed) none @endif">
+                                                <svg class="button-with-suboptions" style="fill: #1e1e1e; height: 15px; width: 15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,512a64,64,0,0,0,64-64H192A64,64,0,0,0,256,512ZM471.39,362.29c-19.32-20.76-55.47-52-55.47-154.29,0-77.7-54.48-139.9-127.94-155.16V32a32,32,0,1,0-64,0V52.84C150.56,68.1,96.08,130.3,96.08,208c0,102.3-36.15,133.53-55.47,154.29A31.24,31.24,0,0,0,32,384c.11,16.4,13,32,32.1,32H447.9c19.12,0,32-15.6,32.1-32A31.23,31.23,0,0,0,471.39,362.29Z"/></svg>
+                                                <div class="suboptions-container suboptions-container-right-style" style="left: 0; width:max-content">
+                                                    <div class="pointer follow-resource follow-button-toggle-with-bell simple-suboption flex align-center">
+                                                        <svg class="size17 mr4" style="fill: #202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                            <path d="M234,147.1h0a87.1,87.1,0,1,0,87.1,87.11A87.12,87.12,0,0,0,234,147.1Zm0,130.65a43.55,43.55,0,1,1,0-87.1h0a43.55,43.55,0,0,1,0,87.1Zm224.55-7.07a9.77,9.77,0,0,0-6.3-8.52,156.94,156.94,0,0,0-26.41-7.34,9.79,9.79,0,0,0-11.36,7.94,9.46,9.46,0,0,0-.09,2.81,180.26,180.26,0,0,1-32.79,124.58c-22.14-28.49-56.34-47.09-95.35-47.09-9.26,0-23.59,8.71-52.26,8.71s-43-8.71-52.26-8.71c-38.92,0-73.12,18.6-95.35,47.09A180.17,180.17,0,0,1,52.62,279.91c2.66-96,80.45-173.7,176.4-176.29q6.63-.18,13.16.11a9.8,9.8,0,0,0,10.22-9.36,9.94,9.94,0,0,0-.09-1.81A157.76,157.76,0,0,0,246.4,66.9a9.83,9.83,0,0,0-9.16-6.9h-.06C112.7,58.3,9,160.44,9,284.93,9,426,138.59,536.67,285.24,504.35a221.37,221.37,0,0,0,168-167.67A235,235,0,0,0,458.56,270.68ZM234,466.45a180.41,180.41,0,0,1-118-43.91,78.14,78.14,0,0,1,63.14-35.84C198,392.51,216,395.41,234,395.41a181.65,181.65,0,0,0,54.89-8.71A78.38,78.38,0,0,1,352,422.54,180.41,180.41,0,0,1,234,466.45ZM444.34,98,510.8,31.53a4.07,4.07,0,0,0,0-5.77L486.25,1.2a4.08,4.08,0,0,0-5.78,0L414,67.66,347.54,1.2a4.19,4.19,0,0,0-5.78,0L317.2,25.76a4.09,4.09,0,0,0,0,5.77L383.67,98,317.2,164.46a4.1,4.1,0,0,0,0,5.78l24.56,24.56a4.08,4.08,0,0,0,5.78,0L414,128.33l66.47,66.47a4.08,4.08,0,0,0,5.78,0l24.55-24.56a4.08,4.08,0,0,0,0-5.78Z"/>
+                                                        </svg>
+                                                            
+                                                        <div class="fs13 btn-txt">{{ __('Unfollow') }}</div>
+                                                        <input type="hidden" class="unfollow-text" value="{{ __('Unfollow') }}">
+                                                        <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing') }}..">
+                                                        <input type="hidden" class="icon-path-when-selected" value="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8ZM456,256a199.12,199.12,0,0,1-10.8,64.4H424.9a15.8,15.8,0,0,1-11.4-4.8l-32-32.6a11.92,11.92,0,0,1,.1-16.7l12.5-12.5v-8.7a11.36,11.36,0,0,0-3.3-8l-9.4-9.4a11.36,11.36,0,0,0-8-3.3h-16a11.31,11.31,0,0,1-8-19.3l9.4-9.4a11.36,11.36,0,0,1,8-3.3h32a11.35,11.35,0,0,0,11.3-11.3v-9.4a11.35,11.35,0,0,0-11.3-11.3H362.1a16,16,0,0,0-16,16v4.5a16,16,0,0,1-10.9,15.2l-31.6,10.5a8,8,0,0,0-5.5,7.6v2.2a8,8,0,0,1-8,8h-16a8,8,0,0,1-8-8,8,8,0,0,0-8-8H255a8.15,8.15,0,0,0-7.2,4.4l-9.4,18.7a15.92,15.92,0,0,1-14.3,8.8H202a16,16,0,0,1-16-16V199a16.06,16.06,0,0,1,4.7-11.3l20.1-20.1a24.74,24.74,0,0,0,7.2-17.5,8,8,0,0,1,5.5-7.6l40-13.3a11.64,11.64,0,0,0,4.4-2.7l26.8-26.8a11.31,11.31,0,0,0-8-19.3H266l-16,16v8a8,8,0,0,1-8,8H226a8,8,0,0,1-8-8v-20a8.05,8.05,0,0,1,3.2-6.4l28.9-21.7c1.9-.1,3.8-.3,5.7-.3C366.3,56,456,145.7,456,256ZM138.1,149.1a11.36,11.36,0,0,1,3.3-8l25.4-25.4a11.31,11.31,0,0,1,19.3,8v16a11.36,11.36,0,0,1-3.3,8l-9.4,9.4a11.36,11.36,0,0,1-8,3.3h-16A11.35,11.35,0,0,1,138.1,149.1Zm128,306.4v-7.1a16,16,0,0,0-16-16H229.9c-10.8,0-26.7-5.3-35.4-11.8l-22.2-16.7a45.42,45.42,0,0,1-18.2-36.4V343.6a45.44,45.44,0,0,1,22.1-39l42.9-25.7a46.1,46.1,0,0,1,23.4-6.5h31.2a45.62,45.62,0,0,1,29.6,10.9l43.2,37.1h18.3a31.94,31.94,0,0,1,22.6,9.4l17.3,17.3a18.32,18.32,0,0,0,12.9,5.3H431A199.64,199.64,0,0,1,266.1,455.5Z">
+                                                    </div>
                                                 </div>
                                             </div>
+                                            
+                                            <div class="@if($followed) none @endif @auth follow-text-button follow-resource follow-button-toggle-with-bell @endauth">
+                                                <p class="no-margin fs12 bold btn-txt blue unselectable">{{ __('Follow') }}</p>
+                                                <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
+                                                <input type="hidden" class="following-text" value="{{ __('Following') }}..">
+                                                <input type="hidden" class="follow-success-text" value="{{ __('Follow success !') }}">
+                                            </div>
+                                            <input type="hidden" class="thread-add-visibility-slug" value="public">
+                                            <input type="hidden" class="followable-id" value="{{ $thread->user->id }}">
+                                            <input type="hidden" class="followable-type" value="user">
+                                            @php
+                                                $state = ($followed) ? 1 : -1;
+                                            @endphp
+                                            <input type="hidden" class="status" value="{{ $state }}">
                                         </div>
-                                        
-                                        <div class="@if($followed) none @endif @auth follow-text-button follow-resource follow-from-index-resource @endauth">
-                                            <p class="no-margin fs12 bold btn-txt blue unselectable">{{ __('Follow') }}</p>
-                                            <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
-                                            <input type="hidden" class="following-text" value="{{ __('Following') }}..">
-                                            <input type="hidden" class="follow-success-text" value="{{ __('Follow success !') }}">
-                                        </div>
-                                        <input type="hidden" class="thread-add-visibility-slug" value="public">
-                                        <input type="hidden" class="followable-id" value="{{ $thread->user->id }}">
-                                        <input type="hidden" class="followable-type" value="user">
-                                        @php
-                                            $state = ($followed) ? 1 : -1;
-                                        @endphp
-                                        <input type="hidden" class="status" value="{{ $state }}">
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
                             <div class="flex align-center" style="margin-top: 1px">
                                 <div class="relative height-max-content">

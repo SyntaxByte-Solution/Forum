@@ -2042,6 +2042,24 @@ tr:nth-child(2n) {
     background-color: #009fffad;
 }
 
+.button-wraper-style-2 {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px 7px;
+    background: #ebebeb;
+    border: 1px solid #eaeaea;
+
+    border-radius: 4px;
+}
+
+.button-wraper-style-2:hover {
+    border-color: rgb(207, 239, 255);
+    background: rgb(207, 239, 255);
+}
+
 .button-mini-wraper-style {
     display: flex;
     align-items: center;
@@ -2219,7 +2237,7 @@ tr:nth-child(2n) {
     bottom: 26px;
     left: 26px;
     padding: 16px;
-    max-width: 340px;
+    max-width: 360px;
     min-width: 290px;
     box-sizing: border-box;
     color: white;

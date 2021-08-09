@@ -35,21 +35,6 @@
                 <h3 class="fs26 page-title forum-color" style="margin: 12px 0 26px 0">{{ __('Discussions and Questions') }}</h3>
                 <div class="flex space-between align-end my8">
                     <div>
-                        
-                        <div class="flex align-center my8">
-                            <div class="flex align-center mr8">
-                                <p class="no-margin mr4">{{__('Forums')}}: </p>
-                                <div class="relative">
-                                    <a href="{{ route('forum.all.threads', ['forum'=>'general']) }}" class="flex mr4 button-right-icon more-icon button-with-suboptions" style="padding: 6px 26px 6px 10px; font-size: 12px">{{ __('All') }}</a>
-                                    <div class="suboptions-container suboptions-buttons-b-style">
-                                        @foreach($forums as $forum)
-                                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="flex align-center move-to-right">
                             <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
                             <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>

@@ -2141,6 +2141,15 @@ function handle_follow_resource(button) {
                         followers_counter.text(parseInt(followers_counter.text()) + 1);
                         button.find('.follow').addClass('none');
                         button.find('.followed').removeClass('none');
+
+                        // Generate follower component with the current user and append it to the followers viewer
+                        $.ajax({
+                            type: 'get', 
+                            url: `/users/${userId}/followers/generate`,
+                            success: function(response) {
+                                $('.followers-viewer .follow-box-body').append(response);
+                            }
+                        });
                     }
                 }
             },

@@ -70,7 +70,7 @@ class FollowController extends Controller
         }
 
         return [
-            "hasNext"=> $user->followers->skip($data['skip']+1)->count() > 0,
+            "hasNext"=> $user->followers->skip($data['skip']+$data['range'])->count() > 0,
             "content"=>$payload,
             "count"=>$followers_to_return->count()
         ];
@@ -94,7 +94,7 @@ class FollowController extends Controller
         }
 
         return [
-            "hasNext"=> $user->followed_users->skip($data['skip'] + 1)->count() > 0,
+            "hasNext"=> $user->followed_users->skip($data['skip']+$data['range'])->count() > 0,
             "content"=>$payload,
             "count"=>$follows_to_return->count()
         ];

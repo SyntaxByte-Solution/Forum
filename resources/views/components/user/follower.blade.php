@@ -1,6 +1,6 @@
 <div class="follow-box-item follow-box">
     <div class="flex align-center">
-        <img src="{{ $follower->sizedavatar(36) }}" class="size36 rounded mr8" alt="{{ $follower->username . ' ' . __(' avatar') }}">
+        <img src="{{ $follower->sizedavatar(36) }}" class="size36 rounded mr8" alt="{{ $follower->username . ' ' . __('avatar') }}">
         <div>
             <a href="{{ route('user.profile', ['user'=>$follower->username]) }}" class="bold no-underline blue">{{ $follower->username }}</a>
             <p class="fs13 gray no-margin">{{ $follower->firstname . ' ' . $follower->lastname }}</p>
@@ -26,11 +26,8 @@
         <input type="hidden" class="following-text" value="{{ __('Following ..') }}">
         <input type="hidden" class="followed-text" value="{{ __('Followed') }}">
         <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
-        <input type="hidden" class="followable-id" value="{{ $follower->id }}">
-        <input type="hidden" class="followable-type" value="user">
-
-        <input type="hidden" class="followed-icon" value="followed14-icon">
-        <input type="hidden" class="unfollowed-icon" value="follow14-icon">
     </div>
     @endunless
+    <input type="hidden" class="followable-id" value="{{ $follower->id }}">
+    <input type="hidden" class="followable-type" value="user">
 </div>

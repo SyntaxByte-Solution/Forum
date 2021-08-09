@@ -22,8 +22,9 @@ $('.follows-load').click(function(event) {
 });
 
 function loadFollows(button) {
-    btn_txt_ing = button.parent().find('.button-text-ing').val();
-    btn_txt_no_ing = button.parent().find('.button-text-no-ing').val();
+    let spinner = button.find('.spinner');
+    let btn_txt_ing = button.parent().find('.button-text-ing').val();
+    let btn_txt_no_ing = button.parent().find('.button-text-no-ing').val();
 
     button.val(btn_txt_ing);
     button.attr("disabled","disabled");
@@ -39,11 +40,13 @@ function loadFollows(button) {
     // The profile-s owner id not the current user id
     let user_id = follow_container.find('.profile_owner_id').val();
 
+    start_spinner(spinner, 'load-more-followers-spinner');
+    spinner.removeClass('opacity0');
+
     $.ajax({
         url: `/users/${user_id}/follows/load?range=8&skip=${present_follows_count}`,
         type: 'get',
         success: function(follows_rows) {
-            console.log(follows_rows)
             if(follows_rows.hasNext == false) {
                 button.addClass('none');
             }
@@ -65,9 +68,11 @@ function loadFollows(button) {
             }
         },
         complete: function() {
-            button.val('load more');
+            button.find('.button-text').text(btn_txt_no_ing);
             button.attr('style', '');
             button.prop("disabled", false);
+            spinner.addClass('opacity0');
+            stop_spinner(spinner, 'load-more-followers-spinner');
         }
     })
 }
@@ -80,7 +85,11 @@ $('.followers-load').click(function(event) {
 });
 
 function loadFollowers(button) {
-    button.val('loading..')
+    let spinner = button.find('.spinner');
+    let btn_txt_ing = button.parent().find('.button-text-ing').val();
+    let btn_txt_no_ing = button.parent().find('.button-text-no-ing').val();
+    
+    button.find('.button-text').text(btn_txt_ing);
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
     
@@ -93,6 +102,8 @@ function loadFollowers(button) {
     // The profile-s owner id not the current user id
     let user_id = follow_container.find('.profile_owner_id').val();
 
+    start_spinner(spinner, 'load-more-followers-spinner');
+    spinner.removeClass('opacity0');
     $.ajax({
         url: `/users/${user_id}/followers/load?range=8&skip=${present_followers_count}`,
         type: 'get',
@@ -118,9 +129,11 @@ function loadFollowers(button) {
             }
         },
         complete: function() {
-            button.val('load more');
+            button.find('.button-text').text(btn_txt_no_ing);
             button.attr('style', '');
             button.prop("disabled", false);
+            spinner.addClass('opacity0');
+            stop_spinner(spinner, 'load-more-followers-spinner');
         }
     })
 }

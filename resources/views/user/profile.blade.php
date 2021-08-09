@@ -38,8 +38,19 @@
                     @foreach($followers as $follower)
                         <x-user.follower :user="$follower"/>
                     @endforeach
-                    @if($user->followers->count() > 2)
-                        <input type='button' class="see-all-full-style followers-load" value="{{__('load more')}}">
+                    @if($user->followers->count() > 8)
+                        <button class="see-all-full-style followers-load relative">
+                            <div class="relative flex align-center">
+                                <span class="button-text">{{__('load more')}}</span>
+                                <div class="relative absolute" style="left: 100%">
+                                    <div class="spinner size17 ml4 opacity0">
+                                        <svg class="size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                        <input type='hidden' class="button-text-no-ing" value="{{ __('load more') }}">
+                        <input type='hidden' class="button-text-ing" value="{{ __('loading..') }}">
                     @endif
                 @else
                     <div class="flex flex-column align-center">
@@ -71,11 +82,18 @@
                         <x-user.follows :user="$followed_user"/>
                     @endforeach
                     @if($user->followed_users->count() > 8)
-                        <div>
-                            <input type='button' class="see-all-full-style follows-load" value="{{__('load more')}}">
-                            <input type='hidden' class="button-text-no-ing" value="{{ __('load more') }}">
-                            <input type='hidden' class="button-text-ing" value="{{ __('loading..') }}">
-                        </div>
+                        <button class="see-all-full-style follows-load relative">
+                            <div class="relative flex align-center">
+                                <span class="button-text">{{__('load more')}}</span>
+                                <div class="relative absolute" style="left: 100%">
+                                    <div class="spinner size17 ml4 opacity0">
+                                        <svg class="size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                        <input type='hidden' class="button-text-no-ing" value="{{ __('load more') }}">
+                        <input type='hidden' class="button-text-ing" value="{{ __('loading..') }}">
                     @endif
                 @else
                     <div class="flex flex-column align-center">
@@ -146,16 +164,16 @@
                                     </svg>
                                     <p class="no-margin btn-txt unselectable" style="padding-top: 1px">@if($followed){{ __('Followed') }}@else{{ __('Follow') }}@endif</p>
                                     @if($followed)
-                                    <input type="hidden" class="status" value="1">
+                                    <input type="hidden" autocomplete="off" class="status" value="1">
                                     @else
-                                    <input type="hidden" class="status" value="-1">
+                                    <input type="hidden" autocomplete="off" class="status" value="-1">
                                     @endif
-                                    <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
-                                    <input type="hidden" class="following-text" value="{{ __('Following ..') }}">
-                                    <input type="hidden" class="followed-text" value="{{ __('Followed') }}">
-                                    <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
-                                    <input type="hidden" class="followable-id" value="{{ $user->id }}">
-                                    <input type="hidden" class="followable-type" value="user">
+                                    <input type="hidden" autocomplete="off" class="follow-text" value="{{ __('Follow') }}">
+                                    <input type="hidden" autocomplete="off" class="following-text" value="{{ __('Following ..') }}">
+                                    <input type="hidden" autocomplete="off" class="followed-text" value="{{ __('Followed') }}">
+                                    <input type="hidden" autocomplete="off" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
+                                    <input type="hidden" autocomplete="off" class="followable-id" value="{{ $user->id }}">
+                                    <input type="hidden" autocomplete="off" class="followable-type" value="user">
                                 </div>
                                 @endif
                             </div>

@@ -2078,7 +2078,7 @@ function handle_follow_resource(button) {
         if(button.hasClass('follow-button-with-icon')) {
             button.attr('style', 'background: rgb(207, 239, 255); border-color: rgb(207, 239, 255); cursor: default');
         }
-                   
+
         if(follow_box.find('.status').val() == '1') {
             button.find('.btn-txt').text(unfollowing_text);
         } else {
@@ -2123,9 +2123,18 @@ function handle_follow_resource(button) {
                     if(response == -1) {
                         button.find('.status').val(-1);
                         button.find('.btn-txt').text(follow_text);
-                        followers_counter.text(parseInt(followers_counter.text()) - 1);
+                        followers_counter.text(parseInt(followers_counter.text())-1);
                         button.find('.follow').removeClass('none');
                         button.find('.followed').addClass('none');
+
+                        if($('.followers-viewer').length) {
+                            $('.followers-viewer .follow-box-item').each(function() {
+                                let fid = $(this).find('.followable-id').val();
+                                if(fid == userId) {
+                                    $(this).remove();
+                                }
+                            })
+                        }
                     } else {
                         button.find('.status').val(1);
                         button.find('.btn-txt').text(button.find('.followed-text').val());

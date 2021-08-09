@@ -4,7 +4,7 @@
 ?>
 
 <header>
-    <input type="hidden" class="uid" value="@auth{{ auth()->user()->id }}@endauth">
+    <input type="hidden" class="uid" autocomplete="off" value="@auth{{ auth()->user()->id }}@endauth">
     <div id="header" class="relative">
         <div id="header-logo-container" style="min-width: 133px">
             <a href="/">

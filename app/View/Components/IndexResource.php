@@ -43,10 +43,10 @@ class IndexResource extends Component
         $this->likes = $thread->likes->count();
 
         if(Auth::check()) {
-            $this->followed = (bool)Follow::where('follower', auth()->user()->id)
+            $this->followed = Follow::where('follower', auth()->user()->id)
             ->where('followable_id', $thread->user->id)
             ->where('followable_type', 'App\Models\User')
-            ->count();
+            ->count() > 0;
         } else {
             $this->followed = false;
         }

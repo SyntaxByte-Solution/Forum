@@ -2077,18 +2077,12 @@ function handle_follow_resource(button) {
 
         if(button.hasClass('follow-button-with-icon')) {
             button.attr('style', 'background: rgb(207, 239, 255); border-color: rgb(207, 239, 255); cursor: default');
-            
-            if(follow_box.find('.status').val() == '1') {
-                button.find('.btn-txt').text(unfollowing_text);
-            } else {
-                button.find('.btn-txt').text(following_text);
-            }
-        } else if(button.hasClass('follow-button-toggle-with-bell')) {
-            if(follow_box.find('.status').val() == '-1') {
-                button.find('.btn-txt').text(following_text);
-            } else {
-                button.find('.btn-txt').text(unfollowing_text);
-            }
+        }
+                   
+        if(follow_box.find('.status').val() == '1') {
+            button.find('.btn-txt').text(unfollowing_text);
+        } else {
+            button.find('.btn-txt').text(following_text);
         }
     
         let followable_id = follow_box.find('.followable-id').val();
@@ -2102,18 +2096,27 @@ function handle_follow_resource(button) {
             },
             success: function(response) {
                 if(button.hasClass('follow-button-toggle-with-bell')) {
-                    if(follow_box.find('.status').val() == '1') {
-                        follow_box.find('.status').val(-1);
-                        button.find('.btn-txt').text(unfollow_text);
-                        follow_box.find('.follow-notif-container').addClass('none');
-                        follow_box.find('.follow-text-button').removeClass('none');
-                    } else {
-                        follow_box.find('.status').val(1);
-                        button.find('.btn-txt').text(follow_text);
-                        button.parent().find('.follow-notif-container').removeClass('none');
-                        button.addClass('none');
-                        basic_notification_show(button.find('.follow-success-text').val(), 'basic-notification-round-tick');
-                    }
+                    // Here after following or unfollowing the user, we have to loop over every thread of this user and update his following box as well
+                    $('.follow-box').each(function() {
+                        let fbox = $(this);
+                        let fid = fbox.find('.followable-id').val();
+                        let ftype = fbox.find('.followable-type').val();
+                        
+                        if(fid == followable_id && ftype == followable_type) {
+                            if(fbox.find('.status').val() == '1') {
+                                fbox.find('.status').val(-1);
+                                fbox.find('.follow-notif-container').addClass('none');
+                                fbox.find('.follow-text-button').text(follow_text);
+                                fbox.find('.follow-text-button').removeClass('none');
+                            } else {
+                                fbox.find('.status').val(1);
+                                fbox.find('.follow-notif-container').removeClass('none');
+                                fbox.find('.follow-notif-container .btn-txt').val(unfollow_text);
+                                fbox.find('.follow-text-button').addClass('none');
+                                basic_notification_show(fbox.find('.follow-success-text').val(), 'basic-notification-round-tick');
+                            }     
+                        }
+                    });
                 } else if(button.hasClass('follow-button-with-icon')) {
                     let followers_counter = follow_box.find('.followers-counter');
     

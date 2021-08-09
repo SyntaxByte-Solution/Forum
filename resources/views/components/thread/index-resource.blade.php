@@ -99,7 +99,7 @@
                                         <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
                                         <div class="pointer @guest login-signin-button @endguest">
                                             <div class="relative follow-notif-container @if(!$followed) none @endif">
-                                                <svg class="button-with-suboptions" style="fill: #1e1e1e; height: 15px; width: 15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,512a64,64,0,0,0,64-64H192A64,64,0,0,0,256,512ZM471.39,362.29c-19.32-20.76-55.47-52-55.47-154.29,0-77.7-54.48-139.9-127.94-155.16V32a32,32,0,1,0-64,0V52.84C150.56,68.1,96.08,130.3,96.08,208c0,102.3-36.15,133.53-55.47,154.29A31.24,31.24,0,0,0,32,384c.11,16.4,13,32,32.1,32H447.9c19.12,0,32-15.6,32.1-32A31.23,31.23,0,0,0,471.39,362.29Z"/></svg>
+                                                <svg class="size14 button-with-suboptions" style="fill: #1e1e1e;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,512a64,64,0,0,0,64-64H192A64,64,0,0,0,256,512ZM471.39,362.29c-19.32-20.76-55.47-52-55.47-154.29,0-77.7-54.48-139.9-127.94-155.16V32a32,32,0,1,0-64,0V52.84C150.56,68.1,96.08,130.3,96.08,208c0,102.3-36.15,133.53-55.47,154.29A31.24,31.24,0,0,0,32,384c.11,16.4,13,32,32.1,32H447.9c19.12,0,32-15.6,32.1-32A31.23,31.23,0,0,0,471.39,362.29Z"/></svg>
                                                 <div class="suboptions-container suboptions-container-right-style" style="left: 0; width:max-content">
                                                     <div class="pointer follow-resource follow-button-toggle-with-bell simple-suboption flex align-center">
                                                         <svg class="size17 mr4" style="fill: #202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -113,7 +113,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+                                            @php
+                                                $state = $followed == true ? 1 : -1;
+                                            @endphp
                                             <div class="@if($followed) none @endif @auth follow-text-button follow-resource follow-button-toggle-with-bell @endauth">
                                                 <p class="no-margin fs12 bold btn-txt blue unselectable">{{ __('Follow') }}</p>
                                                 <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
@@ -123,10 +125,7 @@
                                             <input type="hidden" class="thread-add-visibility-slug" value="public">
                                             <input type="hidden" class="followable-id" value="{{ $thread->user->id }}">
                                             <input type="hidden" class="followable-type" value="user">
-                                            @php
-                                                $state = ($followed) ? 1 : -1;
-                                            @endphp
-                                            <input type="hidden" class="status" value="{{ $state }}">
+                                            <input type="hidden" class="status" autocomplete="off" value="{{ $state }}">
                                         </div>
                                     @endif
                                 </div>
@@ -360,7 +359,7 @@
                         </div>
                         <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 0;">
                             <div class="flex">
-                                <input type="text" value="{{ $thread->link }}" class="simple-input" style="width: 240px; padding: 3px; ">
+                                <input type="text" value="{{ $thread->link }}" autocomplete="off" class="simple-input" style="width: 240px; padding: 3px; ">
                                 <a href="" class="input-button-style flex align-center copy-button">
                                     <div>copy</div>
                                 </a>

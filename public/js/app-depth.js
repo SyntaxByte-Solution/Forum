@@ -2632,9 +2632,10 @@ function handle_thread_medias_containers(thread_medias_container) {
 $('.thread-media-container').each(function() {
     let media_container = $(this);
     let thread_medias_container = media_container.parent();
+    let frame;
     
     media_container.imagesLoaded(function() {
-        let frame = media_container.find('.thread-media');
+        frame = media_container.find('.thread-media');
         if(frame.parent().find('.media-type').val() == 'image') {
             handle_media_image_dimensions(frame);
         }

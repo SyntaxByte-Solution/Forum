@@ -15,7 +15,7 @@
         <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
         <div id="login-view" class="auth-card">
             <div>
-                <img id="login-top-logo" class="move-to-middle" src="{{ asset('assets/images/logos/large-logo.png') }}" alt="logo">
+                <img id="login-top-logo" class="move-to-middle" src="{{ asset('assets/images/logos/large-logo(200black).png') }}" load="lazy" alt="logo">
             </div>
             <h1>{{ __('Login') }}</h1>
             <form method="POST" action="{{ route('login') }}" class="move-to-middle">

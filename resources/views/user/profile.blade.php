@@ -145,16 +145,17 @@
                             </div>
                             <div class="move-to-right flex align-center height-max-content follow-box">
                                 <div class="flex align-center">
-                                    <div class="flex align-center px8 py4 pointer followers-display light-border" style="margin: 0 14px">
+                                    <div class="flex align-center px8 py4 pointer br4 followers-display light-grey-hover">
                                         <div class="forum-color">{{ _('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers->count() }}</span></div>
                                     </div>
-                                    <div class="flex align-center px8 py4 pointer follows-display light-border mr8">
+                                    <div class="gray height-max-content mx4 fs10">•</div>
+                                    <div class="flex align-center px8 py4 pointer br4 follows-display light-grey-hover mr8">
                                         <div class="forum-color">{{ _('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->followed_users->count() }}</span></div>
                                     </div>
                                 </div>
                                 @if(auth()->user() && $user->id != auth()->user()->id)
                                 <div class="button-wraper-style-2 @auth follow-resource follow-button-with-icon @endauth @guest login-signin-button @endguest">
-                                    <svg class="size18 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                         <path class="followed @unless($followed) none @endunless" d="M446.26,288.77l-115.32,129a11.26,11.26,0,0,1-15.9.87l-.28-.26L266,371.62a11.23,11.23,0,0,0-15.89.31h0l-28,29.13a11.26,11.26,0,0,0,.33,15.91l95.72,91.89a11.26,11.26,0,0,0,15.91-.33l.27-.29L493.14,330.68a11.26,11.26,0,0,0-.89-15.89l-30.11-26.91A11.25,11.25,0,0,0,446.26,288.77ZM225,149.1a87.1,87.1,0,1,0,87.1,87.09A87.12,87.12,0,0,0,225,149.1Zm0,130.64a43.55,43.55,0,1,1,43.55-43.55A43.56,43.56,0,0,1,225,279.74ZM208.43,470l24,25.28a9.89,9.89,0,0,1-7.18,16.7H225C100.87,512,.27,411.57,0,287.5S101,62,225,62c100.49,0,185.55,65.82,214.45,156.72a11.55,11.55,0,0,1-2.38,11.17L421,248a11.62,11.62,0,0,1-20-5C381.38,164.17,309.93,105.55,225,105.55,124.93,105.55,43.55,186.93,43.55,287A180.16,180.16,0,0,0,77.39,392.15c22.23-28.49,56.43-47.09,95.35-47.09h.06a6.35,6.35,0,0,1,6.2,6.4v31.31a6.4,6.4,0,0,1-8.23,6.14l-.66-.21A78.15,78.15,0,0,0,107,424.54,180.6,180.6,0,0,0,202.48,467,9.88,9.88,0,0,1,208.43,470Z"/>
                                         <g class="follow @if($followed) none @endif">
                                             <path d="M146.9,234.19A87.1,87.1,0,1,0,234,147.1,87.12,87.12,0,0,0,146.9,234.19Zm130.65,0A43.55,43.55,0,1,1,234,190.65,43.56,43.56,0,0,1,277.55,234.19Z"/>

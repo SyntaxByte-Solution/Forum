@@ -10,10 +10,6 @@ function preloadImages(srcs) {
     }
 }
 // then to call it, you would use this
-var imageSrcs = [];
-if(uid != '') {
-    imageSrcs.push(`/users/${uid}/usermedia/avatars/36-l.png`);
-}
-imageSrcs.push(["/assets/images/icons/sp.png"]);
+var imageSrcs = ["/assets/images/logos/large-logo.png", "/assets/images/icons/sp.png"];
 
 preloadImages(imageSrcs);

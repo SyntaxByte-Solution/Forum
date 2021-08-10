@@ -92,12 +92,7 @@ a, input, textarea {
     font-size: 12px !important;
 }
 
-.light-border {
-    border: 1px solid #eaeaea;
-    border-radius: 4px;
-}
-
-.light-border:hover {
+.light-grey-hover:hover {
     background-color: #eaeaea;
 }
 
@@ -578,7 +573,7 @@ a, input, textarea {
     display: flex;
     cursor: pointer;
     border: none;
-    background-color: rgb(103, 170, 255);
+    background-color: rgb(51, 130, 255);
     color: white;
     border-bottom-right-radius: 4px;
     border-top-right-radius: 4px;
@@ -588,7 +583,7 @@ a, input, textarea {
 }
 
 .search-button:hover {
-    background-color: rgb(75, 137, 218);
+    background-color: rgb(32, 121, 238);
 }
 
 #search-and-login {

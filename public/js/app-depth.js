@@ -691,7 +691,6 @@ $('.toggle-container-button').click(function() {
     let container = box.find('.toggle-container');
 
     if(container.css('display') == 'none') {
-        console.log('down');
         container.removeClass('none');
         container.addClass('block');
 
@@ -699,7 +698,6 @@ $('.toggle-container-button').click(function() {
             rotate: '90deg'
         });
     } else {
-        console.log('up');
         container.removeClass('block');
         container.addClass('none');
 

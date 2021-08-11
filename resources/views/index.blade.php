@@ -56,9 +56,9 @@
                             <div class="flex align-center my4 move-to-right">
                                 <span class="mr4 fs13 gray">posts/page :</span>
                                 <select name="" class="small-dropdown row-num-changer" autocomplete="off">
-                                    <option value="8" @if($pagesize == 8) selected @endif>8</option>
+                                    <option value="6" @if($pagesize == 6) selected @endif>6</option>
+                                    <option value="10" @if($pagesize == 10) selected @endif>10</option>
                                     <option value="16" @if($pagesize == 16) selected @endif>16</option>
-                                    <option value="32" @if($pagesize == 32) selected @endif>32</option>
                                 </select>
                             </div>
                         </div>

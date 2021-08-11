@@ -8,7 +8,7 @@ use App\Models\{Forum, Thread, Category};
 class IndexController extends Controller
 {
     public function index(Request $request) {
-        $pagesize = 8;
+        $pagesize = 6;
         $pagesize_exists = false;
         if($request->has('pagesize')) {
             $pagesize_exists = true;

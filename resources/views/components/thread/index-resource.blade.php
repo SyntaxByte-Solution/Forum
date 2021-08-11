@@ -91,7 +91,7 @@
                     <div class="flex">
                         <div class="relative rounded mr4 hidden-overflow has-fade" style="width: 32px; height: 32px">
                             <div class="fade-loading"></div>
-                            <img src="{{ $thread->user->sizedavatar(36) }}" class="thread-owner-avatar flex" alt="" style="width: 32px; height: 32px">
+                            <img src="{{ $thread->user->sizedavatar(36, '-l') }}" class="thread-owner-avatar flex" alt="" style="width: 32px; height: 32px">
                         </div>
                         <div>
                             <div class="flex align-center">
@@ -279,7 +279,7 @@
                 </div>
                 @if($thread->has_media)
                 <!-- thread media -->
-                <div class="thread-medias-container  has-lazy">
+                <div class="thread-medias-container has-lazy">
                     <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                     @php
                         $media_count = 0;

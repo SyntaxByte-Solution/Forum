@@ -3931,12 +3931,29 @@ $.fn.isInViewport = function() {
 $(window).on('DOMContentLoaded load resize scroll', function() {
     $('.has-lazy').each(function() {
         if($(this).isInViewport()) {
+            let thread_medias_container = $(this);
             $(this).find('.lazy-image').each(function() {
                 let img = $(this);
                 img.attr('src', img.attr('data-src'));
                 img.removeAttr('data-src');
                 img.parent().imagesLoaded(function() {
                     handle_media_image_dimensions(img);
+                    if(thread_medias_container.find('.thread-media-container').length == 1) {
+                        let media_container = thread_medias_container.find('.thread-media-container');
+                        let media = media_container.find('.thread-media');
+                        let media_type = media.parent().find('.media-type').val();
+                        if(media_type == 'image') {
+                            if(media.height() > media_container.height()) {
+                                let max_height = parseInt(media_container.css('max-height'), 10);
+                                let container_height = media_container.height();
+                    
+                                while(container_height < max_height && container_height < media.height()) {
+                                    media_container.height(container_height++);
+                                }
+                                media_container.css('align-items', 'flex-start');
+                            }
+                        }
+                    }
                     img.parent().find('.fade-loading').remove();
                 });
             });
@@ -3945,33 +3962,3 @@ $(window).on('DOMContentLoaded load resize scroll', function() {
         }
     });
 });
-
-// let media_container = $(this);
-//     let thread_medias_container = media_container.parent();
-//     let frame;
-    
-//     media_container.imagesLoaded(function() {
-//         frame = media_container.find('.thread-media');
-//         if(frame.parent().find('.media-type').val() == 'image') {
-//             handle_media_image_dimensions(frame);
-//         }
-//     });
-
-//     if(thread_medias_container.find('.thread-media-container').length == 1) {
-//         let media = media_container.find('.thread-media');
-//         let media_type = media.parent().find('.media-type').val();
-//         if(media_type == 'image') {
-//             if(media.height() > media_container.height()) {
-//                 let max_height = parseInt(media_container.css('max-height'), 10);
-//                 let container_height = media_container.height();
-    
-//                 while(container_height < max_height && container_height < media.height()) {
-//                     media_container.height(container_height++);
-//                 }
-//                 handle_media_image_dimensions(frame);
-//                 media_container.css('align-items', 'flex-start');
-//             }
-//         } else {
-//             handle_thread_video_dimensions(media);
-//         }
-//     }

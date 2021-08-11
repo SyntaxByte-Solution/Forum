@@ -17,7 +17,7 @@
             @auth
             <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" class="menu-button-style">{{ __('Activities') }}</a>
             @endauth
-            <a href="" class="menu-button-style">{{ __('Contact') }}</a>
+            <a href="" class="menu-button-style">{{ __('Contact Us') }}</a>
         </div>
 
         <div id="search-and-login" class="flex align-center move-to-right">

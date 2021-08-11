@@ -16,7 +16,7 @@
 @section('content')
     @include('partials.left-panel', ['page' => 'search', 'subpage'=>'users-search'])
     <div id="middle-container" class="middle-padding-1 flex">
-        <div class="full-width">
+        <div class="full-width index-middle-width middle-container-style">
             <div>
                 <a href="/" class="link-path">{{ __('Board index') }} > </a>
                 <a href="/search" class="link-path">{{ __('Search') }} > </a>
@@ -37,10 +37,10 @@
                     <input type="submit" class="ml8 button-style-1" style="padding: 9px 12px" value="{{ __('Search') }}">
                 </form>
             </div>
-            <div class="simple-line-separator my8"></div>
             @if($search_query != "")
-            <h2 class="fs20 flex align-center gray">Search results for: "<span class="black">{{ $search_query }}</span>"</h2>
+            <h2 class="fs20 flex align-center gray">Users search results for: "<span class="black">{{ $search_query }}</span>" ({{$users->total()}} {{__('found')}})</h2>
             @endif
+            <div class="simple-line-separator my8"></div>
             <div>
                 @if($users->count())
                     <div class="flex space-between align-center my8">

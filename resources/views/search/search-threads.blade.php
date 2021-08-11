@@ -3,6 +3,12 @@
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css">
+@endpush
+
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
+    <script src="{{ asset('js/post.js') }}" defer></script>
 @endpush
 
 @section('header')
@@ -14,22 +20,14 @@
 @endsection
 
 @section('content')
+    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'search', 'subpage'=>'threads-search'])
     <div id="middle-container" class="middle-padding-1 flex">
-        <div class="full-width">
-            <div class="flex">
-                <div>
-                    <div>
-                        <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                        <a href="/search" class="link-path">{{ __('Search') }} > </a>
-                        <span class="current-link-path">{{ __('Threads search') }}</span>
-                    </div>
-                    <!-- 
-                        Here we need to know if the page loaded from advanced search; If so we need to show the user
-                        the filters.
-                     -->
-                </div>
-                <a href="{{ route('thread.add') }}" class="button-style-1 flex move-to-right height-max-content">{{ __('Add a thread') }}</a>
+        <div class="full-width index-middle-width middle-container-style">
+            <div>
+                <a href="/" class="link-path">{{ __('Board index') }} > </a>
+                <a href="/search" class="link-path">{{ __('Search') }} > </a>
+                <span class="current-link-path">{{ __('Threads search') }}</span>
             </div>
             <div class="flex">
                 <div>
@@ -50,47 +48,23 @@
                 </form>
             </div>
             @if($search_query != "")
-            <h2 class="fs20 flex align-center gray">Search results for: "<span class="black">{{ $search_query }}</span>"</h2>
+            <h2 class="fs20 flex align-center gray">Threads search results for: "<span class="black">{{ $search_query }}</span>" ({{$threads->total()}} {{__('found')}})</h2>
             @endif
             <div class="simple-line-separator my8"></div>
             <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Threads') }}</h2>
             <div>
-                <div class="flex space-between align-end my8">
-                    <div>
-                        
-                        <div class="flex align-center my8">
-                            <div class="flex align-center mr8">
-                                <p class="no-margin mr4">{{__('Forums')}}: </p>
-                                <div class="relative">
-                                    <a href="{{ route('forum.all.threads', ['forum'=>'general']) }}" class="flex mr4 button-right-icon more-icon button-with-suboptions" style="padding: 6px 26px 6px 10px; font-size: 12px">{{ __('All') }}</a>
-                                    <div class="suboptions-container suboptions-buttons-b-style">
-                                        @foreach($forums as $forum)
-                                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex align-center move-to-right">
-                            <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
-                            <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
-                            <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
+                <div class="flex align-center space-between my4">
+                    <div class="flex">
+                        <div class="flex align-center my4 move-to-right">
+                            <span class="mr4 fs13 gray">posts/page :</span>
+                            <select name="" class="small-dropdown row-num-changer" autocomplete="off">
+                                <option value="6" @if($pagesize == 6) selected @endif>6</option>
+                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                <option value="16" @if($pagesize == 16) selected @endif>16</option>
+                            </select>
                         </div>
                     </div>
-                    <div>
-                        <div class="flex">
-                            <div class="flex align-center my4 move-to-right">
-                                <span class="mr4 fs13 gray">Discussion/Page :</span>
-                                <select name="" class="small-dropdown row-num-changer">
-                                    <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                    <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                    <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                                </select>
-                            </div>
-                        </div>
-                        {{ $threads->onEachSide(0)->links() }}
-                    </div>
+                    {{ $threads->onEachSide(0)->links() }}
                 </div>
                 <div id="threads-global-container">
                     @foreach($threads as $thread)

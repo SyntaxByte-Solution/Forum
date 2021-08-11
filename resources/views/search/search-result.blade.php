@@ -70,8 +70,7 @@
                     </div>
                     <div>
                         <div class="flex space-between align-end my8">
-                            <div>
-                                <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
+                            <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
                                 <a href="/" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
                                         {{ __('All') }}
                                 </a>
@@ -81,7 +80,6 @@
                                 <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
                                     {{ __('This week') }}
                                 </a>
-                            </div>
                             </div>
                             <div>
                                 <div class="flex">

@@ -128,7 +128,7 @@
             <script>
                 var viewer_reply_simplemde = new SimpleMDE({
                     placeholder: '{{ __("Your reply here..") }}',
-                    hideIcons: ["guide", "link", "image"],
+                    hideIcons: ["guide", "heading", "link", "image"],
                     spellChecker: false,
                     showMarkdownLineBreaks: true,
                 });

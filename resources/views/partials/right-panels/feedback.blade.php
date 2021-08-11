@@ -77,7 +77,7 @@
         <p class="fs12 my8">We are here to anwser any questions you may have about us or any feedback you have about the website. Reach out to us using below form, and we'll respond as soon as we can.</p>
         <div class="feedback-container">
             <div class="feedback-sent-success-container green-message-container none">
-                <img src="{{ asset('assets/images/icons/green-tick.png') }}" class="small-image move-to-middle" alt="">
+                <svg class="size20 flex mb4 move-to-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/></svg>
                 <p class="fs13 no-margin text-center green-message">{{ __('Your feedback is sent successfully.') }}</p>
             </div>
             <div class="feedback-sec">

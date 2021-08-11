@@ -1,4 +1,3 @@
-
 var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
@@ -3964,3 +3963,19 @@ function handle_move_to_trash(button) {
         });
     });
 }
+
+$.fn.isInViewport = function() {
+    var elementTop = $(this).offset().top;
+    var elementBottom = elementTop + $(this).outerHeight();var viewportTop = $(window).scrollTop();
+    var viewportBottom = viewportTop + $(window).height();return elementBottom > viewportTop && elementTop < viewportBottom;
+};
+
+$(window).on('DOMContentLoaded load resize scroll', function() {
+    $('.lazy').each(function() {
+        if($(this).isInViewport()) {
+            console.log('reached');
+            // 
+            $(this).removeClass('lazy');
+        }
+    });
+});

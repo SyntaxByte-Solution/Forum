@@ -13,11 +13,10 @@
         </div>
         <div class="flex align-center full-height" style="margin-left: 10px;">
             <a href="/" class="menu-button-style">{{ __('Home') }}</a>
+            <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
             @auth
             <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" class="menu-button-style">{{ __('Activities') }}</a>
             @endauth
-            <a href="{{ route('user.notifications') }}" class="menu-button-style">{{ __('Notifications') }}</a>
-            <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
             <a href="" class="menu-button-style">{{ __('Contact') }}</a>
         </div>
 

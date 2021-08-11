@@ -3,7 +3,6 @@
 @section('title', 'MG Forums')
 
 @push('styles')
-    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
 @endpush

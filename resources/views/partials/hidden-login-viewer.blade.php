@@ -12,7 +12,9 @@
 @endif
 
 <div class="fixed full-shadowed" style="{{ $show_login_view }}z-index:90; margin-top: 52px">
-        <a href="" class="close-shadowed-view close-shadowed-view-button"></a>
+        <div class="close-shadowed-view-button close-button-style" style="right: 20px; top: 20px">
+            <span>✖</span>
+        </div>
         <div id="login-view" class="auth-card">
             <div>
                 <img id="login-top-logo" class="move-to-middle" src="{{ asset('assets/images/logos/large-logo(200black).png') }}" load="lazy" alt="logo">

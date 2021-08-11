@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
-@endpush
-
 @section('header')
     @include('partials.header')
 @endsection

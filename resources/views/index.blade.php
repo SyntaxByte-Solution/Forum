@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @push('styles')
-    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
 @endpush
@@ -34,21 +33,32 @@
                 @endauth
                 <h3 class="fs26 page-title forum-color" style="margin: 12px 0 26px 0">{{ __('Discussions and Questions') }}</h3>
                 <div class="flex space-between align-end my8">
-                    <div>
+                    <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
+                        <a href="/" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
+                                {{ __('All') }}
+                        </a>
+                        <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
+                            {{ __('Today') }}
+                        </a>
+                        <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
+                            {{ __('This week') }}
+                        </a>
+                    </div>
+                    <!-- <div>
                         <div class="flex align-center move-to-right">
                             <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
                             <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
                             <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
                         </div>
-                    </div>
+                    </div> -->
                     <div>
                         <div class="flex">
                             <div class="flex align-center my4 move-to-right">
                                 <span class="mr4 fs13 gray">posts/page :</span>
                                 <select name="" class="small-dropdown row-num-changer" autocomplete="off">
-                                    <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                    <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                    <option value="50" @if($pagesize == 50) selected @endif>50</option>
+                                    <option value="8" @if($pagesize == 8) selected @endif>8</option>
+                                    <option value="16" @if($pagesize == 16) selected @endif>16</option>
+                                    <option value="32" @if($pagesize == 32) selected @endif>32</option>
                                 </select>
                             </div>
                         </div>

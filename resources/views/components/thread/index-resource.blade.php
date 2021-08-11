@@ -59,7 +59,9 @@
                     <div class="left-middle-triangle"></div>
                     <div class="flex align-center">
                         <p class="informer-message"></p>
-                        <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
+                        <div class="remove-informer-message-container rounded pointer">
+                            <span style="margin-top: -1px">✖</span>
+                        </div>
                     </div>
                 </div>
 
@@ -277,7 +279,7 @@
                 </div>
                 @if($thread->has_media)
                 <!-- thread media -->
-                <div class="thread-medias-container">
+                <div class="thread-medias-container  has-lazy">
                     <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                     @php
                         $media_count = 0;
@@ -292,7 +294,7 @@
 
                             </div>
                             <div class="fade-loading"></div>
-                            <img data-src="{{ asset($media['frame']) }}" alt="" class="thread-media image-that-fade-wait lazy">
+                            <img data-src="{{ asset($media['frame']) }}" alt="" class="thread-media image-that-fade-wait lazy-image">
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
                             </div>

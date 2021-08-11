@@ -2,6 +2,23 @@ var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
 
+// preload important images that needs to be shown in the beginning
+function preloadImages(srcs) {
+    if (!preloadImages.cache) {
+        preloadImages.cache = [];
+    }
+    var img;
+    for (var i = 0; i < srcs.length; i++) {
+        img = new Image();
+        img.src = srcs[i];
+        preloadImages.cache.push(img);
+    }
+}
+// then to call it, you would use this
+var imageSrcs = ["/assets/images/logos/large-logo.png", "/assets/images/icons/sp.png"];
+
+preloadImages(imageSrcs);
+
 // the following section is for displaying viewers based on the value of query strings
 // -------------------------------
 
@@ -2601,65 +2618,6 @@ function handle_thread_medias_containers(thread_medias_container) {
     }
 }
 
-// $('.thread-media').each(function() {
-//     $(this).on('load', function() {
-//         handle_media_image_dimensions($(this));
-        
-//         // Following code handle thread with one image
-//         let image = $(this);
-//         let thread_medias_container = $(this);
-//         while(!thread_medias_container.hasClass('thread-medias-container')) {
-//             thread_medias_container = thread_medias_container.parent();
-//         }
-
-//         if(thread_medias_container.find('.thread-media-container').length == 1) {
-//             if(image.height() > thread_medias_container.height()) {
-//                 let thread_media_container = thread_medias_container.find('.thread-media-container');
-//                 let max_height = parseInt(image.parent().css('max-height'), 10);
-//                 let container_height = thread_media_container.height();
-
-//                 while(container_height < max_height && container_height < image.height()) {
-//                     thread_media_container.height(container_height+1);
-//                     container_height++;
-//                 }
-//                 handle_media_image_dimensions(image);
-//             }
-//         }
-//     });
-// });
-
-$('.thread-media-container').each(function() {
-    let media_container = $(this);
-    let thread_medias_container = media_container.parent();
-    let frame;
-    
-    media_container.imagesLoaded(function() {
-        frame = media_container.find('.thread-media');
-        if(frame.parent().find('.media-type').val() == 'image') {
-            handle_media_image_dimensions(frame);
-        }
-    });
-
-    if(thread_medias_container.find('.thread-media-container').length == 1) {
-        let media = media_container.find('.thread-media');
-        let media_type = media.parent().find('.media-type').val();
-        if(media_type == 'image') {
-            if(media.height() > media_container.height()) {
-                let max_height = parseInt(media_container.css('max-height'), 10);
-                let container_height = media_container.height();
-    
-                while(container_height < max_height && container_height < media.height()) {
-                    media_container.height(container_height++);
-                }
-                handle_media_image_dimensions(frame);
-                media_container.css('align-items', 'flex-start');
-            }
-        } else {
-            handle_thread_video_dimensions(media);
-        }
-    }
-});
-
 let images_loaded = false;
 let infos_fetched = false;
 let viewer_media_count = 0;
@@ -3252,7 +3210,7 @@ $('.fade-loading').each(function(event) {
 });
 $(".has-fade").each(function() {
     let fc = $(this);
-    fc.imagesLoaded( function() {
+    fc.imagesLoaded(function() {
         fc.find('.fade-loading').remove();
     });
 });
@@ -3971,11 +3929,49 @@ $.fn.isInViewport = function() {
 };
 
 $(window).on('DOMContentLoaded load resize scroll', function() {
-    $('.lazy').each(function() {
+    $('.has-lazy').each(function() {
         if($(this).isInViewport()) {
-            console.log('reached');
-            // 
-            $(this).removeClass('lazy');
+            $(this).find('.lazy-image').each(function() {
+                let img = $(this);
+                img.attr('src', img.attr('data-src'));
+                img.removeAttr('data-src');
+                img.parent().imagesLoaded(function() {
+                    handle_media_image_dimensions(img);
+                    img.parent().find('.fade-loading').remove();
+                });
+            });
+            
+            $(this).removeClass('has-lazy');
         }
     });
 });
+
+// let media_container = $(this);
+//     let thread_medias_container = media_container.parent();
+//     let frame;
+    
+//     media_container.imagesLoaded(function() {
+//         frame = media_container.find('.thread-media');
+//         if(frame.parent().find('.media-type').val() == 'image') {
+//             handle_media_image_dimensions(frame);
+//         }
+//     });
+
+//     if(thread_medias_container.find('.thread-media-container').length == 1) {
+//         let media = media_container.find('.thread-media');
+//         let media_type = media.parent().find('.media-type').val();
+//         if(media_type == 'image') {
+//             if(media.height() > media_container.height()) {
+//                 let max_height = parseInt(media_container.css('max-height'), 10);
+//                 let container_height = media_container.height();
+    
+//                 while(container_height < max_height && container_height < media.height()) {
+//                     media_container.height(container_height++);
+//                 }
+//                 handle_media_image_dimensions(frame);
+//                 media_container.css('align-items', 'flex-start');
+//             }
+//         } else {
+//             handle_thread_video_dimensions(media);
+//         }
+//     }

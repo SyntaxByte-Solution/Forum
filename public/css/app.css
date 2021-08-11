@@ -651,10 +651,6 @@ a, input, textarea {
     background-position: 0px -476px;
 }
 
-.vote28-icon {
-    background-position: 28px -980px;
-}
-
 .english17-flag {
     background-position: -17px -102px;
 }
@@ -683,60 +679,8 @@ a, input, textarea {
     background-position: 17px -68px;
 }
 
-.votes17-icon {
-    background-position: 0px -1360px;
-}
-
-.upvoted17-icon {
-    background-position: 0px -1377px;
-}
-
-.downvoted17-icon {
-    background-position: 17px -1377px;
-}
-
-.upvote17-icon {
-    background-position: 0px -1343px;
-}
-
-.upvote20-icon {
-    background-position: 0px -1580px;
-}
-
-.upvotefilled17-icon {
-    background-position: 17px -1343px;
-}
-
-.upvotefilled20-icon {
-    background-position: 20px -1580px;
-}
-
-.downvotefilled17-icon {
-    background-position: 17px -1326px;
-}
-
-.downvotefilled20-icon {
-    background-position: 20px -1560px;
-}
-
-.downvote17-icon {
-    background-position: 0px -1326px;
-}
-
-.downvote20-icon {
-    background-position: 0px -1560px;
-}
-
 .resource24-reply-icon {
     background-position: 0px -455px;
-}
-
-.resource24-vote-icon {
-    background-position: 0px -480px;
-}
-
-.followfilled24-icon {
-    background-position: 0px -312px;
 }
 
 .notification24-icon {
@@ -767,24 +711,8 @@ a, input, textarea {
     background-position: 0px -624px;
 }
 
-.reply17-icon {
-    background-position: 0px -17px;
-}
-
-.private18-icon {
-    background-position: 0px -1350px;
-}
-
-.follow14-icon {
-    background-position: 14px -798px;
-}
-
 .followed14-icon {
     background-position: 14px -784px;
-}
-
-.votes14-icon {
-    background-position: 14px -938px;
 }
 
 .nofollow36-icon {
@@ -984,30 +912,6 @@ a, input, textarea {
     background-color: rgba(0, 0, 0, 0.78);
 
     transition: all 0.4s ease;
-}
-
-.close-shadowed-view {
-    position: absolute;
-    display: block;
-
-    top: 30px;
-    right: 30px;
-
-    height: 36px;
-    width: 36px;
-
-    border-radius: 50%;
-
-    background-image: url(../assets/images/icons/wx.png);
-    background-size: 16px;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    transition: 0.4s ease background-color;
-}
-
-.close-shadowed-view:hover {
-    background-color: rgba(255, 255, 255, 0.3);
 }
 
 .shadowed-view-section-style {
@@ -2141,10 +2045,14 @@ tr:nth-child(2n) {
 }
 
 .remove-informer-message-container {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
     width: 9px;
     height: 9px;
-    padding: 3px;
+    padding: 4px;
     margin-left: 6px;
+    color: white;
     background-color: #00000075;
 }
 

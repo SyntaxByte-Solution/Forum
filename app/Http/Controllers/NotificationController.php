@@ -66,7 +66,7 @@ class NotificationController extends Controller
         }
 
         return [
-            "hasNext"=> auth()->user()->notifs->skip(($data['skip']+1) * $data['range'])->count() > 0,
+            "hasNext"=> auth()->user()->notifs->skip(($data['skip']+ $data['range']))->count() > 0,
             "content"=>$payload,
             "count"=>$notifs_to_return->count()
         ];

@@ -24,6 +24,11 @@
                 $previous_page_url = $previous_page_url . "&pagesize=" . $pagesize;
                 $next_page_url = $next_page_url . "&pagesize=" . $pagesize;
             }
+            if(request()->has('k')) {
+                $k = request()->input('k');
+                $previous_page_url = $previous_page_url . "&k=" . $k;
+                $next_page_url = $next_page_url . "&k=" . $k;
+            }
 
         @endphp
 
@@ -47,6 +52,9 @@
                         }
                         if(request()->has('pagesize')) {
                             $url = $url . "&pagesize=" . $pagesize;
+                        }
+                        if(request()->has('k')) {
+                            $url = $url . "&k=" . $k;
                         }
                     @endphp
                     @if ($page == $paginator->currentPage())

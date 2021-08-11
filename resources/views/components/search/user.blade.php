@@ -1,10 +1,11 @@
 <div class="user-component-container flex align-center {{ $attributes['class'] }}" style="{{ $attributes['style'] }}">
-    <div class="flex">
-        <img src="{{ $user->avatar }}" class="size60 rounded" alt="">
+    <div class="flex relative has-fade rounded hidden-overflow">
+        <div class="fade-loading"></div>
+        <img src="{{ $user->sizedavatar(36) }}" class="size60 rounded image-that-fade-wait" alt="">
     </div>
     <div class="ml8">
         <div class="relative">
-            <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="my4 fs16 bold no-underline blue button-with-container">{{ $user->username }}</a>
+            <a href="{{ $user->profilelink }}" class="my4 fs16 bold no-underline blue button-with-container">{{ $user->username }}</a>
             @include('partials.user-profile-card', ['user'=>$user])
         </div>
         <div>

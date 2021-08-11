@@ -44,13 +44,6 @@
                             {{ __('This week') }}
                         </a>
                     </div>
-                    <!-- <div>
-                        <div class="flex align-center move-to-right">
-                            <a href="/" class="pagination-item pag-active @if(!request()->has('tab')) pagination-item-selected @endif bold">Interesting</a>
-                            <a href="?tab=today" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'today') pagination-item-selected @endif @endif">Today</a>
-                            <a href="?tab=thisweek" class="pagination-item pag-active bold @if($t = request()->has('tab')) @if(request()->get('tab') == 'thisweek') pagination-item-selected @endif @endif">This week</a>
-                        </div>
-                    </div> -->
                     <div>
                         <div class="flex">
                             <div class="flex align-center my4 move-to-right">

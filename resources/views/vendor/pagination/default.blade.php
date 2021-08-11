@@ -30,6 +30,33 @@
                 $next_page_url = $next_page_url . "&k=" . $k;
             }
 
+            // These checks for advanced search section
+            if(request()->has('forum')) {
+                $forum = request()->input('forum');
+                $previous_page_url = $previous_page_url . "&forum=" . $forum;
+                $next_page_url = $next_page_url . "&forum=" . $forum;
+            }
+            if(request()->has('category')) {
+                $category = request()->input('category');
+                $previous_page_url = $previous_page_url . "&category=" . $category;
+                $next_page_url = $next_page_url . "&category=" . $category;
+            }
+            if(request()->has('threads_date')) {
+                $threads_date = request()->input('threads_date');
+                $previous_page_url = $previous_page_url . "&threads_date=" . $threads_date;
+                $next_page_url = $next_page_url . "&threads_date=" . $threads_date;
+            }
+            if(request()->has('sorted_by')) {
+                $sorted_by = request()->input('sorted_by');
+                $previous_page_url = $previous_page_url . "&sorted_by=" . $sorted_by;
+                $next_page_url = $next_page_url . "&sorted_by=" . $sorted_by;
+            }
+            if(request()->has('hasbestreply')) {
+                $hasbestreply = request()->input('hasbestreply');
+                $previous_page_url = $previous_page_url . "&hasbestreply=" . $hasbestreply;
+                $next_page_url = $next_page_url . "&hasbestreply=" . $hasbestreply;
+            }
+
         @endphp
 
         @if (!$paginator->onFirstPage())
@@ -55,6 +82,22 @@
                         }
                         if(request()->has('k')) {
                             $url = $url . "&k=" . $k;
+                        }
+                        // Advanced search checks
+                        if(request()->has('forum')) {
+                            $url = $url . "&forum=" . $forum;
+                        }
+                        if(request()->has('category')) {
+                            $url = $url . "&category=" . $category;
+                        }
+                        if(request()->has('threads_date')) {
+                            $url = $url . "&threads_date=" . $threads_date;
+                        }
+                        if(request()->has('sorted_by')) {
+                            $url = $url . "&sorted_by=" . $sorted_by;
+                        }
+                        if(request()->has('hasbestreply')) {
+                            $url = $url . "&hasbestreply=" . $hasbestreply;
                         }
                     @endphp
                     @if ($page == $paginator->currentPage())

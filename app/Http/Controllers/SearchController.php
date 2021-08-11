@@ -72,9 +72,10 @@ class SearchController extends Controller
     }
 
     public function search_advanced_results(Request $request) {
+        $filters = [];
         $forums = Forum::all();
 
-        $pagesize = 10;
+        $pagesize = 6;
         $threads = Thread::query();
         $keywords;
 
@@ -93,7 +94,7 @@ class SearchController extends Controller
             ],
             'category'=>[
                 'sometimes',
-                function ($attribute, $value, $fail) use (&$threads) {
+                function ($attribute, $value, $fail) use (&$filters) {
                     // request()->forum != 0 means the user select a forum
                     // request()->forum == 0; means user select All forums
                     if(($forum = request()->forum) != 0) {
@@ -102,6 +103,10 @@ class SearchController extends Controller
 
                         if(!in_array($value, $categories_ids)) {
                             $fail('The '.$attribute." doesn't exists in our records.");
+                        } else {
+                            if($value != 0) {
+                                $filters[] = [__('Category'), \App\Models\Category::find($value)->category];
+                            }
                         }
                     } else {
                         if($value != 0) {
@@ -130,6 +135,12 @@ class SearchController extends Controller
         // request()->forum != 0 means the user select a forum
         // request()->forum == 0; means user select All forums
         if(($forum = $data['forum']) != 0) {
+            // We check for category because if there's forum and category submitted we want the forum to be first
+            if($request->category) {
+                array_unshift($filters, [__('Forum'), Forum::find($forum)->forum]);
+            } else {
+                $filters[] = [__('Forum'), Forum::find($forum)->forum];
+            }
             $categories_ids = Forum::find($forum)->categories->pluck('id')->toArray();
             
             if(!isset($data['category']) || $data['category'] == '0') {
@@ -197,21 +208,26 @@ class SearchController extends Controller
         }
 
         if(isset($request->hasbestreply)) {
+            $filters[] = [__('Best replied'), __('ON')];
             $threads = $threads->ticked();
         }
 
         if(isset($data['threads_date'])) {
             switch($data['threads_date']) {
                 case 'past24hours':
+                    $filters[] = [__('Date'), __('Past 24 hours')];
                     $threads = $threads->where("created_at",">",Carbon::now()->subDay(1));
                     break;
                 case 'pastweek':
+                    $filters[] = [__('Date'), __('Last week')];
                     $threads = $threads->where("created_at",">",Carbon::now()->subDays(7));
                     break;
                 case 'pastmonth':
+                    $filters[] = [__('Date'), __('Last month')];
                     $threads = $threads->where("created_at",">",Carbon::now()->subMonth());
                     break;
                 case 'pastyear':
+                    $filters[] = [__('Date'), __('Last year')];
                     $threads = $threads->where("created_at",">",Carbon::now()->subYear());
                     break;
             }
@@ -220,19 +236,24 @@ class SearchController extends Controller
         if(isset($data['sorted_by'])) {
             switch($data['sorted_by']) {
                 case 'created_at_desc':
+                    $filters[] = [__('Sort by'), __('creation date(desc)')];
                     $threads = $threads->orderBy('created_at', 'desc');
                     break;
                 case 'created_at_asc':
+                    $filters[] = [__('Sort by'), __('creation date(asc)')];
                     $threads = $threads->orderBy('created_at');
                     break;
                 case 'views':
+                    $filters[] = [__('Sort by'), __('views')];
                     // We plan to separate thread view to new table
                     $threads = $threads->orderBy('view_count', 'desc');
                     break;
                 case 'votes':
+                    $filters[] = [__('Sort by'), __('votes')];
                     $threads = $threads->withCount('votes')->orderBy('votes_count', 'desc');
                     break;
                 case 'likes':
+                    $filters[] = [__('Sort by'), __('likes')];
                     $threads = $threads->withCount('likes')->orderBy('likes_count', 'desc');
                     break;
             }
@@ -242,6 +263,7 @@ class SearchController extends Controller
         $search_query = $data['k'];
         
         return view('search.search-threads')
+            ->with(compact('filters'))
             ->with(compact('forums'))
             ->with(compact('threads'))
             ->with(compact('pagesize'))

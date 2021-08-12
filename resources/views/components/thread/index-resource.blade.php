@@ -24,6 +24,7 @@
                     <a href="" class="simple-link close-shadowed-view-button fs14" style="text-decoration: none; margin-left: 6px;">cancel</a>
                     <input type="hidden" class="id" value="{{ $thread->id }}">
                     <input type="hidden" class="switch" value="{{ $switch }}">
+                    <input type="hidden" class="act-wait" value="{{ __('Please wait') }}..">
                 </div>
             </div>
         </div>
@@ -229,7 +230,7 @@
                                 <input type="hidden" value="thread.destroy" class="verification-action-type">
                             </div>
                             <div class="simple-suboption flex align-center action-verification">
-                                <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') repliesoff17-icon @else reply17-icon @endif mr4"></div>
+                                <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') turnoffreplies17-icon @else turnonreplies17-icon @endif mr4"></div>
                                 <div>{{ __('Turn ' . $posts_switch .  ' replies') }}</div>
                                 <input type="hidden" value="turn.off.posts" class="verification-action-type">
                             </div>

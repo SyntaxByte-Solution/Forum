@@ -8,15 +8,13 @@
     <div id="header" class="relative">
         <div id="header-logo-container" style="min-width: 144px; max-width: 144px">
             <a href="/">
-                <img src='{{ asset("assets/images/logos/large-logo.png") }}' alt="header logo" id="header-logo">
+                <img src='{{ asset("assets/images/logos/header-logo.png") }}' alt="header logo" id="header-logo">
             </a>
         </div>
         <div class="flex align-center full-height" style="margin-left: 10px;">
             <a href="/" class="menu-button-style">{{ __('Home') }}</a>
             <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
-            @auth
-            <a href="{{ route('user.activities', ['user'=>auth()->user()->username]) }}" class="menu-button-style">{{ __('Activities') }}</a>
-            @endauth
+            <a href="" class="menu-button-style">{{ __('Guidelines') }}</a>
             <a href="" class="menu-button-style">{{ __('Contact Us') }}</a>
         </div>
 

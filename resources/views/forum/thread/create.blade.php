@@ -19,7 +19,7 @@
 @section('content')
     @include('partials.left-panel', ['page' => 'add-thread'])
     <div id="middle-container" class="middle-padding-1 flex">
-        <div class="full-width">
+        <div class="full-width index-middle-width middle-container-style">
             <div>
                 <a href="/" class="link-path">{{ __('Board index') }} > </a>
                 <span class="current-link-path">{{ __('Start a discussion / Ask a question') }}</span>

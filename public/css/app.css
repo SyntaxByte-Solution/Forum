@@ -668,49 +668,47 @@ a, input, textarea {
 }
 
 .disablenotif17b-icon {
-    background-position: 0px -425px;
+    background-position: 0px -17px;
 }
 
 .enablenotif17b-icon {
-    background-position: -17px -425px;
+    background-position: 17px -17px;
 }
 
-.repliesoff17-icon {
-    background-position: 17px -68px;
+.turnoffreplies17-icon {
+    background-position: 17px 0px;
+}
+
+.turnonreplies17-icon {
+    background-position: 0 0;
 }
 
 .resource24-reply-icon {
-    background-position: 0px -455px;
-}
-
-.resource24-vote-icon {
-    background-position: 0px -480px;
-}
-
-.followfilled24-icon {
-    background-position: 0px -312px;
+    background-position: 0px -192px;
 }
 
 .notification24-icon {
-    background-position: -24px -456px;
+    background-position: -24px -192px;
+}
+
+.resource24-vote-icon {
+    background-position: 0px -216px;
+}
+
+.followfilled24-icon {
+    background-position: 0px -240px;
 }
 
 .resource24-like-icon {
-    background-position: -24px -480px;
+    background-position: -24px -216px;
 }
 
 .warning24-icon {
-    background-position: 0px -288px;
+    background-position: -24px -240px;
 }
 
 .menu24-icon {
-    background-position: 0px -552px;
-    border-radius: 50%;
-    border: 1px solid gray;
-}
-
-.menu24b-icon {
-    background-position: -20px -552px;
+    background-position: 0px -48px;
     border-radius: 50%;
     border: 1px solid gray;
 }
@@ -724,7 +722,7 @@ a, input, textarea {
 }
 
 .nofollow36-icon {
-    background-position: 0 -144px;
+    background-position: -36px -180px;
 }
 
 .notfound36-icon {

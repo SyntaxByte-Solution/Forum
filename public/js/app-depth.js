@@ -2,23 +2,6 @@ var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
 
-// preload important images that needs to be shown in the beginning
-function preloadImages(srcs) {
-    if (!preloadImages.cache) {
-        preloadImages.cache = [];
-    }
-    var img;
-    for (var i = 0; i < srcs.length; i++) {
-        img = new Image();
-        img.src = srcs[i];
-        preloadImages.cache.push(img);
-    }
-}
-// then to call it, you would use this
-var imageSrcs = ["/assets/images/logos/large-logo.png", "/assets/images/icons/sp.png"];
-
-preloadImages(imageSrcs);
-
 // the following section is for displaying viewers based on the value of query strings
 // -------------------------------
 
@@ -358,7 +341,7 @@ $('.share-thread').click(function(event) {
 $('.turn-off-posts').click(function() {
     let button = $(this);
     let old_button_name = button.val();
-    button.val('Please wait..')
+    button.val(button.parent().find('.act-wait').val());
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #acacac; cursor: default');
 
@@ -1592,6 +1575,8 @@ if(userId != "") {
                     handle_nested_soc(appended_component.find('.notification-menu-button'));
                     handle_delete_notification(appended_component.find('.delete-notification'));
                     handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
+                    handle_fade_loading(appended_component.find('.has-fade'));
+                    handle_fade_loading_removing(appended_component.find('.has-fade'));
                 }
             })
 
@@ -1647,6 +1632,8 @@ function loadNotifications(button) {
                     handle_delete_notification($(this).find('.delete-notification'));
                     handle_disable_switch_notification($(this).find('.disable-switch-notification'));
                     handle_image_dimensions($(this).find('.action_takers_image'));
+                    handle_fade_loading($(this).find('.has-fade'));
+                    handle_fade_loading_removing($(this).find('.has-fade'));
                 });
             }
         },
@@ -3182,6 +3169,7 @@ function handle_media_image_dimensions(image) {
 }
 
 function handle_thread_video_dimensions(video) {
+    console.log('video dimensions handling ..');
     let medias_container = video;
     while(!medias_container.hasClass('thread-medias-container')) {
         medias_container = medias_container.parent();
@@ -3190,6 +3178,8 @@ function handle_thread_video_dimensions(video) {
     let videoWidth = video[0].videoWidth;
     let videoHeight = video[0].videoHeight;
 }
+
+// go to index resource give video media a specific class and then come back here to handle each video
 
 $('.fade-loading').each(function(event) {
     let fade_item = $(this);
@@ -3212,6 +3202,30 @@ $(".has-fade").each(function() {
         fc.find('.fade-loading').remove();
     });
 });
+
+function handle_fade_loading_removing(fade_container) {
+    fade_container.imagesLoaded(function() {
+        fade_container.find('.fade-loading').remove();
+    });
+}
+
+function handle_fade_loading(fade_container) {
+    fade_container.find('.fade-loading').each(function() {
+        let fade_item = $(this);
+        window.setInterval(function(){
+            let target_color;
+            if(fade_item.css('background-color') == "rgb(240, 240, 240)") {
+                target_color = "rgb(200, 200, 200)";
+            } else {
+                target_color = "rgb(240, 240, 240)";
+            }
+            fade_item.css({
+                backgroundColor: target_color,
+                transition: "background-color 1.2s"
+            });
+        }, 1200);
+    });
+}
 
 let strip_loading_interval;
 function start_loading_strip() {

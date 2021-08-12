@@ -3196,12 +3196,6 @@ $('.fade-loading').each(function(event) {
         });
     }, 1200);
 });
-$(".has-fade").each(function() {
-    let fc = $(this);
-    fc.imagesLoaded(function() {
-        fc.find('.fade-loading').remove();
-    });
-});
 
 function handle_fade_loading_removing(fade_container) {
     fade_container.imagesLoaded(function() {
@@ -3933,44 +3927,3 @@ function handle_move_to_trash(button) {
         });
     });
 }
-
-$.fn.isInViewport = function() {
-    var elementTop = $(this).offset().top;
-    var elementBottom = elementTop + $(this).outerHeight();var viewportTop = $(window).scrollTop();
-    var viewportBottom = viewportTop + $(window).height();return elementBottom > viewportTop && elementTop < viewportBottom;
-};
-
-$(window).on('DOMContentLoaded load resize scroll', function() {
-    $('.has-lazy').each(function() {
-        if($(this).isInViewport()) {
-            let thread_medias_container = $(this);
-            $(this).find('.lazy-image').each(function() {
-                let img = $(this);
-                img.attr('src', img.attr('data-src'));
-                img.removeAttr('data-src');
-                img.parent().imagesLoaded(function() {
-                    handle_media_image_dimensions(img);
-                    if(thread_medias_container.find('.thread-media-container').length == 1) {
-                        let media_container = thread_medias_container.find('.thread-media-container');
-                        let media = media_container.find('.thread-media');
-                        let media_type = media.parent().find('.media-type').val();
-                        if(media_type == 'image') {
-                            if(media.height() > media_container.height()) {
-                                let max_height = parseInt(media_container.css('max-height'), 10);
-                                let container_height = media_container.height();
-                    
-                                while(container_height < max_height && container_height < media.height()) {
-                                    media_container.height(container_height++);
-                                }
-                                media_container.css('align-items', 'flex-start');
-                            }
-                        }
-                    }
-                    img.parent().find('.fade-loading').remove();
-                });
-            });
-            
-            $(this).removeClass('has-lazy');
-        }
-    });
-});

@@ -90,9 +90,9 @@
             <div class="thread-header-section space-between">
                 <div class="flex">
                     <div class="flex">
-                        <div class="relative rounded mr4 hidden-overflow has-fade" style="width: 32px; height: 32px">
+                        <div class="relative rounded mr4 hidden-overflow has-lazy" style="width: 32px; height: 32px">
                             <div class="fade-loading"></div>
-                            <img src="{{ $thread->user->sizedavatar(36, '-l') }}" class="thread-owner-avatar flex" alt="" style="width: 32px; height: 32px">
+                            <img data-src="{{ $thread->user->sizedavatar(36, '-l') }}" class="thread-owner-avatar flex lazy-image image-with-fade" alt="" style="width: 32px; height: 32px">
                         </div>
                         <div>
                             <div class="flex align-center">
@@ -295,7 +295,7 @@
 
                             </div>
                             <div class="fade-loading"></div>
-                            <img data-src="{{ asset($media['frame']) }}" alt="" class="thread-media image-that-fade-wait lazy-image">
+                            <img data-src="{{ asset($media['frame']) }}" alt="" class="thread-media lazy-image image-with-fade">
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
                             </div>
@@ -346,7 +346,8 @@
                             <path class="red-like @if(!$thread->liked) none @endif" d="M285.26,35.53A107.1,107.1,0,0,1,391.84,142.11c0,107.62-195.92,214.2-195.92,214.2S0,248.16,0,142.11A106.58,106.58,0,0,1,106.58,35.53h0a105.54,105.54,0,0,1,89.34,48.06A106.57,106.57,0,0,1,285.26,35.53Z" style="fill:#d7453d"/>
                             <path class="grey-like @if($thread->liked) none @endif" d="M273.52,56.75A92.93,92.93,0,0,1,366,149.23c0,93.38-170,185.86-170,185.86S26,241.25,26,149.23A92.72,92.72,0,0,1,185.3,84.94a14.87,14.87,0,0,0,21.47,0A92.52,92.52,0,0,1,273.52,56.75Z" style="fill:none;stroke:#1c1c1c;stroke-miterlimit:10;stroke-width:45px"/>
                         </svg>
-                        <p class="gray no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
+                        <p class="no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
+                        <p class="no-margin fs12 unselectable ml4">{{ __('like') . (($thread->likes->count()>1) ? 's' : '' ) }}</p>
                     </div>
                     <div class="thread-react-hover move-to-thread-replies flex align-center no-underline">
                         <input type="hidden" class="thread-id" value="{{ $thread->id }}">

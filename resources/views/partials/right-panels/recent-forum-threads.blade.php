@@ -26,8 +26,9 @@
                 <a href="{{ route('category.threads', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug]) }}" class="blue no-underline fs11">{{ $thread->category->category }}</a>
             </div>
             <div class="flex">
-                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="small-image-3 rounded mr4 hidden-overflow" style="min-width: 22px">
-                    <img src="{{ $thread->user->sizedavatar(36, '-l') }}" class="small-image-3" alt="" loading="lazy">
+                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="small-image-3 rounded mr4 hidden-overflow relative has-lazy" style="min-width: 22px">
+                    <div class="fade-loading"></div>
+                    <img data-src="{{ $thread->user->sizedavatar(36, '-l') }}" class="lazy-image image-with-fade" alt="">
                 </a>
                 <div class="full-width">
                     <a href="{{ $thread->link }}" class="no-margin bold no-underline forum-color fs13">{{ $thread->slice }}</a>

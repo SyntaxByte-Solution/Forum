@@ -17,8 +17,7 @@
         <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
         <input type="hidden" class="category" value="{{ $category->id }}">
         <div class="thread-add-header flex align-center">
-            <div class="size28 rounded hidden-overflow mr4 relative has-fade">
-                <div class="fade-loading"></div>
+            <div class="size28 rounded hidden-overflow mr4 relative">
                 <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size28" alt="">
             </div>
             <div class="relative">

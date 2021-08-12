@@ -9,6 +9,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
     <script src="{{ asset('js/post.js') }}" defer></script>
+    <script src="{{ asset('js/search.js') }}" defer></script>
 @endpush
 
 @section('header')
@@ -51,21 +52,73 @@
                 <h2 class="fs20 flex align-center gray">{{__('Threads search results for')}}: "<span class="black">{{ $search_query }}</span>" ({{$threads->total()}} {{__('found')}})</h2>
                 @if(isset($filters) && count($filters))
                 <style>
-                    
+                    .adv-search-filter-item {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        padding: 4px 26px 4px 8px;
+                        margin: 3px;
+                        border-radius: 3px;
+                        background-color: #eee;
+                        border: 1px solid #d5d5d5;
+
+                        transition: all 1s ease;
+                    }
+
+                    .adv-search-filter-item:hover {
+                        background-color: #d5d5d5;
+                    }
+
+                    .adv-search-remove-filter {
+                        position: absolute;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        right: 4px;
+                        border-radius: 50%;
+                        cursor: pointer;
+
+                        background-color: #353535;
+                        color: white;
+                    }
                 </style>
                 <div>
                     <div class="flex align-center">
                         <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511 511"><path d="M492,0H21A20,20,0,0,0,1,20,195,195,0,0,0,66.37,165.55l87.42,77.7a71.1,71.1,0,0,1,23.85,53.12V491a20,20,0,0,0,31,16.6l117.77-78.51a20,20,0,0,0,8.89-16.6V296.37a71.1,71.1,0,0,1,23.85-53.12l87.41-77.7A195,195,0,0,0,512,20,20,20,0,0,0,492,0ZM420.07,135.71l-87.41,77.7a111.1,111.1,0,0,0-37.25,83V401.82l-77.85,51.9V296.37a111.1,111.1,0,0,0-37.25-83L92.9,135.71A155.06,155.06,0,0,1,42.21,39.92H470.76A155.06,155.06,0,0,1,420.07,135.71Z"/></svg>
                         <p class="bold gray my4">{{ __('Your search filters') }} :</p>
                     </div>
-                    <div class="ml8">
+                    <div class="ml8 flex flex-wrap">
                         @foreach($filters as $filter)
-                        <div class="flex align-center mx4">
-                            <p class="no-margin fs12 bold unselectable" style="margin-top: 2px">{{ $filter[0] }}</p>
+                        <div class="adv-search-filter-item">
+                            <p class="no-margin fs12 bold blue unselectable">{{ $filter[0] }}</p>
                             <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                            <p class="no-margin fs12 bold unselectable" style="margin-top: 2px">{{ $filter[1] }}</p>
+                            <p class="no-margin fs12 bold unselectable">{{ $filter[1] }}</p>
+                            <input type="hidden" class="removed-filter" autocomplete="off" value="{{ $filter[2] }}">
+                            <div class="size17 adv-search-remove-filter">
+                                <span class="fs12">✖</span>
+                            </div>
                         </div>
                         @endforeach
+
+                        <script>
+                            let forum_exists = category_exists = false;
+                            let forum;
+                            $('.removed-filter').each(function() {
+                                if($(this).val() == 'forum') {
+                                    forum = $(this).parent().find('.adv-search-remove-filter');
+                                    forum_exists = true;
+                                }
+                                if($(this).val() == 'category') {
+                                    category_exists = true;
+                                }
+                            });
+
+                            if(forum_exists && category_exists) {
+                                forum.parent().css('padding-right', '8px')
+                                forum.remove();
+                            }
+                        </script>
                     </div>
                 </div>
                 @endif

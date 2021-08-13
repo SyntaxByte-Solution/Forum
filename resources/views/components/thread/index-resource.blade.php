@@ -311,18 +311,8 @@
                                 @endif
                             </div>
                             <video class="thread-media full-height" controls>
-                                <source src="{{ asset($media['frame']) }}" type="video/mp4">
-                                <source src="{{ asset($media['frame']) }}" type="video/ogg">
-                                <source src="{{ asset($media['frame']) }}" type="video/mp4">
-                                <source src="{{ asset($media['frame']) }}" type="video/avi">
-                                <source src="{{ asset($media['frame']) }}" type="video/ogg">
-                                <source src="{{ asset($media['frame']) }}" type="video/webm">
-                                <source src="{{ asset($media['frame']) }}" type="video/mp">
-                                <source src="{{ asset($media['frame']) }}" type="video/mp2">
-                                <source src="{{ asset($media['frame']) }}" type="video/mpeg">
-                                <source src="{{ asset($media['frame']) }}" type="video/mpv">
-                                <source src="{{ asset($media['frame']) }}" type="video/m4p">
-                                Your browser does not support HTML video.
+                                <source src="{{ asset($media['frame']) }}" type="{{ $media['mime'] }}">
+                                {{ __('Your browser does not support HTML video') }}
                             </video>
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>

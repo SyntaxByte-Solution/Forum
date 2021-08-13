@@ -70,7 +70,7 @@ class IndexResource extends Component
                     $media_source = $media;
                 }
 
-                $medias[] = ['frame'=>$media_source, 'type'=>$media_type];
+                $medias[] = ['frame'=>$media_source, 'type'=>$media_type, 'mime'=>$mime];
             }
             $this->medias = $medias;
         }

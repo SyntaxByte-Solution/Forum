@@ -76,7 +76,7 @@ main {
     color: rgb(190, 190, 190);
     padding: 0 16px;
     height: 100%;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
 
     transition: 0.4s ease background-color;
@@ -563,6 +563,10 @@ a, input, textarea {
 
 .mt8 {
     margin-top: 8px !important;
+}
+
+.mb2 {
+    margin-bottom: 2px !important;
 }
 
 .mb4 {
@@ -1631,7 +1635,7 @@ tr:nth-child(2n) {
 }
 
 #page-title {
-    margin: 6px 0 18px 0;
+    margin: 16px 0 26px 0;
 
     color: #1e2027;
 }
@@ -2450,21 +2454,21 @@ tr:nth-child(2n) {
     background-color: #f4f4f4;
 }
 
-.thread-add-input {
+.styled-input {
     padding: 8px;
     display: block;
     width: 100%;
     box-sizing: border-box;
     border-radius: 3px;
-    border: 1px solid gray;
+    border: 1px solid #bdbdbd;
 }
 
-.thread-add-input:focus {
+.styled-input:focus {
     border-color: #64ceff;
     box-shadow: 0 0 0px 3px #def2ff;
 }
 
-.thread-add-label {
+.input-label {
     display: block;
     margin-bottom: 2px;
     font-size: 12px;

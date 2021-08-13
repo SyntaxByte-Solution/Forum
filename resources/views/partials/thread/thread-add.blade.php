@@ -96,12 +96,12 @@
             <span class="fs13 error thread-add-error none"></span>
         </div>
         <div class="mx8 my8">
-            <label for="subject" class="thread-add-label">{{ __('Title') }}<span class="error none">*</span></label>
+            <label for="subject" class="input-label">{{ __('Title') }}<span class="error none">*</span></label>
             <input type="hidden" class="required-text" value="{{ __('Title field is required') }}">
-            <input type="text" id="subject" name="subject" class="thread-add-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re asking a question to another person") }}'>
+            <input type="text" id="subject" name="subject" class="styled-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re asking a question to another person") }}'>
         </div>
         <div>
-            <label for="content" class="thread-add-label mx8">{{ __('Content') }}<span class="error none">*</span></label>
+            <label for="content" class="input-label mx8">{{ __('Content') }}<span class="error none">*</span></label>
             <input type="hidden" class="required-text" value="{{ __('Content field is required') }}">
             <textarea name="content" id="content"></textarea>
             <script>

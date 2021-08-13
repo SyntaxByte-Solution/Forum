@@ -60,6 +60,8 @@ Route::get('/threads/{thread}/viewer_infos_component', [ThreadController::class,
 Route::get('/thread/{thread}/viewer/posts/load', [ThreadController::class, 'viewer_replies_load']);
 Route::get('/users/{user}/activities/sections/generate', [ThreadController::class, 'generate_section_range']);
 
+Route::get('/contact', [IndexController::class, 'contactus'])->name('contactus');
+
 Route::middleware(['auth'])->group(function () {
     /** 
      * The routes that are accessible for only admins should be placed in a group

@@ -15,7 +15,7 @@
             <a href="/" class="menu-button-style">{{ __('Home') }}</a>
             <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
             <a href="" class="menu-button-style">{{ __('Guidelines') }}</a>
-            <a href="" class="menu-button-style">{{ __('Contact Us') }}</a>
+            <a href="{{ route('contactus') }}" class="menu-button-style">{{ __('Contact Us') }}</a>
         </div>
 
         <div id="search-and-login" class="flex align-center move-to-right">

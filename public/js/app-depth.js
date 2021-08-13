@@ -2070,10 +2070,10 @@ function handle_follow_resource(button) {
             follow_box = follow_box.parent();
         }
 
-        let follow_text = button.find('.follow-text').val();
-        let unfollow_text = button.find('.unfollow-text').val();
-        let following_text = button.find('.following-text').val();
-        let unfollowing_text = button.find('.unfollowing-text').val();
+        let follow_text = follow_box.find('.follow-text').val();
+        let unfollow_text = follow_box.find('.unfollow-text').val();
+        let following_text = follow_box.find('.following-text').val();
+        let unfollowing_text = follow_box.find('.unfollowing-text').val();
 
         if(button.hasClass('follow-button-with-icon')) {
             button.attr('style', 'background: rgb(207, 239, 255); border-color: rgb(207, 239, 255); cursor: default');
@@ -2088,6 +2088,11 @@ function handle_follow_resource(button) {
         let followable_id = follow_box.find('.followable-id').val();
         let followable_type = follow_box.find('.followable-type').val();
     
+        console.log('follow: '+ follow_text);
+        console.log('following: '+ following_text);
+        console.log('unfollow: '+ unfollow_text);
+        console.log('unfollowing: '+ unfollowing_text);
+
         $.ajax({
             type: 'post',
             url: `/${followable_type}s/${followable_id}/follow`,
@@ -2104,14 +2109,15 @@ function handle_follow_resource(button) {
                         
                         if(fid == followable_id && ftype == followable_type) {
                             if(fbox.find('.status').val() == '1') {
+                                console.log('unfollowing is done');
                                 fbox.find('.status').val(-1);
                                 fbox.find('.follow-notif-container').addClass('none');
-                                fbox.find('.follow-text-button').text(follow_text);
+                                fbox.find('.follow-text-button .btn-txt').text(follow_text);
                                 fbox.find('.follow-text-button').removeClass('none');
                             } else {
                                 fbox.find('.status').val(1);
                                 fbox.find('.follow-notif-container').removeClass('none');
-                                fbox.find('.follow-notif-container .btn-txt').val(unfollow_text);
+                                fbox.find('.follow-button-toggle-with-bell .btn-txt').text(unfollow_text);
                                 fbox.find('.follow-text-button').addClass('none');
                                 basic_notification_show(fbox.find('.follow-success-text').val(), 'basic-notification-round-tick');
                             }     

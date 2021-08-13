@@ -26,4 +26,5 @@ window.Echo = new Echo({
     wsHost: '127.0.0.1',
     wsPort: 6001,
     disableStats: true,
+    enabledTransports: ['ws', 'wss'], // <-- only use ws and wss as valid transports
 });

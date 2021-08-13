@@ -1865,7 +1865,9 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
   forceTLS: false,
   wsHost: '127.0.0.1',
   wsPort: 6001,
-  disableStats: true
+  disableStats: true,
+  enabledTransports: ['ws', 'wss'] // <-- only use ws and wss as valid transports
+
 });
 
 /***/ }),

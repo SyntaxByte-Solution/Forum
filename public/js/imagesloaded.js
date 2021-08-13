@@ -495,3 +495,52 @@ return ImagesLoaded;
 
 });
 
+// Handling lazy loading images
+$.fn.isInViewport = function() {
+  var elementTop = $(this).offset().top;
+  var elementBottom = elementTop + $(this).outerHeight();var viewportTop = $(window).scrollTop();
+  var viewportBottom = viewportTop + $(window).height();return elementBottom > viewportTop && elementTop < viewportBottom;
+};
+function handle_lazy_loading(lazy_container) {
+  if(lazy_container.isInViewport()) {
+      lazy_container.find('.lazy-image').each(function() {
+          let img = $(this);
+          img.attr('src', img.attr('data-src'));
+          img.removeAttr('data-src');
+          img.parent().imagesLoaded(function() {
+              handle_media_image_dimensions(img);
+              if(img.hasClass('image-with-fade')) {
+                  img.parent().find('.fade-loading').remove();
+              }
+              if(img.hasClass('thread-media')) {
+                  handle_thread_media_one_item(lazy_container);
+              }
+          });
+      });
+      
+      lazy_container.removeClass('has-lazy');
+  }
+}
+$(window).on('DOMContentLoaded load resize scroll', function() {
+  $('.has-lazy').each(function() {
+      handle_lazy_loading($(this));
+  });
+});
+function handle_thread_media_one_item(thread_medias_container) {
+  if(thread_medias_container.find('.thread-media-container').length == 1) {
+      let media_container = thread_medias_container.find('.thread-media-container');
+      let media = media_container.find('.thread-media');
+      let media_type = media.parent().find('.media-type').val();
+      if(media_type == 'image') {
+          if(media.height() > media_container.height()) {
+              let max_height = parseInt(media_container.css('max-height'), 10);
+              let container_height = media_container.height();
+  
+              while(container_height < max_height && container_height < media.height()) {
+                  media_container.height(container_height++);
+              }
+              media_container.css('align-items', 'flex-start');
+          }
+      }
+  }
+}

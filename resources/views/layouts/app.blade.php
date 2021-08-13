@@ -13,23 +13,18 @@
     @auth
     <link rel="preload" as="image" href="{{ auth()->user()->sizedavatar(36, '-l') }}">
     @endauth
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script
         src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
-    <script src="{{ asset('js/bootstrap.js') }}" defer></script>
     <script>
         let uid = "@auth{{ auth()->user()->id }}@endauth";
     </script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     
     <!-- Styles -->
-    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <script type="text/javascript" src="{{ asset('js/imagesloaded.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/app-depth.js') }}" defer></script>

@@ -72,7 +72,10 @@
         <div class="flex">
             <div style="width: 44px" class="flex justify-center">
                 @if($post->ticked)
-                <div class="sprite sprite-2-size size20 mt8 greentick20-icon" alt="{{ __('This is the best reply') }}"></div>
+                <svg class="size20 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <title>{{ __('Has best reply') }}</title>
+                    <path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/>
+                </svg>
                 @endif
             </div>
             <div class="border-box full-width">

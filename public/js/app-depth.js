@@ -1516,6 +1516,7 @@ function handle_mark_as_read() {
 
 let notification_timeout;
 if(userId != "") {
+    console.log('echo !');
     Echo.private('user.' + userId + '.notifications')
         .notification((notification) => {
             // Stop animatio if there's already animation
@@ -1575,8 +1576,7 @@ if(userId != "") {
                     handle_nested_soc(appended_component.find('.notification-menu-button'));
                     handle_delete_notification(appended_component.find('.delete-notification'));
                     handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
-                    handle_fade_loading(appended_component.find('.has-fade'));
-                    handle_fade_loading_removing(appended_component.find('.has-fade'));
+                    // handle_lazy_loading(appended_component.find('.has-lazy'));
                 }
             })
 
@@ -1632,8 +1632,7 @@ function loadNotifications(button) {
                     handle_delete_notification($(this).find('.delete-notification'));
                     handle_disable_switch_notification($(this).find('.disable-switch-notification'));
                     handle_image_dimensions($(this).find('.action_takers_image'));
-                    handle_fade_loading($(this).find('.has-fade'));
-                    handle_fade_loading_removing($(this).find('.has-fade'));
+                    handle_lazy_loading($(this).find('.has-fade'));
                 });
             }
         },

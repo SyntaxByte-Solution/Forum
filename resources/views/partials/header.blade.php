@@ -14,7 +14,7 @@
         <div class="flex align-center full-height" style="margin-left: 10px;">
             <a href="/" class="menu-button-style">{{ __('Home') }}</a>
             <a href="" class="menu-button-style">{{ __('Announcements') }}</a>
-            <a href="" class="menu-button-style">{{ __('Guidelines') }}</a>
+            <a href="{{ route('guidelines') }}" class="menu-button-style">{{ __('Guidelines') }}</a>
             <a href="{{ route('contactus') }}" class="menu-button-style">{{ __('Contact Us') }}</a>
         </div>
 

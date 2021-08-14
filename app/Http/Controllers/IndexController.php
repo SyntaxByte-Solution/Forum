@@ -56,4 +56,8 @@ class IndexController extends Controller
         ->with(compact('category'))
         ->with(compact('forum'));
     }
+
+    public function guidelines() {
+        return view('guidelines');
+    }
 }

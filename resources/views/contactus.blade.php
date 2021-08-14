@@ -20,7 +20,7 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'forums'])
+    @include('partials.left-panel', ['page' => 'contactus'])
     <style>
         .contactus-text {
             font-size: 13px;
@@ -50,7 +50,7 @@
                 {{ __('Board index') }}
             </a>
             <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-            <span class="current-link-path unselectable">{{ __('Contact us') }}</span>
+            <span class="current-link-path unselectable">{{ __('Contact & Feedback') }}</span>
         </div>
         <div>
             @if(Session::has('message'))
@@ -59,8 +59,13 @@
                     <p class="green-message">{{ Session::get('message') }}</p>
                 </div>
             @endif
-            <h1 id="cu-heading">CONTACT US</h1>
+            <div class="flex align-center">
+                <svg class="size28 mr8 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
+                <h1 id="cu-heading">CONTACT & FEEDBACK</h1>
+            </div>
             <p class="contactus-text">{{ __("If you have any questions or queries, a member of staff will always be happy to help. Feel free to contact us using the form below, or by our telephone or email in the right panel and we will be sure to get back to you as soon as possible") }}.</p>
+            <p class="contactus-text">{{ __("Be clear, thoughtful, and respectful. Make sure the feedback you offer is accurate, specific, and is limited only to the behavior in question, suggestion or advice") }}.</p>
+            <div class="simple-line-separator my8"></div>
             @if($rate_limit_reached)
             <div class="flex align-center">
                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -119,6 +124,29 @@
         </div>
     </div>
     <div id="right-panel">
-        @include('partials.right-panels.forum-guidelines-panel-section')
+        <div>
+            <div class="right-panel-header-container">
+                <div class="flex align-center">
+                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M65.4,453.77h85.53V512l55-24.76L261,512V453.77H446.6V0H65.4ZM231,465.61l-25-11.27-25,11.27V423.74H231ZM155.44,30H416.6V333.7H155.44Zm-60,0h30.05V333.7h-30Zm0,333.7H416.6v60.07H261v-30H150.93v30H95.4ZM301,231.9V161.85H241v30h30V231.9H241v30h90.07v-30ZM271,101.8h30v30H271Z"/></svg>
+                    <p class="bold no-margin unselectable my4">{{ __('Contact & Feedback guidelines') }}</p>
+                </div>
+            </div>
+            <div class="mx8 py8">
+                <p class="fs12 my8"><strong>1. {{ __('Include the topic for your contact in the first line of message section') }}</strong></p>
+                <p class="fs12 my8 ml8"><strong>1.1</strong> {{ __('Including the topic of your message help our team to help you when you ask a question or ask for something') }}.</p>
+                <p class="fs12 my8 ml8"><strong>1.2</strong> {{ __('Including the topic of your message help our team to help you When you ask a question or ask for something.') }}.</p>
+                <p class="fs12 my8"><strong>2. {{ __('Use what is appropriate') }}</strong></p>
+                <p class="fs12 my8 ml8"><strong>2.1</strong> {{ __('Be clear, thoughtful, and respectful. Make sure the feedback you offer is accurate, specific, and is limited only to the behavior in question or suggestion') }}.</p>
+                <p class="fs12 my8 ml8"><strong>2.2</strong> {{ __('Deliver feedback in a timely manner. It is best to give feedback as close as possible to the occurrence of the behavior or issue that requires correction') }}.</p>
+                <p class="fs12 my8"><strong>3. {{ __('How to Share Useful – and Respectful – Feedback') }}</strong></p>
+                <p class="fs12 my8 ml8"><strong>3.1</strong> {{ __('Concentrate on the positive first before giving criticism. Feedback should start with positive observations about the contributions we are making before detailing areas that need improvement') }}.</p>
+                <p class="fs12 my8 ml8"><strong>3.2</strong> {{ __('Be clear about what you want to say before you say it') }}.</p>
+                <p class="fs12 my8 ml8"><strong>3.3</strong> {{ __('The information should be about your own perception of information, not about the other’s perceptions, assumptions and motives. Use ‘I’ statements as much as possible to indicate that your impressions are your own') }}.</p>
+
+                <div class="flex">
+                    <a href="{{ route('guidelines') }}" class="link-style fs12 move-to-right">Go to guidelines for all</a>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

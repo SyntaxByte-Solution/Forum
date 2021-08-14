@@ -32,9 +32,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::defaultView('vendor.pagination.default');
-
         Paginator::defaultSimpleView('vendor.pagination.simple-default');
-
         Blade::if('canemoji', function () {
             $ip = request()->ip();
             if(Auth::check()) {
@@ -43,7 +41,6 @@ class AppServiceProvider extends ServiceProvider
                 return EmojiFeedback::where('ip', $ip)->where('created_at', '>', today())->count() == 0;
             }
         });
-
         Blade::if('upvoted', function ($resource, $type) {
             if($user=auth()->user()) {
                 return Vote::where('vote', '1')
@@ -55,7 +52,6 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
         });
-
         Blade::if('downvoted', function ($resource, $type) {
             if($user=auth()->user()) {
                 return Vote::where('vote', '-1')
@@ -67,11 +63,9 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
         });
-
         if (($lang = Cookie::get('lang')) !== null) {
             App::setLocale($lang);
         }
-
         Schema::defaultStringLength(191);
     }
 }

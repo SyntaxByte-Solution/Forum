@@ -56,8 +56,4 @@ class IndexController extends Controller
         ->with(compact('category'))
         ->with(compact('forum'));
     }
-
-    public function contactus(Request $request) {
-        return view('contactus');
-    }
 }

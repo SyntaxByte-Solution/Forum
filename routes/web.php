@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
     CategoryController, ThreadController, PostController,
-    IndexController, UserController, OAuthController,
+    IndexController, UserController, OAuthController, ContactController,
     SearchController, FeedbackController, VoteController,
     LikesController, GeneralController, MultilanguageHelperController,
     NotificationController, FollowController, ReportController};
@@ -60,7 +60,8 @@ Route::get('/threads/{thread}/viewer_infos_component', [ThreadController::class,
 Route::get('/thread/{thread}/viewer/posts/load', [ThreadController::class, 'viewer_replies_load']);
 Route::get('/users/{user}/activities/sections/generate', [ThreadController::class, 'generate_section_range']);
 
-Route::get('/contact', [IndexController::class, 'contactus'])->name('contactus');
+Route::get('/contact', [ContactController::class, 'contactus'])->name('contactus');
+Route::post('/contact', [ContactController::class, 'store_contact_message']);
 
 Route::middleware(['auth'])->group(function () {
     /** 
@@ -158,6 +159,5 @@ Route::post('/users/username/check', [UserController::class, 'username_check']);
 
 Route::get('/{forum:slug}/{category:slug}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
 
-Route::post('/feedback', [FeedbackController::class, 'store'])->middleware(['throttle:feedback'])->name('feedback.save');
-//Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->middleware(['throttle:opd'])->name('feedback.emoji.save');
-Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->name('feedback.emoji.save');
+Route::post('/feedback', [FeedbackController::class, 'store'])->middleware(['throttle:opd'])->name('feedback.save');
+Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->middleware(['throttle:opd'])->name('feedback.emoji.save');

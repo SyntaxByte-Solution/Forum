@@ -85,12 +85,12 @@
                 @guest
                 <div class="input-container">
                     <label for="subject" class="label-style-1 fs13">{{ __('Email') }} </label>
-                    <input type="email" id="email" name="email" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
+                    <input type="email" id="email" name="email" autocomplete="off" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
                 </div>
                 @endguest
                 <div class="input-container">
                     <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }}</label>
-                    <textarea name="feedback" id="feedback" class="feedback-textarea" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
+                    <textarea name="feedback" id="feedback" class="feedback-textarea" autocomplete="off" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
                 </div>
                 <div class="flex">
                     <input type="button" value="send" class="move-to-right button-style-1 send-feedback">

@@ -499,33 +499,42 @@ return ImagesLoaded;
 $.fn.isInViewport = function() {
   var elementTop = $(this).offset().top;
   var elementBottom = elementTop + $(this).outerHeight();var viewportTop = $(window).scrollTop();
-  var viewportBottom = viewportTop + $(window).height();return elementBottom > viewportTop && elementTop < viewportBottom;
+  var viewportBottom = viewportTop + $(window).height();
+  return elementBottom > viewportTop && elementTop < viewportBottom;
 };
-function handle_lazy_loading(lazy_container) {
-  if(lazy_container.isInViewport()) {
-      lazy_container.find('.lazy-image').each(function() {
-          let img = $(this);
-          img.attr('src', img.attr('data-src'));
-          img.removeAttr('data-src');
-          img.parent().imagesLoaded(function() {
-              handle_media_image_dimensions(img);
-              if(img.hasClass('image-with-fade')) {
-                  img.parent().find('.fade-loading').remove();
+
+function handle_lazy_loading() {
+  $('.lazy-image').each(function() {
+    let img = $(this);
+    if(img.isInViewport()) {
+      console.log('dont need container');
+      img.attr('src', img.attr('data-src'));
+      img.removeAttr('data-src');
+      img.removeClass('lazy-image');
+      img.parent().imagesLoaded(function() {
+          handle_media_image_dimensions(img);
+          if(img.hasClass('image-with-fade')) {
+            img.parent().find('.fade-loading').remove();
+          }
+          if(img.hasClass('thread-media')) {
+              let medias_container = img;
+              while(!medias_container.hasClass('thread-medias-container')) {
+                medias_container = medias_container.parent();
               }
-              if(img.hasClass('thread-media')) {
-                  handle_thread_media_one_item(lazy_container);
-              }
-          });
+              handle_thread_media_one_item(medias_container);
+          }
       });
-      
-      lazy_container.removeClass('has-lazy');
-  }
-}
-$(window).on('DOMContentLoaded load resize scroll', function() {
-  $('.has-lazy').each(function() {
-      handle_lazy_loading($(this));
+    }
   });
+}
+
+$(window).on('DOMContentLoaded load resize scroll', function() {
+    handle_lazy_loading();
 });
+$('.notifs-box').on('DOMContentLoaded scroll', function() {
+    handle_lazy_loading();
+});
+
 function handle_thread_media_one_item(thread_medias_container) {
   if(thread_medias_container.find('.thread-media-container').length == 1) {
       let media_container = thread_medias_container.find('.thread-media-container');

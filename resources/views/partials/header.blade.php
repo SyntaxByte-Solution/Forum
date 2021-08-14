@@ -86,9 +86,8 @@
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="flex first-profile-container-part">
-                                <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="has-lazy relative">
-                                    <div class="fade-loading"></div>
-                                    <img data-src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="rounded size36 mr8 lazy-image image-with-fade">
+                                <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="relative">
+                                    <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="rounded size36 mr8">
                                 </a>
                                 <div>
                                     <p class="no-margin fs15 bold unselectable">{{ $user->firstname . ' ' . $user->lastname }}</p>

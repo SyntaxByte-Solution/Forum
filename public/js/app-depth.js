@@ -94,15 +94,12 @@ function validateEmail(email) {
 $(".button-with-suboptions").each(function() {
     handle_suboptions_container($(this));
 });
-
 $(".nested-soc-button").each(function() {
     handle_nested_soc($(this));
 });
-
 $('.notification-menu-button').each(function() {
     handle_notification_menu_buttons($(this));
 })
-
 $('.notification-container').each(function() {
     handle_notification_menu_appearence($(this));
 });
@@ -1501,8 +1498,9 @@ $('.find-keys').click(function() {
     }
 });
 
-$('.notification-button').click(function() {
+$('.notification-button').on('click', function() {
     handle_mark_as_read();
+    handle_lazy_loading();
 });
 
 function handle_mark_as_read() {
@@ -1581,7 +1579,7 @@ if(userId != "") {
                     handle_nested_soc(appended_component.find('.notification-menu-button'));
                     handle_delete_notification(appended_component.find('.delete-notification'));
                     handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
-                    // handle_lazy_loading(appended_component.find('.has-lazy'));
+                    handle_lazy_loading();
                 }
             })
 
@@ -1637,7 +1635,7 @@ function loadNotifications(button) {
                     handle_delete_notification($(this).find('.delete-notification'));
                     handle_disable_switch_notification($(this).find('.disable-switch-notification'));
                     handle_image_dimensions($(this).find('.action_takers_image'));
-                    handle_lazy_loading($(this).find('.has-fade'));
+                    handle_lazy_loading();
                 });
             }
         },

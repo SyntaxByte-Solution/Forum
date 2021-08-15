@@ -15,33 +15,66 @@
 
 @section('content')
     @include('partials.left-panel', ['page' => 'threads'])
-    <div id="middle-container" class="middle-padding-1 flex">
+    <div class="flex align-center middle-padding-1">
+        <a href="/" class="link-path flex align-center unselectable">
+            <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
+            {{ __('Board index') }}
+        </a>
+        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path flex align-center">
+            <svg class="small-image-size mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                {!! $forum->icon !!}
+            </svg>
+            {{ $forum->forum }}
+        </a>
+        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <span class="current-link-path unselectable">{{ __('All Categories') }}</span>
+    </div>
+    <div class="index-middle-width middle-container-style">
         <div class="full-width">
             <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
-            <div>
-                <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                <a href="" class="link-path">{{ __(request()->forum->forum) }} > </a>
-                <span class="current-link-path">{{ __('All Categories Threads') }}</span>
-            </div>
-            <div class="flex space-between">
-                <h1 id="page-title">{{ __('All ' . request()->forum->forum . ' threads') }}</h1>
+            <div class="flex align-center space-between">
+                <h1 id="page-title" style="margin: 16px 0">{{ __(request()->forum->forum . ' Forum') }}</h1>
                 <div>
-                    <div class="flex align-center" style="margin-top: 8px">
-                        <p class="gray fs12 mr8">Forum: </p>
+                    <div class="flex align-center">
                         <div class="relative">
-                            <a href="request('forum')->slug" class="mr4 button-right-icon more-icon button-with-suboptions">{{ request('forum')->forum }}</a>
-                            <div class="suboptions-container suboptions-buttons-b-style">
-                                @foreach($forums as $forum)
-                                    <a href="{{ route(Illuminate\Support\Facades\Route::currentRouteName(), ['forum'=>$forum->slug]) }}" class="suboption-b-style">{{ $forum->forum }}</a>
-                                @endforeach
+                            <div>
+                                <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to fs12">
+                                    <svg class="small-image-size thread-add-forum-icon mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        {!! $forum->icon !!}
+                                    </svg>
+                                    <span class="thread-add-selected-forum">{{ $forum->forum }}</span>
+                                    <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                                </div>
+                                <div class="suboptions-container thread-add-suboptions-container">
+                                    @foreach($forums as $forum)
+                                        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
+                                            <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                {!! $forum->icon !!}
+                                            </svg>
+                                            <span>{{ $forum->forum }}</span>
+                                        </a>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="flex align-center my8 mr4">
-                <label class="label-style-2" for="category-dd">Select Category: </label>
+            @if($announcements->count() != 0)
+                <div class="flex align-center space-between">
+                    <h2 class="forum-color" style="margin: 0 0 6px 0">Announcements</h2>
+                    @if($announcements->count() > 2)
+                    <a href="{{ route('announcements') }}" class="blue no-underline bold">{{ __('See all') }}</a>
+                    @endif
+                </div>
+                @foreach($announcements->take(3) as $announcement)
+                    <x-thread.announcement :announcement="$announcement"/>
+                @endforeach
+            <div class="simple-line-separator my8"></div>
+            @endif
+            <div class="flex align-center my4">
+                <label class="label-style-2" for="category-dd">Categories: </label>
                 <select name="category" id="category-dropdown" class="basic-dropdown">
                     <option value="all">{{ __('All') }}</option>
                     @foreach($categories as $category)
@@ -49,63 +82,13 @@
                     @endforeach
                 </select>
             </div>
-            <div class="flex align-center space-between" style="margin-bottom: 10px">
-                <div class="flex align-center">
-                    <div class="relative">
-                        <a href="{{ route('thread.add') }}" class="button-style-1 mr4">Add Thread</a>
-                    </div>
-                    <form action="{{ route('advanced.search.results') }}" method='get' class="flex">
-                        <input type="hidden" name="forum" value="{{ request()->forum->id }}">
-                        <input type="text" name="k" class="input-style-2" placeholder="{{ __('Search this forum') }}" required>
-                        <input type="submit" value="" class="search-forum-button" style="margin-left: -8px">
-                    </form>
-                    <a href="{{ route('advanced.search') }}" class="size24 sprite sprite-2-size adv24-icon mx4"></a>
-                </div>
-                <div class="mr8">
-                    {{ $threads->onEachSide(0)->links() }}
-                </div>
+            <div class="flex align-center space-between mb4">
+                <h2 class="forum-color" style="margin: 0 0 6px 0">{{ __('Discussions') }}</h2>
+                {{ $threads->onEachSide(0)->links() }}
             </div>
-            @if($announcements->count() != 0)
-            <table class="forums-table">
-                <tr>
-                    <th class="table-col-header">{{ __('ANNOUNCEMENTS') }}</th>
-                    <th class="table-col-header table-numbered-column">{{ __('REPLIES') }}</th>
-                    <th class="table-col-header table-numbered-column">{{ __('VIEWS') }}</th>
-                    <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
-                </tr>
-                @foreach($announcements as $announcement)
-                    <x-announcement :announcement="$announcement"/>
-                @endforeach
-            </table>
-            @endif
-            <table class="forums-table">
-                <tr>
-                    <th class="table-col-header">
-                        <div class="flex space-between align-center">
-                            <div>
-                                {{ __('THREADS') }} ({{$threads->total()}} in total)
-                            </div>
-                            <div>
-                                <div class="mx4 inline-block">
-                                    <div class="flex align-center">
-                                        <span>rows: </span>
-                                        <select name="" class="small-dropdown row-num-changer">
-                                            <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                            <option value="20" @if($pagesize == 20) selected @endif>20</option>
-                                            <option value="50" @if($pagesize == 50) selected @endif>50</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </th>
-                    <th class="table-col-header table-numbered-column">{{ __('REPLIES/VIEWS') }}</th>
-                    <th class="table-col-header table-last-post">{{ __('LAST POST') }}</th>
-                </tr>
-                @foreach($threads as $thread)
-                    <x-index-resource :thread="$thread"/>
-                @endforeach
-            </table>
+            @foreach($threads as $thread)
+                <x-index-resource :thread="$thread"/>
+            @endforeach
             <div class="flex my8">
                 <div class="mr8 move-to-right">
                     {{ $threads->onEachSide(0)->links() }}

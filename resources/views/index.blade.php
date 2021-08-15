@@ -27,59 +27,59 @@
                 {{ __('Board index') }}
             </a>
         </div>
-        <div class="index-middle-width middle-container-style">
-            @if(Session::has('message'))
-                <div class="green-message-container mb8">
-                    <p class="green-message">{{ Session::get('message') }}</p>
+    </div>
+    <div class="index-middle-width middle-container-style">
+        @if(Session::has('message'))
+            <div class="green-message-container mb8">
+                <p class="green-message">{{ Session::get('message') }}</p>
+            </div>
+        @endif
+        @auth
+            @include('partials.thread.thread-add', ['editor_height'=>100])
+        @endauth
+        <h1 id="page-title" class="fs26">{{ __('Discussions and Questions') }}</h1>
+        <div class="flex space-between align-end my8">
+            <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
+                <a href="/" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
+                        {{ __('All') }}
+                </a>
+                <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
+                    {{ __('Today') }}
+                </a>
+                <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
+                    {{ __('This week') }}
+                </a>
+            </div>
+            <div>
+                <div class="flex">
+                    <div class="flex align-center my4 move-to-right">
+                        <span class="mr4 fs13 gray">posts/page :</span>
+                        <select name="" class="small-dropdown row-num-changer" autocomplete="off">
+                            <option value="6" @if($pagesize == 6) selected @endif>6</option>
+                            <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                            <option value="16" @if($pagesize == 16) selected @endif>16</option>
+                        </select>
+                    </div>
                 </div>
-            @endif
-            @auth
-                @include('partials.thread.thread-add', ['editor_height'=>100])
-            @endauth
-            <h1 id="page-title" class="fs26">{{ __('Discussions and Questions') }}</h1>
-            <div class="flex space-between align-end my8">
-                <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
-                    <a href="/" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
-                            {{ __('All') }}
-                    </a>
-                    <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
-                        {{ __('Today') }}
-                    </a>
-                    <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
-                        {{ __('This week') }}
-                    </a>
-                </div>
+                {{ $threads->onEachSide(0)->links() }}
+            </div>
+        </div>
+        <div id="threads-global-container">
+            @foreach($threads as $thread)
+                <x-index-resource :thread="$thread"/>
+            @endforeach
+        </div>
+        @if(!$threads->count())
+            <div class="full-center">
                 <div>
-                    <div class="flex">
-                        <div class="flex align-center my4 move-to-right">
-                            <span class="mr4 fs13 gray">posts/page :</span>
-                            <select name="" class="small-dropdown row-num-changer" autocomplete="off">
-                                <option value="6" @if($pagesize == 6) selected @endif>6</option>
-                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                <option value="16" @if($pagesize == 16) selected @endif>16</option>
-                            </select>
-                        </div>
-                    </div>
-                    {{ $threads->onEachSide(0)->links() }}
+                    <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("There are no threads for the moment try out later !") }}</p>
+                    <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('thread')}}</a></p>
                 </div>
             </div>
-            <div id="threads-global-container">
-                @foreach($threads as $thread)
-                    <x-index-resource :thread="$thread"/>
-                @endforeach
-            </div>
-            @if(!$threads->count())
-                <div class="full-center">
-                    <div>
-                        <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("There are no threads for the moment try out later !") }}</p>
-                        <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('thread')}}</a></p>
-                    </div>
-                </div>
-            @endif
-            <div class="flex my8">
-                <div class="move-to-right">
-                    {{ $threads->onEachSide(0)->links() }}
-                </div>
+        @endif
+        <div class="flex my8">
+            <div class="move-to-right">
+                {{ $threads->onEachSide(0)->links() }}
             </div>
         </div>
     </div>

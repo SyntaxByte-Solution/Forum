@@ -486,7 +486,7 @@ $('#category-dropdown').change(function() {
     if(category_slug == 'all') {
         url = '/'+forum_slug+'/all';
     } else {
-        url = '/'+forum_slug+'/'+category_slug+'/threads';
+        url = '/forums/'+forum_slug+'/'+category_slug+'/threads';
     }
 
     document.location.href = url;

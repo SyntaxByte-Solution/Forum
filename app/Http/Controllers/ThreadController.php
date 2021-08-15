@@ -87,6 +87,10 @@ class ThreadController extends Controller
             ->with(compact('posts'));
     }
 
+    public function announcement_show(Request $request, Forum $forum, Thread $announcement) {
+        return 'announcement show';
+    }
+
     public function create() {
         $this->authorize('create', Thread::class);
 

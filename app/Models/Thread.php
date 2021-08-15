@@ -244,4 +244,8 @@ class Thread extends Model
     public function getLinkAttribute() {
         return route('thread.show', ['forum'=>$this->forum()->slug, 'category'=>$this->category->slug, 'thread'=>$this->id]);
     }
+
+    public function getAnnouncementLinkAttribute() {
+        return route('announcement.show', ['forum'=>$this->forum()->slug, 'announcement'=>$this->id]);
+    }
 }

@@ -57,6 +57,13 @@ class IndexController extends Controller
         ->with(compact('forum'));
     }
 
+    public function announcements() {
+        $announcement_ids = Category::where('slug', 'announcements')->pluck('id');
+        $announcements = Thread::whereIn('category_id', $announcement_ids)->paginate(5);
+        return view('announcements')
+        ->with(compact('announcements'));
+    }
+
     public function guidelines() {
         return view('guidelines');
     }

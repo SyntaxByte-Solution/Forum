@@ -60,6 +60,7 @@ Route::get('/threads/{thread}/viewer_infos_component', [ThreadController::class,
 Route::get('/thread/{thread}/viewer/posts/load', [ThreadController::class, 'viewer_replies_load']);
 Route::get('/users/{user}/activities/sections/generate', [ThreadController::class, 'generate_section_range']);
 
+Route::get('/announcements', [IndexController::class, 'announcements'])->name('announcements');
 Route::get('/guidelines', [IndexController::class, 'guidelines'])->name('guidelines');
 
 Route::get('/contact', [ContactController::class, 'contactus'])->name('contactus');
@@ -159,6 +160,7 @@ Route::get('/users/{user}/activities/sections/{section}/generate', [ThreadContro
 Route::get('/users/{user:username}', [UserController::class, 'profile'])->name('user.profile');
 Route::post('/users/username/check', [UserController::class, 'username_check']);
 
+Route::get('/announcements/{forum:slug}/{announcement}', [ThreadController::class, 'announcement_show'])->name('announcement.show');
 Route::get('/{forum:slug}/{category:slug}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
 
 Route::post('/feedback', [FeedbackController::class, 'store'])->middleware(['throttle:opd'])->name('feedback.save');

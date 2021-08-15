@@ -19,7 +19,7 @@
 @endsection
 
 @section('content')
-    @include('partials.left-panel', ['page' => 'forums'])
+    @include('partials.left-panel', ['page' => 'guidelines'])
     <style>
         .contactus-text {
             font-size: 13px;

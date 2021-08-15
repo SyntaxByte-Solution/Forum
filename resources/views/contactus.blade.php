@@ -61,7 +61,7 @@
             @endif
             <div class="flex align-center">
                 <svg class="size28 mr8 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
-                <h1 id="cu-heading">CONTACT & FEEDBACK</h1>
+                <h1 id="cu-heading">Contact & Feedback</h1>
             </div>
             <p class="contactus-text">{{ __("If you have any questions or queries, a member of staff will always be happy to help. Feel free to contact us using the form below, or by our telephone or email in the right panel and we will be sure to get back to you as soon as possible") }}.</p>
             <p class="contactus-text">{{ __("Be clear, thoughtful, and respectful. Make sure the feedback you offer is accurate, specific, and is limited only to the behavior in question, suggestion or advice") }}.</p>

@@ -131,20 +131,33 @@
             @endif
         @endif
         <div class="simple-line-separator my8"></div>
-        <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Dsicussions') }}</h2>
         <div>
-            <div class="flex align-center space-between my4">
-                <div class="flex">
-                    <div class="flex align-center my4 move-to-right">
-                        <span class="mr4 fs13 gray">posts/page :</span>
-                        <select name="" class="small-dropdown row-num-changer" autocomplete="off">
-                            <option value="6" @if($pagesize == 6) selected @endif>6</option>
-                            <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                            <option value="16" @if($pagesize == 16) selected @endif>16</option>
-                        </select>
-                    </div>
+            <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Discussions') }}</h2>
+            <div class="flex align-end space-between my4">
+                <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
+                    <a href="/search" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
+                        {{ __('All') }}
+                    </a>
+                    <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
+                        {{ __('Today') }}
+                    </a>
+                    <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
+                        {{ __('This week') }}
+                    </a>
                 </div>
-                {{ $threads->onEachSide(0)->links() }}
+                <div>
+                    <div class="flex">
+                        <div class="flex align-center my4 move-to-right">
+                            <span class="mr4 fs13 gray">posts/page :</span>
+                            <select name="" class="small-dropdown row-num-changer" autocomplete="off">
+                                <option value="6" @if($pagesize == 6) selected @endif>6</option>
+                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                <option value="16" @if($pagesize == 16) selected @endif>16</option>
+                            </select>
+                        </div>
+                    </div>
+                    {{ $threads->onEachSide(0)->links() }}
+                </div>
             </div>
             <div id="threads-global-container">
                 @foreach($threads as $thread)

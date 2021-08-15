@@ -295,7 +295,7 @@ window.onresize = function(event) {
 };
 
 function handle_viewer_infos_height(infos) {
-    infos.height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 34);
+    infos.height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 16);
 }
 
 $('.reply-to-thread').click(function() {
@@ -484,7 +484,7 @@ $('#category-dropdown').change(function() {
     let forum_slug = $('#forum-slug').val();
     let category_slug = $('#category-dropdown').val();
     if(category_slug == 'all') {
-        url = '/'+forum_slug+'/all';
+        url = '/forums/'+forum_slug;
     } else {
         url = '/forums/'+forum_slug+'/'+category_slug+'/threads';
     }

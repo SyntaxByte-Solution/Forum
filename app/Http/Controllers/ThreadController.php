@@ -541,7 +541,7 @@ class ThreadController extends Controller
         return -1;
     }
 
-    public function forum_all_threads(Forum $forum) {
+    public function forum_all_threads(Request $request, Forum $forum) {
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $category = $forum->categories->first();
         $forums = Forum::all();
@@ -553,7 +553,7 @@ class ThreadController extends Controller
         $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
         $announcements = Thread::where('category_id', $anoun_id)->orderBy('created_at', 'desc')->get();
 
-        $pagesize = 10;
+        $pagesize = 6;
         $pagesize_exists = false;
         
         if(request()->has('pagesize')) {
@@ -561,8 +561,21 @@ class ThreadController extends Controller
             $pagesize = request()->input('pagesize');
         }
 
+        $threads = Thread::whereIn('category_id', $categories_ids);
         // Then we fetch all threads in those categories
-        $threads = Thread::whereIn('category_id', $categories_ids)->orderBy('created_at', 'desc')->paginate($pagesize);
+        if($request->has('tab')) {
+            $tab = $request->input('tab');
+            if($tab == 'today') {
+                $threads = $threads->today();
+            } else if($tab == 'thisweek') {
+                $threads = $threads->where(
+                    'created_at', 
+                    '>=', 
+                    \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
+                );
+            }
+        }
+        $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
         
         return view('forum.category.categories-threads')
         ->with(compact('forum'))
@@ -574,12 +587,12 @@ class ThreadController extends Controller
         ->with(compact('pagesize'));
     }
 
-    public function category_threads(Forum $forum, Category $category) {
+    public function category_threads(Request $request, Forum $forum, Category $category) {
         $category = $category;
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
-        $forums = Forum::where('id', '<>', $forum->id)->get();
+        $forums = Forum::all();
 
-        $pagesize = 10;
+        $pagesize = 6;
         $pagesize_exists = false;
         
         if(request()->has('pagesize')) {
@@ -587,9 +600,24 @@ class ThreadController extends Controller
             $pagesize = request()->input('pagesize');
         }
 
-        $threads = Thread::where('category_id', $category->id)->orderBy('created_at', 'desc')->paginate($pagesize);
+        $threads = Thread::where('category_id', $category->id);
+
+        if($request->has('tab')) {
+            $tab = $request->input('tab');
+            if($tab == 'today') {
+                $threads = $threads->today();
+            } else if($tab == 'thisweek') {
+                $threads = $threads->where(
+                    'created_at', 
+                    '>=', 
+                    \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
+                );
+            }
+        }
+        $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
 
         return view('forum.category.category-threads')
+        ->with(compact('forum'))
         ->with(compact('forums'))
         ->with(compact('category'))
         ->with(compact('categories'))

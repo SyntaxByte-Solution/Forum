@@ -3,6 +3,12 @@
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="{{ asset('js/post.js') }}" defer></script>
 @endpush
 
 @section('header')
@@ -14,6 +20,7 @@
 @endsection
 
 @section('content')
+    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
     <div class="flex align-center middle-padding-1">
         <a href="/" class="link-path flex align-center unselectable">
@@ -71,20 +78,45 @@
                 @foreach($announcements->take(3) as $announcement)
                     <x-thread.announcement :announcement="$announcement"/>
                 @endforeach
-            <div class="simple-line-separator my8"></div>
+            <div class="simple-line-separator" style="margin: 14px 0"></div>
             @endif
-            <div class="flex align-center my4">
-                <label class="label-style-2" for="category-dd">Categories: </label>
-                <select name="category" id="category-dropdown" class="basic-dropdown">
-                    <option value="all">{{ __('All') }}</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->slug }}">{{ $category->category }}</option>
-                    @endforeach
-                </select>
+            <div class="flex space-between">
+                <h2 class="fs22 blue unselectable my8 flex align-center">{{ __('Discussions') }}</h2>
+                <div class="flex align-center my4">
+                    <label class="label-style-2" for="category-dd">Categories: </label>
+                    <select name="category" id="category-dropdown" class="basic-dropdown">
+                        <option value="all">{{ __('All') }}</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->slug }}">{{ $category->category }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            <div class="flex align-center space-between mb4">
-                <h2 class="forum-color" style="margin: 0 0 6px 0">{{ __('Discussions') }}</h2>
-                {{ $threads->onEachSide(0)->links() }}
+            <div class="flex align-end space-between mb8">
+                <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
+                    <a href="/search" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
+                        {{ __('All') }}
+                    </a>
+                    <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
+                        {{ __('Today') }}
+                    </a>
+                    <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
+                        {{ __('This week') }}
+                    </a>
+                </div>
+                <div>
+                    <div class="flex">
+                        <div class="flex align-center my4 move-to-right">
+                            <span class="mr4 fs13 gray">posts/page :</span>
+                            <select name="" class="small-dropdown row-num-changer" autocomplete="off">
+                                <option value="6" @if($pagesize == 6) selected @endif>6</option>
+                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
+                                <option value="16" @if($pagesize == 16) selected @endif>16</option>
+                            </select>
+                        </div>
+                    </div>
+                    {{ $threads->onEachSide(0)->links() }}
+                </div>
             </div>
             @foreach($threads as $thread)
                 <x-index-resource :thread="$thread"/>

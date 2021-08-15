@@ -1,7 +1,7 @@
 <div class="user-component-container flex align-center {{ $attributes['class'] }}" style="{{ $attributes['style'] }}">
     <div class="flex relative has-fade rounded hidden-overflow">
         <div class="fade-loading"></div>
-        <img src="{{ $user->sizedavatar(36) }}" class="size60 rounded image-that-fade-wait" alt="">
+        <img data-src="{{ $user->sizedavatar(100) }}" class="size60 rounded lazy-image image-with-fade" alt="">
     </div>
     <div class="ml8">
         <div class="relative">

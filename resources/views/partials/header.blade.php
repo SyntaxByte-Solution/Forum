@@ -82,7 +82,10 @@
                             <div class='header-profile-button relative' style="align-items: flex-start">
                                 <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="header-profile-picture size36">
                             </div>
-                            <p class="no-margin fs13 mx4 light-gray">{{ $user->username }} <span>▾</span></p>
+                            <p class="no-margin fs13 mx4 light-gray flex align-center">
+                                {{ $user->username }} 
+                                <svg class="size7 ml8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M28.61,12l-11,9.35a4,4,0,0,1-5.18,0L1.43,12a4,4,0,1,1,5.18-6.1L15,13.09l8.39-7.16A4,4,0,1,1,28.61,12Z"/></svg>
+                            </p>
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="flex first-profile-container-part">

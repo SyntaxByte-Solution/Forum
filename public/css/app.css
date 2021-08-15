@@ -1347,12 +1347,11 @@ a, input, textarea {
 }
 
 .input-style-1 {
-    padding: 8px 10px;
-    border: 1px solid rgb(145, 145, 145);
-    font-size: 14px;
-    border-radius: 4px;
+    padding: 6px 10px;
+    border: 1px solid rgb(200, 200, 200);
+    font-size: 13px;
+    border-radius: 3px;
     min-width: 300px;
-    margin-top: 4px;
 }
 
 .input-style-1:focus {

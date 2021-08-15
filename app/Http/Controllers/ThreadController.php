@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Filesystem\Filesystem;
 use Request as Rqst;
+use Carbon\Carbon;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post, Like};
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
@@ -88,7 +89,34 @@ class ThreadController extends Controller
     }
 
     public function announcement_show(Request $request, Forum $forum, Thread $announcement) {
-        return 'announcement show';
+        $forums = Forum::all();
+        $at = (new Carbon($announcement->created_at))->toDayDateTimeString();
+        $at_hummans = (new Carbon($announcement->created_at))->diffForHumans();
+        $pagesize = 6;
+
+        $announcement->update([
+            'view_count'=>$announcement->view_count+1
+        ]);
+
+        $tickedPost = $announcement->tickedPost();
+        
+        if($tickedPost) {
+            $posts = $announcement->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->paginate($pagesize);
+            if(request()->has('page') && request()->get('page') != 1) {
+                $tickedPost = false;
+            }
+        } else {
+            $posts = $announcement->posts()->orderBy('created_at', 'desc')->paginate($pagesize);
+        }
+
+        return view('forum.thread.announcement-show')
+        ->with(compact('forum'))
+        ->with(compact('forums'))
+        ->with(compact('posts'))
+        ->with(compact('at'))
+        ->with(compact('at_hummans'))
+        ->with(compact('tickedPost'))
+        ->with(compact('announcement'));
     }
 
     public function create() {

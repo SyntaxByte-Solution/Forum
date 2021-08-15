@@ -13,7 +13,6 @@ class Announcement extends Component
     public $forum;
     public $category;
     public $at;
-    public $ay_humans;
     
     public function __construct(Thread $announcement)
     {

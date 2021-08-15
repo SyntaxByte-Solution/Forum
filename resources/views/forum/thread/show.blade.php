@@ -22,20 +22,20 @@
     @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
     @include('partials.thread.report')
+    <div class="flex align-center middle-padding-1">
+        <a href="/" class="link-path flex align-center unselectable">
+            <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
+            {{ __('Board index') }}
+        </a>
+        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum }}</a>
+        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }}</a>
+    </div>
     <div id="middle-container" class="middle-padding-1" style="width: 70%; margin: 0 auto;">
         <input type="hidden" class="page" value="thread-show">
         <div class="flex">
             <div class="full-width">
-                <div class="flex space-between full-width align-end" style="margin-bottom: 20px">
-                    <div>
-                        <a href="/" class="link-path">{{ __('Board index') }} > </a>
-                        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum }} > </a>
-                        <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }}</a>
-                    </div>
-                    <div>
-                        <a href="{{ route('thread.add') }}" class="button-style-1 @guest login-signin-button @endguest">{{ __('Create a thread') }}</a>
-                    </div>
-                </div>
 
                 <x-index-resource :thread="request()->thread"/>
 

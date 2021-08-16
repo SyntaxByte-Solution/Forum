@@ -48,7 +48,37 @@
         </div>
         <div class="relative">
             <svg class="pointer button-with-suboptions size20 mr4" style="margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
-
+            <div class="suboptions-container suboptions-container-right-style" style="width:max-content">
+            @can('save', $thread)
+                <div class="pointer simple-suboption save-thread flex align-center">
+                    <input type="hidden" class="save-icon" value="M400,0H112A48,48,0,0,0,64,48V512L256,400,448,512V48A48,48,0,0,0,400,0Zm0,428.43-144-84-144,84V54a6,6,0,0,1,6-6H394a6,6,0,0,1,6,6Z">
+                    <input type="hidden" class="unsave-icon" value="M424.5,230.48V480.67L256,382.38,87.5,480.67V73.46a42.13,42.13,0,0,1,42.13-42.13H324.42a55.81,55.81,0,0,0-9.88,7.46c-6.09,5.74-11,13-15.4,20.08a25.43,25.43,0,0,0-3.92,14.59H134.89a5.26,5.26,0,0,0-5.26,5.26V407.33L256,333.61l126.38,73.72V238.2a26.69,26.69,0,0,0,14.2-.22,52.38,52.38,0,0,0,5.45-1.91c7.38.45,14.78-1.75,21.32-5ZM507.06,127A121.06,121.06,0,1,1,386,5.94,121,121,0,0,1,507.06,127Zm-23.43,0A97.63,97.63,0,1,0,386,224.63,97.6,97.6,0,0,0,483.63,127ZM435.69,96.64a5.85,5.85,0,0,0,0-8.3l-11-11a5.85,5.85,0,0,0-8.3,0L386,107.67,355.64,77.31a5.85,5.85,0,0,0-8.3,0l-11,11a5.85,5.85,0,0,0,0,8.3L366.67,127l-30.36,30.36a5.85,5.85,0,0,0,0,8.3l11,11a5.85,5.85,0,0,0,8.3,0L386,146.33l30.36,30.36a5.85,5.85,0,0,0,8.3,0l11-11a5.85,5.85,0,0,0,0-8.3L405.33,127l30.36-30.36Z">
+                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        @if($thread->is_saved)
+                        <path class="icon" d="M424.5,230.48V480.67L256,382.38,87.5,480.67V73.46a42.13,42.13,0,0,1,42.13-42.13H324.42a55.81,55.81,0,0,0-9.88,7.46c-6.09,5.74-11,13-15.4,20.08a25.43,25.43,0,0,0-3.92,14.59H134.89a5.26,5.26,0,0,0-5.26,5.26V407.33L256,333.61l126.38,73.72V238.2a26.69,26.69,0,0,0,14.2-.22,52.38,52.38,0,0,0,5.45-1.91c7.38.45,14.78-1.75,21.32-5ZM507.06,127A121.06,121.06,0,1,1,386,5.94,121,121,0,0,1,507.06,127Zm-23.43,0A97.63,97.63,0,1,0,386,224.63,97.6,97.6,0,0,0,483.63,127ZM435.69,96.64a5.85,5.85,0,0,0,0-8.3l-11-11a5.85,5.85,0,0,0-8.3,0L386,107.67,355.64,77.31a5.85,5.85,0,0,0-8.3,0l-11,11a5.85,5.85,0,0,0,0,8.3L366.67,127l-30.36,30.36a5.85,5.85,0,0,0,0,8.3l11,11a5.85,5.85,0,0,0,8.3,0L386,146.33l30.36,30.36a5.85,5.85,0,0,0,8.3,0l11-11a5.85,5.85,0,0,0,0-8.3L405.33,127l30.36-30.36Z"/>
+                        @else
+                        <path class="icon" d="M400,0H112A48,48,0,0,0,64,48V512L256,400,448,512V48A48,48,0,0,0,400,0Zm0,428.43-144-84-144,84V54a6,6,0,0,1,6-6H394a6,6,0,0,1,6,6Z"/>
+                        @endif
+                    </svg>
+                    <div class="button-text">
+                        @if($thread->is_saved)
+                            {{ __('Unsave thread') }}
+                        @else
+                            {{ __('Save thread') }}
+                        @endif
+                    </div>
+                    <div style="width: 12px">
+                        <div class="loading-dots-anim ml4 none">•</div>
+                    </div>
+                    <input type="hidden" class="thread-id" value="{{ $thread->id }}">
+                    <input type="hidden" class="status" value="@if($thread->is_saved) unsave @else save @endif">
+                    <input type="hidden" class="button-text-save" value="{{ __('Save thread') }}">
+                    <input type="hidden" class="button-text-unsave" value="{{ __('Unsave thread') }}">
+                    <input type="hidden" class="saved-message" value="{{ __('Thread saved successfully.') }}">
+                    <input type="hidden" class="unsaved-message" value="{{ __('Thread unsaved successfully.') }}">
+                </div>
+                @endcan
+            </div>
         </div>
     </div>
     <div class="thread-media-viewer-infos-content">

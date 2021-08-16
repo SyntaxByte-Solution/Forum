@@ -1879,12 +1879,14 @@ function stop_loading_anim() {
 $('.thread-add-share').click(function(event) {
     event.preventDefault();
 
+    const $codemirror = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
+
     let form_data = new FormData();
     form_data.append('_token' ,csrf);
     form_data.append('subject' ,$('#subject').val());
     form_data.append('category_id' ,$('.category').val());
     form_data.append('visibility_id' ,$('.thread-add-visibility-slug').val());
-    form_data.append('content' ,simplemde.value());
+    form_data.append('content' ,$codemirror.getValue());
 
     let button = $(this);
     let container = $(this);
@@ -1927,12 +1929,13 @@ $('.thread-add-share').click(function(event) {
             form_data.append('videos[]', uploaded_thread_videos_assets[i]);
         }
     }
-
+    // When user click share and everything is validated we need to disable both subject and content inputs
     $('#subject').attr('disabled', 'disabled');
+    $codemirror.setOption('readOnly', 'nocursor');
+
     button.val(button.parent().find('.message-ing').val());
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #acacac; cursor: default');
-
     $.ajax({
         url: '/thread',
         type: 'post',
@@ -1941,7 +1944,6 @@ $('.thread-add-share').click(function(event) {
         contentType: false,
         data: form_data,
         success: function(response) {
-            simplemde.value('');
             $('.thread-add-uploaded-media').slice(1).remove();
             $('.uploaded-images-counter').val('0');
             $('.uploaded-videos-counter').val('0');
@@ -2750,7 +2752,7 @@ $('.open-thread-image').on('click', function(event) {
                 $('.tmvisc').find('.login-signin-button').not('.viewer-thread-reply .login-signin-button').each(function() {
                     handle_login_lock($(this).parent());
                 });
-
+                handle_save_threads($('.tmvisc').find('.save-thread'));
                 handle_document_suboptions_hiding();
                 handle_remove_informer_message_container($('.tmvisc'));
                 $('.tmvisc').find('.votable-up-vote').not('.viewer-thread-reply .votable-up-vote').each(function() {
@@ -3341,16 +3343,11 @@ $('.save-thread').each(function() {
 
 function handle_save_threads(save_button) {
     save_button.click(function() {
-        let container = save_button;
-        while(!container.hasClass('resource-container')) {
-            container = container.parent();
-        }
-
         let loading = save_button.find('.loading-dots-anim');
         loading.removeClass('none');
         start_loading_anim(loading);
 
-        let thread_id = container.find('.thread-id').first().val();
+        let thread_id = save_button.find('.thread-id').first().val();
         let save_switch = save_button.find('.status').val();
 
         $.ajax({

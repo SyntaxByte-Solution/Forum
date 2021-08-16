@@ -213,6 +213,7 @@
                                 <div style="width: 12px">
                                     <div class="loading-dots-anim ml4 none">•</div>
                                 </div>
+                                <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                                 <input type="hidden" class="status" value="@if($thread->is_saved) unsave @else save @endif">
                                 <input type="hidden" class="button-text-save" value="{{ __('Save thread') }}">
                                 <input type="hidden" class="button-text-unsave" value="{{ __('Unsave thread') }}">

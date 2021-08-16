@@ -84,7 +84,7 @@
                             </div>
                             <p class="no-margin fs13 mx4 light-gray flex align-center">
                                 {{ $user->username }} 
-                                <svg class="size7 ml8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M28.61,12l-11,9.35a4,4,0,0,1-5.18,0L1.43,12a4,4,0,1,1,5.18-6.1L15,13.09l8.39-7.16A4,4,0,1,1,28.61,12Z"/></svg>
+                                <svg class="size7 ml8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </p>
                         </div>
                         <div class="suboptions-container suboptions-account-style">

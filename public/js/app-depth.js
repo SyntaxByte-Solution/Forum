@@ -2557,14 +2557,7 @@ function handle_thread_medias_containers(thread_medias_container) {
     let half_media_width = (full_media_width / 2);
 
     if(media_count == 1) {
-        medias.width(full_media_width);
-        medias.find('.thread-media').on('load', function() {
-            medias.css('justify-content', 'center');
-            let image = $(this);
-            if(image.height() > full_media_width) {
-                
-            }
-        });
+        handle_thread_media_one_item(thread_medias_container);
     } else if(media_count == 2) {
         medias.each(function() {
             $(this).width(half_media_width-2);

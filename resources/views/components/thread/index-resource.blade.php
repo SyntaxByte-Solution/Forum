@@ -284,7 +284,7 @@
                 </div>
                 <!-- media content -->
                 @if($thread->has_media)
-                <div class="thread-medias-container has-lazy">
+                <div class="thread-medias-container">
                     <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                     @php
                         $media_count = 0;

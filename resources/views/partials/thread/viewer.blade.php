@@ -8,14 +8,6 @@
         <img src="" id="thread-viewer-media-image" class="image-that-fade-wait" alt="">
         <video id="thread-viewer-media-video" style="width: calc(100% - 128px);" controls class="none full-height">
             <source src="" type="video/mp4">
-            <source src="" type="video/avi">
-            <source src="" type="video/ogg">
-            <source src="" type="video/webm">
-            <source src="" type="video/mp">
-            <source src="" type="video/mp2">
-            <source src="" type="video/mpeg">
-            <source src="" type="video/mpv">
-            <source src="" type="video/m4p">
             Your browser does not support the video tag.
         </video>
 

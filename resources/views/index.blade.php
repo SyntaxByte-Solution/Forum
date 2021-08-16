@@ -61,6 +61,10 @@
                         </select>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="flex mb8">
+            <div class="move-to-right">
                 {{ $threads->onEachSide(0)->links() }}
             </div>
         </div>

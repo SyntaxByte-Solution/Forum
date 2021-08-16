@@ -507,7 +507,6 @@ function handle_lazy_loading() {
   $('.lazy-image').each(function() {
     let img = $(this);
     if(img.isInViewport()) {
-      console.log('dont need container');
       img.attr('src', img.attr('data-src'));
       img.removeAttr('data-src');
       img.removeClass('lazy-image');
@@ -515,13 +514,6 @@ function handle_lazy_loading() {
           handle_media_image_dimensions(img);
           if(img.hasClass('image-with-fade')) {
             img.parent().find('.fade-loading').remove();
-          }
-          if(img.hasClass('thread-media')) {
-              let medias_container = img;
-              while(!medias_container.hasClass('thread-medias-container')) {
-                medias_container = medias_container.parent();
-              }
-              handle_thread_media_one_item(medias_container);
           }
       });
     }
@@ -535,21 +527,21 @@ $('.notifs-box').on('DOMContentLoaded scroll', function() {
     handle_lazy_loading();
 });
 
-function handle_thread_media_one_item(thread_medias_container) {
-  if(thread_medias_container.find('.thread-media-container').length == 1) {
-      let media_container = thread_medias_container.find('.thread-media-container');
-      let media = media_container.find('.thread-media');
-      let media_type = media.parent().find('.media-type').val();
-      if(media_type == 'image') {
-          if(media.height() > media_container.height()) {
-              let max_height = parseInt(media_container.css('max-height'), 10);
-              let container_height = media_container.height();
+function handle_thread_media_one_item(medias_container) {
+    let media = medias_container.find('.thread-media');
+    let media_type = media.parent().find('.media-type').val();
+
+    if(media_type == 'video') {
+      media.on('loadedmetadata', function() {
+        let width = media[0].videoWidth;
+        let height = media[0].videoHeight;
   
-              while(container_height < max_height && container_height < media.height()) {
-                  media_container.height(container_height++);
-              }
-              media_container.css('align-items', 'flex-start');
-          }
-      }
-  }
+        if(width > height) {
+          media.css('width', '100%');
+        } else {
+          media.css('width', '100%');
+          media.css('height', '100%');
+        }
+      });
+    }
 }

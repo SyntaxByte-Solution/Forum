@@ -185,11 +185,8 @@ class UserController extends Controller
         ]);
 
         if($request->avatar_removed) {
-            if($user->avatar == null) {
-                $data['provider_avatar'] = null;
-            } else {
-                $data['avatar'] = null;
-            }
+            $data['provider_avatar'] = null;
+            $data['avatar'] = null;
         }
         else if($request->hasFile('avatar')){
             $path = $request->file('avatar')->storeAs(

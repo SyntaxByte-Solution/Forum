@@ -2507,7 +2507,7 @@ a, input, textarea {
     display: flex;
     align-items: center;
     padding: 5px;
-    height: 32px;
+    height: 36px;
     border-bottom: 1px solid #d0d0d0;
     background-color: #f2f2f2;
     border-radius: 0 6px 0 0;
@@ -2524,7 +2524,6 @@ a, input, textarea {
 
 .thread-content-section {
     background-color: white;
-    padding: 10px;
 }
 
 .thread-content-section:hover {
@@ -2571,14 +2570,14 @@ a, input, textarea {
 
 .thread-medias-container {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
-    padding: 4px 0;
 }
 
 .thread-media-container {
     width: 100%;
+    height: 270px;
     max-height: 620px;
-    border-radius: 5px;
     overflow: hidden;
     box-sizing: border-box;
     display: flex;

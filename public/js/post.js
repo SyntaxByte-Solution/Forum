@@ -108,6 +108,7 @@ function handle_save_edit_post(post) {
             let post_id = post.find('.post-id').first().val();
             
             error.text('');
+            $codemirror.options.readOnly = 'nocursor';
             $.ajax({
                 url: '/post/'+post_id,
                 type:"patch",

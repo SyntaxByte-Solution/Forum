@@ -712,11 +712,13 @@ function updateQueryStringParameter(uri, key, value) {
     }
 }
 
-$('.check-username').click(function() {
+$('.check-username').on('click', function() {
     let button = $(this);
+    let ing = button.parent().find('.btn-text-ing').val();
+    let no_ing = button.parent().find('.btn-text-no-ing').val();
     let username = $('#username').val();
     
-    button.val('checking..')
+    button.val(ing);
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #acacac; cursor: default');
 
@@ -728,7 +730,7 @@ $('.check-username').click(function() {
             '_token': csrf
         },
         success: function(response) {
-            button.val('check');
+            button.val(no_ing);
             button.attr('style', '');
             button.prop("disabled", false);
             button.parent().find('.red-box').addClass('none');
@@ -746,7 +748,7 @@ $('.check-username').click(function() {
             }
         },
         error: function(response) {
-            button.val('check');
+            button.val(no_ing);
             button.attr('style', '');
             button.prop("disabled", false);
 
@@ -794,6 +796,7 @@ $('.remove-avatar-button').on('click', function() {
 $('.avatar-upload-button').change(function(event) {
     let avatar = [event.target.files[0]];
     if(validate_image_file_Type(avatar).length == 1) {
+        $('.avatar-removed').val('0');
         $('.avatar-error,.default-avatar,.original-avatar').addClass('none');
         $('.uploaded-avatar').removeClass('none');
 
@@ -2550,11 +2553,11 @@ function handle_threads_medias_containers() {
 function handle_thread_medias_containers(thread_medias_container) {
     let media_count = thread_medias_container.find('.thread-media-container').length;
     let medias = thread_medias_container.find('.thread-media-container');
-    let full_media_width = thread_medias_container.width() - 3;
-    let half_media_width = (full_media_width / 2) - 3;
+    let full_media_width = thread_medias_container.width();
+    let half_media_width = (full_media_width / 2);
 
     if(media_count == 1) {
-        medias.height(full_media_width+3);
+        medias.width(full_media_width);
         medias.find('.thread-media').on('load', function() {
             medias.css('justify-content', 'center');
             let image = $(this);
@@ -2564,45 +2567,37 @@ function handle_thread_medias_containers(thread_medias_container) {
         });
     } else if(media_count == 2) {
         medias.each(function() {
-            $(this).width(half_media_width);
-            $(this).height(half_media_width);
+            $(this).width(half_media_width-2);
+            $(this).height(half_media_width-2);
         })
-        $(medias[0]).css('margin-right', '4px');
-        $(medias[1]).css('margin-left', '4px');
     } else if(media_count == 3) {
-        $(medias[0]).width(half_media_width);
-        $(medias[0]).height(half_media_width);
+        $(medias[0]).width(half_media_width-2);
+        $(medias[0]).height(half_media_width-2);
         
-        $(medias[1]).width(half_media_width);
-        $(medias[1]).height(half_media_width);
+        $(medias[1]).width(half_media_width-2);
+        $(medias[1]).height(half_media_width-2);
         
         $(medias[2]).width(full_media_width);
         $(medias[2]).height(half_media_width);
 
-        $(medias[0]).css('margin', '0 4px 8px 0');
-        $(medias[1]).css('margin', '0 0 8px 4px');
+        $(medias[0]).css('margin-bottom', '4px');
+        $(medias[1]).css('margin-bottom', '4px');
     } else if(media_count == 4) {
-        let count = 0;
         medias.each(function() {
-            $(this).width(half_media_width);
-            $(this).height(half_media_width);
-            if(count % 2 == 0) {
-                $(this).css('margin', '0 4px 8px 0');
-            } else {
-                $(this).css('margin', '0 0 4px 4px');
-            }
-            count++;
-        })
+            $(this).width(half_media_width-2);
+            $(this).height(half_media_width-2);
+        });
+        $(medias[0]).css('margin-bottom', '4px');
+        $(medias[1]).css('margin-bottom', '4px');
     } else {
         for(let i = 0;i<4;i++) {
-            $(medias[i]).width(half_media_width);
-            $(medias[i]).height(half_media_width);
-            if(i % 2 == 0) {
-                $(medias[i]).css('margin', '0 4px 8px 0');
-            } else {
-                $(medias[i]).css('margin', '0 0 4px 4px');
-            }
+            $(medias[i]).width(half_media_width-2);
+            $(medias[i]).height(half_media_width-2);
         }
+
+        $(medias[0]).css('margin-bottom', '4px');
+        $(medias[1]).css('margin-bottom', '4px');
+
         for(i=4;i<medias.length;i++) {
             $(medias[i]).addClass('none');
         }
@@ -2644,13 +2639,17 @@ $('.open-thread-image').on('click', function(event) {
         let media_type = $(this).find('.media-type').val();
         let media_source;
         if(media_type == "image") {
-            media_source = $(this).find('.thread-media').attr('src');
+            var attr = $(this).find('.thread-media').attr('data-src');
+            // we check for data-src due to lazy loaded more images (because +4 images are hidden and therefor they are not handled by lazy loading function)
+            if (typeof attr !== 'undefined' && attr !== false)
+                media_source = $(this).find('.thread-media').attr('data-src');
+            else
+                media_source = $(this).find('.thread-media').attr('src');
         } else if(media_type == "video") {
             media_source = $(this).find('video source').attr('src');
         }
         viewer_medias.push(media_source);
     });
-
     viewer_media_count = selected_media;
     let selected_media_url = viewer_medias[selected_media];
 

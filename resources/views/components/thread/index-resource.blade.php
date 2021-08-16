@@ -90,9 +90,9 @@
             <div class="thread-header-section space-between">
                 <div class="flex">
                     <div class="flex">
-                        <div class="relative rounded mr4 hidden-overflow has-lazy" style="width: 32px; height: 32px">
+                        <div class="size36 relative rounded mr4 hidden-overflow has-lazy">
                             <div class="fade-loading"></div>
-                            <img data-src="{{ $thread->user->sizedavatar(36, '-l') }}" class="thread-owner-avatar flex lazy-image image-with-fade" alt="" style="width: 32px; height: 32px">
+                            <img data-src="{{ $thread->user->sizedavatar(36, '-l') }}" class="thread-owner-avatar size36 flex lazy-image image-with-fade" alt="">
                         </div>
                         <div>
                             <div class="flex align-center">
@@ -247,41 +247,43 @@
             </div>
             <!-- thread main content -->
             <div class="thread-content-section">
-                <!-- thread content: header FORUM->category -->
-                <div class="flex align-center">
-                    <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        {!! $forum->icon !!}
-                    </svg>
+                <!-- textual content -->
+                <div style="padding: 10px">
                     <div class="flex align-center">
-                        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
-                        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                        <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ $category->category }}</a>
+                        <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            {!! $forum->icon !!}
+                        </svg>
+                        <div class="flex align-center">
+                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
+                            <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+                            <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ $category->category }}</a>
+                        </div>
+                    </div>
+                    <div class="my8 expand-box">
+                        <span><a href="{{ $thread->link }}" class="expandable-text bold fs18 blue no-underline">{{ $thread->mediumslice }}</a></span>
+                        @if($thread->mediumslice != $thread->subject)
+                        <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
+                        <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
+                        <input type="hidden" class="expand-text-state" value="0">
+                        <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
+                        <input type="hidden" class="expand-text" value="{{ __('see all') }}">
+                        <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
+                        @endif
+                    </div>
+                    <div class="my4 expand-box">
+                        <span class="expandable-text fs15 no-underline">{{ $thread->mediumcontentslice }}</span>
+                        @if($thread->content != $thread->mediumcontentslice)
+                        <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumcontentslice }}">
+                        <input type="hidden" class="expand-whole-text" value="{{ $thread->content }}">
+                        <input type="hidden" class="expand-text-state" value="0">
+                        <span class="pointer expand-button fs12 inline-block blue">{{ __('see all') }}</span>
+                        <input type="hidden" class="expand-text" value="{{ __('see all') }}">
+                        <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
+                        @endif
                     </div>
                 </div>
-                <div class="my8 expand-box">
-                    <span><a href="{{ $thread->link }}" class="expandable-text bold fs18 blue no-underline">{{ $thread->mediumslice }}</a></span>
-                    @if($thread->mediumslice != $thread->subject)
-                    <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
-                    <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
-                    <input type="hidden" class="expand-text-state" value="0">
-                    <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
-                    <input type="hidden" class="expand-text" value="{{ __('see all') }}">
-                    <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
-                    @endif
-                </div>
-                <div class="my4 expand-box">
-                    <span class="expandable-text fs15 no-underline">{{ $thread->mediumcontentslice }}</span>
-                    @if($thread->content != $thread->mediumcontentslice)
-                    <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumcontentslice }}">
-                    <input type="hidden" class="expand-whole-text" value="{{ $thread->content }}">
-                    <input type="hidden" class="expand-text-state" value="0">
-                    <span class="pointer expand-button fs12 inline-block blue">{{ __('see all') }}</span>
-                    <input type="hidden" class="expand-text" value="{{ __('see all') }}">
-                    <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
-                    @endif
-                </div>
+                <!-- media content -->
                 @if($thread->has_media)
-                <!-- thread media -->
                 <div class="thread-medias-container has-lazy">
                     <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                     @php

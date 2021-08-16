@@ -89,7 +89,7 @@
                             </div>
                             <div class="us-settings-profile-picture-container full-center relative">
                                 <img src="{{ \App\Models\User::sizeddefaultavatar(100, '-l') }}" class="default-avatar us-settings-profile-picture @if(!is_null($user->avatar)) none @endif" alt="">
-                                <img src="{{ $user->sizedavatar(100) }}" class="original-avatar us-settings-profile-picture handle-image-center-positioning" alt="">
+                                <img src="@if($user->sizedavatar(100, '-l') != \App\Models\User::sizeddefaultavatar(100, '-l')) {{ $user->sizedavatar(100) }} @endif" class="original-avatar us-settings-profile-picture handle-image-center-positioning" alt="">
                                 <img src="" class="uploaded-avatar @if(!$user->avatar) none @endif us-settings-profile-picture " alt="">
                             </div>
                         </div>
@@ -120,9 +120,11 @@
                     </div>
                     <div class="my8">
                         <div class="input-container full-width ">
-                            <div class="flex align-center">
+                            <div class="flex align-center mb4">
                                 <label for="username" class="label-style-1 gray mr4">{{ __('Change username') }} </label>
-                                <input type="button" class="simple-button pointer check-username mr4" value="check">
+                                <input type="button" class="simple-button pointer check-username mr4" value="{{ __('check') }}">
+                                <input type="hidden" class="btn-text-no-ing" value="{{ __('check') }}">
+                                <input type="hidden" class="btn-text-ing" value="{{ __('checking') }}..">
                                 <div class="align-center red-box none">
                                     <svg class="size10 mx4" fill="#ff5959" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"/></svg>
                                     <span class="error fs12"></span>

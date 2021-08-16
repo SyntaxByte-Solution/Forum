@@ -85,7 +85,7 @@
                 @can('update', $post)
                 <div class="post-edit-container px8 py8 none">
                     <div class="flex align-center space-between">
-                        <p class="fs12 bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
+                        <p class="fs12 bold my8">{{ __('Edit your reply') }} <span class="error fs13"></span></p>
                         <div class="flex align-center">
                             <a href="" class="simple-white-button save-edit-post" style="background-color: #a8d8ff">{{ __('Save') }}</a>
                             <a href="" class="simple-white-button exit-edit-post ml4">✖</a>

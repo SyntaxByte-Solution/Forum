@@ -1879,104 +1879,6 @@ function stop_loading_anim() {
     clearInterval(loading_anim_interval);
 }
 
-$('.thread-add-share').click(function(event) {
-    event.preventDefault();
-
-    const $codemirror = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
-
-    let form_data = new FormData();
-    form_data.append('_token' ,csrf);
-    form_data.append('subject' ,$('#subject').val());
-    form_data.append('category_id' ,$('.category').val());
-    form_data.append('visibility_id' ,$('.thread-add-visibility-slug').val());
-    form_data.append('content' ,$codemirror.getValue());
-
-    let button = $(this);
-    let container = $(this);
-    while(!container.hasClass('thread-add-container')) {
-        container = container.parent();
-    }
-
-    if(form_data.get('subject') == '') {
-        $('#subject').parent().find('.error').removeClass('none');
-        container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
-        container.find('.thread-add-error').removeClass('none');
-        return;
-    } else {
-        $('#subject').parent().find('.error').addClass('none');
-        container.find('.thread-add-error').text("");
-        container.find('.thread-add-error').addClass('none');
-    }
-
-    if(form_data.get('content') == '') {
-        $('#content').parent().find('.error').removeClass('none');
-        container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
-        container.find('.thread-add-error').removeClass('none');
-        return;
-    } else {
-        $('#content').parent().find('.error').addClass('none');
-        container.find('.thread-add-error').addClass('none');
-    }
-
-    // Checking images existence in the thread
-    if(uploaded_thread_images_assets.length) {
-        // Append image files
-        for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
-            form_data.append('images[]', uploaded_thread_images_assets[i]);
-        }
-    }
-    // Checking videos existence in the thread
-    if(uploaded_thread_videos_assets.length) {
-        // Append videos files
-        for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
-            form_data.append('videos[]', uploaded_thread_videos_assets[i]);
-        }
-    }
-    // When user click share and everything is validated we need to disable both subject and content inputs
-    $('#subject').attr('disabled', 'disabled');
-    $codemirror.setOption('readOnly', 'nocursor');
-
-    button.val(button.parent().find('.message-ing').val());
-    button.attr("disabled","disabled");
-    button.attr('style', 'background-color: #acacac; cursor: default');
-    $.ajax({
-        url: '/thread',
-        type: 'post',
-        enctype: 'multipart/form-data',
-        processData: false,
-        contentType: false,
-        data: form_data,
-        success: function(response) {
-            $('.thread-add-uploaded-media').slice(1).remove();
-            $('.uploaded-images-counter').val('0');
-            $('.uploaded-videos-counter').val('0');
-            // Show notification flash
-            window.location.href = response;
-        },
-        error: function(response) {
-            // let er;
-            // let error = JSON.parse(response.responseText).error;
-            // if(error) {
-            //     er = JSON.parse(response.responseText).error;
-            // } else {
-            //     let errorObject = JSON.parse(response.responseText).errors;
-            //     er = errorObject[Object.keys(errorObject)[0]][0];
-            // }
-
-            // container.find('.thread-add-error').removeClass('none');
-            // container.find('.thread-add-error').html(er);
-        },
-        complete: function(response) {
-            button.val(button.parent().find('.message-no-ing').val());
-            button.attr('style', '');
-            button.prop("disabled", false);
-        }
-    });
-    $('#thread-creation-forum').submit();
-    
-    return false;
-})
-
 $('.thread-container-box').each(function() {
     handle_thread_display($(this));
 });
@@ -2177,10 +2079,124 @@ function handle_follow_resource(button) {
 
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
 
+$('.thread-add-share').click(function(event) {
+    event.preventDefault();
+
+    const $codemirror = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
+
+    let form_data = new FormData();
+    form_data.append('_token' ,csrf);
+    form_data.append('subject' ,$('#subject').val());
+    form_data.append('category_id' ,$('.category').val());
+    form_data.append('visibility_id' ,$('.thread-add-visibility-slug').val());
+    form_data.append('content' ,$codemirror.getValue());
+
+    let button = $(this);
+    let container = $(this);
+    while(!container.hasClass('thread-add-container')) {
+        container = container.parent();
+    }
+
+    if(form_data.get('subject') == '') {
+        $('#subject').parent().find('.error').removeClass('none');
+        container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
+        container.find('.thread-add-error').removeClass('none');
+        return;
+    } else {
+        $('#subject').parent().find('.error').addClass('none');
+        container.find('.thread-add-error').text("");
+        container.find('.thread-add-error').addClass('none');
+    }
+
+    if(form_data.get('content') == '') {
+        $('#content').parent().find('.error').removeClass('none');
+        container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
+        container.find('.thread-add-error').removeClass('none');
+        return;
+    } else {
+        $('#content').parent().find('.error').addClass('none');
+        container.find('.thread-add-error').addClass('none');
+    }
+
+    // Checking images existence in the thread
+    /**
+     * Update:
+     */
+    if(uploaded_thread_images_assets.length) {
+        // Append image files
+        for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
+            // First filename
+            let filename = uploaded_thread_images_assets[i][1].name.toLowerCase();
+            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
+            let ext = filename.substr(filename.lastIndexOf('.'));
+            // Then we store the file with the combination of counter and extension to preserve the order when saving files
+            filename = uploaded_thread_images_assets[i][0] + ext;
+            form_data.append('images[]', uploaded_thread_images_assets[i][1], filename);
+        }
+    }
+    // Checking videos existence in the thread
+    if(uploaded_thread_videos_assets.length) {
+        // Append videos files
+        for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
+            // First filename
+            let filename = uploaded_thread_videos_assets[i][1].name.toLowerCase();
+            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
+            let ext = filename.substr(filename.lastIndexOf('.'));
+            // Then we store the file with the combination of counter and extension to preserve the order when saving files
+            filename = uploaded_thread_videos_assets[i][0] + ext;
+            form_data.append('videos[]', uploaded_thread_videos_assets[i][1], filename);
+        }
+    }
+    // When user click share and everything is validated we need to disable both subject and content inputs
+    $('#subject').attr('disabled', 'disabled');
+    $codemirror.setOption('readOnly', 'nocursor');
+
+    button.val(button.parent().find('.message-ing').val());
+    button.attr("disabled","disabled");
+    button.attr('style', 'background-color: #acacac; cursor: default');
+    $.ajax({
+        url: '/thread',
+        type: 'post',
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        data: form_data,
+        success: function(response) {
+            $('.thread-add-uploaded-media').slice(1).remove();
+            $('.uploaded-images-counter').val('0');
+            $('.uploaded-videos-counter').val('0');
+            // Show notification flash
+            window.location.href = response;
+        },
+        error: function(response) {
+            // let er;
+            // let error = JSON.parse(response.responseText).error;
+            // if(error) {
+            //     er = JSON.parse(response.responseText).error;
+            // } else {
+            //     let errorObject = JSON.parse(response.responseText).errors;
+            //     er = errorObject[Object.keys(errorObject)[0]][0];
+            // }
+
+            // container.find('.thread-add-error').removeClass('none');
+            // container.find('.thread-add-error').html(er);
+        },
+        complete: function(response) {
+            button.val(button.parent().find('.message-no-ing').val());
+            button.attr('style', '');
+            button.prop("disabled", false);
+        }
+    });
+    $('#thread-creation-forum').submit();
+    
+    return false;
+});
+
 let uploaded_thread_images_assets = [];
 let uploaded_thread_videos_assets = [];
+let uploaded_thread_media_counter = 0;
 // This will track image uploads --- [Now it is possible to share more than one image] ---
-$("#thread-photos").change(function(event) {
+$("#thread-photos").on('change', function(event) {
     // First we close the error if it is opened
     $('.thread-add-media-error p').addClass('none');
     /**
@@ -2232,7 +2248,14 @@ $("#thread-photos").change(function(event) {
     }
     
     images = validated_images;
-    uploaded_thread_images_assets.push(...images);
+    for(let i=0;i<images.length;i++) {
+        /**
+         * Here instead of pushing only the file to the array we have to pass also the counter (used to preserve the order) 
+         * of uploaded file and then increment it
+         */
+        uploaded_thread_images_assets.push([uploaded_thread_media_counter, images[i]]);
+        uploaded_thread_media_counter++;
+    }
     /**
      * Now we loop through the new files and append them to thread-add-uploaded-medias-container by cloning 
      * thread-add-uploaded-media-projection-model container
@@ -2275,7 +2298,7 @@ $("#thread-photos").change(function(event) {
     // Clear the input because we don't need its value; we use arrays to store files
     $(this).val('');
 });
-$("#thread-videos").change(function(event) {
+$("#thread-videos").on('change', function(event) {
     // First we close the error if it is opened
     $('.thread-add-media-error p').addClass('none');
     /**
@@ -2307,7 +2330,10 @@ $("#thread-videos").change(function(event) {
         media_container.find('.tame-video-limit').addClass('none');
     }
 
-    uploaded_thread_videos_assets.push(...videos);
+    for(let i=0;i<videos.length;i++) {
+        uploaded_thread_videos_assets.push([uploaded_thread_media_counter, videos[i]]);
+        uploaded_thread_media_counter++;
+    }
     
     for (let i = 0; i < videos.length; i++) {
         let clone = $('.thread-add-uploaded-media-projection-model').clone(true);
@@ -2330,8 +2356,8 @@ $("#thread-videos").change(function(event) {
 
 
         last_uploaded_video.removeClass('none thread-add-uploaded-media-projection-model');
-        if(global_medias_count >= 6) {
-            if(global_medias_count == 6)
+        if(global_medias_count >= 5) {
+            if(global_medias_count == 5)
                 $('.thread-add-uploaded-medias-container').addClass('scrollx');
 
             // Scroll to the end position of x axe
@@ -2410,7 +2436,7 @@ function handle_close_uploaded_media(container) {
         adjust_uploaded_medias_indexes();
 
         global_counter = parseInt(container.find('.uploaded-images-counter').val()) + parseInt(container.find('.uploaded-videos-counter').val());
-        if(global_counter <= 5) {
+        if(global_counter <= 4) {
             $('.thread-add-uploaded-medias-container').removeClass('scrollx');
         }
     })

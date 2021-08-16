@@ -245,16 +245,16 @@ class ThreadController extends Controller
         // Verify if there's uploaded images
         if(request()->has('images')) {
             foreach($request->images as $image) {
-                $image->store(
-                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/medias', 'public'
+                $image->storeAs(
+                    'users/'.$data['user_id'].'/threads/'.$thread->id.'/medias', $image->getClientOriginalName(), 'public'
                 );
             }
         }
         // Verify if there's uploaded videos
         if(request()->has('videos')) {
             foreach($request->videos as $video) {
-                $video->store(
-                    'users/' . $data['user_id'] . '/threads/' . $thread->id . '/medias', 'public'
+                $video->storeAs(
+                    'users/'.$data['user_id'].'/threads/'.$thread->id.'/medias', $video->getClientOriginalName(), 'public'
                 );
             }
         }

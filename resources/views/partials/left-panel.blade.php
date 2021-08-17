@@ -55,7 +55,7 @@
                         @endif
                     @endisset
                 </div>
-                <div class="simple-line-separator" style="background-color: #3b4157;"></div>
+                <div class="fs10" style="margin-left: 21px; color: #d9d9d9">•</div>
                 <div class="relative">
                     <a href="{{ route('advanced.search') }}" @isset($subpage) @if($subpage == 'advanced-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">
                         <svg class="size14 mr4" fill="@isset($subpage) @if($subpage == 'advanced-search') #2ca0ff @else #fff @endif @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511 511"><path d="M492,0H21A20,20,0,0,0,1,20,195,195,0,0,0,66.37,165.55l87.42,77.7a71.1,71.1,0,0,1,23.85,53.12V491a20,20,0,0,0,31,16.6l117.77-78.51a20,20,0,0,0,8.89-16.6V296.37a71.1,71.1,0,0,1,23.85-53.12l87.41-77.7A195,195,0,0,0,512,20,20,20,0,0,0,492,0ZM420.07,135.71l-87.41,77.7a111.1,111.1,0,0,0-37.25,83V401.82l-77.85,51.9V296.37a111.1,111.1,0,0,0-37.25-83L92.9,135.71A155.06,155.06,0,0,1,42.21,39.92H470.76A155.06,155.06,0,0,1,420.07,135.71Z"/></svg>
@@ -151,7 +151,7 @@
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected bold white' }} @endif">
-                        <svg class="small-image mr4" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M438.09,273.32h-39.6a102.92,102.92,0,0,1,6.24,35.4V458.37a44.18,44.18,0,0,1-2.54,14.79h65.46A44.4,44.4,0,0,0,512,428.81V347.23A74,74,0,0,0,438.09,273.32ZM107.26,308.73a102.94,102.94,0,0,1,6.25-35.41H73.91A74,74,0,0,0,0,347.23v81.58a44.4,44.4,0,0,0,44.35,44.35h65.46a44.17,44.17,0,0,1-2.55-14.78Zm194-73.91H210.74a74,74,0,0,0-73.91,73.91V458.38a14.78,14.78,0,0,0,14.78,14.78H360.39a14.78,14.78,0,0,0,14.78-14.78V308.73A74,74,0,0,0,301.26,234.82ZM256,38.84a88.87,88.87,0,1,0,88.89,88.89A89,89,0,0,0,256,38.84ZM99.92,121.69a66.44,66.44,0,1,0,66.47,66.47A66.55,66.55,0,0,0,99.92,121.69Zm312.16,0a66.48,66.48,0,1,0,66.48,66.47A66.55,66.55,0,0,0,412.08,121.69Z"/></svg>
+                        <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M438.09,273.32h-39.6a102.92,102.92,0,0,1,6.24,35.4V458.37a44.18,44.18,0,0,1-2.54,14.79h65.46A44.4,44.4,0,0,0,512,428.81V347.23A74,74,0,0,0,438.09,273.32ZM107.26,308.73a102.94,102.94,0,0,1,6.25-35.41H73.91A74,74,0,0,0,0,347.23v81.58a44.4,44.4,0,0,0,44.35,44.35h65.46a44.17,44.17,0,0,1-2.55-14.78Zm194-73.91H210.74a74,74,0,0,0-73.91,73.91V458.38a14.78,14.78,0,0,0,14.78,14.78H360.39a14.78,14.78,0,0,0,14.78-14.78V308.73A74,74,0,0,0,301.26,234.82ZM256,38.84a88.87,88.87,0,1,0,88.89,88.89A89,89,0,0,0,256,38.84ZM99.92,121.69a66.44,66.44,0,1,0,66.47,66.47A66.55,66.55,0,0,0,99.92,121.69Zm312.16,0a66.48,66.48,0,1,0,66.48,66.47A66.55,66.55,0,0,0,412.08,121.69Z"/></svg>
                         {{__('Forums')}}
                     </a>
                 </div>
@@ -162,19 +162,32 @@
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="" class="left-panel-item lp-padding @if($page == 'popular-posts') {{ 'lp-selected bold white' }} @endif">
-                        <svg class="small-image mr4" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M446.91,299.77c-5.87-76.36-41.42-124.21-72.78-166.44C345.08,94.24,320,60.48,320,10.69a10.68,10.68,0,0,0-5.79-9.49A10.53,10.53,0,0,0,303.13,2C256,35.71,216.72,92.52,203,146.73c-9.53,37.73-10.79,80.16-11,108.18-43.5-9.29-53.35-74.36-53.46-75.07a10.73,10.73,0,0,0-5.55-7.92,10.61,10.61,0,0,0-9.67-.17c-2.28,1.1-56,28.39-59.11,137.35C64,312.73,64,316.36,64,320c0,105.85,86.14,192,192,192a1.24,1.24,0,0,0,.43,0h.13C362.17,511.68,448,425.67,448,320,448,314.67,446.91,299.77,446.91,299.77ZM256,490.65c-35.29,0-64-30.58-64-68.17,0-1.28,0-2.57.08-4.16.43-15.85,3.44-26.67,6.74-33.87C205,397.74,216.07,410,234,410a10.66,10.66,0,0,0,10.67-10.67c0-15.18.31-32.7,4.09-48.51,3.37-14,11.41-28.94,21.6-40.9,4.53,15.52,13.36,28.08,22,40.34,12.34,17.54,25.1,35.68,27.34,66.6.14,1.84.27,3.68.27,5.66C320,460.07,291.29,490.65,256,490.65Z"/></svg>
-                        {{__('Popular threads')}}
+                        <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 510"><path d="M255,227A28.05,28.05,0,1,0,283.05,255,28.3,28.3,0,0,0,255,227ZM255,0C114.75,0,0,114.75,0,255S114.75,510,255,510,510,395.25,510,255,395.25,0,255,0Zm56.1,311.1L102,408l96.9-209.1L408,102Z"/></svg>
+                        {{__('Explore')}}
                     </a>
                 </div>
-                @if($page == 'popular')
+                @if($page == 'explore')
                     <div class="selected-colored-slice"></div>
                 @endif
             </div>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
                     <a href="" class="left-panel-item lp-padding @if($page == 'market') {{ 'lp-selected bold white' }} @endif">
-                        <svg class="small-image mr4" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456.03 456.03"><path d="M345.6,338.86a53.25,53.25,0,1,0,53.25,53.25C398.34,362.93,374.78,338.86,345.6,338.86ZM439.3,84.91c-1,0-2.56-.51-4.1-.51H112.64l-5.12-34.31A45.85,45.85,0,0,0,62,10.67H20.48a20.48,20.48,0,0,0,0,41H62a5.44,5.44,0,0,1,5.12,4.61L98.82,272.3a56.12,56.12,0,0,0,55.29,47.62h213c26.63,0,49.67-18.95,55.3-45.06l33.28-166.4A20.24,20.24,0,0,0,439.3,84.91ZM215,389.55c-1-28.16-24.58-50.69-52.74-50.69a53.56,53.56,0,0,0-51.2,55.3,52.49,52.49,0,0,0,52.23,50.69h1C193.54,443.31,216.58,418.73,215,389.55Z"/></svg>
+                        <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M317,31H45A44.94,44.94,0,0,0,0,76V256a44.94,44.94,0,0,0,45,45H60v45c0,10.84,11.22,18.69,22.2,13.2.3-.3.9-.3,1.2-.6,82.52-55.33,64-43,82.5-55.2A15.09,15.09,0,0,1,174,301H317a44.94,44.94,0,0,0,45-45V76A44.94,44.94,0,0,0,317,31ZM197,211H75c-19.77,0-19.85-30,0-30H197C216.77,181,216.85,211,197,211Zm90-60H75c-19.77,0-19.85-30,0-30H287C306.77,121,306.85,151,287,151Zm180,0H392V256a75,75,0,0,1-75,75H178.5L150,349.92V376a44.94,44.94,0,0,0,45,45H342.5l86.1,57.6c11.75,6.53,23.4-1.41,23.4-12.6V421h15a44.94,44.94,0,0,0,45-45V196A44.94,44.94,0,0,0,467,151Z"/></svg>
+                        {{ __('Chats') }}
+                        <span class="fs12" style="margin-left: 3px; color: rgb(187, 187, 187)">({{__('soon')}})</span>
+                    </a>
+                </div>
+                @if($page == 'chat')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
+            <div class="flex relative">
+                <div class="flex align-center full-width relative">
+                    <a href="" class="left-panel-item lp-padding @if($page == 'market') {{ 'lp-selected bold white' }} @endif">
+                        <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456.03 456.03"><path d="M345.6,338.86a53.25,53.25,0,1,0,53.25,53.25C398.34,362.93,374.78,338.86,345.6,338.86ZM439.3,84.91c-1,0-2.56-.51-4.1-.51H112.64l-5.12-34.31A45.85,45.85,0,0,0,62,10.67H20.48a20.48,20.48,0,0,0,0,41H62a5.44,5.44,0,0,1,5.12,4.61L98.82,272.3a56.12,56.12,0,0,0,55.29,47.62h213c26.63,0,49.67-18.95,55.3-45.06l33.28-166.4A20.24,20.24,0,0,0,439.3,84.91ZM215,389.55c-1-28.16-24.58-50.69-52.74-50.69a53.56,53.56,0,0,0-51.2,55.3,52.49,52.49,0,0,0,52.23,50.69h1C193.54,443.31,216.58,418.73,215,389.55Z"/></svg>
                         {{ __('Market place') }}
+                        <span class="fs12" style="margin-left: 3px; color: rgb(187, 187, 187)">({{__('soon')}})</span>
                     </a>
                 </div>
                 @if($page == 'market')
@@ -185,8 +198,8 @@
         <div>
             <p class="left-panel-label">{{__('MORE')}}</p>
             <div class="flex relative">
-                <a href="/" class="left-panel-item lp-wpadding @if($page == 'aboutus') {{ 'lp-selected bold white' }} @endif">{{__('About Us')}}</a>
-                @if($page == 'aboutus')
+                <a href="{{ route('about') }}" class="left-panel-item lp-wpadding @if($page == 'about') {{ 'lp-selected bold white' }} @endif">{{__('About Us')}}</a>
+                @if($page == 'about')
                     <div class="selected-colored-slice"></div>
                 @endif
             </div>
@@ -200,11 +213,11 @@
     </div>
     <div class="move-to-bottom" style="margin-bottom: 12px">
         <div class="flex align-center fs13">
-            <p class="unselectable">Designed with</p>
-            <div style="max-height: 19px; height: 19px; max-width: 19px; width: 19px" class="full-center mx4">
+            <p class="unselectable fs13">Designed with</p>
+            <div style="max-height: 19px; height: 19px; max-width: 19px; width: 19px" class="full-center mx4" title="{{ __('LOVE') }}">
                 <svg class="heart-beating" fill="#FF0000" style="width: 16px; stroke: #331010; stroke-width: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 94.5"><path d="M86.82,26.63v-7.3H78.64V12H62.27v7.29H54.09v7.3H45.91v-7.3H37.73V12H21.36v7.29H13.18v7.3H5V48.5h8.18v7.29h8.18v7.29h8.19v7.29h8.18v7.3h8.18V85h8.18V77.67h8.18v-7.3h8.18V63.08h8.19V55.79h8.18V48.5H95V26.63Z"/></svg>
             </div>
-            <p class="unselectable">by <a href="https://www.mouad-dev.com" target="_blank" class="no-underline mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
+            <p class="unselectable fs13">by <a href="https://www.mouad-dev.com" target="_blank" class="no-underline mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
         </div>
     </div>
 </div>

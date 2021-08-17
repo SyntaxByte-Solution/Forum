@@ -6,10 +6,6 @@
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
 @endpush
 
-@push('scripts')
-    <script src="{{ asset('js/contactus.js') }}" defer></script>
-@endpush
-
 @section('header')
     @guest
         @include('partials.hidden-login-viewer')
@@ -39,7 +35,9 @@
             min-width: 320px;
         }
         #middle-padding {
-            padding: 26px 46px;
+            width: 80%;
+            min-width: 300px;
+            margin: 0 auto;
         }
 
         em:first-letter {

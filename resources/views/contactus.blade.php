@@ -134,7 +134,6 @@
             <div class="mx8 py8">
                 <p class="fs12 my8"><strong>1. {{ __('Include the topic for your contact in the first line of message section') }}</strong></p>
                 <p class="fs12 my8 ml8"><strong>1.1</strong> {{ __('Including the topic of your message help our team to help you when you ask a question or ask for something') }}.</p>
-                <p class="fs12 my8 ml8"><strong>1.2</strong> {{ __('Including the topic of your message help our team to help you When you ask a question or ask for something.') }}.</p>
                 <p class="fs12 my8"><strong>2. {{ __('Use what is appropriate') }}</strong></p>
                 <p class="fs12 my8 ml8"><strong>2.1</strong> {{ __('Be clear, thoughtful, and respectful. Make sure the feedback you offer is accurate, specific, and is limited only to the behavior in question or suggestion') }}.</p>
                 <p class="fs12 my8 ml8"><strong>2.2</strong> {{ __('Deliver feedback in a timely manner. It is best to give feedback as close as possible to the occurrence of the behavior or issue that requires correction') }}.</p>

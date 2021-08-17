@@ -62,6 +62,7 @@ Route::get('/users/{user}/activities/sections/generate', [ThreadController::clas
 
 Route::get('/announcements', [IndexController::class, 'announcements'])->name('announcements');
 Route::get('/guidelines', [IndexController::class, 'guidelines'])->name('guidelines');
+Route::get('/about', [IndexController::class, 'about'])->name('about');
 
 Route::get('/contact', [ContactController::class, 'contactus'])->name('contactus');
 Route::post('/contact', [ContactController::class, 'store_contact_message']);

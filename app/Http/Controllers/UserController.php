@@ -216,13 +216,21 @@ class UserController extends Controller
             // Here we need to notify all the followers about avatar change
             foreach($user->followers as $follower) {
                 $follower = User::find($follower->follower);
+                // First delete followers notifications about a previous avatar change if exists
+                foreach($follower->notifications as $notification) {
+                    if($notification->data['action_type'] == "avatar-change" 
+                    && $notification->data['action_user'] == $user->id
+                    && $notification->data['action_resource_id'] == $user->id) {
+                        $notification->delete();
+                    }
+                }
                 
                 $follower->notify(
                     new \App\Notifications\UserAction([
                         'action_user'=>auth()->user()->id,
                         'action_statement'=>"changed his profile avatar",
                         'resource_string_slice'=>"",
-                        'action_type'=>'image-action',
+                        'action_type'=>'avatar-change',
                         'action_date'=>now(),
                         'action_resource_id'=>auth()->user()->id,
                         'action_resource_link'=>route('user.profile', ['user'=>auth()->user()->username]),

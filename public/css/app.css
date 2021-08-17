@@ -853,6 +853,10 @@ a, input, textarea {
     background-position: -24px -240px;
 }
 
+.image24-icon {
+    background-position: 0px -264px;
+}
+
 .menu24-icon {
     background-position: 0px -48px;
     border-radius: 50%;
@@ -2169,7 +2173,6 @@ a, input, textarea {
     position: absolute;
     height: 24px;
     width: 24px;
-    border-radius: 50%;
     right: 5px;
     bottom: 0px;
 }

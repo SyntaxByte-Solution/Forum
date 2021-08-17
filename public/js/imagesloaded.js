@@ -535,13 +535,6 @@ function handle_thread_media_one_item(medias_container) {
       media.on('loadedmetadata', function() {
         let width = media[0].videoWidth;
         let height = media[0].videoHeight;
-  
-        if(width > height) {
-          media.css('width', '100%');
-        } else {
-          media.css('width', '100%');
-          media.css('height', '100%');
-        }
       });
     }
 }

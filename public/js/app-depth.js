@@ -372,7 +372,8 @@ $('.turn-off-posts').click(function() {
 
 let already_uploaded_thread_images_assets = [];
 let already_uploaded_thread_videos_assets = [];
-$('.edit-thread').click(function() {
+let edit_deleted_medias = [];
+$('.edit-thread').on('click', function() {
     let button = $(this);
     let button_text_ing = button.parent().find('.text-button-ing').val();
     let button_text_no_ing = button.parent().find('.text-button-no-ing').val();
@@ -389,18 +390,29 @@ $('.edit-thread').click(function() {
         form_data.append('removed_medias', JSON.stringify(edit_deleted_medias));
     }
 
-    // Checking if the user add new images
     if(uploaded_thread_images_assets.length) {
         // Append image files
         for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
-            form_data.append('images[]', uploaded_thread_images_assets[i]);
+            // First filename
+            let filename = uploaded_thread_images_assets[i][1].name.toLowerCase();
+            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
+            let ext = filename.substr(filename.lastIndexOf('.'));
+            // Then we store the file with the combination of counter and extension to preserve the order when saving files
+            filename = uploaded_thread_images_assets[i][0] + ext;
+            form_data.append('images[]', uploaded_thread_images_assets[i][1], filename);
         }
     }
-    // Checking if the user add new videos
+    // Checking videos existence in the thread
     if(uploaded_thread_videos_assets.length) {
         // Append videos files
         for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
-            form_data.append('videos[]', uploaded_thread_videos_assets[i]);
+            // First filename
+            let filename = uploaded_thread_videos_assets[i][1].name.toLowerCase();
+            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
+            let ext = filename.substr(filename.lastIndexOf('.'));
+            // Then we store the file with the combination of counter and extension to preserve the order when saving files
+            filename = uploaded_thread_videos_assets[i][0] + ext;
+            form_data.append('videos[]', uploaded_thread_videos_assets[i][1], filename);
         }
     }
 
@@ -1522,7 +1534,6 @@ function handle_mark_as_read() {
 
 let notification_timeout;
 if(userId != "") {
-    console.log('echo !');
     Echo.private('user.' + userId + '.notifications')
         .notification((notification) => {
             // Stop animatio if there's already animation
@@ -2120,7 +2131,9 @@ $('.thread-add-share').click(function(event) {
 
     // Checking images existence in the thread
     /**
-     * Update:
+     * Update: instead of directly append files to form data, we take first the old filename and extract the extension
+     * then we use the counter and append the extension to the counter value, in that way we get ascending order of file names to maintain order
+     * when saving those files
      */
     if(uploaded_thread_images_assets.length) {
         // Append image files
@@ -3042,7 +3055,6 @@ function handle_viewer_closing() {
 }
 function handle_thread_viewer_image(image) {
     image.parent().imagesLoaded(function() {
-        console.log('handling ..');
         handle_viewer_media_logic(image);
     });
 }
@@ -3592,8 +3604,7 @@ $('.submit-thread-report').on('click', function() {
     });
 });
 
-let edit_deleted_medias = [];
-$('.close-thread-media-upload-edit').click(function() {
+$('.close-thread-media-upload-edit').on('click', function() {
     // First we close the error if it is opened
     $('.thread-add-media-error p').addClass('none');
 

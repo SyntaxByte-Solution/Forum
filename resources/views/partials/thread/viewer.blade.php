@@ -7,7 +7,6 @@
 
         <img src="" id="thread-viewer-media-image" class="image-that-fade-wait" alt="">
         <video id="thread-viewer-media-video" style="width: calc(100% - 128px);" controls class="none full-height">
-            <source src="" type="video/mp4">
             Your browser does not support the video tag.
         </video>
 

@@ -73,6 +73,8 @@ class IndexController extends Controller
     }
 
     public function faqs() {
-        return view('faqs');
+        $faqs = \App\Models\FAQ::paginate(10);
+        return view('faqs')
+            ->with(compact('faqs'));
     }
 }

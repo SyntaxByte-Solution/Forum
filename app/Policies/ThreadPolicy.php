@@ -41,8 +41,8 @@ class ThreadPolicy
             throw new UserBannedException();
         }
 
-        // The user should be: authenticated, not banned and post less than 60 threads per day.
-        return $user->threads()->today()->count() < 60;
+        // The user should be: authenticated, not banned and post less than 20 threads per day.
+        return $user->threads()->today()->count() < 20;
     }
 
     /**

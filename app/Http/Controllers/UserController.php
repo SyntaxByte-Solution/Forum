@@ -317,7 +317,6 @@ class UserController extends Controller
         return view('user.settings.account-settings')
         ->with(compact('user'));
     }
-
     public function delete_account(Request $request) {
         $user = auth()->user();
         $this->authorize('delete', $user);
@@ -331,7 +330,6 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Invalid password !');
         }
     }
-
     public function deactivate_account(Request $request) {
         $user = auth()->user();
         $this->authorize('delete', $user);
@@ -353,7 +351,6 @@ class UserController extends Controller
             return redirect()->back()->with('errordeactiv', 'Invalid password !');
         }
     }
-
     public function activate_account() {
         $user = auth()->user();
         $this->authorize('activate_account', $user);
@@ -365,7 +362,6 @@ class UserController extends Controller
         return view('user.settings.account-activation')
             ->with(compact('user'));
     }
-
     public function activating_account() {
         $user = auth()->user();
         $this->authorize('activate_account', $user);
@@ -377,7 +373,6 @@ class UserController extends Controller
         
         abort(404);
     }
-
     public function username_check(Request $request) {
         $response = [
             'status'=>'valid',

@@ -71,4 +71,8 @@ class IndexController extends Controller
     public function about() {
         return view('aboutus');
     }
+
+    public function faqs() {
+        return view('faqs');
+    }
 }

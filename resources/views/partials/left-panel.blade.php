@@ -204,7 +204,7 @@
                 @endif
             </div>
             <div class="flex relative">
-                <a href="/" class="left-panel-item lp-wpadding @if($page == 'faqs') {{ 'lp-selected bold white' }} @endif" title="Frequently Asked Questions">{{ __('FAQs') }}</a>
+                <a href="{{ route('faqs') }}" class="left-panel-item lp-wpadding @if($page == 'faqs') {{ 'lp-selected bold white' }} @endif" title="Frequently Asked Questions">{{ __('FAQs') }}</a>
                 @if($page == 'faqs')
                     <div class="selected-colored-slice"></div>
                 @endif

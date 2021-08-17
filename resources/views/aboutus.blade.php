@@ -35,7 +35,7 @@
             min-width: 320px;
         }
         #middle-padding {
-            width: 80%;
+            width: 74%;
             min-width: 300px;
             margin: 0 auto;
         }

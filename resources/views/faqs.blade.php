@@ -80,12 +80,6 @@
         <span class="current-link-path unselectable">FAQs</span>
     </div>
     <div id="middle-padding">
-        @if(Session::has('message'))
-            <div class="green-message-container full-width border-box flex align-center" style="margin-top: 16px">
-                <svg class="size20 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:rgb(67, 172, 67)"/></svg>
-                <p class="green-message">{{ Session::get('message') }}</p>
-            </div>
-        @endif
         <!-- title -->
         <div class="full-center move-to-middle">
             <svg class="size28 mr8 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M316,71a74.93,74.93,0,0,0-60,30.05,74.93,74.93,0,0,0-60-30H0V381H21v60H491V381h21V71ZM51,411V381H196a45.07,45.07,0,0,1,42.42,30Zm190-45a74.59,74.59,0,0,0-45-15H30V101H196a45.05,45.05,0,0,1,45,45ZM359,101h50V203.73l-25-12.5-25,12.5ZM461,411H273.58A45.06,45.06,0,0,1,316,381H461Zm21-60H316a74.59,74.59,0,0,0-45,15V146a45.05,45.05,0,0,1,45-45h13V252.27l55-27.5,55,27.5V101h43ZM139,139a45.05,45.05,0,0,0-45,45h30a15,15,0,1,1,15,15H124v50h30V226.43A45,45,0,0,0,139,139ZM124,279h30v30H124Z"/></svg>
@@ -98,6 +92,12 @@
             <em class="fs15">{{ __("Below you’ll find answers to our most commonly asked questions. If you don’t find the answer you are looking for, you could ask a question using the form at the bottom") }}</em>
         </div>
         <!-- FAQs -->
+        @if(Session::has('message'))
+            <div class="green-message-container full-width border-box flex align-center" style="margin: 16px 0">
+                <svg class="size20 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:rgb(67, 172, 67)"/></svg>
+                <p class="green-message">{{ Session::get('message') }}</p>
+            </div>
+        @endif
         <div class="flex align-end space-between" style="margin: 28px 0 10px 0">
             <h2 class="no-margin forum-color">{{ __('TOP FAQs') }}</h2>
             {{ $faqs->onEachSide(0)->links() }}
@@ -123,11 +123,14 @@
         <!-- send a question -->
         <div>
             <p class="my8 fs18 bold">{{ __("Your question does not exist? You can use the form below to ask your question") }}</p>
+            <p class="error fs15 faq-global-error none"></p>
             <div style="width: 70%; min-width: 280px">
+                <p class="error"><span class="general-error"></span></p>
                 <div style="margin: 12px 0">
-                    <input type="hidden" class="question-required" value="{{ __('Question is required') }}">
+                    <input type="hidden" class="question-required" value="* {{ __('Question is required') }}">
+                    <input type="hidden" class="question-length-error" value="* {{ __('Question must contain at least 10 characters') }}">
                     <label for="question" class="flex align-center bold forum-color mb4">{{ __('Question') }}<span class="error none fs12" style="font-weight: 400; margin: 0"></span></label>
-                    <input type="text" id="question" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Your question") }}'>
+                    <input type="text" id="question" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Your question") }}' value="this is my fucking question !">
                 </div>
                 <div class="input-container">
                     <span class="error frt-error"></span>
@@ -146,10 +149,10 @@
                         <input type="hidden" class="max-textarea-characters" value="800">
                     </div>
                 </div>
-                <div class="flex align-center">
+                <div class="flex align-center" style="margin-bottom: 28px">
                     <input type="hidden" class="btn-text-ing" value="{{ __('Sending Question') }}..">
-                    <input type="hidden" class="btn-no-text-ing" value="{{ __('Send Question') }}">
-                    <input type='button' class="faq-question-send inline-block button-style" value="{{ __('Send Question') }}">
+                    <input type="hidden" class="btn-text-no-ing" value="{{ __('Send Question') }}">
+                    <input type='button' class="@auth faq-question-send @else login-signin-button @endauth inline-block button-style" value="{{ __('Send Question') }}">
                     <div class="spinner size17 ml4 opacity0">
                         <svg class="size17" xmlns="http://www.w3.org/2000/svg" fill="#000" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
                     </div>

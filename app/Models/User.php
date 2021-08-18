@@ -9,7 +9,8 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as UserAuthenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\{Role, Permission, UserStatus, UserReach, ProfileView, 
-    Thread, Post, SavedThread, UserPersonalInfos, AccountStatus, Vote, Like, NotificationDisable, Follow};
+    Thread, Post, SavedThread, UserPersonalInfos, AccountStatus, 
+    Vote, Like, NotificationDisable, Follow, FAQ};
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -143,6 +144,10 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function followers() {
         return $this->morphMany(Follow::class, 'followable');
+    }
+
+    public function faqs() {
+        return $this->hasMany(FAQ::class);
     }
 
     public function getFollowedUsersAttribute() {

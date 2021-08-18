@@ -7,7 +7,7 @@ use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
     CategoryController, ThreadController, PostController,
     IndexController, UserController, OAuthController, ContactController,
-    SearchController, FeedbackController, VoteController,
+    SearchController, FeedbackController, VoteController, FaqsController,
     LikesController, GeneralController, MultilanguageHelperController,
     NotificationController, FollowController, ReportController};
 use App\Models\{User, Thread, Post};
@@ -26,7 +26,8 @@ use App\Http\Middleware\AccountActivationCheck;
 
 Route::get('/test', function() {
     $user = auth()->user();
-    $thread = Thread::find(113);
+    
+    dd($user->faqs()->whereDate('created_at', \Carbon\Carbon::today())->count());
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -63,10 +64,12 @@ Route::get('/users/{user}/activities/sections/generate', [ThreadController::clas
 Route::get('/announcements', [IndexController::class, 'announcements'])->name('announcements');
 Route::get('/guidelines', [IndexController::class, 'guidelines'])->name('guidelines');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
-Route::get('/faqs', [IndexController::class, 'faqs'])->name('faqs');
 
 Route::get('/contact', [ContactController::class, 'contactus'])->name('contactus');
 Route::post('/contact', [ContactController::class, 'store_contact_message']);
+
+Route::get('/faqs', [FaqsController::class, 'faqs'])->name('faqs');
+Route::post('/faqs', [FaqsController::class, 'store'])->middleware('auth');
 
 Route::middleware(['auth'])->group(function () {
     /** 

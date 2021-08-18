@@ -55,7 +55,6 @@
                         @endif
                     @endisset
                 </div>
-                <div class="fs10" style="margin-left: 21px; color: #d9d9d9">•</div>
                 <div class="relative">
                     <a href="{{ route('advanced.search') }}" @isset($subpage) @if($subpage == 'advanced-search') style="color: #53baff" @endif @endisset class="left-panel-item lp-sub-item @if($page == 'search') {{ 'lp-selected' }} @endif">
                         <svg class="size14 mr4" fill="@isset($subpage) @if($subpage == 'advanced-search') #2ca0ff @else #fff @endif @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511 511"><path d="M492,0H21A20,20,0,0,0,1,20,195,195,0,0,0,66.37,165.55l87.42,77.7a71.1,71.1,0,0,1,23.85,53.12V491a20,20,0,0,0,31,16.6l117.77-78.51a20,20,0,0,0,8.89-16.6V296.37a71.1,71.1,0,0,1,23.85-53.12l87.41-77.7A195,195,0,0,0,512,20,20,20,0,0,0,492,0ZM420.07,135.71l-87.41,77.7a111.1,111.1,0,0,0-37.25,83V401.82l-77.85,51.9V296.37a111.1,111.1,0,0,0-37.25-83L92.9,135.71A155.06,155.06,0,0,1,42.21,39.92H470.76A155.06,155.06,0,0,1,420.07,135.71Z"/></svg>
@@ -91,7 +90,7 @@
                     <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size24" alt="{{ __('your profile picture') }}">
                 </div>
                 {{__('My Space')}} 
-                <svg class="toggle-arrow mx4 size7" style="margin-top: 1px; @if($page == 'user') rotate: 90deg; @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                <svg class="toggle-arrow mx4 size7" style="margin-top: 1px; @if($page == 'user' && $same_user) rotate: 90deg; @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
                     <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                 </svg>
             </a>
@@ -150,23 +149,23 @@
             <p class="left-panel-label">{{__('PUBLIC')}}</p>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
+                    <a href="{{ route('explore') }}" class="left-panel-item lp-padding @if($page == 'explore') {{ 'lp-selected bold white' }} @endif">
+                        <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 510"><path d="M255,227A28.05,28.05,0,1,0,283.05,255,28.3,28.3,0,0,0,255,227ZM255,0C114.75,0,0,114.75,0,255S114.75,510,255,510,510,395.25,510,255,395.25,0,255,0Zm56.1,311.1L102,408l96.9-209.1L408,102Z"/></svg>
+                        {{__('Explore')}}
+                    </a>
+                </div>
+                @if($page == 'explore')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
+            <div class="flex relative">
+                <div class="flex align-center full-width relative">
                     <a href="/forums" class="left-panel-item lp-padding @if($page == 'forums') {{ 'lp-selected bold white' }} @endif">
                         <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M438.09,273.32h-39.6a102.92,102.92,0,0,1,6.24,35.4V458.37a44.18,44.18,0,0,1-2.54,14.79h65.46A44.4,44.4,0,0,0,512,428.81V347.23A74,74,0,0,0,438.09,273.32ZM107.26,308.73a102.94,102.94,0,0,1,6.25-35.41H73.91A74,74,0,0,0,0,347.23v81.58a44.4,44.4,0,0,0,44.35,44.35h65.46a44.17,44.17,0,0,1-2.55-14.78Zm194-73.91H210.74a74,74,0,0,0-73.91,73.91V458.38a14.78,14.78,0,0,0,14.78,14.78H360.39a14.78,14.78,0,0,0,14.78-14.78V308.73A74,74,0,0,0,301.26,234.82ZM256,38.84a88.87,88.87,0,1,0,88.89,88.89A89,89,0,0,0,256,38.84ZM99.92,121.69a66.44,66.44,0,1,0,66.47,66.47A66.55,66.55,0,0,0,99.92,121.69Zm312.16,0a66.48,66.48,0,1,0,66.48,66.47A66.55,66.55,0,0,0,412.08,121.69Z"/></svg>
                         {{__('Forums')}}
                     </a>
                 </div>
                 @if($page == 'forums')
-                    <div class="selected-colored-slice"></div>
-                @endif
-            </div>
-            <div class="flex relative">
-                <div class="flex align-center full-width relative">
-                    <a href="" class="left-panel-item lp-padding @if($page == 'popular-posts') {{ 'lp-selected bold white' }} @endif">
-                        <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 510"><path d="M255,227A28.05,28.05,0,1,0,283.05,255,28.3,28.3,0,0,0,255,227ZM255,0C114.75,0,0,114.75,0,255S114.75,510,255,510,510,395.25,510,255,395.25,0,255,0Zm56.1,311.1L102,408l96.9-209.1L408,102Z"/></svg>
-                        {{__('Explore')}}
-                    </a>
-                </div>
-                @if($page == 'explore')
                     <div class="selected-colored-slice"></div>
                 @endif
             </div>
@@ -197,6 +196,12 @@
         </div>
         <div>
             <p class="left-panel-label">{{__('MORE')}}</p>
+            <div class="flex relative">
+                <a href="{{ route('guidelines') }}" class="left-panel-item lp-wpadding @if($page == 'guidelines') {{ 'lp-selected bold white' }} @endif">{{__('Guidelines')}}</a>
+                @if($page == 'guidelines')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
             <div class="flex relative">
                 <a href="{{ route('about') }}" class="left-panel-item lp-wpadding @if($page == 'about') {{ 'lp-selected bold white' }} @endif">{{__('About Us')}}</a>
                 @if($page == 'about')

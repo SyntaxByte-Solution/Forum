@@ -61,7 +61,9 @@ Route::get('/threads/{thread}/viewer_infos_component', [ThreadController::class,
 Route::get('/thread/{thread}/viewer/posts/load', [ThreadController::class, 'viewer_replies_load']);
 Route::get('/users/{user}/activities/sections/generate', [ThreadController::class, 'generate_section_range']);
 
+
 Route::get('/announcements', [IndexController::class, 'announcements'])->name('announcements');
+Route::get('/explore', [IndexController::class, 'explore'])->name('explore');
 Route::get('/guidelines', [IndexController::class, 'guidelines'])->name('guidelines');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
 

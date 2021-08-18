@@ -2111,22 +2111,22 @@ $('.thread-add-share').click(function(event) {
     if(form_data.get('subject') == '') {
         $('#subject').parent().find('.error').removeClass('none');
         container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
-        container.find('.thread-add-error').removeClass('none');
+        container.find('.thread-add-error-container').removeClass('none');
         return;
     } else {
         $('#subject').parent().find('.error').addClass('none');
         container.find('.thread-add-error').text("");
-        container.find('.thread-add-error').addClass('none');
+        container.find('.thread-add-error-container').addClass('none');
     }
 
     if(form_data.get('content') == '') {
         $('#content').parent().find('.error').removeClass('none');
         container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
-        container.find('.thread-add-error').removeClass('none');
+        container.find('.thread-add-error-container').removeClass('none');
         return;
     } else {
         $('#content').parent().find('.error').addClass('none');
-        container.find('.thread-add-error').addClass('none');
+        container.find('.thread-add-error-container').addClass('none');
     }
 
     // Checking images existence in the thread

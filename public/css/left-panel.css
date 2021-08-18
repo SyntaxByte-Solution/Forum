@@ -1,5 +1,5 @@
 main {
-    padding-left: 250px;
+    padding-left: 280px;
 }
 
 /* Left-panel */
@@ -7,10 +7,10 @@ main {
     position: fixed;
     left: 0;
 
-    padding: 30px 0 0 50px;
+    padding: 30px 0 0 60px;
     color: white;
     overflow-y: scroll;
-    min-width: 250px;
+    min-width: 280px;
     box-sizing: border-box;
 
     background-color: #4c5371;

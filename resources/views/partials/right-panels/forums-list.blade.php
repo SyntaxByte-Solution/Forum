@@ -15,15 +15,15 @@
                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     {!! $forum->icon !!}
                 </svg>
-                {{ $forum->forum }}
+                <span class="bold">{{ $forum->forum }}</span>
                 <svg class="toggle-arrow mx8 size7" style="margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
                     <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                 </svg>
                 <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="stop-propagation move-to-right link-style fs13 mr8">visit</a>
             </div>
-            <div class="toggle-container mx8 px8">
+            <div class="toggle-container px8">
                 @foreach($forum->categories as $category)
-                <div class="my8">
+                <div class="my8" style="margin-left: 30px">
                     <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="blue fs13 no-underline">{{ $category->category }}</a>
                 </div>
                 @endforeach

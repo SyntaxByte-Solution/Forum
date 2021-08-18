@@ -86,7 +86,7 @@
             <h1 id="cu-heading">FAQs</h1>
         </div>
         <div class="flex justify-center">
-            <em class="fs15 bold flex">{{ __("Frequently Asked Questions") }}</em>
+            <em class="fs16 bold flex">{{ __("Frequently Asked Questions") }}</em>
         </div>
         <div style="margin: 20px 0 10px 0;">
             <em class="fs15">{{ __("Below you’ll find answers to our most commonly asked questions. If you don’t find the answer you are looking for, you could ask a question using the form at the bottom") }}</em>
@@ -130,7 +130,7 @@
                     <input type="hidden" class="question-required" value="* {{ __('Question is required') }}">
                     <input type="hidden" class="question-length-error" value="* {{ __('Question must contain at least 10 characters') }}">
                     <label for="question" class="flex align-center bold forum-color mb4">{{ __('Question') }}<span class="error none fs12" style="font-weight: 400; margin: 0"></span></label>
-                    <input type="text" id="question" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Your question") }}' value="this is my fucking question !">
+                    <input type="text" id="question" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Your question") }}'>
                 </div>
                 <div class="input-container">
                     <span class="error frt-error"></span>

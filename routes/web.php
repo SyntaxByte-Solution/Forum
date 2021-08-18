@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\
     {RolesController, PermissionsController, ForumController,
-    CategoryController, ThreadController, PostController,
+    CategoryController, ThreadController, PostController, ExploreController,
     IndexController, UserController, OAuthController, ContactController,
     SearchController, FeedbackController, VoteController, FaqsController,
     LikesController, GeneralController, MultilanguageHelperController,
@@ -61,9 +61,10 @@ Route::get('/threads/{thread}/viewer_infos_component', [ThreadController::class,
 Route::get('/thread/{thread}/viewer/posts/load', [ThreadController::class, 'viewer_replies_load']);
 Route::get('/users/{user}/activities/sections/generate', [ThreadController::class, 'generate_section_range']);
 
+Route::get('/explore', [ExploreController::class, 'explore'])->name('explore');
+Route::get('/explore/loadmore', [ExploreController::class, 'explore_more']);
 
 Route::get('/announcements', [IndexController::class, 'announcements'])->name('announcements');
-Route::get('/explore', [IndexController::class, 'explore'])->name('explore');
 Route::get('/guidelines', [IndexController::class, 'guidelines'])->name('guidelines');
 Route::get('/about', [IndexController::class, 'about'])->name('about');
 

@@ -32,7 +32,9 @@
         </div>
     </div>
     <div class="index-middle-width middle-container-style">
-        <input type="hidden" autocomplete="off" id="explore-page" value="1">
+        <input type="hidden" autocomplete="off" id="explore-hours-interval" value="{{ $hours_interval_to_fetch }}">
+        <input type="hidden" autocomplete="off" id="explore-hours-interval-remains" value="{{ $remains }}"> <!-- to know why we use this go to Explore controller -->
+        <input type="hidden" autocomplete="off" id="explore-sort-key" value="{{ $sortby }}">
         @if(Session::has('message'))
             <div class="green-message-container mb8">
                 <p class="green-message">{{ Session::get('message') }}</p>
@@ -90,10 +92,15 @@
                 {{ __('Adv. Search') }}
             </a>
         </div>
-        <div class="threads-global-container mt8">
+        <div id="threads-global-container" class="mt8">
             @foreach($threads as $thread)
                 <x-index-resource :thread="$thread"/>
             @endforeach
+        </div>
+        <div class="full-center" style="padding: 26px 0">
+            <div class="spinner size28 explore-more">
+                <svg class="size28 move-to-middle" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+            </div>
         </div>
     </div>
 

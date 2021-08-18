@@ -89,8 +89,8 @@ class IndexResource extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.thread.index-resource');
+        return view('components.thread.index-resource', $data);
     }
 }

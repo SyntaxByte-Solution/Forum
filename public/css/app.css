@@ -250,7 +250,11 @@ a, input, textarea {
 }
 
 .br4 {
-    border-radius: 6px;
+    border-radius: 4px;
+}
+
+.br3 {
+    border-radius: 3px;
 }
 
 .br4-first {

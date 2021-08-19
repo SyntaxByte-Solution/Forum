@@ -3239,9 +3239,9 @@ $('.fade-loading').each(function(event) {
         }
         fade_item.css({
             backgroundColor: target_color,
-            transition: "background-color 1.2s"
+            transition: "background-color 1s"
         });
-    }, 1200);
+    }, 1000);
 });
 
 function handle_fade_loading_removing(fade_container) {

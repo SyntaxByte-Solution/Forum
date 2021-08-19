@@ -221,6 +221,10 @@ class Thread extends Model
         return false;
     }
 
+    public function getPostsandlikescountAttribute() {
+        return $this->posts->count() + $this->likes->count();
+    }
+
     public function forum() {
         return Forum::find($this->category->forum_id);
     }

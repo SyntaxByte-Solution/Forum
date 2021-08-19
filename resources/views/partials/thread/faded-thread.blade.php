@@ -1,4 +1,4 @@
-<div class="resource-container thread-container-box relative @isset($classes) {{ $classes }} @endif" style="margin-bottom: 0; border-bottom: unset; border-radius: 4px 4px 0 0; border-color: #dfdfdf">
+<div class="resource-container faded-thread-container thread-container-box relative @isset($classes) {{ $classes }} @endif" style="margin-bottom: 0; border-bottom: unset; border-radius: 4px 4px 0 0; border-color: #dfdfdf">
     <div class="flex thread-component">
         <div class="thread-vote-section" style="border-right: unset; background-color: #e6e6e6bd; border-radius: 4px 0 0 0">
             <div class="vote-box full-center flex-column relative">
@@ -74,13 +74,7 @@
                         <div class="fade-loading"></div>
                     </div>
                     <div class="mt8">
-                        <div class="relative my8 br3 hidden-overflow" style="height: 12px; width: 90%">
-                            <div class="fade-loading"></div>
-                        </div>
-                        <div class="relative my8 br3 hidden-overflow" style="height: 12px">
-                            <div class="fade-loading"></div>
-                        </div>
-                        <div class="relative br3 hidden-overflow" style="height: 12px">
+                        <div class="relative my8 br3 hidden-overflow" style="height: 60px">
                             <div class="fade-loading"></div>
                         </div>
                     </div>

@@ -35,7 +35,6 @@
     </div>
     <div class="index-middle-width middle-container-style">
         <input type="hidden" autocomplete="off" id="explore-hours-interval" value="{{ $hours_interval_to_fetch }}">
-        <input type="hidden" autocomplete="off" id="explore-hours-interval-remains" value="{{ $remains }}"> <!-- to know why we use this go to Explore controller -->
         <input type="hidden" autocomplete="off" id="explore-sort-key" value="{{ $sortby }}">
         @if(Session::has('message'))
             <div class="green-message-container mb8">

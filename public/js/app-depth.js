@@ -3232,16 +3232,16 @@ $('.fade-loading').each(function(event) {
     let fade_item = $(this);
     window.setInterval(function(){
         let target_color;
-        if(fade_item.css('background-color') == "rgb(240, 240, 240)") {
+        if(fade_item.css('background-color') == "rgb(230, 230, 230)") {
             target_color = "rgb(200, 200, 200)";
         } else {
-            target_color = "rgb(240, 240, 240)";
+            target_color = "rgb(230, 230, 230)";
         }
         fade_item.css({
             backgroundColor: target_color,
-            transition: "background-color 1s"
+            transition: "background-color 0.8s"
         });
-    }, 1000);
+    }, 800);
 });
 
 function handle_fade_loading_removing(fade_container) {
@@ -3971,7 +3971,7 @@ function handle_move_to_trash(button) {
 function handle_thread_events(thread) {
     thread.find('.button-with-suboptions').each(function() {
         // Handle all suboptions of thread component
-        handle_suboptions_container(thread);
+        handle_suboptions_container($(this));
     });
     // Handle votes event
     handle_up_vote(thread.find('.votable-up-vote'));

@@ -32,6 +32,14 @@
     @stack('scripts')
 </head>
 <body>
+    <script type="text/javascript">
+        const warningTitleCSS = 'color:red; font-size:50px; font-weight: bold; -webkit-text-stroke: 1px black;';
+        const warningDescCSS = 'font-size: 14px;';
+
+        console.log('%c{{ __("WARNING") }}', warningTitleCSS);
+        console.log("%cThis is a browser feature intended for developers. If someone told you to copy and paste something here to enable a feature or 'hack' someone's account, it is a scam and will give them access to your gladiator account.", warningDescCSS);
+        console.log('%cSee https://en.wikipedia.org/wiki/Self-XSS for more information.', warningDescCSS);
+    </script>
     <div id="app">
         <!-- IMPORT HEADER FROM PARTIALS LATER -->
         @yield('header')

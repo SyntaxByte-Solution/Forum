@@ -3967,3 +3967,40 @@ function handle_move_to_trash(button) {
         });
     });
 }
+
+function handle_thread_events(thread) {
+    thread.find('.button-with-suboptions').each(function() {
+        // Handle all suboptions of thread component
+        handle_suboptions_container(thread);
+    });
+    // Handle votes event
+    handle_up_vote(thread.find('.votable-up-vote'));
+    handle_down_vote(thread.find('.votable-down-vote'));
+    // Handle like
+    handle_resource_like(thread.find('.like-resource'));
+    // Handle thread delete viewer && turn off posts viewer appearence
+    handle_thread_shadowed_viewers(thread);
+    // Handle close shadowed viewer
+    handle_close_shadowed_view(thread);
+    // Handle hide parent
+    handle_hide_parent(thread);
+    // Handle thread events
+    handle_save_threads(thread.find('.save-thread'));
+    handle_move_to_trash(thread.find('.move-to-trash-button'));
+    handle_turn_off_posts(thread.find('.turn-off-posts'));
+    handle_thread_display(thread);
+    handle_tooltip(thread);
+    handle_thread_visibility_switch(thread);
+    handle_follow_resource(thread.find('.follow-resource'));
+    // Keep in mind that images dimensions also handled withing lazy loading logic
+    handle_thread_medias_containers(thread);
+    /**
+     * Handle image fade loading when image is not fetched from server yet 
+     * Remember fade removing is handled in lazy loading scroll feature when scroll reach the image it will
+     * check at the end if the image comes with a fade loader and it will delete it immedietely when the image fully loaded
+     */
+    handle_fade_loading(thread);
+    handle_open_media_viewer(thread);
+    // Handle link copy
+    handle_copy_thread_link(thread.find('.copy-thread-link'));
+}

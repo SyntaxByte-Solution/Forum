@@ -17,7 +17,7 @@
         @include('partials.hidden-login-viewer')
     @endguest
     
-    @include('partials.header')
+    @include('partials.header', ['globalpage'=>'explore'])
 @endsection
 
 @section('content')

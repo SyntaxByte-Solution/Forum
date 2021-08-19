@@ -14,19 +14,31 @@
         <div class="flex align-center full-height" style="margin-left: 10px;">
             <a href="/" class="menu-button-style">
                 <svg class="size14 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
-                <span style="margin-top: 1px">{{ __('Home') }}</span>
+                <span style="margin-top: 1px; @if(isset($globalpage) && $globalpage == 'home') color: white; @endif">{{ __('Home') }}</span>
+                @if(isset($globalpage) && $globalpage == 'home')
+                <div class="menu-button-style-selected-stripe"></div>
+                @endif
             </a>
             <a href="{{ route('explore') }}" class="menu-button-style">
                 <svg class="size14 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 510 510"><path d="M255,227A28.05,28.05,0,1,0,283.05,255,28.3,28.3,0,0,0,255,227ZM255,0C114.75,0,0,114.75,0,255S114.75,510,255,510,510,395.25,510,255,395.25,0,255,0Zm56.1,311.1L102,408l96.9-209.1L408,102Z"/></svg>
-                <span style="margin-top: 1px">{{ __('Explore') }}</span>
+                <span style="margin-top: 1px; @if(isset($globalpage) && $globalpage == 'explore') color: white; @endif">{{ __('Explore') }}</span>
+                @if(isset($globalpage) && $globalpage == 'explore')
+                <div class="menu-button-style-selected-stripe"></div>
+                @endif
             </a>
             <a href="{{ route('announcements') }}" class="menu-button-style">
                 <svg class="size14 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390.34 390.34"><path d="M294.17,21.07c-3.29,0-6.52,2.08-9.6,6.18-.33.44-34.42,44.62-119.62,70.89-6.23,1.92-13.57,4.39-21.86,5.4-4.59.56-5.67-.41-6-1.07a15,15,0,0,0-13.13-7.79H39.78a15,15,0,0,0-15,15v5.58c0,3.38-2.38,3.53-3.21,3.59l-2,.15A21.48,21.48,0,0,0,0,140.08v56.24a21.47,21.47,0,0,0,19.6,21.07l2.8.22c.68,0,2.38.65,2.38,3.65v5.45a15,15,0,0,0,15,15h6.51a3.6,3.6,0,0,1,3.44,2.91L73,350.69c2.29,10.42,12.44,18.58,23.1,18.58H123a16.56,16.56,0,0,0,16.66-20.72L116.91,244.92s-.87-3.21,2.38-3.21h4.63c5.63,0,10.11-3.37,13.09-7.71,1.28-1.86,3.94-1.59,5.38-1.29,8.46,1.71,16.15,3.56,22.56,5.54,85.2,26.32,119.28,70.45,119.61,70.89,3.08,4.11,6.32,6.19,9.61,6.19h0a7.68,7.68,0,0,0,7-4.62,17.38,17.38,0,0,0,1.43-7.57V33.25C302.56,21.66,295.57,21.07,294.17,21.07Zm72.31,71.81A10,10,0,1,0,350,104.23c13.3,19.29,20.33,42.54,20.33,67.27s-7.35,48.71-20.7,67.81A10,10,0,1,0,366,250.76c15.89-22.75,24.3-50.16,24.3-79.26C390.34,142.7,382.09,115.52,366.48,92.88Zm-32.86,28.26a10,10,0,0,0-16.47,11.35A68.47,68.47,0,0,1,329,171.61a69.33,69.33,0,0,1-12,39.44,10,10,0,0,0,16.4,11.46,90.74,90.74,0,0,0,.29-101.37Z"/></svg>
-                <span>{{ __('Announcements') }}</span>
+                <span style="@if(isset($globalpage) && $globalpage == 'announcements') color: white; @endif">{{ __('Announcements') }}</span>
+                @if(isset($globalpage) && $globalpage == 'announcements')
+                <div class="menu-button-style-selected-stripe"></div>
+                @endif
             </a>
             <a href="{{ route('contactus') }}" class="menu-button-style">
                 <svg class="size14 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448,64H400V16A16,16,0,0,0,384,0H96A48.06,48.06,0,0,0,48,48V448a64.06,64.06,0,0,0,64,64H448a16,16,0,0,0,16-16V80A16,16,0,0,0,448,64ZM368,400a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V368a80.09,80.09,0,0,1,80-80h64a80.07,80.07,0,0,1,80,80ZM192,192a64,64,0,1,1,64,64A64.06,64.06,0,0,1,192,192ZM368,64H96a16,16,0,0,1,0-32H368Z"/></svg>
-                <span>{{ __('Contact Us') }}</span>
+                <span style="@if(isset($globalpage) && $globalpage == 'contactus') color: white; @endif">{{ __('Contact Us') }}</span>
+                @if(isset($globalpage) && $globalpage == 'contactus')
+                <div class="menu-button-style-selected-stripe"></div>
+                @endif
             </a>
         </div>
 

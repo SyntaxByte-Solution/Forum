@@ -12,7 +12,7 @@
         @include('partials.hidden-login-viewer')
     @endguest
     
-    @include('partials.header')
+    @include('partials.header', ['globalpage'=>'announcements'])
 @endsection
 
 @section('content')

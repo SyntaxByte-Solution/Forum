@@ -147,7 +147,7 @@
                                     <div class="flex align-center px8 py4 pointer br4 followers-display light-grey-hover">
                                         <div class="forum-color">{{ _('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers->count() }}</span></div>
                                     </div>
-                                    <div class="gray height-max-content mx4 fs10">•</div>
+                                    <div class="gray height-max-content mx4 fs10 unselectable">•</div>
                                     <div class="flex align-center px8 py4 pointer br4 follows-display light-grey-hover mr8">
                                         <div class="forum-color">{{ _('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->followed_users->count() }}</span></div>
                                     </div>

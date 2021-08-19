@@ -340,35 +340,39 @@ $('.share-thread').click(function(event) {
     return false;
 });
 
-$('.turn-off-posts').click(function() {
-    let button = $(this);
-    let old_button_name = button.val();
-    button.val(button.parent().find('.act-wait').val());
-    button.attr("disabled","disabled");
-    button.attr('style', 'background-color: #acacac; cursor: default');
-
-    let thread_id = $(this).parent().find('.id').val();
-    let swtch = $(this).parent().find('.switch').val();
-
-    $.ajax({
-        type: 'post',
-        url: '/thread/'+thread_id+'/posts/switch',
-        data: {
-            _token: csrf,
-            switch: swtch
-        },
-        success: function(response) {
-            window.location.href = response;
-        },
-        error: function(response) {
-            button.val(old_button_name);
-            button.attr('style', '');
-            button.prop("disabled", false);
-        },
-    })
-
-    return false;
+$('.turn-off-posts').on('click', function() {
+    handle_turn_off_posts($(this));
 });
+
+function handle_turn_off_posts(button) {
+    button.on('click', function() {
+        let button_text_no_ing = button.val();
+        let button_text_ing = button.parent().find('.button-text-ing').val();
+        button.val(button_text_ing);
+        button.attr("disabled","disabled");
+        button.attr('style', 'background-color: #acacac; cursor: default');
+    
+        let thread_id = button.parent().find('.id').val();
+        let swtch = button.parent().find('.switch').val();
+    
+        $.ajax({
+            type: 'post',
+            url: '/thread/'+thread_id+'/posts/switch',
+            data: {
+                _token: csrf,
+                switch: swtch
+            },
+            success: function(response) {
+                window.location.href = response;
+            },
+            error: function(response) {
+                button.val(button_text_no_ing);
+                button.attr('style', '');
+                button.prop("disabled", false);
+            },
+        })
+    });
+}
 
 let already_uploaded_thread_images_assets = [];
 let already_uploaded_thread_videos_assets = [];
@@ -504,52 +508,53 @@ $('#category-dropdown').change(function() {
     document.location.href = url;
 });
 
-$('.copy-container-button').click(function() {
-    $(this).parent().find('input').select();
-    return false;
+$('.copy-thread-link').each(function() {
+    handle_copy_thread_link($(this));
 });
 
-$('.copy-button').click(function() {
-    $(this).parent().find('input').select();
-    document.execCommand("copy");
+function handle_copy_thread_link(button) {
+    button.on('click', function(event) {
+        $(this).parent().find('input').trigger('select');
+        document.execCommand("copy");
+        $(this).parent().parent().css('display', 'none');
+        console.log($(this).parent().parent());
+        basic_notification_show($(this).find('.copied').val(), 'basic-notification-round-tick');
 
-    return false;
+        event.stopPropagation();
+    });
+}
+
+$('.resource-container').each(function() {
+    handle_thread_medias_containers($(this));
+    handle_open_media_viewer($(this));
+    handle_thread_shadowed_viewers($(this));
+    handle_thread_visibility_switch($(this));
 });
 
-$('.action-verification').click(function(event) {
-    let action_type = $(this).find('.verification-action-type').val();
-    let container = $(this);
-    while(!container.hasClass('shadow-contained-box')) {
-        container = container.parent();
-    }
-
-    if(action_type == 'thread.destroy') {
-        container.find('.thread-deletion-viewer').css('display', 'block');
-        container.find('.thread-deletion-viewer').css('opacity', '1');
-    } else if(action_type == 'turn.off.posts') {
-        container.find('.turn-off-viewer').css('display', 'block');
-        container.find('.turn-off-viewer').css('opacity', '1');
-    }
-
-    $('.suboptions-container').css('display', 'none');
-    return false;
-});
-
-$('.tooltip-section').on({
-    'mouseenter': function() {
-        $(this).parent().find('.tooltip').css('display', 'block');
-    },
-    'mouseleave': function() {
-        $(this).parent().find('.tooltip').css('display', 'none');
-    }
-});
+function handle_thread_shadowed_viewers(thread) {
+    thread.find('.open-thread-shadowed-viewer').each(function(event) {
+        $(this).on('click', function(event) {
+            let thread = $(this);
+            while(!thread.hasClass('resource-container')) {
+                thread = thread.parent();
+            }
+            
+            let viewerclass = $(this).find('.viewer').val();
+            thread.find(viewerclass).css('display', 'block');
+            thread.find(viewerclass).css('opacity', '1');
+            
+            thread.find('.suboptions-container').css('display', 'none');
+            event.stopPropagation();
+        });
+    })
+}
 
 $('.tooltip-section').each(function() {
-    handle_tooltip($(this));
+    handle_tooltip($(this).parent());
 })
 
-function handle_tooltip(item) {
-    item.on({
+function handle_tooltip(component) {
+    component.find('.tooltip-section').on({
         'mouseenter': function() {
             $(this).parent().find('.tooltip').css('display', 'block');
         },
@@ -651,19 +656,19 @@ function handle_button_container(element) {
     });
 }
 
-function handle_close_shadowed_view(element) {
-    element.click(function() {
-
-        let shadowed_container = $(this);
-
-        while(!shadowed_container.hasClass('full-shadowed')) {
-            shadowed_container = shadowed_container.parent();
-        }
-        shadowed_container.css('display', 'none');
-        $('.suboptions-container').css('display', 'none');
-
-        return false;
-    });
+function handle_close_shadowed_view(component) {
+    component.find('.close-shadowed-view-button').each(function() {
+        $(this).on('click',function() {
+            let shadowed_container = $(this);
+            while(!shadowed_container.hasClass('full-shadowed')) {
+                shadowed_container = shadowed_container.parent();
+            }
+            shadowed_container.css('display', 'none');
+            $('.suboptions-container').css('display', 'none');
+    
+            return false;
+        });
+    })
 }
 
 $('.hide-parent').click(function() {
@@ -1908,53 +1913,60 @@ function handle_thread_display(thread_container_box) {
     });
 }
 
+/**
+ * NOTICE: Later, add a feature where the user click on locked button and the lock is false add this click in kind 
+ * of queue and when the loc is released check the queue and trigger the event again and so on ;)
+ */
 let thread_visibility_lock = true;
-$('.thread-visibility-button').click(function() {
-    if(!thread_visibility_lock) {
-        return;
-    }
-    thread_visibility_lock = false;
+function handle_thread_visibility_switch(component) {
+    component.find('.thread-visibility-button').each(function() {
+        $(this).on('click', function() {
+            if(!thread_visibility_lock) {
+                return;
+            }
+            thread_visibility_lock = false;
 
-    let button = $(this);
-    let visibility_box = $(this);
-    while(!visibility_box.hasClass('visibility-box')) {
-        visibility_box = visibility_box.parent();
-    }
-
-    visibility_box.find('.thread-visibility-button').attr('style','background-color: rgb(250, 250, 250); color: gray');
-    button.attr('style', 'background-color: rgb(240, 240, 240); color: black');
-    let loading = button.find('.loading-dots-anim');
-    loading.removeClass('none');
-    start_loading_anim(loading);
-
-    let thread_id = visibility_box.find('.thread-id').val();
-    let visibility_slug = button.find('.thread-add-visibility-slug').val();
-
-    $.ajax({
-        url: `/thread/visibility/patch`,
-        type: 'patch',
-        data: {
-            _token: csrf,
-            thread_id: thread_id,
-            visibility_slug: visibility_slug
-        },
-        success: function() {
-            let button_ico = visibility_box.find('.thread-resource-visibility-icon');
-            let new_path = button.find('.icon-path-when-selected').val();
-            
-            button_ico.find('path').attr('d', new_path);
-        },
-        complete: function() {
-            thread_visibility_lock = true;
-            stop_loading_anim();
-            loading.addClass('none');
-            visibility_box.find('.thread-visibility-button').attr('style','');
-
-            button.parent().css('display', 'none');
-        }
+            let button = $(this);
+            let visibility_box = button;
+            while(!visibility_box.hasClass('visibility-box')) {
+                visibility_box = visibility_box.parent();
+            }
+        
+            visibility_box.find('.thread-visibility-button').attr('style','background-color: rgb(250, 250, 250); color: gray');
+            button.attr('style', 'background-color: rgb(240, 240, 240); color: black');
+            let loading = button.find('.loading-dots-anim');
+            loading.removeClass('none');
+            start_loading_anim(loading);
+        
+            let thread_id = visibility_box.find('.thread-id').val();
+            let visibility_slug = button.find('.thread-add-visibility-slug').val();
+        
+            $.ajax({
+                url: `/thread/visibility/patch`,
+                type: 'patch',
+                data: {
+                    _token: csrf,
+                    thread_id: thread_id,
+                    visibility_slug: visibility_slug
+                },
+                success: function() {
+                    let button_ico = visibility_box.find('.thread-resource-visibility-icon');
+                    let new_path = button.find('.icon-path-when-selected').val();
+                    
+                    button_ico.find('path').attr('d', new_path);
+                },
+                complete: function() {
+                    thread_visibility_lock = true;
+                    stop_loading_anim();
+                    loading.addClass('none');
+                    visibility_box.find('.thread-visibility-button').attr('style','');
+        
+                    button.parent().css('display', 'none');
+                }
+            });
+        });    
     });
-
-});
+}
 
 $('.thread-add-visibility').on('click', function(event) {
     event.stopPropagation();
@@ -2582,14 +2594,8 @@ function is_video(url) {
     return false;
 }
 
-handle_threads_medias_containers();
-function handle_threads_medias_containers() {
-    $('.thread-medias-container').each(function() {
-        handle_thread_medias_containers($(this));
-    })
-}
-
-function handle_thread_medias_containers(thread_medias_container) {
+function handle_thread_medias_containers(thread) {
+    let thread_medias_container = thread.find('.thread-medias-container');
     let media_count = thread_medias_container.find('.thread-media-container').length;
     let medias = thread_medias_container.find('.thread-media-container');
     let full_media_width = thread_medias_container.width();
@@ -2647,286 +2653,289 @@ let viewer_medias = [];
 let last_opened_thread = 0;
 let opened_thread_component;
 let viewer_loading_finished = false;
-$('.open-thread-image').on('click', function(event) {
-    event.preventDefault();
+function handle_open_media_viewer(thread) {
+    thread.find('.open-media-viewer').each(function() {
+        $(this).on('click', function(event) {
+            event.preventDefault();
 
-    infos_fetched = images_loaded = false;
+            infos_fetched = images_loaded = false;
 
-    let media_viewer = $('#thread-media-viewer');
-
-    // all thread medias container
-    let medias_container = $(this);
-    while(!medias_container.hasClass('thread-medias-container')) {
-        medias_container = medias_container.parent();
-    }
-    // selected media container
-    let media_container = $(this);
-    while(!media_container.hasClass('thread-media-container')) {
-        media_container = media_container.parent();
-    }
-    let selected_media = media_container.find('.media-count').val();
-    
-    medias_container.find('.thread-media-container').each(function() {
-        // Here before pushing the sources, we need to check media type
-        let media_type = $(this).find('.media-type').val();
-        let media_source;
-        if(media_type == "image") {
-            var attr = $(this).find('.thread-media').attr('data-src');
-            // we check for data-src due to lazy loaded more images (because +4 images are hidden and therefor they are not handled by lazy loading function)
-            if (typeof attr !== 'undefined' && attr !== false)
-                media_source = $(this).find('.thread-media').attr('data-src');
-            else
-                media_source = $(this).find('.thread-media').attr('src');
-        } else if(media_type == "video") {
-            media_source = $(this).find('video source').attr('src');
-        }
-        viewer_medias.push(media_source);
-    });
-    viewer_media_count = selected_media;
-    let selected_media_url = viewer_medias[selected_media];
-
-    // Viewer navigation buttons
-    if(viewer_medias.length == 1) {
-        $('.thread-viewer-right').addClass('none');
-        $('.thread-viewer-left').addClass('none');
-    } else {
-        if(selected_media != 0) {
-            $('.thread-viewer-left').removeClass('none');
-        }
-
-        if(selected_media == viewer_medias.length-1) {
-            $('.thread-viewer-right').addClass('none');
-        } else {
-            $('.thread-viewer-right').removeClass('none');
-        }
-    }
-    // media index indicator
-    if(viewer_medias.length > 1) {
-        media_viewer.find('.thread-viewer-medias-indicator').removeClass('none');
-        media_viewer.find('.thread-counter-total-medias').text(viewer_medias.length);
-        media_viewer.find('.thread-counter-current-index').text(parseInt(viewer_media_count)+1);
-    }
-    
-    /**
-     * Before opening thread media viewer we need to make sure all medias are loaded
-     */
-     medias_container.imagesLoaded( function() {
-        images_loaded = true;
-        $('body').css('overflow', 'hidden');
-        media_viewer.removeClass('none');
-        // Check type of media
-        if(is_image(selected_media_url)) {
-            // It's an image
-            let viewer_image = $('#thread-viewer-media-image');
-            let viewer_video = $('#thread-viewer-media-video');
-            viewer_image.removeClass('none');
-            viewer_video.addClass('none');
-            viewer_image.attr('src', viewer_medias[selected_media]);
-            handle_thread_viewer_image(viewer_image);
-        } else if(is_video(selected_media_url)) {
-            // It's a video
-            let viewer_image = $('#thread-viewer-media-image');
-            let viewer_video = $('#thread-viewer-media-video');
-            viewer_image.addClass('none');
-            viewer_video.removeClass('none');
-            viewer_video.attr('src', selected_media_url);
-            viewer_video[0].load();
-        }
-        if(infos_fetched) {
-            stop_loading_strip();
-            viewer_loading_finished = true;
-        }
-    });
-
-    opened_thread_component = $(this);
-    while(!opened_thread_component.hasClass('resource-container')) {
-        opened_thread_component = opened_thread_component.parent();
-    }
-    let thread_id = opened_thread_component.find('.thread-id').first().val();
-    if(last_opened_thread != thread_id) {
-        viewer_loading_finished = false;
-        start_loading_strip();
-        $('.tmvis').html('');
-        $('.thread-media-viewer-infos-header-pattern').removeClass('none');
-        // First we send ajax request to get thread infos component
-        $.ajax({
-            url: `/threads/${thread_id}/viewer_infos_component`,
-            type: 'get',
-            success: function(thread_infos_section) {
-                infos_fetched = true;
-                last_opened_thread = thread_id;
-                $('.thread-media-viewer-infos-header-pattern').addClass('none');
-                $('.tmvisc').html(thread_infos_section);
-
-                // ----- HANDLING EVENTS -----
-                $('.tmvisc').find('.follow-resource').not('#viewer-replies-box .follow-resource').each(function() {
-                    handle_follow_resource($(this));
-                });
-                $('.tmvisc').find('.button-with-suboptions').not('#viewer-replies-box .button-with-suboptions').each(function() {
-                    handle_suboptions_container($(this));
-                });
-                $('.tmvisc').find('.expand-button').not('#viewer-replies-box .expand-button').each(function() {
-                    handle_expend($(this));
-                });
-                $('.tmvisc').find('.move-to-thread-viewer-reply').on('click', function() {
-                    location.hash = "#viewer-reply-text-label";
-                    // After taking the user to replying section we need to delete the anchor from url
-                    location.hash = '';
-                    // and then get rid of the last hash in url
-                    history.replaceState({}, document.title, window.location.href.split('#')[0]);
-                    // and focus the editor
-                    viewer_reply_simplemde.codemirror.focus();
-                });
-                $('.tmvisc').find('.like-resource').not('.viewer-thread-reply .like-resource').each(function() {
-                    handle_resource_like($(this));
-                });
-                $('.tmvisc').find('.login-signin-button').not('.viewer-thread-reply .login-signin-button').each(function() {
-                    handle_login_lock($(this).parent());
-                });
-                handle_save_threads($('.tmvisc').find('.save-thread'));
-                handle_document_suboptions_hiding();
-                handle_remove_informer_message_container($('.tmvisc'));
-                $('.tmvisc').find('.votable-up-vote').not('.viewer-thread-reply .votable-up-vote').each(function() {
-                    handle_up_vote($(this));
-                })
-                $('.tmvisc').find('.votable-down-vote').not('.viewer-thread-reply .votable-down-vote').each(function() {
-                    handle_down_vote($(this));
-                })
-                if($('.tmvisc').find('#viewer-replies-load').length) {
-                    handle_viewer_replies_load($('.tmvisc').find('#viewer-replies-load'));
+            let media_viewer = $('#thread-media-viewer');
+            // all thread medias container
+            let medias_container = $(this);
+            while(!medias_container.hasClass('thread-medias-container')) {
+                medias_container = medias_container.parent();
+            }
+            // selected media container
+            let media_container = $(this);
+            while(!media_container.hasClass('thread-media-container')) {
+                media_container = media_container.parent();
+            }
+            let selected_media = media_container.find('.media-count').val();
+            
+            medias_container.find('.thread-media-container').each(function() {
+                // Here before pushing the sources, we need to check media type
+                let media_type = $(this).find('.media-type').val();
+                let media_source;
+                if(media_type == "image") {
+                    var attr = $(this).find('.thread-media').attr('data-src');
+                    // we check for data-src due to lazy loaded more images (because +4 images are hidden and therefor they are not handled by lazy loading function)
+                    if (typeof attr !== 'undefined' && attr !== false)
+                        media_source = $(this).find('.thread-media').attr('data-src');
+                    else
+                        media_source = $(this).find('.thread-media').attr('src');
+                } else if(media_type == "video") {
+                    media_source = $(this).find('video source').attr('src');
                 }
-                $('.tmvisc').find('.viewer-thread-reply').each(function() {
-                    handle_viewer_reply_events($(this));
-                });
-                // ---- HANDLE REPLY ---- //
-                $('.tmvisc').find('.share-viewer-reply').on('click', function() {
+                viewer_medias.push(media_source);
+            });
+            viewer_media_count = selected_media;
+            let selected_media_url = viewer_medias[selected_media];
 
-                    const $codemirror = $('#viewer-reply-input').nextAll('.CodeMirror')[0].CodeMirror;
-                    let button = $(this);
-                    let button_text_ing = $(this).parent().find('.button-text-ing').val();
-                    let button_text_no_ing = $(this).parent().find('.button-text-no-ing').val();
-                    
-                    let post_content = viewer_reply_simplemde.value();
-                    let thread_id = button.parent().find('.thread-id').val();
+            // Viewer navigation buttons
+            if(viewer_medias.length == 1) {
+                $('.thread-viewer-right').addClass('none');
+                $('.thread-viewer-left').addClass('none');
+            } else {
+                if(selected_media != 0) {
+                    $('.thread-viewer-left').removeClass('none');
+                }
 
-                    let data = {
-                        '_token':csrf,
-                        'thread_id': thread_id,
-                        'content': post_content,
-                    };
-
-                    if(post_content == "") {
-                        $('.reply-error').removeClass('none');
-                        $('.reply-error').text(button.parent().find('.required-error').val());
-                        button.prop("disabled", false);
-                        button.attr('style', '');
-                    } else if(post_content.length < 2) {
-                        $('.reply-error').text(button.parent().find('.reply-size-error').val());
-                        $('.reply-error').removeClass('none');
-                        button.prop("disabled", false);
-                        button.attr('style', '');
-                    }
-                    else {
-                        button.val(button_text_ing);
-                        button.attr("disabled","disabled");
-                        button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
-                        $('.reply-error').addClass('none');
-                        // Disable editor while saving the reply
-                        $codemirror.options.readOnly = 'nocursor';
-
-                        $.ajax({
-                            type: 'post',
-                            data: data,
-                            url: '/post?from=thread-viewer',
-                            success: function(response) {
-                                $('.viewer-thread-replies-number-container').removeClass('none');
-                                if ($(".viewer-ticked-reply").length){
-                                    $(".viewer-replies-container .viewer-thread-reply:first-child").after(response);
-                                    pst = $('.viewer-replies-container .viewer-thread-reply:eq(1)');
-                                } else {
-                                    $('.viewer-replies-container').prepend(response);
-                                    pst = $('.viewer-replies-container .viewer-thread-reply').first();
-                                }
-                                
-                                handle_viewer_reply_events(pst);
-
-                                $codemirror.getDoc().setValue('');
-                                let new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)+1;
-                                $('.viewer-thread-replies-number').text(new_replies_counter);
-
-                                // 1. Handle replies counter
-                                opened_thread_component.find('.thread-replies-counter').text(new_replies_counter);
-                                // Handle thread replies outside the viewer, but just in case the user is located in thread show page
-                                // To verify that, we can check if thread show replies container exists
-                                if($('#replies-container').length) {
-                                    // 2. Handle reply appending to thread show page
-                                    let post_id = pst.find('.post-id').val();
-                                    $.ajax({
-                                        url: `/post/${post_id}/show/generate`,
-                                        type: 'get',
-                                        success: function(post) {
-                                            $('#replies-container').find('.replies_header_after_thread').removeClass('none');
-                                            $('#global-error').css('display', 'none');
-                                            let pst;
-                                            if ($("#ticked-post")[0]){
-                                                $("#replies-container .resource-container:first-child").after(post);
-                                                pst = $('#replies-container .resource-container:eq(1)');
-                                            } else {
-                                                $('#replies-container').prepend(post);
-                                                pst = $('#replies-container .resource-container').first();
-                                            }
-                                            $('.thread-replies-number').text(new_replies_counter);
-
-                                            // Handling all events of the newly appended component
-                                            handle_post_events(pst);
-                                            handle_post_other_events(pst);
-                                        }
-                                    })
-                                }
-                            },
-                            error: function(response) {
-                                let errors = JSON.parse(response.responseText);
-                                let error;
-
-                                if(errors.message) {
-                                    error = errors.message
-                                } else {
-                                    // Here we get the errors of the response as an object
-                                    let errors = JSON.parse(response.responseText);
-                    
-                                    // The errors object hold errors keys as well as error values in form of array of errors
-                                    // because a field could have multiple validation constraints and then it could have multiple errors
-                                    // strings. In this case we only need the first error of the first validation
-                                    error = errors[Object.keys(errors)[0]][0];
-                                }
-                                $('.reply-error').removeClass('none');
-                                $('.reply-error').text(error);
-                            },
-                            complete: function() {
-                                button.val(button_text_no_ing);
-                                button.prop("disabled", false);
-                                button.attr('style', '');
-                                $codemirror.options.readOnly = false;
-                            }
-                        });
-                    }
-                });           
-                // ---------------------- //
-                handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
-                if(images_loaded) {
+                if(selected_media == viewer_medias.length-1) {
+                    $('.thread-viewer-right').addClass('none');
+                } else {
+                    $('.thread-viewer-right').removeClass('none');
+                }
+            }
+            // media index indicator
+            if(viewer_medias.length > 1) {
+                media_viewer.find('.thread-viewer-medias-indicator').removeClass('none');
+                media_viewer.find('.thread-counter-total-medias').text(viewer_medias.length);
+                media_viewer.find('.thread-counter-current-index').text(parseInt(viewer_media_count)+1);
+            }
+            
+            /**
+             * Before opening thread media viewer we need to make sure all medias are loaded
+             */
+            medias_container.imagesLoaded( function() {
+                images_loaded = true;
+                $('body').css('overflow', 'hidden');
+                media_viewer.removeClass('none');
+                // Check type of media
+                if(is_image(selected_media_url)) {
+                    // It's an image
+                    let viewer_image = $('#thread-viewer-media-image');
+                    let viewer_video = $('#thread-viewer-media-video');
+                    viewer_image.removeClass('none');
+                    viewer_video.addClass('none');
+                    viewer_image.attr('src', viewer_medias[selected_media]);
+                    handle_thread_viewer_image(viewer_image);
+                } else if(is_video(selected_media_url)) {
+                    // It's a video
+                    let viewer_image = $('#thread-viewer-media-image');
+                    let viewer_video = $('#thread-viewer-media-video');
+                    viewer_image.addClass('none');
+                    viewer_video.removeClass('none');
+                    viewer_video.attr('src', selected_media_url);
+                    viewer_video[0].load();
+                }
+                if(infos_fetched) {
                     stop_loading_strip();
                     viewer_loading_finished = true;
                 }
+            });
+
+            opened_thread_component = $(this);
+            while(!opened_thread_component.hasClass('resource-container')) {
+                opened_thread_component = opened_thread_component.parent();
             }
-        });
-    } else {
-        viewer_loading_finished = true;
-    }
-});
+            let thread_id = opened_thread_component.find('.thread-id').first().val();
+            if(last_opened_thread != thread_id) {
+                viewer_loading_finished = false;
+                start_loading_strip();
+                $('.tmvis').html('');
+                $('.thread-media-viewer-infos-header-pattern').removeClass('none');
+                // First we send ajax request to get thread infos component
+                $.ajax({
+                    url: `/threads/${thread_id}/viewer_infos_component`,
+                    type: 'get',
+                    success: function(thread_infos_section) {
+                        infos_fetched = true;
+                        last_opened_thread = thread_id;
+                        $('.thread-media-viewer-infos-header-pattern').addClass('none');
+                        $('.tmvisc').html(thread_infos_section);
+
+                        // ----- HANDLING EVENTS -----
+                        $('.tmvisc').find('.follow-resource').not('#viewer-replies-box .follow-resource').each(function() {
+                            handle_follow_resource($(this));
+                        });
+                        $('.tmvisc').find('.button-with-suboptions').not('#viewer-replies-box .button-with-suboptions').each(function() {
+                            handle_suboptions_container($(this));
+                        });
+                        $('.tmvisc').find('.expand-button').not('#viewer-replies-box .expand-button').each(function() {
+                            handle_expend($(this));
+                        });
+                        $('.tmvisc').find('.move-to-thread-viewer-reply').on('click', function() {
+                            location.hash = "#viewer-reply-text-label";
+                            // After taking the user to replying section we need to delete the anchor from url
+                            location.hash = '';
+                            // and then get rid of the last hash in url
+                            history.replaceState({}, document.title, window.location.href.split('#')[0]);
+                            // and focus the editor
+                            viewer_reply_simplemde.codemirror.focus();
+                        });
+                        $('.tmvisc').find('.like-resource').not('.viewer-thread-reply .like-resource').each(function() {
+                            handle_resource_like($(this));
+                        });
+                        $('.tmvisc').find('.login-signin-button').not('.viewer-thread-reply .login-signin-button').each(function() {
+                            handle_login_lock($(this).parent());
+                        });
+                        handle_save_threads($('.tmvisc').find('.save-thread'));
+                        handle_document_suboptions_hiding();
+                        handle_remove_informer_message_container($('.tmvisc'));
+                        $('.tmvisc').find('.votable-up-vote').not('.viewer-thread-reply .votable-up-vote').each(function() {
+                            handle_up_vote($(this));
+                        })
+                        $('.tmvisc').find('.votable-down-vote').not('.viewer-thread-reply .votable-down-vote').each(function() {
+                            handle_down_vote($(this));
+                        })
+                        if($('.tmvisc').find('#viewer-replies-load').length) {
+                            handle_viewer_replies_load($('.tmvisc').find('#viewer-replies-load'));
+                        }
+                        $('.tmvisc').find('.viewer-thread-reply').each(function() {
+                            handle_viewer_reply_events($(this));
+                        });
+                        // ---- HANDLE REPLY ---- //
+                        $('.tmvisc').find('.share-viewer-reply').on('click', function() {
+
+                            const $codemirror = $('#viewer-reply-input').nextAll('.CodeMirror')[0].CodeMirror;
+                            let button = $(this);
+                            let button_text_ing = $(this).parent().find('.button-text-ing').val();
+                            let button_text_no_ing = $(this).parent().find('.button-text-no-ing').val();
+                            
+                            let post_content = viewer_reply_simplemde.value();
+                            let thread_id = button.parent().find('.thread-id').val();
+
+                            let data = {
+                                '_token':csrf,
+                                'thread_id': thread_id,
+                                'content': post_content,
+                            };
+
+                            if(post_content == "") {
+                                $('.reply-error').removeClass('none');
+                                $('.reply-error').text(button.parent().find('.required-error').val());
+                                button.prop("disabled", false);
+                                button.attr('style', '');
+                            } else if(post_content.length < 2) {
+                                $('.reply-error').text(button.parent().find('.reply-size-error').val());
+                                $('.reply-error').removeClass('none');
+                                button.prop("disabled", false);
+                                button.attr('style', '');
+                            }
+                            else {
+                                button.val(button_text_ing);
+                                button.attr("disabled","disabled");
+                                button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
+                                $('.reply-error').addClass('none');
+                                // Disable editor while saving the reply
+                                $codemirror.options.readOnly = 'nocursor';
+
+                                $.ajax({
+                                    type: 'post',
+                                    data: data,
+                                    url: '/post?from=thread-viewer',
+                                    success: function(response) {
+                                        $('.viewer-thread-replies-number-container').removeClass('none');
+                                        if ($(".viewer-ticked-reply").length){
+                                            $(".viewer-replies-container .viewer-thread-reply:first-child").after(response);
+                                            pst = $('.viewer-replies-container .viewer-thread-reply:eq(1)');
+                                        } else {
+                                            $('.viewer-replies-container').prepend(response);
+                                            pst = $('.viewer-replies-container .viewer-thread-reply').first();
+                                        }
+                                        
+                                        handle_viewer_reply_events(pst);
+
+                                        $codemirror.getDoc().setValue('');
+                                        let new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)+1;
+                                        $('.viewer-thread-replies-number').text(new_replies_counter);
+
+                                        // 1. Handle replies counter
+                                        opened_thread_component.find('.thread-replies-counter').text(new_replies_counter);
+                                        // Handle thread replies outside the viewer, but just in case the user is located in thread show page
+                                        // To verify that, we can check if thread show replies container exists
+                                        if($('#replies-container').length) {
+                                            // 2. Handle reply appending to thread show page
+                                            let post_id = pst.find('.post-id').val();
+                                            $.ajax({
+                                                url: `/post/${post_id}/show/generate`,
+                                                type: 'get',
+                                                success: function(post) {
+                                                    $('#replies-container').find('.replies_header_after_thread').removeClass('none');
+                                                    $('#global-error').css('display', 'none');
+                                                    let pst;
+                                                    if ($("#ticked-post")[0]){
+                                                        $("#replies-container .resource-container:first-child").after(post);
+                                                        pst = $('#replies-container .resource-container:eq(1)');
+                                                    } else {
+                                                        $('#replies-container').prepend(post);
+                                                        pst = $('#replies-container .resource-container').first();
+                                                    }
+                                                    $('.thread-replies-number').text(new_replies_counter);
+
+                                                    // Handling all events of the newly appended component
+                                                    handle_post_events(pst);
+                                                    handle_post_other_events(pst);
+                                                }
+                                            })
+                                        }
+                                    },
+                                    error: function(response) {
+                                        let errors = JSON.parse(response.responseText);
+                                        let error;
+
+                                        if(errors.message) {
+                                            error = errors.message
+                                        } else {
+                                            // Here we get the errors of the response as an object
+                                            let errors = JSON.parse(response.responseText);
+                            
+                                            // The errors object hold errors keys as well as error values in form of array of errors
+                                            // because a field could have multiple validation constraints and then it could have multiple errors
+                                            // strings. In this case we only need the first error of the first validation
+                                            error = errors[Object.keys(errors)[0]][0];
+                                        }
+                                        $('.reply-error').removeClass('none');
+                                        $('.reply-error').text(error);
+                                    },
+                                    complete: function() {
+                                        button.val(button_text_no_ing);
+                                        button.prop("disabled", false);
+                                        button.attr('style', '');
+                                        $codemirror.options.readOnly = false;
+                                    }
+                                });
+                            }
+                        });           
+                        // ---------------------- //
+                        handle_viewer_infos_height($('.tmvisc').find('.thread-media-viewer-infos-content'));
+                        if(images_loaded) {
+                            stop_loading_strip();
+                            viewer_loading_finished = true;
+                        }
+                    }
+                });
+            } else {
+                viewer_loading_finished = true;
+            }
+        })
+    })
+}
 
 function handle_viewer_reply_events(reply_component) {
     handle_resource_like(reply_component.find('.like-resource'));
-    handle_tooltip(reply_component.find('.tooltip-section'));
+    handle_tooltip(reply_component);
     handle_post_display_buttons(reply_component);
     // Handle reply edit editor
     reply_component.find('textarea').each(function() {
@@ -2944,7 +2953,7 @@ function handle_viewer_reply_events(reply_component) {
     handle_exit_edit_changes(reply_component);
     handle_delete_post_button(reply_component);
     handle_delete_post(reply_component);
-    handle_close_shadowed_view(reply_component.find('.close-shadowed-view-button'));
+    handle_close_shadowed_view(reply_component);
     handle_remove_informer_message_container(reply_component);
     handle_login_lock(reply_component);
 
@@ -3359,7 +3368,7 @@ function handle_move_to_thread_replies(button) {
                         }, 400);
                     }
                 } else if(c_type == 'video') {
-                    $('.open-thread-image').click();
+                    $('.open-media-viewer').trigger('click');
                 }
                 
             }
@@ -3613,7 +3622,7 @@ $('.close-thread-media-upload-edit').on('click', function() {
     $(this).parent().remove();
 });
 
-$('.thread-media-options .open-thread-image').on('click', function() {
+$('.thread-media-options .open-media-viewer').on('click', function() {
     let medias_container = $(this);
     while(!medias_container.hasClass('thread-medias-container')) {
         medias_container = medias_container.parent();

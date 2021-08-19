@@ -3,7 +3,7 @@
         <p class="my4 fs12">Thread hidden. If you want to show it again <span class="pointer blue thread-display-button">click here</span></p>
     </div>
     @can('update', $thread)
-    <div class="absolute full-shadowed br6 turn-off-viewer" style="z-index: 1">
+    <div class="absolute full-shadowed br6 turn-off-posts-viewer" style="z-index: 1">
         <div class="full-center full-width full-height">
             <div>
                 @php
@@ -15,16 +15,16 @@
                 
                 @if(!$thread->replies_off)
                 <p class="white bold fs15 my4">{{ __('Important: If you turn off replies, no one could reply to your tread') }}.</p>
-                <p class="white fs15 mt4 mb8">{{ __('However if there are already some replies, they will not disappeared.') }}</p>
+                <p class="white fs15 mt4 mb8">{{ __('However if there are already some replies, they will not disappeared') }}.</p>
                 @else
                 <p class="white bold fs15 my8">{{ __('Turn on replies on this thread') }}.</p>
                 @endif
                 <div class="full-center">
                     <input type="button" class="simple-white-button pointer turn-off-posts fs13" value="Turn {{ $posts_switch }} replies">
-                    <a href="" class="simple-link close-shadowed-view-button fs14" style="text-decoration: none; margin-left: 6px;">cancel</a>
+                    <div class="pointer white close-shadowed-view-button fs14" style="text-decoration: none; margin-left: 6px;">{{ __('cancel') }}</div>
                     <input type="hidden" class="id" value="{{ $thread->id }}">
                     <input type="hidden" class="switch" value="{{ $switch }}">
-                    <input type="hidden" class="act-wait" value="{{ __('Please wait') }}..">
+                    <input type="hidden" class="button-text-ing" value="{{ __('Please wait') }}..">
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
                             <img data-src="{{ $thread->user->sizedavatar(36, '-l') }}" class="thread-owner-avatar size36 flex lazy-image image-with-fade" alt="">
                         </div>
                         <div>
-                            <div class="flex align-center">
+                            <div class="flex align-center" style="height: 18px">
                                 <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="forum-color no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
                                 @if(auth()->user() && $thread->user->id != auth()->user()->id)
                                 <div class="follow-box thread-component-follow-box flex align-center">
@@ -134,7 +134,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <div class="flex align-center" style="margin-top: 1px">
+                            <div class="flex align-center mt2">
                                 <div class="relative height-max-content">
                                     <p class="no-margin fs11 flex align-center tooltip-section gray" style="margin-top:1px">{{ $at_hummans }}</p>
                                     <div class="tooltip tooltip-style-1">
@@ -226,15 +226,15 @@
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"/></svg>
                                 <div class="black">{{ __('Edit thread') }}</div>
                             </a>
-                            <div class="pointer simple-suboption flex align-center action-verification">
+                            <div class="pointer simple-suboption flex align-center open-thread-shadowed-viewer">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
                                 <div class="no-underline black">{{ __('Delete thread') }}</div>
-                                <input type="hidden" value="thread.destroy" class="verification-action-type">
+                                <input type="hidden" value=".thread-deletion-viewer" class="viewer">
                             </div>
-                            <div class="simple-suboption flex align-center action-verification">
+                            <div class="simple-suboption flex align-center open-thread-shadowed-viewer">
                                 <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') turnoffreplies17-icon @else turnonreplies17-icon @endif mr4"></div>
                                 <div>{{ __('Turn ' . $posts_switch .  ' replies') }}</div>
-                                <input type="hidden" value="turn.off.posts" class="verification-action-type">
+                                <input type="hidden" value=".turn-off-posts-viewer" class="viewer">
                             </div>
                             @endcan
                             <div class="pointer simple-suboption thread-display-button flex align-center">
@@ -291,7 +291,7 @@
                     @endphp
                     @foreach($medias as $media)
                         @if($media['type'] == 'image')
-                        <div class="thread-media-container open-thread-image relative pointer">
+                        <div class="thread-media-container open-media-viewer relative pointer">
                             <div class="thread-image-options">
                                 <p class="white"></p>
                             </div>
@@ -310,7 +310,7 @@
                         <div class="thread-media-box thread-media-container relative" style="background-color: #0f0f0f">
                             <div class="thread-media-options full-center">
                                 @if($thread->has_media)
-                                <svg class="size17 pointer open-thread-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0,180V56A23.94,23.94,0,0,1,24,32H148a12,12,0,0,1,12,12V84a12,12,0,0,1-12,12H64v84a12,12,0,0,1-12,12H12A12,12,0,0,1,0,180ZM288,44V84a12,12,0,0,0,12,12h84v84a12,12,0,0,0,12,12h40a12,12,0,0,0,12-12V56a23.94,23.94,0,0,0-24-24H300A12,12,0,0,0,288,44ZM436,320H396a12,12,0,0,0-12,12v84H300a12,12,0,0,0-12,12v40a12,12,0,0,0,12,12H424a23.94,23.94,0,0,0,24-24V332A12,12,0,0,0,436,320ZM160,468V428a12,12,0,0,0-12-12H64V332a12,12,0,0,0-12-12H12A12,12,0,0,0,0,332V456a23.94,23.94,0,0,0,24,24H148A12,12,0,0,0,160,468Z"/></svg>
+                                <svg class="size17 pointer open-media-viewer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0,180V56A23.94,23.94,0,0,1,24,32H148a12,12,0,0,1,12,12V84a12,12,0,0,1-12,12H64v84a12,12,0,0,1-12,12H12A12,12,0,0,1,0,180ZM288,44V84a12,12,0,0,0,12,12h84v84a12,12,0,0,0,12,12h40a12,12,0,0,0,12-12V56a23.94,23.94,0,0,0-24-24H300A12,12,0,0,0,288,44ZM436,320H396a12,12,0,0,0-12,12v84H300a12,12,0,0,0-12,12v40a12,12,0,0,0,12,12H424a23.94,23.94,0,0,0,24-24V332A12,12,0,0,0,436,320ZM160,468V428a12,12,0,0,0-12-12H64V332a12,12,0,0,0-12-12H12A12,12,0,0,0,0,332V456a23.94,23.94,0,0,0,24,24H148A12,12,0,0,0,160,468Z"/></svg>
                                 @endif
                             </div>
                             <video class="thread-media full-height full-width" controls>
@@ -358,9 +358,10 @@
                         <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 0;">
                             <div class="flex">
                                 <input type="text" value="{{ $thread->link }}" autocomplete="off" class="simple-input" style="width: 240px; padding: 3px; ">
-                                <a href="" class="input-button-style flex align-center copy-button">
-                                    <div>copy</div>
-                                </a>
+                                <div class="pointer input-button-style flex align-center copy-thread-link">
+                                    {{ __('copy') }}
+                                    <input type="hidden" class="copied" value="link copied to your clipboard">
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -28,12 +28,49 @@ $(window).on('DOMContentLoaded scroll', function() {
             url: url,
             success: function(response) {
               // Increment page
-
-              $('#threads-global-container').append(response.content);
-
               $('#explore-page').val(parseInt($('#explore-page').val())+1);
               $('#explore-hours-interval').val(response.hours_interval);
               $('#explore-hours-interval-remains').val(response.remains);
+
+              $('#threads-global-container').append(response.content);
+              
+              // When appending threads we have to handle their events (Notice that response.count is the number of threads appended)
+              let unhandled_appended_threads = 
+                $('.resource-container').slice(response.count*(-1));
+                
+                unhandled_appended_threads.each(function() {
+                    $(this).find('.button-with-suboptions').each(function() {
+                      // Handle all suboptions of thread component
+                      handle_suboptions_container($(this));
+                    })
+                    // Handle votes event
+                    handle_up_vote($(this).find('.votable-up-vote'));
+                    handle_down_vote($(this).find('.votable-down-vote'));
+                    // Handle like
+                    handle_resource_like($(this).find('.like-resource'));
+                    // Handle thread delete viewer && turn off posts viewer appearence
+                    handle_thread_shadowed_viewers($(this));
+                    // Handle close shadowed viewer
+                    handle_close_shadowed_view($(this));
+                    // Handle hide parent
+                    handle_hide_parent($(this));
+                    // Handle thread events
+                    handle_save_threads($(this).find('.save-thread'));
+                    handle_move_to_trash($(this).find('.move-to-trash-button'));
+                    handle_turn_off_posts($(this).find('.turn-off-posts'));
+                    handle_thread_display($(this));
+                    handle_tooltip($(this));
+                    handle_thread_visibility_switch($(this));
+                    handle_follow_resource($(this).find('.follow-resource'));
+                    
+                    handle_thread_medias_containers($(this));
+                    handle_open_media_viewer($(this));
+
+                    // Handle link copy
+                    handle_copy_thread_link($(this).find('.copy-thread-link'));
+                });
+                // This will prevent appended suboptions from disappearing when cursor click on suboption containers
+                handle_document_suboptions_hiding();
             },
             error: function(response) {
 

@@ -22,14 +22,14 @@ class ExploreController extends Controller
         switch($sortby) {
             case 'popular-and-recent':
                 /**
-                 * First we take all threads created in the last 8 hours and sort them by views & creation date and return 
-                 * 8 (pagesize) of them to the user
+                 * First we take all threads created in the last 24 hours and sort them by views & creation date and return 
+                 * 8 (pagesize) of them to the user; of course the returned threads are sorted with views and date
                  * When threads returned are not enough (less than pagesize) we increase the number of hours to increase the range
                  * of time to cover more threads
                  */
 
-                $hours_interval_to_fetch = 8;
-                while($threads->count() < 7) {
+                $hours_interval_to_fetch = 24;
+                while($threads->count() < $pagesize) {
                     $threads = Thread::where('created_at', '>=', 
                         Carbon::now()->subHours($hours_interval_to_fetch)->toDateTimeString())
                         ->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->get();
@@ -92,7 +92,7 @@ class ExploreController extends Controller
                 if(!$indexes['remains']) {
                     $from += 8;
                 }
-                while($threads->count() < 7) {
+                while($threads->count() < $pagesize) {
                     $threads = 
                             Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
                             ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
@@ -102,7 +102,9 @@ class ExploreController extends Controller
                 }
                 
                 $payload = "";
+                $count = 0;
                 foreach($threads->take($pagesize)->get() as $thread) {
+                    $count++;
                     $thread_component = (new IndexResource($thread));
                     $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
                     $payload .= $thread_component;
@@ -111,7 +113,8 @@ class ExploreController extends Controller
                 return [
                     "hours_interval"=>$from,
                     "content"=>$payload,
-                    "remains"=> ($threads->count() > $pagesize*3) ? 1 : 0
+                    "remains"=> ($threads->count() > $pagesize*3) ? 1 : 0,
+                    'count'=>$count
                 ];
                 break;
             case 'replies-and-likes':

@@ -53,11 +53,13 @@
     @endcan
     <div class="flex thread-component">
         <div class="thread-vote-section">
-            <div class="vote-box flex flex-column">
+            <div class="vote-box full-center flex-column relative">
                 <input type="hidden" class="votable-type" value="thread">
                 <input type="hidden" class="votable-id" value="{{ $thread->id }}">
-                <div class="informer-message-container absolute left100 zi1">
-                    <div class="left-middle-triangle"></div>
+                <div class="informer-message-container absolute zi1">
+                    <div class="absolute full-height full-center left0 top0">
+                        <div class="left-middle-triangle"></div>
+                    </div>
                     <div class="flex align-center">
                         <p class="informer-message"></p>
                         <div class="remove-informer-message-container rounded pointer">
@@ -107,7 +109,7 @@
                                     <input type="hidden" class="follow-success-text" autocomplete="off" value="{{ __('Follow success !') }}">
                                     <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
                                     <div class="pointer @guest login-signin-button @endguest">
-                                        <div class="relative follow-notif-container @if(!$followed) none @endif">
+                                        <div class="size14 relative follow-notif-container @if(!$followed) none @endif">
                                             <svg class="size14 button-with-suboptions" style="fill: #1e1e1e;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,512a64,64,0,0,0,64-64H192A64,64,0,0,0,256,512ZM471.39,362.29c-19.32-20.76-55.47-52-55.47-154.29,0-77.7-54.48-139.9-127.94-155.16V32a32,32,0,1,0-64,0V52.84C150.56,68.1,96.08,130.3,96.08,208c0,102.3-36.15,133.53-55.47,154.29A31.24,31.24,0,0,0,32,384c.11,16.4,13,32,32.1,32H447.9c19.12,0,32-15.6,32.1-32A31.23,31.23,0,0,0,471.39,362.29Z"/></svg>
                                             <div class="suboptions-container suboptions-container-right-style" style="left: 0; width:max-content">
                                                 <div class="pointer follow-resource follow-button-toggle-with-bell simple-suboption flex align-center">
@@ -134,7 +136,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <div class="flex align-center mt2">
+                            <div class="flex align-center">
                                 <div class="relative height-max-content">
                                     <p class="no-margin fs11 flex align-center tooltip-section gray" style="margin-top:1px">{{ $at_hummans }}</p>
                                     <div class="tooltip tooltip-style-1">

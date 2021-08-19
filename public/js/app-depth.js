@@ -1035,7 +1035,8 @@ function handle_up_vote(button) {
                 'vote': 1
             },
             success: function(response) {
-                // button.parent().find('.votable-count').text(response);
+                // Only synch thread component with viewer if the vote went successfully
+                handle_vote_sync(button, vote_icons_state, new_vote_count);
             },
             error: function(xhr, status, error) {
                 if(!up_vote_filled.hasClass('none')) {
@@ -1105,8 +1106,6 @@ function handle_up_vote(button) {
                 new_vote_count = vote_count+2;
             }
         }
-    
-        handle_vote_sync(button, vote_icons_state, new_vote_count);
     });
 }
 function handle_down_vote(button) {
@@ -1135,7 +1134,8 @@ function handle_down_vote(button) {
                 'vote': -1
             },
             success: function(response) {
-                // button.parent().find('.votable-count').text(response);
+                // Only synch thread component with viewer if the vote went successfully
+                handle_vote_sync(button, vote_icons_state, new_vote_count);
             },
             error: function(xhr, status, error) {
                 if(!down_vote_filled.hasClass('none')) {
@@ -1203,8 +1203,6 @@ function handle_down_vote(button) {
                 vote_icons_state = 'remove-up-fill-down';
             }
         }
-    
-        handle_vote_sync(button, vote_icons_state, new_vote_count);
     });
 };
 function handle_vote_sync(button, vote_icons_state, new_vote_count) {

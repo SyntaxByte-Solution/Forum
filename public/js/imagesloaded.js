@@ -520,6 +520,21 @@ function handle_lazy_loading() {
   });
 }
 
+function force_lazy_load(component) {
+  component.find('.lazy-image').each(function() {
+    let lazy_image = $(this);
+    lazy_image.attr('src', lazy_image.attr('data-src'));
+    lazy_image.removeAttr('data-src');
+    lazy_image.removeClass('lazy-image');
+    lazy_image.parent().imagesLoaded(function() {
+        handle_media_image_dimensions(lazy_image);
+        if(lazy_image.hasClass('image-with-fade')) {
+          lazy_image.parent().find('.fade-loading').remove();
+        }
+    });
+  });
+}
+
 $(window).on('DOMContentLoaded load resize scroll', function() {
     handle_lazy_loading();
 });

@@ -38,39 +38,47 @@ $(window).on('DOMContentLoaded scroll', function() {
               let unhandled_appended_threads = 
                 $('.resource-container').slice(response.count*(-1));
                 
-                unhandled_appended_threads.each(function() {
-                    $(this).find('.button-with-suboptions').each(function() {
-                      // Handle all suboptions of thread component
-                      handle_suboptions_container($(this));
-                    })
-                    // Handle votes event
-                    handle_up_vote($(this).find('.votable-up-vote'));
-                    handle_down_vote($(this).find('.votable-down-vote'));
-                    // Handle like
-                    handle_resource_like($(this).find('.like-resource'));
-                    // Handle thread delete viewer && turn off posts viewer appearence
-                    handle_thread_shadowed_viewers($(this));
-                    // Handle close shadowed viewer
-                    handle_close_shadowed_view($(this));
-                    // Handle hide parent
-                    handle_hide_parent($(this));
-                    // Handle thread events
-                    handle_save_threads($(this).find('.save-thread'));
-                    handle_move_to_trash($(this).find('.move-to-trash-button'));
-                    handle_turn_off_posts($(this).find('.turn-off-posts'));
-                    handle_thread_display($(this));
-                    handle_tooltip($(this));
-                    handle_thread_visibility_switch($(this));
-                    handle_follow_resource($(this).find('.follow-resource'));
-                    
-                    handle_thread_medias_containers($(this));
-                    handle_open_media_viewer($(this));
+              // When threads are appended we need to force lazy loading for the first appended thread for better ui experience
+              force_lazy_load(unhandled_appended_threads.first());
 
-                    // Handle link copy
-                    handle_copy_thread_link($(this).find('.copy-thread-link'));
-                });
-                // This will prevent appended suboptions from disappearing when cursor click on suboption containers
-                handle_document_suboptions_hiding();
+              unhandled_appended_threads.each(function() {
+                  $(this).find('.button-with-suboptions').each(function() {
+                    // Handle all suboptions of thread component
+                    handle_suboptions_container($(this));
+                  })
+                  // Handle votes event
+                  handle_up_vote($(this).find('.votable-up-vote'));
+                  handle_down_vote($(this).find('.votable-down-vote'));
+                  // Handle like
+                  handle_resource_like($(this).find('.like-resource'));
+                  // Handle thread delete viewer && turn off posts viewer appearence
+                  handle_thread_shadowed_viewers($(this));
+                  // Handle close shadowed viewer
+                  handle_close_shadowed_view($(this));
+                  // Handle hide parent
+                  handle_hide_parent($(this));
+                  // Handle thread events
+                  handle_save_threads($(this).find('.save-thread'));
+                  handle_move_to_trash($(this).find('.move-to-trash-button'));
+                  handle_turn_off_posts($(this).find('.turn-off-posts'));
+                  handle_thread_display($(this));
+                  handle_tooltip($(this));
+                  handle_thread_visibility_switch($(this));
+                  handle_follow_resource($(this).find('.follow-resource'));
+                  // Keep in mind that images dimensions also handled withing lazy loading logic
+                  handle_thread_medias_containers($(this));
+                  /**
+                   * Handle image fade loading when image is not fetched from server yet 
+                   * Remember fade removing is handled in lazy loading scroll feature when scroll reach the image it will
+                   * check at the end if the image comes with a fade loader and it will delete it immedietely when the image fully loaded
+                   */
+                  handle_fade_loading($(this));
+                  handle_open_media_viewer($(this));
+                  // Handle link copy
+                  handle_copy_thread_link($(this).find('.copy-thread-link'));
+              });
+              // This will prevent appended suboptions from disappearing when cursor click on suboption containers
+              handle_document_suboptions_hiding();
             },
             error: function(response) {
 

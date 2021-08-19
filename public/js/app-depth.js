@@ -23,7 +23,7 @@ $('.button-with-strip').on({
     }
 })
 
-$('.stop-propagation').click(function(event) {
+$('.stop-propagation').on('click', function(event) {
     event.stopPropagation();
 })
 
@@ -3646,7 +3646,6 @@ let activities_sections_apperance_switch = new Map([
     ['voted-threads', false],
     ['activity-log', false],
 ]);
-
 let section_switcher_lock = true;
 $('.activity-section-switcher').on('click', function() {
     let spinner = $('#activities-sections-loading-container').find('.spinner');

@@ -14,20 +14,21 @@ $(window).on('DOMContentLoaded scroll', function() {
     }
     explore_lock=false;
 
-    let sortby = $('#explore-sort-key').val();
-    let hours_interval = $('#explore-hours-interval').val();
-    let remains = $('#explore-hours-interval-remains').val();
+    let sortby = $('#sort').val();
+    let from = $('#hours_interval_from').val();
+    let to = $('#hours_interval_to').val();
+    let remains = $('#remains').val();
+    let skip = $('#skip').val();
 
-    let url = `/explore/loadmore?hours_interval=${hours_interval}&sortby=${sortby}&remains=${remains}`;
+    let url = `/explore/loadmore?from=${from}&to=${to}&sortby=${sortby}&remains=${remains}&skip=${skip}`;
     $.ajax({
         type: 'get',
         url: url,
         success: function(response) {
-          // Increment page
-          $('#explore-page').val(parseInt($('#explore-page').val())+1);
-          $('#explore-hours-interval').val(response.hours_interval);
-          $('#explore-hours-interval-remains').val(response.remains);
-
+          $('#hours_interval_from').val(response.from);
+          $('#hours_interval_to').val(response.to);
+          $('#remains').val(response.remains);
+          $('#skip').val(response.skip);
           $('#threads-global-container').append(response.content);
           
           /**
@@ -35,7 +36,7 @@ $(window).on('DOMContentLoaded scroll', function() {
            * Notice that we have faded thread container righgt after threads collection so we have to exclude it from unhandled threads collection
            */
           let unhandled_appended_threads = 
-            $('.resource-container:not(.faded-thread-container)').slice(response.count*(-1));
+            $('#threads-global-container .resource-container').slice(response.count*(-1));
             
           // When threads are appended we need to force lazy loading for the first appended thread for better ui experience
           force_lazy_load(unhandled_appended_threads.first());

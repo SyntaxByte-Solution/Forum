@@ -34,8 +34,20 @@
         </div>
     </div>
     <div class="index-middle-width middle-container-style">
-        <input type="hidden" autocomplete="off" id="explore-hours-interval" value="{{ $hours_interval_to_fetch }}">
-        <input type="hidden" autocomplete="off" id="explore-sort-key" value="{{ $sortby }}">
+        <!-- from and to variables respresent hours to subracted from today date in order to fetch threads -->
+        <input type="hidden" autocomplete="off" id="hours_interval_from" value="{{ $hours_from }}">
+        <!--
+            hours_interval_to is initialized with 0 because we begin from current hour (wich means subtractHours(0) gives us current hour
+            because we are using Carbon package to get current time based on hours subtraction) when page is loaded th first time
+        -->
+        <input type="hidden" autocomplete="off" id="hours_interval_to" value="0">
+        <!-- 
+            This is useful when hours interval contains too many threads we track how many items are precessed
+            This is initialized with threads count which is the same as pagesize because the first time the user
+            open this page it will get number of threads (e.g 8 in this case which is pagesize value)
+        -->
+        <input type="hidden" autocomplete="off" id="skip" value="{{ $skip }}">
+        <input type="hidden" autocomplete="off" id="sort" value="{{ $sortby }}">
         @if(Session::has('message'))
             <div class="green-message-container mb8">
                 <p class="green-message">{{ Session::get('message') }}</p>

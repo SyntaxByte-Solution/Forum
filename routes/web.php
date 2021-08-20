@@ -27,7 +27,10 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     
-    dd($user->faqs()->whereDate('created_at', \Carbon\Carbon::today())->count());
+    $users = collect([User::first()]);
+    $p = collect([User::find(15)]);
+    $users = $users->concat($p);
+    dd($users);
 });
 
 Route::get('/', [IndexController::class, 'index']);

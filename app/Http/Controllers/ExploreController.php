@@ -142,15 +142,16 @@ class ExploreController extends Controller
                             ->orderBy('created_at', 'desc')
                             ->get();
 
-                        while($temp->count() < $gap) {
-                            $from++;
+                        while($temp->count() < self::PAGESIZE) {
                             $temp = 
                                 Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
                                 ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
                                 ->orderBy('view_count', 'desc')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
+                            $from++;
                         }
+                        $from--;
                         
                         $threads = $threads->concat($temp->take($gap));
                         $skip = $gap;
@@ -226,68 +227,176 @@ class ExploreController extends Controller
                 ];
                 break;
             case 'replies-and-likes':
-                // $to = $indexes['hours_interval'];
-                // $from = $indexes['hours_interval'];
-                // if(!$indexes['remains']) {
-                //     $from += 8;
-                // }
-                // while($threads->count() < self::PAGESIZE) {
-                //     $threads = 
-                //         Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
-                //         ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
-                //         ->get()
-                //         ->sortBy(function($thread) {
-                //             return -$thread->postsandlikescount;
-                //         });
-                //     $from++;
-                // }
-                // $from--;
-                
-                // $payload = "";
-                // $count = 0;
-                // foreach($threads->take(self::PAGESIZE) as $thread) {
-                //     $count++;
-                //     $thread_component = (new IndexResource($thread));
-                //     $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
-                //     $payload .= $thread_component;
-                // }
+                if($skip) {
+                    $from = $indexes['from'];
+                    $to = $indexes['to'];
 
-                // return [
-                //     "hours_interval"=>$from,
-                //     "content"=>$payload,
-                //     'count'=>$count
-                // ];
+                    $threads = 
+                        Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                        ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                        ->orderBy('created_at', 'desc')
+                        ->get()
+                        ->sortBy(function($thread) {
+                            return -$thread->postsandlikescount;
+                        })
+                        ->skip($skip);
+
+                    if($threads->count() < self::PAGESIZE) {
+                        $to = $from;
+                        $from = $from + $interval_increase_by;
+                        $gap = self::PAGESIZE - $threads->count();
+
+                        $temp = 
+                            Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                            ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                            ->orderBy('created_at', 'desc')
+                            ->get()
+                            ->sortBy(function($thread) {
+                                return -$thread->postsandlikescount;
+                            });
+
+                        while($temp->count() < self::PAGESIZE) {
+                            $temp = 
+                                Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                                ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                                ->orderBy('created_at', 'desc')
+                                ->get()
+                                ->sortBy(function($thread) {
+                                    return -$thread->postsandlikescount;
+                                });
+                            $from++;
+                        }
+                        $from--;
+                        
+                        $threads = $threads->concat($temp->take($gap));
+                        $skip = $gap;
+                    } else {
+                        if($threads->count() == self::PAGESIZE) {
+                            $skip = 0;
+                            $to = $from;
+                            $from = $from + $interval_increase_by;
+                        } else {
+                            $threads = $threads->take(self::PAGESIZE);
+                            $skip = $skip + self::PAGESIZE;
+                        }
+                    }
+
+                } else {
+                    $to = $indexes['from'];
+                    $from = $indexes['from'] + $interval_increase_by;
+                    while($threads->count() < self::PAGESIZE) {
+                        $threads = 
+                            Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                            ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                            ->orderBy('created_at', 'desc')
+                            ->get()
+                            ->sortBy(function($thread) {
+                                return -$thread->postsandlikescount;
+                            })
+                            ->take(self::PAGESIZE);
+                        $from++;
+                    }
+                    $from--;
+
+                    if($threads->count() > self::PAGESIZE) {
+                        $skip = self::PAGESIZE;
+                    }
+                }
+                
+                $payload = "";
+                $count = 0;
+                foreach($threads as $thread) {
+                    $count++;
+                    $thread_component = (new IndexResource($thread));
+                    $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+                    $payload .= $thread_component;
+                }
+
+                return [
+                    "content"=>$payload,
+                    'count'=>$count, // Number of threads (useful in appended threads events handlers)
+                    "from"=>$from,
+                    "to"=>$to,
+                    'skip'=>$skip
+                ];
                 break;
             case 'votes':
-                // $to = $indexes['hours_interval'];
-                // $from = $indexes['hours_interval'];
-                // if(!$indexes['remains']) {
-                //     $from += 8;
-                // }
+                if($skip) {
+                    $from = $indexes['from'];
+                    $to = $indexes['to'];
 
-                // while($threads->count() < self::PAGESIZE) {
-                //     $threads = Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
-                //                 ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
-                //                 ->withCount('votes')
-                //                 ->orderBy('votes_count', 'desc');
-                //     $from++;
-                // }
-                // $from--;
+                    $threads = 
+                        Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                        ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                        ->withCount('votes')->orderBy('votes_count', 'desc')->get()
+                        ->skip($skip);
+
+                    if($threads->count() < self::PAGESIZE) {
+                        $to = $from;
+                        $from = $from + $interval_increase_by;
+                        $gap = self::PAGESIZE - $threads->count();
+
+                        $temp = 
+                            Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                            ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                            ->withCount('votes')->orderBy('votes_count', 'desc')->get();
+
+                        while($temp->count() < self::PAGESIZE) {
+                            $temp = 
+                                Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                                ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                                ->withCount('votes')->orderBy('votes_count', 'desc')->get();
+                            $from++;
+                        }
+                        $from--;
+                        
+                        $threads = $threads->concat($temp->take($gap));
+                        $skip = $gap;
+                    } else {
+                        if($threads->count() == self::PAGESIZE) {
+                            $skip = 0;
+                            $to = $from;
+                            $from = $from + $interval_increase_by;
+                        } else {
+                            $threads = $threads->take(self::PAGESIZE);
+                            $skip = $skip + self::PAGESIZE;
+                        }
+                    }
+
+                } else {
+                    $to = $indexes['from'];
+                    $from = $indexes['from'] + $interval_increase_by;
+                    while($threads->count() < self::PAGESIZE) {
+                        $threads = 
+                            Thread::where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                            ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
+                            ->withCount('votes')->orderBy('votes_count', 'desc')->get()
+                            ->take(self::PAGESIZE);
+                        $from++;
+                    }
+                    $from--;
+
+                    if($threads->count() > self::PAGESIZE) {
+                        $skip = self::PAGESIZE;
+                    }
+                }
                 
-                // $payload = "";
-                // $count = 0;
-                // foreach($threads->take(self::PAGESIZE)->get() as $thread) {
-                //     $count++;
-                //     $thread_component = (new IndexResource($thread));
-                //     $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
-                //     $payload .= $thread_component;
-                // }
+                $payload = "";
+                $count = 0;
+                foreach($threads as $thread) {
+                    $count++;
+                    $thread_component = (new IndexResource($thread));
+                    $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+                    $payload .= $thread_component;
+                }
 
-                // return [
-                //     "hours_interval"=>$from,
-                //     "content"=>$payload,
-                //     'count'=>$count
-                // ];
+                return [
+                    "content"=>$payload,
+                    'count'=>$count, // Number of threads (useful in appended threads events handlers)
+                    "from"=>$from,
+                    "to"=>$to,
+                    'skip'=>$skip
+                ];
                 break;
         }
     }

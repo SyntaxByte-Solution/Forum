@@ -17,10 +17,9 @@ $(window).on('DOMContentLoaded scroll', function() {
     let sortby = $('#sort').val();
     let from = $('#hours_interval_from').val();
     let to = $('#hours_interval_to').val();
-    let remains = $('#remains').val();
     let skip = $('#skip').val();
 
-    let url = `/explore/loadmore?from=${from}&to=${to}&sortby=${sortby}&remains=${remains}&skip=${skip}`;
+    let url = `/explore/loadmore?from=${from}&to=${to}&sortby=${sortby}&skip=${skip}`;
     $.ajax({
         type: 'get',
         url: url,

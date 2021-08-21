@@ -208,6 +208,43 @@ $('.expand-button').each(function() {
     handle_expend($(this));
 });
 
+function handle_expend_button_appearence(thread) {
+    let thread_content_section = thread.find('.thread-content-section');
+    let thread_content_box = thread_content_section.find('.thread-content-box');
+    
+    let content_full_height = thread_content_box[0].scrollHeight;
+    let content_hidden_height = thread_content_box.height();
+    
+    if(content_full_height != content_hidden_height) {
+        thread_content_section.find('.expend-thread-content-button').removeClass('none');
+
+        let expand_state = thread_content_box.find('.expand-state');
+        let expand_button = thread_content_section.find('.expend-thread-content-button');
+        let expand_arrow = expand_button.find('.expand-arrow path');
+
+        expand_button.on('click', function() {
+            let see_less = thread_content_box.find('.expand-button-collapse-text').val();
+            let see_more = thread_content_box.find('.expand-button-text').val();
+            if(expand_state.val() == "0") {
+                thread_content_box.removeClass('thread-content-box-max-height');
+                expand_button.find('.btn-text').text(see_less);
+                expand_state.val('1');
+                expand_arrow.attr('d', expand_button.find('.up-arr').val());
+            } else {
+                thread_content_box.addClass('thread-content-box-max-height');
+                expand_button.find('.btn-text').text(see_more);
+                expand_state.val('0');
+                expand_arrow.attr('d', expand_button.find('.down-arr').val());
+            }
+        });
+    }
+
+}
+
+function handle_expend_button(thread) {
+    
+}
+
 function handle_expend(expend_button) {
     expend_button.on('click', function() {
         let state = expend_button.parent().find('.expand-text-state').val();
@@ -1894,6 +1931,7 @@ function stop_loading_anim() {
 }
 
 $('.thread-container-box').each(function() {
+    handle_expend_button_appearence($(this));
     handle_thread_display($(this));
 });
 
@@ -3992,6 +4030,7 @@ function handle_thread_events(thread) {
     handle_tooltip(thread);
     handle_thread_visibility_switch(thread);
     handle_follow_resource(thread.find('.follow-resource'));
+    handle_expend_button_appearence(thread);
     // Keep in mind that images dimensions also handled withing lazy loading logic
     handle_thread_medias_containers(thread);
     /**

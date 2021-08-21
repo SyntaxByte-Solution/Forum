@@ -187,6 +187,23 @@ a, input, textarea {
     color: #03A9F4;
 }
 
+.thread-content-box {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.thread-content-box-max-height {
+    max-height: 160px;
+}
+
+.thread-content * {
+    margin: 0;
+}
+
+.thread-content p {
+    margin: 6px 0;
+}
+
 .fade-loading {
     position: absolute;
     left: 0;

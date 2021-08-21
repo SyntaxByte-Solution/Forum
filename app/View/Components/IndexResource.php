@@ -17,6 +17,7 @@ class IndexResource extends Component
     public $thread;
     public $forum;
     public $category;
+    public $content;
     
     public $edit_link;
     public $category_threads_link;
@@ -41,6 +42,7 @@ class IndexResource extends Component
         $this->views = $thread->view_count;
         $this->replies = $thread->posts->count();
         $this->likes = $thread->likes->count();
+        $this->content = Markdown::parse($thread->content);
 
         if(Auth::check()) {
             $this->followed = Follow::where('follower', auth()->user()->id)

@@ -2178,13 +2178,14 @@ a, input, textarea {
     font-size: 12px;
 }
 
-.user-profile-card-container {
+.user-profile-card {
     position: absolute;
+    z-index: 1;
     top: calc(100% + 4px);
     min-width: 285px;
     width: 285px;
     background-color: white;
-    box-shadow: 0 0px 6px 1px #dbdbdb;
+    box-shadow: 0 0px 10px 1px #dfdfdf;
     border-radius: 6px;
     overflow: hidden;
 }

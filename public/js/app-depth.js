@@ -209,6 +209,9 @@ $('.expand-button').each(function() {
 });
 
 function handle_expend_button_appearence(thread) {
+    if(!thread.find('.expend-thread-content-button').length) {
+        return;
+    }
     let thread_content_section = thread.find('.thread-content-section');
     let thread_content_box = thread_content_section.find('.thread-content-box');
     
@@ -601,10 +604,101 @@ function handle_tooltip(component) {
     });
 }
 
-let mouse_over_button = false;
-let mouse_over_container = false;
-let mouse_over_button_timeout;
-let mouse_over_button_container_timeout;
+// let mouse_over_button_timeout;
+// let mouse_over_button_container_timeout;
+// let mouse_over_displayer = false;
+// let mouse_over_container = false;
+let user_card_mouse_states = new Map();
+let user_card_mouse_displayer_timeouts = new Map();
+let user_card_mouse_container_timeouts = new Map();
+/**
+ * Here we have to have mouse_over_displayer and mouse_over_container values for each user-card-container
+ * To accomplish that we create a map to store
+ */
+let index = 0;
+$('.user-card-container-index').each(function() {
+    $(this).val(index);
+    user_card_mouse_states.set(index, {
+        mouse_over_displayer: false,
+        mouse_over_container: false,
+    });
+    user_card_mouse_displayer_timeouts.set(index, false);
+    user_card_mouse_container_timeouts.set(index, false);
+
+    index++;
+});
+
+$('.user-profile-card-box').each(function() {
+    handle_user_profile_card_displayer($(this));
+})
+function handle_user_profile_card_displayer(user_profile_card_box) {
+    user_profile_card_box.find('.user-profile-card-displayer').each(function() { 
+        let container_index = $(this).parent().find('.user-card-container-index').val();
+
+        $(this).on({
+            mouseenter: function() {
+                // Mouse is over displayer
+                user_card_mouse_states.set(container_index, {
+                    mouse_over_displayer: true,
+                    mouse_over_container: false,
+                });
+                let inside_displayer_timeout = setTimeout(function() {
+                    user_profile_card_box.find('.user-profile-card').removeClass('none');
+                    user_profile_card_box.find('.user-profile-card').animate({
+                        opacity: 1
+                    }, 400);
+                }, 500);
+                user_card_mouse_displayer_timeouts.set(container_index, inside_displayer_timeout);
+            },
+            mouseleave: function() {
+                // Mouse is outside displayer
+                user_card_mouse_states.set(container_index, {
+                    mouse_over_displayer: false,
+                    mouse_over_container: false,
+                });
+                clearTimeout(user_card_mouse_displayer_timeouts.get(container_index));
+                let inside_displayer_timeout = setTimeout(function() {
+                    if(user_card_mouse_states.get(container_index).mouse_over_displayer || user_card_mouse_states.get(container_index).mouse_over_container) {
+                        clearTimeout(inside_displayer_timeout);
+                        return false;
+                    }
+                    user_profile_card_box.find('.user-profile-card').animate({
+                        opacity: 0
+                    }, 400);
+                    user_profile_card_box.find('.user-profile-card').addClass('none');
+                }, 500);
+            }
+        });
+
+        $(this).parent().find('.user-profile-card').on({
+            mouseenter: function() {
+                // Mouse is over displayer
+                user_card_mouse_states.set(container_index, {
+                    mouse_over_displayer: false,
+                    mouse_over_container: true,
+                });
+            },
+            mouseleave: function() {
+                // Mouse is outside displayer
+                user_card_mouse_states.set(container_index, {
+                    mouse_over_displayer: false,
+                    mouse_over_container: false,
+                });
+                clearTimeout(user_card_mouse_displayer_timeouts.get(container_index));
+                let inside_displayer_timeout = setTimeout(function() {
+                    if(user_card_mouse_states.get(container_index).mouse_over_displayer) {
+                        clearTimeout(inside_displayer_timeout);
+                        return false;
+                    }
+                    user_profile_card_box.find('.user-profile-card').animate({
+                        opacity: 0
+                    }, 400);
+                    user_profile_card_box.find('.user-profile-card').addClass('none');
+                }, 500);
+            }
+        });
+    });
+}
 
 // $('.button-with-container').on({
 //     'mouseenter': function() {

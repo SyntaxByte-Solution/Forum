@@ -4,8 +4,9 @@
         <img data-src="{{ $user->sizedavatar(100) }}" class="size60 rounded lazy-image image-with-fade" alt="">
     </div>
     <div class="ml8">
-        <div class="relative">
-            <a href="{{ $user->profilelink }}" class="my4 fs16 bold no-underline blue button-with-container">{{ $user->username }}</a>
+        <div class="relative user-profile-card-box">
+            <input type="hidden" class="user-card-container-index"> <!-- value will be initialized at run time by js, to identify each container with incremented index (go to depth.js file) -->
+            <a href="{{ $user->profilelink }}" class="my4 fs16 bold no-underline blue user-profile-card-displayer">{{ $user->username }}</a>
             @include('partials.user-profile-card', ['user'=>$user])
         </div>
         <div>

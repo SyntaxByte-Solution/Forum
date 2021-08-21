@@ -941,29 +941,6 @@ a, input, textarea {
     background-color: #ececec;
 }
 
-.button-container {
-    display: none;
-    opacity: 0;
-    z-index: 10;
-    max-width: 500px;
-    width: max-content;
-
-    transition: 1s ease opacity;
-}
-
-.button-container-style {
-    z-index: 10;
-    top: 100%;
-    border: 1px solid rgb(223, 223, 223);
-    background-color: #fdfdfd;
-    border-radius: 3px;
-    padding: 10px;
-}
-
-.button-container-style-2 {
-    top: 120%;
-}
-
 .button-simple-container {
     display: flex;
     align-items: center;
@@ -2199,6 +2176,17 @@ a, input, textarea {
     color: white;
     font-weight: bold;
     font-size: 12px;
+}
+
+.user-profile-card-container {
+    position: absolute;
+    top: calc(100% + 4px);
+    min-width: 285px;
+    width: 285px;
+    background-color: white;
+    box-shadow: 0 0px 6px 1px #dbdbdb;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .user-component-container {

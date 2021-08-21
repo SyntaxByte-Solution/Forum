@@ -606,92 +606,93 @@ let mouse_over_container = false;
 let mouse_over_button_timeout;
 let mouse_over_button_container_timeout;
 
-$('.button-with-container').on({
-    'mouseenter': function() {
-        let button = $(this);
-        setTimeout(function() {
-            mouse_over_button = true;
-            button.parent().find('.button-container').css('display', 'block');
-            button.parent().find('.button-container').css('opacity', '1');
-        }, 800);
-    },
-    'mouseleave': function() {
-        let button = $(this);
-        /*
-            Here we need to check whether the mouse is over the button or container before closing the container as well
-        */
-        setTimeout(function() {
-            mouse_over_button = false;
-            if(!mouse_over_container) {
-                button.parent().find('.button-container').css('display', 'none');
-                button.parent().find('.button-container').css('opacity', '0');
-            }
-        }, 800);
-    }
-})
-$('.button-container').on({
-    mouseenter: function(event) {
-        let container = $(this);
-        setTimeout(function() {
-            mouse_over_container = true;
-            container.css('display', 'block');
-            container.css('opacity', '1');
-        }, 800)
-        event.stopPropagation();
-    },
-    mouseleave: function(event) {
-        let container = $(this);
-        /*
-            Here we need to check whether the mouse is over the button or container before closing the container as well
-        */
-       setTimeout(function() {
-           mouse_over_container = false;
-           if(!mouse_over_button) {
-               container.css('display', 'none');
-               container.css('opacity', '0');
-           }
-       }, 400);
-    }
-});
+// $('.button-with-container').on({
+//     'mouseenter': function() {
+//         let button = $(this);
+//         setTimeout(function() {
+//             mouse_over_button = true;
+//             button.parent().find('.button-container').css('display', 'block');
+//             button.parent().find('.button-container').css('opacity', '1');
+//         }, 800);
+//     },
+//     'mouseleave': function() {
+//         let button = $(this);
+//         /*
+//             Here we need to check whether the mouse is over the button or container before closing the container as well
+//         */
+//         setTimeout(function() {
+//             mouse_over_button = false;
+//             if(!mouse_over_container) {
+//                 button.parent().find('.button-container').css('display', 'none');
+//                 button.parent().find('.button-container').css('opacity', '0');
+//             }
+//         }, 800);
+//     }
+// })
 
-function handle_button_container(element) {
-    element.find('.button-with-container').on({
-        'mouseenter': function() {
-            mouse_over_button = true;
-            $(this).parent().find('.button-container').css('display', 'block');
-            $(this).parent().find('.button-container').css('opacity', '1');
-        },
-        'mouseleave': function() {
-            /*
-                Here we need to check whether the mouse is over the button or container before closing the container as well
-            */
-            mouse_over_button = false;
-            if(!mouse_over_container) {
-                $(this).parent().find('.button-container').css('display', 'none');
-                $(this).parent().find('.button-container').css('opacity', '0');
-            }
-        }
-    });
+// $('.button-container').on({
+//     mouseenter: function(event) {
+//         let container = $(this);
+//         setTimeout(function() {
+//             mouse_over_container = true;
+//             container.css('display', 'block');
+//             container.css('opacity', '1');
+//         }, 800)
+//         event.stopPropagation();
+//     },
+//     mouseleave: function(event) {
+//         let container = $(this);
+//         /*
+//             Here we need to check whether the mouse is over the button or container before closing the container as well
+//         */
+//        setTimeout(function() {
+//            mouse_over_container = false;
+//            if(!mouse_over_button) {
+//                container.css('display', 'none');
+//                container.css('opacity', '0');
+//            }
+//        }, 400);
+//     }
+// });
 
-    element.find('.button-container').on({
-        mouseenter: function(event) {
-            mouse_over_container = true;
-            $(this).css('display', 'block');
-            $(this).css('opacity', '1');
-            event.stopPropagation();
-        },
-        mouseleave: function(event) {
-            /*
-                Here we need to check whether the mouse is over the button or container before closing the container as well
-            */
-            mouse_over_container = false;
-            if(!mouse_over_button) {
-                $(this).parent().find('.button-container').css('display', 'none');
-                $(this).parent().find('.button-container').css('opacity', '0');
-            }
-        }
-    });
-}
+// function handle_button_container(element) {
+//     element.find('.button-with-container').on({
+//         'mouseenter': function() {
+//             mouse_over_button = true;
+//             $(this).parent().find('.button-container').css('display', 'block');
+//             $(this).parent().find('.button-container').css('opacity', '1');
+//         },
+//         'mouseleave': function() {
+//             /*
+//                 Here we need to check whether the mouse is over the button or container before closing the container as well
+//             */
+//             mouse_over_button = false;
+//             if(!mouse_over_container) {
+//                 $(this).parent().find('.button-container').css('display', 'none');
+//                 $(this).parent().find('.button-container').css('opacity', '0');
+//             }
+//         }
+//     });
+
+//     element.find('.button-container').on({
+//         mouseenter: function(event) {
+//             mouse_over_container = true;
+//             $(this).css('display', 'block');
+//             $(this).css('opacity', '1');
+//             event.stopPropagation();
+//         },
+//         mouseleave: function(event) {
+//             /*
+//                 Here we need to check whether the mouse is over the button or container before closing the container as well
+//             */
+//             mouse_over_container = false;
+//             if(!mouse_over_button) {
+//                 $(this).parent().find('.button-container').css('display', 'none');
+//                 $(this).parent().find('.button-container').css('opacity', '0');
+//             }
+//         }
+//     });
+// }
 
 function handle_close_shadowed_view(component) {
     component.find('.close-shadowed-view-button').each(function() {

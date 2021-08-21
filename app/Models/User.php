@@ -253,10 +253,6 @@ class User extends UserAuthenticatable implements Authenticatable
         return $count;
     }
 
-    public function threads_count() {
-        return $this->threads()->count();
-    }
-
     public function getNotifsAttribute() {
         // Grouped based on action_type and action_resource_id
         $grouped_notifications = $this->notifications;
@@ -373,6 +369,10 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function getArchivedthreadsAttribute() {
         return $this->threads()->onlyTrashed()->get();
+    }
+
+    public function getAboutminAttribute() {
+        return strlen($about=($this->about)) > 100 ? substr($about, 0, 100) . '..' : $about;
     }
 
     /**

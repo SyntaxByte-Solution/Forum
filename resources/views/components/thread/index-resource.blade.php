@@ -338,6 +338,7 @@
                 </div>
                 @endif
             </div>
+            <!-- thread bottom section -->
             <div class="thread-bottom-section space-between">
                 <div class="flex align-center">
                     <div class="thread-react-hover @auth like-resource like-resource-from-outside-viewer @endauth @guest login-signin-button @endguest">

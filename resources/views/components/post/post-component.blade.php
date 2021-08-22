@@ -29,7 +29,9 @@
                     <div class="left-middle-triangle"></div>
                     <div class="flex align-center">
                         <p class="informer-message"></p>
-                        <img src="http://127.0.0.1:8000/assets/images/icons/wx.png" class="remove-informer-message-container rounded pointer" alt="">
+                        <div class="remove-informer-message-container rounded pointer">
+                            <span style="margin-top: -1px">✖</span>
+                        </div>
                     </div>
                 </div>
 
@@ -80,11 +82,11 @@
                     <div class="no-margin fs12">
                         <div class="inline-block relative">
                             <div class="flex">
-                                <div class="relative">
-                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="button-with-container forum-style-link fs12 flex">
+                                <div class="relative user-profile-card-box">
+                                    <input type="hidden" class="user-card-container-index"> <!-- value will be initialized at run time by js, to identify each container with incremented index (go to depth.js file) -->
+                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="user-profile-card-displayer flex">
                                         <img src="{{ $post->user->sizedavatar(36) }}" class="size28 mr4 rounded" alt="">
                                     </a>
-                                    
                                     @include('partials.user-profile-card', ['user'=>$post->user])
                                 </div>
                                 <div>

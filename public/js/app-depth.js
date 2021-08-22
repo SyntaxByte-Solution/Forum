@@ -565,9 +565,6 @@ function handle_copy_thread_link(button) {
 }
 
 $('.resource-container').each(function() {
-    handle_thread_medias_containers($(this));
-    handle_open_media_viewer($(this));
-    handle_thread_shadowed_viewers($(this));
     handle_thread_visibility_switch($(this));
 });
 
@@ -2025,6 +2022,9 @@ function stop_loading_anim() {
 }
 
 $('.thread-container-box').each(function() {
+    handle_thread_medias_containers($(this));
+    handle_open_media_viewer($(this));
+    handle_thread_shadowed_viewers($(this));
     handle_expend_button_appearence($(this));
     handle_thread_display($(this));
 });

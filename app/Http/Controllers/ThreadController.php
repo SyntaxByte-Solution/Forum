@@ -48,6 +48,12 @@ class ThreadController extends Controller
             $posts = $thread->posts()->orderBy('created_at', 'desc')->paginate($pagesize);
         }
         
+        // $groups = $posts->groupBy('user_id');
+        // $results = [];
+        // foreach($groups as $group) {
+        //     $results[] = head($group);
+        // } // Results now will hold posts unique by users
+
         // The following foreach will loop through each owner of all posts of the page
         foreach($posts->pluck('user')->unique('id') as $user) {
             // Here we just create userreach record
@@ -59,7 +65,6 @@ class ThreadController extends Controller
 
             // before saving the userreach we need to check if the user has already reach the page before today
             // by checking ip, resource id, if so we don't have to increment the reach
-            
             $found = UserReach::today()
             ->where('visitor_ip', $reach->visitor_ip)
             ->where('user_id', $user->id)

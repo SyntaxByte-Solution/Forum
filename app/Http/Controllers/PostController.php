@@ -37,6 +37,11 @@ class PostController extends Controller
             throw new ThreadClosedException("You can't share posts on a temporarily closed thread");
         }
 
+        $data['user_id'] = auth()->user()->id;
+        $from = $request->from;
+        unset($data['from']);
+        $post = Post::create($data);
+
         /**
          * Before notify the user we have to fetch all the notifications that have the same resource_id
          * and action_type and pluck the users's names and delete all those notifications and add one with the collection of names
@@ -44,7 +49,6 @@ class PostController extends Controller
          * grotto_IV, hostname47 and hitman replied to your thread
          * Take a look at User model->fetchNotifs()
          */
-        
         if(!$thread_owner->thread_disabled($thread->id)) {
             if($thread_owner->id != $current_user->id) {
                 // If the user is already reply to this thread we have to delete the previous notification
@@ -59,7 +63,7 @@ class PostController extends Controller
                 $notif_data = [
                     'action_user'=>$current_user->id,
                     'action_statement'=>"replied to your thread:",
-                    'resource_string_slice'=> $thread->slice,
+                    'resource_string_slice'=>mb_convert_encoding($thread->slice, 'UTF-8', 'UTF-8'),
                     'action_type'=>'thread-reply',
                     'action_date'=>now(),
                     'action_resource_id'=>$thread->id,
@@ -73,11 +77,6 @@ class PostController extends Controller
             }
         }
 
-        $data['user_id'] = auth()->user()->id;
-        
-        $from = $request->from;
-        unset($data['from']);
-        $post = Post::create($data);
         if($from == 'thread-show') {
             // First we create a component class instance
             $component = (new PostComponent($post->id));

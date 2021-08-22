@@ -262,17 +262,12 @@ function handle_post_other_events(post) {
     // Suboption containers
     handle_element_suboption_containers(post);
     // buttons with container inside
-    handle_button_container(post);
+    handle_user_profile_card_displayer(post);
     // Handle vote buttons
-    post.find('.votable-up-vote').click(function(event) {
-        handle_up_vote(post.find('.votable-up-vote'));
-        event.preventDefault();
-    })
+    handle_up_vote(post.find('.votable-up-vote'));
+    handle_down_vote(post.find('.votable-down-vote'));
 
-    post.find('.votable-down-vote').click(function(event) {
-        handle_down_vote(post.find('.votable-down-vote'));
-        event.preventDefault();
-    })
+    
     // Handle informer message container close button
     handle_remove_informer_message_container(post);
 }
@@ -281,7 +276,7 @@ $('.post-container').each(function() {
     handle_post_events($(this));
 });
 
-$('.share-post').click(function() {
+$('.share-post').on('click', function() {
     let btn = $(this);
     $(this).attr("disabled","disabled");
     $(this).attr('style', 'background-color: #acacac; cursor: default');

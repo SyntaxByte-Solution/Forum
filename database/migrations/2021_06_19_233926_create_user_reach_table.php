@@ -15,11 +15,19 @@ class CreateUserReachTable extends Migration
     {
         Schema::create('user_reach', function (Blueprint $table) {
             $table->id();
-            $table->string('resource_id');
-            $table->string('resource_name');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->ipAddress('visitor_ip');
+            // Reach users
+            $table->unsignedBigInteger('reacher')->nullable();
+            $table->unsignedBigInteger('reachable');
+            /**
+             * Resource (Notice that here we don't have to add foreign key to resource_id because the resource may 
+             * be deleted)
+             */
+            $table->unsignedBigInteger('resource_id');
+            $table->string('resource_type');
+
+            $table->foreign('reacher')->references('id')->on('users');
+            $table->foreign('reachable')->references('id')->on('users');
+            $table->ipAddress('reacher_ip');
             $table->timestamps();
         });
     }

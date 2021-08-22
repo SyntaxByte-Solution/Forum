@@ -110,7 +110,7 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function getReachAttribute() {
-        return UserReach::where('user_id', $this->id)->count();
+        return UserReach::where('reachable', $this->id)->count();
     }
 
     public function getCoverAttribute($value) {

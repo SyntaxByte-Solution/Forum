@@ -2,6 +2,10 @@ var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
 
+$(window).on('unload', function() {
+    $(window).scrollTop(0);
+ });
+
 // the following section is for displaying viewers based on the value of query strings
 // -------------------------------
 

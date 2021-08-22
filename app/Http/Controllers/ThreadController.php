@@ -47,39 +47,52 @@ class ThreadController extends Controller
         } else {
             $posts = $thread->posts()->orderBy('created_at', 'desc')->paginate($pagesize);
         }
-        
-        // $groups = $posts->groupBy('user_id');
-        // $results = [];
-        // foreach($groups as $group) {
-        //     $results[] = head($group);
-        // } // Results now will hold posts unique by users
+
+        $current_user = auth()->user();
+        if($current_user) {
+            $postsbyusers = $posts->where('user_id', '<>', $current_user->id)->groupBy('user_id');
+        } else {
+            $postsbyusers = $posts->groupBy('user_id');
+        }
+
+        $postperuser = [];
+        foreach($postsbyusers as $group) {
+            $postperuser[] = $group->first();
+        } // Results now will hold posts unique by users
 
         // The following foreach will loop through each owner of all posts of the page
-        foreach($posts->pluck('user')->unique('id') as $user) {
+        foreach($postperuser as $post) {
             // Here we just create userreach record
             $reach = new UserReach;
-            $reach->visitor_ip = $request->ip();
-            $reach->user_id = $user->id;
-            $reach->resource_id = $posts->where('user_id', $user->id)->first()->id;
-            $reach->resource_name = 'post';
+            // We only set reacher in case the user is authenticated
+            if($current_user) {
+                $reach->reacher = $current_user->id;
+            }
+            $reach->reachable = $post->user->id;
+            $reach->resource_id = $post->id;
+            $reach->resource_type = 'post';
+            $reach->reacher_ip = $request->ip();
 
-            // before saving the userreach we need to check if the user has already reach the page before today
-            // by checking ip, resource id, if so we don't have to increment the reach
-            $found = UserReach::today()
-            ->where('visitor_ip', $reach->visitor_ip)
-            ->where('user_id', $user->id)
-            ->where('resource_id', $reach->resource_id)
-            ->where('resource_name', 'post')
-            ->where('user_id', $user->id)->count();
+            /**
+             * Before saving the userreach we need to check if the user has already reach the post of the current page before;
+             * If so we don't have to increment the reach because the post is already reached by the current user
+             * NOTICE: If a user has 2 or more posts in the same page we only increment reach once per watch
+             * by taking only one post from user posts in the page and reference it in the reach table
+             */
+            $found = UserReach::where('reachable', $post->user->id)
+                ->where('resource_id', $post->id)
+                ->where('resource_type', 'post');
+            if($current_user)
+                $found = $found->where('reacher', $current_user->id)->count();
+            else
+                $found = $found->where('reacher_ip', $request->ip())->count();
 
             if(!$found) {
-                if(auth()->user()) {
-                    if(auth()->user()->id != $user->id) {
-                        $reach->save();
-                    }
-                } else {
-                    $reach->save();
-                }
+                /**
+                 * Notice that we don't have to check if the current user is exists to not increment the reach
+                 * because we exclude all current user posts before looping in the current foreach
+                 */
+                $reach->save();
             }
         }
 

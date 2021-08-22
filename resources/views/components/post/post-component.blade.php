@@ -91,14 +91,16 @@
                                 </div>
                                 <div>
                                     <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold link-path">{{ $post->user->username }}</a>
-                                    <span class="relative block">
-                                        <span class="tooltip-section">{{ __('replied') }}: {{ $post_date }}</span>
-                                        <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
-                                    </span>
+                                    <div class="flex align-center">
+                                        <span class="relative block">
+                                            <span class="tooltip-section">{{ __('replied') }}: {{ $post_date }}</span>
+                                            <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
+                                        </span>
+                                        <span class="@if(!$post->is_updated) none @endif post-updated-date ml4">({{ __('edited') }})</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <span class="@if(!$post->is_updated) none @endif post-updated-date">({{ __('edited') }})</span>
                     </div>
                 </div>
                 <div class="flex align-center relative height-ma.x-content">

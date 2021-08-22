@@ -1446,7 +1446,6 @@ function handle_remove_informer_message_container(element) {
             vote_container = vote_container.parent();
         }
     
-    
         clearTimeout(informer_container_timeout);
     
         vote_container.css('display', 'none');
@@ -2233,9 +2232,7 @@ function handle_follow_resource(button) {
 
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
 
-$('.thread-add-share').click(function(event) {
-    event.preventDefault();
-
+$('.thread-add-share').on('click', function(event) {
     const $codemirror = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
 
     let form_data = new FormData();
@@ -2321,8 +2318,39 @@ $('.thread-add-share').click(function(event) {
             $('.thread-add-uploaded-media').slice(1).remove();
             $('.uploaded-images-counter').val('0');
             $('.uploaded-videos-counter').val('0');
-            // Show notification flash
-            window.location.href = response;
+            if($('#threads-global-container').length) {
+                // Show notification flash
+                $.ajax({
+                    url: `/threads/${response.id}/component/generate`,
+                    type: 'get',
+                    success: function(thread) {
+                        // Clear thread add component inputs
+                        $('#subject').attr('disabled', false);
+                        $('#subject').val('');
+                        $codemirror.setOption('readOnly', false);
+                        $codemirror.getDoc().setValue("");
+                        $('#thread-photos').val('');
+                        $('#thread-videos').val('');
+                        uploaded_thread_images_assets = [];
+                        uploaded_thread_videos_assets = [];
+                        uploaded_thread_media_counter = 0;
+
+                        button.val(button.parent().find('.message-no-ing').val());
+                        button.attr('style', '');
+                        button.prop("disabled", false);
+
+                        $('#threads-global-container').prepend(thread);
+
+                        let unhandled_thread = $('#threads-global-container').find('.thread-container-box').first();
+                        force_lazy_load(unhandled_thread);
+                        handle_thread_events(unhandled_thread);
+                        handle_document_suboptions_hiding();
+                        basic_notification_show(button.parent().find('.successful-share').val(), 'basic-notification-round-tick');
+                    }
+                })
+            } else {
+                window.location.href = response.link;
+            }
         },
         error: function(response) {
             // let er;
@@ -2338,12 +2366,9 @@ $('.thread-add-share').click(function(event) {
             // container.find('.thread-add-error').html(er);
         },
         complete: function(response) {
-            button.val(button.parent().find('.message-no-ing').val());
-            button.attr('style', '');
-            button.prop("disabled", false);
+            
         }
     });
-    $('#thread-creation-forum').submit();
     
     return false;
 });

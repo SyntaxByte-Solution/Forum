@@ -2433,10 +2433,11 @@ a, input, textarea {
 }
 
 .thread-add-share {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     cursor: pointer;
-    text-decoration: none;
     padding: 12px;
     background-color: #4d5264;
     color: white;

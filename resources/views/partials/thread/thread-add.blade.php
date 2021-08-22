@@ -160,9 +160,12 @@
             </div>
         </div>
         <div class="mb8 px8 flex">
+            <input type="hidden" class="successful-share" value="{{ __('Your discussion is shared successfully to your timeline') }}">
             <input type="hidden" class="message-ing" value="{{ __('Sharing..') }}">
             <input type="hidden" class="message-no-ing" value="{{ __('Share') }}">
-            <input type="button" class="thread-add-share" value="{{ __('Share') }}">
+            <button class="thread-add-share">
+                {{ __('Share') }}
+            </button>
         </div>
         <style>
             .CodeMirror,

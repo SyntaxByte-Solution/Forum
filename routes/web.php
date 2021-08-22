@@ -112,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/{user}/follows/load', [FollowController::class, 'follows_load']);
     Route::get('/users/{user}/followers/generate', [FollowController::class, 'generate_follower_component']);
 
+    Route::get('/threads/{thread}/component/generate', [ThreadController::class, 'generate_thread_component']);
     Route::get('/threads/add', [ThreadController::class, 'create'])->name('thread.add');
     Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
 

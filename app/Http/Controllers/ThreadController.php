@@ -13,6 +13,7 @@ use Request as Rqst;
 use Carbon\Carbon;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
 use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post, Like};
+use App\View\Components\IndexResource;
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\View\Components\Activities\ActivityThread;
 use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads, ArchivedThreads, ActivityLog};
@@ -276,7 +277,10 @@ class ThreadController extends Controller
             );
         }
 
-        return $thread->link;
+        return [
+            'link'=>$thread->link,
+            'id'=>$thread->id
+        ];
     }
 
     public function edit(User $user, Thread $thread) {
@@ -706,7 +710,6 @@ class ThreadController extends Controller
                 break;
         }
     }
-
     // range of section's threads
     public function generate_section_range(Request $request, User $user) {
         $sections = ['threads', 'liked-threads', 'voted-threads'];
@@ -815,5 +818,10 @@ class ThreadController extends Controller
             case "activity-log":
                 break;
         }
+    }
+    public function generate_thread_component(Thread $thread) {
+        $thread_component = (new IndexResource($thread));
+        $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+        return $thread_component;
     }
 }

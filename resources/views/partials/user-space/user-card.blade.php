@@ -70,7 +70,7 @@
         <div>
             <p class="bold fs12 gray" style="margin-bottom: 0">{{ __('IMPACT') }}</p>
             <div class="relative">
-                <p class="fs17 bold inline-block my4 tooltip-section">~ {{ $user->reach }}</p>
+                <p class="fs17 bold inline-block my4 tooltip-section">~ {{ $user->reachcount }}</p>
                 <div class="tooltip tooltip-style-2 left0">
                     {{ __('Estimated number of times people viewed your helpful posts
                     (based on page views of your questions

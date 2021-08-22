@@ -26,11 +26,10 @@ use App\Http\Middleware\AccountActivationCheck;
 
 Route::get('/test', function() {
     $user = auth()->user();
-    
-    $users = collect([User::first()]);
-    $p = collect([User::find(15)]);
-    $users = $users->concat($p);
-    dd($users);
+
+    $thread = $user->threads->first();
+    dd(\App\Models\SavedThread::where('thread', $thread->id)->get());
+
 });
 
 Route::get('/', [IndexController::class, 'index']);

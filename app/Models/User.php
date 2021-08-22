@@ -54,26 +54,65 @@ class User extends UserAuthenticatable implements Authenticatable
         static::deleting(function(User $user) {
             /**
              * Before deleting a user we have to delete everything related to that user
-             * first we are goinf to delete: 
-             * 1. likes on posts && likes on threads
-             * 2. votes on posts && votes on threads
-             * 3. saved threads
-             * 4. saved threads of other users who saved the deleted user's threads
+             * first we need to delete: 
+             * 1. likes on threads => [for posts related to threads -> READ NOTICE ABOVE THREADS DELETION LOOP BELOW]
+             * 2. votes on threads => [for posts related to threads -> READ NOTICE ABOVE THREADS DELETION LOOP BELOW]
+             * 3. saved threads (also saved threads of other users who saved the deleted user's threads)
              * 4. followers
              * 5. followings
-             * 6. threads -threads also will delete attached posts/likes/votes of other users -
-             * 7. avatars
-             * 8. cover
+             * 6. avatars and cover
+             * 7. all user reach records in user_reach table
+             * 8. all notifications
+             * 9. profile views
+             * . delete threads
              */
             
-            // foreach ($user->threads as $thread) {
-            //     $thread->delete();
-            // }
+            // 1. user votes (on posts and threads)
+            Vote::where('user_id', $user->id)->delete();
+            // 2. user likes (on posts and threads)
+            Like::where('user_id', $user->id)->delete();
+            // 3. user posts (on own threads and other's users threads)
+            Post::withTrashed()->where('user_id', $user->id)->forceDelete();
+            // 3. delete saved threads
+                // 3.1 delete user's saved threads
+            $user->savedthreads()->delete();
+                // 3.2 delete all saved threads of other users related to user's threads because we're going to delete all threads at the end
+            \App\Models\SavedThread::whereIn('thread', $user->threads->pluck('id'))->delete(); 
+            // 4. delete all followers records
+            $user->followers()->delete();
+            // 5. delete followed users
+            foreach($user->followed_users as $followed) {
+                $followed->delete();
+            }
+            // 6. delete all medias directory content
+            $media_dir = 'users/' . $user->id . '/usermedia';
+            (new \Illuminate\Filesystem\Filesystem)->cleanDirectory($media_dir);
+            $user->update(['avatar' => null]);
+
+            // 7. reach records
+            $user->reach()->delete();
+            // 8. notifications
+            // Normally we have to delete followers notification that are relevant to the deleted user's own resources but we're gonna left it as it is just for now
+            $user->notifications()->delete(); 
+            // 9. profile views
+            ProfileView::where('visited_id', $user->id)->delete();
+
+            /**
+             * This should be among the last deletions because lot of other tables rely on threads ids
+             * NOTICE: In Thread model, when we delete a thread, deleting in boot method will trigger all posts/votes/likes
+             * handling actions for delete. -check out Thread boot-deleting method
+             */
+            foreach (Thread::withTrashed()->where('user_id', $user->id)->get() as $thread) {
+                $thread->forceDelete();
+            }
+            // After deleting all threads we have to delete threads directory in order to delete all medias of his threads
+            $threads_media_dir = 'users/' . $user->id . '/threads';
+            (new \Illuminate\Filesystem\Filesystem)->cleanDirectory($threads_media_dir);
         });
     }
 
     // Even though using local scopes needs a lot of code update like prefixing user fetch queries but
-    // it gives me what I need and it doesn't cause infinite (nested) calls to the global scope like in global scopes
+    // it gives me what I need and it doesn't cause infinite (nested) calls to the scope like in global scopes
     public function scopeExcludedeactivatedaccount($query) {
         return $query->where('account_status', '<>', 2);
     }
@@ -109,7 +148,11 @@ class User extends UserAuthenticatable implements Authenticatable
         return asset("users/defaults/medias/avatars/" . $size . $quality . ".png");
     }
 
-    public function getReachAttribute() {
+    public function reach() {
+        return $this->hasMany(UserReach::class, 'reachable');
+    }
+
+    public function getReachcountAttribute() {
         return UserReach::where('reachable', $this->id)->count();
     }
 

@@ -35,11 +35,10 @@ class Thread extends Model
                 $thread->likes()->delete();
 
                 // Delete saved threads of people who already saved this thread
-                foreach(SavedThread::where('thread', $thread->id)->get() as $savedthread) {
-                    $savedthread->delete();
-                }
+                SavedThread::where('thread', $thread->id)->delete();
                 
                 // Maybe in future, reports related to deleted thread must not be deleted
+                // Cause If we find that the same user creates a new account, we will still have these reports and warning to identify him better.
                 $thread->reports()->delete();
 
                 // Delete all the notifications for this thread
@@ -51,6 +50,8 @@ class Thread extends Model
                         $notification->delete();
                     }
                 }
+            } else {
+
             }
         });
     }

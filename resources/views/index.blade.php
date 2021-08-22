@@ -29,48 +29,63 @@
         </div>
     </div>
     <div class="index-middle-width middle-container-style">
+        <input type="hidden" class="current-threads-count" autocomplete="off" value="{{ $pagesize }}">
         @if(Session::has('message'))
             <div class="green-message-container mb8">
                 <p class="green-message">{{ Session::get('message') }}</p>
             </div>
         @endif
-        @auth
-            @include('partials.thread.thread-add', ['editor_height'=>100])
-        @endauth
-        <h1 id="page-title" class="fs26">{{ __('Discussions and Questions') }}</h1>
-        <div class="flex mb8 align-end space-between">
-            <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
-                <a href="/" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
-                        {{ __('All') }}
-                </a>
-                <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
-                    {{ __('Today') }}
-                </a>
-                <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
-                    {{ __('This week') }}
-                </a>
-            </div>
-            <div>
-                <div>
-                    <div class="flex">
-                        <div class="flex align-center my4 move-to-right">
-                            <span class="mr4 fs13 gray">posts/page :</span>
-                            <select name="" class="small-dropdown row-num-changer" autocomplete="off">
-                                <option value="6" @if($pagesize == 6) selected @endif>6</option>
-                                <option value="10" @if($pagesize == 10) selected @endif>10</option>
-                                <option value="16" @if($pagesize == 16) selected @endif>16</option>
-                            </select>
-                        </div>
-                    </div>
+        <div class="thread-add-component none">
+            @auth
+                @include('partials.thread.thread-add', ['editor_height'=>100])
+            @endauth
+        </div>
+        <h1 class="fs26 forum-color my8">{{ __('Discussions and Questions') }}</h1>
+        <div class="flex space-between stick-after-header">
+            <div class="relative">
+                <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
+                    <span class="mr4 gray">{{ __('Filter by date') }}:</span>
+                    <span class="forum-color fs13 bold">{{ __($tab_title) }}</span>
+                    <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                 </div>
-                {{ $threads->onEachSide(0)->links() }}
+                <div class="suboptions-container thread-add-suboptions-container" style="width: 220px">
+                    <a href="/" class="no-underline thread-add-suboption sort-by-option flex">
+                        <div>
+                            <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
+                            <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
+                            <input type="hidden" class="tab" value="all">
+                        </div>
+                        <div class="loading-dots-anim ml4 none">•</div>
+                    </a>
+                    <a href="?tab=today" class="no-underline thread-add-suboption sort-by-option flex">
+                        <div>
+                            <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
+                            <p class="no-margin fs12 gray">{{ __('Get only threads created today') }}</p>
+                            <input type="hidden" class="tab" value="today">
+                        </div>
+                        <div class="loading-dots-anim ml4 none">•</div>
+                    </a>
+                    <a href="?tab=thisweek" class="no-underline thread-add-suboption sort-by-option flex">
+                        <div>
+                            <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
+                            <p class="no-margin fs12 gray">{{ __('Get only threads created this week') }}</p>
+                            <input type="hidden" class="sort-by-key" value="votes">
+                        </div>
+                        <div class="loading-dots-anim ml4 none">•</div>
+                    </a>
+                </div>
             </div>
+            <a href="{{ route('advanced.search') }}" class="fs13 bold no-underline forum-color flex align-center">
+                <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512,28.48A28.27,28.27,0,0,0,484,0H28.06A27.71,27.71,0,0,0,11.92,5.19,28.75,28.75,0,0,0,5.11,44.87L170.4,283.44,170.87,457A55.72,55.72,0,0,0,180,487.44a53.81,53.81,0,0,0,75.32,15.29l59-40a57.19,57.19,0,0,0,25-47.66l-.6-130.63L506.8,45A28.85,28.85,0,0,0,512,28.48ZM282.54,266.39l.68,149L227,453.45l-.5-188.1L82.09,57H429.51Z"/></svg>
+                {{ __('Adv. Search') }}
+            </a>
         </div>
         <div id="threads-global-container">
             @foreach($threads as $thread)
                 <x-index-resource :thread="$thread"/>
             @endforeach
         </div>
+        @include('partials.thread.faded-thread', ['classes'=>'index-fetch-more'])
         @if(!$threads->count())
             <div class="full-center">
                 <div>
@@ -79,11 +94,6 @@
                 </div>
             </div>
         @endif
-        <div class="flex my8">
-            <div class="move-to-right">
-                {{ $threads->onEachSide(0)->links() }}
-            </div>
-        </div>
     </div>
 
     @push('scripts')

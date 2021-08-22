@@ -52,6 +52,8 @@ Route::get('/search/advanced/results', [SearchController::class, 'search_advance
 Route::get('/threads/search', [SearchController::class, 'threads_search'])->name('threads.search');
 Route::get('/users/search', [SearchController::class, 'users_search'])->name('users.search');
 
+/** AUTO-FETCHING */
+Route::get('/index/threads/loadmore', [IndexController::class, 'index_load_more']);
 
 /**
  * get all forum threads

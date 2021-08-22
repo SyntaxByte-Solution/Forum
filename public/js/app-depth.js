@@ -2319,16 +2319,17 @@ $('.thread-add-share').on('click', function(event) {
         contentType: false,
         data: form_data,
         success: function(response) {
-            $('.thread-add-uploaded-media').slice(1).remove();
-            $('.uploaded-images-counter').val('0');
-            $('.uploaded-videos-counter').val('0');
             if($('#threads-global-container').length) {
                 // Show notification flash
                 $.ajax({
                     url: `/threads/${response.id}/component/generate`,
                     type: 'get',
                     success: function(thread) {
+                        $('.thread-add-uploaded-media').slice(1).remove();
+                        
                         // Clear thread add component inputs
+                        $('.uploaded-images-counter').val('0');
+                        $('.uploaded-videos-counter').val('0');
                         $('#subject').attr('disabled', false);
                         $('#subject').val('');
                         $codemirror.setOption('readOnly', false);
@@ -4166,4 +4167,53 @@ function handle_thread_events(thread) {
     handle_open_media_viewer(thread);
     // Handle link copy
     handle_copy_thread_link(thread.find('.copy-thread-link'));
+}
+
+let index_fetch_more = $('.index-fetch-more');
+let index_fetch_more_lock = true;
+if(index_fetch_more.length) {
+    $(window).on('DOMContentLoaded scroll', function() {
+      // We only have to start loading and fetching data when user reach the explore more faded thread
+      if(index_fetch_more.isInViewport()) {
+            if(!index_fetch_more_lock) {
+                return;
+            }
+            index_fetch_more_lock=false;
+        
+            let skip = $('.current-threads-count').val();
+        
+            let url = `/index/threads/loadmore?skip=${skip}`;
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function(response) {
+                    $('#threads-global-container').append(response.content);
+                    let new_skip = parseInt(skip) + parseInt(response.count);
+                    $('.current-threads-count').val(new_skip);
+                    /**
+                     * When appending threads we have to handle their events (Notice that response.count is the number of threads appended)
+                     * Notice that we have faded thread container righgt after threads collection so we have to exclude it from unhandled threads collection
+                     */
+                    let unhandled_appended_threads = 
+                    $('#threads-global-container .resource-container').slice(response.count*(-1));
+                    
+                    // When threads are appended we need to force lazy loading for the first appended thread for better ui experience
+                    force_lazy_load(unhandled_appended_threads.first());
+        
+                    unhandled_appended_threads.each(function() {
+                        handle_thread_events($(this));
+                    });
+                    // This will prevent appended suboptions from disappearing when cursor click on suboption containers
+                    handle_document_suboptions_hiding();
+                    index_fetch_more_lock = true;
+                },
+                error: function(response) {
+        
+                },
+                complete: function(response) {
+                    
+                }
+            });
+      }
+    });
 }

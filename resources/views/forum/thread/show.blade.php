@@ -59,8 +59,8 @@
                             <style>
                                 .CodeMirror,
                                 .CodeMirror-scroll {
-                                    max-height: 160px;
-                                    min-height: 160px;
+                                    max-height: 120px;
+                                    min-height: 120px;
                                     border-color: #dbdbdb;
                                 }
                                 .CodeMirror-scroll:focus {

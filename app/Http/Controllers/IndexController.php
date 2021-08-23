@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\{Forum, Thread, Category};
 use App\View\Components\IndexResource;
 use Carbon\Carbon;
@@ -14,18 +15,19 @@ class IndexController extends Controller
 
     public function index(Request $request) {
         $tab_title = 'All'; // By default is all, until the user choose other option
+        $tab = "all";
         $pagesize = self::PAGESIZE;
         if($request->has('tab')) {
             $tab = $request->input('tab');
             if($tab == 'today') {
-                $threads = Thread::today()->orderBy('created_at', 'desc')->paginate($pagesize);
+                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->paginate($pagesize);
                 $tab_title = 'Today';
             } else if($tab == 'thisweek') {
                 $threads = Thread::where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                )->orderBy('created_at', 'desc')->paginate($pagesize);
+                )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->paginate($pagesize);
                 $tab_title = 'This week';
             }
         } else {
@@ -37,6 +39,7 @@ class IndexController extends Controller
 
         return view('index')
         ->with(compact('threads'))
+        ->with(compact('tab'))
         ->with(compact('tab_title'))
         ->with(compact('pagesize'))
         ->with(compact('recent_threads'))
@@ -45,10 +48,28 @@ class IndexController extends Controller
 
     public function index_load_more(Request $request) {
         $indexes = $request->validate([
-            'skip'=>'required|numeric|max:600'
+            'skip'=>'required|numeric|max:600',
+            'tab'=>[
+                'required',
+                Rule::in(['all', 'today', 'thisweek']),
+            ]
         ]);
         
-        $threads = Thread::orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
+        switch($indexes['tab']) {
+            case 'all':
+                $threads = Thread::orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
+                break;
+            case 'today':
+                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
+                break;
+            case 'thisweek':
+                $threads = Thread::where(
+                    'created_at', 
+                    '>=', 
+                    \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
+                )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
+                break;
+        }
 
         $payload = "";
         foreach($threads as $thread) {

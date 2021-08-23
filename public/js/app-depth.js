@@ -4181,8 +4181,9 @@ if(index_fetch_more.length) {
             index_fetch_more_lock=false;
         
             let skip = $('.current-threads-count').val();
+            let tab = $('.date-tab').val();
         
-            let url = `/index/threads/loadmore?skip=${skip}`;
+            let url = `/index/threads/loadmore?skip=${skip}&tab=${tab}`;
             $.ajax({
                 type: 'get',
                 url: url,
@@ -4217,3 +4218,12 @@ if(index_fetch_more.length) {
       }
     });
 }
+
+$('.thread-add-display-toggler').on('click', function() {
+    let thread_add_component = $('#thread-add-component');
+    if(thread_add_component.hasClass('none')) {
+        thread_add_component.removeClass('none');
+    } else {
+        thread_add_component.addClass('none');
+    }
+});

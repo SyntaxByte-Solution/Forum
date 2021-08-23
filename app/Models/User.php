@@ -87,7 +87,7 @@ class User extends UserAuthenticatable implements Authenticatable
             // 6. delete all medias directory content
             $media_dir = 'users/' . $user->id . '/usermedia';
             (new \Illuminate\Filesystem\Filesystem)->cleanDirectory($media_dir);
-            $user->update(['avatar' => null]);
+            $user->update(['avatar'=>null, 'cover'=>null]);
 
             // 7. reach records
             $user->reach()->delete();

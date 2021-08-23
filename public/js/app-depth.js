@@ -2086,7 +2086,7 @@ function handle_thread_visibility_switch(component) {
                 success: function() {
                     let button_ico = visibility_box.find('.thread-resource-visibility-icon');
                     let new_path = button.find('.icon-path-when-selected').val();
-                    
+                    basic_notification_show(visibility_box.find('.message-after-change').val(), 'basic-notification-round-tick');
                     button_ico.find('path').attr('d', new_path);
                 },
                 complete: function() {
@@ -4226,4 +4226,23 @@ $('.thread-add-display-toggler').on('click', function() {
     } else {
         thread_add_component.addClass('none');
     }
+});
+
+let top_informer_timeout;
+function display_top_informer_message(message) {
+    let informer_box = $('.top-informer-box');
+    informer_box.removeClass('none');
+    informer_box.find('.top-informer-text').text(message);
+
+    // This timeout will wait for 5 sec before close the message
+    top_informer_timeout = setTimeout(function() {
+        informer_box.addClass('none');
+        informer_box.find('.top-informer-text').text('');
+   }, 4000);
+}
+
+$('.remove-top-informer-container').on('click', function() {
+    clearTimeout(top_informer_timeout);
+    $('.top-informer-box').addClass('none');
+    $('.top-informer-box').find('.top-informer-text').text('');
 });

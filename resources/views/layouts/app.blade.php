@@ -44,6 +44,7 @@
         <!-- IMPORT HEADER FROM PARTIALS LATER -->
         @yield('header')
         <main class="relative">
+            @include('partials.general.top-message-informer')
             @yield('content')
             @include('partials.notification')
             @include('partials.general.basic-notification')

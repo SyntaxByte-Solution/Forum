@@ -544,9 +544,33 @@ $('.notifs-box').on('DOMContentLoaded scroll', function() {
 
 function handle_thread_media_one_item(medias_container) {
     let media = medias_container.find('.thread-media');
+    let media_container = medias_container.find('.thread-media-container ');
     let media_type = media.parent().find('.media-type').val();
 
-    if(media_type == 'video') {
+    
+    /**
+     * Here we handle one image that have the following carcteristics:
+     *  1. width > height
+     *  2. height of image is greather than its container
+     *  3. width > container width when height is set
+     * In this case we don't want this image to take the whole height; We have to keep shrinking the width until we reach the minimum height
+     * which is the same as full width
+     */
+    if(media_type == 'image') {
+      media_container.imagesLoaded(function() {
+        if(media.height() > media_container.height() && media.height() < media.width()) {
+          console.log('process');
+          let min_height = media_container.width();
+          let container_height = media_container.height();
+  
+          while(container_height > min_height && media.width() > media_container.width()) {
+              container_height--;
+              media_container.height(container_height);
+          }
+          media_container.css('align-items', 'flex-start');
+        }
+      });
+    } else if(media_type == 'video') {
       media.on('loadedmetadata', function() {
         let width = media[0].videoWidth;
         let height = media[0].videoHeight;

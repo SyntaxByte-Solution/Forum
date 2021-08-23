@@ -2623,7 +2623,7 @@ a, input, textarea {
 
 .thread-media-container {
     width: 100%;
-    max-height: 600px;
+    max-height: 570px;
     min-height: 200px;
     overflow: hidden;
     box-sizing: border-box;

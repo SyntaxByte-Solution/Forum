@@ -112,4 +112,8 @@ class IndexController extends Controller
     public function about() {
         return view('aboutus');
     }
+    
+    public function privacy() {
+        return view('privacy-policy');
+    }
 }

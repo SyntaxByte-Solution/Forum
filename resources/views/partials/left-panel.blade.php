@@ -214,6 +214,12 @@
                     <div class="selected-colored-slice"></div>
                 @endif
             </div>
+            <div class="flex relative">
+                <a href="{{ route('privacy') }}" class="left-panel-item lp-wpadding @if($page == 'privacy') {{ 'lp-selected bold white' }} @endif" title="Frequently Asked Questions">{{ __('Privacy Policy') }}</a>
+                @if($page == 'privacy')
+                    <div class="selected-colored-slice"></div>
+                @endif
+            </div>
         </div>
     </div>
     <div class="move-to-bottom" style="margin-bottom: 12px">

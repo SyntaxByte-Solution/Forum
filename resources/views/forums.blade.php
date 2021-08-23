@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'MG Forums')
+@section('title', 'Forums')
 
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">

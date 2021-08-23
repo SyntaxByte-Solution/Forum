@@ -78,6 +78,8 @@ Route::post('/contact', [ContactController::class, 'store_contact_message']);
 Route::get('/faqs', [FaqsController::class, 'faqs'])->name('faqs');
 Route::post('/faqs', [FaqsController::class, 'store'])->middleware('auth');
 
+Route::get('/privacy', [IndexController::class, 'privacy'])->name('privacy');
+
 Route::middleware(['auth'])->group(function () {
     /** 
      * The routes that are accessible for only admins should be placed in a group

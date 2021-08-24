@@ -234,12 +234,25 @@ function handle_tooltips(post) {
     });
 }
 
+let delete_lock = true;
 function handle_delete_post(post) {
     post.find('.delete-post').click(function() {
-        let delete_button = $(this);
-        delete_button.val(delete_button.parent().find('.button-ing-text').val());
-        delete_button.attr("disabled","disabled");
-        delete_button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
+        if(!delete_lock) {
+            return;
+        }
+        delete_lock = false;
+
+        let close_button = $(this).parent().find('.close-shadowed-view-button');
+        let button = $(this);
+        let btn_text_no_ing = button.find('.button-ing-no-text').val();
+        let btn_text_ing = button.find('.button-ing-text').val();
+
+        button.find('.btn-text').text(btn_text_ing);
+        button.attr("disabled","disabled");
+        button.attr('style', 'background-color: #e9e9e9; color: black; cursor: not-allowed');
+
+        close_button.attr("disabled","disabled");
+        close_button.attr('style', 'background: unset; border: unset; cursor: not-allowed');
 
         let pid = post.find('.post-id').first().val();
 
@@ -250,20 +263,49 @@ function handle_delete_post(post) {
                 '_token':csrf,
             },
             success: function(response) {
+                basic_notification_show(button.parent().find('.message-when-delete').val(), 'basic-notification-round-tick');
                 post.remove();
 
                 let new_replies_counter;
-                if(delete_button.hasClass('delete-from-outside-viewer')) {
+                if(button.hasClass('delete-from-outside-viewer')) {
                     new_replies_counter = parseInt($('.thread-replies-number').first().text(), 10)-1;
                     $('.thread-replies-counter').text(new_replies_counter);
-                } else if(delete_button.hasClass('delete-from-viewer')) {
+                    // Remove the reply from thread viewer if it's already opened
+                    if(last_opened_thread) {
+                        let reply;
+                        $('.viewer-thread-reply').each(function() {
+                            if($(this).find('.post-id').first().val() == pid) {
+                                reply = $(this);
+                                return false;
+                            }
+                        });
+
+                        reply.remove();
+                    }
+                } else if(button.hasClass('delete-from-viewer')) {
                     new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)-1;
                     $('.viewer-thread-replies-number').text(new_replies_counter);
+
+                    let reply;
+                    if($('.page').length && $('.page').val() == "thread-show") {
+                        $('#replies-container .post-container').each(function() {
+                            if($(this).find('.post-id').first().val() == pid) {
+                                reply = $(this);
+                                return false;
+                            }
+                        });
+                    }
+
+                    reply.remove();
                 }
             },
             error: function(response) {
-                $(this).attr("disabled","");
-                $(this).attr("style","");
+                close_button.attr("disabled", false);
+                close_button.attr('style', '');
+
+                button.find('btn-text').text(btn_text_no_ing);
+                button.attr("disabled","");
+                button.attr("style","");
             }
         });
 
@@ -294,7 +336,7 @@ function handle_post_events(post) {
     // Tooltips
     handle_tooltips(post);
     // Handle close shadowed view for deleting
-    handle_close_shadowed_view(post.parent().find('.close-shadowed-view-button'));
+    handle_close_shadowed_view(post);
     // Handle post best reply
     handle_post_reply_tick_button(post);
     // posts like buttons are already handled from app-depth script

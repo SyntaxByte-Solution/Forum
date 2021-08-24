@@ -6,8 +6,13 @@
         @can('destroy', $post)
         <div class="full-center full-width full-height">
             <div class="flex align-center">
-                <input type="button" class="simple-white-button pointer delete-post delete-from-outside-viewer" value="Delete">
-                <a href="" class="simple-link close-shadowed-view-button" style="text-decoration: none; margin-left: 6px; font-size: 10px">CANCEL</a>
+                <button class="simple-white-button pointer delete-post delete-from-outside-viewer">
+                    <span class="btn-text">{{ __('Delete') }}</span>
+                    <input type="hidden" class="button-ing-no-text" value="{{ __('Delete') }}">
+                    <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
+                    <input type="hidden" class="message-when-delete" value="{{ __('Your reply deleted successfully') }}.">
+                </button>
+                <button class="simple-link close-shadowed-view-button" style="background: unset; border: unset; cursor: pointer; margin-left: 6px; font-size: 10px; font-weight: bold">{{ __('CANCEL') }}</button>
                 <input type="hidden" class="post-id" value="{{ $post->id }}">
                 <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
             </div>
@@ -134,6 +139,7 @@
                             <div class="simple-suboption delete-post-button flex align-center">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
                                 {{ __('Delete reply') }}
+                                <input type="hidden" class="message-when-delete" value="{{ __('Your reply deleted successfully') }}.">
                             </div>
                             @endcan
                         </div>

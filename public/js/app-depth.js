@@ -31,7 +31,7 @@ $('.stop-propagation').on('click', function(event) {
     event.stopPropagation();
 })
 
-$('.block-click').click(function() {
+$('.block-click').on('click', function() {
     return false;
 });
 

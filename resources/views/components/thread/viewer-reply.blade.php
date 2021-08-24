@@ -8,10 +8,14 @@
         @can('destroy', $post)
         <div class="full-center full-width full-height">
             <div class="flex align-center">
-                <input type="button" class="simple-white-button pointer delete-post delete-from-viewer" value="{{ __('Delete') }}">
-                <a href="" class="simple-link close-shadowed-view-button" style="text-decoration: none; margin-left: 6px; font-size: 10px">CANCEL</a>
+                <button class="simple-white-button pointer delete-post delete-from-viewer">
+                    <span class="btn-text">{{ __('Delete') }}</span>
+                    <input type="hidden" class="button-ing-no-text" value="{{ __('Delete') }}">
+                    <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
+                    <input type="hidden" class="message-when-delete" value="{{ __('Your reply deleted successfully') }}.">
+                </button>
+                <button class="simple-link close-shadowed-view-button" style="background: unset; border: unset; cursor: pointer; margin-left: 6px; font-size: 10px; font-weight: bold">{{ __('CANCEL') }}</button>
                 <input type="hidden" class="post-id" value="{{ $post->id }}">
-                <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
             </div>
         </div>
         @endcan

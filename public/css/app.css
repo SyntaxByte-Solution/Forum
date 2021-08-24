@@ -617,6 +617,10 @@ a, input, textarea {
     padding-bottom: 8px !important;
 }
 
+.pb4 {
+    padding-bottom: 4px !important;
+}
+
 .pt8 {
     padding-top: 8px !important;
 }
@@ -3023,4 +3027,20 @@ a, input, textarea {
 
 .x-close-style svg {
     fill: #222;
+}
+
+.progress-bar-container {
+    border: 2px solid #494f64;
+    border-radius: 3px;
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+.progress-bar {
+    height: 16px;
+    width: 68%;
+
+    background-color: #7e86a2;
+    transition: width 0.5s;
 }

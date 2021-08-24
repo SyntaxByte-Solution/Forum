@@ -88,7 +88,7 @@
                 {{ __('Adv. Search') }}
             </a>
         </div>
-        <div id="thread-add-component" class="none" style="margin-bottom: 10px">
+        <div id="thread-add-component" class="" style="margin-bottom: 10px">
             @auth
                 @include('partials.thread.thread-add', ['editor_height'=>100])
             @endauth

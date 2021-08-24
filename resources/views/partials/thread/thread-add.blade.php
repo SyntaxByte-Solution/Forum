@@ -175,7 +175,7 @@
                 border-radius: 0;
                 border-left: none;
                 border-right: none;
-                border-color: #dbdbdb;
+                border-color: #b9b9b9;
             }
             .CodeMirror-scroll:focus {
                 border-color: #64ceff;
@@ -188,7 +188,7 @@
                 border-radius: 0;
                 border-left: none;
                 border-right: none;
-                border-top-color: #dbdbdb;
+                border-top-color: #b9b9b9;
                 background-color: rgb(244, 244, 244);
 
                 display: flex;

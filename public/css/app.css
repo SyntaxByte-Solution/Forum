@@ -1696,7 +1696,7 @@ a, input, textarea {
 
 /* vs: vote section */
 .thread-vs, .post-vs {
-    padding: 8px;
+    padding: 8px 8px 0 8px;
     width: 22px;
     border-radius: 6px 0 0 6px;
 }
@@ -1747,8 +1747,8 @@ a, input, textarea {
 
 
 .post-main-component {
-    margin: 10px 0;
-    border: 1px solid #ccc;
+    margin: 8px 0;
+    border: 1px solid #b9b9b9;
     box-shadow: 2px 2px 8px 1px #f4f4f4;
     border-radius: 6px;
 }
@@ -2375,13 +2375,14 @@ a, input, textarea {
 .thread-add-container {
     background-color: white;
     border-radius: 6px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid #b9b9b9;
 }
 
 .thread-add-header {
     padding: 6px;
     border-radius: 6px 6px 0 0;
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 1px solid #b9b9b9;
+    background-color: rgb(244, 244, 244);
 }
 
 .thread-add-posted-to {
@@ -2390,7 +2391,7 @@ a, input, textarea {
 }
 
 .thread-add-posted-to:hover {
-    background-color: rgba(140, 191, 255, 0.44);
+    background-color: #e6e6e6;
 }
 
 .audience-button {
@@ -2433,7 +2434,7 @@ a, input, textarea {
     width: 100%;
     box-sizing: border-box;
     border-radius: 3px;
-    border: 1px solid #bdbdbd;
+    border: 1px solid #b9b9b9;
 }
 
 .styled-input:focus {
@@ -2787,7 +2788,8 @@ a, input, textarea {
     border-radius: 8px;
 }
 
-.thread-viewer-reply-content * {
+.post-content * {
+    font-size: 15px;
     margin-top: 2px;
     margin-bottom: 2px;
 }

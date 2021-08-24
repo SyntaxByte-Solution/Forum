@@ -23,6 +23,9 @@
     <div>
         <img src="{{ asset('assets/images/img/welcome.jpg') }}" class="block full-width" alt="">
     </div>
+    <div class="full-center" style="width: 720px; height: 90px; margin: 20px 0">
+        <h2>ADS: 720*90</h2>
+    </div>
     <div id="middle-container" class="middle-padding-1">
         <div class="flex align-center">
             <a href="/" class="link-path flex align-center unselectable">

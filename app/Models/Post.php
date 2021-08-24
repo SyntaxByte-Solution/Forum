@@ -86,6 +86,17 @@ class Post extends Model
         return $this->created_at != $this->updated_at;
     }
 
+    public function getAlreadyReportedAttribute() {
+        if(auth()->user()) {
+            return $this->reports->where('user_id', auth()->user()->id)
+                ->where('reportable_id', $this->id)
+                ->where('reportable_type', 'App\Models\Post')
+                ->count();
+        }
+
+        return 0;
+    }
+
     public function getSliceAttribute() {
         return substr($this->content, 0, 30);
     }

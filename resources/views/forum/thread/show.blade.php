@@ -21,7 +21,10 @@
 @section('content')
     @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
-    @include('partials.thread.report')
+    @if(auth()->user() && auth()->user()->id != $thread->user->id)
+        @include('partials.thread.report.thread-report')
+    @endif
+    @include('partials.thread.report.post-report')
     <div class="flex align-center middle-padding-1">
         <a href="/" class="link-path flex align-center unselectable">
             <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
@@ -69,7 +72,7 @@
                 @endif
                 
                 <div class="flex space-between align-end replies_header_after_thread @if(!$tickedPost && $posts->count() == 0) none @endif" id="thread-show-replies-section">
-                    <p class="bold forum-color fs20" style="margin: 30px 0 0 0"><span class="thread-replies-number thread-replies-counter">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
+                    <p class="bold forum-color fs18" style="margin: 30px 0 0 0"><span class="thread-replies-number thread-replies-counter">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
                     {{ $posts->onEachSide(0)->links() }}
                 </div>
                 <div id="replies-container" style="margin-bottom: 30px">

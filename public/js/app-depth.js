@@ -3594,7 +3594,7 @@ function basic_notification_show(message, icon='') {
    }, 5000);
 }
 
-// reporting section
+// -------------------------------------    reporting section    -------------------------------------
 $('.close-report-container').click(function() {
     let report_container = $(this);
     while(!report_container.hasClass('report-resource-container')) {
@@ -3611,8 +3611,9 @@ function close_report_container(container) {
         container.css('opacity', '1');
     })
 }
-$('.open-thread-report').click(function() {
-    let container = $('.report-resource-container');
+$('.open-thread-report').on('click', function() {
+    $('#post-report-container').addClass('none');
+    let container = $('.thread-report-container');
 
     container.css('opacity', '0');
     container.removeClass('none');
@@ -3622,7 +3623,7 @@ $('.open-thread-report').click(function() {
     $('.resource-report-option').css('background-color', '');
     $('.report-section-textarea').val('');
 
-    let report_button = container.find('.submit-thread-report');
+    let report_button = container.find('.submit-report');
     report_button.attr("disabled","disabled");
     report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
     report_button.removeClass('blue-background');
@@ -3644,7 +3645,7 @@ $('.resource-report-option').each(function() {
         while(!report_container.hasClass('report-resource-container')) {
             report_container = report_container.parent();
         }
-        let report_button = report_container.find('.submit-thread-report');
+        let report_button = report_container.find('.submit-report');
 
         if(value == 'moderator-intervention') {
             $(this).find('.child-to-be-opened').animate({
@@ -3680,7 +3681,7 @@ function handle_report_textarea(textarea) {
     let maxlength = 500;
     let currentLength = textarea.val().length;
 
-    let report_button = report_container.find('.submit-thread-report');
+    let report_button = report_container.find('.submit-report');
 
     counter_container.addClass('gray');
     if(currentLength == 0) {
@@ -3729,7 +3730,7 @@ function handle_report_textarea(textarea) {
         }
     }
 }
-$('.submit-thread-report').on('click', function() {
+$('.submit-report').on('click', function() {
     let button = $(this);
     let button_text_ing = $(this).parent().find('.button-ing-text').val();
     let button_text_no_ing = $(this).parent().find('.button-no-ing-text').val();
@@ -3761,9 +3762,25 @@ $('.submit-thread-report').on('click', function() {
         url: `/${reportable_type}/${reportable_id}/report`,
         data: data,
         success: function(response) {
+            if(reportable_type == 'post') {
+                // We have to set already reported to 1 inside report 
+                let pid = reportable_id;
+                $('.already-reported').each(function() {
+                    if($(this).parent().find('.post-id').val() == pid) {
+                        $(this).val('1'); // Set already reported to 1
+                        return false;
+                    }
+                });
+            }
+
             close_report_container(report_container);
-            report_container.find('.report-section').remove();
-            report_container.find('.already-reported-container').removeClass('none');
+            // Wait for closing annimation
+            setTimeout(function() {
+                report_container.find('.report-section').remove();
+                report_container.find('.already-reported-container').removeClass('none');
+
+                console.log(report_container.find('.already-reported-container'));
+            }, 400);
             basic_notification_show(button.parent().find('.reported-text').val(), 'basic-notification-round-tick');
         },
         complete: function() {
@@ -3773,6 +3790,45 @@ $('.submit-thread-report').on('click', function() {
         }
     });
 });
+$('.open-post-report').on('click', function(event) {
+    $('.thread-report-container').addClass('none');
+    $(this).parent().css('display', 'none');
+    // Stop propagation to close the button container because if propagation not stop container won't disappear 
+    // because clicking on container or its content doesn't close the container
+    event.stopPropagation(); 
+    let container = $('#post-report-container');
+    let button = $(this);
+    // Already reported not equal to zero means it is already reported
+    if(button.find('.already-reported').val() != '0') {
+        container.find('.already-reported-container').removeClass('none');
+        container.find('.report-section').addClass('none');
+    } else {
+        container.find('.already-reported-container').addClass('none');
+        container.find('.report-section').removeClass('none');
+
+        // clear all inputs
+        container.find('.report-input').prop('checked', false);
+        container.find('.child-to-be-opened').css('height', '0');
+        $('.resource-report-option').css('background-color', '');
+        $('.report-section-textarea').val('');
+
+        let report_button = container.find('.submit-report');
+        report_button.attr("disabled","disabled");
+        report_button.attr('style', 'background-color: #a6d5ff; cursor: default');
+        report_button.removeClass('blue-background');
+
+        container.find('.reportable-id').val($(this).find('.post-id').val());
+        container.find('.reportable-type').val('post');
+    }
+    // Display report container
+    container.css('opacity', '0');
+    container.removeClass('none');
+
+    container.animate({
+        opacity: 1
+    }, 300);
+});
+// -----------------------------------------------------------------------
 
 $('.close-thread-media-upload-edit').on('click', function() {
     // First we close the error if it is opened

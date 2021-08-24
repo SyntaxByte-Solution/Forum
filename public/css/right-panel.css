@@ -1,6 +1,6 @@
 
 main {
-    padding-right: 320px;
+    padding-right: 310px;
 }
 
 .index-right-panel-container {
@@ -19,7 +19,7 @@ main {
     position: absolute;
     top: 0;
     right: 0px;
-    width: 320px;
+    width: 310px;
     padding: 0;
     background-color: white;
     border-left: 1px solid #d5d5d5;

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Thread, Report};
+use App\Models\{Thread, Post, Report};
 use Illuminate\Validation\Rule;
 
 class ReportController extends Controller
@@ -25,5 +25,24 @@ class ReportController extends Controller
         $report->report_type = $data['report_type'];
 
         $thread->reports()->save($report);
+    }
+
+    public function post_report(Request $request, Post $post) {
+        $this->authorize('post_report', [Report::class, $post->id]);
+        $data = $request->validate([
+            'body'=>'sometimes|max:500|min:10',
+            'report_type'=>Rule::in([
+                'spam', 'rude-or-abusive', 'not-a-reply', 'moderator-intervention'
+            ])
+        ]);
+
+        $report = new Report;
+        $report->user_id = auth()->user()->id;
+        if($request->has('body')) {
+            $report->body = $data['body'];
+        }
+        $report->report_type = $data['report_type'];
+
+        $post->reports()->save($report);
     }
 }

@@ -19,11 +19,10 @@
         </div>
         @endcan
     </div>
-    <div class="show-post-container fs11">
-        <div class="line-separator"></div>
-        {{ __('Reply hidden') }} [<a href="" class="show-post show-post-from-outside-viewer black-link bold">{{ __('click here to show it') }}</a>]
-        <div class="line-separator"></div>
+    <div class="show-post-container fs12 my8 p8" style="border-radius: 6px; border: 1px solid #b9b9b9">
+        {{ __('Reply hidden') }} <a href="" class="show-post show-post-from-outside-viewer blue bold">{{ __('click here to show it') }}</a>
     </div>
+    
     <div class="flex post-main-component relative" style="@if($post->ticked) border-color: #28882678; @endif">
         <div id="{{ $post->id }}" class="absolute" style="top: -65px"></div>
         <div class="vote-section post-vs relative">
@@ -56,7 +55,7 @@
 
             </div>
 
-            <div class="mt8 relative informer-box tick-post-container">
+            <div class="relative informer-box tick-post-container my4">
                 <input type="hidden" value="{{ $post->id }}" class="post-id">
                 <input type="hidden" class="remove-best-reply" value="{{ __('Remove best reply') }}">
                 <input type="hidden" class="mark-best-reply" value="{{ __('Mark this reply as the best reply') }}">
@@ -74,7 +73,7 @@
                 </div>
                 @else
                     @if($post->ticked)
-                    <svg class="size20 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <svg class="size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path class="green-tick" d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/>
                     </svg>
                     @endif
@@ -84,7 +83,7 @@
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe438; @endif">
             <div class="flex align-center space-between p4">
                 <div>
-                    <div class="no-margin fs12" style="max-height: 34px">
+                    <div class="no-margin" style="max-height: 34px">
                         <div class="inline-block relative">
                             <div class="flex">
                                 <div class="relative user-profile-card-box">
@@ -95,13 +94,17 @@
                                     <!-- here we have to check first in the mouse enter if this is the first time the user mouse over the displayer if so wr send a request to fetch the user card and append it here -->
                                 </div>
                                 <div>
-                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold fs13 bblack no-underline">{{ $post->user->username }}</a>
-                                    <div class="flex align-center gray">
-                                        <span class="relative block">
-                                            <span class="tooltip-section">{{ __('replied') }}: {{ $post_date }}</span>
-                                            <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
-                                        </span>
-                                        <span class="@if(!$post->is_updated) none @endif post-updated-date ml4">({{ __('edited') }})</span>
+                                    <a href="{{ $post->user->profilelink }}" class="no-margin bold blue no-underline">{{ $post->user->fullname }}</a>
+                                    <div class="flex align-center fs11">
+                                        <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="fs12 bblack no-underline">{{ $post->user->username }}</a>
+                                        <span class="fs10 gray mx4 unselectable">•</span>
+                                        <div class="flex align-center gray">
+                                            <span class="relative block">
+                                                <span class="tooltip-section">{{ __('replied') }}: {{ $post_date }}</span>
+                                                <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
+                                            </span>
+                                            <span class="@if(!$post->is_updated) none @endif post-updated-date ml4">({{ __('edited') }})</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -135,6 +138,14 @@
                                 </div>
                             </div>
                             @endcan
+                            @if(!(auth()->user()) || auth()->user() && auth()->user()->id != $post->user->id)
+                            <div class="simple-suboption flex align-center @auth open-post-report @endauth @guest login-signin-button @endguest">
+                                <svg class="size17 mr4" style="fill: #242424" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M336.17,80C287,80,242.87,48,174.26,48A221.86,221.86,0,0,0,93.54,63.17,48,48,0,1,0,24,89.56V496a16,16,0,0,0,16,16H56a16,16,0,0,0,16-16V412.56C109.87,395.28,143.26,384,199.83,384c49.13,0,93.3,32,161.91,32,58.48,0,102-22.62,128.55-40A48,48,0,0,0,512,335.86V95.94c0-34.46-35.26-57.77-66.9-44.12C409.19,67.31,371.64,80,336.17,80ZM464,336c-21.78,15.41-60.82,32-102.26,32-59.95,0-102-32-161.91-32-43.36,0-96.38,9.4-127.83,24V128c21.78-15.41,60.82-32,102.26-32,60,0,102,32,161.91,32,43.28,0,96.32-17.37,127.83-32Z"/></svg>
+                                {{ __('Report') }}
+                                <input type="hidden" class="post-id" value="{{ $post->id }}">
+                                <input type="hidden" class="already-reported" value="{{ $post->already_reported }}">
+                            </div>
+                            @endif
                             @can('destroy', $post)
                             <div class="simple-suboption delete-post-button flex align-center">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
@@ -146,30 +157,33 @@
                     </div>
                 </div>
             </div>
-            <div class="simple-line-separator mb4" style="margin-bottom: 0 !important"></div>
-            <div class="post-content px8">
-                {{ $post->parsed_content }}
-            </div>
-            @can('update', $post)
-            <div class="post-edit-container px8 py8 none">
-                <div class="flex align-end space-between mb4">
-                    <p class="fs12 bold no-margin">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
-                    <div class="flex align-center">
-                        <button class="button-style-2 save-edit-post save-edit-post-from-outside-viewer" style="font-size: 12px">
-                            <span class="btn-text">{{ __('Save') }}</span>
-                            <input type="hidden" class="btn-text-ing" value="{{ __('Saving') }}..">
-                            <input type="hidden" class="btn-text-no-ing" value="{{ __('Save') }}">
-                            <input type="hidden" class="message-when-save" value="{{ __('Your reply has been saved successfully') }} !">
-                        </button>
-                        <button class="button-style-2 exit-edit-post ml4" style="font-size: 10px !important">
-                            ✖
-                        </button>
-                    </div>
+            <div class="simple-line-separator" style="margin-bottom: 0 !important; background-color: #b9b9b9"></div>
+            <!-- post content section -->
+            <div style="padding: 10px 10px 11px 14px">
+                <div class="post-content">
+                    {{ $post->parsed_content }}
                 </div>
-                <textarea name="content" class="reply-content" id="post-edit-content-{{ $post->id }}"></textarea>
-                <input type="hidden" class="post_id" value="{{ $post->id }}">
+                @can('update', $post)
+                <div class="post-edit-container px8 py8 none">
+                    <div class="flex align-end space-between mb4">
+                        <p class="fs12 bold no-margin">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
+                        <div class="flex align-center">
+                            <button class="button-style-2 save-edit-post save-edit-post-from-outside-viewer" style="font-size: 12px">
+                                <span class="btn-text">{{ __('Save') }}</span>
+                                <input type="hidden" class="btn-text-ing" value="{{ __('Saving') }}..">
+                                <input type="hidden" class="btn-text-no-ing" value="{{ __('Save') }}">
+                                <input type="hidden" class="message-when-save" value="{{ __('Your reply has been saved successfully') }} !">
+                            </button>
+                            <button class="button-style-2 exit-edit-post ml4" style="font-size: 10px !important">
+                                ✖
+                            </button>
+                        </div>
+                    </div>
+                    <textarea name="content" class="reply-content" id="post-edit-content-{{ $post->id }}"></textarea>
+                    <input type="hidden" class="post_id" value="{{ $post->id }}">
+                </div>
+                @endcan
             </div>
-            @endcan
         </div>
     </div>
 </div>

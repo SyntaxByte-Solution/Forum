@@ -33,9 +33,9 @@
                     <img src="{{ $post->user->sizedavatar(36) }}" class="size36 mr8 rounded" alt="">
                 </a>
                 <div>
-                    <a href="{{ $post->user->profilelink }}" class="no-margin bold blue no-underline">Mouad Nassri</a>
+                    <a href="{{ $post->user->profilelink }}" class="no-margin bold blue no-underline">{{ $post->user->fullname }}</a>
                     <div class="flex align-center">
-                        <p class="no-margin fs12" style="margin-top: 1px">grotto_IV</p>
+                        <p class="no-margin fs12" style="margin-top: 1px">{{ $post->user->username }}</p>
                         <span class="fs10 gray mx4 unselectable">•</span>
                         <span class="relative block" style="padding-bottom: 1px">
                             <span class="tooltip-section fs11 gray">{{ $post->creation_date_humans }}</span>
@@ -95,7 +95,7 @@
                                 <span class="btn-text">{{ __('Save') }}</span>
                                 <input type="hidden" class="btn-text-ing" value="{{ __('Saving') }}..">
                                 <input type="hidden" class="btn-text-no-ing" value="{{ __('Save') }}">
-                                <input type="hidden" class="message-when-save" value="{{ __('Your reply has been saved successfully') }} !">;
+                                <input type="hidden" class="message-when-save" value="{{ __('Your reply has been saved successfully') }} !">
                             </button>
                             <button class="button-style-2 exit-edit-post ml4" style="font-size: 10px !important">
                                 ✖

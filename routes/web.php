@@ -128,6 +128,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/thread/{thread}', [ThreadController::class, 'update']);
     Route::delete('/thread/{thread}', [ThreadController::class, 'delete'])->name('thread.delete');
     Route::post('/thread/{thread}/report', [ReportController::class, 'thread_report']);
+    Route::post('/post/{post}/report', [ReportController::class, 'post_report']);
     Route::post('/thread/{thread}/save', [ThreadController::class, 'thread_save_switch']);
     Route::delete('/thread/{thread}/force', [ThreadController::class, 'destroy'])->name('thread.destroy');
     Route::post('/thread/{thread}/restore', [ThreadController::class, 'restore'])->name('thread.restore');

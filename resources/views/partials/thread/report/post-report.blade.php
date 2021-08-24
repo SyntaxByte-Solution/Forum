@@ -1,22 +1,21 @@
-<div class="report-resource-container thread-report-container none">
+<div class="report-resource-container none" id="post-report-container">
     <input type="hidden" class="reportable-id" value="">
     <input type="hidden" class="reportable-type" value="">
     <div class="close-report-container x-close-container-style" style="top: 12px; right: 12px">
         <span class="x-close">✖</span>
     </div>
-    <div class="@if(!$thread->already_reported) none @endif already-reported-container">
+    <div class="already-reported-container none">
         <div class="flex align-center justify-center move-to-middle">
             <svg class="size17 mr8" style="fill: #1d1d1d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>
-            <h2 class="text-center gray my8">{{ __('You already report this discussion.') }}</h2>
+            <h2 class="text-center gray my8">{{ __('You already report this reply.') }}</h2>
         </div>
-        <p class="text-center my8">{{ __('We have received your report submit and we are going to verify if this discussion respects our guidelines and standards as soon as possible.') }}</p>
+        <p class="text-center my8">{{ __('We have received your report submit and we are going to verify if this reply respects our guidelines and standards as soon as possible.') }}</p>
     </div>
-    @if(!$thread->already_reported)
     <div class="report-section">
         <div style="width: calc(100% - 20px);">
             <div class="flex">
                 <svg class="size17 mr4" style="fill: #1d1d1d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>
-                <h3 class="no-margin mb8">{{ __('I am flagging to report this discussion as') }}... </h3>
+                <h3 class="no-margin mb8">{{ __('I am flagging to report this reply as') }}... </h3>
             </div>
         </div>
         <div>
@@ -35,10 +34,10 @@
                 </div>
             </label>
             <label class="resource-report-option">
-                <input type="radio" name="report" value="low-quality" class="height-max-content report-input">
+                <input type="radio" name="report" value="not-a-reply" class="height-max-content report-input">
                 <div class="ml8">
-                    <p class="bold no-margin">{{__('very low quality')}}</p>
-                    <p class="no-margin gray">{{__('This question has severe formatting or content problems. This discussion is unlikely to be salvageable through editing, and might need to be removed')}}.</p>
+                    <p class="bold no-margin">{{__('not a reply')}}</p>
+                    <p class="no-margin gray">{{__('This was posted as an answer, but it is irrelevent and does not add anything useful to discussion. It should possibly be an edit, a comment, another question, or deleted altogether')}}.</p>
                 </div>
             </label>
             <label class="resource-report-option has-child-to-be-opened">
@@ -58,15 +57,13 @@
                 </div>
             </label>
         </div>
-        <p class="fs12 my8">{{__('Please check carefully your report before submit it, because inappropriate or random reports could lead')}} <strong>{{__('your account to be banned')}}</strong> !</p>
+        <p class="fs12 my8">{{__('Please check carefully your report before submit it, because inappropriate or random reports could lead your account to')}} <strong>{{__('permanent BAN')}}</strong> !</p>
         <div class="flex align-center">
-            <input type="button" class="submit-thread-report button-style mr8" value="{{ __('Submit') }}" disabled style="background-color: #a6d5ff; cursor: default">
+            <input type="button" class="submit-report button-style mr8" value="{{ __('Submit') }}" disabled style="background-color: #a6d5ff; cursor: default">
             <input type="hidden" class="button-no-ing-text" value="{{ __('Submit') }}">
             <input type="hidden" class="button-ing-text" value="{{ __('Submitting ..') }}">
             <input type="hidden" class="reported-text" value="{{ __('Your report has been sent successfully.') }}">
-            <input type="hidden" class="button-no-ing-text">
             <div class="pointer close-report-container link-path">{{ __('Cancel') }}</div>
         </div>
     </div>
-    @endif
 </div>

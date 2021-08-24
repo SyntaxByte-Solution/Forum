@@ -29,7 +29,7 @@ class ThreadController extends Controller
                 'view_count'=>$thread->view_count+1
             ]);
         }
-        $pagesize = 6;
+        $pagesize = 10;
         $pagesize_exists = false;
         
         if(request()->has('pagesize')) {

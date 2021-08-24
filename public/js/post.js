@@ -272,6 +272,8 @@ function handle_delete_post(post) {
                     $('.thread-replies-counter').text(new_replies_counter);
                     // Remove the reply from thread viewer if it's already opened
                     if(last_opened_thread) {
+                        // Update counter in viewer
+                        $('.viewer-thread-replies-number').text(new_replies_counter);
                         let reply;
                         $('.viewer-thread-reply').each(function() {
                             if($(this).find('.post-id').first().val() == pid) {
@@ -285,9 +287,11 @@ function handle_delete_post(post) {
                 } else if(button.hasClass('delete-from-viewer')) {
                     new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)-1;
                     $('.viewer-thread-replies-number').text(new_replies_counter);
-
                     let reply;
                     if($('.page').length && $('.page').val() == "thread-show") {
+                        // Update counter in thread show page
+                        $('.thread-replies-counter').text(new_replies_counter);
+                        
                         $('#replies-container .post-container').each(function() {
                             if($(this).find('.post-id').first().val() == pid) {
                                 reply = $(this);
@@ -306,6 +310,9 @@ function handle_delete_post(post) {
                 button.find('btn-text').text(btn_text_no_ing);
                 button.attr("disabled","");
                 button.attr("style","");
+            },
+            complete: function() {
+                delete_lock = true;
             }
         });
 

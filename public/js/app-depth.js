@@ -3783,6 +3783,13 @@ $('.submit-report').on('click', function() {
             }, 400);
             basic_notification_show(button.parent().find('.reported-text').val(), 'basic-notification-round-tick');
         },
+        error: function(response) {
+            report_container.addClass('none');
+            let errorObject = JSON.parse(response.responseText);
+            let er = errorObject.message;
+
+            display_top_informer_message(er, 'error');
+        },
         complete: function() {
             button.val(button_text_no_ing);
             button.attr("disabled",false);
@@ -4285,16 +4292,29 @@ $('.thread-add-display-toggler').on('click', function() {
 });
 
 let top_informer_timeout;
-function display_top_informer_message(message) {
+function display_top_informer_message(message, type="normal") {
     let informer_box = $('.top-informer-box');
+    let informer_container = informer_box.find('.top-informer-container');
     informer_box.removeClass('none');
     informer_box.find('.top-informer-text').text(message);
 
-    // This timeout will wait for 5 sec before close the message
+    switch(type) {
+        case 'normal':
+            break;
+        case 'error':
+            informer_container.css('border-color', '#ff9696');
+            informer_container.css('box-shadow', '0px 0px 6px 0px #ffd4d4');
+            informer_container.find('.top-informer-text').css('color', 'rgb(198, 43, 43)');
+            informer_container.find('.tiei-icon').addClass('none');
+            informer_container.find('.top-informer-error-icon').removeClass('none');
+            break;
+    }
+    
+    // This timeout will wait for 6 sec before close the message
     top_informer_timeout = setTimeout(function() {
         informer_box.addClass('none');
         informer_box.find('.top-informer-text').text('');
-   }, 4000);
+   }, 6000);
 }
 
 $('.remove-top-informer-container').on('click', function() {

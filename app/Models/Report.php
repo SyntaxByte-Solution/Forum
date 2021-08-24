@@ -15,4 +15,8 @@ class Report extends Model
     {
         return $this->morphTo();
     }
+    
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>=', today());
+    }
 }

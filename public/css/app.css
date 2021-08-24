@@ -2985,16 +2985,16 @@ a, input, textarea {
 }
 
 .top-informer-container {
-    padding: 10px 36px 10px 10px;
+    padding: 13px 36px 13px 12px;
     background-color: #fafdff;
     position: fixed;
     display: flex;
     top: 70px;
     z-index: 2000;
     width: 600px;
-    border: 1px solid #5eb6ea;
+    border: 1px solid #919191;
     border-radius: 5px;
-    box-shadow: 1px 1px 4px 0px #aee1ff78;
+    box-shadow: 0px 0px 6px 0px #a6a6a659;
 }
 
 .top-informer-text {
@@ -3003,7 +3003,7 @@ a, input, textarea {
     align-items: center;
     font-size: 13px;
     font-weight: bold;
-    color: #254d8c;
+    color: #242424;
 }
 
 .x-close-style {
@@ -3012,15 +3012,15 @@ a, input, textarea {
     top: 10px;
     right: 10px;
     cursor: pointer;
-    border: 2px solid #417795;
+    border: 2px solid #646464;
     border-radius: 4px;
     padding: 4px;
 }
 
 .x-close-style:hover {
-    background-color: #def4ff;
+    background-color: #dfdfdf;
 }
 
 .x-close-style svg {
-    fill: #203a48;
+    fill: #222;
 }

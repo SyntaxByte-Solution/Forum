@@ -77,21 +77,21 @@
             </div>
         </div>
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe438; @endif">
-            <div class="flex align-center space-between px8 py8">
+            <div class="flex align-center space-between p4">
                 <div>
-                    <div class="no-margin fs12">
+                    <div class="no-margin fs12" style="max-height: 34px">
                         <div class="inline-block relative">
                             <div class="flex">
                                 <div class="relative user-profile-card-box">
                                     <input type="hidden" class="user-card-container-index"> <!-- value will be initialized at run time by js, to identify each container with incremented index (go to depth.js file) -->
-                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="user-profile-card-displayer flex">
-                                        <img src="{{ $post->user->sizedavatar(36) }}" class="size28 mr4 rounded" alt="">
+                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="user-profile-card-displayer block">
+                                        <img src="{{ $post->user->sizedavatar(36) }}" class="size34 mr4 rounded" alt="">
                                     </a>
-                                    @include('partials.user-profile-card', ['user'=>$post->user])
+                                    <!-- here we have to check first in the mouse enter if this is the first time the user mouse over the displayer if so wr send a request to fetch the user card and append it here -->
                                 </div>
                                 <div>
-                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold link-path">{{ $post->user->username }}</a>
-                                    <div class="flex align-center">
+                                    <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="bold fs13 bblack no-underline">{{ $post->user->username }}</a>
+                                    <div class="flex align-center gray">
                                         <span class="relative block">
                                             <span class="tooltip-section">{{ __('replied') }}: {{ $post_date }}</span>
                                             <span class="tooltip tooltip-style-1">{{ $post_created_at }}</span>
@@ -140,17 +140,24 @@
                     </div>
                 </div>
             </div>
-            <div class="simple-line-separator mb4"></div>
+            <div class="simple-line-separator mb4" style="margin-bottom: 0 !important"></div>
             <div class="post-content px8">
                 {{ $post->parsed_content }}
             </div>
             @can('update', $post)
             <div class="post-edit-container px8 py8 none">
-                <div class="flex align-center space-between">
-                    <p class="fs12 bold my8">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
+                <div class="flex align-end space-between mb4">
+                    <p class="fs12 bold no-margin">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
                     <div class="flex align-center">
-                        <a href="" class="simple-white-button save-edit-post" style="background-color: #a8d8ff">{{ __('Save') }}</a>
-                        <a href="" class="simple-white-button exit-edit-post ml4">✖</a>
+                        <button class="button-style-2 save-edit-post save-edit-post-from-outside-viewer" style="font-size: 12px">
+                            <span class="btn-text">{{ __('Save') }}</span>
+                            <input type="hidden" class="btn-text-ing" value="{{ __('Saving') }}..">
+                            <input type="hidden" class="btn-text-no-ing" value="{{ __('Save') }}">
+                            <input type="hidden" class="message-when-save" value="{{ __('Your reply has been saved successfully') }} !">
+                        </button>
+                        <button class="button-style-2 exit-edit-post ml4" style="font-size: 10px !important">
+                            ✖
+                        </button>
                     </div>
                 </div>
                 <textarea name="content" class="reply-content" id="post-edit-content-{{ $post->id }}"></textarea>

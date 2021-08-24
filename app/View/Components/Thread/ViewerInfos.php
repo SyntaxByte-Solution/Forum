@@ -28,6 +28,8 @@ class ViewerInfos extends Component
         $this->posts__turn_off_switch = ($thread->replies_off) ? 'on' : 'off';
         $switch = ($thread->replies_off) ? 0 : 1;
 
+        $thread->update(['view_count'=>$thread->view_count+1]);
+
         if(Auth::check()) {
             $this->followed = (bool)Follow::where('follower', auth()->user()->id)
             ->where('followable_id', $thread->user->id)

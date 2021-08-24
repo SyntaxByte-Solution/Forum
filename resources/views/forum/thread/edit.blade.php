@@ -67,6 +67,7 @@
                                         <input type="hidden" class="icon-path-when-selected" value="M412.45,245.72a26.43,26.43,0,0,0-19.42-8H383.9V182.91q0-52.53-37.68-90.22T256,55q-52.55,0-90.22,37.69t-37.69,90.22v54.82H119a27.28,27.28,0,0,0-27.41,27.41V429.59A27.28,27.28,0,0,0,119,457H393a27.28,27.28,0,0,0,27.41-27.41V265.14A26.4,26.4,0,0,0,412.45,245.72Zm-83.36-8H182.91V182.91q0-30.27,21.41-51.68T256,109.82q30.27,0,51.68,21.41t21.41,51.68Z">
                                         <div class="loading-dots-anim ml4 none">•</div>
                                     </div>
+                                    <input type="hidden" class="message-after-change" value="{{ __('Your discussion visibility has been changed successfully') }}.">
                                     <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                                 </div>
                             </div>
@@ -242,4 +243,7 @@
     <div id="right-panel">
         @include('partials.right-panels.forum-guidelines-panel-section')
     </div>
+    <script type="module" defer>
+        handle_thread_visibility_switch($('.visibility-box'));
+    </script>
 @endsection

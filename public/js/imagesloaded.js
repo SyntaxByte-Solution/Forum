@@ -557,10 +557,9 @@ function handle_thread_media_one_item(medias_container) {
      * which is the same as full width
      */
     if(media_type == 'image') {
-      media_container.imagesLoaded(function() {
-        if(media.height() > media_container.height() && media.height() < media.width()) {
-          console.log('process');
-          let min_height = media_container.width();
+      media.on('load', function() {
+        let min_height = media_container.width();
+        if(media.height() > min_height && media.height() < media.width()) {
           let container_height = media_container.height();
   
           while(container_height > min_height && media.width() > media_container.width()) {

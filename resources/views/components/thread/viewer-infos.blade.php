@@ -83,6 +83,16 @@
     </div>
     <div class="thread-media-viewer-infos-content">
         <div class="px8 py8">
+            <div class="flex align-center mb8">
+                <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    {!! $thread->forum()->icon !!}
+                </svg>
+                <div class="flex align-center">
+                    <a href="{{ route('forum.all.threads', ['forum'=>$thread->forum()->slug]) }}" class="fs11 black-link">{{ $thread->forum()->forum }}</a>
+                    <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+                    <a href="{{ route('category.threads', ['forum'=>$thread->forum()->slug,'category'=>$thread->category->slug]) }}" class="fs11 black-link">{{ $thread->category->category }}</a>
+                </div>
+            </div>
             <div class="expand-box mb8">
                 <span><a href="{{ $thread->link }}" class="expandable-text bold fs20 blue no-underline my4">{{ $thread->mediumslice }}</a></span>
                 @if($thread->mediumslice != $thread->subject)
@@ -180,7 +190,7 @@
             </script>
             <style>
                 .thread-media-viewer-infos-content .editor-toolbar {
-                    background-color: #f1f9ff;
+                    background-color: #f4f4f4;
                 }
                 .thread-media-viewer-infos-content .fa-arrows-alt, .thread-media-viewer-infos-content .fa-columns {
                     display: none !important;
@@ -214,7 +224,7 @@
                     align-items: center;
                 }
                 .thread-media-viewer-infos-content .editor-statusbar {
-                    border-radius: 0px !important;
+                    display: none !important;
                 }
                 
                 .viewer-thread-reply .CodeMirror {
@@ -231,8 +241,8 @@
             </style>
         </div>
         @endauth
-        <p id="viewer-replies-site" class="my4 py4 ml8 fs15 bold viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</p>
-        <div class="mx8">
+        <div id="viewer-replies-site" class="forum-color bold mt8 ml8 viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</div>
+        <div class="mx8" style="margin-bottom: 12px">
             <div class="viewer-replies-container mt8" id="viewer-replies-box">
             @if($thread->posts->count())
                 @if($ticked = $thread->tickedPost())
@@ -253,16 +263,4 @@
             </div>
         </div>
     </div>
-    <script>
-        // $('#viewer-replies-box textarea').each(function() {
-        //     var simplemde = new SimpleMDE({
-        //         element: this,
-        //         placeholder: "{{ __('Edit Your reply') }}",
-        //         hideIcons: ["guide", "heading", "link", "image"],
-        //         spellChecker: false,
-        //         status: false,
-        //     });
-        //     simplemde.render();
-        // });
-    </script>
 </div>

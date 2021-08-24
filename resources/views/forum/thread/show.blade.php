@@ -32,7 +32,7 @@
         <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }}</a>
     </div>
-    <div id="middle-container" class="middle-padding-1" style="width: 70%; margin: 0 auto;">
+    <div id="middle-container" class="index-middle-width" style="margin-bottom: 50px">
         <input type="hidden" class="page" value="thread-show">
         <div class="flex">
             <div class="full-width">
@@ -49,60 +49,28 @@
                                 <div class="relative">
                                     <span class="absolute" id="reply-site" style="margin-top: -70px"></span>
                                 </div>
-                                <label for="reply-content" class="flex bold fs16">
+                                <label for="reply-content" class="flex bblack bold fs16">
                                     {{__('Your reply')}} 
                                     <span class="error frt-error reply-content-error">  *</span>
                                 </label>
                             </div>
                             <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
                             <textarea name="subject" class="reply-content" id="post-reply"></textarea>
-                            <style>
-                                .CodeMirror,
-                                .CodeMirror-scroll {
-                                    max-height: 120px;
-                                    min-height: 120px;
-                                    border-color: #dbdbdb;
-                                }
-                                .CodeMirror-scroll:focus {
-                                    border-color: #64ceff;
-                                    box-shadow: 0 0 0px 3px #def2ff;
-                                }
-                                .editor-toolbar {
-                                    padding: 0 4px;
-                                    opacity: 0.8;
-                                    height: 38px;
-                                    border-top-color: #dbdbdb;
-
-                                    display: flex;
-                                    align-items: center;
-                                }
-                                .editor-toolbar .fa-arrows-alt {
-                                    margin-left: auto;
-                                }
-                                .editor-statusbar {
-                                    border-radius: 0px;
-                                }
-
-                                .fa-question-circle, .fa-link, .fa-picture-o, .fa-link {
-                                    display: none !important;
-                                }
-
-                                .share-post-form .separator:nth-of-type(2) {
-                                    display: none !important;
-                                }
-                            </style>
                         </div>
                         <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
-                        <input type='button' class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest" value="Post your reply">
+                        <button class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest">
+                            <span class="btn-text">{{__('Post your reply')}}</span>
+                            <input type="hidden" class="btn-text-no-ing" autocomplete="off" value="{{ __('Post your reply') }}">
+                            <input type="hidden" class="btn-text-ing" autocomplete="off" value="{{ __('Posting your reply') }}..">
+                        </button>
+
                     </div>
                 </div>
                 @endif
                 
                 <div class="flex space-between align-end replies_header_after_thread @if(!$tickedPost && $posts->count() == 0) none @endif" id="thread-show-replies-section">
-                    <p class="bold fs20" style="margin-top: 30px"><span class="thread-replies-number thread-replies-counter">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
-                    <div>
-                        {{ $posts->onEachSide(0)->links() }}
-                    </div>
+                    <p class="bold forum-color fs20" style="margin: 30px 0 0 0"><span class="thread-replies-number thread-replies-counter">@if($tickedPost) {{ $posts->total() + 1 }} @else {{ $posts->total() }} @endif</span> Replies</p>
+                    {{ $posts->onEachSide(0)->links() }}
                 </div>
                 <div id="replies-container" style="margin-bottom: 30px">
                     @if($tickedPost)
@@ -124,11 +92,39 @@
                         var simplemde = new SimpleMDE({
                             element: this,
                             placeholder: "{{ __('Your reply here') }}",
+                            hideIcons: ["guide", "heading", "link", "image"],
                             spellChecker: false,
+                            showMarkdownLineBreaks: true,
                         });
                         simplemde.render();
                     });
                 </script>
+                <style>
+                    .CodeMirror,
+                    .CodeMirror-scroll {
+                        max-height: 120px;
+                        min-height: 120px;
+                        border-color: #dbdbdb;
+                    }
+                    .CodeMirror-scroll:focus {
+                        border-color: #64ceff;
+                        box-shadow: 0 0 0px 3px #def2ff;
+                    }
+                    .editor-toolbar {
+                        padding: 0 4px;
+                        opacity: 0.8;
+                        height: 38px;
+                        border-top-color: #dbdbdb;
+                        background-color: #f2f2f2;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .editor-toolbar .fa-arrows-alt, .editor-toolbar .fa-columns, 
+                    .fa-question-circle, .fa-link, .fa-picture-o, .fa-link,
+                    .share-post-form .separator:nth-of-type(2), .editor-statusbar {
+                        display: none !important;
+                    }
+                </style>
             </div>
         </div>
     </div>

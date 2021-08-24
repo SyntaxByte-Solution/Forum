@@ -64,6 +64,7 @@ function handle_edit_post(post) {
                     $codemirror.getDoc().setValue(post_content);
                 } else if(edit_button.hasClass('edit-post-from-outside-viewer')) {
                     $('.post-content').css('display', 'block');
+                    $('.post-content').removeClass('none');
                     $('.post-edit-container').css('display', 'none');
                 
                     edit_button.parent().css('display', 'none');
@@ -88,7 +89,11 @@ function handle_edit_post(post) {
 
 function handle_save_edit_post(post) {
     post.find('.save-edit-post').click(function() {
+        let exit_button = $(this).parent().find('.exit-edit-post');
         let btn = $(this);
+
+        let btn_ing = btn.find('.btn-text-ing').val();
+        let btn_no_ing = btn.find('.btn-text-no-ing').val();
         let error = post.find('.post-edit-container .error');
 
         const $codemirror = $(post).find('.reply-content').nextAll('.CodeMirror')[0].CodeMirror;
@@ -101,9 +106,13 @@ function handle_save_edit_post(post) {
             post.find('.post-edit-container').css('display', 'none');
             post.find('.post-content').removeClass('none');
         } else {
+            // Disable buttons
             btn.attr("disabled","disabled");
-            btn.text('Saving Changes ..');
-            btn.attr('style', 'background-color: #acacac; cursor: default');
+            btn.find('btn-text').text(btn_ing);
+            btn.attr('style', 'background-color: #dfdfdf; cursor: not-allowed');
+
+            exit_button.attr("disabled","disabled");
+            exit_button.attr('style', 'cursor: not-allowed');
 
             let post_id = post.find('.post-id').first().val();
             
@@ -121,7 +130,8 @@ function handle_save_edit_post(post) {
                         type: 'get',
                         url: `/post/${post_id}/content/parsed/fetch`,
                         success: function(post_content) {
-                            btn.text('Save Changes');
+                            basic_notification_show(btn.find('.message-when-save').val(), 'basic-notification-round-tick');
+                            btn.find('btn-text').text(btn_no_ing);
                             btn.attr('style', '');
                             btn.prop("disabled", false);
                             post.find('.post-content').html(post_content);
@@ -130,14 +140,46 @@ function handle_save_edit_post(post) {
                             post.find('.post-content').removeClass('none');
         
                             post.find('.post-updated-date').removeClass('none');
+                            $codemirror.options.readOnly = false;
+
+                            if(btn.hasClass('save-edit-post-from-outside-viewer')) {
+                                if(last_opened_thread) {
+                                    let reply;
+                                    $('.viewer-thread-reply').each(function() {
+                                        if($(this).find('.post-id').first().val() == post_id) {
+                                            reply = $(this);
+                                            return false;
+                                        }
+                                    });
+    
+                                    // Take the whole post content html (result of markdown parse) and past it to viewer reply content
+                                    reply.find('.thread-viewer-reply-content').html(post.find('.post-content').html());
+                                }
+                            } else if(btn.hasClass('save-edit-post-from-viewer')) {
+                                let reply;
+                                if($('.page').length && $('.page').val() == "thread-show") {
+                                    $('#replies-container .post-container').each(function() {
+                                        if($(this).find('.post-id').first().val() == post_id) {
+                                            reply = $(this);
+                                            return false;
+                                        }
+                                    });
+                                }
+
+                                reply.find('.post-content').html(post.find('.thread-viewer-reply-content').html());
+                            }
+                        },
+                        complete: function() {
+                            btn.text(btn_no_ing);
+                            btn.attr('style', '');
+                            btn.prop("disabled", false);
+
+                            exit_button.attr("disabled",false);
+                            exit_button.attr('style', '');
                         }
                     })
                 },
                 error: function(response) {
-                    btn.text('Save Changes');
-                    btn.attr('style', '');
-                    btn.prop("disabled", false);
-
                     // Here we get the errors of the response as an object
                     let errors = JSON.parse(response.responseText).errors;
 
@@ -146,7 +188,7 @@ function handle_save_edit_post(post) {
                     // strings. In this case we only need the first error of the first validation
                     let er = errors[Object.keys(errors)[0]][0];
                     error.text('*' + er);
-                }
+                },
             });
         }
 
@@ -278,8 +320,8 @@ $('.post-container').each(function() {
 
 $('.share-post').on('click', function() {
     let btn = $(this);
-    $(this).attr("disabled","disabled");
-    $(this).attr('style', 'background-color: #acacac; cursor: default');
+    let btn_text_no_ing = btn.find('.btn-text-no-ing').val();
+    let btn_text_ing = btn.find('.btn-text-ing').val();
     
     const $codemirror = $('#post-reply').nextAll('.CodeMirror')[0].CodeMirror;
     let post_content = $codemirror.getDoc().getValue();
@@ -293,19 +335,19 @@ $('.share-post').on('click', function() {
     if(post_content == "") {
         $('#global-error').text('Reply field is required');
         $('#global-error').css('display', 'flex');
-        $(this).prop("disabled", false);
-        $(this).attr('style', '');
         location.hash = "#reply-site";
     } else if(post_content.length < 2) {
         $('#global-error').text('Reply should have at least 2 characters');
         $('#global-error').css('display', 'flex');
-        $(this).attr('style', '');
-        $(this).prop("disabled", false);
         location.hash = "#reply-site";
     }
     else {
-        $(this).val('Posting your reply ..');
         form.find('#global-error').css('display', 'none');
+        
+        btn.find('.btn-text').text(btn_text_ing);
+        $(this).attr("disabled","disabled");
+        $(this).attr('style', 'background-color: #acacac; cursor: default');
+        
         data.content = post_content;
         $.ajax({
             type: 'post',
@@ -322,17 +364,11 @@ $('.share-post').on('click', function() {
                     $('#replies-container').prepend(response);
                     pst = $('#replies-container .resource-container').first();
                 }
-                btn.val('Post your reply');
+                $codemirror.getDoc().setValue('');
+                btn.find('.btn-text').text(btn_text_no_ing);
                 btn.prop("disabled", false);
                 btn.attr('style', '');
-                $codemirror.getDoc().setValue('');
 
-                pst.find('textarea').each(function() {
-                    var sm = new SimpleMDE({
-                        element: this,
-                    });
-                    sm.render();
-                })
                 // Handling all events of the newly appended reply
                 handle_post_events(pst);
                 handle_post_other_events(pst);
@@ -353,8 +389,10 @@ $('.share-post').on('click', function() {
                                 $('.viewer-replies-container').prepend(post);
                                 pst = $('.viewer-replies-container .viewer-thread-reply').first();
                             }
+                            // Handling all events of the newly appended component
+                            handle_post_events(pst);
+                            handle_post_other_events(pst);
                             handle_resource_like(pst.find('.like-resource'));
-                            handle_tooltip(pst.find('.tooltip-section'));
                             let new_replies_counter = parseInt($('.viewer-thread-replies-number').first().text(), 10)+1;
                             $('.viewer-thread-replies-number').text(new_replies_counter);
                         }
@@ -380,7 +418,7 @@ $('.share-post').on('click', function() {
                 }
                 $('#global-error').text(error);
                 $('#global-error').css('display', 'block');
-                btn.val('Post your reply');
+                btn.val(btn_text_no_ing);
                 btn.prop("disabled", false);
                 btn.attr('style', '');
                 location.hash = "#reply-site";

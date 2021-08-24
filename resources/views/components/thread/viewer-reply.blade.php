@@ -41,10 +41,10 @@
                     </div>
                 </div>
             </div>
-            <div class="flex align-center">
-                <p class="best-reply-ticket unselectable @if(!$post->ticked) none @endif" style="margin-right: 4px; padding: 6px; font-size: 11px">{{ __('BEST REPLY') }}</p>
-                <div class="relative">
-                    <svg class="pointer button-with-suboptions size20 mr4" style="margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
+            <div class="flex">
+                <p class="best-reply-ticket unselectable height-max-content @if(!$post->ticked) none @endif" style="margin-right: 4px; padding: 6px; font-size: 11px">{{ __('BEST REPLY') }}</p>
+                <div class="relative size17">
+                    <svg class="pointer button-with-suboptions size17 mr4" style="margin-top: 2px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
                     <div class="suboptions-container suboptions-container-right-style">
                         <div class="simple-suboption pointer hide-post hide-post-from-viewer flex align-center">
                             <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490.03 490.03"><path d="M435.67,54.31a18,18,0,0,0-25.5,0l-64,64c-79.3-36-163.9-27.2-244.6,25.5C41.47,183,5,232.31,3.47,234.41a18.16,18.16,0,0,0,.5,22c34.2,42,70,74.7,106.6,97.5l-56.3,56.3a18,18,0,1,0,25.4,25.5l356-355.9A18.11,18.11,0,0,0,435.67,54.31ZM200.47,264a46.82,46.82,0,0,1-3.9-19,48.47,48.47,0,0,1,67.5-44.6Zm90.2-90.1a84.37,84.37,0,0,0-116.6,116.6L137,327.61c-32.5-18.8-64.5-46.6-95.6-82.9,13.3-15.6,41.4-45.7,79.9-70.8,66.6-43.4,132.9-52.8,197.5-28.1Zm195.4,59.7c-24.7-30.4-50.3-56-76.3-76.3a18.05,18.05,0,1,0-22.3,28.4c20.6,16.1,41.2,36.1,61.2,59.5a394.59,394.59,0,0,1-66,61.3c-60.1,43.7-120.8,59.5-180.3,46.9a18,18,0,0,0-7.4,35.2,224.08,224.08,0,0,0,46.8,4.9,237.92,237.92,0,0,0,71.1-11.1c31.1-9.7,62-25.7,91.9-47.5,50.4-36.9,80.5-77.6,81.8-79.3A18.16,18.16,0,0,0,486.07,233.61Z"/></svg>
@@ -84,11 +84,18 @@
                 </div>
                 @can('update', $post)
                 <div class="post-edit-container px8 py8 none">
-                    <div class="flex align-center space-between">
-                        <p class="fs12 bold my8">{{ __('Edit your reply') }} <span class="error fs13"></span></p>
+                    <div class="flex align-center space-between mb4">
+                        <p class="fs12 bold no-margin">{{ __('Edit your reply') }} <span class="error fs13"></span></p>
                         <div class="flex align-center">
-                            <a href="" class="simple-white-button save-edit-post" style="background-color: #a8d8ff">{{ __('Save') }}</a>
-                            <a href="" class="simple-white-button exit-edit-post ml4">✖</a>
+                            <button class="button-style-2 save-edit-post save-edit-post-from-viewer" style="font-size: 12px">
+                                <span class="btn-text">{{ __('Save') }}</span>
+                                <input type="hidden" class="btn-text-ing" value="{{ __('Saving') }}..">
+                                <input type="hidden" class="btn-text-no-ing" value="{{ __('Save') }}">
+                                <input type="hidden" class="message-when-save" value="{{ __('Your reply has been saved successfully') }} !">;
+                            </button>
+                            <button class="button-style-2 exit-edit-post ml4" style="font-size: 10px !important">
+                                ✖
+                            </button>
                         </div>
                     </div>
                     <textarea name="content" class="reply-content" id="post-edit-content-{{ $post->id }}"></textarea>

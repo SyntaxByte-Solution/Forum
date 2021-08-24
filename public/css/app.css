@@ -649,6 +649,10 @@ a, input, textarea {
     color: black;
 }
 
+.bblack {
+    color: rgb(12, 12, 12);
+}
+
 .small-dropdown {
     font-size: 12px;   
     padding: 2px;
@@ -2382,7 +2386,6 @@ a, input, textarea {
 
 .thread-add-posted-to {
     padding: 6px;
-    background-color: rgba(172, 201, 240, 0.31);
     border-radius: 4px;
 }
 

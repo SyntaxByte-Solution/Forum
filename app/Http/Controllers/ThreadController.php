@@ -224,7 +224,7 @@ class ThreadController extends Controller
             $category = Category::find($data['category_id'])->slug;
 
             $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-            return response()->json(['error' => '* ' . __("This title is already exists in your threads list") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>) , " . __("please choose another one or delete/edit the previous one!")], 422);
+            return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " ( <a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>discussion</a> ), " . __("please choose another title or edit the old one")], 422);
         }
 
         // Verify category by preventing normal user to post on announcements

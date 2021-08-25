@@ -2247,6 +2247,8 @@ $('.thread-add-share').on('click', function(event) {
     form_data.append('content' ,$codemirror.getValue());
 
     let button = $(this);
+    let btn_text_ing = button.parent().find('.message-ing').val();
+    let btn_text_no_ing = button.parent().find('.message-no-ing').val();
     let container = $(this);
     while(!container.hasClass('thread-add-container')) {
         container = container.parent();
@@ -2254,6 +2256,7 @@ $('.thread-add-share').on('click', function(event) {
 
     if(form_data.get('subject') == '') {
         $('#subject').parent().find('.error').removeClass('none');
+        display_top_informer_message($('#subject').parent().find('.required-text').val(), 'error');
         container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
         container.find('.thread-add-error-container').removeClass('none');
         return;
@@ -2265,6 +2268,7 @@ $('.thread-add-share').on('click', function(event) {
 
     if(form_data.get('content') == '') {
         $('#content').parent().find('.error').removeClass('none');
+        display_top_informer_message($('#content').parent().find('.required-text').val(), 'error');
         container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
         container.find('.thread-add-error-container').removeClass('none');
         return;
@@ -2273,6 +2277,7 @@ $('.thread-add-share').on('click', function(event) {
         container.find('.thread-add-error-container').addClass('none');
     }
 
+    let has_upload = false;
     // Checking images existence in the thread
     /**
      * Update: instead of directly append files to form data, we take first the old filename and extract the extension
@@ -2280,6 +2285,7 @@ $('.thread-add-share').on('click', function(event) {
      * when saving those files
      */
     if(uploaded_thread_images_assets.length) {
+        has_upload = true;
         // Append image files
         for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
             // First filename
@@ -2293,6 +2299,7 @@ $('.thread-add-share').on('click', function(event) {
     }
     // Checking videos existence in the thread
     if(uploaded_thread_videos_assets.length) {
+        has_upload = true;
         // Append videos files
         for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
             // First filename
@@ -2308,10 +2315,40 @@ $('.thread-add-share').on('click', function(event) {
     $('#subject').attr('disabled', 'disabled');
     $codemirror.setOption('readOnly', 'nocursor');
 
-    button.val(button.parent().find('.message-ing').val());
+    button.text(btn_text_ing);
     button.attr("disabled","disabled");
     button.attr('style', 'background-color: #acacac; cursor: default');
     $.ajax({
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+        
+            if(has_upload) {
+                let progress_bar_box = container.find('.progress-bar-box');
+                let progress_bar = progress_bar_box.find('.progress-bar');
+                progress_bar_box.removeClass('none');
+
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = evt.loaded / evt.total;
+                        percentComplete = parseInt(percentComplete * 100);
+                        progress_bar.css('width', percentComplete+"%");
+                        progress_bar_box.find('.progress-bar-percentage-counter').text(percentComplete);
+                        if(percentComplete >= 50) {
+                            progress_bar_box.find('.progress-bar-percentage').css('color', 'white');
+                        }
+                        console.log(percentComplete);
+                
+                        if (percentComplete === 100) {
+                            if(progress_bar_box.find('.text-above-progress-bar').length) {
+                                progress_bar_box.find('.text-above-progress-bar').text(progress_bar_box.find('.upload-finish-text').val());
+                            }
+                        }
+                    }
+                }, false);
+            }
+        
+            return xhr;
+        },
         url: '/thread',
         type: 'post',
         enctype: 'multipart/form-data',
@@ -2326,7 +2363,6 @@ $('.thread-add-share').on('click', function(event) {
                     type: 'get',
                     success: function(thread) {
                         $('.thread-add-uploaded-media').slice(1).remove();
-                        
                         // Clear thread add component inputs
                         $('.uploaded-images-counter').val('0');
                         $('.uploaded-videos-counter').val('0');
@@ -2340,9 +2376,9 @@ $('.thread-add-share').on('click', function(event) {
                         uploaded_thread_videos_assets = [];
                         uploaded_thread_media_counter = 0;
 
-                        button.val(button.parent().find('.message-no-ing').val());
+                        button.text(btn_text_no_ing);
+                        button.attr("disabled",false);
                         button.attr('style', '');
-                        button.prop("disabled", false);
 
                         $('#threads-global-container').prepend(thread);
 
@@ -2358,20 +2394,35 @@ $('.thread-add-share').on('click', function(event) {
             }
         },
         error: function(response) {
-            // let er;
-            // let error = JSON.parse(response.responseText).error;
-            // if(error) {
-            //     er = JSON.parse(response.responseText).error;
-            // } else {
-            //     let errorObject = JSON.parse(response.responseText).errors;
-            //     er = errorObject[Object.keys(errorObject)[0]][0];
-            // }
+            let er;
+            let error = JSON.parse(response.responseText).error;
+            if(error) {
+                er = JSON.parse(response.responseText).error;
+            } else {
+                let errorObject = JSON.parse(response.responseText).errors;
+                er = errorObject[Object.keys(errorObject)[0]][0];
+            }
 
-            // container.find('.thread-add-error').removeClass('none');
-            // container.find('.thread-add-error').html(er);
+            container.find('.thread-add-error-container').removeClass('none');
+            container.find('.thread-add-error').html(er);
+
+            $('#subject').attr('disabled', false);
+            $codemirror.setOption('readOnly', false);
+
+            button.text(btn_text_no_ing);
+            button.attr("disabled",false);
+            button.attr('style', '');
         },
         complete: function(response) {
-            
+            if(has_upload) {
+                let progress_bar_box = container.find('.progress-bar-box');
+                let progress_bar = progress_bar_box.find('.progress-bar');
+
+                progress_bar_box.addClass('none');
+                progress_bar_box.find('.text-above-progress-bar').text(progress_bar_box.find('.uploading-text').val());
+                progress_bar_box.find('.progress-bar-percentage').css('color', 'black');
+                progress_bar.css('width', '0%');
+            }
         }
     });
     
@@ -4304,7 +4355,8 @@ function display_top_informer_message(message, type="normal") {
         case 'error':
             informer_container.css('border-color', '#ff9696');
             informer_container.css('box-shadow', '0px 0px 6px 0px #ffd4d4');
-            informer_container.find('.top-informer-text').css('color', 'rgb(198, 43, 43)');
+            informer_container.css('background-color', 'rgb(255, 237, 237)');
+            informer_container.find('.top-informer-text').css('color', 'rgb(104, 28, 28)');
             informer_container.find('.tiei-icon').addClass('none');
             informer_container.find('.top-informer-error-icon').removeClass('none');
             break;

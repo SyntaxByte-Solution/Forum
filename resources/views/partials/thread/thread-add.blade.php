@@ -12,7 +12,7 @@
     $category = $categories->first();
 @endphp
 
-<div>
+<div id="thread-add-container-size">
     <div class="thread-add-container">
         <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
         <input type="hidden" class="category" value="{{ $category->id }}">
@@ -93,8 +93,8 @@
             </div>
         </div>
         <div class="px8 pt8 thread-add-error-container none">
-            <div class="flex align-center">
-                <svg class="size14 mr4" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+            <div class="flex">
+                <svg class="size14 mr4" style="min-width: 14px; margin-top: 1px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
                 <span class="error fs13 bold no-margin thread-add-error"></span>
             </div>
         </div>
@@ -143,10 +143,13 @@
                         <input type="file" name="videos[]" id="thread-videos" class="thread-add-file-input" multiple accept=".mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi">
                     </div>
                 </div>
-                <div class="progress-bar-box full-width ml8 pb4">
-                    <p class="no-margin fs11 bold bblack mb2">{{ __('Uploading media to your discussion') }}..</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar"></div>
+                <div class="progress-bar-box none full-width pb4" style="margin-left: 18px">
+                    <input type="hidden" class="upload-finish-text" value="{{ __('Upload finishes ! Please wait') }}..">
+                    <input type="hidden" class="uploading-text" value="{{ __('Uploading media to your discussion') }}..">
+                    <p class="no-margin fs11 bold bblack mb2 text-above-progress-bar">{{ __('Uploading media to your discussion') }}..</p>
+                    <div class="progress-bar-container relative flex align-center">
+                        <span class="fs12 bold progress-bar-percentage"><span class="progress-bar-percentage-counter">0</span>%</span>
+                        <div class="progress-bar flex align-center justify-center"></div>
                     </div>
                 </div>
             </div>

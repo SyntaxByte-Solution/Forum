@@ -3039,8 +3039,15 @@ a, input, textarea {
 
 .progress-bar {
     height: 16px;
-    width: 68%;
+    width: 0%;
 
     background-color: #7e86a2;
     transition: width 0.5s;
+}
+
+.progress-bar-percentage {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

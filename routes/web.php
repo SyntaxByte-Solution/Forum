@@ -9,7 +9,7 @@ use App\Http\Controllers\
     IndexController, UserController, OAuthController, ContactController,
     SearchController, FeedbackController, VoteController, FaqsController,
     LikesController, GeneralController, MultilanguageHelperController,
-    NotificationController, FollowController, ReportController};
+    NotificationController, FollowController, ReportController, ThreadComponentsFetchController};
 use App\Models\{User, Thread, Post};
 use App\Http\Middleware\AccountActivationCheck;
 
@@ -53,7 +53,9 @@ Route::get('/threads/search', [SearchController::class, 'threads_search'])->name
 Route::get('/users/search', [SearchController::class, 'users_search'])->name('users.search');
 
 /** AUTO-FETCHING */
-Route::get('/index/threads/loadmore', [IndexController::class, 'index_load_more']);
+Route::get('/index/threads/loadmore', [ThreadComponentsFetchController::class, 'index_load_more']);
+Route::get('/forums/{forum}/threads/loadmore', [ThreadComponentsFetchController::class, 'forum_threads_load_more']);
+
 
 /**
  * get all forum threads

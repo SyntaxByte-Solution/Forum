@@ -592,13 +592,15 @@ class ThreadController extends Controller
         if($request->has('tab')) {
             $tab = $request->input('tab');
             if($tab == 'today') {
-                $threads = $threads->today();
+                $threads = $threads->today()->orderBy('view_count', 'desc');
+                $tab_title = __('Today');
             } else if($tab == 'thisweek') {
                 $threads = $threads->where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                );
+                )->orderBy('view_count', 'desc');
+                $tab_title = __('This week');
             }
         }
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);

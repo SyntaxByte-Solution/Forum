@@ -1214,6 +1214,11 @@ a, input, textarea {
     width: 14px;
 }
 
+.size13 {
+    height: 13px;
+    width: 13px;
+}
+
 .size12 {
     height: 12px;
     width: 12px;

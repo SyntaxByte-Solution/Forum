@@ -46,44 +46,6 @@ class IndexController extends Controller
         ->with(compact('forums'));
     }
 
-    public function index_load_more(Request $request) {
-        $indexes = $request->validate([
-            'skip'=>'required|numeric|max:600',
-            'tab'=>[
-                'required',
-                Rule::in(['all', 'today', 'thisweek']),
-            ]
-        ]);
-        
-        switch($indexes['tab']) {
-            case 'all':
-                $threads = Thread::orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
-                break;
-            case 'today':
-                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
-                break;
-            case 'thisweek':
-                $threads = Thread::where(
-                    'created_at', 
-                    '>=', 
-                    \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
-                break;
-        }
-
-        $payload = "";
-        foreach($threads as $thread) {
-            $thread_component = (new IndexResource($thread));
-            $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
-            $payload .= $thread_component;
-        }
-
-        return [
-            "content"=>$payload,
-            'count'=>$threads->count(),
-        ];
-    }
-
     public function forums() {
         $forums = Forum::all();
         $forum = Forum::first();

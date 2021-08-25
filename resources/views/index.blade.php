@@ -39,19 +39,15 @@
                 <p class="green-message">{{ Session::get('message') }}</p>
             </div>
         @endif
-        <div class="flex space-between align-center">
-            <h1 class="fs26 forum-color my8">{{ __('Discussions and Questions') }}</h1>
-            <div class="flex align-center button-style-2 thread-add-display-toggler">
-                <svg class="size14" style="margin-right: 6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M402.29,237.71v36.58A13.76,13.76,0,0,1,388.57,288H288V388.57a13.76,13.76,0,0,1-13.71,13.72H237.71A13.76,13.76,0,0,1,224,388.57V288H123.43a13.76,13.76,0,0,1-13.72-13.71V237.71A13.76,13.76,0,0,1,123.43,224H224V123.43a13.76,13.76,0,0,1,13.71-13.72h36.58A13.76,13.76,0,0,1,288,123.43V224H388.57A13.76,13.76,0,0,1,402.29,237.71ZM512,54.86V457.14A54.87,54.87,0,0,1,457.14,512H54.86A54.87,54.87,0,0,1,0,457.14V54.86A54.87,54.87,0,0,1,54.86,0H457.14A54.87,54.87,0,0,1,512,54.86ZM457.14,450.29V61.71a6.87,6.87,0,0,0-6.85-6.85H61.71a6.87,6.87,0,0,0-6.85,6.85V450.29a6.87,6.87,0,0,0,6.85,6.85H450.29A6.87,6.87,0,0,0,457.14,450.29Z"/></svg>
-                <span class="unselectable">{{ __('Add a discussion') }}</span>
-            </div>
-        </div>
+        <h1 class="fs26 forum-color my8">{{ __('Discussions and Questions') }}</h1>
         <div class="flex space-between mb4 stick-after-header">
             <div class="flex align-center">
+                <div class="flex align-center button-style-2 mr8 thread-add-display-toggler">
+                    <svg class="size14" style="margin-right: 6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M402.29,237.71v36.58A13.76,13.76,0,0,1,388.57,288H288V388.57a13.76,13.76,0,0,1-13.71,13.72H237.71A13.76,13.76,0,0,1,224,388.57V288H123.43a13.76,13.76,0,0,1-13.72-13.71V237.71A13.76,13.76,0,0,1,123.43,224H224V123.43a13.76,13.76,0,0,1,13.71-13.72h36.58A13.76,13.76,0,0,1,288,123.43V224H388.57A13.76,13.76,0,0,1,402.29,237.71ZM512,54.86V457.14A54.87,54.87,0,0,1,457.14,512H54.86A54.87,54.87,0,0,1,0,457.14V54.86A54.87,54.87,0,0,1,54.86,0H457.14A54.87,54.87,0,0,1,512,54.86ZM457.14,450.29V61.71a6.87,6.87,0,0,0-6.85-6.85H61.71a6.87,6.87,0,0,0-6.85,6.85V450.29a6.87,6.87,0,0,0,6.85,6.85H450.29A6.87,6.87,0,0,0,457.14,450.29Z"/></svg>
+                    <span class="unselectable">{{ __('Add a discussion') }}</span>
+                </div>
                 <div class="relative">
                     <div class="flex align-center">
-                        <p class="no-margin gray fs13 unselectable">Forum</p>
-                        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
                         <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to">
                             <svg class="small-image-size thread-add-forum-icon mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path d="M438.09,273.32h-39.6a102.92,102.92,0,0,1,6.24,35.4V458.37a44.18,44.18,0,0,1-2.54,14.79h65.46A44.4,44.4,0,0,0,512,428.81V347.23A74,74,0,0,0,438.09,273.32ZM107.26,308.73a102.94,102.94,0,0,1,6.25-35.41H73.91A74,74,0,0,0,0,347.23v81.58a44.4,44.4,0,0,0,44.35,44.35h65.46a44.17,44.17,0,0,1-2.55-14.78Zm194-73.91H210.74a74,74,0,0,0-73.91,73.91V458.38a14.78,14.78,0,0,0,14.78,14.78H360.39a14.78,14.78,0,0,0,14.78-14.78V308.73A74,74,0,0,0,301.26,234.82ZM256,38.84a88.87,88.87,0,1,0,88.89,88.89A89,89,0,0,0,256,38.84ZM99.92,121.69a66.44,66.44,0,1,0,66.47,66.47A66.55,66.55,0,0,0,99.92,121.69Zm312.16,0a66.48,66.48,0,1,0,66.48,66.47A66.55,66.55,0,0,0,412.08,121.69Z"/>
@@ -71,44 +67,40 @@
                         </div>
                     </div>
                 </div>
-                <div class="relative" style="margin-left: 12px">
-                    <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
-                        <span class="mr4 gray unselectable">{{ __('Filter by date') }}:</span>
-                        <span class="forum-color fs13 bold unselectable">{{ __($tab_title) }}</span>
-                        <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
-                    </div>
-                    <div class="suboptions-container thread-add-suboptions-container" style="width: 220px">
-                        <a href="/" class="no-underline thread-add-suboption sort-by-option flex">
-                            <div>
-                                <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
-                                <input type="hidden" class="tab" value="all">
-                            </div>
-                            <div class="loading-dots-anim ml4 none">•</div>
-                        </a>
-                        <a href="?tab=today" class="no-underline thread-add-suboption sort-by-option flex">
-                            <div>
-                                <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get only threads created today. (This will be sorted by number of views)') }}</p>
-                                <input type="hidden" class="tab" value="today">
-                            </div>
-                            <div class="loading-dots-anim ml4 none">•</div>
-                        </a>
-                        <a href="?tab=thisweek" class="no-underline thread-add-suboption sort-by-option flex">
-                            <div>
-                                <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get only threads created this week. (This will be sorted by number of views)') }}</p>
-                                <input type="hidden" class="sort-by-key" value="votes">
-                            </div>
-                            <div class="loading-dots-anim ml4 none">•</div>
-                        </a>
-                    </div>
+            </div>
+            <div class="relative mr4">
+                <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
+                    <span class="mr4 gray unselectable">{{ __('Filter by date') }}:</span>
+                    <span class="forum-color fs13 bold unselectable">{{ __($tab_title) }}</span>
+                    <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                </div>
+                <div class="suboptions-container thread-add-suboptions-container" style="width: 220px">
+                    <a href="/" class="no-underline thread-add-suboption sort-by-option flex">
+                        <div>
+                            <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
+                            <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
+                            <input type="hidden" class="tab" value="all">
+                        </div>
+                        <div class="loading-dots-anim ml4 none">•</div>
+                    </a>
+                    <a href="?tab=today" class="no-underline thread-add-suboption sort-by-option flex">
+                        <div>
+                            <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
+                            <p class="no-margin fs12 gray">{{ __('Get only threads created today. (This will be sorted by number of views)') }}</p>
+                            <input type="hidden" class="tab" value="today">
+                        </div>
+                        <div class="loading-dots-anim ml4 none">•</div>
+                    </a>
+                    <a href="?tab=thisweek" class="no-underline thread-add-suboption sort-by-option flex">
+                        <div>
+                            <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
+                            <p class="no-margin fs12 gray">{{ __('Get only threads created this week. (This will be sorted by number of views)') }}</p>
+                            <input type="hidden" class="sort-by-key" value="votes">
+                        </div>
+                        <div class="loading-dots-anim ml4 none">•</div>
+                    </a>
                 </div>
             </div>
-            <a href="{{ route('advanced.search') }}" class="fs13 bold no-underline forum-color flex align-center">
-                <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512,28.48A28.27,28.27,0,0,0,484,0H28.06A27.71,27.71,0,0,0,11.92,5.19,28.75,28.75,0,0,0,5.11,44.87L170.4,283.44,170.87,457A55.72,55.72,0,0,0,180,487.44a53.81,53.81,0,0,0,75.32,15.29l59-40a57.19,57.19,0,0,0,25-47.66l-.6-130.63L506.8,45A28.85,28.85,0,0,0,512,28.48ZM282.54,266.39l.68,149L227,453.45l-.5-188.1L82.09,57H429.51Z"/></svg>
-                {{ __('Adv. Search') }}
-            </a>
         </div>
         <div id="thread-add-component" class="none" style="margin-bottom: 10px">
             @auth

@@ -8,6 +8,7 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="{{ asset('js/fetch/forum-threads-fetch.js') }}" defer></script>
     <script src="{{ asset('js/post.js') }}" defer></script>
 @endpush
 
@@ -38,6 +39,14 @@
         <span class="current-link-path unselectable">{{ __('All Categories') }}</span>
     </div>
     <div class="index-middle-width middle-container-style">
+        <input type="hidden" class="current-threads-count" autocomplete="off" value="{{ $pagesize }}">
+        <input type="hidden" class="date-tab" autocomplete="off" value="{{ $tab }}">
+        <input type="hidden" id="forum-id" autocomplete="off" value="{{ $forum->id }}">
+        @if(Session::has('message'))
+            <div class="green-message-container mb8">
+                <p class="green-message">{{ Session::get('message') }}</p>
+            </div>
+        @endif
         <div class="full-width">
             <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
             <div class="flex align-center" style="margin: 16px 0">
@@ -48,7 +57,7 @@
             </div>
             @if($announcements->count() != 0)
                 <div class="flex align-center space-between">
-                    <h2 class="forum-color" style="margin: 0 0 6px 0">Announcements</h2>
+                    <h2 class="forum-color" style="margin: 0 0 6px 0; font-size: 19px">Announcements</h2>
                     @if($announcements->count() > 2)
                     <a href="{{ route('announcements') }}" class="blue no-underline bold">{{ __('See all') }}</a>
                     @endif
@@ -108,52 +117,60 @@
                         </div>
                     </div>
                 </div>
-                <div class="relative">
-                        <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
-                            <span class="mr4 gray unselectable">{{ __('Filter by date') }}:</span>
-                            <span class="forum-color fs13 bold unselectable">{{ __($tab_title) }}</span>
-                            <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
-                        </div>
-                        <div class="suboptions-container thread-add-suboptions-container" style="width: 220px">
-                            <a href="?tab=all" class="no-underline thread-add-suboption sort-by-option flex">
-                                <div>
-                                    <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
-                                    <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
-                                    <input type="hidden" class="tab" value="all">
-                                </div>
-                                <div class="loading-dots-anim ml4 none">•</div>
-                            </a>
-                            <a href="?tab=today" class="no-underline thread-add-suboption sort-by-option flex">
-                                <div>
-                                    <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
-                                    <p class="no-margin fs12 gray">{{ __('Get only threads created today. (This will be sorted by number of views)') }}</p>
-                                    <input type="hidden" class="tab" value="today">
-                                </div>
-                                <div class="loading-dots-anim ml4 none">•</div>
-                            </a>
-                            <a href="?tab=thisweek" class="no-underline thread-add-suboption sort-by-option flex">
-                                <div>
-                                    <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
-                                    <p class="no-margin fs12 gray">{{ __('Get only threads created this week. (This will be sorted by number of views)') }}</p>
-                                    <input type="hidden" class="sort-by-key" value="votes">
-                                </div>
-                                <div class="loading-dots-anim ml4 none">•</div>
-                            </a>
-                        </div>
+                <div class="relative mr4">
+                    <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
+                        <span class="mr4 gray unselectable">{{ __('Filter by date') }}:</span>
+                        <span class="forum-color fs13 bold unselectable">{{ __($tab_title) }}</span>
+                        <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                     </div>
+                    <div class="suboptions-container thread-add-suboptions-container" style="width: 220px">
+                        <a href="?tab=all" class="no-underline thread-add-suboption sort-by-option flex">
+                            <div>
+                                <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
+                                <input type="hidden" class="tab" value="all">
+                            </div>
+                            <div class="loading-dots-anim ml4 none">•</div>
+                        </a>
+                        <a href="?tab=today" class="no-underline thread-add-suboption sort-by-option flex">
+                            <div>
+                                <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get only threads created today. (This will be sorted by number of views)') }}</p>
+                                <input type="hidden" class="tab" value="today">
+                            </div>
+                            <div class="loading-dots-anim ml4 none">•</div>
+                        </a>
+                        <a href="?tab=thisweek" class="no-underline thread-add-suboption sort-by-option flex">
+                            <div>
+                                <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get only threads created this week. (This will be sorted by number of views)') }}</p>
+                                <input type="hidden" class="sort-by-key" value="votes">
+                            </div>
+                            <div class="loading-dots-anim ml4 none">•</div>
+                        </a>
+                    </div>
+                </div>
                 <!-- <a href="{{ route('advanced.search') }}" class="fs13 bold no-underline forum-color flex align-center">
                     <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512,28.48A28.27,28.27,0,0,0,484,0H28.06A27.71,27.71,0,0,0,11.92,5.19,28.75,28.75,0,0,0,5.11,44.87L170.4,283.44,170.87,457A55.72,55.72,0,0,0,180,487.44a53.81,53.81,0,0,0,75.32,15.29l59-40a57.19,57.19,0,0,0,25-47.66l-.6-130.63L506.8,45A28.85,28.85,0,0,0,512,28.48ZM282.54,266.39l.68,149L227,453.45l-.5-188.1L82.09,57H429.51Z"/></svg>
                     {{ __('Adv. Search') }}
                 </a> -->
             </div>
-            @foreach($threads as $thread)
-                <x-index-resource :thread="$thread"/>
-            @endforeach
-            <div class="flex my8">
-                <div class="mr8 move-to-right">
-                    {{ $threads->onEachSide(0)->links() }}
+            <div id="threads-global-container">
+                @foreach($threads as $thread)
+                    <x-index-resource :thread="$thread"/>
+                @endforeach
+            </div>
+            @if(!$threads->count())
+            <div class="full-center">
+                <div class="flex flex-column align-center">
+                    <svg class="size48 my8" viewBox="0 0 442 442"><path d="M442,268.47V109.08a11.43,11.43,0,0,0-.1-1.42,2.51,2.51,0,0,0,0-.27,10.11,10.11,0,0,0-.29-1.3v0c-.1-.31-.21-.62-.34-.92l-.12-.26-.15-.32c-.17-.34-.36-.67-.56-1a.57.57,0,0,1-.08-.13,10.33,10.33,0,0,0-.81-1l-.17-.18a8,8,0,0,0-.84-.81l-.14-.12a9.65,9.65,0,0,0-1.05-.76l-.26-.15a8.61,8.61,0,0,0-1.05-.53.67.67,0,0,0-.12-.06l-236-99-.06,0-.28-.1a10,10,0,0,0-4.4-.61h-.08a10.59,10.59,0,0,0-1.94.39l-.12,0c-.27.09-.55.18-.82.29l0,0-69.22,29a10,10,0,0,0,0,18.44L186,74.73v88.16L6.13,238.37l-.36.17-.36.17c-.28.15-.55.31-.82.48l-.13.07s0,0,0,0a9.86,9.86,0,0,0-1,.72l-.09.08c-.25.23-.49.46-.72.71l-.2.22a8.19,8.19,0,0,0-.53.67c-.07.08-.13.17-.19.25-.18.27-.34.54-.5.81l-.09.15c-.17.33-.32.67-.46,1,0,.09-.07.19-.1.28-.09.26-.18.53-.25.79l-.09.35c-.06.28-.12.55-.16.83,0,.1,0,.19,0,.28A11.87,11.87,0,0,0,0,247.62V333a10,10,0,0,0,6.13,9.22l235.92,99a9.8,9.8,0,0,0,1.95.6l.19,0c.26.05.52.09.79.12s.66.05,1,.05.67,0,1-.05.53-.07.79-.12l.19,0a9.8,9.8,0,0,0,2-.6l186-78A10,10,0,0,0,442,354V268.47ZM330.23,300.4l-63.15-26.49a10,10,0,0,0-7.74,18.44l45,18.9L246,335.75,137.62,290.29l58.4-24.5,35.53,14.9a10,10,0,1,0,7.74-18.44l-33.27-14V184.58l200.13,84ZM186,248.29l-74.25,31.16L35.85,247.59l150.17-63v63.71ZM196,20.84,406.15,109l-43.37,18.2L200,58.89l-.09,0L152.65,39Zm162.82,126.4a10,10,0,0,0,7.81,0L422,124.05V253.51L206,162.89V83.13ZM20,262.63l216,90.62V417L20,326.34ZM422,347.3,256,417V353.25l166-69.66Z"/></svg>
+                    <p class="fs20 bold gray text-center" style="margin: 2px 0">{{ __("There are no threads at the moment try out later or change the date filter !") }}</p>
+                    <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
                 </div>
             </div>
+            @else
+                @include('partials.thread.faded-thread', ['classes'=>'forum-threads-fetch-more'])
+            @endif
         </div>
     </div>
     <div id="right-panel">

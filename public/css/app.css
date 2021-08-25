@@ -193,7 +193,7 @@ a, input, textarea {
 }
 
 .thread-content-box-max-height {
-    max-height: 160px;
+    max-height: 200px;
 }
 
 .thread-content * {

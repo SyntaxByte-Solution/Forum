@@ -627,13 +627,7 @@ class ThreadController extends Controller
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $forums = Forum::all();
 
-        $pagesize = 6;
-        $pagesize_exists = false;
-        
-        if(request()->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = request()->input('pagesize');
-        }
+        $pagesize = 8;
 
         $threads = Thread::where('category_id', $category->id);
 
@@ -662,7 +656,8 @@ class ThreadController extends Controller
         ->with(compact('category'))
         ->with(compact('categories'))
         ->with(compact('threads'))
-        ->with(compact('pagesize'));
+        ->with(compact('pagesize'))
+        ->with(compact('hasmore'));
     }
 
     public function view_infos_component(Thread $thread) {

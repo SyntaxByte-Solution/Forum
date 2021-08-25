@@ -55,6 +55,7 @@ Route::get('/users/search', [SearchController::class, 'users_search'])->name('us
 /** AUTO-FETCHING */
 Route::get('/index/threads/loadmore', [ThreadComponentsFetchController::class, 'index_load_more']);
 Route::get('/forums/{forum}/threads/loadmore', [ThreadComponentsFetchController::class, 'forum_threads_load_more']);
+Route::get('/forums/{forum}/categories/{category}/threads/loadmore', [ThreadComponentsFetchController::class, 'category_threads_load_more']);
 
 
 /**

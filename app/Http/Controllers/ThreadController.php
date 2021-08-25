@@ -22,23 +22,16 @@ use App\Http\Controllers\PostController;
 class ThreadController extends Controller
 {
     public function show(Request $request, Forum $forum, Category $category, Thread $thread) {
-        $thread_owner = User::find($thread->user_id);
+        $pagesize = 10;
+        $thread_owner = $thread->user;
         $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
         if(!(Auth::check() && auth()->user()->id == $thread->user->id)) {
             $thread->update([
                 'view_count'=>$thread->view_count+1
             ]);
         }
-        $pagesize = 10;
-        $pagesize_exists = false;
-        
-        if(request()->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = request()->input('pagesize');
-        }
 
         $tickedPost = $thread->tickedPost();
-        
         if($tickedPost) {
             $posts = $thread->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->paginate($pagesize);
             if(request()->has('page') && request()->get('page') != 1) {
@@ -46,6 +39,20 @@ class ThreadController extends Controller
             }
         } else {
             $posts = $thread->posts()->orderBy('created_at', 'desc')->paginate($pagesize);
+        }
+
+        if(request()->has('reply')) {
+            $reply_id = request()->get('reply');
+            $count = 1;
+            foreach($posts as $post) {
+                if($post->id == $reply_id) {
+                    break;
+                }
+                $count++;
+            }
+            $page = ceil($count / $pagesize);
+
+            return redirect($thread->link . "?page=".$page);
         }
 
         $current_user = auth()->user();

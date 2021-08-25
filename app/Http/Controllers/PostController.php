@@ -67,7 +67,7 @@ class PostController extends Controller
                     'action_type'=>'thread-reply',
                     'action_date'=>now(),
                     'action_resource_id'=>$thread->id,
-                    'action_resource_link'=>$thread->link,
+                    'action_resource_link'=>$thread->link.'?reply='.$post->id,
                 ];
 
                 // Only notify thread owner if he didn't disable notif on the thread

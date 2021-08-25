@@ -23,9 +23,6 @@
     <div>
         <img src="{{ asset('assets/images/img/welcome.jpg') }}" class="block full-width" alt="">
     </div>
-    <div class="full-center" style="width: 720px; height: 90px; margin: 20px 0">
-        <h2>ADS: 720*90</h2>
-    </div>
     <div id="middle-container" class="middle-padding-1">
         <div class="flex align-center">
             <a href="/" class="link-path flex align-center unselectable">
@@ -42,12 +39,37 @@
                 <p class="green-message">{{ Session::get('message') }}</p>
             </div>
         @endif
-        <h1 class="fs26 forum-color my8">{{ __('Discussions and Questions') }}</h1>
+        <div class="flex space-between align-center">
+            <h1 class="fs26 forum-color my8">{{ __('Discussions and Questions') }}</h1>
+            <div class="flex align-center button-style-2 thread-add-display-toggler">
+                <svg class="size14" style="margin-right: 6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M402.29,237.71v36.58A13.76,13.76,0,0,1,388.57,288H288V388.57a13.76,13.76,0,0,1-13.71,13.72H237.71A13.76,13.76,0,0,1,224,388.57V288H123.43a13.76,13.76,0,0,1-13.72-13.71V237.71A13.76,13.76,0,0,1,123.43,224H224V123.43a13.76,13.76,0,0,1,13.71-13.72h36.58A13.76,13.76,0,0,1,288,123.43V224H388.57A13.76,13.76,0,0,1,402.29,237.71ZM512,54.86V457.14A54.87,54.87,0,0,1,457.14,512H54.86A54.87,54.87,0,0,1,0,457.14V54.86A54.87,54.87,0,0,1,54.86,0H457.14A54.87,54.87,0,0,1,512,54.86ZM457.14,450.29V61.71a6.87,6.87,0,0,0-6.85-6.85H61.71a6.87,6.87,0,0,0-6.85,6.85V450.29a6.87,6.87,0,0,0,6.85,6.85H450.29A6.87,6.87,0,0,0,457.14,450.29Z"/></svg>
+                <span class="unselectable">{{ __('Add a discussion') }}</span>
+            </div>
+        </div>
         <div class="flex space-between mb4 stick-after-header">
             <div class="flex align-center">
-                <div class="flex align-center button-style-2 thread-add-display-toggler">
-                    <svg class="size14" style="margin-right: 6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M402.29,237.71v36.58A13.76,13.76,0,0,1,388.57,288H288V388.57a13.76,13.76,0,0,1-13.71,13.72H237.71A13.76,13.76,0,0,1,224,388.57V288H123.43a13.76,13.76,0,0,1-13.72-13.71V237.71A13.76,13.76,0,0,1,123.43,224H224V123.43a13.76,13.76,0,0,1,13.71-13.72h36.58A13.76,13.76,0,0,1,288,123.43V224H388.57A13.76,13.76,0,0,1,402.29,237.71ZM512,54.86V457.14A54.87,54.87,0,0,1,457.14,512H54.86A54.87,54.87,0,0,1,0,457.14V54.86A54.87,54.87,0,0,1,54.86,0H457.14A54.87,54.87,0,0,1,512,54.86ZM457.14,450.29V61.71a6.87,6.87,0,0,0-6.85-6.85H61.71a6.87,6.87,0,0,0-6.85,6.85V450.29a6.87,6.87,0,0,0,6.85,6.85H450.29A6.87,6.87,0,0,0,457.14,450.29Z"/></svg>
-                    <span class="unselectable">{{ __('Add a discussion') }}</span>
+                <div class="relative">
+                    <div class="flex align-center">
+                        <p class="no-margin gray fs13 unselectable">Forum</p>
+                        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+                        <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to">
+                            <svg class="small-image-size thread-add-forum-icon mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M438.09,273.32h-39.6a102.92,102.92,0,0,1,6.24,35.4V458.37a44.18,44.18,0,0,1-2.54,14.79h65.46A44.4,44.4,0,0,0,512,428.81V347.23A74,74,0,0,0,438.09,273.32ZM107.26,308.73a102.94,102.94,0,0,1,6.25-35.41H73.91A74,74,0,0,0,0,347.23v81.58a44.4,44.4,0,0,0,44.35,44.35h65.46a44.17,44.17,0,0,1-2.55-14.78Zm194-73.91H210.74a74,74,0,0,0-73.91,73.91V458.38a14.78,14.78,0,0,0,14.78,14.78H360.39a14.78,14.78,0,0,0,14.78-14.78V308.73A74,74,0,0,0,301.26,234.82ZM256,38.84a88.87,88.87,0,1,0,88.89,88.89A89,89,0,0,0,256,38.84ZM99.92,121.69a66.44,66.44,0,1,0,66.47,66.47A66.55,66.55,0,0,0,99.92,121.69Zm312.16,0a66.48,66.48,0,1,0,66.48,66.47A66.55,66.55,0,0,0,412.08,121.69Z"/>
+                            </svg>
+                            <span class="thread-add-selected-forum bold">{{ __('All forums') }}</span>
+                            <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                        </div>
+                        <div class="suboptions-container thread-add-suboptions-container" style="max-height: 236px; overflow-y: scroll">
+                            @foreach($forums as $forum)
+                                <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
+                                    <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        {!! $forum->icon !!}
+                                    </svg>
+                                    <span>{{ $forum->forum }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
                 <div class="relative" style="margin-left: 12px">
                     <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
@@ -88,11 +110,11 @@
                 {{ __('Adv. Search') }}
             </a>
         </div>
-        <div id="thread-add-component" class="" style="margin-bottom: 10px">
+        <div id="thread-add-component" class="none" style="margin-bottom: 10px">
             @auth
                 @include('partials.thread.thread-add', ['editor_height'=>100])
             @endauth
-            <div class="simple-line-separator my8"></div>
+            <div class="simple-line-separator" style="margin: 12px 0"></div>
         </div>
         <div id="threads-global-container">
             @foreach($threads as $thread)
@@ -112,32 +134,14 @@
         @endif
     </div>
 
-    @push('scripts')
-        <!-- <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script> -->
-        <script>
-        // window.googletag = window.googletag || {cmd: []};
-        // googletag.cmd.push(function() {
-        //     googletag
-        //         .defineSlot(
-        //             '/6355419/Travel/Europe/France/Paris', [300, 250], 'banner-ad')
-        //         .addService(googletag.pubads());
-        //     googletag.enableServices();
-        // });
-        </script>
-    @endpush
     <div id="right-panel">
         @include('partials.right-panels.forums-list')
         @include('partials.right-panels.recent-forum-threads')
         @include('partials.right-panels.statistics')
-        <div class="line-separator"></div>
-        <div id="banner-ad" style="width: 300px; height: 250px; margin: 0 auto" class="full-center">
+        <!-- <div class="line-separator"></div>
+        <div style="width: 300px; height: 250px; margin: 0 auto" class="full-center">
             <h2>ADS HERE</h2>
-            <script>
-                // googletag.cmd.push(function() {
-                // googletag.display('banner-ad');
-                // });
-            </script>
-        </div>
+        </div> -->
         @include('partials.right-panels.feedback')
     </div>
 @endsection

@@ -2362,6 +2362,16 @@ $('.thread-add-share').on('click', function(event) {
                     url: `/threads/${response.id}/component/generate`,
                     type: 'get',
                     success: function(thread) {
+                        if(has_upload) {
+                            let progress_bar_box = container.find('.progress-bar-box');
+                            let progress_bar = progress_bar_box.find('.progress-bar');
+            
+                            progress_bar_box.addClass('none');
+                            progress_bar_box.find('.text-above-progress-bar').text(progress_bar_box.find('.uploading-text').val());
+                            progress_bar_box.find('.progress-bar-percentage').css('color', 'black');
+                            progress_bar.css('width', '0%');
+                        }
+
                         $('.thread-add-uploaded-media').slice(1).remove();
                         // Clear thread add component inputs
                         $('.uploaded-images-counter').val('0');
@@ -2394,6 +2404,16 @@ $('.thread-add-share').on('click', function(event) {
             }
         },
         error: function(response) {
+            if(has_upload) {
+                let progress_bar_box = container.find('.progress-bar-box');
+                let progress_bar = progress_bar_box.find('.progress-bar');
+
+                progress_bar_box.addClass('none');
+                progress_bar_box.find('.text-above-progress-bar').text(progress_bar_box.find('.uploading-text').val());
+                progress_bar_box.find('.progress-bar-percentage').css('color', 'black');
+                progress_bar.css('width', '0%');
+            }
+            
             let er;
             let error = JSON.parse(response.responseText).error;
             if(error) {
@@ -2414,15 +2434,7 @@ $('.thread-add-share').on('click', function(event) {
             button.attr('style', '');
         },
         complete: function(response) {
-            if(has_upload) {
-                let progress_bar_box = container.find('.progress-bar-box');
-                let progress_bar = progress_bar_box.find('.progress-bar');
-
-                progress_bar_box.addClass('none');
-                progress_bar_box.find('.text-above-progress-bar').text(progress_bar_box.find('.uploading-text').val());
-                progress_bar_box.find('.progress-bar-percentage').css('color', 'black');
-                progress_bar.css('width', '0%');
-            }
+            
         }
     });
     

@@ -180,4 +180,4 @@ Route::get('/announcements/{forum:slug}/{announcement}', [ThreadController::clas
 Route::get('/{forum:slug}/{category:slug}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
 
 Route::post('/feedback', [FeedbackController::class, 'store'])->middleware(['throttle:opd'])->name('feedback.save');
-Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->middleware(['throttle:opd'])->name('feedback.emoji.save');
+Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->name('feedback.emoji.save');

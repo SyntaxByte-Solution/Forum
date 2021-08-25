@@ -571,6 +571,9 @@ class ThreadController extends Controller
     }
 
     public function forum_all_threads(Request $request, Forum $forum) {
+        $tab_title = 'All'; // By default is all, until the user choose other option
+        $tab = "all";
+
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $category = $forum->categories->first();
         $forums = Forum::all();
@@ -582,13 +585,7 @@ class ThreadController extends Controller
         $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
         $announcements = Thread::where('category_id', $anoun_id)->orderBy('created_at', 'desc')->get();
 
-        $pagesize = 6;
-        $pagesize_exists = false;
-        
-        if(request()->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = request()->input('pagesize');
-        }
+        $pagesize = 8;
 
         $threads = Thread::whereIn('category_id', $categories_ids);
         // Then we fetch all threads in those categories
@@ -607,6 +604,8 @@ class ThreadController extends Controller
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
         
         return view('forum.category.categories-threads')
+        ->with(compact('tab'))
+        ->with(compact('tab_title'))
         ->with(compact('forum'))
         ->with(compact('forums'))
         ->with(compact('categories'))

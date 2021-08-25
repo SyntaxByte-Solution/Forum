@@ -101,12 +101,12 @@
         <div class="px8 py8">
             <label for="subject" class="flex align-center bold forum-color mb4">{{ __('Title') }}<span class="error ml4 none">*</span></label>
             <input type="hidden" class="required-text" value="{{ __('Title field is required') }}">
-            <input type="text" id="subject" name="subject" class="styled-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re asking a question to another person") }}' value="this is title">
+            <input type="text" id="subject" name="subject" class="styled-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re asking a question to another person") }}'>
         </div>
         <div>
             <label for="content" class="flex align-center bold forum-color mx8 mb4">{{ __('Content') }}<span class="error ml4 none">*</span></label>
             <input type="hidden" class="required-text" value="{{ __('Content field is required') }}">
-            <textarea name="content" id="content">This is content</textarea> <!-- we fill-in inputs for testing purposes -->
+            <textarea name="content" id="content"></textarea>
             <script>
                 var simplemde = new SimpleMDE({
                     placeholder: '{{ __("Add a discussion content here..") }}',

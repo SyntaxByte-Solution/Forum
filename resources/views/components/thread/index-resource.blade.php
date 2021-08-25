@@ -252,7 +252,7 @@
             <div class="thread-content-section">
                 <!-- textual content -->
                 <div style="padding: 10px 10px 4px 10px">
-                    <div class="flex align-center">
+                    <div class="flex align-center path-blue-when-hover">
                         <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             {!! $forum->icon !!}
                         </svg>

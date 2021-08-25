@@ -171,7 +171,7 @@
             </div>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
-                    <a href="" class="left-panel-item lp-padding @if($page == 'market') {{ 'lp-selected bold white' }} @endif">
+                    <a href="" class="left-panel-item block-click lp-padding @if($page == 'market') {{ 'lp-selected bold white' }} @endif" style="cursor: default">
                         <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M317,31H45A44.94,44.94,0,0,0,0,76V256a44.94,44.94,0,0,0,45,45H60v45c0,10.84,11.22,18.69,22.2,13.2.3-.3.9-.3,1.2-.6,82.52-55.33,64-43,82.5-55.2A15.09,15.09,0,0,1,174,301H317a44.94,44.94,0,0,0,45-45V76A44.94,44.94,0,0,0,317,31ZM197,211H75c-19.77,0-19.85-30,0-30H197C216.77,181,216.85,211,197,211Zm90-60H75c-19.77,0-19.85-30,0-30H287C306.77,121,306.85,151,287,151Zm180,0H392V256a75,75,0,0,1-75,75H178.5L150,349.92V376a44.94,44.94,0,0,0,45,45H342.5l86.1,57.6c11.75,6.53,23.4-1.41,23.4-12.6V421h15a44.94,44.94,0,0,0,45-45V196A44.94,44.94,0,0,0,467,151Z"/></svg>
                         {{ __('Chats') }}
                         <span class="fs12" style="margin-left: 3px; color: rgb(187, 187, 187)">({{__('soon')}})</span>
@@ -183,7 +183,7 @@
             </div>
             <div class="flex relative">
                 <div class="flex align-center full-width relative">
-                    <a href="" class="left-panel-item lp-padding @if($page == 'market') {{ 'lp-selected bold white' }} @endif">
+                    <a href="" class="left-panel-item block-click lp-padding @if($page == 'market') {{ 'lp-selected bold white' }} @endif" style="cursor: default">
                         <svg class="small-image mr8" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 456.03 456.03"><path d="M345.6,338.86a53.25,53.25,0,1,0,53.25,53.25C398.34,362.93,374.78,338.86,345.6,338.86ZM439.3,84.91c-1,0-2.56-.51-4.1-.51H112.64l-5.12-34.31A45.85,45.85,0,0,0,62,10.67H20.48a20.48,20.48,0,0,0,0,41H62a5.44,5.44,0,0,1,5.12,4.61L98.82,272.3a56.12,56.12,0,0,0,55.29,47.62h213c26.63,0,49.67-18.95,55.3-45.06l33.28-166.4A20.24,20.24,0,0,0,439.3,84.91ZM215,389.55c-1-28.16-24.58-50.69-52.74-50.69a53.56,53.56,0,0,0-51.2,55.3,52.49,52.49,0,0,0,52.23,50.69h1C193.54,443.31,216.58,418.73,215,389.55Z"/></svg>
                         {{ __('Market place') }}
                         <span class="fs12" style="margin-left: 3px; color: rgb(187, 187, 187)">({{__('soon')}})</span>

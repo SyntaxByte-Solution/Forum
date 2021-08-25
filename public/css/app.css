@@ -282,6 +282,10 @@ a, input, textarea {
     border-radius: 0 4px 4px 0;
 }
 
+.fs30 {
+    font-size: 30px;
+}
+
 .fs22 {
     font-size: 22px;
 }
@@ -1150,6 +1154,11 @@ a, input, textarea {
     width: 28px;
 }
 
+.size30{
+    height: 30px;
+    width: 30px;
+}
+
 .size34 {
     height: 34px;
     width: 34px;
@@ -1320,6 +1329,10 @@ a, input, textarea {
 
 .link-path:hover {
     color: rgb(44, 87, 204);
+}
+
+.path-blue-when-hover:hover {
+    fill: #2ca0ff;
 }
 
 .black-link {

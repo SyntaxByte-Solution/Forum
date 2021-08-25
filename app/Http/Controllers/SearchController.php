@@ -11,6 +11,9 @@ use App\Models\{Thread, User, Forum, Vote, Like};
 class SearchController extends Controller
 {
     public function search(Request $request) {
+        $tab = 'all';
+        $tab_title = __('All');
+
         $pagesize = 10;
         $pagesize_exists = false;
         if($request->has('pagesize')) {
@@ -34,22 +37,24 @@ class SearchController extends Controller
             DB::select(
                 $this->search_query_generator('threads', $search_query, ['subject', 'content'], ['LIKE'], ['OR'])
             ), 'id'
-        ))->orderBy('created_at', 'desc');
+        ));
 
         if($request->has('tab')) {
             $tab = $request->input('tab');
             if($tab == 'today') {
-                $threads = $threads->today();
+                $threads = $threads->today()->orderBy('view_count', 'desc');
+                $tab_title = __('Today');
             } else if($tab == 'thisweek') {
                 $threads = $threads->where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                );
+                )->orderBy('view_count', 'desc');
+                $tab_title = __('This week');
             }
         }
 
-        $threads = $threads->paginate($pagesize);
+        $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
 
         $users = User::excludedeactivatedaccount()->whereIn('id', array_column(
             DB::select(
@@ -62,7 +67,9 @@ class SearchController extends Controller
             ->with(compact('threads'))
             ->with(compact('users'))
             ->with(compact('pagesize'))
-            ->with(compact('search_query'));
+            ->with(compact('search_query'))
+            ->with(compact('tab'))
+            ->with(compact('tab_title'));
     }
 
     public function search_advanced(Request $request) {
@@ -271,6 +278,9 @@ class SearchController extends Controller
     }
 
     public function threads_search(Request $request) {
+        $tab = 'all';
+        $tab_title = __('All');
+
         $pagesize = 10;
         $pagesize_exists = false;
         if($request->has('pagesize')) {
@@ -294,27 +304,30 @@ class SearchController extends Controller
             DB::select(
                 $this->search_query_generator('threads', $search_query, ['subject', 'content'], ['LIKE'], ['OR'])
             ), 'id'
-        ))->orderBy('created_at', 'desc');
+        ));
 
         if($request->has('tab')) {
             $tab = $request->input('tab');
             if($tab == 'today') {
-                $threads = $threads->today();
+                $threads = $threads->today()->orderBy('view_count', 'desc');
+                $tab_title = __('Today');
             } else if($tab == 'thisweek') {
                 $threads = $threads->where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                );
+                )->orderBy('view_count', 'desc');
+                $tab_title = __('This week');
             }
         }
 
-        $threads = $threads->paginate($pagesize);
+        $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
 
         return view('search.search-threads')
             ->with(compact('forums'))
             ->with(compact('threads'))
             ->with(compact('pagesize'))
+            ->with(compact('tab_title'))
             ->with(compact('search_query'));
     }
 

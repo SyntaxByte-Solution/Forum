@@ -28,7 +28,7 @@
                 <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
                 {{ __('Board index') }}
             </a>
-            <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+            <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
             <span class="current-link-path unselectable">{{ __('Search') }}</span>
         </div>
     </div>
@@ -69,41 +69,100 @@
             @endif
             <div>
                 @if($users->count())
-                    <div class="flex space-between align-center">
+                    <div class="flex space-between align-end">
                         <a href="{{ route('users.search') . '?k=' . request()->input('k') }}" class="fs20 blue bold no-underline my4 flex align-center">{{ __('Users') }}<span class="gray fs14 ml4 @if($search_query == '') none @endif">({{$users->total()}} {{__('in total')}})</span></a>
                         @if($users->total() > 4)
-                        <a href="" class="link-path mr4">see all</a>
+                        <a href="{{ route('users.search') . '?k=' . request()->input('k') }}" class="link-path mr4">see all</a>
                         @endif
                     </div>
                     <div class="flex flex-wrap space-between">
                         @foreach($users as $user)
                             <x-search.user :user="$user" class="half-width" style="width: calc(100% / 2 - 7.5px);"/>
-                            <div class="simple-line-separator"></div>
                         @endforeach
                     </div>
                 @endif
             </div>
                 <div class="simple-line-separator my8"></div>
-                <div class="flex my8">
-                    <a href="{{ route('threads.search') . '?k=' . request()->input('k') }}" class="fs20 blue bold no-underline my4 flex align-center">{{ __('Discussions') }}<span class="gray fs14 ml4">@isset($search_query) ({{$threads->total() . ' ' . __('in total')}}) @endisset</span></a>
+                <div class="flex">
+                    @php
+                        $discussions_link = route('threads.search');
+                        $mark = '?';
+                        
+                        if($search_query != '') {
+                            if (strpos($discussions_link, '?') !== false) {
+                                $mark = '&';
+                            }
+                            $discussions_link .= $mark . 'k=' . $search_query;
+                        }
+                        if(request()->has('tab') != '') {
+                            if (strpos($discussions_link, '?') !== false) {
+                                $mark = '&';
+                            }
+                            $discussions_link .= $mark . 'tab=' . request()->get('tab');
+                        }
+                        if(request()->has('pagesize')) {
+                            if (strpos($discussions_link, '?') !== false) {
+                                $mark = '&';
+                            }
+                            $discussions_link .= $mark . 'pagesize=' . request()->get('pagesize');
+                        }
+                        if(request()->has('page')) {
+                            if (strpos($discussions_link, '?') !== false) {
+                                $mark = '&';
+                            }
+                            $discussions_link .= $mark . 'page=' . request()->get('page');
+                        }
+                    @endphp
+                    <a href="{{ $discussions_link }}" class="fs20 blue bold no-underline mt4 flex align-center">{{ __('Discussions') }}<span class="gray fs14 ml4">@isset($search_query) @if($search_query != '') ({{$threads->total() . ' ' . __('in total')}}) @endif @endisset</span></a>
                 </div>
                 <div>
-                    <div class="flex space-between align-end my8">
-                        <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
-                            <a href="/search" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
-                                {{ __('All') }}
-                            </a>
-                            <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
-                                {{ __('Today') }}
-                            </a>
-                            <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
-                                {{ __('This week') }}
-                            </a>
+                    <div class="flex space-between align-end mb8">
+                        <div class="relative mr4">
+                            <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
+                                <span class="mr4 gray unselectable">{{ __('Filter by date') }}:</span>
+                                <span class="forum-color fs13 bold unselectable">{{ __($tab_title) }}</span>
+                                <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                            </div>
+                            <div class="suboptions-container thread-add-suboptions-container" style="width: 220px">
+                                @php
+                                    $appendings = '';
+                                    if($search_query != '') {
+                                        $appendings = '&k=' . $search_query;
+                                    }
+                                    if(request()->has('pagesize')) {
+                                        $appendings .= '&pagesize=' . request()->get('pagesize');
+                                    }
+                                @endphp
+                                <a href="?tab=all{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
+                                    <div>
+                                        <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
+                                        <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
+                                        <input type="hidden" class="tab" value="all">
+                                    </div>
+                                    <div class="loading-dots-anim ml4 none">•</div>
+                                </a>
+                                <a href="?tab=today{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
+                                    <div>
+                                        <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
+                                        <p class="no-margin fs12 gray">{{ __('Get only threads created today. (This will be sorted by number of views)') }}</p>
+                                        <input type="hidden" class="tab" value="today">
+                                    </div>
+                                    <div class="loading-dots-anim ml4 none">•</div>
+                                </a>
+                                <a href="?tab=thisweek{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
+                                    <div>
+                                        <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
+                                        <p class="no-margin fs12 gray">{{ __('Get only threads created this week. (This will be sorted by number of views)') }}</p>
+                                        <input type="hidden" class="sort-by-key" value="votes">
+                                    </div>
+                                    <div class="loading-dots-anim ml4 none">•</div>
+                                </a>
+                            </div>
                         </div>
                         <div>
                             <div class="flex">
                                 <div class="flex align-center my4 move-to-right">
-                                    <span class="mr4 fs13 gray">posts/page :</span>
+                                    <span class="mr4 fs13 gray">{{ __('discussions') }}/{{ __('page') }} :</span>
                                     <select name="" class="small-dropdown row-num-changer" autocomplete="off">
                                         <option value="6" @if($pagesize == 6) selected @endif>6</option>
                                         <option value="10" @if($pagesize == 10) selected @endif>10</option>

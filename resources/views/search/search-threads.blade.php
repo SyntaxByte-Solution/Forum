@@ -28,9 +28,9 @@
             <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
             {{ __('Board index') }}
         </a>
-        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <a href="/search" class="link-path">{{ __('Search') }}</a>
-        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <span class="current-link-path">{{ __('Discussions Search') }}</span>
     </div>
     <div class="full-width index-middle-width middle-container-style">
@@ -134,16 +134,47 @@
         <div>
             <h2 class="fs20 blue unselectable my4 flex align-center">{{ __('Discussions') }}</h2>
             <div class="flex align-end space-between my4">
-                <div class="flex inline-buttons-container" style="border: 1px solid #c6c6c6; border-right: unset;">
-                    <a href="/search" class="flex no-underline inline-button-style @if(!request()->has('tab')) selected-inline-button-style @endif">
-                        {{ __('All') }}
-                    </a>
-                    <a href="?tab=today" class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'today') selected-inline-button-style @endif">
-                        {{ __('Today') }}
-                    </a>
-                    <a href="?tab=thisweek"  class="flex inline-button-style no-underline @if(request()->has('tab') && request()->get('tab') == 'thisweek') selected-inline-button-style @endif">
-                        {{ __('This week') }}
-                    </a>
+                <div class="relative mr4">
+                    <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
+                        <span class="mr4 gray unselectable">{{ __('Filter by date') }}:</span>
+                        <span class="forum-color fs13 bold unselectable">{{ __($tab_title) }}</span>
+                        <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                    </div>
+                    <div class="suboptions-container thread-add-suboptions-container" style="width: 220px">
+                        @php
+                            $appendings = '';
+                            if($search_query != '') {
+                                $appendings = '&k=' . $search_query;
+                            }
+                            if(request()->has('pagesize')) {
+                                $appendings .= '&pagesize=' . request()->get('pagesize');
+                            }
+                        @endphp
+                        <a href="?tab=all{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
+                            <div>
+                                <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get search results for all threads at any time') }}</p>
+                                <input type="hidden" class="tab" value="all">
+                            </div>
+                            <div class="loading-dots-anim ml4 none">•</div>
+                        </a>
+                        <a href="?tab=today{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
+                            <div>
+                                <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get search results for only threads created today. (This will be sorted by number of views)') }}</p>
+                                <input type="hidden" class="tab" value="today">
+                            </div>
+                            <div class="loading-dots-anim ml4 none">•</div>
+                        </a>
+                        <a href="?tab=thisweek{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
+                            <div>
+                                <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get search results for only threads created this week. (This will be sorted by number of views)') }}</p>
+                                <input type="hidden" class="sort-by-key" value="votes">
+                            </div>
+                            <div class="loading-dots-anim ml4 none">•</div>
+                        </a>
+                    </div>
                 </div>
                 <div>
                     <div class="flex">

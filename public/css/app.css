@@ -1332,10 +1332,6 @@ a, input, textarea {
     text-decoration: none;
 }
 
-.link-path:hover {
-    color: rgb(44, 87, 204);
-}
-
 .path-blue-when-hover:hover {
     fill: #2ca0ff;
 }

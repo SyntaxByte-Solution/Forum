@@ -28,14 +28,14 @@
             <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
             {{ __('Board index') }}
         </a>
-        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path flex align-center">
             <svg class="small-image-size mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 {!! $forum->icon !!}
             </svg>
             {{ $forum->forum }}
         </a>
-        <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <span class="current-link-path unselectable">{{ __('All Categories') }}</span>
     </div>
     <div class="index-middle-width middle-container-style">
@@ -84,12 +84,12 @@
                                 <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </div>
                             <div class="suboptions-container thread-add-suboptions-container">
-                                @foreach($forums as $forum)
-                                    <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
+                                @foreach($forums as $f)
+                                    <a href="{{ route('forum.all.threads', ['forum'=>$f->slug]) }}" class="@if($f->id == $forum->id) block-click @endif thread-add-suboption black no-underline flex align-center" style="@if($f->id == $forum->id) background-color: #e1e1e1; cursor: default @endif">
                                         <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                            {!! $forum->icon !!}
+                                            {!! $f->icon !!}
                                         </svg>
-                                        <span>{{ $forum->forum }}</span>
+                                        <span>{{ $f->forum }}</span>
                                     </a>
                                 @endforeach
                             </div>
@@ -105,8 +105,8 @@
                                 <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </div>
                             <div class="suboptions-container thread-add-suboptions-container width-max-content">
-                                <a href="{{ route('category.threads', ['forum'=>$category->forum->slug, 'category'=>$category->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
-                                    <span>{{ __('All') }}</span>
+                                <a href="{{ route('category.threads', ['forum'=>$category->forum->slug, 'category'=>$category->slug]) }}" class="block-click thread-add-suboption black no-underline flex align-center" style="background-color: #e1e1e1; cursor: default">
+                                    <span>{{ __('All categories') }}</span>
                                 </a>
                                 @foreach($categories as $category)
                                     <a href="{{ route('category.threads', ['forum'=>$category->forum->slug, 'category'=>$category->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
@@ -150,10 +150,6 @@
                         </a>
                     </div>
                 </div>
-                <!-- <a href="{{ route('advanced.search') }}" class="fs13 bold no-underline forum-color flex align-center">
-                    <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512,28.48A28.27,28.27,0,0,0,484,0H28.06A27.71,27.71,0,0,0,11.92,5.19,28.75,28.75,0,0,0,5.11,44.87L170.4,283.44,170.87,457A55.72,55.72,0,0,0,180,487.44a53.81,53.81,0,0,0,75.32,15.29l59-40a57.19,57.19,0,0,0,25-47.66l-.6-130.63L506.8,45A28.85,28.85,0,0,0,512,28.48ZM282.54,266.39l.68,149L227,453.45l-.5-188.1L82.09,57H429.51Z"/></svg>
-                    {{ __('Adv. Search') }}
-                </a> -->
             </div>
             <div id="threads-global-container">
                 @foreach($threads as $thread)
@@ -169,7 +165,9 @@
                 </div>
             </div>
             @else
-                @include('partials.thread.faded-thread', ['classes'=>'forum-threads-fetch-more'])
+                @if($hasmore)
+                    @include('partials.thread.faded-thread', ['classes'=>'forum-threads-fetch-more'])
+                @endif
             @endif
         </div>
     </div>

@@ -603,6 +603,7 @@ class ThreadController extends Controller
                 $tab_title = __('This week');
             }
         }
+        $hasmore = $threads->count() > $pagesize ? 1 : 0;
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
         
         return view('forum.category.categories-threads')
@@ -614,10 +615,14 @@ class ThreadController extends Controller
         ->with(compact('category'))
         ->with(compact('announcements'))
         ->with(compact('threads'))
-        ->with(compact('pagesize'));
+        ->with(compact('pagesize'))
+        ->with(compact('hasmore'));
     }
 
     public function category_threads(Request $request, Forum $forum, Category $category) {
+        $tab = "all";
+        $tab_title = 'All';
+
         $category = $category;
         $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
         $forums = Forum::all();
@@ -635,18 +640,23 @@ class ThreadController extends Controller
         if($request->has('tab')) {
             $tab = $request->input('tab');
             if($tab == 'today') {
-                $threads = $threads->today();
+                $threads = $threads->today()->orderBy('view_count', 'desc');
+                $tab_title = __('Today');
             } else if($tab == 'thisweek') {
                 $threads = $threads->where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                );
+                )->orderBy('view_count', 'desc');
+                $tab_title = __('This week');
             }
         }
+        $hasmore = $threads->count() > $pagesize ? 1 : 0;
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
 
         return view('forum.category.category-threads')
+        ->with(compact('tab'))
+        ->with(compact('tab_title'))
         ->with(compact('forum'))
         ->with(compact('forums'))
         ->with(compact('category'))

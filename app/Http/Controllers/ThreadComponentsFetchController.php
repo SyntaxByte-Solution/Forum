@@ -27,7 +27,7 @@ class ThreadComponentsFetchController extends Controller
         
         switch($indexes['tab']) {
             case 'all':
-                $thread = $threads->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
+                $threads = $threads->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
                 break;
             case 'today':
                 $threads = $threads->today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();

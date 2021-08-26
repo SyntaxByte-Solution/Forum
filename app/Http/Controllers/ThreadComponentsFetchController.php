@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\{Forum, Thread, Category};
+use App\Models\{Forum, Thread, Category, User};
 use App\View\Components\IndexResource;
 use Carbon\Carbon;
 
@@ -89,12 +89,11 @@ class ThreadComponentsFetchController extends Controller
                 break;
         }
 
-        $has_more = false;
+        $has_more = 0;
         if($threads->count() > self::FETCH_PAGESIZE) {
             $threads->pop();
             $has_more = 1;
-        } else
-            $has_more = 0;
+        }
 
         $payload = "";
         foreach($threads as $thread) {
@@ -144,6 +143,35 @@ class ThreadComponentsFetchController extends Controller
         return [
             "content"=>$payload,
             'count'=>$threads->count(),
+        ];
+    }
+    public function profile_threads_load_more(Request $request) {
+        $indexes = $request->validate([
+            'skip'=>'required|numeric|max:600',
+            'user'=>'required|exists:users,id'
+        ]);
+        $user = User::find($indexes['user']);
+
+        $threads = $user->threads()->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
+        $hasmore = 0;
+
+        if($threads->count() > self::FETCH_PAGESIZE) {
+            $hasmore = 1;
+            $threads->pop();
+        }
+
+
+        $payload = "";
+        foreach($threads as $thread) {
+            $thread_component = (new IndexResource($thread));
+            $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
+            $payload .= $thread_component;
+        }
+
+        return [
+            "content"=>$payload,
+            'count'=>$threads->count(),
+            'hasmore'=>$hasmore,
         ];
     }
 }

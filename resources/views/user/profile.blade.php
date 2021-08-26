@@ -8,6 +8,7 @@
 @push('scripts')
     <script src="{{ asset('js/post.js') }}" defer></script>
     <script src="{{ asset('js/profile.js') }}" defer></script>
+    <script src="{{ asset('js/fetch/profile-threads-fetch.js') }}" defer></script>
 @endpush
 
 @section('title', $user->username)
@@ -185,28 +186,29 @@
                     <h2 class="text-center">DEACTIVATED ACCOUNT</h2>
                     @endif
                     @if($threads->count())
-                        <div class="flex align-end space-between forum-color mb8">
+                        <div class="forum-color mb8">
                             @if(auth()->user() && $user->id == auth()->user()->id)
-                            <div>
-                                <a href="{{ route('thread.add') }}" class="flex button-style-2 black no-underline mb4">
+                            <div class="flex align-end space-between">
+                                <h2 class="no-margin">{{ __('Your Threads') }}</h2>
+                                <a href="{{ route('thread.add') }}" class="flex button-style-2 black no-underline">
                                     <svg class="size14" style="margin-right: 6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M402.29,237.71v36.58A13.76,13.76,0,0,1,388.57,288H288V388.57a13.76,13.76,0,0,1-13.71,13.72H237.71A13.76,13.76,0,0,1,224,388.57V288H123.43a13.76,13.76,0,0,1-13.72-13.71V237.71A13.76,13.76,0,0,1,123.43,224H224V123.43a13.76,13.76,0,0,1,13.71-13.72h36.58A13.76,13.76,0,0,1,288,123.43V224H388.57A13.76,13.76,0,0,1,402.29,237.71ZM512,54.86V457.14A54.87,54.87,0,0,1,457.14,512H54.86A54.87,54.87,0,0,1,0,457.14V54.86A54.87,54.87,0,0,1,54.86,0H457.14A54.87,54.87,0,0,1,512,54.86ZM457.14,450.29V61.71a6.87,6.87,0,0,0-6.85-6.85H61.71a6.87,6.87,0,0,0-6.85,6.85V450.29a6.87,6.87,0,0,0,6.85,6.85H450.29A6.87,6.87,0,0,0,457.14,450.29Z"/></svg>
                                     <span class="unselectable">{{ __('Add a discussion') }}</span>
                                 </a>
-                                <h2 class="no-margin">{{ __('Your Threads') }}</h2>
                             </div>
                             @else
                             <h2 class="no-margin">{{ __('Threads') }}</h2>
                             @endif
-                            {{ $threads->onEachSide(0)->links() }}
                         </div>
-                        @foreach($threads as $thread)
-                            <x-index-resource :thread="$thread"/>
-                        @endforeach
-                        <div class="flex">
-                            <div class="move-to-right">
-                                {{ $threads->onEachSide(0)->links() }}
-                            </div>
+                        <input type="hidden" class="current-threads-count" autocomplete="off" value="{{ $threads->count() }}">
+                        <div id="threads-global-container">
+                            @foreach($threads as $thread)
+                                <x-index-resource :thread="$thread"/>
+                            @endforeach
                         </div>
+
+                        @if($user->threads->count() > $pagesize)
+                            @include('partials.thread.faded-thread', ['classes'=>'profile-fetch-more'])
+                        @endif
                     @else
                         <div class="full-center" style="margin-bottom: 36px">
                             <div class="flex flex-column align-center">

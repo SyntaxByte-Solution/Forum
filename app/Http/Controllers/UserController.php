@@ -15,6 +15,9 @@ use App\Classes\ImageResize;
 
 class UserController extends Controller
 {
+    const PROFILE_THREADS_SIZE = 8;
+    const PROFILE_THREADS_FETCH = 6;
+
     public function activities(Request $request, User $user) {
         $is_current = Auth::check() ? auth()->user()->id == $user->id : false;
         $announcements_ids = Category::where('slug', 'announcements')->pluck('id');
@@ -67,6 +70,7 @@ class UserController extends Controller
             return view('errors.custom.deactivated-account');
         }
 
+        // --- profile view checking .. ---
         $profile_view = new ProfileView;
         $profile_view->visitor_ip = $request->ip();
         $profile_view->visited_id = $user->id;
@@ -74,7 +78,6 @@ class UserController extends Controller
         if($current_user = auth()->user()) {
             $profile_view->visitor_id = $current_user->id;
         }
-
         // We count only 1 profile view per day for the same user
         $found = ProfileView::
         where('created_at', '>', Carbon::now()->subHours(24)->toDateTimeString())
@@ -82,7 +85,6 @@ class UserController extends Controller
         ->where('visited_id', $user->id)
         ->where('visitor_id', $profile_view->visitor_id)
         ->count();
-
         if(!$found) {
             if(auth()->user()) {
                 if($user->id != auth()->user()->id) {
@@ -93,6 +95,7 @@ class UserController extends Controller
             }
         }
 
+        // Check if the visitor is a follower of the visited profile
         if(Auth::check()) {
             $followed = (bool) Follow::where('follower', auth()->user()->id)
             ->where('followable_id', $user->id)
@@ -102,10 +105,9 @@ class UserController extends Controller
             $followed = false;
         }
 
-        $threads_count = $user->threads->count();
-        $posts_count = $user->posts_count();
         $threads = $user->threads()
-        ->orderBy('created_at', 'desc')->paginate(10);
+            ->orderBy('created_at', 'desc')->paginate(self::PROFILE_THREADS_SIZE);
+        $pagesize = self::PROFILE_THREADS_SIZE;
 
         $followers = $user->followers;
         $followers = $followers->map(function($item, $key) {
@@ -122,8 +124,7 @@ class UserController extends Controller
             ->with(compact('followers'))
             ->with(compact('followed_users'))
             ->with(compact('followed'))
-            ->with(compact('threads_count'))
-            ->with(compact('posts_count'))
+            ->with(compact('pagesize'))
             ->with(compact('threads'));
     }
 

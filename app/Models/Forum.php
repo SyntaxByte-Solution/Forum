@@ -21,7 +21,7 @@ class Forum extends Model
     }
 
     public function threads() {
-        $threads = collect();
+        $threads = collect([]);
         foreach($this->categories as $category) {
             $threads = $threads->merge($category->threads);
         }

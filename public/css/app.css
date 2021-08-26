@@ -3115,8 +3115,8 @@ a, input, textarea {
 }
 
 .forum-component-last-reply-section-width {
-    min-width: 160px;
-    width: 160px;
+    min-width: 180px;
+    width: 180px;
     box-sizing: border-box;
 }
 

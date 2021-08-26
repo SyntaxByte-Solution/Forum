@@ -8,10 +8,10 @@
         <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="no-underline bold blue no-margin fs17 mb2">{{ $forum->forum }}</a>
         <p class="no-margin fs13">{{ $forum->description }}</p>
     </td>
-    <td class="full-center fs15 bold forum-component-threads-section-width">
+    <td class="full-center fs15 bold bblack forum-component-threads-section-width">
         {{ $threads_count }}
     </td>
-    <td class="full-center fs15 bold forum-component-posts-section-width">
+    <td class="full-center fs15 bold bblack forum-component-posts-section-width">
         {{ $posts_count }}
     </td>
     <td class="last-reply-container forum-component-last-reply-section-width">
@@ -22,7 +22,6 @@
             <div class="relative ml4 user-profile-card-box">
                 <input type="hidden" class="user-card-container-index"> <!-- value will be initialized at run time by js, to identify each container with incremented index (go to depth.js file) -->
                 <a href="{{ $last_thread->user->profilelink }}" class="no-underline fs12 bblack bold user-profile-card-displayer">{{ $last_thread->user->username }}</a>
-                @include('partials.user-profile-card', ['user'=>$last_thread->user])
             </div>
         </div>
         <div class="relative height-max-content">

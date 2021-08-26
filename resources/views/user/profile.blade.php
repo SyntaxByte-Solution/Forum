@@ -181,24 +181,22 @@
                     </div>
                 </div>
                 <div style="margin-top: 20px" class="index-middle-width">
-                    @if(auth()->user() && $user->id == auth()->user()->id)
-                        <a href="{{ route('thread.add') }}" class="thread-add-button width-max-content @if($threads->count()) full-width border-box @else move-to-middle @endif" style="margin-bottom: 12px" target="_blank">
-                            <svg class="small-image mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397.15 397.15"><path d="M390.88,12.37c-4.14-4.15-10.13-6.25-17.78-6.25-26.78,0-70.16,26-93.64,41.55l-1.91,1.27-5.28,41.68-14-28.34-4.81,3.52a763.05,763.05,0,0,0-85.75,73.26c-4.62,4.62-9.16,9.31-13.5,13.94l-.93,1-18.7,82.35-9.86-49.17L118,196.36c-3.84,5.26-7.46,10.53-10.78,15.65l-.62,1-8,62.92L86.17,250.56,82.63,263.1c-4.3,15.28-4.5,28.32-.67,38.5l-80,80a5.52,5.52,0,0,0-1.55,6.22A5.21,5.21,0,0,0,5.24,391a6.85,6.85,0,0,0,2.46-.49l36.94-14a15.23,15.23,0,0,0,5.11-3.41l49.61-52.77A44.27,44.27,0,0,0,118,324h0a82.94,82.94,0,0,0,22.18-3.4l12.54-3.54-25.33-12.49,62.92-8,.95-.62c5.12-3.31,10.39-6.94,15.66-10.79l9.19-6.7-49.17-9.86,82.34-18.71,1-.92c4.64-4.35,9.33-8.89,13.94-13.5,35.17-35.17,70.11-78.39,95.85-118.59l3-4.7L338.24,100,373,95.59l1.23-2.2C397.46,51.81,403.07,24.56,390.88,12.37Z"/></svg>
-                            {{ __('CREATE NEW THREAD') }}
-                        </a>
-                    @endif
-                
                     @if($user->account_status->slug == 'deactivated')
                     <h2 class="text-center">DEACTIVATED ACCOUNT</h2>
                     @endif
                     @if($threads->count())
-                        <div class="flex align-center space-between forum-color">
+                        <div class="flex align-end space-between forum-color mb8">
                             @if(auth()->user() && $user->id == auth()->user()->id)
-                            <h2 class="no-margin" style="margin-bottom: 10px">{{ __('Your Threads') }}</h2>
+                            <div>
+                                <a href="{{ route('thread.add') }}" class="flex button-style-2 black no-underline mb4">
+                                    <svg class="size14" style="margin-right: 6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M402.29,237.71v36.58A13.76,13.76,0,0,1,388.57,288H288V388.57a13.76,13.76,0,0,1-13.71,13.72H237.71A13.76,13.76,0,0,1,224,388.57V288H123.43a13.76,13.76,0,0,1-13.72-13.71V237.71A13.76,13.76,0,0,1,123.43,224H224V123.43a13.76,13.76,0,0,1,13.71-13.72h36.58A13.76,13.76,0,0,1,288,123.43V224H388.57A13.76,13.76,0,0,1,402.29,237.71ZM512,54.86V457.14A54.87,54.87,0,0,1,457.14,512H54.86A54.87,54.87,0,0,1,0,457.14V54.86A54.87,54.87,0,0,1,54.86,0H457.14A54.87,54.87,0,0,1,512,54.86ZM457.14,450.29V61.71a6.87,6.87,0,0,0-6.85-6.85H61.71a6.87,6.87,0,0,0-6.85,6.85V450.29a6.87,6.87,0,0,0,6.85,6.85H450.29A6.87,6.87,0,0,0,457.14,450.29Z"/></svg>
+                                    <span class="unselectable">{{ __('Add a discussion') }}</span>
+                                </a>
+                                <h2 class="no-margin">{{ __('Your Threads') }}</h2>
+                            </div>
                             @else
-                            <h2 class="no-margin" style="margin-bottom: 10px">{{ __('Threads') }}</h2>
+                            <h2 class="no-margin">{{ __('Threads') }}</h2>
                             @endif
-
                             {{ $threads->onEachSide(0)->links() }}
                         </div>
                         @foreach($threads as $thread)

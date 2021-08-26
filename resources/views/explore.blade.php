@@ -31,7 +31,7 @@
                 <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
                 {{ __('Board index') }}
             </a>
-            <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+            <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
             <span class="current-link-path unselectable">{{ __('Explore') }}</span>
         </div>
     </div>
@@ -56,9 +56,9 @@
             </div>
         @endif
         <h1 class="fs24 forum-color no-margin mb8">{{ __("Popular discussions across all forums") }}</h1>
-        <div class="flex space-between py4 stick-after-header">
+        <div class="flex space-between stick-after-header">
             <div class="relative">
-                <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
+                <div class="flex align-center forum-color button-with-suboptions pointer fs13">
                     <span class="mr4 gray">{{ __('Sort by') }}:</span>
                     <svg class="size14 sort-by-icon mr4" fill="#262626" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path d="{{ $sort_icon }}"/>

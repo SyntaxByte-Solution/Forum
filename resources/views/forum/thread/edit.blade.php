@@ -159,21 +159,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="thread-add-uploaded-medias-container flex my4">
+                <!-- the following div will be used to clone uploaded images -->
+                <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
+                    <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">
+                    <div class="close-thread-media-upload x-close-container-style remove">
+                        <span class="x-close unselectable">✖</span>
+                    </div>
+                    <div class="thread-add-video-indicator full-center none">
+                        <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
+                    </div>
+                    <input type="hidden" class="uploaded-media-index" value="-1">
+                    <input type="hidden" class="uploaded-media-genre" value="">
+                </div>
+                <div id="thread-uploads-wrapper" class="thread-add-uploaded-medias-container flex my4">
                     <input type="hidden" class="uploaded-images-counter" value="0" autocomplete="off">
                     <input type="hidden" class="uploaded-videos-counter" value="0" autocomplete="off">
-                    <!-- the following div will be used to clone uploaded images -->
-                    <div class="thread-add-uploaded-media relative none thread-add-uploaded-media-projection-model">
-                        <img src="" class="thread-add-uploaded-image move-to-middle none" alt="">
-                        <div class="close-thread-media-upload x-close-container-style remove">
-                            <span class="x-close unselectable">✖</span>
-                        </div>
-                        <div class="thread-add-video-indicator full-center none">
-                            <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
-                        </div>
-                        <input type="hidden" class="uploaded-media-index" value="-1">
-                        <input type="hidden" class="uploaded-media-genre" value="">
-                    </div>
                     @php
                         $count = 0;
                     @endphp

@@ -401,8 +401,8 @@ class ThreadController extends Controller
                 abort(422, $validator->errors());
             } else {
                 foreach($request->images as $image) {
-                    $image->store(
-                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', 'public'
+                    $image->storeAs(
+                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', $image->getClientOriginalName(), 'public'
                     );
                 }
 
@@ -424,8 +424,8 @@ class ThreadController extends Controller
                 abort(422, $validator->errors());
             } else {
                 foreach($request->videos as $video) {
-                    $video->store(
-                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', 'public'
+                    $video->storeAs(
+                        'users/' . $thread->user->id . '/threads/' . $thread->id . '/medias', $video->getClientOriginalName(), 'public'
                     );
                 }
 

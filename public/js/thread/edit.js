@@ -1,6 +1,17 @@
 // Handle visibility editing
 handle_thread_visibility_switch($('.visibility-box'));
 
+let last_media_count = $('#thread-uploads-wrapper .uploaded-media-url').last();
+if(last_media_count.length) {
+  let url = last_media_count.val();
+  let filename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+
+  last_media_count = parseInt(filename) + 1;
+} else {
+  last_media_count = 0;
+}
+
+
 let placeholder = $('#placeholder').val();
 $('.content-container textarea').each(function() {
   var content_editor = new SimpleMDE({
@@ -82,8 +93,13 @@ $('.edit-thread').on('click', function() {
             let filename = uploaded_thread_images_assets[i][1].name.toLowerCase();
             // Get file extension with the preceding dot (ex: file.jpg => .jpg)
             let ext = filename.substr(filename.lastIndexOf('.'));
-            // Then we store the file with the combination of counter and extension to preserve the order when saving files
-            filename = uploaded_thread_images_assets[i][0] + ext;
+            /**
+             * Here to preserve the order is little more different than storing media the first time
+             * First we need to take the last already uploaded media's name (If exists) from it's source
+             * and add 1 to that counter
+             */
+            filename = last_media_count + ext;
+            last_media_count++;
             form_data.append('images[]', uploaded_thread_images_assets[i][1], filename);
         }
     }
@@ -96,7 +112,8 @@ $('.edit-thread').on('click', function() {
             // Get file extension with the preceding dot (ex: file.jpg => .jpg)
             let ext = filename.substr(filename.lastIndexOf('.'));
             // Then we store the file with the combination of counter and extension to preserve the order when saving files
-            filename = uploaded_thread_videos_assets[i][0] + ext;
+            filename = last_media_count + ext;
+            last_media_count++;
             form_data.append('videos[]', uploaded_thread_videos_assets[i][1], filename);
         }
     }

@@ -349,7 +349,7 @@ $('.reply-to-thread').click(function() {
     return false;
 });
 
-$('.share-thread').click(function(event) {
+$('.share-thread').on('click', function(event) {
     event.preventDefault();
 
     let data = {
@@ -2364,7 +2364,7 @@ $("#thread-photos").on('change', function(event) {
      * Otherwise: we have to take only 15 from 18
      */
     if(validated_images.length + uploaded_thread_images_assets.length > 20
-        || validated_images.length + already_uploaded_thread_images_assets.length > 20) {
+        || validated_images.length + uploaded_thread_images_assets.length + already_uploaded_thread_images_assets.length > 20) {
         media_container.find('.tame-image-limit').removeClass('none');
         validated_images = validated_images.slice(0, 20-(uploaded_thread_images_assets.length+already_uploaded_thread_images_assets.length));
     }
@@ -2392,7 +2392,9 @@ $("#thread-photos").on('change', function(event) {
         let images_counter = parseInt(upload_images_index.val()) + 1;
         upload_images_index.val(images_counter);
 
-        let global_medias_count = images_counter 
+        let global_medias_count = images_counter
+        + already_uploaded_thread_images_assets.length
+        + already_uploaded_thread_videos_assets.length
         + parseInt($('.thread-add-uploaded-medias-container').find('.uploaded-videos-counter').val());
 
         // We get the last uploaded image container
@@ -2426,6 +2428,7 @@ $("#thread-videos").on('change', function(event) {
     /**
      * IMPORTANT: see notices inside thread-image change event handler above
      */
+    console.log(already_uploaded_thread_videos_assets.length);
      let media_container = $(this);
      while(!media_container.hasClass('thread-add-media-section')) {
          media_container = media_container.parent();    
@@ -2445,7 +2448,7 @@ $("#thread-videos").on('change', function(event) {
 
     /** First let's limit the number of uploaded files */
     if(videos.length + uploaded_thread_videos_assets.length > 4 
-        || videos.length + already_uploaded_thread_videos_assets.length > 4) {
+        || videos.length + uploaded_thread_videos_assets.length + already_uploaded_thread_videos_assets.length > 4) {
         videos = videos.slice(0, 4-(uploaded_thread_videos_assets.length+already_uploaded_thread_videos_assets.length));
         media_container.find('.tame-video-limit').removeClass('none');
     } else {
@@ -2465,7 +2468,9 @@ $("#thread-videos").on('change', function(event) {
         let videos_counter = parseInt(upload_videos_index.val()) + 1;
         upload_videos_index.val(videos_counter);
         
-        let global_medias_count = videos_counter 
+        let global_medias_count = videos_counter
+            + already_uploaded_thread_images_assets.length
+            + already_uploaded_thread_videos_assets.length
             + parseInt($('.thread-add-uploaded-medias-container').find('.uploaded-images-counter').val());
         
         // We get the last uploaded video container
@@ -2474,8 +2479,6 @@ $("#thread-videos").on('change', function(event) {
         last_uploaded_video.find('.uploaded-media-genre').val('video'); // this is useful when close button is pressed in order for us to know from where we should delete the uploaded file(either from videos array container/image array container)
         
         last_uploaded_video.find('.thread-add-video-indicator').removeClass('none');
-
-
 
         last_uploaded_video.removeClass('none thread-add-uploaded-media-projection-model');
         if(global_medias_count >= 5) {
@@ -2558,7 +2561,8 @@ function handle_close_uploaded_media(container) {
         // After removeing the component we need to adjust indexes
         adjust_uploaded_medias_indexes();
 
-        global_counter = parseInt(container.find('.uploaded-images-counter').val()) + parseInt(container.find('.uploaded-videos-counter').val());
+        global_counter = 
+            $('#thread-uploads-wrapper .thread-add-uploaded-media').length;
         if(global_counter <= 4) {
             $('.thread-add-uploaded-medias-container').removeClass('scrollx');
         }

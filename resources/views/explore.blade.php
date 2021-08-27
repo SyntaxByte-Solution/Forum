@@ -127,11 +127,6 @@
         <div class="line-separator"></div>
         <div id="banner-ad" style="width: 300px; height: 250px; margin: 0 auto" class="full-center">
             <h2>ADS HERE</h2>
-            <script>
-                // googletag.cmd.push(function() {
-                // googletag.display('banner-ad');
-                // });
-            </script>
         </div>
         @include('partials.right-panels.feedback')
     </div>

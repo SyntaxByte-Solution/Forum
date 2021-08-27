@@ -288,8 +288,5 @@
                 </div>
             </div>
         </section>
-        <script defer>    
-            $('.thread-component-follow-box').remove();
-        </script>
     </div>
 @endsection

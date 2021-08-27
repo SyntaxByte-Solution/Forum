@@ -1,27 +1,7 @@
 @extends('layouts.app')
 
 @prepend('scripts')
-    <script type="application/javascript" defer>
-        $(document).ready(function() { 
-            console.log('prepend inline script');
-            handle_mark_as_read();
-
-            $('.header-button-counter-indicator').css('opacity', '0');
-            let element = $('.notification-button');
-            element.off();
-
-            @if($user->notifs->count() > 8)
-            $(window).scroll(function() {
-                console.log('test');
-                if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                    if(button = $('.notifications-load-scroll')) {
-                        loadNotifications(button);
-                    }
-                }
-            });
-            @endif
-        });
-    </script>
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
 @endprepend
 
 @push('styles')

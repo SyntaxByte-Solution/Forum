@@ -1,3 +1,7 @@
+// The reason why we move this from profile page (inline script) to here is because we're going to
+// use Content Security Policy
+$('.thread-component-follow-box').remove();
+
 $('.followers-display').click(function() {
     $('.followers-viewer').css('display', 'block');
     $('.followers-viewer').animate({

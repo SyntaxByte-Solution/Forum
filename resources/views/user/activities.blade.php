@@ -4,6 +4,10 @@
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
 @endpush
 
+@push('scripts')
+    <script src="{{ asset('js/activities.js') }}" defer></script>
+@endpush
+
 @section('header')
     @guest
         @include('partials.hidden-login-viewer')
@@ -116,17 +120,4 @@
             </div>
         </div>
     </div>
-    <script defer>
-        window.onload = function() {
-            let urlParams = new URLSearchParams(window.location.search);
-
-            if(urlParams.has('section')) {
-                $('.activity-section-name').each(function() {
-                    if($(this).val() == urlParams.get('section')) {
-                        $(this).parent().click();
-                    }
-                })
-            }
-        };
-    </script>
 @endsection

@@ -79,6 +79,9 @@ class SearchController extends Controller
     }
 
     public function search_advanced_results(Request $request) {
+        $tab = 'all';
+        $tab_title = __('All');
+
         $filters = [];
         $forums = Forum::all();
 
@@ -274,6 +277,8 @@ class SearchController extends Controller
             ->with(compact('forums'))
             ->with(compact('threads'))
             ->with(compact('pagesize'))
+            ->with(compact('tab'))
+            ->with(compact('tab_title'))
             ->with(compact('search_query'));
     }
 

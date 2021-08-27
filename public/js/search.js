@@ -50,3 +50,20 @@ function removeURLParameter(url, parameter) {
     }
     return url;
 }
+
+let forum_exists = category_exists = false;
+let forum;
+$('.removed-filter').each(function() {
+    if($(this).val() == 'forum') {
+        forum = $(this).parent().find('.adv-search-remove-filter');
+        forum_exists = true;
+    }
+    if($(this).val() == 'category') {
+        category_exists = true;
+    }
+});
+
+if(forum_exists && category_exists) {
+    forum.parent().css('padding-right', '8px')
+    forum.remove();
+}

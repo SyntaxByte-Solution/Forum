@@ -4,6 +4,10 @@
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
 @endpush
 
+@push('scripts')
+    <script src="{{ asset('js/settings.js') }}" defer></script>
+@endpush
+
 @section('header')
     @guest
         @include('partials.hidden-login-viewer')
@@ -148,9 +152,6 @@
                                 <textarea name="about" id="about" class="block styled-textarea move-to-middle countable-textarea" maxlength="1400" spellcheck="false" autocomplete="off" form="profile-edit-form" placeholder="{{ __('Something about you') }}">{{ $user->about }}</textarea>
                                 <p class="block my4 mr4 unselectable fs12 gray textarea-counter-box move-to-right width-max-content"><span class="textarea-chars-counter"></span>/1400</p>
                                 <input type="hidden" class="max-textarea-characters" value="1400">
-                                <script>
-                                    $('.textarea-chars-counter').text($('#about').val().length);
-                                </script>
                             </div>
                             
                         </div>

@@ -3,11 +3,12 @@
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="{{ asset('js/simplemde.js') }}"></script>
+    <script src="{{ asset('js/thread/edit.js') }}" defer></script>
 @endpush
 
 @section('header')
@@ -30,6 +31,17 @@
             </div>
             <div class="error-container none">
                 <p class="error-message"></p>
+            </div>
+            <div class="input-container">
+                @error('category_id')
+                    <p class="error" role="alert">{{ $message }}</p>
+                @enderror
+                <label for="category" class="label-style-1">{{ __('Category') }} <span class="error ml4 none">*</span></label>
+                <select name="category_id" id="category" class="dropdown-style">
+                    @foreach($categories as $c)
+                        <option value="{{ $c->id }}" @if($c->slug == $category->slug) selected @endif>{{ $c->category }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="input-container">
                 <label for="subject" class="label-style-1" style="margin: 0">{{ __('Subject') }} <span class="error ml4 none">*</span></label>
@@ -74,22 +86,55 @@
                         </div>
                     </div>
                 </div>
-                <input type="text" id="subject" name="subject" class="full-width input-style-1" value="{{ $thread->subject }}" required autocomplete="off" placeholder="eg. Kifach nwli b7al Arnold f simana ?">
+                <input type="text" id="subject" name="subject" class="full-width styled-input" value="{{ $thread->subject }}" required autocomplete="off" placeholder="eg. Kifach nwli b7al Arnold f simana ?">
                 @error('subject')
                     <p class="error" role="alert">{{ $message }}</p>
                 @enderror
             </div>
-
-            <div class="input-container">
-                @error('category_id')
-                    <p class="error" role="alert">{{ $message }}</p>
-                @enderror
-                <label for="category" class="label-style-1">{{ __('Category') }} <span class="error ml4 none">*</span></label>
-                <select name="category_id" id="category" class="dropdown-style">
-                    @foreach($categories as $c)
-                        <option value="{{ $c->id }}" @if($c->slug == $category->slug) selected @endif>{{ $c->category }}</option>
-                    @endforeach
-                </select>
+            <div class="input-container content-container" style='margin-top: 10px'>
+                <input type="hidden" id="placeholder" value="{{ __('Update your discussion') }}">
+                <label for="content" class="label-style-1">{{ __('Content') }} <span class="error ml4 none">*</span></label>
+                <p class="mini-label" style='margin-bottom: 6px'>Include all the information someone would need to answer your question</p>
+                <textarea name="content" id="content">{{ $thread->content }}</textarea>
+                <style>
+                    .CodeMirror,
+                    .CodeMirror-scroll {
+                        max-height: 180px;
+                        min-height: 180px;
+                        border-color: #bbb;
+                        border-radius: 0 0 4px 4px;
+                        border-top-color: #dbdbdb;
+                    }
+                    .CodeMirror-scroll:focus {
+                        border-color: #64ceff;
+                        box-shadow: 0 0 0px 3px #def2ff;
+                    }
+                    .editor-toolbar {
+                        border: 1px solid #bbb;
+                        border-bottom: unset;
+                        border-radius: 4px 4px 0 0 !important;
+                        padding: 0 4px;
+                        opacity: 0.8;
+                        height: 38px;
+                        background-color: #f2f2f2;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .editor-toolbar .fa-arrows-alt, .editor-toolbar .fa-columns, 
+                    .fa-question-circle, .fa-link, .fa-picture-o, .fa-link,
+                    .share-post-form .separator:nth-of-type(2), .editor-statusbar {
+                        display: none !important;
+                    }
+                </style>
+            </div>
+            <div class="flex">
+                <div class="flex align-center move-to-right">
+                    <label for="thread-post-switch" class="my4 mr4 flex align-center">
+                        <svg class="size17 flex mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><circle cx="286.31" cy="273.61" r="20.21"/><circle cx="205.48" cy="273.61" r="20.21"/><circle cx="124.65" cy="273.61" r="20.21"/><path d="M437.87,249.45v44.37H377.24V262.45A130.67,130.67,0,0,1,336.83,255V374.65H160.62l-13.74,40.42-13.74-40.42h-59V172.58h182a131.13,131.13,0,0,1-6.64-40.42H155V71.54H263.84A131.48,131.48,0,0,1,287.36,39,4.66,4.66,0,0,0,284,31.13H152.13a37.58,37.58,0,0,0-37.58,37.58v63.45H70.09a36.57,36.57,0,0,0-36.37,36.38V378.69a36.57,36.57,0,0,0,36.37,36.38h34l19.2,52.33a28.08,28.08,0,0,0,24.25,13.74h5a28.48,28.48,0,0,0,22.63-20.2l14.55-45.87H340.87a36.57,36.57,0,0,0,36.37-36.38V334.24H440.7a37.59,37.59,0,0,0,37.58-37.59V230.49a4.67,4.67,0,0,0-7.89-3.37A131.55,131.55,0,0,1,437.87,249.45Z"/><path d="M422.66,69A75.55,75.55,0,0,0,318,173.66ZM444,90.34A75.55,75.55,0,0,1,339.34,195ZM381,26.25A105.75,105.75,0,1,1,275.25,132,105.76,105.76,0,0,1,381,26.25Z" style="fill-rule:evenodd"/></svg>
+                        {{ __('Turn off replies on this thread') }}: 
+                    </label>
+                    <input type="checkbox" id="thread-post-switch" @if($thread->replies_off) checked @endif>
+                </div>
             </div>
             <div class="input-container">
                 <label for="category" class="label-style-1">{{ __('Medias') }}</label>
@@ -134,101 +179,25 @@
                     @endphp
                     @if($thread->has_media)
                         @foreach($medias as $media)
-                        <div class="thread-add-uploaded-media relative">
-                            <img src="@if($media['type'] == 'image'){{ asset($media['frame']) }}@endif" class="thread-add-uploaded-image move-to-middle" id="media{{ $count }}" alt="">
-                            <div class="close-thread-media-upload-edit x-close-container-style remove">
-                                <span class="x-close unselectable">✖</span>
+                            <div class="thread-add-uploaded-media relative">
+                                <img src="@if($media['type'] == 'image'){{ asset($media['frame']) }}@endif" class="thread-add-uploaded-image move-to-middle" id="media{{ $count }}" alt="">
+                                <div class="close-thread-media-upload-edit x-close-container-style remove">
+                                    <span class="x-close unselectable">✖</span>
+                                </div>
+                                @if($media['type'] == 'video')
+                                <div class="thread-add-video-indicator full-center">
+                                    <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
+                                </div>
+                                @endif
+                                <input type="hidden" class="uploaded-media-index" value="-1">
+                                <input type="hidden" class="uploaded-media-genre" value="{{ $media['type'] }}">
+                                <input type="hidden" class="uploaded-media-url" value="{{ asset($media['frame']) }}">
                             </div>
-                            @if($media['type'] == 'video')
-                            <div class="thread-add-video-indicator full-center">
-                                <svg class="size36" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 271.95 271.95"><path d="M136,272A136,136,0,1,0,0,136,136,136,0,0,0,136,272ZM250.2,136A114.22,114.22,0,1,1,136,21.76,114.35,114.35,0,0,1,250.2,136ZM112.29,205a21.28,21.28,0,0,0,8.24,1.66,21.65,21.65,0,0,0,15.34-6.37l48.93-49a21.75,21.75,0,0,0,0-30.77L135.84,71.64a21.78,21.78,0,0,0-15.4-6.37,20.81,20.81,0,0,0-8.15,1.66A21.58,21.58,0,0,0,99,87v97.91A21.6,21.6,0,0,0,112.29,205Zm8.5-116.42V87l49,48.95-48.95,49Z"/></svg>
-                            </div>
-                            <script type="module" defer>
-                                let image = $('#media{{ $count }}');
-                                let video_url = "{{ asset($media['frame']) }}";
-
-                                var GetFileBlobUsingURL = function (url, convertBlob) {
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open("GET", url);
-                                        xhr.responseType = "blob";
-                                        xhr.addEventListener('load', function() {
-                                            convertBlob(xhr.response);
-                                        });
-                                        xhr.send();
-                                };
-                                var blobToFile = function (blob, name) {
-                                        blob.lastModifiedDate = new Date();
-                                        blob.name = name;
-                                        return blob;
-                                };
-                                var GetFileObjectFromURL = function(filePathOrUrl, convertBlob) {
-                                    GetFileBlobUsingURL(filePathOrUrl, function (blob) {
-                                        convertBlob(blobToFile(blob, 'testFile.jpg'));
-                                    });
-                                };
-
-                                GetFileObjectFromURL(video_url, function (fileObject) {
-                                    get_thumbnail(fileObject, 1.5, image.parent()).then(value => {
-                                        image.attr("src", value);
-                                    });
-                                });
-                                image.parent().imagesLoaded(function() {
-                                    handle_image_dimensions(image);
-                                });
-                                already_uploaded_thread_videos_assets.push(video_url);
-                            </script>
-                            @elseif($media['type'] == 'image')
-                            <script type="module" defer>
-                                let image = $('#media{{ $count }}');
-                                let image_url = "{{ asset($media['frame']) }}";
-                                image.parent().imagesLoaded(function() {
-                                    handle_image_dimensions(image);
-                                });
-                                already_uploaded_thread_images_assets.push(image_url);
-                            </script>
-                            @endif
-                            <input type="hidden" class="uploaded-media-index" value="-1">
-                            <input type="hidden" class="uploaded-media-genre" value="">
-                            <input type="hidden" class="uploaded-media-url" value="{{ $media['frame'] }}">
-                        </div>
-                        @php $count++; @endphp
-                    @endforeach
-                @endif
+                            @php $count++; @endphp
+                        @endforeach
+                    @endif
+                </div>
             </div>
-            <script type="module" defer>
-                console.log('uploaded images: ');
-                console.log(already_uploaded_thread_images_assets);
-                console.log('uploaded videos: ');
-                console.log(already_uploaded_thread_videos_assets);
-            </script>
-            <div class="input-container" style='margin-top: 10px'>
-                <label for="content" class="label-style-1">{{ __('Content') }} <span class="error ml4 none">*</span></label>
-                <p class="mini-label" style='margin-bottom: 6px'>Include all the information someone would need to answer your question</p>
-                <textarea name="content" id="content"></textarea>
-                <script>
-                    var simplemde = new SimpleMDE();
-                    simplemde.value(htmlDecode(`{{$thread->content}}`));
-
-                    function htmlDecode(input){
-                        var e = document.createElement('textarea');
-                        e.innerHTML = input;
-                        // handle case of empty input
-                        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-                    }
-                </script>
-                <style>
-                    .CodeMirror,
-                    .CodeMirror-scroll {
-                        max-height: 200px;
-                        min-height: 200px;
-                    }
-                </style>
-            </div>
-            <div class="flex align-center">
-                <p class="my4 mr4">{{ __('Turn off replies on this thread') }}: </p>
-                <input type="checkbox" id="thread-post-switch" @if($thread->replies_off) checked @endif>
-            </div>
-            <div class="simple-half-line-separator"></div>
             <div class="input-container">
                 <input type="hidden" class="thread_id" value="{{ $thread->id }}">
                 <input type="submit" class="button-style block edit-thread" value="{{ __('Save Changes') }}">
@@ -243,7 +212,4 @@
     <div id="right-panel">
         @include('partials.right-panels.forum-guidelines-panel-section')
     </div>
-    <script type="module" defer>
-        handle_thread_visibility_switch($('.visibility-box'));
-    </script>
 @endsection

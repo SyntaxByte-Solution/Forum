@@ -418,128 +418,6 @@ function handle_turn_off_posts(button) {
     });
 }
 
-let already_uploaded_thread_images_assets = [];
-let already_uploaded_thread_videos_assets = [];
-let edit_deleted_medias = [];
-$('.edit-thread').on('click', function() {
-    let button = $(this);
-    let button_text_ing = button.parent().find('.text-button-ing').val();
-    let button_text_no_ing = button.parent().find('.text-button-no-ing').val();
-    let thread_id = $(this).parent().find('.thread_id').val();
-
-    let form_data = new FormData();
-    form_data.append('_token' ,csrf);
-    form_data.append('subject' ,$('#subject').val());
-    form_data.append('category_id' ,$('#category').val());
-    form_data.append('content' , simplemde.value());
-    form_data.append('_method', 'patch');
-
-    if(edit_deleted_medias.length) {
-        form_data.append('removed_medias', JSON.stringify(edit_deleted_medias));
-    }
-
-    if(uploaded_thread_images_assets.length) {
-        // Append image files
-        for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
-            // First filename
-            let filename = uploaded_thread_images_assets[i][1].name.toLowerCase();
-            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
-            let ext = filename.substr(filename.lastIndexOf('.'));
-            // Then we store the file with the combination of counter and extension to preserve the order when saving files
-            filename = uploaded_thread_images_assets[i][0] + ext;
-            form_data.append('images[]', uploaded_thread_images_assets[i][1], filename);
-        }
-    }
-    // Checking videos existence in the thread
-    if(uploaded_thread_videos_assets.length) {
-        // Append videos files
-        for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
-            // First filename
-            let filename = uploaded_thread_videos_assets[i][1].name.toLowerCase();
-            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
-            let ext = filename.substr(filename.lastIndexOf('.'));
-            // Then we store the file with the combination of counter and extension to preserve the order when saving files
-            filename = uploaded_thread_videos_assets[i][0] + ext;
-            form_data.append('videos[]', uploaded_thread_videos_assets[i][1], filename);
-        }
-    }
-
-    if($('#thread-post-switch').prop("checked") == true) {
-        form_data.append('replies_off', 1);
-    } else {
-        form_data.append('replies_off', 0);
-    }
-
-    if(form_data.get('subject') == '') {
-        $('#subject').parent().find('.error').removeClass('none');
-        $('.error-container').removeClass('none');
-        $('.error-message').text(button.parent().find('.subject-required-error').val());
-        window.scrollTo(0, 0);
-        return;
-    } else {
-        $('#subject').parent().find('.error').addClass('none');
-    }
-
-    if(form_data.get('category_id') == '' || form_data.get('category_id') == 0) {
-        $('#category').parent().find('.error').removeClass('none');
-        window.scrollTo(0, 0);
-        return;
-    } else {
-        $('#category').parent().find('.error').addClass('none');
-        $('.error-container').addClass('none');
-    }
-
-    if(form_data.get('content') == '') {
-        $('#content').parent().find('.error').removeClass('none');
-        $('.error-container').removeClass('none');
-        $('.error-message').text(button.parent().find('.content-required-error').val());
-        window.scrollTo(0, 0);
-        return;
-    } else {
-        $('.error-container').addClass('none');
-        $('#content').parent().find('.error').addClass('none');
-        
-        button.val(button_text_ing);
-        button.attr("disabled","disabled");
-        button.attr('style', 'background-color: #acacac; cursor: default');
-
-        $.ajax({
-            type: 'post',
-            data: form_data,
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            url: '/thread/'+thread_id,
-            success: function(response) {
-                document.location.href = response;
-            },
-            error: function(response) {
-                console.log(response);
-                // let er;
-                // let error = JSON.parse(response.responseText).error;
-                // if(error) {
-                //     er = JSON.parse(response.responseText).error;
-                // } else {
-                //     let errorObject = JSON.parse(response.responseText).errors;
-                //     er = errorObject[Object.keys(errorObject)[0]][0];
-                // }
-
-                
-                // $('.error-container').removeClass('none');
-                // $('.error-message').text(er);
-                // window.scrollTo(0, 0);
-            },
-            complete: function() {
-                button.val(button_text_no_ing);
-                button.attr("disabled","disabled");
-                button.attr('style', 'background-color: #acacac; cursor: default');
-            }
-        })
-    }
-    
-    return false;
-})
-
 $('#category-dropdown').change(function() {
     let forum_slug = $('#forum-slug').val();
     let category_slug = $('#category-dropdown').val();
@@ -561,7 +439,6 @@ function handle_copy_thread_link(button) {
         $(this).parent().find('input').trigger('select');
         document.execCommand("copy");
         $(this).parent().parent().css('display', 'none');
-        console.log($(this).parent().parent());
         basic_notification_show($(this).find('.copied').val(), 'basic-notification-round-tick');
 
         event.stopPropagation();
@@ -1220,7 +1097,6 @@ function handle_up_vote(button) {
             // here we have 2 cases:
             // 1- case where the user is not voted at all we only need to add 1
             if(!up_vote.hasClass('none') && !down_vote.hasClass('none')){
-                console.log('up not voted at all');
                 vote_box.find('.votable-count').text(vote_count+1);
                 up_vote.addClass('none');
                 up_vote_filled.removeClass('none');
@@ -1373,8 +1249,6 @@ function handle_vote_sync(button, vote_icons_state, new_vote_count) {
 
             break;
         case 'inside':
-            console.log('from inside');
-            console.log(opened_thread_component);
             if(votable_type == 'thread') {
                 votable_box = opened_thread_component.find('.vote-box');
             } else if(votable_type == 'post') {
@@ -2154,11 +2028,6 @@ function handle_follow_resource(button) {
     
         let followable_id = follow_box.find('.followable-id').val();
         let followable_type = follow_box.find('.followable-type').val();
-    
-        console.log('follow: '+ follow_text);
-        console.log('following: '+ following_text);
-        console.log('unfollow: '+ unfollow_text);
-        console.log('unfollowing: '+ unfollowing_text);
 
         $.ajax({
             type: 'post',
@@ -2176,7 +2045,6 @@ function handle_follow_resource(button) {
                         
                         if(fid == followable_id && ftype == followable_type) {
                             if(fbox.find('.status').val() == '1') {
-                                console.log('unfollowing is done');
                                 fbox.find('.status').val(-1);
                                 fbox.find('.follow-notif-container').addClass('none');
                                 fbox.find('.follow-text-button .btn-txt').text(follow_text);
@@ -2336,7 +2204,6 @@ $('.thread-add-share').on('click', function(event) {
                         if(percentComplete >= 50) {
                             progress_bar_box.find('.progress-bar-percentage').css('color', 'white');
                         }
-                        console.log(percentComplete);
                 
                         if (percentComplete === 100) {
                             if(progress_bar_box.find('.text-above-progress-bar').length) {
@@ -2440,6 +2307,12 @@ $('.thread-add-share').on('click', function(event) {
     
     return false;
 });
+
+
+// The following three variables will be used in edit thread (look at /thread/edit.js)
+let already_uploaded_thread_images_assets = [];
+let already_uploaded_thread_videos_assets = [];
+let edit_deleted_medias = [];
 
 let uploaded_thread_images_assets = [];
 let uploaded_thread_videos_assets = [];
@@ -2621,7 +2494,8 @@ $("#thread-videos").on('change', function(event) {
         try {
             // get the frame at 1.5 seconds of the video file
             get_thumbnail(videos[i], 1.5, img.parent()).then(value => {
-                last_uploaded_video.find(".thread-add-uploaded-image").attr("src", value);
+                img.attr("src", value);
+                handle_image_dimensions(img);
             });
         } catch(e) {
             
@@ -3312,7 +3186,7 @@ function handle_viewer_media_logic(image) {
             let ratio = container_height * original_width / original_height;
             image.css('width', ratio + 'px');
         } else {
-            console.log('not right !');
+            
         }
     } else {
         image.css('height', '100%');
@@ -3442,7 +3316,6 @@ function handle_media_image_dimensions(image) {
 }
 
 function handle_thread_video_dimensions(video) {
-    console.log('video dimensions handling ..');
     let medias_container = video;
     while(!medias_container.hasClass('thread-medias-container')) {
         medias_container = medias_container.parent();
@@ -3841,8 +3714,6 @@ $('.submit-report').on('click', function() {
             setTimeout(function() {
                 report_container.find('.report-section').remove();
                 report_container.find('.already-reported-container').removeClass('none');
-
-                console.log(report_container.find('.already-reported-container'));
             }, 400);
             basic_notification_show(button.parent().find('.reported-text').val(), 'basic-notification-round-tick');
         },

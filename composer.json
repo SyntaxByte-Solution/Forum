@@ -15,7 +15,8 @@
         "laravel/framework": "8.51.0",
         "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5",
-        "pusher/pusher-php-server": "~3.0"
+        "pusher/pusher-php-server": "~3.0",
+        "spatie/laravel-csp": "^2.6"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -39,7 +39,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\AccountActivationCheck::class,
             \App\Http\Middleware\LastUserActivity::class,
-            // \App\Http\Middleware\XssSanitizer::class,
+            \App\Http\Middleware\XssSanitizer::class,
+            \Spatie\Csp\AddCspHeaders::class,
         ],
 
         'api' => [

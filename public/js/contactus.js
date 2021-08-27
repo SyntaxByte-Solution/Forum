@@ -31,7 +31,6 @@ $('.contact-send-message').on('click', function() {
         email.parent().find('.error').removeClass('none');
         return;
     } else if(!validateEmail(email.val().trim())) {
-        console.log('email is invalide');
         email.parent().find('.error').text('* ' + email.parent().find('.invalide-email').val());
         email.parent().find('.error').removeClass('none');
         return;
@@ -58,7 +57,6 @@ $('.contact-send-message').on('click', function() {
 
     let button = $(this);
     let spinner = button.parent().find('.spinner');
-    console.log(spinner);
     let btn_text_ing = button.parent().find('.btn-text-ing').val();
     let btn_text = button.parent().find('.btn-no-text-ing').val();
     button.val(btn_text_ing);
@@ -75,7 +73,6 @@ $('.contact-send-message').on('click', function() {
             location.reload();
         },
         error: function(response) {
-            console.log(response);
             spinner.addClass('opacity0');
             stop_spinner(spinner, '');
             button.attr('style', 'contact-spinner');

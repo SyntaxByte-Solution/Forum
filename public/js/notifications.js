@@ -1,4 +1,3 @@
-console.log('no prepending for inline scripts anymore');
 handle_mark_as_read();
 
 $('.header-button-counter-indicator').css('opacity', '0');

@@ -317,7 +317,6 @@ class ThreadController extends Controller
         $medias = [];
         if($thread->has_media) {
             $medias_urls = Storage::disk('public')->files('users/' . $user->id . '/threads/' . $thread->id . '/medias');
-            $medias = [];
             foreach($medias_urls as $media) {
                 $media_type;
                 $media_source = $media;

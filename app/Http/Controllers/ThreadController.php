@@ -204,7 +204,6 @@ class ThreadController extends Controller
             }
         }
 
-
         // Prevent user from sharing two threads with the same subject in the same category
         $duplicated_thread;        
         $duplicated_thread_url;        

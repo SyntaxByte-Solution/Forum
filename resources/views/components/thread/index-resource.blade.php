@@ -375,7 +375,7 @@
                         </div>
                     </div>
                     <!-- Only display report button in thread show page -->
-                    @if(request()->route()->getName() == 'thread.show')
+                    @if(request()->route()->getName() == 'thread.show' && auth()->user() && auth()->user()->id != $thread->user->id)
                     <div class="flex align-center ml4 report-thread-button-container">
                         <div class="@auth @if(auth()->user()->id != $thread->user->id) open-thread-report @endif @endauth @guest login-signin-button @endguest thread-react-hover" style="margin-right: 0px">
                             <svg class="size14 mr4" style="fill: #242424" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>

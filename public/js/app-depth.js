@@ -713,15 +713,26 @@ $('.toggle-container-button').click(function() {
         container.removeClass('none');
         container.addClass('block');
 
+        // box.find('.toggle-arrow').css({
+        //     rotate: '90deg'
+        // });
         box.find('.toggle-arrow').css({
-            rotate: '90deg'
+            transform:'rotate(90deg)',
+            '-ms-transform':'rotate(90deg)',
+            '-moz-transform':'rotate(90deg)',
+            '-webkit-transform':'rotate(90deg)',
+            '-o-transform':'rotate(90deg)'
         });
     } else {
         container.removeClass('block');
         container.addClass('none');
 
         box.find('.toggle-arrow').css({
-            rotate: '0deg'
+            transform:'rotate(0deg)',
+            '-ms-transform':'rotate(0deg)',
+            '-moz-transform':'rotate(0deg)',
+            '-webkit-transform':'rotate(0deg)',
+            '-o-transform':'rotate(0deg)'
         });
     }
     

@@ -327,7 +327,6 @@ function handle_post_events(post) {
     post.find('textarea').each(function() {
         var simplemde = new SimpleMDE({
             element: this,
-            placeholder: "{{ __('Edit Your reply') }}",
             hideIcons: ["guide", "heading", "link", "image"],
             spellChecker: false,
             status: false,

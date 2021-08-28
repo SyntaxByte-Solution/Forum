@@ -3,11 +3,11 @@
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="{{ asset('js/simplemde.js') }}" defer></script>
     <script src="{{ asset('js/fetch/category-threads-fetch.js') }}" defer></script>
     <script src="{{ asset('js/post.js') }}" defer></script>
 @endpush

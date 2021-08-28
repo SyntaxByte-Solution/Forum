@@ -180,14 +180,6 @@
             </div>
             <p class="reply-error error ml8 none"></p>
             <textarea name="content" id="viewer-reply-input"></textarea>
-            <script>
-                var viewer_reply_simplemde = new SimpleMDE({
-                    placeholder: '{{ __("Your reply here..") }}',
-                    hideIcons: ["guide", "heading", "link", "image"],
-                    spellChecker: false,
-                    showMarkdownLineBreaks: true,
-                });
-            </script>
             <style>
                 .thread-media-viewer-infos-content .editor-toolbar {
                     background-color: #f4f4f4;

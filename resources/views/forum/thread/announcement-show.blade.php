@@ -3,12 +3,13 @@
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
     <script src="{{ asset('js/post.js') }}" defer></script>
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="{{ asset('js/thread/announcement-show.js') }}" defer></script>
+    <script src="{{ asset('js/simplemde.js') }}"></script>
 @endpush
 
 
@@ -139,8 +140,8 @@
                             <style>
                                 .CodeMirror,
                                 .CodeMirror-scroll {
-                                    max-height: 160px;
-                                    min-height: 160px;
+                                    max-height: 120px;
+                                    min-height: 120px;
                                     border-color: #dbdbdb;
                                 }
                                 .CodeMirror-scroll:focus {
@@ -152,25 +153,16 @@
                                     opacity: 0.8;
                                     height: 38px;
                                     border-top-color: #dbdbdb;
-
+                                    background-color: #f2f2f2;
                                     display: flex;
                                     align-items: center;
                                 }
-                                .editor-toolbar .fa-arrows-alt {
-                                    margin-left: auto;
-                                }
-                                .editor-statusbar {
-                                    border-radius: 0px;
-                                }
-
-                                .fa-question-circle, .fa-link, .fa-picture-o, .fa-link {
+                                .editor-toolbar .fa-arrows-alt, .editor-toolbar .fa-columns, 
+                                .fa-question-circle, .fa-link, .fa-picture-o, .fa-link,
+                                .share-post-form .separator:nth-of-type(2), .editor-statusbar {
                                     display: none !important;
                                 }
-
-                                .share-post-form .separator:nth-of-type(2) {
-                                    display: none !important;
-                                }
-                            </style>
+                        </style>
                         </div>
                         <input type="hidden" name="thread_id" class="thread_id" value="{{ $announcement->id }}">
                         <input type='button' class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest" value="Post your reply">
@@ -199,16 +191,6 @@
                     </div>
                     @endif
                 </div>
-                <script>
-                    $('.share-post-form textarea').each(function() {
-                        var simplemde = new SimpleMDE({
-                            element: this,
-                            placeholder: "{{ __('Your reply here') }}",
-                            spellChecker: false,
-                        });
-                        simplemde.render();
-                    });
-                </script>
             </div>
         </div>
     </div>

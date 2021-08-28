@@ -1,3 +1,10 @@
+// SELF-XSS warning
+const warningTitleCSS = 'color:red; font-size:50px; font-weight: bold; -webkit-text-stroke: 1px black;';
+const warningDescCSS = 'font-size: 14px;';
+console.log('%cWARNING', warningTitleCSS);
+console.log("%cThis is a browser feature intended for developers. If someone told you to copy and paste something here to enable a feature or 'hack' someone's account, it is a scam and will give them access to your gladiator account.", warningDescCSS);
+console.log('%cSee https://en.wikipedia.org/wiki/Self-XSS for more information.', warningDescCSS);
+
 var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
@@ -2866,7 +2873,14 @@ function handle_open_media_viewer(thread) {
                         last_opened_thread = thread_id;
                         $('.thread-media-viewer-infos-header-pattern').addClass('none');
                         $('.tmvisc').html(thread_infos_section);
-
+                        // Bind mde to viewer reply editor
+                        $('#viewer-reply-container textarea').each(function() {
+                            let viewer_reply_simplemde = new SimpleMDE({
+                                hideIcons: ["guide", "heading", "link", "image"],
+                                spellChecker: false,
+                                showMarkdownLineBreaks: true,
+                            });
+                        });
                         // ----- HANDLING EVENTS -----
                         $('.tmvisc').find('.follow-resource').not('#viewer-replies-box .follow-resource').each(function() {
                             handle_follow_resource($(this));
@@ -4260,4 +4274,13 @@ $('.remove-top-informer-container').on('click', function() {
     clearTimeout(top_informer_timeout);
     $('.top-informer-box').addClass('none');
     $('.top-informer-box').find('.top-informer-text').text('');
+});
+
+
+$('.thread-add-container textarea').each(function() {
+    let simplemde = new SimpleMDE({
+        hideIcons: ["guide", "heading", "link", "image"],
+        spellChecker: false,
+        showMarkdownLineBreaks: true,
+    });
 });

@@ -1,9 +1,9 @@
 @push('styles')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="{{ asset('js/simplemde.js') }}"></script>
 @endpush
 
 @php
@@ -14,6 +14,7 @@
 
 <div id="thread-add-container-size">
     <div class="thread-add-container">
+        <input type="hidden" class="placeholder" value="{{ __('Start your discussion content here') }}..">
         <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
         <input type="hidden" class="category" value="{{ $category->id }}">
         <div class="thread-add-header flex align-center">
@@ -44,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            <svg class="size12 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+            <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
             <div class="relative">
                 <div>
                     <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to fs12">
@@ -106,22 +107,7 @@
         <div>
             <label for="content" class="flex align-center bold forum-color mx8 mb4">{{ __('Content') }}<span class="error ml4 none">*</span></label>
             <input type="hidden" class="required-text" value="{{ __('Content field is required') }}">
-            <textarea name="content" id="content"></textarea>
-            <script>
-                var simplemde = new SimpleMDE({
-                    placeholder: '{{ __("Add a discussion content here..") }}',
-                    hideIcons: ["guide", "heading", "link", "image"],
-                    spellChecker: false,
-                });
-                simplemde.value();
-
-                function htmlDecode(input){
-                    var e = document.createElement('textarea');
-                    e.innerHTML = input;
-                    // handle case of empty input
-                    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-                }
-            </script>
+            <textarea name="content" id="content" placeholder="{{ __('Start your a discussion content here') }}.."></textarea>
         </div>
         <div class="thread-add-media-section px8">
             <div class="thread-add-media-error px8 my8">
@@ -205,12 +191,8 @@
                 display: flex;
                 align-items: center;
             }
-            .editor-toolbar .fa-arrows-alt {
-                margin-left: auto;
-                margin-right: 10px;
-            }
-            .editor-statusbar {
-                border-radius: 0px;
+            .share-post-form .separator:nth-of-type(2), .editor-statusbar {
+                display: none !important;
             }
         </style>
     </div>

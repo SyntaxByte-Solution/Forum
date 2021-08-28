@@ -3,12 +3,13 @@
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/post.js') }}" defer></script>
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script src="{{ asset('js/simplemde.js') }}"></script>
+<script src="{{ asset('js/thread/show.js') }}" defer></script>
+<script src="{{ asset('js/post.js') }}" defer></script>
 @endpush
 
 
@@ -58,7 +59,7 @@
                                 </label>
                             </div>
                             <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
-                            <textarea name="subject" class="reply-content" id="post-reply"></textarea>
+                            <textarea name="subject" class="reply-content" id="post-reply" placeholder="{{ __('Your reply here') }}.."></textarea>
                         </div>
                         <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
                         <button class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest">
@@ -90,18 +91,6 @@
                     </div>
                     @endif
                 </div>
-                <script>
-                    $('.share-post-form textarea').each(function() {
-                        var simplemde = new SimpleMDE({
-                            element: this,
-                            placeholder: "{{ __('Your reply here') }}",
-                            hideIcons: ["guide", "heading", "link", "image"],
-                            spellChecker: false,
-                            showMarkdownLineBreaks: true,
-                        });
-                        simplemde.render();
-                    });
-                </script>
                 <style>
                     .CodeMirror,
                     .CodeMirror-scroll {

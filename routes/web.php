@@ -25,19 +25,19 @@ use App\Http\Middleware\AccountActivationCheck;
 */
 
 // for sql testing purposes
-\Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
-    Log::info( json_encode($query->sql) );
-    Log::info( json_encode($query->bindings) );
-    Log::info( json_encode($query->time));
-});
+// \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
+//     Log::info( json_encode($query->sql) );
+//     Log::info( json_encode($query->bindings) );
+//     Log::info( json_encode($query->time));
+// });
 
 Route::get('/test', function() {
     $user = auth()->user();
-    $thread = $user->threads->first();
+    // $thread = $user->threads->first();
     
     //dd(Thread::hydrate(DB::select('select * from users')));
 
-    dd(DB::select('SELECT * FROM users WHERE firstname = ?', ['mouad']));
+    dd(count(User::query()->excludedeactivatedaccount()->getQuery()->wheres));
 
 });
 

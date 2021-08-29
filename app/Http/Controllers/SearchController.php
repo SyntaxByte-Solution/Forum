@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 use App\Models\{Thread, User, Forum, Vote, Like};
 
@@ -33,10 +34,9 @@ class SearchController extends Controller
 
         
         $forums = Forum::all();
+        $query = $this->ksearch('threads', $search_query, ['subject', 'content'], ['LIKE']);
         $threads = Thread::whereIn('id', array_column(
-            DB::select(
-                $this->search_query_generator('threads', $search_query, ['subject', 'content'], ['LIKE'], ['OR'])
-            ), 'id'
+            DB::select($query['query'], $query['bindings']), 'id'
         ));
 
         if($request->has('tab')) {
@@ -55,12 +55,11 @@ class SearchController extends Controller
         }
 
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
-
-        $users = User::excludedeactivatedaccount()->whereIn('id', array_column(
-            DB::select(
-                $this->search_query_generator('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE'], ['OR'])
-            ), 'id'
-        ))->orderBy('username', 'asc')->paginate(4);
+        $query = $this->ksearch('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE']);
+        $users = 
+            User::excludedeactivatedaccount()
+            ->whereIn('id', array_column(DB::select($query['query'], $query['bindings']), 'id'))
+            ->orderBy('username', 'asc')->paginate(4);
 
         return view('search.search-result')
             ->with(compact('forums'))
@@ -305,10 +304,9 @@ class SearchController extends Controller
 
         
         $forums = Forum::all();
+        $query = $this->ksearch('threads', $search_query, ['subject', 'content'], ['LIKE']);
         $threads = Thread::whereIn('id', array_column(
-            DB::select(
-                $this->search_query_generator('threads', $search_query, ['subject', 'content'], ['LIKE'], ['OR'])
-            ), 'id'
+            DB::select($query['query'], $query['bindings']), 'id'
         ));
 
         if($request->has('tab')) {
@@ -356,96 +354,18 @@ class SearchController extends Controller
 
         
         $forums = Forum::all();
-        $query = $this->ksearch('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE']);
-        $users = User::excludedeactivatedaccount()->whereIn('id', array_column(
-            DB::select($query['query'], $query['bindings']), 'id'
-        ))->orderBy('username', 'asc')->paginate($pagesize);
+
+
+        $users = $this->srch(
+            User::query()->excludedeactivatedaccount(), $search_query, ['firstname', 'lastname', 'username'], ['LIKE']
+        )->orderBy('username', 'asc')
+        ->paginate($pagesize);
 
         return view('search.search-users')
             ->with(compact('forums'))
             ->with(compact('users'))
             ->with(compact('pagesize'))
             ->with(compact('search_query'));
-    }
-
-    /**
-     * The following function is used to fetch records from databse table specified in the $table parameter and
-     * return results in form of collection of type specified in $table parameter.
-     * 1. It takes a table as its first parameter to fetch the records
-     * 2. search query will be split it up into space-separated keywords. eg: "MOUAD NASSRI" => ['MOUAD','NASSRI']
-     * 3. columns parameter specify the table's columns that are used to compare with the keywords.
-     * 4. column_keyword_condition_operators(array): is an array of operators used to specify the operator between each
-     *    column and keyword. eg: ['==', 'LIKE'] => SELECT * FROM foo WHERE column1 == keyword && column2 LIKE keyword
-     *    Note: Notice that the number of column operators must be exactly the same as columns number
-     *    Note: If the number of operators is less than number of columns it will fill the gaps with the last
-     *    operator. if the operators array is empty it will populated automatically with == operators
-     * 5. conditional_operators(array): is the array of conditional operators.
-     *    eg: ['&&', '||'] => SELECT * FROM foo WHERE a == boo && b = zoo || c == grotto
-     *    if no paramter is given it will replaced by array of OR operators
-     *    Notice that the number of operators should be equal to count($columns) - 1
-     * 
-     *    RETURN: returns the generated query for search
-     */
-    private function search_query_generator($table, $search_query='', 
-                        $columns=[], $operators=[], $conditional_operators=[]) {
-        $keywords = array_filter(explode(' ', $search_query));
-
-        if(empty($columns) || empty($keywords)) {
-            return "SELECT * FROM $table";
-        }
-        // If number of operators > number of columns return false;
-        if(count($operators) > count($columns)) {
-            return false;
-        }
-
-        if(empty($operators)) {
-            $operators = array_fill(0, count($columns), $this->default_operator);
-        } // If the number of operators < number of bolumns then we fill in the gaps with the last element
-        else if(count($operators) < count($columns)) {
-            $last_element = $operators[count($operators)-1];
-            for($i=count($operators);$i<count($columns);$i++) {
-                $operators[] = $last_element;
-            }
-        }
-        if(empty($conditional_operators)) {
-            $conditional_operators = array_fill(0, count($columns)-1, $this->default_conditional_operator);
-        } // We do the same thing with conditional operators array
-        else if(count($conditional_operators) < count($columns)-1) {
-            $last_element = $conditional_operators[count($conditional_operators)-1];
-            for($i=count($conditional_operators);$i<count($columns)-1;$i++) {
-                $conditional_operators[] = $last_element;
-            }
-        }
-
-        $first_iteration = true;
-        $fi = true;
-        $i = 0;
-        $j = 0;
-
-        $query = "SELECT * FROM $table ";
-        
-        foreach($columns as $column) {
-            if($first_iteration) {
-                $query .= "WHERE `$column` LIKE '%$search_query%' ";
-                $first_iteration = false;
-            } else {
-                $query .= "OR `$column` LIKE '%$search_query%' ";
-            }
-
-            foreach($keywords as $keyword) {    
-                if($operators[$i] == 'LIKE') {
-                    $keyword = "%$keyword%";
-                }
-                $query .= "$conditional_operators[$j] `$column` $operators[$i] '$keyword' ";
-            }
-            $i++;
-            if(!$fi) {
-                $j++;
-            }
-            $fi = false;
-        }
-        return trim($query);
-        //return $model::whereIn('id', $model::hydrate(DB::select($query))->pluck('id'));
     }
 
     private $default_operator = "=";
@@ -580,5 +500,126 @@ class SearchController extends Controller
                 $conditional_operators[] = $last_element;
             }
         }
+    }
+
+    /**
+     * The reason behind implement search using eloquent is that because I have defined several scopes to several
+     * models and at run time we don't knowthe scopes of each table
+     * Normal search(ksearch) wil search for the search query without checking any scope. eg: soft deleted records or deactivated users will also returned by the search
+     * and because of that we need to explicitely remove those records again
+     * For that reason we have to use eloquent to search in these situations
+     * $builder now will hold the query builder of passed model with all its scopes. 
+     * eg: eloquent_search(Thread::query(), 'foo boo', ...) will hold Thread builder with all
+     * its scopes to allowing us to return the results filtered
+     * 
+     * NOTICE: local scopes should be passed along with the query builder.
+     *      eg: srch(User::query()->excludedeactivatedaccount(), $search_query, ...)
+     */
+    private function srch(Builder $builder, $search_query, $columns=[], $operators=[]) {
+        $keywords = array_filter(explode(' ', $search_query));
+
+        if(empty($columns) || $search_query == "") {
+            return $builder;
+        }
+        /**
+         * It is imposible to have number of operators > number of columns so we return false when that happen;
+         * (Notice that this check is applied only to developer function call and doesn't have any relation with search query)
+         * for operators is less than columns we handled it in the else if statement of operators empty checking
+         */ 
+        if(count($operators) > count($columns)) {
+            return collect([]);
+        }
+        // Filling the gaps if empty or not enough operators present
+        if(empty($operators)) {
+            $operators = array_fill(0, count($columns), $this->default_operator);
+        } // If the number of operators < number of columns then we fill in the gaps with the last element
+        else if(count($operators) < count($columns)) {
+            $last_element = $operators[count($operators)-1];
+            for($i=count($operators);$i<count($columns);$i++) {
+                $operators[] = $last_element;
+            }
+        }
+
+        /**
+         * First search priority is to search for the whole query_string in every column
+         * But before that we have to check wether it contains multiple keywords separated by space or not; If not we need to directly check this keyword on all columns
+         * 
+         * IMPORTANT: we used groupped where because the builder could have already defined where in form of scopes
+         * and for that reason we have to chaine the previous scopes with grouped where by AND logical condition
+         * because If we don't do that and we append OR logical condition at the end all previous scopes will lose
+         * their roles
+         */
+        $onekeyword = true; // first iteration
+        if(count($keywords) > 1) {
+            $onekeyword = false;
+            $builder = $builder->where(function($bld) use($columns, $operators, $search_query, &$onekeyword) {
+                for($i=0; $i < count($columns); $i++) {
+                    if($i == 0) {
+                        if(strtolower($operators[$i])=='like') $search_query = "%$search_query%";
+                        $bld = $bld->where($columns[$i], $operators[$i], $search_query);
+                        continue;
+                    }
+    
+                    $bld = $bld->orWhere($columns[$i], $operators[$i], $search_query);
+                }
+            });
+        }
+
+        // $keywords_columns_closure = function($builder, $columns, $operators, $keywords, $fi) {
+        //         for($i=0; $i < count($columns); $i++) {
+        //             foreach($keywords as $keyword) {
+        //                 // If $fi is true; it means count($keywords) == 1 (because $fi is still true only if the condition [count($keywords) > 1] is false)
+        //                 if(strtolower($operators[$i]) == 'like') $keyword = "%$keyword%";
+        //                 if($fi) {
+        //                     $fi = false;
+        //                     $builder = $builder->where($columns[$i], $operators[$i], $keyword);
+        //                     continue;
+        //                 }
+        //                 $builder = $builder->orWhere($columns[$i], $operators[$i], $keyword);
+        //             }
+        //         }
+        //     };
+
+        /**
+         * Here we can sort keywords array by length in descending order, but for now let's keep it as it is
+         * Notice here we have to check if the search query has only one keyword; because If it has only one, then the
+         * following where wrapper is the next where after scopes if they exists and in this case we use where
+         * If It has more than 1 keywords meaning the previous condition is true and we have already appended wheres to the builder
+         * and in this case we have to use orWhere
+         */
+        $fi = true; 
+        if($onekeyword) {
+            $builder = $builder->where(function($bld) use($columns, $operators, $keywords, &$fi) {
+                for($i=0; $i < count($columns); $i++) {
+                    foreach($keywords as $keyword) {
+                        // If $fi is true; it means count($keywords) == 1 (because $fi is still true only if the condition [count($keywords) > 1] is false)
+                        if(strtolower($operators[$i]) == 'like') $keyword = "%$keyword%";
+                        if($fi) {
+                            $fi = false;
+                            $bld = $bld->where($columns[$i], $operators[$i], $keyword);
+                            continue;
+                        }
+                        $bld = $bld->orWhere($columns[$i], $operators[$i], $keyword);
+                    }
+                }
+            });
+        } else {
+            $builder = $builder->orWhere(function($bld) use($columns, $operators, $keywords, &$fi) {
+                for($i=0; $i < count($columns); $i++) {
+                    foreach($keywords as $keyword) {
+                        // If $fi is true; it means count($keywords) == 1 (because $fi is still true only if the condition [count($keywords) > 1] is false)
+                        if(strtolower($operators[$i]) == 'like') $keyword = "%$keyword%";
+                        if($fi) {
+                            $fi = false;
+                            $bld = $bld->where($columns[$i], $operators[$i], $keyword);
+                            continue;
+                        }
+                        $bld = $bld->orWhere($columns[$i], $operators[$i], $keyword);
+                    }
+                }
+            });
+        }
+
+        return $builder;
     }
 }

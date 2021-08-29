@@ -356,10 +356,9 @@ class SearchController extends Controller
 
         
         $forums = Forum::all();
+        $query = $this->ksearch('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE']);
         $users = User::excludedeactivatedaccount()->whereIn('id', array_column(
-            DB::select(
-                $this->search_query_generator('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE'], ['OR'])
-            ), 'id'
+            DB::select($query['query'], $query['bindings']), 'id'
         ))->orderBy('username', 'asc')->paginate($pagesize);
 
         return view('search.search-users')
@@ -368,9 +367,6 @@ class SearchController extends Controller
             ->with(compact('pagesize'))
             ->with(compact('search_query'));
     }
-
-    private $default_operator = "=";
-    private $default_conditional_operator = "AND";
 
     /**
      * The following function is used to fetch records from databse table specified in the $table parameter and
@@ -450,5 +446,139 @@ class SearchController extends Controller
         }
         return trim($query);
         //return $model::whereIn('id', $model::hydrate(DB::select($query))->pluck('id'));
+    }
+
+    private $default_operator = "=";
+    private $default_conditional_operator = "AND";
+    /**
+     * Building a query in string format based on user input and pass it to DB facade as raw sql is vulnerable.
+     * We have to pass it as prepared statement and passing the bindings along with it as array of operands
+     * for that purpose I decided to build this function from scratch into this new method
+     * Notice that this function doesn't support conditional grouping of logical operators between conditions
+     * We're going to implement it later
+     * 
+     * NOTICE: Search results should be fetched in cetain priority for example the most prioritized search parameter 
+     *         is the full search query, then we space-explode the query string and take exploded keywords [here also 
+     *         we prioritize the keywords based on keyword length] ..etc
+     *         $result is an array of arrays; arrays will be appended to $result for every search priority
+     * return: It returns array of results (Query builder select method)
+     */
+    private function ksearch($table, $search_query, $columns=[], $operators=[]) {
+        $query = "SELECT * FROM $table ";
+        $bindings = [];
+
+        $keywords = array_filter(explode(' ', $search_query));
+        $result = [];
+
+        if(empty($columns) || $search_query == "") {
+            return [
+                "query"=>trim($query),
+                "bindings"=>$bindings
+            ];
+        }
+
+        $query .= 'WHERE';
+        /**
+         * It is imposible to have number of operators > number of columns so we return false when that happen;
+         * (Notice that this check is applied only to developer function call and doesn't have any relation with search query)
+         * for operators is less than columns we handled it in the else if statement of operators empty checking
+         */ 
+        if(count($operators) > count($columns)) {
+            return collect([]);
+        }
+        // Filling the gaps if empty or not enough operators present
+        if(empty($operators)) {
+            $operators = array_fill(0, count($columns), $this->default_operator);
+        } // If the number of operators < number of columns then we fill in the gaps with the last element
+        else if(count($operators) < count($columns)) {
+            $last_element = $operators[count($operators)-1];
+            for($i=count($operators);$i<count($columns);$i++) {
+                $operators[] = $last_element;
+            }
+        }
+
+        // First search priority is to search for the whole query_string in every column
+        // But before that we have to check wether it container multiple keywords separated by space or not
+        if(count($keywords) > 1) {
+            for($i=0; $i < count($columns); $i++) {
+                if($i != 0) $query .= "OR";
+                if(strtolower($operators[$i]) == 'like') $search_query = "%$search_query%";
+                $query .=  " $columns[$i] $operators[$i] ? "; // eg: WHERE firstname != ?, [$search_query]
+                $bindings[] = $search_query;
+            }
+        }
+
+        // Here we can sort keywords list by length descending order, but for now let's keep it as it is
+        $first_iteration = true;
+        $c = 0;
+        for($i=0; $i < count($columns); $i++) {
+            foreach($keywords as $keyword) {
+                if((count($keywords) == 1 && $first_iteration)) {
+                    /**
+                     * If the iteration is the frist one and the keywords count is 1, we don't have to add OR
+                     * because we have already appended WHERE to query (look above right after checking for $columns empty)
+                     */
+                    $first_iteration=false;
+                } else {
+                    $query.="OR";
+                }
+
+                if(strtolower($operators[$i]) == 'like') $keyword = "%$keyword%";
+                $query .= " $columns[$i] $operators[$i] ? ";
+                $bindings[] = $keyword;
+            }
+        }
+
+        return [
+            "query"=>trim($query),
+            "bindings"=>$bindings
+        ];
+    }
+
+    /**
+     * NOTICE: logical groups will be determined by the nature of element in conditional_operators parameter
+     * for example if we pass an array as operator, it will be considered as a group
+     * eg: [[AND], OR] => (A==? && B==?) || C==?;
+     * When we loop through conditional_operators and get into an element of type array, we know that we have a group
+     * and we loop further by the length of array(group)+1 columns and handle the group syntax
+     */
+    public function qsearch($table, $search_query, $columns=[], $operators=[], $conditional_operators=[]) {
+        $sql = "SELECT * FROM $table";
+        $bindings = [];
+        $keywords = array_filter(explode(' ', $search_query));
+        $result = [];
+
+        if(empty($columns)) {
+            return DB::select($sql);
+        }
+        /**
+         * It is imposible to have number of operators > number of columns so we return false when that happen;
+         * (Notice that this check is applied only to developer function call and doesn't have any relation with search query)
+         * for operators is less than columns we handled it in the else if statement of operators empty checking
+         */ 
+        if(count($operators) > count($columns)) {
+            return collect([]);
+        }
+        // Filling the gaps if empty or not enough operators present
+        if(empty($operators)) {
+            $operators = array_fill(0, count($columns), $this->default_operator);
+        } // If the number of operators < number of columns then we fill in the gaps with the last element
+        else if(count($operators) < count($columns)) {
+            $last_element = $operators[count($operators)-1];
+            for($i=count($operators);$i<count($columns);$i++) {
+                $operators[] = $last_element;
+            }
+        }
+        // Filling the gaps if empty or not enough conditional operators present
+        if(empty($conditional_operators)) {
+            $conditional_operators = array_fill(0, count($columns)-1, $this->default_conditional_operator);
+        } // We do the same thing with conditional operators array
+        else if(count($conditional_operators) < count($columns)-1) {
+            $last_element = $conditional_operators[count($conditional_operators)-1];
+            // Notice: $i < count($columns)-1 because conditional operators are always equal to number of checks - 1
+            for($i=count($conditional_operators);$i<count($columns)-1;$i++) {
+                $conditional_operators[] = $last_element;
+            }
+        }
     }
 }

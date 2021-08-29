@@ -32,7 +32,8 @@ class CSPPolicy extends Policy
             ->addDirective(Directive::SCRIPT, [
                 Keyword::SELF,
                 'code.jquery.com',
-                'cdn.jsdelivr.net'
+                'cdn.jsdelivr.net',
+                'cdnjs.cloudflare.com'
             ])
             ->addDirective(Directive::OBJECT, Keyword::NONE);
     }

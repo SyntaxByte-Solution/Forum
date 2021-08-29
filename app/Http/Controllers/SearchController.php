@@ -14,7 +14,6 @@ class SearchController extends Controller
     public function search(Request $request) {
         $tab = 'all';
         $tab_title = __('All');
-
         $pagesize = 10;
         $pagesize_exists = false;
         if($request->has('pagesize')) {
@@ -25,20 +24,14 @@ class SearchController extends Controller
         $keyword = $request->validate([
             'k'=>'sometimes|max:2000'
         ]);
-
         if(empty($keyword)) {
             $search_query = '';
         } else {
             $search_query = $keyword['k'];
         }
 
-        
         $forums = Forum::all();
-        $query = $this->ksearch('threads', $search_query, ['subject', 'content'], ['LIKE']);
-        $threads = Thread::whereIn('id', array_column(
-            DB::select($query['query'], $query['bindings']), 'id'
-        ));
-
+        $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
             $tab = $request->input('tab');
             if($tab == 'today') {
@@ -53,13 +46,10 @@ class SearchController extends Controller
                 $tab_title = __('This week');
             }
         }
-
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
-        $query = $this->ksearch('users', $search_query, ['firstname', 'lastname', 'username'], ['LIKE']);
-        $users = 
-            User::excludedeactivatedaccount()
-            ->whereIn('id', array_column(DB::select($query['query'], $query['bindings']), 'id'))
-            ->orderBy('username', 'asc')->paginate(4);
+        $users = $this->srch(User::query()->excludedeactivatedaccount(), $search_query, ['firstname', 'lastname', 'username'], ['LIKE'])
+                      ->orderBy('username', 'asc')
+                      ->paginate(4);
 
         return view('search.search-result')
             ->with(compact('forums'))
@@ -80,24 +70,24 @@ class SearchController extends Controller
     public function search_advanced_results(Request $request) {
         $tab = 'all';
         $tab_title = __('All');
-
-        $filters = [];
         $forums = Forum::all();
-
         $pagesize = 6;
-        $threads = Thread::query();
-        $keywords;
+        $filters = [];
 
         $data = $request->validate([
             'k'=>'required|min:1|max:2000',
             'forum'=> [
                 'sometimes',
-                function ($attribute, $value, $fail) use (&$keywords) {
-                    $forums_ids = Forum::all()->pluck('id')->toArray();
+                function ($attribute, $value, $fail) use (&$filters) {
+                    $forums_ids = Forum::pluck('id')->toArray();
                     $forums_ids[] = 0;
 
                     if(!in_array($value, $forums_ids)) {
                         $fail('The '.$attribute."  doesn't exists in our records.");
+                    } else {
+                        if($value != 0) {
+                            $filters[] = [__('Forum'), \App\Models\Forum::find($value)->forum, 'forum'];
+                        }
                     }
                 },
             ],
@@ -117,7 +107,7 @@ class SearchController extends Controller
                                 $filters[] = [__('Category'), \App\Models\Category::find($value)->category, 'category'];
                             }
                         }
-                    } else {
+                    } else { /** This case the user doesn't choose a forum and category is not 0 so we have to stop the exec */
                         if($value != 0) {
                             $fail('Invalid '.$attribute." value");
                         }
@@ -134,98 +124,40 @@ class SearchController extends Controller
             ]
         ]);
 
-        $query_string = $data['k'];
-        $keywords = array_filter(explode(' ', $query_string));
-        usort($keywords, function($a, $b){
-            return strlen($a) < strlen($b);
-        });
-         
+        $search_query = $data['k'];
 
-        // request()->forum != 0 means the user select a forum
-        // request()->forum == 0; means user select All forums
+        // 1. First fetch threads based on search query
+        $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
+        /**
+         * 2. Then we check for forum and category existence and based on that we set our conditions and checks;
+         *    (because the user could choose all forums and all categories)
+         */
         if(isset($data['forum']) && ($forum = $data['forum']) != 0) {
-            // We check for category because if there's forum and category submitted we want the forum to be first
-            if($request->category) {
-                array_unshift($filters, [__('Forum'), Forum::find($forum)->forum, 'forum']);
-            } else {
-                $filters[] = [__('Forum'), Forum::find($forum)->forum, 'forum'];
-            }
+            // request()->forum != 0 means the user select a forum
+            // request()->forum == 0; means user select All forums
             $categories_ids = Forum::find($forum)->categories->pluck('id')->toArray();
-            
             if(!isset($data['category']) || $data['category'] == '0') {
-                /**
-                 * Get threads for all categories of the forum that match the search query
-                 * Notice here we have to use conditional groups because threads will be fetched like following
-                 * First we fetch threads from categories of the selected forum
-                 * then we open a group to place all the conditions:
-                 *  1. we compare threads subject with the whole query_string using like operator
-                 *  2. we compare threads content with the whole query_string using like operator
-                 *  3. then we pass the keywords to the nested group to fetch all threads with either subject or content like keyword
-                 * WHERE category_id IN (1, 2, 3) AND (subject like '%keyword%' || content like '%keyword%')
-                 */
-                $threads = Thread::whereIn('category_id', $categories_ids)
-                    ->where(function($query) use ($query_string,$keywords) {
-                        $query->where('subject', 'like', "%$query_string%")
-                            ->orWhere('content', 'like', "%$query_string%")
-                            ->orWhere(function($q) use ($keywords) {
-                                foreach($keywords as $keyword) {
-                                    $q->where('subject','like',"%$keyword%")
-                                            ->orWhere('content','like',"%$keyword%");
-                                }
-                            });
-                    });
+                $threads = $threads->whereIn('category_id', $categories_ids);
             } else {
-                // Get threads for category of the forum that match the search query
-                $threads = 
-                    Thread::where('category_id', $data['category'])
-                    ->where(function($query) use ($query_string, $keywords) {
-                        $query->where('subject', 'like', "%$query_string%")
-                        ->orWhere('content', 'like', "%$query_string%")
-                        // see notice above where $value = '0'
-                        ->orWhere(function($query) use ($keywords) {
-                            foreach($keywords as $keyword) {
-                                $query->where('subject','like',"%$keyword%")
-                                ->orWhere('content','like',"%$keyword%");
-                            }
-                        });
-                });
+                $threads = $threads->where('category_id', $data['category']);
             }
         } else {
             /**
-             * get all threads of all forums categories that match one of search query keywords
-             * Notice that here also we need to use groupings because we need OR operators
-             * between keywords checks
-             * eg. :
-             * keyword = mouad nassri => keywords = ['mouad','nassri']
-             * SELECT * FROM threads 
-             * where `subject` LIKE '%mouad nassri%'
-             * OR `content` LIKE '%mouad nassri%'
-             * OR `subject` LIKE '%mouad%'
-             * OR `subject` LIKE '%nassri%'
-             * OR `content` LIKE '%mouad%'
-             * OR `content` LIKE '%nassri%'
+             * In this case we don't need to do anything and keep $threads as it is because we need to fetch threads 
+             * of all forums that match the search query
              */
-            $threads = 
-                Thread::where('subject', 'like', "%$query_string%")
-                    ->orWhere('content', 'like', "%$query_string%")
-                    ->orWhere(function($query) use ($keywords) {
-                        foreach($keywords as $keyword) {
-                            $query->where('subject', 'like', "%$keyword%")
-                            ->orWhere('content', 'like', "%$keyword%");
-                        }
-                    });
         }
-
+        // 3. check if user choose only ticked threads
         if(isset($request->hasbestreply)) {
             $filters[] = [__('Best replied'), __('ON'), 'hasbestreply'];
-            $threads = $threads->ticked();
+            $threads = $threads->ticked(); // ticked() here is a scope defined in thread model to allow us to fetch only ticked threads
         }
-
+        //4. thread date check
         if(isset($data['threads_date'])) {
             switch($data['threads_date']) {
                 case 'past24hours':
                     $filters[] = [__('Date'), __('Past 24 hours'), 'threads_date'];
-                    $threads = $threads->where("created_at",">",Carbon::now()->subDay(1));
+                    $threads = $threads->where("created_at",">=",Carbon::now()->subDay(1));
                     break;
                 case 'pastweek':
                     $filters[] = [__('Date'), __('Last week'), 'threads_date'];
@@ -241,20 +173,22 @@ class SearchController extends Controller
                     break;
             }
         }
-
         if(isset($data['sorted_by'])) {
             switch($data['sorted_by']) {
                 case 'created_at_desc':
-                    $filters[] = [__('Sort by'), __('creation date(desc)'), 'sorted_by'];
                     $threads = $threads->orderBy('created_at', 'desc');
+                    /**
+                     * Notice that here we don't defined a filter because this is the default behavior of every search
+                     * we get the newest threads first and then the oldest
+                     */
                     break;
                 case 'created_at_asc':
-                    $filters[] = [__('Sort by'), __('creation date(asc)'), 'sorted_by'];
+                    $filters[] = [__('Sort by'), __('creation date (old to new)'), 'sorted_by'];
                     $threads = $threads->orderBy('created_at');
                     break;
                 case 'views':
                     $filters[] = [__('Sort by'), __('views'), 'sorted_by'];
-                    // We plan to separate thread view to new table
+                    // We plan to separate thread views to new table
                     $threads = $threads->orderBy('view_count', 'desc');
                     break;
                 case 'votes':
@@ -267,10 +201,8 @@ class SearchController extends Controller
                     break;
             }
         }
-        
         $threads = $threads->paginate($pagesize);
-        $search_query = $data['k'];
-        
+
         return view('search.search-threads')
             ->with(compact('filters'))
             ->with(compact('forums'))
@@ -284,7 +216,6 @@ class SearchController extends Controller
     public function threads_search(Request $request) {
         $tab = 'all';
         $tab_title = __('All');
-
         $pagesize = 10;
         $pagesize_exists = false;
         if($request->has('pagesize')) {
@@ -302,13 +233,8 @@ class SearchController extends Controller
             $search_query = $keyword['k'];
         }
 
-        
         $forums = Forum::all();
-        $query = $this->ksearch('threads', $search_query, ['subject', 'content'], ['LIKE']);
-        $threads = Thread::whereIn('id', array_column(
-            DB::select($query['query'], $query['bindings']), 'id'
-        ));
-
+        $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
             $tab = $request->input('tab');
             if($tab == 'today') {
@@ -323,7 +249,6 @@ class SearchController extends Controller
                 $tab_title = __('This week');
             }
         }
-
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
 
         return view('search.search-threads')
@@ -417,7 +342,7 @@ class SearchController extends Controller
             }
         }
 
-        // First search priority is to search for the whole query_string in every column
+        // First search priority is to search for the whole search_query in every column
         // But before that we have to check wether it container multiple keywords separated by space or not
         if(count($keywords) > 1) {
             for($i=0; $i < count($columns); $i++) {
@@ -541,7 +466,7 @@ class SearchController extends Controller
         }
 
         /**
-         * First search priority is to search for the whole query_string in every column
+         * First search priority is to search for the whole search_query in every column
          * But before that we have to check wether it contains multiple keywords separated by space or not; If not we need to directly check this keyword on all columns
          * 
          * IMPORTANT: we used groupped where because the builder could have already defined where in form of scopes
@@ -565,21 +490,22 @@ class SearchController extends Controller
             });
         }
 
-        // $keywords_columns_closure = function($builder, $columns, $operators, $keywords, $fi) {
-        //         for($i=0; $i < count($columns); $i++) {
-        //             foreach($keywords as $keyword) {
-        //                 // If $fi is true; it means count($keywords) == 1 (because $fi is still true only if the condition [count($keywords) > 1] is false)
-        //                 if(strtolower($operators[$i]) == 'like') $keyword = "%$keyword%";
-        //                 if($fi) {
-        //                     $fi = false;
-        //                     $builder = $builder->where($columns[$i], $operators[$i], $keyword);
-        //                     continue;
-        //                 }
-        //                 $builder = $builder->orWhere($columns[$i], $operators[$i], $keyword);
-        //             }
-        //         }
-        //     };
-
+        /*
+        $keywords_columns_closure = function($builder, $columns, $operators, $keywords, $fi) {
+            for($i=0; $i < count($columns); $i++) {
+                foreach($keywords as $keyword) {
+                    // If $fi is true; it means count($keywords) == 1 (because $fi is still true only if the condition [count($keywords) > 1] is false)
+                    if(strtolower($operators[$i]) == 'like') $keyword = "%$keyword%";
+                    if($fi) {
+                        $fi = false;
+                        $builder = $builder->where($columns[$i], $operators[$i], $keyword);
+                        continue;
+                    }
+                    $builder = $builder->orWhere($columns[$i], $operators[$i], $keyword);
+                }
+            }
+        }; 
+        */
         /**
          * Here we can sort keywords array by length in descending order, but for now let's keep it as it is
          * Notice here we have to check if the search query has only one keyword; because If it has only one, then the

@@ -79,11 +79,11 @@
                     <p class="error">{{ $message }}</p>
                 @enderror
                 <div class="full-width flex">
-                    <label class="mr8 fs13 bold" style="width: 160px">{{ __('Select only threads with best reply') }}</label>
+                    <label class="mr8 fs13 bold" style="width: 160px">{{ __('Select only discussions with best reply') }}</label>
                     <span class="bold mx4">:</span>
-                    <input type="checkbox" name="hasbestreply">
+                    <input type="checkbox" name="hasbestreply" autocomplete="off">
                 </div>
-                <div class="simple-line-separator my4"></div>
+                <div class="simple-line-separator my8"></div>
                 @error('threads_date')
                     <p class="error">{{ $message }}</p>
                 @enderror
@@ -98,7 +98,7 @@
                         <option value="pastyear">{{ __("past year") }}</option>
                     </select>
                 </div>
-                <div class="simple-line-separator my4"></div>
+                <div class="simple-line-separator my8"></div>
                 <div class="full-width flex align-center">
                     <label for="sorted_by" class="mr8 fs13 bold" style="width: 160px">{{ __('Sorted by') }}</label>
                     <span class="bold mx4">:</span>

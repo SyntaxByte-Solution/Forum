@@ -185,6 +185,12 @@
                 </div>
                 <div class="suboptions-container suboptions-account-style">
                     <div class="triangle"></div>
+                    <a href="" class="suboption-style-1 @if($local == 'ma-ar') block-click @else set-lang @endif" style="@if($local == 'ma-ar') background-color: #e6e6e6; cursor: pointer @endif">
+                        <div class="small-image-2 sprite sprite-2-size ma-arabic17-flag mr8"></div>
+                        <p class="no-margin">{{ __('Arabic-Morocco') }}</p>
+                        <div class="loading-dots-anim ml4 none">•</div>
+                        <input type="hidden" class="lang-value" value="ma-ar">
+                    </a>
                     <a href="" class="suboption-style-1 @if($local == 'en') block-click @else set-lang @endif" style="@if($local == 'en') background-color: #e6e6e6; cursor: pointer @endif">
                         <div class="small-image-2 sprite sprite-2-size english17-flag mr8"></div>
                         <p class="no-margin">{{__('English')}}</p>
@@ -196,12 +202,6 @@
                         <p class="no-margin">{{__('French')}}</p>
                         <div class="loading-dots-anim ml4 none">•</div>
                         <input type="hidden" class="lang-value" value="fr">
-                    </a>
-                    <a href="" class="suboption-style-1 @if($local == 'ma-ar') block-click @else set-lang @endif" style="@if($local == 'ma-ar') background-color: #e6e6e6; cursor: pointer @endif">
-                        <div class="small-image-2 sprite sprite-2-size ma-arabic17-flag mr8"></div>
-                        <p class="no-margin">{{ __('Arabic-Morocco') }}</p>
-                        <div class="loading-dots-anim ml4 none">•</div>
-                        <input type="hidden" class="lang-value" value="ma-ar">
                     </a>
                 </div>
             </div>

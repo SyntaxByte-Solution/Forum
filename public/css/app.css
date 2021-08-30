@@ -169,6 +169,10 @@ a, input, textarea {
     color: #202020;
 }
 
+.red {
+    color: rgb(228, 48, 48);
+}
+
 .red-background {
     background-color: rgb(165, 44, 44) !important;
 }
@@ -193,7 +197,7 @@ a, input, textarea {
 }
 
 .thread-content-box-max-height {
-    max-height: 200px;
+    max-height: 310px;
 }
 
 .thread-content * {
@@ -202,6 +206,7 @@ a, input, textarea {
 
 .thread-content p {
     margin: 6px 0;
+    font-size: 15px;
 }
 
 .fade-loading {
@@ -1036,7 +1041,7 @@ a, input, textarea {
 
 .suboptions-account-style {
     position: absolute;
-    top: 44px;
+    top: 42px;
     right: 0;
     width: 180px;
     background-color: white;

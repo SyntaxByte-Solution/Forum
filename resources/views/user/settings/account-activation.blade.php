@@ -4,6 +4,10 @@
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
 @endpush
 
+@push('scripts')
+    <script src="{{ asset('js/settings.js') }}" defer></script>
+@endpush
+
 @section('header')
     @guest
         @include('partials.hidden-login-viewer')

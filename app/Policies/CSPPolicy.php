@@ -17,11 +17,12 @@ class CSPPolicy extends Policy
     {
         $this
             ->addDirective(Directive::BASE, Keyword::SELF)
-            ->addDirective(Directive::CONNECT, [
-                'self',
-                'ws://' . env('APP_DOMAIN') . ':6001',
-                'wss://' . env('APP_DOMAIN') . '127.0.0.1:6001',
-            ])
+            // ->addDirective(Directive::CONNECT, [
+            //     'self',
+            //     'ws://' . env('APP_DOMAIN') . ':6001',
+            //     'wss://' . env('APP_DOMAIN') . ':6001',
+
+            // ])
             ->addDirective(Directive::FORM_ACTION, Keyword::SELF)
             // ->addDirective(Directive::IMG, [
             //     Keyword::SELF,

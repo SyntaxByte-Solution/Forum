@@ -23,7 +23,7 @@ class FeedbackController extends Controller
         }
 
         $d = $request->validate([
-            'feedback'=>'required|min:2|max:2600',
+            'feedback'=>'required|min:10|max:2600',
         ]);
         $data['feedback'] = $d['feedback'];
 

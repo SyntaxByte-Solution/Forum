@@ -192,5 +192,5 @@ Route::post('/users/username/check', [UserController::class, 'username_check']);
 Route::get('/announcements/{forum:slug}/{announcement}', [ThreadController::class, 'announcement_show'])->name('announcement.show');
 Route::get('/{forum:slug}/{category:slug}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
 
-Route::post('/feedback', [FeedbackController::class, 'store'])->middleware(['throttle:opd'])->name('feedback.save');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.save');
 Route::post('/emojifeedback', [FeedbackController::class, 'store_emojifeedback'])->name('feedback.emoji.save');

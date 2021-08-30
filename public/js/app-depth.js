@@ -9,21 +9,23 @@ var userId = $('.uid').first().val();
 let csrf = document.querySelector('meta[name="csrf-token"]').content;
 let urlParams = new URLSearchParams(window.location.search);
 
-$(window).on('unload', function() {
-    $(window).scrollTop(0);
- });
+Array.prototype.contains = function(element){
+    return this.indexOf(element) > -1;
+};
 
-// the following section is for displaying viewers based on the value of query strings
-// -------------------------------
+jQuery.fn.rotate = function(degrees) {
+    $(this).css({   
+        '-webkit-transform' : 'rotate('+ degrees +'deg)',
+        '-moz-transform' : 'rotate('+ degrees +'deg)',
+        '-ms-transform' : 'rotate('+ degrees +'deg)',
+        'transform' : 'rotate('+ degrees +'deg)',
+    });
+    return $(this);
+};
 
-if(urlParams.has('action')) {
-    if(urlParams.get('action') == 'thread-delete') {
-        $('.thread-deletion-viewer').css('display', 'block');
-        $('.thread-deletion-viewer').css('opacity', '1');
-    }
-}
-
-// -------------------------------
+// $(window).on('unload', function() {
+//     $(window).scrollTop(0);
+//  });
 
 $('.button-with-strip').on({
     mouseenter: function() {
@@ -55,7 +57,6 @@ $('.handle-image-center-positioning').each(function() {
         handle_image_dimensions(image);
     });
 });
-
 function handle_image_dimensions(image) {
     width = image.width();
     height = image.height();
@@ -75,25 +76,10 @@ function handle_complexe_image_dimensions(image) {
 
     width = image.width();
     height = image.height();
-    let ratio;
     if(width >= height) {
-        // if(image_container.height() > height) {
-        //     ratio = height * 1 / image_container.height();
-        // } else {
-        //     ratio = image_container.height() * 1 / height;
-        // }
-
-        // image.width(ratio*width);
         image.height(image_container.height());
     } else {
-        // if(image_container.width() < width) {
-        //     ratio = image_container.width() * 1 / width; 
-        // } else {
-        //     ratio = image_container.width() * 1 / width;
-        // }
-
         image.width(image_container.width());
-        //image.height(width*ratio);
     }
 }
 
@@ -215,10 +201,6 @@ $('.close-shadowed-view-button').click(function() {
     return false;
 });
 
-$('.expand-button').each(function() {
-    handle_expend($(this));
-});
-
 function handle_expend_button_appearence(thread) {
     if(!thread.find('.expend-thread-content-button').length) {
         return;
@@ -255,29 +237,8 @@ function handle_expend_button_appearence(thread) {
 
 }
 
-function handle_expend_button(thread) {
-    
-}
-
-function handle_expend(expend_button) {
-    expend_button.on('click', function() {
-        let state = expend_button.parent().find('.expand-text-state').val();
-    
-        if(state == '0') {
-            expend_button.parent().find('.expandable-text').text(expend_button.parent().find('.expand-whole-text').val());
-            expend_button.parent().find('.expand-text-state').val(1);
-            expend_button.parent().find('.expand-button').text(expend_button.parent().find('.collapse-text').val());
-        } else {
-            expend_button.parent().find('.expandable-text').text(expend_button.parent().find('.expand-slice-text').val());
-            expend_button.parent().find('.expand-text-state').val(0);
-            expend_button.parent().find('.expand-button').text(expend_button.parent().find('.expand-text').val());
-        }
-    });
-}
-
 function heart_beating() {
     let heart = $('.heart-beating');
-
     if(heart.height() == 16) {
         heart.css('height', '19px');
         heart.css('width', '19px');
@@ -285,15 +246,12 @@ function heart_beating() {
         heart.css('height', '16px');
         heart.css('width', '16px');
     }
-    
 }
-
-var t=setInterval(heart_beating,500);
+setInterval(heart_beating,500);
 
 $('.login-signin-button').each(function() {
     handle_login_lock($(this).parent());
 });
-
 function handle_login_lock(container) {
     container.find('.login-signin-button').each(function() {
         $(this).on('click', function(event) {
@@ -394,7 +352,6 @@ $('.share-thread').on('click', function(event) {
 $('.turn-off-posts').on('click', function() {
     handle_turn_off_posts($(this));
 });
-
 function handle_turn_off_posts(button) {
     button.on('click', function() {
         let button_text_no_ing = button.val();
@@ -440,7 +397,6 @@ $('#category-dropdown').change(function() {
 $('.copy-thread-link').each(function() {
     handle_copy_thread_link($(this));
 });
-
 function handle_copy_thread_link(button) {
     button.on('click', function(event) {
         $(this).parent().find('input').trigger('select');
@@ -455,7 +411,6 @@ function handle_copy_thread_link(button) {
 $('.resource-container').each(function() {
     handle_thread_visibility_switch($(this));
 });
-
 function handle_thread_shadowed_viewers(thread) {
     thread.find('.open-thread-shadowed-viewer').each(function(event) {
         $(this).on('click', function(event) {
@@ -585,94 +540,6 @@ function handle_user_profile_card_displayer(user_profile_card_box) {
     });
 }
 
-// $('.button-with-container').on({
-//     'mouseenter': function() {
-//         let button = $(this);
-//         setTimeout(function() {
-//             mouse_over_button = true;
-//             button.parent().find('.button-container').css('display', 'block');
-//             button.parent().find('.button-container').css('opacity', '1');
-//         }, 800);
-//     },
-//     'mouseleave': function() {
-//         let button = $(this);
-//         /*
-//             Here we need to check whether the mouse is over the button or container before closing the container as well
-//         */
-//         setTimeout(function() {
-//             mouse_over_button = false;
-//             if(!mouse_over_container) {
-//                 button.parent().find('.button-container').css('display', 'none');
-//                 button.parent().find('.button-container').css('opacity', '0');
-//             }
-//         }, 800);
-//     }
-// })
-
-// $('.button-container').on({
-//     mouseenter: function(event) {
-//         let container = $(this);
-//         setTimeout(function() {
-//             mouse_over_container = true;
-//             container.css('display', 'block');
-//             container.css('opacity', '1');
-//         }, 800)
-//         event.stopPropagation();
-//     },
-//     mouseleave: function(event) {
-//         let container = $(this);
-//         /*
-//             Here we need to check whether the mouse is over the button or container before closing the container as well
-//         */
-//        setTimeout(function() {
-//            mouse_over_container = false;
-//            if(!mouse_over_button) {
-//                container.css('display', 'none');
-//                container.css('opacity', '0');
-//            }
-//        }, 400);
-//     }
-// });
-
-// function handle_button_container(element) {
-//     element.find('.button-with-container').on({
-//         'mouseenter': function() {
-//             mouse_over_button = true;
-//             $(this).parent().find('.button-container').css('display', 'block');
-//             $(this).parent().find('.button-container').css('opacity', '1');
-//         },
-//         'mouseleave': function() {
-//             /*
-//                 Here we need to check whether the mouse is over the button or container before closing the container as well
-//             */
-//             mouse_over_button = false;
-//             if(!mouse_over_container) {
-//                 $(this).parent().find('.button-container').css('display', 'none');
-//                 $(this).parent().find('.button-container').css('opacity', '0');
-//             }
-//         }
-//     });
-
-//     element.find('.button-container').on({
-//         mouseenter: function(event) {
-//             mouse_over_container = true;
-//             $(this).css('display', 'block');
-//             $(this).css('opacity', '1');
-//             event.stopPropagation();
-//         },
-//         mouseleave: function(event) {
-//             /*
-//                 Here we need to check whether the mouse is over the button or container before closing the container as well
-//             */
-//             mouse_over_container = false;
-//             if(!mouse_over_button) {
-//                 $(this).parent().find('.button-container').css('display', 'none');
-//                 $(this).parent().find('.button-container').css('opacity', '0');
-//             }
-//         }
-//     });
-// }
-
 function handle_close_shadowed_view(component) {
     component.find('.close-shadowed-view-button').each(function() {
         $(this).on('click',function() {
@@ -713,27 +580,28 @@ $('.toggle-container-button').click(function() {
         container.removeClass('none');
         container.addClass('block');
 
-        // box.find('.toggle-arrow').css({
-        //     rotate: '90deg'
-        // });
-        box.find('.toggle-arrow').css({
-            transform:'rotate(90deg)',
-            '-ms-transform':'rotate(90deg)',
-            '-moz-transform':'rotate(90deg)',
-            '-webkit-transform':'rotate(90deg)',
-            '-o-transform':'rotate(90deg)'
-        });
+        if(box.find('.toggle-arrow').length) {
+            box.find('.toggle-arrow').css({
+                transform:'rotate(90deg)',
+                '-ms-transform':'rotate(90deg)',
+                '-moz-transform':'rotate(90deg)',
+                '-webkit-transform':'rotate(90deg)',
+                '-o-transform':'rotate(90deg)'
+            });
+        }
     } else {
         container.removeClass('block');
         container.addClass('none');
 
-        box.find('.toggle-arrow').css({
-            transform:'rotate(0deg)',
-            '-ms-transform':'rotate(0deg)',
-            '-moz-transform':'rotate(0deg)',
-            '-webkit-transform':'rotate(0deg)',
-            '-o-transform':'rotate(0deg)'
-        });
+        if(box.find('.toggle-arrow').length) {
+            box.find('.toggle-arrow').css({
+                transform:'rotate(0deg)',
+                '-ms-transform':'rotate(0deg)',
+                '-moz-transform':'rotate(0deg)',
+                '-webkit-transform':'rotate(0deg)',
+                '-o-transform':'rotate(0deg)'
+            });
+        }
     }
     
     return false;
@@ -757,229 +625,65 @@ function updateQueryStringParameter(uri, key, value) {
     }
 }
 
-$('.check-username').on('click', function() {
-    let button = $(this);
-    let ing = button.parent().find('.btn-text-ing').val();
-    let no_ing = button.parent().find('.btn-text-no-ing').val();
-    let username = $('#username').val();
-    
-    button.val(ing);
-    button.attr("disabled","disabled");
-    button.attr('style', 'background-color: #acacac; cursor: default');
-
-    $.ajax({
-        url: '/users/username/check',
-        type: 'post',
-        data: {
-            'username': username,
-            '_token': csrf
-        },
-        success: function(response) {
-            button.val(no_ing);
-            button.attr('style', '');
-            button.prop("disabled", false);
-            button.parent().find('.red-box').addClass('none');
-            button.parent().find('.green-box').removeClass('none');
-            button.parent().find('.green-box').css('display', 'flex');
-
-            if(response.valid) {
-                button.parent().find('.green').text(response.message);
-            } else {
-                button.parent().find('.green-box').addClass('none');
-                button.parent().find('.red-box').removeClass('none');
-                button.parent().find('.red-box').css('display', 'flex');
-
-                button.parent().find('.error').text(response.message);
-            }
-        },
-        error: function(response) {
-            button.val(no_ing);
-            button.attr('style', '');
-            button.prop("disabled", false);
-
-            button.parent().find('.green-box').addClass('none');;
-            button.parent().find('.red-box').removeClass('none');;
-            button.parent().find('.red-box').css('display', 'flex');
-
-            let errorObject = JSON.parse(response.responseText).errors;
-            let er = errorObject[Object.keys(errorObject)][0]; //returns the first error from laravel validator bag
-
-            button.parent().find('.error').text(er);
-        }
-    })
-
-    return false;
-});
-
-$('#settings-avatar-area').on({
-    mouseenter: function() {
-        $(this).find('.update-avatar-section-button').removeClass('none');
-    },
-    mouseleave: function() {
-        $(this).find('.update-avatar-section-button').addClass('none');
-    }
-})
-
-$('.remove-profile-avatar').click(function() {
-    $('.remove-avatar-dialog').css("display", 'block');
-    $('.remove-avatar-dialog').css("opacity", '1');
-})
-
-$('.remove-avatar-button').on('click', function() {
-    $('.original-avatar,.uploaded-avatar').addClass("none");
-    $('.default-avatar').removeClass("none");
-    $('.remove-profile-avatar').addClass("none");
-    
-    $('.remove-avatar-dialog').css('display', 'none');
-    $('.suboptions-container').css('display', 'none');
-
-    $('.original-avatar').attr('src', '');
-    $('.avatar-upload-button').val('');
-    $('.avatar-removed').val('1');
-});
-
-$('.avatar-upload-button').change(function(event) {
-    let avatar = [event.target.files[0]];
-    if(validate_image_file_Type(avatar).length == 1) {
-        $('.avatar-removed').val('0');
-        $('.avatar-error,.default-avatar,.original-avatar').addClass('none');
-        $('.uploaded-avatar').removeClass('none');
-
-        $('.uploaded-avatar').attr('src', URL.createObjectURL(event.target.files[0]));
-        $('.uploaded-avatar').removeClass('none');
-        $('.uploaded-avatar').parent().imagesLoaded(function() {
-            handle_image_dimensions($('.uploaded-avatar'));
-        });
-
-        $('.remove-profile-avatar').addClass('none');
-        $('.undo-avatar-upload').removeClass('none');
-    } else {
-        $('.avatar-error').removeClass('none');
-    }
-});
-
-$('.undo-avatar-upload').on('click', function() {
-    $('.avatar-error').addClass('none');
-    $('.uploaded-avatar').addClass('none');
-    
-    let original_avatar = $('.original-avatar');
-    if(original_avatar.attr('src') == '') {
-        original_avatar.addClass('none');
-        $('.default-avatar').removeClass('none');
-        $('.remove-profile-avatar').addClass('none');
-    } else {
-        original_avatar.removeClass('none');
-        $('.default-avatar').addClass('none');
-        $('.remove-profile-avatar').removeClass('none');
-    }
-
-    $('.avatar-upload-button').val('');
-    $(this).addClass('none');
-});
-
-$('.remove-profile-cover').click(function() {
-    $('.remove-cover-dialog').css('display', 'flex');
-    $('.remove-cover-dialog').animate({
-        'opacity': 1
-    });
-
-    return false;
-});
-
-$('.remove-cover-button').click(function() {
-    let upload_text = $('.change-cover-cont').find('.upload-btn-text').val();
-    $('.cover-upload-button-text').text(upload_text);
-
-    $('.remove-cover-dialog').addClass('none');
-    $('.us-cover').attr('src', '');
-    $('.us-cover').addClass('none');
-    $('.remove-profile-cover').addClass('none');
-    
-    $('.suboptions-container').css('display', 'none');
-
-    $('.change-cover-back-container').removeClass('none');
-
-    $('.cover-upload-button').value = '';
-    $('.cover-removed').val('1');
-    return false;
-});
-
-$('.discard-cover-upload').on('click', function() {
-    let upload_text = $('.change-cover-cont').find('.upload-btn-text').val();
-    let update_text = $('.change-cover-cont').find('.update-btn-text').val();
-    $('.uploaded-us-cover').attr('src', '');
-    $('.uploaded-us-cover').addClass('none');
-    if($('.original-cover').attr('src') == '') {
-        $('.original-cover').addClass('none');
-        $('.change-cover-back-container').removeClass('none');
-        $('.cover-upload-button-text').text(upload_text);
-    } else {
-        $('.original-cover').removeClass('none');
-        $('.remove-profile-cover').removeClass('none');
-        $('.cover-upload-button-text').text(update_text);
-    }
-
-    $('.cover-upload-button').val('');
-    $(this).addClass('none');
-});
-
-$('.cover-upload-button').on('change', function(event) {
-    let update_text = $('.change-cover-cont').find('.update-btn-text').val();
-    // validate_image function accept an array
-    let uploaded_cover = [event.target.files[0]];
-    if(validate_image_file_Type(uploaded_cover).length == 1) {
-        $('.cover-error').addClass('none');
-    } else {
-        $('.cover-error').removeClass('none');
-        return;
-    }
-
-    // for now validating image size is done in the backend side
-    $('.cover-upload-button-text').text(update_text);
-    $('.us-cover').addClass('none');
-    $('.uploaded-us-cover').attr('src', URL.createObjectURL(event.target.files[0]));
-    $('.uploaded-us-cover').removeClass('none');
-
-    $('.discard-cover-upload').removeClass('none');
-    $('.change-cover-back-container').addClass('none');
-    $('.remove-profile-cover').addClass('none');
-});
-
-$('.delete-account').click(function() {
-    $('#deactivate-account-container').addClass('none');
-    $('#delete-account-container').removeClass('none');
-    return false;
-});
-
-$('.deactivate-account').click(function() {
-    $('#deactivate-account-container').removeClass('none');
-    $('#delete-account-container').addClass('none');
-
-    return false;
-});
-
 $('.send-feedback').click(function() {
     let button = $(this);
+    let btn_text_ing = button.parent().find('.btn-text-ing').val();
+    let btn_text_no_ing = button.parent().find('.btn-text-no-ing').val();
+
+    let data = {
+        _token: csrf,
+    };
 
     let feedback_container = $(this);
     while(!feedback_container.hasClass('feedback-container')) {
         feedback_container = feedback_container.parent();
     }
 
+    // If this is true, it means the user is a guest
+    let error_container = feedback_container.find('.error-box');
+    if(feedback_container.find('#email').length) {
+        let email = feedback_container.find('#email').val().trim();
+        if(email == "") {
+            feedback_container.find('#email').parent().find('.err').removeClass('none');
+            error_container.find('.error').text(feedback_container.find('.email-required').val());
+            error_container.removeClass('none');
+            return;
+        } else if(!validateEmail(email)) {
+            feedback_container.find('#email').parent().find('.err').removeClass('none');
+            feedback_container.find('.error').text(feedback_container.find('.email-invalide').val());
+            error_container.removeClass('none');
+            return;
+        } else {
+            feedback_container.find('#email').parent().find('.err').addClass('none');
+            error_container.addClass('none');
+            data.email = email;
+        }
+    }
+
+    let feedback = feedback_container.find('#feedback').val().trim();
+    if(feedback == "") {
+        feedback_container.find('#feedback').parent().find('.err').removeClass('none');
+        error_container.removeClass('none');
+        error_container.find('.error').text(feedback_container.find('.feedback-required').val());
+        return;
+    } else {
+        feedback_container.find('#feedback').parent().find('.err').addClass('none');
+        error_container.addClass('none');
+        data.feedback = feedback;
+    }
+
+    // Disabling inputs while sending feedback
     feedback_container.find('#email').attr('disabled', 'disabled');
     feedback_container.find('textarea').attr('disabled', 'disabled');
-    button.attr('disabled', 'disabled');
-    button.val('sending..');
-    button.attr('style', 'background-color: #acacac; cursor: default');
 
+    button.attr('disabled', 'disabled');
+    button.val(btn_text_ing);
+    button.attr('style', 'background-color: #acacac; cursor: default');
+    console.log('ui validation passed !');
     $.ajax({
         url: '/feedback',
         type: 'POST',
-        data: {
-            '_token': csrf,
-            'email': feedback_container.find('#email').val(),
-            'feedback': feedback_container.find('#feedback').val(),
-        },
+        data: data,
         success: function(response) {
             feedback_container.find('.feedback-sec').addClass('none');
             feedback_container.find('.feedback-sent-success-container').removeClass('none');
@@ -988,18 +692,18 @@ $('.send-feedback').click(function() {
             feedback_container.find('#email').removeAttr('disabled');
             feedback_container.find('textarea').removeAttr('disabled');
             button.removeAttr('disabled');
-            button.val('send');
+            button.val(btn_text_no_ing);
             button.attr('style', '');
             let er = '';
             try {
                 let errorObject = JSON.parse(response.responseText).errors;
                 er = errorObject[Object.keys(errorObject)][0];
             } catch(e) {
-                er = 'This form has limited attempts please try again later !';
+                er = JSON.parse(response.responseText).message;
             }
 
-            feedback_container.find('.error').removeClass('none');
-            feedback_container.find('.error').text('* ' + er);
+            error_container.removeClass('none');
+            error_container.find('.error').text(er);
         }
     })
 });
@@ -1323,13 +1027,8 @@ function handle_vote_sync(button, vote_icons_state, new_vote_count) {
     }
 }
 
-$('.remove-informer-message-container').click(function() {
-    let vote_container = $(this);
-    while(!vote_container.hasClass('informer-message-container')) {
-        vote_container = vote_container.parent();
-    }
-    clearTimeout(informer_container_timeout);
-    vote_container.css('display', 'none');
+$('.remove-informer-message-container').each(function() {
+    handle_remove_informer_message_container($(this).parent());
 });
 
 function handle_remove_informer_message_container(element) {
@@ -1345,17 +1044,10 @@ function handle_remove_informer_message_container(element) {
         event.preventDefault();
     });
 }
-function handle_hover_informer_display(element) {
-    element.find('.hover-informer-display-element').on({
-        mouseenter: function() {
-            $(this).parent().find('.informer-message-container').css('display', 'block');
-        },
-        mouseleave: function() {
-            $(this).parent().find('.informer-message-container').css('display', 'none');
-        }
-    })
-}
 
+$('.like-resource').each(function() {
+    handle_resource_like($(this));
+});
 function handle_resource_like(like_button) {
     like_button.click(function() {
         let likable_id = like_button.find('.likable-id').val();
@@ -1403,7 +1095,6 @@ function handle_resource_like(like_button) {
         handle_like_sync(like_button, like_icon_status, new_like_count);
     });
 }
-
 function handle_like_sync(button, like_icon_status, new_like_count) {
     // If the thread viewer is not opened we have to stop the execution flow
     if(!last_opened_thread) 
@@ -1461,10 +1152,6 @@ function handle_like_sync(button, like_icon_status, new_like_count) {
     }
 }
 
-$('.like-resource').each(function() {
-    handle_resource_like($(this));
-});
-
 $('.set-lang').click(function(event) {
     let language = $(this).find('.lang-value').val();
     let loading = $(this).find('.loading-dots-anim');
@@ -1478,66 +1165,11 @@ $('.set-lang').click(function(event) {
             lang: language
         },
         success: function() {
-            stop_loading_anim();
             location.reload();
         }
     });
 
     event.preventDefault();
-});
-
-$('.find-keys').click(function() {
-    let content = $('#multilang_textarea').val();
-    let result = {};
-    let r = 0;
-    let cursor = 0;
-    let current;
-    while(current=content[cursor]) {
-        if(current == '_') {
-            if(content[cursor+1] == '_' && content[cursor+2] == '(') {
-                let closing_quote = (content[cursor+3] == "'") ? "'" : '"';
-                let key = '';
-                cursor = cursor+4;
-                while((k=content[cursor]) != closing_quote) {
-                    key += k;
-                    cursor++;
-                }
-                result[key] = '';
-                continue;
-            }
-        }
-
-        cursor++;
-    }
-
-    let lang_comparison_list = $('#lang-comparison-list').val();
-
-    // Check if the user check a file to compare keys with and remove already existed translated keys
-    if(lang_comparison_list != 'none') {
-        let lang = lang_comparison_list;
-
-        $.ajax({
-            type: 'get',
-            url: '/languages/' + lang + '/keys' ,
-            success: function(language_file_keys) {
-                language_file_keys = JSON.parse(language_file_keys);
-                // Now we have two language keys in for of objects
-                // All we want to do is to subtract the keys exist in language file from the results generated keys
-                // because we don't need to add already translated strings in our result
-                // That's mean whatever is generated after the following loop have to be added to the language file
-                Object.keys(result).forEach((item) => {
-                    if(item in language_file_keys) {
-                        delete result[item];
-                    }
-                });
-
-                $('#multilang_result_textarea').val(JSON.stringify(result, null, 4));
-            }
-        })
-    } else {
-        let generated_json = JSON.stringify(result, null, " ");
-        $('#multilang_result_textarea').val(generated_json + '\n');        
-    }
 });
 
 $('.notification-button').on('click', function() {
@@ -1912,7 +1544,6 @@ function start_loading_anim(loading_anim) {
         }
     }, 300);
 }
-
 function stop_loading_anim() {
     clearInterval(loading_anim_interval);
 }
@@ -2121,7 +1752,6 @@ function handle_follow_resource(button) {
 }
 
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
-
 $('.thread-add-share').on('click', function(event) {
     const $codemirror = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
 
@@ -2532,7 +2162,6 @@ $("#thread-videos").on('change', function(event) {
     // Clear the input because we don't need its value; we use arrays to store files
     $(this).val('');
 });
-
 let load_image = function(file, image) {
     let reader = new FileReader();
     reader.onload = function(){
@@ -2592,7 +2221,6 @@ function handle_close_uploaded_media(container) {
         }
     })
 }
-
 function adjust_uploaded_medias_indexes() {
     let images_count = 0;
     let videos_count = 0;
@@ -2606,7 +2234,6 @@ function adjust_uploaded_medias_indexes() {
         }
     });
 }
-
 // The following three functions used to fetch image thumbnail from the uploaded video if user upload a video
 const get_thumbnail = async function(file, seekTo, thumbnail_container) {
     let response = await getVideoCover(file, seekTo, thumbnail_container);
@@ -2661,10 +2288,6 @@ function getVideoCover(file, seekTo = 0.0, thumbnail_container) {
         });
     });
 }
-
-Array.prototype.contains = function(element){
-    return this.indexOf(element) > -1;
-};
 
 // Validate images upload
 function validate_image_file_Type(files){
@@ -2938,7 +2561,7 @@ function handle_open_media_viewer(thread) {
                         $('.tmvisc').find('.viewer-thread-reply').each(function() {
                             handle_viewer_reply_events($(this));
                         });
-                        // ---- HANDLE REPLY ---- //
+                        // ---- HANDLE REPLY BUTTON ---- //
                         $('.tmvisc').find('.share-viewer-reply').on('click', function() {
 
                             const $codemirror = $('#viewer-reply-input').nextAll('.CodeMirror')[0].CodeMirror;
@@ -3144,7 +2767,6 @@ $('.thread-viewer-left').on('click', function(event) {
 
     $('#thread-media-viewer').find('.thread-counter-current-index').text(parseInt(viewer_media_count)+1);
 });
-
 $('.thread-viewer-right').on('click', function(event) {
     event.stopPropagation();
 
@@ -3377,13 +2999,11 @@ $('.fade-loading').each(function(event) {
         });
     }, 800);
 });
-
 function handle_fade_loading_removing(fade_container) {
     fade_container.imagesLoaded(function() {
         fade_container.find('.fade-loading').remove();
     });
 }
-
 function handle_fade_loading(fade_container) {
     fade_container.find('.fade-loading').each(function() {
         let fade_item = $(this);
@@ -3905,16 +3525,6 @@ $('.activity-section-switcher').on('click', function() {
         })
     }
 });
-
-jQuery.fn.rotate = function(degrees) {
-    $(this).css({   
-        '-webkit-transform' : 'rotate('+ degrees +'deg)',
-        '-moz-transform' : 'rotate('+ degrees +'deg)',
-        '-ms-transform' : 'rotate('+ degrees +'deg)',
-        'transform' : 'rotate('+ degrees +'deg)',
-    });
-    return $(this);
-};
 
 let spinners_intervals = new Map();
 let spinner_rotation = 0;

@@ -1,10 +1,9 @@
 <div class="mt8">
     <div class="right-panel-header-container" style="padding: 8px">
-        <svg class="size24 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
-        <p class="bold no-margin">{{ __('Feedback') }}</p>
+        <svg class="mr4 size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8ZM397.4,397.4A200,200,0,1,1,114.6,114.6,200,200,0,1,1,397.4,397.4ZM336,224a32,32,0,1,0-32-32A32,32,0,0,0,336,224Zm-160,0a32,32,0,1,0-32-32A32,32,0,0,0,176,224Zm194.4,64H141.6a13.42,13.42,0,0,0-13.5,15c7.5,59.2,58.9,105,121.1,105h13.6c62.2,0,113.6-45.8,121.1-105a13.42,13.42,0,0,0-13.5-15Z"/></svg>
+        <p class="bold no-margin">{{ __('How are you feeling today') }}</p>
     </div>
     <div class="mx8 px8 mb8" style="margin-top: 16px">
-        <p class="forum-color bold fs13">{{ __('how are you feeling today') }} ?</p>
         @canemoji
         <div class="flex space-between">
             <div class="pointer mx4 emoji-button">
@@ -76,8 +75,11 @@
         </div>
         @endcanemoji
         <div class="toggle-box" style="margin-bottom: 14px">
-            <div class="bold fs13 bold blue pointer my4 toggle-container-button">
-                {{ __('Send a message/feedback ?') }}
+            <div class="bold fs13 bold bblack pointer my4 toggle-container-button flex align-center">
+                {{ __('Send a message/feedback') }}
+                <svg class="toggle-arrow mx4 size7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                    <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
+                </svg>
             </div>
             <div class="toggle-container">
                 <p class="fs12 my8">{{ __("We are here to anwser any questions you may have about us or any feedback you have about the website. Reach out to us using below form") }}.</p>
@@ -87,18 +89,28 @@
                         <p class="fs13 no-margin text-center green-message">{{ __('Your feedback is sent successfully.') }}</p>
                     </div>
                     <div class="feedback-sec">
-                        <p class="no-margin my4 none error"></p>
+                        <div class="flex error-box none">
+                            <svg class="size14 mr4" style="min-width: 14px; margin-top: 1px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                            <p class="no-margin bold error"></p>
+                        </div>
+                        <input type="hidden" class="email-required" value="{{ __('Email is required') }}">
+                        <input type="hidden" class="feedback-required" value="{{ __('Feedback is required') }}">
+                        <input type="hidden" class="feedback-min" value="{{ __('Feedback should contain at least 10 characters') }}">
+                        <input type="hidden" class="email-invalide" value="{{ __('Invalide email address') }}">
+                        <input type="hidden" class="content-required" value="{{ __('Feedback is required') }}">
                         @guest
                         <div class="input-container">
-                            <label for="subject" class="label-style-1 fs13">{{ __('Email') }} </label>
+                            <label for="subject" class="label-style-1 fs13">{{ __('Email') }} <span class="err red none ml4">*</span></label>
                             <input type="email" id="email" name="email" autocomplete="off" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
                         </div>
                         @endguest
                         <div class="input-container">
-                            <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }}</label>
-                            <textarea name="feedback" id="feedback" class="feedback-textarea" autocomplete="off" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
+                            <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} <span class="err red none ml4">*</span></label>
+                            <textarea name="feedback" id="feedback" min="10" class="feedback-textarea" autocomplete="off" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
                         </div>
                         <div class="flex">
+                            <input type="hidden" class="btn-text-ing" value="{{ __('Sending') }}..">
+                            <input type="hidden" class="btn-text-no-ing" value="{{ __('Send') }}">
                             <input type="button" value="send" class="move-to-right button-style-1 send-feedback">
                         </div>
                     </div>

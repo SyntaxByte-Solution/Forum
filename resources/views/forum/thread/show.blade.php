@@ -111,9 +111,8 @@
                         display: flex;
                         align-items: center;
                     }
-                    .editor-toolbar .fa-arrows-alt, .editor-toolbar .fa-columns, 
-                    .fa-question-circle, .fa-link, .fa-picture-o, .fa-link,
-                    .share-post-form .separator:nth-of-type(2), .editor-statusbar {
+                    .editor-toolbar .fa-arrows-alt, .editor-toolbar .fa-columns,
+                    .editor-statusbar {
                         display: none !important;
                     }
                 </style>

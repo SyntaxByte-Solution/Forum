@@ -19,9 +19,10 @@ class CSPPolicy extends Policy
             ->addDirective(Directive::BASE, Keyword::SELF)
             // ->addDirective(Directive::CONNECT, [
             //     'self',
-            //     'ws://' . env('APP_DOMAIN') . ':6001',
-            //     'wss://' . env('APP_DOMAIN') . ':6001',
-
+            //     'ws://' . env('APP_DOMAIN'),
+            //     'wss://' . env('APP_DOMAIN'),
+            //     'ws://ws-eu.pusher.com:6001/',
+            //     'wss://ws-eu.pusher.com',
             // ])
             ->addDirective(Directive::FORM_ACTION, Keyword::SELF)
             // ->addDirective(Directive::IMG, [

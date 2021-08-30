@@ -265,6 +265,7 @@ function handle_login_lock(container) {
 
 if($('#right-panel').height() > $(window).height()-52) {
     $(document).scroll(function() {
+        // > 54 + .. => 54 because height(header) = 52 and the border top and bottom of sidebar is 2px
         if (document.documentElement.scrollTop + $(window).height() > 54 + $('#right-panel').height()) { 
             $('#right-panel').css({
                 position: 'fixed',

@@ -1,10 +1,10 @@
-<div class="ms-right-panel">
+<div class="ms-right-panel mt8">
     @php
         $ustatus = Cache::has('user-is-online-' . $user->id) ? 'active' : 'inactive';
         $login_status = Cache::has('user-is-online-' . $user->id) ? 'online' : 'offline';
     @endphp
     @isset($withcover)
-    <div class="flex">
+    <div class="flex ">
         <div class="relative us-user-media-container full-width">
             <div class="us-cover-container full-center" style="height: 90px">
                 <img src="{{ $user->cover }}"  class="us-cover" alt="">
@@ -46,7 +46,7 @@
         </div>
     </div>
     @else
-    <div class="flex px8 py8">
+    <div class="flex py8">
         <div class="small-image-1 br6 mr8 hidden-overflow">
             <img src="{{ $user->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="">
         </div>

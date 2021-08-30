@@ -124,10 +124,6 @@
         @include('partials.right-panels.forums-list')
         @include('partials.right-panels.recent-forum-threads')
         @include('partials.right-panels.statistics')
-        <div class="line-separator"></div>
-        <div id="banner-ad" style="width: 300px; height: 250px; margin: 0 auto" class="full-center">
-            <h2>ADS HERE</h2>
-        </div>
         @include('partials.right-panels.feedback')
     </div>
 @endsection

@@ -55,7 +55,7 @@
                 @enderror
                 <div class="full-width flex my8">
                     <label for="forum_category_dropdown" class="mr8 fs13 bold  no-margin" style="width: 160px">{{__('Forum')}} @error('forum')<span class="error">*</span>@enderror</label>
-                    <span class="bold mx4">:</span>
+                    <span class="bold mx8">:</span>
                     <select name="forum" id="forum_category_dropdown" class="dropdown-style" style="width: 180px">
                         <option value="0">{{ __("All forums") }}</option>
                         @foreach($forums as $forum)
@@ -67,9 +67,9 @@
                 @error('category')
                     <p class="error">{{ $message }}</p>
                 @enderror
-                <div class="full-width flex align-center">
+                <div class="full-width flex">
                     <label for="category_dropdown" class="mr8 fs13 bold" style="width: 160px">{{ __('Category') }}</label>
-                    <span class="bold mx4">:</span>
+                    <span class="bold mx8">:</span>
                     <select name="category" id="category_dropdown" class="dropdown-style" style="width: 180px">
                         <option value="0">{{ __("All categories") }}</option>
                     </select>
@@ -80,16 +80,16 @@
                 @enderror
                 <div class="full-width flex">
                     <label class="mr8 fs13 bold" style="width: 160px">{{ __('Select only discussions with best reply') }}</label>
-                    <span class="bold mx4">:</span>
+                    <span class="bold mx8">:</span>
                     <input type="checkbox" name="hasbestreply" autocomplete="off">
                 </div>
                 <div class="simple-line-separator my8"></div>
                 @error('threads_date')
                     <p class="error">{{ $message }}</p>
                 @enderror
-                <div class="full-width flex align-center">
+                <div class="full-width flex">
                     <label for="threads_date" class="mr8 fs13 bold" style="width: 160px">{{ __('Thread Creation Date') }}</label>
-                    <span class="bold mx4">:</span>
+                    <span class="bold mx8">:</span>
                     <select name="threads_date" id="threads_date" class="dropdown-style" style="width: 180px">
                         <option value="anytime">{{ __("anytime") }}</option>
                         <option value="past24hours">{{ __("past 24 hours") }}</option>
@@ -99,9 +99,9 @@
                     </select>
                 </div>
                 <div class="simple-line-separator my8"></div>
-                <div class="full-width flex align-center">
+                <div class="full-width flex">
                     <label for="sorted_by" class="mr8 fs13 bold" style="width: 160px">{{ __('Sorted by') }}</label>
-                    <span class="bold mx4">:</span>
+                    <span class="bold mx8">:</span>
                     <select name="sorted_by" id="sorted_by" class="dropdown-style" style="width: 180px">
                         <option selected value="created_at_desc">{{ __("Creation date --Newest--") }}</option>
                         <option value="created_at_asc">{{ __("Creation date --Oldest--") }}</option>

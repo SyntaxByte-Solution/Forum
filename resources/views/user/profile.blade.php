@@ -229,7 +229,7 @@
                     @endif
                 </div>
             </div>
-            <div id="right-panel" style="padding-top: 8px">
+            <div id="right-panel">
                 @include('partials.user-space.user-card')
                 <div class="ms-right-panel my8">
                     <div class="relative">

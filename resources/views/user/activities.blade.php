@@ -2,6 +2,7 @@
 
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
@@ -112,11 +113,8 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div id="right-panel">
                 @include('partials.user-space.user-card', ['withcover'=>true])
-                @if(!(auth()->user() && auth()->user()->id == $user->id))
-                    @include('partials.ads.w300h250')
-                @endif
             </div>
         </div>
     </div>

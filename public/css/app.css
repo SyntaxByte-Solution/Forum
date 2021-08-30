@@ -201,7 +201,8 @@ a, input, textarea {
 }
 
 .thread-content * {
-    margin: 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 .thread-content p {
@@ -1987,9 +1988,7 @@ a, input, textarea {
 .ms-right-panel {
     padding: 10px;
     border-radius: 4px;
-    margin-left: 8px;
-    min-width: 280px;
-    width: 280px;
+    margin: 0 8px;
     height: max-content;
     background-color: white;
     border: 1px solid;

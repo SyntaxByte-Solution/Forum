@@ -52,10 +52,12 @@
                                     <svg class="mr4 size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><path class="cls-1" d="M1,12S5,4,12,4s11,8,11,8-4,8-11,8S1,12,1,12ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z"/></svg>
                                     <div class="black">{{ __('See thread') }}</div>
                                 </a>
+                                @can('update', $thread)
                                 <a href="{{ $edit_link }}" target="_blank" class="no-underline simple-suboption flex align-center">
                                     <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"/></svg>
                                     <div class="black">{{ __('Edit thread') }}</div>
                                 </a>
+                                @endcan
                             @else
                                 <div class="simple-suboption restore-thread-button flex align-center">
                                     <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 448"><path d="M234.67,138.67V245.33L326,299.52l15.36-25.92-74.66-44.27V138.67ZM255.89,32C149.76,32,64,118,64,224H0l83.09,83.09,1.5,3.1L170.67,224h-64a149.68,149.68,0,1,1,43.84,105.49l-30.19,30.19A190.8,190.8,0,0,0,255.89,416C362,416,448,330,448,224S362,32,255.89,32Z"/></svg>

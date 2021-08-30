@@ -11,16 +11,15 @@ if(last_media_count.length) {
   last_media_count = 0;
 }
 
-
-let placeholder = $('#placeholder').val();
 $('.content-container textarea').each(function() {
-  var content_editor = new SimpleMDE({
-      placeholder: placeholder,
-      hideIcons: ["guide", "heading", "link", "image"],
-      spellChecker: false,
-      showMarkdownLineBreaks: true,
-  });
-  content_editor.render();
+    var simplemde = new SimpleMDE({
+        element: this,
+        hideIcons: ["guide", "heading", "image"],
+        spellChecker: false,
+        mode: 'markdown',
+        showMarkdownLineBreaks: true,
+    });
+    simplemde.render();
 });
 
 let GetFileBlobUsingURL = function (url, convertBlob) {

@@ -4182,6 +4182,7 @@ function handle_thread_events(thread) {
     handle_thread_visibility_switch(thread);
     handle_follow_resource(thread.find('.follow-resource'));
     handle_expend_button_appearence(thread);
+    handle_remove_informer_message_container(thread);
     // Keep in mind that images dimensions also handled withing lazy loading logic
     handle_thread_medias_containers(thread);
     /**

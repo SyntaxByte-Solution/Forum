@@ -71,7 +71,10 @@ class SearchController extends Controller
         $tab = 'all';
         $tab_title = __('All');
         $forums = Forum::all();
-        $pagesize = 6;
+        $pagesize = 10;
+        if($request->has('pagesize')) {
+            $pagesize = $request->input('pagesize');
+        }
         $filters = [];
 
         $data = $request->validate([
@@ -200,6 +203,8 @@ class SearchController extends Controller
                     $threads = $threads->withCount('likes')->orderBy('likes_count', 'desc');
                     break;
             }
+        } else {
+            $threads = $threads->orderBy('created_at', 'desc');
         }
         $threads = $threads->paginate($pagesize);
 

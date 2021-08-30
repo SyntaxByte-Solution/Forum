@@ -159,6 +159,7 @@
                     </div>
                 </div>
                 <div>
+                    @if($threads->count())
                     <div class="flex">
                         <div class="flex align-center my4 move-to-right">
                             <span class="mr4 fs13 gray">posts/page :</span>
@@ -169,6 +170,7 @@
                             </select>
                         </div>
                     </div>
+                    @endif
                     {{ $threads->onEachSide(0)->links() }}
                 </div>
             </div>
@@ -182,7 +184,7 @@
                     <div>
                         <div class="size36 sprite sprite-2-size notfound36-icon" style="margin: 16px auto 0 auto"></div>
                         <p class="fs20 bold gray my4">{{ __("No discussions matched your search !") }}</p>
-                        <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
+                        <p class="my4 text-center">{{ __("Start your own ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
                     </div>
                 </div>
             @endif

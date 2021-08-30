@@ -103,7 +103,7 @@
                     <label for="sorted_by" class="mr8 fs13 bold" style="width: 160px">{{ __('Sorted by') }}</label>
                     <span class="bold mx4">:</span>
                     <select name="sorted_by" id="sorted_by" class="dropdown-style" style="width: 180px">
-                        <option value="created_at_desc">{{ __("Creation date --Newest--") }}</option>
+                        <option selected value="created_at_desc">{{ __("Creation date --Newest--") }}</option>
                         <option value="created_at_asc">{{ __("Creation date --Oldest--") }}</option>
                         <option value="views">{{ __("Number of views") }}</option>
                         <option value="votes">{{ __("Number of votes") }}</option>

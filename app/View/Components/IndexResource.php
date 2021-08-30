@@ -4,6 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use App\Models\{Thread, User, Category, Forum, Follow};
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -42,7 +43,7 @@ class IndexResource extends Component
         $this->views = $thread->view_count;
         $this->replies = $thread->posts->count();
         $this->likes = $thread->likes->count();
-        $this->content = Markdown::parse($thread->content);
+        $this->content = Str::markdown($thread->content);
 
         if(Auth::check()) {
             $this->followed = Follow::where('follower', auth()->user()->id)

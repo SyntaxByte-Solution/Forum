@@ -98,7 +98,7 @@
                         </div>
                         <div>
                             <div class="flex align-center" style="height: 18px">
-                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="forum-color no-underline bold fs13"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
+                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> - <span class="thread-owner-username">{{ $thread->user->username }}</span></a>
                                 @if(auth()->user() && $thread->user->id != auth()->user()->id)
                                 <div class="follow-box thread-component-follow-box flex align-center">
                                     <!-- buttons labels -->
@@ -126,7 +126,7 @@
                                             $state = $followed == true ? 1 : -1;
                                         @endphp
                                         <div class="@if($followed) none @endif @auth follow-text-button follow-resource follow-button-toggle-with-bell @endauth">
-                                            <p class="no-margin fs12 bold btn-txt blue unselectable">{{ __('Follow') }}</p>
+                                            <p class="no-margin fs12 bold btn-txt bblack unselectable">{{ __('Follow') }}</p>
                                         </div>
                                         <input type="hidden" class="thread-add-visibility-slug" value="public">
                                         <input type="hidden" class="followable-id" value="{{ $thread->user->id }}">

@@ -13,7 +13,7 @@
 @endphp
 
 <div id="thread-add-container-size">
-    <div class="thread-add-container">
+    <div class="thread-add-container" id="thread-add-wrapper">
         <input type="hidden" class="placeholder" value="{{ __('Start your discussion content here') }}..">
         <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
         <input type="hidden" class="category" value="{{ $category->id }}">
@@ -102,12 +102,36 @@
         <div class="px8 py8">
             <label for="subject" class="flex align-center bold forum-color mb4">{{ __('Title') }}<span class="error ml4 none">*</span></label>
             <input type="hidden" class="required-text" value="{{ __('Title field is required') }}">
-            <input type="text" id="subject" name="subject" class="styled-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re asking a question to another person") }}'>
+            <input type="text" id="subject" name="subject" class="styled-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re talking to another person") }}'>
         </div>
         <div>
-            <label for="content" class="flex align-center bold forum-color mx8 mb4">{{ __('Content') }}<span class="error ml4 none">*</span></label>
+            <div class="flex align-center space-between mb4 mx8">
+                <label for="content" class="flex align-center bold forum-color">{{ __('Content') }}<span class="error ml4 none">*</span></label>
+                <div class="move-to-right flex align-center relative">
+                    <!-- this button will be displayed only to other users and not to the activities profile owner -->
+                    <svg class="size17 pointer button-with-suboptions" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                    <div class="suboptions-container simple-information-suboptions-container" style="width: 335px; top: calc(100% + 4px); border-color: #b9b9b9; background-color: white">
+                        <!-- container closer -->
+                        <div class="closer-style fill-opacity-style hide-parent">
+                            <svg class="size17" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm0,448A200,200,0,1,1,456,256,199.94,199.94,0,0,1,256,456ZM357.8,193.8,295.6,256l62.2,62.2a12,12,0,0,1,0,17l-22.6,22.6a12,12,0,0,1-17,0L256,295.6l-62.2,62.2a12,12,0,0,1-17,0l-22.6-22.6a12,12,0,0,1,0-17L216.4,256l-62.2-62.2a12,12,0,0,1,0-17l22.6-22.6a12,12,0,0,1,17,0L256,216.4l62.2-62.2a12,12,0,0,1,17,0l22.6,22.6a12,12,0,0,1,0,17Z"/></svg>
+                        </div>
+                        <div class="flex mb8">
+                            <span class="bold mr8 fs20">↵</span>
+                            <p class="no-margin fs13">{{ __('In order to add line breaks, you need either to add two spaces at the end of line and then press enter, or you can press enter twice') }}.</p>
+                        </div>
+                        <div class="flex">
+                            <span class="bold mr8 fs20">❝</span>
+                            <p class="no-margin fs13">{{ __('If you choose to insert a quote or a list of options and you decide to finish the list or end the quote, you have to click enter button twice') }}.</p>
+                        </div>
+                        <div class="simple-line-separator" style="width: 40%; margin: 10px 0"></div>
+                        <div class="flex mb8">
+                            <p class="no-margin fs13">{{ __('You can preview your content temporarily by clicking on the eye button to check the format of content. To get the ditor back just click on the eye button again') }}.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <input type="hidden" class="required-text" value="{{ __('Content field is required') }}">
-            <textarea name="content" id="content" placeholder="{{ __('Start your a discussion content here') }}.."></textarea>
+            <textarea name="content" id="content" placeholder="{{ __('Your discussion content') }}.."></textarea>
         </div>
         <div class="thread-add-media-section px8">
             <div class="thread-add-media-error px8 my8">
@@ -191,6 +215,7 @@
                 display: flex;
                 align-items: center;
             }
+            .editor-toolbar .fa-arrows-alt, .editor-toolbar .fa-columns,
             .share-post-form .separator:nth-of-type(2), .editor-statusbar {
                 display: none !important;
             }

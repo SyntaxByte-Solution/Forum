@@ -1,14 +1,15 @@
 @php
     $recent_threads = collect([]);
+    $threads_count = 5;
     if($forum = request()->forum) {
         if($category = request()->category) {
-            $recent_threads = \App\Models\Category::find($category)->first()->threads->sortByDesc('created_at')->take(4);
+            $recent_threads = $category->threads->sortByDesc('created_at')->take($threads_count);
         } else {
             $forum_categories_ids = \App\Models\forum::find($forum)->first()->categories->pluck('id');
-            $recent_threads = \App\Models\Thread::whereIn('category_id', $forum_categories_ids)->orderBy('created_at', 'desc')->take(4)->get();
+            $recent_threads = \App\Models\Thread::whereIn('category_id', $forum_categories_ids)->orderBy('created_at', 'desc')->take($threads_count)->get();
         }
     } else {
-        $recent_threads = \App\Models\Thread::orderBy('created_at', 'desc')->take(4)->get();
+        $recent_threads = \App\Models\Thread::orderBy('created_at', 'desc')->take($threads_count)->get();
     }
 @endphp
 @if($recent_threads->count())

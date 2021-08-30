@@ -107,7 +107,7 @@
         </div>
         <div id="thread-add-component" class="none" style="margin-bottom: 10px">
             @auth
-                @include('partials.thread.thread-add', ['editor_height'=>100])
+                @include('partials.thread.thread-add', ['editor_height'=>170])
             @endauth
             <div class="simple-line-separator" style="margin: 12px 0"></div>
         </div>

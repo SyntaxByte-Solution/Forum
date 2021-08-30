@@ -2142,9 +2142,9 @@ $('.thread-add-share').on('click', function(event) {
 
     if(form_data.get('subject') == '') {
         $('#subject').parent().find('.error').removeClass('none');
-        display_top_informer_message($('#subject').parent().find('.required-text').val(), 'error');
         container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
         container.find('.thread-add-error-container').removeClass('none');
+        move_to_thread_add_top();
         return;
     } else {
         $('#subject').parent().find('.error').addClass('none');
@@ -2154,9 +2154,9 @@ $('.thread-add-share').on('click', function(event) {
 
     if(form_data.get('content') == '') {
         $('#content').parent().find('.error').removeClass('none');
-        display_top_informer_message($('#content').parent().find('.required-text').val(), 'error');
         container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
         container.find('.thread-add-error-container').removeClass('none');
+        move_to_thread_add_top();
         return;
     } else {
         $('#content').parent().find('.error').addClass('none');
@@ -2317,6 +2317,8 @@ $('.thread-add-share').on('click', function(event) {
             button.text(btn_text_no_ing);
             button.attr("disabled",false);
             button.attr('style', '');
+
+            move_to_thread_add_top();
         },
         complete: function(response) {
             
@@ -2325,7 +2327,11 @@ $('.thread-add-share').on('click', function(event) {
     
     return false;
 });
-
+function move_to_thread_add_top() {
+    location.hash = "#thread-add-wrapper";
+    var y = $(window).scrollTop();  //your current y position on the page
+    $(window).scrollTop(y-56);
+}
 
 // The following three variables will be used in edit thread (look at /thread/edit.js)
 let already_uploaded_thread_images_assets = [];
@@ -4291,8 +4297,9 @@ $('.remove-top-informer-container').on('click', function() {
 
 $('.thread-add-container textarea').each(function() {
     let simplemde = new SimpleMDE({
-        hideIcons: ["guide", "heading", "link", "image"],
+        hideIcons: ["guide", "heading", "image"],
         spellChecker: false,
+        mode: 'markdown',
         showMarkdownLineBreaks: true,
     });
 });

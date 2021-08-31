@@ -65,7 +65,7 @@
             </div>
             <div class="simple-line-separator my8"></div>
             @if($search_query != "")
-            <h2 class="fs20 flex align-center gray">{{ __('Search results for') }}: "<span class="black">{{ $search_query }}</span>"</h2>
+            <h2 class="fs20 flex align-center gray">{{ __('Search results for') }}: "<span class="black">{{ \Purifier::clean($search_query) }}</span>"</h2>
             @endif
             <div>
                 @if($users->count())

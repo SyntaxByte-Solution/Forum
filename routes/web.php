@@ -35,9 +35,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
     
-    //dd(Thread::hydrate(DB::select('select * from users')));
-
-    dd(count(User::query()->excludedeactivatedaccount()->getQuery()->wheres));
+    dd(\Purifier::clean('<a href="/" onload="" onclick="console.log()" title="ok">my name is mouad</a>'));
 
 });
 

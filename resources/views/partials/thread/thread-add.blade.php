@@ -125,7 +125,7 @@
                         </div>
                         <div class="simple-line-separator" style="width: 40%; margin: 10px 0"></div>
                         <div class="flex mb8">
-                            <p class="no-margin fs13">{{ __('You can preview your content temporarily by clicking on the eye button to check the format of content. To get the ditor back just click on the eye button again') }}.</p>
+                            <p class="no-margin fs13">{{ __('You can preview your content temporarily by clicking on the eye button to check the format of content. To get the editor back just click on the eye button again') }}.</p>
                         </div>
                     </div>
                 </div>

@@ -18,7 +18,7 @@ class XssSanitizer
     {
         $userInput = $request->all();
         array_walk_recursive($userInput, function (&$userInput) {
-            $userInput = strip_tags($userInput, ['a','p','li','ul','ol','em','q','h2','h3','h4','h5','h6','blockquote','q','br']);
+            $userInput = \Purifier::clean($userInput);
         });
         $request->merge($userInput);
         return $next($request);

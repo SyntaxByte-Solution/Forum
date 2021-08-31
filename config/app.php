@@ -191,7 +191,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
@@ -231,7 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Markdown' => Illuminate\Mail\Markdown::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-
+        'Purifier' => Mews\Purifier\Facades\Purifier::class,
     ],
 
 ];

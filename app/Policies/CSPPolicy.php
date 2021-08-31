@@ -19,10 +19,10 @@ class CSPPolicy extends Policy
             ->addDirective(Directive::BASE, Keyword::SELF)
             // ->addDirective(Directive::CONNECT, [
             //     'self',
-            //     'ws://' . env('APP_DOMAIN'),
-            //     'wss://' . env('APP_DOMAIN'),
-            //     'ws://ws-eu.pusher.com:6001/',
-            //     'wss://ws-eu.pusher.com',
+            //     'ws://' . env('APP_DOMAIN') . ':6001',
+            //     'wss://' . env('APP_DOMAIN') . ':6001',
+            //     'ws://ws-eu.pusher.com:6001',
+            //     'wss://ws-eu.pusher.com:6001',
             // ])
             ->addDirective(Directive::FORM_ACTION, Keyword::SELF)
             // ->addDirective(Directive::IMG, [
@@ -31,12 +31,12 @@ class CSPPolicy extends Policy
             //     'blob:'
             // ])
             ->addDirective(Directive::MEDIA, Keyword::SELF)
-            ->addDirective(Directive::SCRIPT, [
-                Keyword::SELF,
-                'code.jquery.com',
-                'cdn.jsdelivr.net',
-                'cdnjs.cloudflare.com'
-            ])
+            // ->addDirective(Directive::SCRIPT, [
+            //     Keyword::SELF,
+            //     'code.jquery.com',
+            //     'cdn.jsdelivr.net',
+            //     'cdnjs.cloudflare.com'
+            // ])
             ->addDirective(Directive::OBJECT, Keyword::NONE);
     }
 }

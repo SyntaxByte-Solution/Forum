@@ -3178,11 +3178,11 @@ function basic_notification_show(message, icon='') {
     }
 
     $('.basic-notification-container').removeClass('none');
-    $('.basic-notification-container').find('.basic-notification-content').text(message);
+    $('.basic-notification-container').find('.basic-notification-content').html(message);
 
     setTimeout(function() {
         $('.basic-notification-container').addClass('none');
-        $('.basic-notification-container').find('.basic-notification-content').text('');
+        $('.basic-notification-container').find('.basic-notification-content').html('');
    }, 5000);
 }
 
@@ -3742,7 +3742,14 @@ function handle_move_to_trash(button) {
     button.click(function() {
         let button_text_no_ing = button.find('.btn-text-no-ing').val();
         let button_text_ing = button.find('.btn-text-ing').val();
+        let moved_successfully = button.find('.moved-successfully').val();
+        let go_to_archive = button.find('.go-to-archive').val();
     
+        let thread = button;
+        while(!thread.hasClass('thread-container-box')) {
+            thread = thread.parent();
+        }
+
         button.find('.btn-text').text(button_text_ing);
         button.find('.btn-text').attr("disabled","disabled");
         button.find('.btn-text').attr('style', 'cursor: default');
@@ -3759,7 +3766,8 @@ function handle_move_to_trash(button) {
                 _method: 'DELETE'
             },
             success: function(response) {
-                window.location.href = response;
+                thread.remove();
+                basic_notification_show(moved_successfully + "<a class='blue no-underline bold' href='" + response + "'>" + go_to_archive + "</a>", 'basic-notification-round-tick');
             },
             error: function() {
                 button.find('.btn-text').text(button_text_no_ing);

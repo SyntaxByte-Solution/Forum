@@ -21,7 +21,7 @@ class FaqsController extends Controller
         $this->authorize('store', [FAQ::class]);
 
         $data = $request->validate([
-            'question'=>'required|max:400',
+            'question'=>'required|min:10|max:400',
             'desc'=>'sometimes|max:800'
         ]);
         $data['user_id'] = auth()->user()->id;

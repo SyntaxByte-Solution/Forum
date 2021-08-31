@@ -54,18 +54,22 @@
             width: 250px;
         }
         .qa-wrapper {
-            cursor: pointer;
-            padding: 10px;
             background-color: #f0f6ffc2;
             border: 1px solid #d4deee;
             border-radius: 3px;
             margin-bottom: 8px;
+        }
+
+        .question-header {
+            cursor: pointer;
+            padding: 10px;
         }
         .qa-wrapper:hover {
             background-color: #ebf5ff;
         }
         .faq-answer {
             display: flex;
+            padding: 0 10px 10px 10px;
             font-size: 15px;
             line-height: 1.5;
             margin: 0;
@@ -104,25 +108,23 @@
         </div>
         @foreach($faqs as $faq)
         <div class="qa-wrapper">
-            <div class="flex space-between">
-                <div class="flex">
-                    <svg class="size20 mr8 mt2" style="min-width: 20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119.08,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm0,448A200,200,0,1,1,456,256,199.88,199.88,0,0,1,256,456ZM363.24,200.8c0,67.05-72.42,68.08-72.42,92.86V300a12,12,0,0,1-12,12H233.18a12,12,0,0,1-12-12v-8.66c0-35.74,27.1-50,47.58-61.51,17.56-9.85,28.32-16.55,28.32-29.58,0-17.25-22-28.7-39.78-28.7-23.19,0-33.9,11-49,30a12,12,0,0,1-16.66,2.13l-27.83-21.1a12,12,0,0,1-2.64-16.37C184.85,131.49,214.94,112,261.79,112,310.86,112,363.24,150.3,363.24,200.8ZM298,368a42,42,0,1,1-42-42A42,42,0,0,1,298,368Z"/></svg>
-                    <div>
-                        <p class="no-margin fs16 bold unselectable">{{ __("$faq->question") }}</p>
-                        <div class="faq-answer mt8 none">
-                            <svg class="size12 mr8" style="min-width: 12px; margin-top: 6px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                            <p class="text">{!! __("$faq->answer") !!}</p>
-                        </div>
-                    </div>
+            <div class="flex align-center space-between question-header">
+                <div class="flex align-center">
+                    <svg class="size18 mr8 mt2" style="min-width: 20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119.08,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm0,448A200,200,0,1,1,456,256,199.88,199.88,0,0,1,256,456ZM363.24,200.8c0,67.05-72.42,68.08-72.42,92.86V300a12,12,0,0,1-12,12H233.18a12,12,0,0,1-12-12v-8.66c0-35.74,27.1-50,47.58-61.51,17.56-9.85,28.32-16.55,28.32-29.58,0-17.25-22-28.7-39.78-28.7-23.19,0-33.9,11-49,30a12,12,0,0,1-16.66,2.13l-27.83-21.1a12,12,0,0,1-2.64-16.37C184.85,131.49,214.94,112,261.79,112,310.86,112,363.24,150.3,363.24,200.8ZM298,368a42,42,0,1,1-42-42A42,42,0,0,1,298,368Z"/></svg>
+                    <p class="no-margin fs16 bold unselectable">{{ __("$faq->question") }}</p>
                 </div>
                 <svg class="size12 ml4 mt2 faq-toggled-arrow" style='min-width: 12px' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350"><path d="M192,271.31l136-136a23.9,23.9,0,0,0,.1-33.8.94.94,0,0,1-.1-.1l-22.6-22.6a23.9,23.9,0,0,0-33.8-.1l-.1.1L175,175.11,78.6,78.7a23.91,23.91,0,0,0-33.8-.1l-.1.1L22,101.3a23.9,23.9,0,0,0-.1,33.8l.1.1,136,136a23.94,23.94,0,0,0,33.84.26l.16-.16Z"/></svg>
+            </div>
+            <div class="faq-answer none">
+                <svg class="size12 mr8" style="min-width: 12px; margin-top: 6px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+                <p class="text">{!! __("$faq->answer") !!}</p>
             </div>
         </div>
         @endforeach
         <div class="simple-line-separator" style="margin: 26px 0;"></div>
         <!-- send a question -->
         <div>
-            <p class="my8 fs18 bold">{{ __("Your question does not exist? You can use the form below to ask your question") }}</p>
+            <p class="my8 fs18 bold">{{ __("Your question does not exist? Use the form below to ask your question") }}</p>
             <p class="error fs15 faq-global-error none"></p>
             <div style="width: 70%; min-width: 280px">
                 <p class="error"><span class="general-error"></span></p>

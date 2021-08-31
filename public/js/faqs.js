@@ -1,11 +1,17 @@
 // Prevent scroll when refreshing the page (when question received successfully we refresh the page to displatthe flash message to user)
-$(window).on('beforeunload', function() {
-  $(window).scrollTop(0);
+$(window).on('unload', function() {
+    $(window).scrollTop(0);
 });
 
-$('.qa-wrapper').on('click', function(event) {
-    let toggled_arrow = $(this).find('.faq-toggled-arrow');
-    let answer = $(this).find('.faq-answer');
+//$('.qa-wrapper').on('click', function(event) {
+$('.question-header').on('click', function(event) {
+    let qa_wrapper = $(this);
+    while(!qa_wrapper.hasClass('qa-wrapper')) {
+      qa_wrapper = qa_wrapper.parent();
+    }
+
+    let toggled_arrow = qa_wrapper.find('.faq-toggled-arrow');
+    let answer = qa_wrapper.find('.faq-answer');
     let display = answer.css('display');
     
     if(display == 'none') {
@@ -85,6 +91,9 @@ $('.faq-question-send').on('click', function() {
         button.attr('disabled', false);
         button.attr('style', '');
         
+        spinner.addClass('opacity0');
+        stop_spinner(spinner, 'faqs-share-question-spinner');
+
         question.attr('disabled', false);
         desc.attr('disabled', false);
 
@@ -95,10 +104,6 @@ $('.faq-question-send').on('click', function() {
         $('.faq-global-error').removeClass('none');
       },
       complete: function() {
-        button.val(button_text_no_ing);
-        button.attr('style', '');
-        spinner.addClass('opacity0');
-        stop_spinner(spinner, 'faqs-share-question-spinner');
         question_lock = true;
       }
   });

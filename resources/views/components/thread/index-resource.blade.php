@@ -196,7 +196,7 @@
                         <p class="no-margin fs12 unselectable" style="margin-top: 1px">{{ $views }}</p>
                     </div>
                     <div class="relative" style="height: 20px">
-                        <svg class="pointer button-with-suboptions size20 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
+                        <svg class="pointer path-blue-when-hover button-with-suboptions size20 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
                         <div class="suboptions-container suboptions-container-right-style">
                             @can('save', $thread)
                             <div class="pointer simple-suboption save-thread flex align-center">
@@ -285,7 +285,7 @@
                         </div>    
                     </div>
                 </div>
-                <div class="pointer fs12 bold blue py4 full-center none expend-thread-content-button">
+                <div class="expend-thread-content-button none">
                     <span class="btn-text">{{ __('see all') }}</span>
                     <svg class="size7 expand-arrow" style="margin-left: 5px; fill: #2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36">
                         <path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/>
@@ -366,10 +366,11 @@
                         <div class="flex align-center unselectable pointer link-without-underline-style button-with-suboptions copy-container-button" class="block" style="margin: 4px; font-size: 12px">
                             <svg class="mr4 size14" fill="#1c1c1c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M326.61,185.39A151.92,151.92,0,0,1,327,400l-.36.37-67.2,67.2c-59.27,59.27-155.7,59.26-215,0s-59.27-155.7,0-215l37.11-37.1c9.84-9.84,26.78-3.3,27.29,10.6a184.45,184.45,0,0,0,9.69,52.72,16.08,16.08,0,0,1-3.78,16.61l-13.09,13.09c-28,28-28.9,73.66-1.15,102a72.07,72.07,0,0,0,102.32.51L270,343.79A72,72,0,0,0,270,242a75.64,75.64,0,0,0-10.34-8.57,16,16,0,0,1-6.95-12.6A39.86,39.86,0,0,1,264.45,191l21.06-21a16.06,16.06,0,0,1,20.58-1.74,152.65,152.65,0,0,1,20.52,17.2ZM467.55,44.45c-59.26-59.26-155.69-59.27-215,0l-67.2,67.2L185,112A152,152,0,0,0,205.91,343.8a16.06,16.06,0,0,0,20.58-1.73L247.55,321a39.81,39.81,0,0,0,11.69-29.81,16,16,0,0,0-6.94-12.6A75,75,0,0,1,242,270a72,72,0,0,1,0-101.83L309.16,101a72.07,72.07,0,0,1,102.32.51c27.75,28.3,26.87,73.93-1.15,102l-13.09,13.09a16.08,16.08,0,0,0-3.78,16.61,184.45,184.45,0,0,1,9.69,52.72c.5,13.9,17.45,20.44,27.29,10.6l37.11-37.1c59.27-59.26,59.27-155.7,0-215Z"/></svg>
                         </div>
-                        <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 0;">
+                        <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 0; background-color: white; border: 1px solid gray">
                             <div class="flex">
-                                <input type="text" value="{{ $thread->link }}" autocomplete="off" class="simple-input" style="width: 240px; padding: 3px; ">
-                                <div class="pointer input-button-style flex align-center copy-thread-link">
+                                <input type="text" value="{{ $thread->link }}" autocomplete="off" class="simple-input" style="width: 280px; padding: 3px 8px 3px 8px; height: 28px;">
+                                <div class="pointer input-button-style flex align-center copy-thread-link bold" style="height: 28px">
+                                    <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352.8 352.8"><path d="M318.54,57.28H270.89V15a15,15,0,0,0-15-15H34.26a15,15,0,0,0-15,15V280.52a15,15,0,0,0,15,15H81.92V337.8a15,15,0,0,0,15,15H318.54a15,15,0,0,0,15-15V72.28A15,15,0,0,0,318.54,57.28ZM49.26,265.52V30H240.89V57.28h-144a15,15,0,0,0-15,15V265.52ZM303.54,322.8H111.92V87.28H303.54Z"/></svg>
                                     {{ __('copy') }}
                                     <input type="hidden" class="copied" value="link copied to your clipboard">
                                 </div>

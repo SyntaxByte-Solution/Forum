@@ -74,7 +74,7 @@
             </a>
         </div>
         @endcanemoji
-        <div class="toggle-box" style="margin-bottom: 14px">
+        <div id="send-feedback-box-sidebar" class="toggle-box" style="margin: 10px 0 14px 0;">
             <div class="bold fs13 bold bblack pointer my4 toggle-container-button flex align-center">
                 {{ __('Send a message/feedback') }}
                 <svg class="toggle-arrow mx4 size7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
@@ -84,34 +84,44 @@
             <div class="toggle-container">
                 <p class="fs12 my8">{{ __("We are here to anwser any questions you may have about us or any feedback you have about the website. Reach out to us using below form") }}.</p>
                 <div class="feedback-container">
-                    <div class="feedback-sent-success-container green-message-container none">
-                        <svg class="size20 flex mb4 move-to-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/></svg>
-                        <p class="fs13 no-margin text-center green-message">{{ __('Your feedback is sent successfully.') }}</p>
-                    </div>
                     <div class="feedback-sec">
                         <div class="flex error-box none">
                             <svg class="size14 mr4" style="min-width: 14px; margin-top: 1px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
                             <p class="no-margin bold error"></p>
                         </div>
                         <input type="hidden" class="email-required" value="{{ __('Email is required') }}">
-                        <input type="hidden" class="feedback-required" value="{{ __('Feedback is required') }}">
-                        <input type="hidden" class="feedback-min" value="{{ __('Feedback should contain at least 10 characters') }}">
+                        <input type="hidden" class="content-required" value="{{ __('Message content is required') }}">
+                        <input type="hidden" class="content-min" value="{{ __('Content message should contain at least 10 characters') }}">
                         <input type="hidden" class="email-invalide" value="{{ __('Invalide email address') }}">
-                        <input type="hidden" class="content-required" value="{{ __('Feedback is required') }}">
                         @guest
                         <div class="input-container">
                             <label for="subject" class="label-style-1 fs13">{{ __('Email') }} <span class="err red none ml4">*</span></label>
-                            <input type="email" id="email" name="email" autocomplete="off" class="full-width border-box input-style-2" value="{{ @old('email') }}" required placeholder="Your email">
+                            <input type="email" id="email" name="email" autocomplete="off" class="full-width border-box input-style-1" style="width: 100%; min-width: unset;" value="{{ @old('email') }}" required placeholder="Your email">
                         </div>
                         @endguest
                         <div class="input-container">
-                            <label for="feedback" class="label-style-1 fs13">{{ __('Your feedback') }} <span class="err red none ml4">*</span></label>
-                            <textarea name="feedback" id="feedback" min="10" class="feedback-textarea" autocomplete="off" placeholder="{{ __('What do you think about this website ..') }}"></textarea>
-                        </div>
-                        <div class="flex">
-                            <input type="hidden" class="btn-text-ing" value="{{ __('Sending') }}..">
-                            <input type="hidden" class="btn-text-no-ing" value="{{ __('Send') }}">
-                            <input type="button" value="send" class="move-to-right button-style-1 send-feedback">
+                            <label for="feedback" class="label-style-1 fs13">{{ __('Tell us something') }} <span class="err red none ml4">*</span></label>
+                            <div class="countable-textarea-container">
+                                <textarea 
+                                    id="feedback"
+                                    class="styled-textarea countable-textarea fs12"
+                                    style="margin: 0; padding: 8px; width: 100%; min-height: 72px; max-height: 110px;"
+                                    maxlength="800"
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                    placeholder="{{ __('eg. what do you think about this website') }}.."></textarea>
+                                <div class="flex space-between">
+                                    <p class="block my4 mr4 unselectable fs12 gray textarea-counter-box width-max-content"><span class="textarea-chars-counter">0</span>/800</p>
+                                    <button class="flex align-center mt4 button-style-1 send-feedback" style="padding: 5px 8px">
+                                        <svg class="size12 mr4" fill="#FFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M492.21,3.82a21.45,21.45,0,0,0-22.79-1l-448,256a21.34,21.34,0,0,0,3.84,38.77L171.77,346.4l9.6,145.67a21.3,21.3,0,0,0,15.48,19.12,22,22,0,0,0,5.81.81,21.37,21.37,0,0,0,17.41-9l80.51-113.67,108.68,36.23a21,21,0,0,0,6.74,1.11,21.39,21.39,0,0,0,21.06-17.84l64-384A21.31,21.31,0,0,0,492.21,3.82ZM184.55,305.7,84,272.18,367.7,110.06ZM220,429.28,215.5,361l42.8,14.28Zm179.08-52.07-170-56.67L447.38,87.4Z"/></svg>
+                                        <span class="btn-text">{{ __('send') }}</span>
+                                        <input type="hidden" class="btn-text-ing" value="{{ __('Sending') }}..">
+                                        <input type="hidden" class="btn-text-no-ing" value="{{ __('Send') }}">
+                                        <input type="hidden" class="message-sent" value="{{ __('Your feedback is sent successfully.') }}">
+                                    </button>
+                                </div>
+                                <input type="hidden" class="max-textarea-characters" value="800">
+                            </div>
                         </div>
                     </div>
                 </div>

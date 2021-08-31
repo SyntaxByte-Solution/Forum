@@ -628,8 +628,9 @@ function updateQueryStringParameter(uri, key, value) {
 
 $('.send-feedback').click(function() {
     let button = $(this);
-    let btn_text_ing = button.parent().find('.btn-text-ing').val();
-    let btn_text_no_ing = button.parent().find('.btn-text-no-ing').val();
+    let btn_text_ing = button.find('.btn-text-ing').val();
+    let btn_text_no_ing = button.find('.btn-text-no-ing').val();
+    let message_sent = button.find('.message-sent').val();
 
     let data = {
         _token: csrf,
@@ -663,12 +664,17 @@ $('.send-feedback').click(function() {
 
     let feedback = feedback_container.find('#feedback').val().trim();
     if(feedback == "") {
-        feedback_container.find('#feedback').parent().find('.err').removeClass('none');
+        feedback_container.find('#feedback').parent().parent().find('.err').removeClass('none');
         error_container.removeClass('none');
-        error_container.find('.error').text(feedback_container.find('.feedback-required').val());
+        error_container.find('.error').text(feedback_container.find('.content-required').val());
+        return;
+    } else if(feedback.length < 10) {
+        feedback_container.find('#feedback').parent().parent().find('.err').removeClass('none');
+        error_container.removeClass('none');
+        error_container.find('.error').text(feedback_container.find('.content-min').val());
         return;
     } else {
-        feedback_container.find('#feedback').parent().find('.err').addClass('none');
+        feedback_container.find('#feedback').parent().parent().find('.err').addClass('none');
         error_container.addClass('none');
         data.feedback = feedback;
     }
@@ -678,23 +684,23 @@ $('.send-feedback').click(function() {
     feedback_container.find('textarea').attr('disabled', 'disabled');
 
     button.attr('disabled', 'disabled');
-    button.val(btn_text_ing);
-    button.attr('style', 'background-color: #acacac; cursor: default');
-    console.log('ui validation passed !');
+    button.find('.btn-text').text(btn_text_ing);
+    button.attr('style', 'padding: 5px 8px; background-color: #acacac; cursor: not-allowed');
+
     $.ajax({
         url: '/feedback',
         type: 'POST',
         data: data,
         success: function(response) {
-            feedback_container.find('.feedback-sec').addClass('none');
-            feedback_container.find('.feedback-sent-success-container').removeClass('none');
+            $('#send-feedback-box-sidebar').remove();
+            basic_notification_show(message_sent, 'basic-notification-round-tick');
         },
         error: function(response) {
             feedback_container.find('#email').removeAttr('disabled');
             feedback_container.find('textarea').removeAttr('disabled');
             button.removeAttr('disabled');
-            button.val(btn_text_no_ing);
-            button.attr('style', '');
+            button.find('.tbn-text').val(btn_text_no_ing);
+            button.attr('style', 'padding: 5px 8px;');
             let er = '';
             try {
                 let errorObject = JSON.parse(response.responseText).errors;

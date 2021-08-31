@@ -15,6 +15,7 @@ class CreateFeedbacksTable extends Migration
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
+            $table->ipAddress('ip');
             $table->text('email')->nullable();
             $table->text('feedback');
             $table->unsignedBigInteger('user_id')->nullable();

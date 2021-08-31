@@ -3,12 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Feedback, EmojiFeedback};
+use Illuminate\Auth\Access\Response;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use App\Models\{Feedback, EmojiFeedback};
 
 class FeedbackController extends Controller
 {
+    const RATE_LIMIT = 2;
+
     public function store(Request $request) {
+        /**
+         * Here before storing the feedback we have to do some checks
+         * Notice that we can't use a policy here because guest users could also provide a feedback
+         */
+        if(Auth::check()) {
+            if(Feedback::today()->where('user_id', auth()->user()->id)->count() >= self::RATE_LIMIT) {
+                abort(429, __("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . ' ' . __('messages') . ')'));
+            }
+        } else {
+            if(Feedback::today()->where('ip', $request->ip())->count() >= self::RATE_LIMIT) {
+                abort(429, __("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . ' ' . __('messages') . ')'));
+            }
+        }
+
         $data = [];
         if(!auth()->user()) {
             $d = $request->validate([
@@ -23,9 +41,10 @@ class FeedbackController extends Controller
         }
 
         $d = $request->validate([
-            'feedback'=>'required|min:10|max:2600',
+            'feedback'=>'required|min:10|max:800',
         ]);
-        $data['feedback'] = $d['feedback'];
+        $data['feedback'] = htmlspecialchars($d['feedback']);
+        $data['ip'] = $request->ip();
 
         Feedback::create($data);
     }

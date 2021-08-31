@@ -11,4 +11,8 @@ class ContactMessage extends Model
 
     protected $guarded = [];
     protected $table = 'contact_messages';
+
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>', today());
+    }
 }

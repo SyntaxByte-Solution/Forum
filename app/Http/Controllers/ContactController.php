@@ -56,11 +56,11 @@ class ContactController extends Controller
          */
         if(Auth::check()) {
             if(ContactMessage::where('user', auth()->user()->id)->count() >= self::RATE_LIMIT) {
-                return Response::deny(__("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . __('messages') . ')'));
+                return Response::deny(__("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . ' ' . __('messages') . ')'));
             }
         } else {
             if(ContactMessage::where('ip', $request->ip())->count() >= self::RATE_LIMIT) {
-                return Response::deny(__("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . __('messages') . ')'));
+                return Response::deny(__("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . ' ' . __('messages') . ')'));
             }
         }
         $data['ip'] = $request->ip();

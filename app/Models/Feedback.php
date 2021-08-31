@@ -11,4 +11,8 @@ class Feedback extends Model
 
     protected $guarded = [];
     protected $table = 'feedbacks';
+
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>', today());
+    }
 }

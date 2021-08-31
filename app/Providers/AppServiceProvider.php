@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
-use App\Models\{Thread, EmojiFeedback, Vote};
+use App\Models\{Thread, EmojiFeedback, Feedback, Vote};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,6 +39,14 @@ class AppServiceProvider extends ServiceProvider
                 return EmojiFeedback::where('user_id', Auth::id())->where('created_at', '>', today())->count() == 0;
             } else {
                 return EmojiFeedback::where('ip', $ip)->where('created_at', '>', today())->count() == 0;
+            }
+        });
+        Blade::if('cansendfeedback', function () {
+            $ip = request()->ip();
+            if(Auth::check()) {
+                return Feedback::today()->where('user_id', Auth::id())->count() < 2;
+            } else {
+                return Feedback::today()->where('ip', $ip)->count() < 2;
             }
         });
         Blade::if('upvoted', function ($resource, $type) {

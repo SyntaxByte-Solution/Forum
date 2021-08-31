@@ -692,14 +692,16 @@ $('.send-feedback').click(function() {
         type: 'POST',
         data: data,
         success: function(response) {
+            $('#send-feedback-box-sidebar').parent().find('.feedback-sent-success-container').removeClass('none');
             $('#send-feedback-box-sidebar').remove();
             basic_notification_show(message_sent, 'basic-notification-round-tick');
+            
         },
         error: function(response) {
             feedback_container.find('#email').removeAttr('disabled');
             feedback_container.find('textarea').removeAttr('disabled');
             button.removeAttr('disabled');
-            button.find('.tbn-text').val(btn_text_no_ing);
+            button.find('.btn-text').text(btn_text_no_ing);
             button.attr('style', 'padding: 5px 8px;');
             let er = '';
             try {

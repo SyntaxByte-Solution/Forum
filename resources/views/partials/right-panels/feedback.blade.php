@@ -74,6 +74,11 @@
             </a>
         </div>
         @endcanemoji
+        @cansendfeedback
+        <div class="feedback-sent-success-container green-message-container none flex align-center" style="margin-top: 12px; padding: 5px 8px">
+            <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/></svg>
+            <p class="fs13 no-margin text-center green-message">{{ __('Your feedback has been sent successfully') }}.</p>
+        </div>
         <div id="send-feedback-box-sidebar" class="toggle-box" style="margin: 10px 0 14px 0;">
             <div class="bold fs13 bold bblack pointer my4 toggle-container-button flex align-center">
                 {{ __('Send a message/feedback') }}
@@ -117,7 +122,7 @@
                                         <span class="btn-text">{{ __('send') }}</span>
                                         <input type="hidden" class="btn-text-ing" value="{{ __('Sending') }}..">
                                         <input type="hidden" class="btn-text-no-ing" value="{{ __('Send') }}">
-                                        <input type="hidden" class="message-sent" value="{{ __('Your feedback is sent successfully.') }}">
+                                        <input type="hidden" class="message-sent" value="{{ __('Your feedback has been sent successfully.') }}">
                                     </button>
                                 </div>
                                 <input type="hidden" class="max-textarea-characters" value="800">
@@ -127,5 +132,6 @@
                 </div>
             </div>
         </div>
+        @endcan
     </div>
 </div>

@@ -12,5 +12,7 @@ class EmojiFeedback extends Model
     protected $guarded = [];
     protected $table = 'emoji_feedback';
 
-    
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>', today());
+    }
 }

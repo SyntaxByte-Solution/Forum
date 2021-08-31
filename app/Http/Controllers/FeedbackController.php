@@ -48,8 +48,17 @@ class FeedbackController extends Controller
 
         Feedback::create($data);
     }
-
     public function store_emojifeedback(Request $request) {
+        /**
+         * here we do the same thing as with feedback
+         */
+        if(Auth::check()) {
+            if(EmojiFeedback::today()->where('user_id', auth()->user()->id)->count() == 1)
+                abort(429, __('You can only give emoji feedback once'));
+        } else {
+            if(EmojiFeedback::today()->where('ip', $request->ip())->count() == 1)
+                abort(429, __('You can only give emoji feedback once'));
+        }
         $data = $request->validate([
             'emoji_feedback'=>[
                 'required',

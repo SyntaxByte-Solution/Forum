@@ -1,4 +1,11 @@
+$(window).on('unload', function() {
+    $(window).scrollTop(0);
+ });
+
 $('.contact-send-message').on('click', function() {
+    let error_box = $('.error-box');
+    let errors_box = $('#validation-messages');
+
     let firstname = $('#firstname');
     let lastname = $('#lastname');
     let email = $('#contact-email');
@@ -11,31 +18,37 @@ $('.contact-send-message').on('click', function() {
     };
 
     if(firstname.val().trim() == '') {
-        firstname.parent().find('.error').removeClass('none');
+        firstname.parent().find('.err').removeClass('none');
+        error_box.removeClass('none');
+        error_box.find('.error').text(errors_box.find('.firstname-required').val());
         return;
     } else {
-        firstname.parent().find('.error').addClass('none');
+        firstname.parent().find('.err').addClass('none');
         data.firstname = firstname.val().trim();
     }
 
     if(lastname.val().trim() == '') {
-        lastname.parent().find('.error').removeClass('none');
+        lastname.parent().find('.err').removeClass('none');
+        error_box.removeClass('none');
+        error_box.find('.error').text(errors_box.find('.lastname-required').val());
         return;
     } else {
-        lastname.parent().find('.error').addClass('none');
+        lastname.parent().find('.err').addClass('none');
         data.lastname = lastname.val().trim();
     }
 
     if(email.val().trim() == '') {
-        email.parent().find('.error').text('* ' + email.parent().find('.email-required').val());
-        email.parent().find('.error').removeClass('none');
+        email.parent().find('.err').removeClass('none');
+        error_box.removeClass('none');
+        error_box.find('.error').text(errors_box.find('.email-required').val());
         return;
     } else if(!validateEmail(email.val().trim())) {
-        email.parent().find('.error').text('* ' + email.parent().find('.invalide-email').val());
-        email.parent().find('.error').removeClass('none');
+        email.parent().find('.err').removeClass('none');
+        error_box.removeClass('none');
+        error_box.find('.error').text(errors_box.find('.email-invalide').val());
         return;
     } else {
-        email.parent().find('.error').addClass('none');
+        email.parent().find('.err').addClass('none');
         data.email = email.val().trim();
     }
 
@@ -48,12 +61,21 @@ $('.contact-send-message').on('click', function() {
     }
     
     if(message.val().trim() == '') {
-        message.parent().parent().find('.error').removeClass('none');
+        message.parent().parent().find('.err').removeClass('none');
+        error_box.removeClass('none');
+        error_box.find('.error').text(errors_box.find('.message-required').val());
+        return;
+    }else if(message.val().trim().length < 10) {
+        message.parent().parent().find('.err').removeClass('none');
+        error_box.removeClass('none');
+        error_box.find('.error').text(errors_box.find('.message-length-error').val());
         return;
     } else {
-        message.parent().parent().find('.error').addClass('none');
+        message.parent().parent().find('.err').addClass('none');
         data.message = message.val();
     }
+
+    error_box.addClass('none');
 
     let button = $(this);
     let spinner = button.parent().find('.spinner');

@@ -60,7 +60,7 @@
                 </div>
             @endif
             <div class="flex align-center">
-                <svg class="size28 mr8 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
+                <svg class="size28 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
                 <h1 id="cu-heading">Contact & Feedback</h1>
             </div>
             <p class="contactus-text">{{ __("If you have any questions or queries, a member of staff will always be happy to help. Feel free to contact us using the form below, or by our telephone or email in the right panel and we will be sure to get back to you as soon as possible") }}.</p>
@@ -71,42 +71,54 @@
                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path d="M404.57,112.64V101.82c0-43.62-40.52-76.69-83-65.55-25.63-49.5-94.09-47.45-118,.75-41.28-10.56-82.41,20.92-82.41,65V228.13A65.45,65.45,0,0,0,59.06,237a67.45,67.45,0,0,0-14.55,93.15l120,168.42A32,32,0,0,0,190.54,512h222.9a32,32,0,0,0,31.18-24.81l30.18-131a203.49,203.49,0,0,0,5.2-45.67V179C480,138.38,444.48,107,404.57,112.64ZM432,310.56a155.71,155.71,0,0,1-4,34.89L400.71,464H198.79L83.59,302.3c-14.44-20.27,15-42.77,29.4-22.6l27.12,38.08c9,12.62,29,6.28,29-9.29V102c0-25.65,36.57-24.81,36.57.69V256a16,16,0,0,0,16,16h6.86a16,16,0,0,0,16-16V67c0-25.66,36.57-24.81,36.57.69V256a16,16,0,0,0,16,16H304a16,16,0,0,0,16-16V101.13c0-25.68,36.57-24.81,36.57.69V256a16,16,0,0,0,16,16h6.85a16,16,0,0,0,16-16V179.69c0-26.24,36.57-25.64,36.57-.69V310.56Z"/>
                 </svg>
-                <p class="contactus-text" style="margin-bottom: 0">{{ __("You have reached messages limit of 2 messages/day, try again later") }}</p>
+                <p class="contactus-text" style="margin-bottom: 0">{{ $exceed_rate_limit_message }}</p>
             </div>
             <p class="contactus-text">{{ __("We have received all your messages, and we will get back to you as soon as possible") }}</p>
             @else
             <div id="contact-us-form-wrapper">
+                <div id="validation-messages"> <!-- collection of validation messages -->
+                    <input type="hidden" class="firstname-required" value="{{ __('firstname is required') }}">
+                    <input type="hidden" class="lastname-required" value="{{ __('lastname is required') }}">
+                    <input type="hidden" class="email-required" value="{{ __('email is required') }}">
+                    <input type="hidden" class="email-invalide" value="{{ __('Invalide email address') }}">
+                    <input type="hidden" class="message-required" value="{{ __('Message required') }}">
+                    <input type="hidden" class="message-length-error" value="{{ __('Message should contain at least 10 characters') }}">
+                </div>
+                <div class="flex error-box none" style="margin: 12px 0">
+                    <svg class="size14 mr8" style="min-width: 14px; margin-top: 1px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                    <p class="no-margin bold error" style="margin-top: 1px">This is an error</p>
+                </div>
                 <div class="full-width flex align-center">
                     <div class="mr8 half-width">
-                        <label for="firstname" class="flex align-center bold forum-color mb2">{{ __('Firstname') }}<span class="error none fs12" style="font-weight: 400; margin: 0">* {{ __('Firstname is required') }}</span></label>
-                        <input type="text" id="firstname" class="styled-input" maxlength="60" autocomplete="off" placeholder='{{ __("Your firstname") }}' value="@auth {{ auth()->user()->firstname }} @endauth" @auth disabled @endauth>
+                        <label for="firstname" class="flex align-center bold forum-color mb2">{{ __('Firstname') }}<span class="ml4 err red none fs12">*</span></label>
+                        <input type="text" id="firstname" class="styled-input" maxlength="60" placeholder='{{ __("Your firstname") }}' value="@auth {{ auth()->user()->firstname }} @endauth" @auth disabled @endauth>
                     </div>
                     <div class="half-width">
-                        <label for="lastname" class="flex align-center bold forum-color mb2">{{ __('Lastname') }}<span class="error none fs12" style="font-weight: 400; margin: 0">* {{ __('Lastname is required') }}</span></label>
-                        <input type="text" id="lastname" class="styled-input" maxlength="60" autocomplete="off" placeholder='{{ __("Your lastname") }}' value="@auth {{ auth()->user()->lastname }} @endauth" @auth disabled @endauth>
+                        <label for="lastname" class="flex align-center bold forum-color mb2">{{ __('Lastname') }}<span class="ml4 err red none fs12">*</span></label>
+                        <input type="text" id="lastname" class="styled-input" maxlength="60" placeholder='{{ __("Your lastname") }}' value="@auth {{ auth()->user()->lastname }} @endauth" @auth disabled @endauth>
                     </div>
                 </div>
                 <div style="margin: 12px 0">
                     <input type="hidden" class="invalide-email" value="{{ __('Invalide email address') }}">
                     <input type="hidden" class="email-required" value="{{ __('Email is required') }}">
-                    <label for="contact-email" class="flex align-center bold forum-color mb2">{{ __('Email') }}<span class="error none fs12" style="font-weight: 400; margin: 0"></span></label>
-                    <input type="text" id="contact-email" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Your email") }}' value="@auth {{ auth()->user()->email }} @endauth" @auth disabled @endauth>
+                    <label for="contact-email" class="flex align-center bold forum-color mb2">{{ __('Email') }}<span class="ml4 err red none fs12">*</span></label>
+                    <input type="text" id="contact-email" class="styled-input" maxlength="400" placeholder='{{ __("Your email") }}' value="@auth {{ auth()->user()->email }} @endauth" @auth disabled @endauth>
                 </div>
                 <div class="flex">
                     <div class="half-width mr8" style="margin-bottom: 12px">
-                        <label for="company" class="flex align-center align-center bold forum-color mb2">{{ __('Company') }} <span style="font-weight: 400; margin-left: 2px; font-size: 12px">({{__('optional')}})</span><span class="error none fs12" style="font-weight: 400; margin: 0">* __('Invalid company name')</span></label>
-                        <input type="text" id="company" class="styled-input" maxlength="200" autocomplete="off" placeholder='{{ __("Company") }}'>
+                        <label for="company" class="flex align-center align-center bold forum-color mb2">{{ __('Company') }} <span style="font-weight: 400; margin-left: 2px; font-size: 12px">({{__('optional')}})</span><span class="ml4 err red none fs12">*</span></label>
+                        <input type="text" id="company" class="styled-input" maxlength="200" placeholder='{{ __("Company") }}'>
                     </div>
                     <div class="half-width" style="margin-bottom: 12px">
-                        <label for="phone" class="flex align-center align-center bold forum-color mb2">{{ __('Phone') }} <span style="font-weight: 400; margin-left: 2px; font-size: 12px">({{__('optional')}})</span><span class="error none fs12" style="font-weight: 400; margin: 0">* __('Invalid phone number')</span></label>
-                        <input type="text" id="phone" class="styled-input" maxlength="200" autocomplete="off" placeholder='{{ __("Your phone number") }}'>
+                        <label for="phone" class="flex align-center align-center bold forum-color mb2">{{ __('Phone') }} <span style="font-weight: 400; margin-left: 2px; font-size: 12px">({{__('optional')}})</span><span class="ml4 err red none fs12">*</span></label>
+                        <input type="text" id="phone" class="styled-input" maxlength="200" placeholder='{{ __("Your phone number") }}'>
                     </div>
                 </div>
                 <div>
-                    <label for="message" class="flex align-center align-center bold forum-color mb2">{{ __('Message') }} <span class="error none fs12" style="font-weight: 400; margin: 0">* {{ __('Message is required') }}</span></label>
-                    <p class="fs12 no-margin mb2 gray">{{ __('Be specific and imagine you’re talking with another person') }}</p>
+                    <label for="message" class="flex align-center align-center bold forum-color mb2">{{ __('Message') }} <span class="ml4 err red none fs12">*</span></label>
+                    <p class="fs12 no-margin mb2 gray">{{ __('Be specific and clear. Make sure the feedback or message you offer is accurate') }}</p>
                     <div class="countable-textarea-container">
-                        <textarea id="message" class="no-margin block styled-textarea move-to-middle countable-textarea" autocomplete="off" min maxlength="2000" spellcheck="false" autocomplete="off" form="profile-edit-form" placeholder="{{ __('Your message') }}"></textarea>
+                        <textarea id="message" class="no-margin block styled-textarea move-to-middle countable-textarea" autocomplete="off" maxlength="2000" spellcheck="false" autocomplete="off" form="profile-edit-form" placeholder="{{ __('Your message') }}"></textarea>
                         <p class="block my4 mr4 unselectable fs12 gray textarea-counter-box move-to-right width-max-content"><span class="textarea-chars-counter">0</span>/2000</p>
                         <input type="hidden" class="max-textarea-characters" value="2000">
                     </div>

@@ -160,7 +160,7 @@
                             </div>
                         </div>
                         <div>
-                            @if($threads->count() > 6)
+                            @if($threads->count() >= 6)
                             <div class="flex">
                                 <div class="flex align-center my4 move-to-right">
                                     <span class="mr4 fs13 gray">{{ __('discussions') }}/{{ __('page') }} :</span>

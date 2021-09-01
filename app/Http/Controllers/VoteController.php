@@ -9,7 +9,7 @@ use App\Models\{Thread, Post, Vote, UserAction};
 class VoteController extends Controller
 {
     /**
-     * Here we need to check first if the user is already vote on this thread, then we decide if we add this vote or not
+     * Here we need to check first if the user is already vote on this thread, then we decide if we add this vote or take it off
      * we have 3 cases here:
      *  1- the user is upvoted this thread, then press upvote button again; in this case we're gonna delete the vote
      *  2- the user is not voted at all, in this case we simply add it
@@ -18,7 +18,6 @@ class VoteController extends Controller
      */
     public function thread_vote(Request $request, Thread $thread) {
         $thread_vote_count = $thread->votes->count();
-
         $result = $this->handle_vote($request, $thread, 'App\Models\Thread');
 
         // If the subtraction of the below operation is greater than 0 means he get rid of his vote
@@ -43,6 +42,7 @@ class VoteController extends Controller
     public function post_vote(Request $request, Post $post) {
         $post_vote_count = $post->votes->count();
         $result = $this->handle_vote($request, $post, 'App\Models\Post');
+        
         $thread = $post->thread;
         if($post_vote_count - $post->votes->count() <= 0 && !$post->user->post_disabled($post->id)) {
             $post->user->notify(
@@ -69,10 +69,13 @@ class VoteController extends Controller
                 Rule::in([-1, 1]),
             ]
         ]);
-        $type_name = strtolower(substr($type, strrpos($type, '\\') + 1));
 
+        $type_name = strtolower(substr($type, strrpos($type, '\\') + 1)); // App\Models\Thread => thread
         $this->authorize('store', [\App\Models\Vote::class, $data['vote'], $resource, $type_name]);
 
+        /**
+         * we have to check if the user already vote the resources
+         */
         $exists = false;
         $founded_vote;
         foreach($current_user->votes() as $vote) {
@@ -87,6 +90,15 @@ class VoteController extends Controller
         $vote->vote = $data['vote'];
         $vote->user_id = $current_user->id;
 
+        /**
+         * If the user already vote the resource we do the following:
+         *  1. store vote value in variable before delete the founded vote
+         *  2. then we delete the notification of the former vote of the resource owner
+         *  3. now we have to check in case the vote found, if resource is already upvoted and the user upvote again or already downvoted and the use..
+         *     in that case we don't do anything but delete the vote and notification;
+         *     Otherwise, if the user already upvote resource and then later downvote it, we save it again to db
+         *     Notice: notifying resource owner is done in the caller method
+         */
         if($exists) {
             $vote_value = $founded_vote->vote;
             $founded_vote->delete();
@@ -102,7 +114,7 @@ class VoteController extends Controller
                 $resource->votes()->save($vote);
             }
         } else {
-            $resource->votes()->save($vote);
+            $resource->votes()->save($vote); // If the user never vote the resource we simply add the vote record
         }
         
         $resource->load('votes');

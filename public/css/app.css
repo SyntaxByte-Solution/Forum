@@ -2978,16 +2978,16 @@ a, input, textarea {
 }
 
 .top-informer-container {
-    padding: 13px 36px 13px 12px;
-    background-color: #fafdff;
+    padding: 13px 40px 13px 12px;
+    background-color: #e8f6ff;
     position: fixed;
     display: flex;
     top: 70px;
     z-index: 2000;
     width: 600px;
-    border: 1px solid #919191;
+    border: 1px solid #a8c7d0;
     border-radius: 5px;
-    box-shadow: 0px 0px 6px 0px #a6a6a659;
+    box-shadow: 0px 0px 6px 0px #9fbbd954;
 }
 
 .top-informer-text {
@@ -3005,13 +3005,12 @@ a, input, textarea {
     top: 10px;
     right: 10px;
     cursor: pointer;
-    border: 2px solid #646464;
     border-radius: 4px;
-    padding: 4px;
+    padding: 6px;
 }
 
 .x-close-style:hover {
-    background-color: #dfdfdf;
+    background-color: #97b2dd40;
 }
 
 .x-close-style svg {

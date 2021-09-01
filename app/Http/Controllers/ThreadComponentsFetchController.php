@@ -151,15 +151,13 @@ class ThreadComponentsFetchController extends Controller
             'user'=>'required|exists:users,id'
         ]);
         $user = User::find($indexes['user']);
-
         $threads = $user->threads()->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
+        
         $hasmore = 0;
-
         if($threads->count() > self::FETCH_PAGESIZE) {
             $hasmore = 1;
             $threads->pop();
         }
-
 
         $payload = "";
         foreach($threads as $thread) {

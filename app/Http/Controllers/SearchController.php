@@ -12,13 +12,12 @@ use App\Models\{Thread, User, Forum, Vote, Like};
 class SearchController extends Controller
 {
     public function search(Request $request) {
+        $tab_whitelist = ['all', 'today', 'thisweek'];
         $tab = 'all';
         $tab_title = __('All');
         $pagesize = 10;
-        $pagesize_exists = false;
         if($request->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = $request->input('pagesize');
+            $pagesize = $request->validate(['pagesize'=>'numeric'])['pagesize'];
         }
 
         $keyword = $request->validate([
@@ -33,7 +32,8 @@ class SearchController extends Controller
         $forums = Forum::all();
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
-            $tab = $request->input('tab');
+            $tab = $request->validate(['tab'=>Rule::in($tab_whitelist)])['tab'];
+            dd($tab);
             if($tab == 'today') {
                 $threads = $threads->today()->orderBy('view_count', 'desc');
                 $tab_title = __('Today');
@@ -73,7 +73,7 @@ class SearchController extends Controller
         $forums = Forum::all();
         $pagesize = 10;
         if($request->has('pagesize')) {
-            $pagesize = $request->input('pagesize');
+            $pagesize = $request->validate(['pagesize'=>'numeric'])['pagesize'];
         }
         $filters = [];
 
@@ -222,10 +222,8 @@ class SearchController extends Controller
         $tab = 'all';
         $tab_title = __('All');
         $pagesize = 10;
-        $pagesize_exists = false;
         if($request->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = $request->input('pagesize');
+            $pagesize = $request->validate(['pagesize'=>'numeric'])['pagesize'];
         }
 
         $keyword = $request->validate([
@@ -241,7 +239,7 @@ class SearchController extends Controller
         $forums = Forum::all();
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
-            $tab = $request->input('tab');
+            $tab = $request->validate(['tab'=>Rule::in($tab_whitelist)])['tab'];
             if($tab == 'today') {
                 $threads = $threads->today()->orderBy('view_count', 'desc');
                 $tab_title = __('Today');
@@ -265,13 +263,8 @@ class SearchController extends Controller
     }
 
     public function users_search(Request $request) {
-        $pagesize = 8;
-        $pagesize_exists = false;
-        if($request->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = $request->input('pagesize');
-        }
-
+        $pagesize = 6;
+        
         $keyword = $request->validate([
             'k'=>'sometimes|max:2000'
         ]);
@@ -282,10 +275,7 @@ class SearchController extends Controller
             $search_query = $keyword['k'];
         }
 
-        
         $forums = Forum::all();
-
-
         $users = $this->srch(
             User::query()->excludedeactivatedaccount(), $search_query, ['firstname', 'lastname', 'username'], ['LIKE']
         )->orderBy('username', 'asc')

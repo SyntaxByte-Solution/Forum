@@ -22,13 +22,17 @@ class ReportPolicy
         // User could report threads with a limited number per day (THREAD_REPORT_ATTEMPTS)
         $number_of_thread_reports = Report::today()->where('reportable_type', 'App\Models\Thread')->where('user_id', $user->id)->count();
         if($number_of_thread_reports >= self::THREAD_REPORT_ATTEMPTS) {
-            return $this->deny(__("You reach the limited thread reporting attempts allowed per day"));
+            return $this->deny(__("You reached your discussions reporting limit allowed per day, try out later") . '. (' . self::THREAD_REPORT_ATTEMPTS . ' ' . 'reports' . ')');
         }
 
         // User can only report a resource once
-        $found = $thread->reports->where('user_id', $user->id)->where('reportable_id', $thread->id)->where('reportable_type', 'App\Models\Thread')->count();
+        $found = $thread->reports
+            ->where('user_id', $user->id)
+            ->where('reportable_id', $thread->id)
+            ->where('reportable_type', 'App\Models\Thread')
+            ->count();
         if($found) {
-            return $this->deny(__("You can't report this resource because you already report it."));
+            return $this->deny(__("You can't report this discussion because you already report it"));
         }
 
         return true;
@@ -43,12 +47,16 @@ class ReportPolicy
         // User could report threads with a limited number per day (THREAD_REPORT_ATTEMPTS)
         $number_of_post_reports = Report::today()->where('reportable_type', 'App\Models\Post')->where('user_id', $user->id)->count();
         if($number_of_post_reports >= self::POST_REPORT_ATTEMPTS) {
-            return $this->deny(__("You reach the limited thread reporting attempts allowed per day"));
+            return $this->deny(__("You reached your replies reporting limit allowed per day, try out later") . '. (' . self::THREAD_REPORT_ATTEMPTS . ' ' . 'reports' . ')');
         }
         // User can only report a resource once
-        $found = $post->reports->where('user_id', $user->id)->where('reportable_id', $post->id)->where('reportable_type', 'App\Models\Post')->count();
+        $found = $post->reports
+            ->where('user_id', $user->id)
+            ->where('reportable_id', $post->id)
+            ->where('reportable_type', 'App\Models\Post')
+            ->count();
         if($found) {
-            return $this->deny("You can't report this resource because you already report it.");
+            return $this->deny("You can't report this reply because you already report it.");
         }
 
         return true;

@@ -12,10 +12,12 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
+    const POST_LIMIT = 260;
+
     public function store(User $user, $thread_id)
     {
-        if($user->isBanned()) {
-            throw new UserBannedException();
+        if ($user->isBanned()) {
+            $this->deny(__("You cannot reply because you're currently banned"));
         }
 
         $thread = Thread::find($thread_id);
@@ -28,8 +30,8 @@ class PostPolicy
         }
         
         // The user should be: authenticated, not banned and post less than 280 posts per day.
-        if($user->today_posts_count() > 280) {
-            return $this->deny(__("You reach replying limit allowed, try out later"));
+        if($user->today_posts_count() > self::POST_LIMIT) {
+            return $this->deny(__("You reached your replying limit allowed per day, try out later") . '. (' . self::POST_LIMIT . ' ' . 'replies' . ')');
         }
         return true;
     }
@@ -43,8 +45,8 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        if($user->isBanned()) {
-            throw new UserBannedException();
+        if ($user->isBanned()) {
+            $this->deny(__("You cannot update replies because you're currently banned"));
         }
 
         return $post->user_id == $user->id;
@@ -57,10 +59,9 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return mixed
      */
-    public function destroy(User $user, Post $post)
-    {
-        if($user->isBanned()) {
-            throw new UserBannedException();
+    public function destroy(User $user, Post $post) {
+        if ($user->isBanned()) {
+            $this->deny(__("You cannot delete replies because you're currently banned"));
         }
 
         return $post->user_id == $user->id || $user->id == $post->thread->user->id;
@@ -76,7 +77,7 @@ class PostPolicy
 
     public function tick(User $user, Post $post) {
         if($user->isBanned()) {
-            return $this->deny("You can't update your threads because you're currently banned");
+            return $this->deny("You can't tick replies because you're currently banned");
         }
 
         /**

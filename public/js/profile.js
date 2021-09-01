@@ -16,8 +16,6 @@ $('.follows-display').click(function() {
     }, 200);
 });
 
-
-
 $('.follows-load').click(function(event) {
     event.preventDefault();
     let button = $(this);

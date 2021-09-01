@@ -1670,6 +1670,7 @@ function handle_follow_resource(button) {
         }
 
         let follow_text = follow_box.find('.follow-text').val();
+        let followed_text = follow_box.find('.followed-text').val();
         let unfollow_text = follow_box.find('.unfollow-text').val();
         let following_text = follow_box.find('.following-text').val();
         let unfollowing_text = follow_box.find('.unfollowing-text').val();
@@ -1717,38 +1718,51 @@ function handle_follow_resource(button) {
                         }
                     });
                 } else if(button.hasClass('follow-button-with-icon')) {
-                    let followers_counter = follow_box.find('.followers-counter');
-    
-                    if(response == -1) {
-                        button.find('.status').val(-1);
-                        button.find('.btn-txt').text(follow_text);
-                        followers_counter.text(parseInt(followers_counter.text())-1);
-                        button.find('.follow').removeClass('none');
-                        button.find('.followed').addClass('none');
-
-                        if($('.followers-viewer').length) {
-                            $('.followers-viewer .follow-box-item').each(function() {
-                                let fid = $(this).find('.followable-id').val();
-                                if(fid == userId) {
-                                    $(this).remove();
-                                }
-                            })
+                    if(button.hasClass('viewer-follow')) {
+                         if(response == -1) {
+                            button.find('.status').val(-1);
+                            button.find('.btn-txt').text(follow_text);
+                            button.find('.follow').removeClass('none');
+                            button.find('.followed').addClass('none');
+                        } else {
+                            button.find('.status').val(1);
+                            button.find('.btn-txt').text(followed_text);
+                            button.find('.follow').addClass('none');
+                            button.find('.followed').removeClass('none');
                         }
-                    } else {
-                        button.find('.status').val(1);
-                        button.find('.btn-txt').text(button.find('.followed-text').val());
-                        followers_counter.text(parseInt(followers_counter.text()) + 1);
-                        button.find('.follow').addClass('none');
-                        button.find('.followed').removeClass('none');
-
-                        // Generate follower component with the current user and append it to the followers viewer
-                        $.ajax({
-                            type: 'get', 
-                            url: `/users/${userId}/followers/generate`,
-                            success: function(response) {
-                                $('.followers-viewer .follow-box-body').append(response);
+                    } else if(button.hasClass('followers-follows-follow-inline')) {
+                        let followers_counter = follow_box.find('.followers-counter');
+                        if(response == -1) {
+                            button.find('.status').val(-1);
+                            button.find('.btn-txt').text(follow_text);
+                            followers_counter.text(parseInt(followers_counter.text())-1);
+                            button.find('.follow').removeClass('none');
+                            button.find('.followed').addClass('none');
+    
+                            if($('.followers-viewer').length) {
+                                $('.followers-viewer .follow-box-item').each(function() {
+                                    let fid = $(this).find('.followable-id').val();
+                                    if(fid == userId) {
+                                        $(this).remove();
+                                    }
+                                })
                             }
-                        });
+                        } else {
+                            button.find('.status').val(1);
+                            button.find('.btn-txt').text(button.find('.followed-text').val());
+                            followers_counter.text(parseInt(followers_counter.text()) + 1);
+                            button.find('.follow').addClass('none');
+                            button.find('.followed').removeClass('none');
+    
+                            // Generate follower component with the current user and append it to the followers viewer
+                            $.ajax({
+                                type: 'get', 
+                                url: `/users/${userId}/followers/generate`,
+                                success: function(response) {
+                                    $('#followers-box').append(response);
+                                }
+                            });
+                        }
                     }
                 }
             },

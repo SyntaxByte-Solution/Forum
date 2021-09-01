@@ -2598,8 +2598,7 @@ a, input, textarea {
 }
 
 .thread-container-box:hover {
-    border-color: #7cc4ff;
-    box-shadow: 0 0 5px 0.2px #bae0ff;
+    box-shadow: 0 0 5px 0.2px #0000001c;
 }
 
 .simple-border-container {

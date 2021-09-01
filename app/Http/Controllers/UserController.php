@@ -142,7 +142,6 @@ class UserController extends Controller
             ->with(compact('username'))
             ->with(compact('user'));
     }
-
     public function edit_personal_infos(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
@@ -155,7 +154,6 @@ class UserController extends Controller
             ->with(compact('username'))
             ->with(compact('user'));
     }
-
     public function edit_password(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
@@ -166,7 +164,6 @@ class UserController extends Controller
             ->with(compact('username'))
             ->with(compact('user'));
     }
-
     public function update(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
@@ -271,7 +268,6 @@ class UserController extends Controller
         $user->update($data);
         return redirect()->route('user.settings')->with('message', __('Profile updated successfully') . '!');
     }
-
     public function update_personal(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
@@ -291,7 +287,6 @@ class UserController extends Controller
         $user->personal->update($data);
         return redirect()->route('user.personal.settings')->with('message','Profile information updated successfully !');
     }
-
     public function update_password(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
@@ -310,7 +305,6 @@ class UserController extends Controller
 
         return redirect()->route('user.passwords.settings')->with('message', __('Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !'));
     }
-
     public function account_settings(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);

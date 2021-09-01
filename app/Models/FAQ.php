@@ -11,4 +11,8 @@ class FAQ extends Model
 
     protected $table = "faqs";
     protected $guarded = [];
+
+    public function scopeToday($builder){
+        return $builder->where('created_at', '>', today());
+    }
 }

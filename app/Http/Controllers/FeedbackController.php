@@ -43,7 +43,7 @@ class FeedbackController extends Controller
         $d = $request->validate([
             'feedback'=>'required|min:10|max:800',
         ]);
-        $data['feedback'] = htmlspecialchars($d['feedback']);
+        $data['feedback'] = $d['feedback'];
         $data['ip'] = $request->ip();
 
         Feedback::create($data);

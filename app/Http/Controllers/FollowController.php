@@ -17,8 +17,16 @@ class FollowController extends Controller
             ->where('followable_id', $user->id)
             ->where('followable_type', 'App\Models\User');
 
+        /**
+         * Before follow a user, we check if the current user already follow this user;
+         * If so ($found->count()>0), we need to delete the follow record because in this case the user click on unfollow button
+         * If not we simply create a follow model and attach the current user as follower to the followed user
+         * and finally notify this user that the current user follow him
+         */
+        
         if($found->count()) {
             $found->first()->delete();
+
             foreach($user->notifications as $notification) {
                 if($notification->data['action_type'] == "user-follow" 
                 && $notification->data['action_user'] == $current_user->id
@@ -44,7 +52,6 @@ class FollowController extends Controller
                 'action_resource_link'=>route('user.profile', ['user'=>$user->username]),
             ])
         );
-
         return 1;
     }
 

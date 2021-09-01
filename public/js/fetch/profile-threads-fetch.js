@@ -36,6 +36,7 @@ if(profile_threads_fetch_more.length) {
     
                 unhandled_appended_threads.each(function() {
                     handle_thread_events($(this));
+                    $(this).find('.thread-component-follow-box').remove();
                 });
                 // This will prevent appended suboptions from disappearing when cursor click on suboption containers
                 handle_document_suboptions_hiding();

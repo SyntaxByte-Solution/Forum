@@ -7,16 +7,16 @@ use App\Models\{Thread, Post, Like};
 
 class LikesController extends Controller
 {
-    public function thread_like(Request $request, Thread $thread) {
-        return $this->handle_resource_like($request, $thread, 'App\Models\Thread');
+    public function thread_like(Thread $thread) {
+        return $this->handle_resource_like($thread, 'App\Models\Thread');
     }
 
-    public function post_like(Request $request, Post $post) {
-        return $this->handle_resource_like($request, $post, 'App\Models\Post');
+    public function post_like(Post $post) {
+        return $this->handle_resource_like($post, 'App\Models\Post');
     }
 
-    private function handle_resource_like($request, $resource, $type) {
-        $this->authorize('store', Like::class);
+    private function handle_resource_like($resource, $type) {
+        $this->authorize('store', [Like::class, $resource, $type]);
 
         $current_user = auth()->user();
 

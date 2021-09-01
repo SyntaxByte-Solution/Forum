@@ -18,7 +18,13 @@ class IndexController extends Controller
         $tab = "all";
         $pagesize = self::PAGESIZE;
         if($request->has('tab')) {
-            $tab = $request->input('tab');
+            $data = $request->validate([
+                'tab'=>[
+                    'alpha',
+                    Rule::in(['today', 'thisweek', 'all']),
+                ]
+            ]);
+            $tab = $data['tab'];
             if($tab == 'today') {
                 $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->paginate($pagesize);
                 $tab_title = 'Today';

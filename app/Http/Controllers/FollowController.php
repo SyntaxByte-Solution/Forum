@@ -82,7 +82,6 @@ class FollowController extends Controller
             "count"=>$followers_to_return->count()
         ];
     }
-
     public function follows_load(Request $request, User $user) {
         $data = $request->validate([
             'range'=>'required|Numeric',
@@ -106,7 +105,6 @@ class FollowController extends Controller
             "count"=>$follows_to_return->count()
         ];
     }
-
     public function generate_follower_component(User $user) {
         $follower_component = (new Follower($user));
         $follower_component = $follower_component->render(get_object_vars($follower_component))->render();

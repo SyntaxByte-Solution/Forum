@@ -9,10 +9,6 @@ use App\Exceptions\UnauthorizedActionException;
 
 class PermissionsController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth');
-    }
-
     public function update(Permission $permission) {
         if (! Gate::allows('update.permissions')) {
             throw new UnauthorizedActionException("Unauthorized action due to missing role or permission.");

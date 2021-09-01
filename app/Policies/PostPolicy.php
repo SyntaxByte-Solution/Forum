@@ -18,12 +18,20 @@ class PostPolicy
             throw new UserBannedException();
         }
 
-        if(Thread::find($thread_id)->status->id == 3) {
-            return $this->deny("You can't post on this thread because the owner is turning off the replies");
+        $thread = Thread::find($thread_id);
+        if($thread->replies_off == 1) {
+            return $this->deny(__("You can't reply on this thread because the owner is turning off the replies"));
         }
-
+        
+        if($thread->status->slug == 'closed') {
+            return $this->deny(__("You can't reply on closed threads"));
+        }
+        
         // The user should be: authenticated, not banned and post less than 280 posts per day.
-        return $user->today_posts_count() < 280;
+        if($user->today_posts_count() > 280) {
+            return $this->deny(__("You reach replying limit allowed, try out later"));
+        }
+        return true;
     }
 
     /**

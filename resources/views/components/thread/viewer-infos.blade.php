@@ -179,7 +179,7 @@
                 <input type="hidden" class="reply-size-error" value="{{ __('* Reply must contain at least 2 characters') }}">
             </div>
             <p class="reply-error error ml8 none"></p>
-            <textarea name="content" id="viewer-reply-input"></textarea>
+            <textarea name="content" id="viewer-reply-input" placeholder="{{ __('Your reply here') }}"></textarea>
             <style>
                 .thread-media-viewer-infos-content .editor-toolbar {
                     background-color: #f4f4f4;

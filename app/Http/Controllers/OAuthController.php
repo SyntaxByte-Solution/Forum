@@ -74,7 +74,7 @@ class OAuthController extends Controller
                 new \App\Notifications\UserAction([
                     'action_user'=>User::where('username', 'Gladiator Team')->first()->id,
                     'action_statement'=>"",
-                    'resource_string_slice'=>__("Welcome to MOROCCAN GLADIATOR, a moroccan sports forum wise factory ;)"),
+                    'resource_string_slice'=>__("Welcome to MOROCCAN GLADIATOR forums, wise factory ;)"),
                     'action_type'=>'welcome-welcome',
                     'action_date'=>now(),
                     'action_resource_id'=>"",

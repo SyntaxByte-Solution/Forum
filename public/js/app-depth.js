@@ -793,17 +793,11 @@ function handle_up_vote(button) {
                 // If there's an error we simply set the old value
                 vote_box.find('.votable-count').text(vote_count);
                 new_vote_count = vote_count;
-    
+
                 let errorObject = JSON.parse(xhr.responseText);
                 let er = errorObject.message;
-                // and then print the error returned in the informer-message-container
-                let vote_message_container = vote_box.find('.informer-message-container').first();
-                vote_message_container.find('.informer-message').text(er);
-                vote_message_container.css('display', 'block');
-    
-                informer_container_timeout = setTimeout( function(){ 
-                    vote_message_container.css('display', 'none');
-                }, 4000);
+                // Here we change displaying from thread embedded message container to global message notification
+                display_top_informer_message(er, 'warning');
             },
             complete: function() {
                 vote_lock = true;
@@ -894,15 +888,8 @@ function handle_down_vote(button) {
     
                 let errorObject = JSON.parse(xhr.responseText);
                 let er = errorObject.message;
-                // and then print the error returned in the informer-message-container
-                let vote_message_container = vote_box.find('.informer-message-container').first();
-                vote_message_container.find('.informer-message').text(er);
-                vote_message_container.css('display', 'block');
-    
-                informer_container_timeout = setTimeout( function(){ 
-                    vote_message_container.css('display', 'none');
-                }, 4000);
-    
+                // Here we change displaying from thread embedded message container to global message notification
+                display_top_informer_message(er);
             },
             complete: function() {
                 vote_lock = true;
@@ -1034,24 +1021,6 @@ function handle_vote_sync(button, vote_icons_state, new_vote_count) {
             down_vote.addClass('none');
             break;
     }
-}
-
-$('.remove-informer-message-container').each(function() {
-    handle_remove_informer_message_container($(this).parent());
-});
-
-function handle_remove_informer_message_container(element) {
-    element.find('.remove-informer-message-container').click(function(event) {
-        let vote_container = $(this);
-        while(!vote_container.hasClass('informer-message-container')) {
-            vote_container = vote_container.parent();
-        }
-    
-        clearTimeout(informer_container_timeout);
-    
-        vote_container.css('display', 'none');
-        event.preventDefault();
-    });
 }
 
 $('.like-resource').each(function() {
@@ -1797,7 +1766,7 @@ $('.thread-add-share').on('click', function(event) {
         $('#subject').parent().find('.error').removeClass('none');
         container.find('.thread-add-error').text($('#subject').parent().find('.required-text').val());
         container.find('.thread-add-error-container').removeClass('none');
-        move_to_thread_add_top();
+        move_element_by_id('thread-add-wrapper');
         return;
     } else {
         $('#subject').parent().find('.error').addClass('none');
@@ -1809,7 +1778,7 @@ $('.thread-add-share').on('click', function(event) {
         $('#content').parent().find('.error').removeClass('none');
         container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
         container.find('.thread-add-error-container').removeClass('none');
-        move_to_thread_add_top();
+        move_element_by_id('thread-add-wrapper');
         return;
     } else {
         $('#content').parent().find('.error').addClass('none');
@@ -1971,7 +1940,7 @@ $('.thread-add-share').on('click', function(event) {
             button.attr("disabled",false);
             button.attr('style', '');
 
-            move_to_thread_add_top();
+            move_element_by_id('thread-add-wrapper');
         },
         complete: function(response) {
             
@@ -1980,8 +1949,9 @@ $('.thread-add-share').on('click', function(event) {
     
     return false;
 });
-function move_to_thread_add_top() {
-    location.hash = "#thread-add-wrapper";
+
+function move_element_by_id(id) {
+    location.hash = "#" + id;
     var y = $(window).scrollTop();  //your current y position on the page
     $(window).scrollTop(y-56);
 }
@@ -2571,7 +2541,6 @@ function handle_open_media_viewer(thread) {
                         });
                         handle_save_threads($('.tmvisc').find('.save-thread'));
                         handle_document_suboptions_hiding();
-                        handle_remove_informer_message_container($('.tmvisc'));
                         $('.tmvisc').find('.votable-up-vote').not('.viewer-thread-reply .votable-up-vote').each(function() {
                             handle_up_vote($(this));
                         })
@@ -2733,7 +2702,6 @@ function handle_viewer_reply_events(reply_component) {
     handle_delete_post_button(reply_component);
     handle_delete_post(reply_component);
     handle_close_shadowed_view(reply_component);
-    handle_remove_informer_message_container(reply_component);
     handle_login_lock(reply_component);
 
     reply_component.find('.button-with-suboptions').each(function() {
@@ -3829,7 +3797,6 @@ function handle_thread_events(thread) {
     handle_thread_visibility_switch(thread);
     handle_follow_resource(thread.find('.follow-resource'));
     handle_expend_button_appearence(thread);
-    handle_remove_informer_message_container(thread);
     // Keep in mind that images dimensions also handled withing lazy loading logic
     handle_thread_medias_containers(thread);
     /**
@@ -3904,13 +3871,21 @@ $('.thread-add-display-toggler').on('click', function() {
 
 let top_informer_timeout;
 function display_top_informer_message(message, type="normal") {
+    clearTimeout(top_informer_timeout);
     let informer_box = $('.top-informer-box');
     let informer_container = informer_box.find('.top-informer-container');
     informer_box.removeClass('none');
     informer_box.find('.top-informer-text').text(message);
 
+
     switch(type) {
         case 'normal':
+            break;
+        case 'warning':
+            informer_container.find('.tiei-icon').addClass('none');
+            informer_container.find('.top-informer-icon-box').removeClass('none');
+            informer_container.find('.top-informer-error-icon').removeClass('none');
+            informer_container.find('.top-informer-error-icon').css('fill', 'black');
             break;
         case 'error':
             informer_container.css('border-color', '#ff9696');

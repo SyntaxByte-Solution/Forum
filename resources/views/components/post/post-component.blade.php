@@ -29,15 +29,6 @@
             <div class="vote-box relative">
                 <input type="hidden" class="votable-id" value="{{ $post->id }}">
                 <input type="hidden" class="votable-type" value="post">
-                <div class="informer-message-container absolute zi1" style="left: calc(100% + 8px); top: 10px;">
-                    <div class="left-middle-triangle"></div>
-                    <div class="flex align-center">
-                        <p class="informer-message"></p>
-                        <div class="remove-informer-message-container rounded pointer">
-                            <span style="margin-top: -1px">✖</span>
-                        </div>
-                    </div>
-                </div>
 
                 <svg class="size15 pointer @auth votable-up-vote outside-viewer @endauth @guest login-signin-button @endguest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                     <title>{{ __('UP') }}</title>
@@ -57,15 +48,10 @@
 
             <div class="relative informer-box tick-post-container my4">
                 <input type="hidden" value="{{ $post->id }}" class="post-id">
+                @can('update', $post->thread)
                 <input type="hidden" class="remove-best-reply" value="{{ __('Remove best reply') }}">
                 <input type="hidden" class="mark-best-reply" value="{{ __('Mark this reply as the best reply') }}">
-                @can('update', $post->thread)
-                <div class="informer-message-container absolute zi1" style="left: 126%; top: -10px">
-                    <div>
-                        <p class="informer-message"></p>
-                    </div>
-                </div>
-                <div class="pointer hover-informer-display-element post-tick-button" title="@if($post->ticked){{ __('Best reply. click to remove') }}@else{{ __('Mark this reply as the best reply') }}@endif">
+                <div class="pointer post-tick-button @if($post->thread->tickedPost() AND $post->thread->tickedPost()->id != $post->id) none @endif" style="max-height: 20px" title="@if($post->ticked){{ __('Best reply. click to remove') }}@else{{ __('Mark this reply as the best reply') }}@endif">
                     <svg class="size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                         <path class="green-tick @if(!$post->ticked) none @endif" d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/>
                         <path class="grey-tick @if($post->thread->tickedPost()) none @endif" d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#808080"/>

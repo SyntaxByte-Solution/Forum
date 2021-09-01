@@ -356,10 +356,6 @@ function handle_post_other_events(post) {
     // Handle vote buttons
     handle_up_vote(post.find('.votable-up-vote'));
     handle_down_vote(post.find('.votable-down-vote'));
-
-    
-    // Handle informer message container close button
-    handle_remove_informer_message_container(post);
 }
 
 $('.post-container').each(function() {
@@ -370,6 +366,14 @@ $('.share-post').on('click', function() {
     let btn = $(this);
     let btn_text_no_ing = btn.find('.btn-text-no-ing').val();
     let btn_text_ing = btn.find('.btn-text-ing').val();
+
+    let share_post_reply = btn;
+    while(!share_post_reply.hasClass('share-post-form')) {
+        share_post_reply = share_post_reply.parent();
+    }
+
+    let content_required = share_post_reply.find('.content-required').val();
+    let content_length_required = share_post_reply.find('.content-length-required').val();
     
     const $codemirror = $('#post-reply').nextAll('.CodeMirror')[0].CodeMirror;
     let post_content = $codemirror.getDoc().getValue();
@@ -381,16 +385,17 @@ $('.share-post').on('click', function() {
     };
 
     if(post_content == "") {
-        $('#global-error').text('Reply field is required');
-        $('#global-error').css('display', 'flex');
-        location.hash = "#reply-site";
+        $('.reply-error-container').removeClass('none');
+        $('.reply-error-container').find('.error-field').text(content_required);
+        move_element_by_id('share-post-box');
+        return;
     } else if(post_content.length < 2) {
-        $('#global-error').text('Reply should have at least 2 characters');
-        $('#global-error').css('display', 'flex');
-        location.hash = "#reply-site";
+        $('.reply-error-container').removeClass('none');
+        $('.reply-error-container').find('.error-field').text(content_length_required);
+        move_element_by_id('share-post-box');
     }
     else {
-        form.find('#global-error').css('display', 'none');
+        $('.reply-error-container').addClass('none');
         
         btn.find('.btn-text').text(btn_text_ing);
         $(this).attr("disabled","disabled");
@@ -402,20 +407,20 @@ $('.share-post').on('click', function() {
             data: data,
             url: '/post?from=thread-show',
             success: function(response) {
+                $codemirror.getDoc().setValue('');
+                btn.find('.btn-text').text(btn_text_no_ing);
+                btn.prop("disabled", false);
+                btn.attr('style', '');
+                // Display replies label if it is hidden
                 $('.replies_header_after_thread').removeClass('none');
-                $('#global-error').css('display', 'none');
                 let pst;
-                if ($("#ticked-post")[0]){
+                if($("#ticked-post").length){
                     $("#replies-container .resource-container:first-child").after(response);
                     pst = $('#replies-container .resource-container:eq(1)');
                 } else {
                     $('#replies-container').prepend(response);
                     pst = $('#replies-container .resource-container').first();
                 }
-                $codemirror.getDoc().setValue('');
-                btn.find('.btn-text').text(btn_text_no_ing);
-                btn.prop("disabled", false);
-                btn.attr('style', '');
 
                 // Handling all events of the newly appended reply
                 handle_post_events(pst);
@@ -449,31 +454,24 @@ $('.share-post').on('click', function() {
 
             },
             error: function(response) {
-                
+                btn.find('.btn-text').text(btn_text_no_ing);
+                btn.prop("disabled", false);
+                btn.attr('style', '');
+
                 let errors = JSON.parse(response.responseText);
                 let error;
-
                 if(errors.message) {
                     error = errors.message
                 } else {
                     // Here we get the errors of the response as an object
                     let errors = JSON.parse(response.responseText);
-    
-                    // The errors object hold errors keys as well as error values in form of array of errors
-                    // because a field could have multiple validation constraints and then it could have multiple errors
-                    // strings. In this case we only need the first error of the first validation
                     error = errors[Object.keys(errors)[0]][0];
                 }
-                $('#global-error').text(error);
-                $('#global-error').css('display', 'block');
-                btn.val(btn_text_no_ing);
-                btn.prop("disabled", false);
-                btn.attr('style', '');
-                location.hash = "#reply-site";
+
+                display_top_informer_message(error, 'warning');
             }
         })
     }
-    return false;
 });
 
 function handle_post_reply_tick_button(post) {
@@ -543,12 +541,7 @@ function handle_post_reply_tick_button(post) {
                         }
 
                         let error = JSON.parse(response.responseText).message;
-                        best_reply_container.find('.informer-message').parent().parent().css('display', 'block');
-                        best_reply_container.parent().find('.informer-message').text(error);
-
-                        setTimeout(function() {
-                            best_reply_container.find('.informer-message').parent().parent().css('display', 'none');
-                        }, 2000);
+                        display_top_informer_message(error, 'warning');
                     },
                     complete: function() {
                         vote_tick_lock = true;

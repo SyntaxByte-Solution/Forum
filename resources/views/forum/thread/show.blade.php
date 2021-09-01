@@ -46,19 +46,22 @@
                 @if($thread->replies_off)
                     <p class="fs13 text-center">{{ __('The owner of this thread turned off replies') }}</p>
                 @else
-                <div>
-                    <div class="share-post-form">
+                <div id="share-post-box">
+                    <div class="share-post-form" style="margin: 20px 0 8px 0">
+                        <input type="hidden" class="content-required" value="{{ __('Reply content is required') }}">
+                        <input type="hidden" class="content-length-required" value="{{ __('Reply content should contain at least 2 characters') }}">
+                        <div class="reply-error-container none">
+                            <div class="flex">
+                                <svg class="size14 mr4" style="min-width: 14px; margin-top: 1px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                                <span class="error fs13 bold no-margin error-field"></span>
+                            </div>
+                        </div>
                         <div class="input-container">
-                            <div class="fs14" style="margin: 20px 0 8px 0">
-                                <div class="relative">
-                                    <span class="absolute" id="reply-site" style="margin-top: -70px"></span>
-                                </div>
-                                <label for="reply-content" class="flex bblack bold fs16">
+                            <div class="fs14">
+                                <label for="reply-content" class="flex align-center bblack bold fs16 mb4">
                                     {{__('Your reply')}} 
-                                    <span class="error frt-error reply-content-error">  *</span>
                                 </label>
                             </div>
-                            <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
                             <textarea name="subject" class="reply-content" id="post-reply" placeholder="{{ __('Your reply here') }}.."></textarea>
                         </div>
                         <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
@@ -67,7 +70,6 @@
                             <input type="hidden" class="btn-text-no-ing" autocomplete="off" value="{{ __('Post your reply') }}">
                             <input type="hidden" class="btn-text-ing" autocomplete="off" value="{{ __('Posting your reply') }}..">
                         </button>
-
                     </div>
                 </div>
                 @endif

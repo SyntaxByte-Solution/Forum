@@ -2163,33 +2163,6 @@ a, input, textarea {
     background-color: #0000008a;
 }
 
-.informer-message-container {
-    display: none;
-    padding: 12px;
-    border-radius: 5px;
-    border: 1px solid rgb(208, 208, 208);
-    background-color: white;
-    left: calc(100% + 10px);
-    width: max-content;
-}
-
-.informer-message {
-    color: rgb(32, 32, 32);
-    margin: 0;
-    font-size: 13px;
-}
-
-.remove-informer-message-container {
-    display: flex;
-    align-items: center;
-    font-size: 11px;
-    width: 9px;
-    height: 9px;
-    padding: 4px;
-    margin-left: 6px;
-    color: white;
-    background-color: #00000075;
-}
 
 .left-middle-triangle {
     z-index: 0;

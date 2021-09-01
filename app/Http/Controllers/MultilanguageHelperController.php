@@ -9,10 +9,14 @@ use Illuminate\Support\Facades\File;
 class MultilanguageHelperController extends Controller
 {
     public function index() {
-        return view('multilanguage.index');
+        if(auth()->user() /** && has_role('admin') */)
+            return view('multilanguage.index');
     }
 
     public function get_keys(Request $request) {
+        if(!auth()->user() /** || !has_role('admin') */) {
+            return '';
+        }
         if(!in_array($request->lang, ['fr', 'ma-ar'])) {
             return '';
         }

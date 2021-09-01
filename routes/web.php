@@ -175,7 +175,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/post/{post}/vote', [VoteController::class, 'post_vote'])->name('post.vote');
 });
 
-Route::get('/users/{user:username}/threads', [UserController::class, 'user_threads'])->name('user.threads');
 Route::get('/forums/{forum:slug}/{category:slug}/threads', [ThreadController::class, 'category_threads'])->name('category.threads');
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);

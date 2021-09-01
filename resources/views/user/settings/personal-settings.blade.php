@@ -7,9 +7,9 @@
 @endpush
 
 @push('scripts')
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" defer></script>
+    <script src="{{ asset('js/jq-plugins/country-picker-flags/build/js/countrySelect.min.js') }}" defer></script>
     <script src="{{ asset('js/settings.js') }}" defer></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{ asset('js/jq-plugins/country-picker-flags/build/js/countrySelect.min.js') }}"></script>
 @endpush
 
 @section('header')

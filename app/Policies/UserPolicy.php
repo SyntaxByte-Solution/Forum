@@ -9,102 +9,34 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function viewAny(User $user)
+    public function edit(User $user, $u)
     {
-        //
+        return $user->id == $u->id;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function view(User $user, User $model)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        //
-    }
-
-    public function edit(User $user, User $model)
-    {
-        return $user->id == $model->id;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function update(User $user, User $model)
+    public function update(User $user, $u)
     {
         if($user->isBanned()) {
-            return $this->deny("You can't update your profile because you're currently banned");
+            return $this->deny("You can't update your settings because you're currently banned");
         }
 
-        return $user->id == $model->id;
+        return $user->id == $u->id;
     }
 
-    public function activate_account(User $user, User $model)
+    public function activate_account(User $user)
     {
+        // If an admin ban the current user then the user could not active or deactive his account and then if he visit activation page we prevent him
         if($user->isBanned()) {
-            return $this->deny("You can't access this page because you're currently banned");
+            return $this->deny("Unauthorized action. You are currently banned !");
         }
-        return $user->id == $model->id;
+        if(!$user->account_deactivated()) {
+            return redirect('/')->with('message', __("You can't access account activation page because your account is already activated"));
+        }
+        return $user->id == $u->id;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
     public function delete(User $user, User $model)
     {
         return $user->id == $model->id;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function restore(User $user, User $model)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function forceDelete(User $user, User $model)
-    {
-        //
     }
 }

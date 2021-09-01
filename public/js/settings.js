@@ -20,7 +20,6 @@ if($("#country_selector").length) {
   });
 }
 
-
 if($('#user-personal-country').length && $('#user-personal-country').length) {
   let country = $('#user-personal-country').val();
     if(country != '') {

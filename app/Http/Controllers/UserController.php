@@ -32,60 +32,29 @@ class UserController extends Controller
             ->with(compact('threads_count'))
             ->with(compact('threads'));
     }
-
-    public function user_threads(Request $request, User $user) {
-        $all = false;
-        $pagesize = 10;
-        $pagesize_exists = false;
-        if($request->has('pagesize')) {
-            $pagesize_exists = true;
-            $pagesize = $request->input('pagesize');
-        }
-
-        $threads_count = $user->threads->count();
-        $posts_count = $user->posts_count();
-
-        $threads;
-        if($pagesize == 'all') {
-            $all = true;
-            $threads = $user->threads()
-            ->orderBy('created_at', 'desc')->lazy();
-        } else {
-            $threads = $user->threads()
-            ->orderBy('created_at', 'desc')->paginate($pagesize);
-        }
-
-        return view('user.threads')
-            ->with(compact('user'))
-            ->with(compact('threads_count'))
-            ->with(compact('posts_count'))
-            ->with(compact('all'))
-            ->with(compact('pagesize'))
-            ->with(compact('pagesize_exists'))
-            ->with(compact('threads'));
-    }
-
     public function profile(Request $request, User $user) {
         if($user->account_status->id == 2) {
             return view('errors.custom.deactivated-account');
         }
 
         // --- profile view checking .. ---
-        $profile_view = new ProfileView;
-        $profile_view->visitor_ip = $request->ip();
-        $profile_view->visited_id = $user->id;
-        $profile_view->visitor_id = null;
-        if($current_user = auth()->user()) {
-            $profile_view->visitor_id = $current_user->id;
-        }
         // We count only 1 profile view per day for the same user
         $found = ProfileView::
-        where('created_at', '>', Carbon::now()->subHours(24)->toDateTimeString())
-        ->where('visitor_ip', $request->ip())
-        ->where('visited_id', $user->id)
-        ->where('visitor_id', $profile_view->visitor_id)
-        ->count();
+            where('created_at', '>', Carbon::now()->subHours(24)->toDateTimeString())
+            ->where('visitor_ip', $request->ip())
+            ->where('visited_id', $user->id)
+            ->where('visitor_id', $profile_view->visitor_id)
+            ->count();
         if(!$found) {
+            $profile_view = new ProfileView;
+            $profile_view = new ProfileView;
+            $profile_view->visitor_ip = $request->ip();
+            $profile_view->visited_id = $user->id;
+            $profile_view->visitor_id = null;
+            if($current_user = auth()->user()) {
+                $profile_view->visitor_id = $current_user->id;
+            }
+
             if(auth()->user()) {
                 if($user->id != auth()->user()->id) {
                     $profile_view->save();
@@ -96,13 +65,12 @@ class UserController extends Controller
         }
 
         // Check if the visitor is a follower of the visited profile
+        $followed = false;
         if(Auth::check()) {
             $followed = (bool) Follow::where('follower', auth()->user()->id)
             ->where('followable_id', $user->id)
             ->where('followable_type', 'App\Models\User')
-            ->count();
-        } else {
-            $followed = false;
+            ->count() > 0;
         }
 
         $threads = $user->threads()
@@ -127,7 +95,6 @@ class UserController extends Controller
             ->with(compact('pagesize'))
             ->with(compact('threads'));
     }
-
     public function edit(Request $request) {
         $user = auth()->user();
         $this->authorize('edit', $user);
@@ -146,23 +113,62 @@ class UserController extends Controller
         $user = auth()->user();
         $this->authorize('update', $user);
 
-        $firstname = $user->firstname;
-        $lastname = $user->lastname;
-        $username = $user->username;
-
         return view('user.settings.personal-settings')
-            ->with(compact('username'))
             ->with(compact('user'));
     }
     public function edit_password(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
 
-        $username = $user->username;
-
         return view('user.settings.password-settings')
-            ->with(compact('username'))
             ->with(compact('user'));
+    }
+    public function account_settings(Request $request) {
+        $user = auth()->user();
+        $this->authorize('update', $user);
+
+        // dd($request);
+        return view('user.settings.account-settings')
+        ->with(compact('user'));
+    }
+    public function username_check(Request $request) {
+        $response = [
+            'status'=>'valid',
+            'message'=>__('valid username'),
+            'valid'=>true
+        ];
+
+        if (Auth::user()) {
+            if(Auth::user()->username == $request->username) {
+                $response['status'] = 'yours';
+                $response['message'] = __('valid username (your current username)');
+            } else if(User::where('username', $request->username)->where('id', '<>', Auth::user()->id)->count()) {
+                $response = [
+                    'status'=>'taken',
+                    'message'=>__('this username is already taken, choose another one'),
+                    'valid'=>false
+                ];
+            }
+        } else {
+            if(User::where('username', $request->username)->count()) {
+                $response = [
+                    'status'=>'taken',
+                    'message'=>'this username is already taken, choose another one',
+                    'valid'=>false
+                ];
+            }
+        }
+
+        $username = $request->validate([
+            'username' => [
+                'required',
+                'min:6',
+                'max:256',
+                'alpha_dash'
+            ]
+        ]);
+
+        return $response;
     }
     public function update(Request $request) {
         $user = auth()->user();
@@ -180,7 +186,7 @@ class UserController extends Controller
             ],
             'about'=>'sometimes|max:1400',
             'avatar'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,png|max:5000|dimensions:min_width=200,min_height=200,max_width=1000,max_height=1000',
-            'cover'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,png|max:5000|dimensions:min_width=200,min_height=200,max_width=1280,max_height=2050',
+            'cover'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,png|max:8000|dimensions:min_width=200,min_height=200,max_width=1280,max_height=2050',
         ]);
 
         if($request->avatar_removed) {
@@ -241,7 +247,7 @@ class UserController extends Controller
         if($request->cover_removed) {
             $data['cover'] = null;
         }
-        if($request->hasFile('cover')){
+        else if($request->hasFile('cover')){
             $path = $request->file('cover')->storeAs(
                 'users/' . $user->id. '/usermedia/covers', 'cover.png', 'public'
             );
@@ -266,26 +272,24 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        return redirect()->route('user.settings')->with('message', __('Profile updated successfully') . '!');
+        return redirect()->route('user.settings')->with('message', __('Your profile settings has been updated successfully') . '!');
     }
     public function update_personal(Request $request) {
         $user = auth()->user();
         $this->authorize('update', $user);
 
-        // dd($request);
-
         $data = $request->validate([
             'birth'=>'sometimes|nullable|date',
             'phone'=>'sometimes|nullable|max:266',
-            'country'=>'sometimes|min:2|max:266',
-            'city'=>'sometimes|min:2|max:266',
+            'country'=>'sometimes|alpha|min:2|max:266',
+            'city'=>'sometimes|alpha|min:2|max:266',
             'facebook'=>'sometimes|nullable|url',
             'instagram'=>'sometimes|nullable|min:2|max:266',
             'twitter'=>'sometimes|nullable|url',
         ]);
 
         $user->personal->update($data);
-        return redirect()->route('user.personal.settings')->with('message','Profile information updated successfully !');
+        return redirect()->route('user.personal.settings')->with('message',__('Your profile informations has been updated successfully !'));
     }
     public function update_password(Request $request) {
         $user = auth()->user();
@@ -305,14 +309,6 @@ class UserController extends Controller
 
         return redirect()->route('user.passwords.settings')->with('message', __('Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !'));
     }
-    public function account_settings(Request $request) {
-        $user = auth()->user();
-        $this->authorize('update', $user);
-
-        // dd($request);
-        return view('user.settings.account-settings')
-        ->with(compact('user'));
-    }
     public function delete_account(Request $request) {
         $user = auth()->user();
         $this->authorize('delete', $user);
@@ -323,7 +319,7 @@ class UserController extends Controller
             Auth::logout();
             return redirect("/home")->with('message', __('Your account has been deleted successfully.'));
         } else {
-            return redirect()->back()->with('error', 'Invalid password !');
+            return redirect()->back()->with('error', __('Invalid password'));
         }
     }
     public function deactivate_account(Request $request) {
@@ -348,19 +344,13 @@ class UserController extends Controller
         }
     }
     public function activate_account() {
-        $user = auth()->user();
-        $this->authorize('activate_account', $user);
-
-        if(!$user->account_deactivated()) {
-            return redirect('/')->with('message', "You can't access account activation page because your account is already activated");
-        }
+        $this->authorize('activate_account');
 
         return view('user.settings.account-activation')
             ->with(compact('user'));
     }
     public function activating_account() {
-        $user = auth()->user();
-        $this->authorize('activate_account', $user);
+        $this->authorize('activate_account');
 
         if($user->account_deactivated()) {
             $user->set_account_status('active');
@@ -368,44 +358,5 @@ class UserController extends Controller
         }
         
         abort(404);
-    }
-    public function username_check(Request $request) {
-        $response = [
-            'status'=>'valid',
-            'message'=>'valid username',
-            'valid'=>true
-        ];
-
-        if (Auth::user()) {
-            if(Auth::user()->username == $request->username) {
-                $response['status'] = 'yours';
-                $response['message'] = 'valid username (yours)';
-            } else if(User::where('username', $request->username)->where('id', '<>', Auth::user()->id)->count()) {
-                $response = [
-                    'status'=>'taken',
-                    'message'=>'this username is already taken, choose another one',
-                    'valid'=>false
-                ];
-            }
-        } else {
-            if(User::where('username', $request->username)->count()) {
-                $response = [
-                    'status'=>'taken',
-                    'message'=>'this username is already taken, choose another one',
-                    'valid'=>false
-                ];
-            }
-        }
-
-        $username = $request->validate([
-            'username' => [
-                'required',
-                'min:6',
-                'max:256',
-                'alpha_dash'
-            ]
-        ]);
-
-        return $response;
     }
 }

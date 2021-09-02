@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Exceptions\AccessDeniedException;
+use App\Exceptions\UnauthorizedActionException;
 use App\Models\Role;
 
 class EnsureUserHasRole
@@ -18,8 +18,8 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, $slug)
     {
-        if (!$request->user()->has_role($slug)) {
-            throw new AccessDeniedException("Access denied.");
+        if(!$request->user()->has_role($slug)) {
+            throw new UnauthorizedActionException("Unauthorized action.");
         }
 
         return $next($request);

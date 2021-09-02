@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\ExcludeAnnouncementFromCategories;
 use App\Models\{Forum, Thread};
 
 class Category extends Model
@@ -12,7 +13,7 @@ class Category extends Model
 
     protected $table = 'categories';
     protected $guarded = [];
-    
+
     public function forum() {
         return $this->belongsTo(Forum::class);
     }
@@ -23,5 +24,13 @@ class Category extends Model
 
     public function getLinkAttribute() {
         return route('category.threads', ['category'=>$this->id]);
+    }
+
+    /**
+     * Here we have to exclude announcements from categories using local scopes due to interconnected links between threads
+     * and categories. using local scopes require us to add the scope everytime we want to exclude announcements
+     */
+    public function scopeExcludeannouncements($query) {
+        return $query->where('slug', '<>', 'announcements');
     }
 }

@@ -57,15 +57,15 @@
             </div>
             @if($announcements->count() != 0)
                 <div class="flex align-center space-between">
-                    <h2 class="forum-color" style="margin: 0 0 6px 0; font-size: 19px">Announcements</h2>
+                    <h2 class="fs22 blue unselectable my8 flex align-center">{{ __('Announcements') }}</h2>
                     @if($announcements->count() > 2)
                     <a href="{{ route('announcements') }}" class="blue no-underline bold">{{ __('See all') }}</a>
                     @endif
                 </div>
-                @foreach($announcements->take(3) as $announcement)
-                    <x-thread.announcement :announcement="$announcement"/>
+                @foreach($announcements as $announcement)
+                    <x-thread.announcement :announcid="$announcement->id"/>
                 @endforeach
-            <div class="simple-line-separator" style="margin: 14px 0"></div>
+                <div class="simple-line-separator" style="margin: 14px 0"></div>
             @endif
             <h2 class="fs22 blue unselectable my8 flex align-center">{{ __('Discussions') }}</h2>
             <div class="flex align-center space-between mb2">

@@ -11,7 +11,7 @@ class GeneralController extends Controller
 {
     public function get_forum_categories_ids(Forum $forum) {
         $f = $forum;
-        return \json_encode($forum->categories->where('slug', '<>', 'announcements')->pluck('category', 'id'));
+        return \json_encode($forum->categories()->excludeannouncements()->pluck('category', 'id'));
     }
 
     public function setlang(Request $request) {

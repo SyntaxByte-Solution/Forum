@@ -67,6 +67,14 @@ class Thread extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
     public function users_who_save() {
         return $this->belongsToMany(User::class, 'saved_threads', 'thread', 'user');
     }
@@ -201,16 +209,8 @@ class Thread extends Model
         });
     }
 
-    public function category() {
-        return $this->belongsTo(Category::class);
-    }
-
     public function isClosed() {
         return $this->status->slug == 'closed';
-    }
-
-    public function posts() {
-        return $this->hasMany(Post::class);
     }
 
     public function tickedPost() {

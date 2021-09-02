@@ -21,8 +21,7 @@ class ThreadComponentsFetchController extends Controller
                 Rule::in(['all', 'today', 'thisweek']),
             ]
         ]);
-
-        $categories = Category::where('slug', '<>', 'announcements')->where('forum_id', $forum->id)->get()->pluck('id');
+        $categories = Category::excludeannouncements()->where('forum_id', $forum->id)->get()->pluck('id');
         $threads = Thread::whereIn('category_id', $categories);
         
         switch($indexes['tab']) {

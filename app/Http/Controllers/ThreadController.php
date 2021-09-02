@@ -18,6 +18,7 @@ use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\View\Components\Activities\ActivityThread;
 use App\View\Components\Activities\Sections\{Threads, SavedThreads, LikedThreads, VotedThreads, ArchivedThreads, ActivityLog};
 use App\Http\Controllers\PostController;
+use App\Scopes\ExcludeAnnouncements;
 
 class ThreadController extends Controller
 {
@@ -108,7 +109,8 @@ class ThreadController extends Controller
             ->with(compact('tickedPost'))
             ->with(compact('posts'));
     }
-    public function announcement_show(Request $request, Forum $forum, Thread $announcement) {
+    public function announcement_show(Request $request, Forum $forum, $announcid) {
+        $announcement = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->find($announcid);
         $forums = Forum::all();
         $at = (new Carbon($announcement->created_at))->toDayDateTimeString();
         $at_hummans = (new Carbon($announcement->created_at))->diffForHumans();
@@ -141,19 +143,14 @@ class ThreadController extends Controller
     public function create() {
         $this->authorize('create', Thread::class);
 
-        $forums = Forum::all();
-        $categories = $forums->first()->categories->where('slug', '<>', 'announcements');
-
-        return view('forum.thread.create')
-            ->with(compact('forums'))
-            ->with(compact('categories'));
+        return view('forum.thread.create');
     }
     public function edit(User $user, Thread $thread) {
         $this->authorize('edit', $thread);
 
         $category = Category::find($thread->category_id);
         $forum = Forum::find($category->forum_id);
-        $categories = $forum->categories->where('slug', '<>', 'announcements');
+        $categories = $forum->categories()->excludeannouncements()->get();
         $medias = [];
         if($thread->has_media) {
             $medias_urls = Storage::disk('public')->files('users/' . $user->id . '/threads/' . $thread->id . '/medias');
@@ -512,25 +509,23 @@ class ThreadController extends Controller
         $current_user->savedthreads()->detach($thread->id);
         return -1;
     }
-
     public function forum_all_threads(Request $request, Forum $forum) {
+        $pagesize = 8;
         $tab_title = 'All'; // By default is all, until the user choose other option
         $tab = "all";
 
-        $categories = $forum->categories()->where('slug', '<>', 'announcements')->get();
+        $categories = $forum->categories()->excludeannouncements()->get();
         $category = $forum->categories->first();
         $forums = Forum::all();
 
         // First get all forum's categories
         $categories_ids = $categories->pluck('id');
-
-        // Fetching announcements
-        $anoun_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
-        $announcements = Thread::where('category_id', $anoun_id)->orderBy('created_at', 'desc')->get();
-
-        $pagesize = 8;
-
         $threads = Thread::whereIn('category_id', $categories_ids);
+        // Fetching forum announcement id to help us get announcements
+        $forum_announcement_id = Category::where('slug', 'announcements')->where('forum_id', $forum->id)->first()->id;
+        // Fetch announcements of the visited forum
+        $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->where('category_id', $forum_announcement_id)->orderBy('created_at', 'desc')->take(3)->get();
+
         // Then we fetch all threads in those categories
         if($request->has('tab')) {
             $tab = $request->input('tab');

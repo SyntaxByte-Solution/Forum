@@ -41,7 +41,7 @@
         <input type="hidden" class="page" value="announcement-show">
         <div class="flex">
             <div class="full-width">
-                <div class="activity-thread-wrapper thread-container-box relative">
+                <div class="activity-thread-wrapper thread-container-box relative" style="background-color: white">
                     <div class="thread-component">
                         <div class="full-width">
                             <div class="flex">
@@ -136,7 +136,7 @@
                                 </label>
                             </div>
                             <p class="error frt-error reply-content-error" id="global-error" role="alert"></p>
-                            <textarea name="subject" class="reply-content" id="post-reply"></textarea>
+                            <textarea name="subject" class="reply-content" id="post-reply" placeholder="{{ __('Your feedback on this announcement') }}"></textarea>
                             <style>
                                 .CodeMirror,
                                 .CodeMirror-scroll {

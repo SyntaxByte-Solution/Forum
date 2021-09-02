@@ -44,7 +44,7 @@
             </div>
             <div>
                 @foreach($announcements as $announcement)
-                    <x-thread.announcement :announcement="$announcement"/>
+                    <x-thread.announcement :announcid="$announcement->id"/>
                 @endforeach
             </div>
             <div class="flex my8">

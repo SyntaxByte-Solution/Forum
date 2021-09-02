@@ -20,9 +20,8 @@ class UserController extends Controller
 
     public function activities(Request $request, User $user) {
         $is_current = Auth::check() ? auth()->user()->id == $user->id : false;
-        $announcements_ids = Category::where('slug', 'announcements')->pluck('id');
         // Take 6 threads created by the current user (the profile owner) to display as the first section in activities page
-        $threads = Thread::whereNotIn('category_id', $announcements_ids)->where('user_id', $user->id)->orderBy('created_at', 'desc')->take(6)->get();
+        $threads = Thread::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(6)->get();
 
         $threads_count = $user->threads->count();
 

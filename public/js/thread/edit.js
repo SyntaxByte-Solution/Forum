@@ -68,6 +68,7 @@ $('.thread-add-uploaded-media').each(function() {
 });
 
 $('.edit-thread').on('click', function() {
+    let spinner = $('#edit-thread-button-spinner');
     let button = $(this);
     let button_text_ing = button.parent().find('.text-button-ing').val();
     let button_text_no_ing = button.parent().find('.text-button-no-ing').val();
@@ -123,33 +124,40 @@ $('.edit-thread').on('click', function() {
         form_data.append('replies_off', 0);
     }
 
+    let error_container = $('.thread-edit-error-container');
     if(form_data.get('subject') == '') {
+        error_container.removeClass('none');
+        error_container.find('.thread-edit-error').text($('.subject-required-error').val());
         $('#subject').parent().find('.error').removeClass('none');
-        $('.error-container').removeClass('none');
-        $('.error-message').text(button.parent().find('.subject-required-error').val());
-        window.scrollTo(0, 0);
+        move_element_by_id('page-top');
         return;
     } else {
+        error_container.addClass('none');
         $('#subject').parent().find('.error').addClass('none');
     }
 
     if(form_data.get('category_id') == '' || form_data.get('category_id') == 0) {
+        error_container.removeClass('none');
+        error_container.find('.thread-edit-error').text($('.category-required-error').val());
         $('#category').parent().find('.error').removeClass('none');
-        window.scrollTo(0, 0);
+        move_element_by_id('page-top');
         return;
     } else {
+        error_container.addClass('none');
         $('#category').parent().find('.error').addClass('none');
-        $('.error-container').addClass('none');
     }
 
     if(form_data.get('content') == '') {
+        error_container.removeClass('none');
+        error_container.find('.thread-edit-error').text($('.content-required-error').val());
         $('#content').parent().find('.error').removeClass('none');
-        $('.error-container').removeClass('none');
-        $('.error-message').text(button.parent().find('.content-required-error').val());
-        window.scrollTo(0, 0);
+        move_element_by_id('page-top');
         return;
     } else {
-        $('.error-container').addClass('none');
+        spinner.removeClass('opacity0');
+        start_spinner(spinner, 'thread-edit-spinner');
+
+        error_container.addClass('none');
         $('#content').parent().find('.error').addClass('none');
         
         button.val(button_text_ing);
@@ -167,24 +175,33 @@ $('.edit-thread').on('click', function() {
                 document.location.href = response;
             },
             error: function(response) {
-                // let er;
-                // let error = JSON.parse(response.responseText).error;
-                // if(error) {
-                //     er = JSON.parse(response.responseText).error;
-                // } else {
-                //     let errorObject = JSON.parse(response.responseText).errors;
-                //     er = errorObject[Object.keys(errorObject)[0]][0];
-                // }
+                spinner.addClass('opacity0');
+                stop_spinner(spinner, 'thread-edit-spinner');
 
-                
-                // $('.error-container').removeClass('none');
-                // $('.error-message').text(er);
-                // window.scrollTo(0, 0);
+                button.val(button_text_no_ing);
+                button.attr("disabled",false);
+                button.attr('style', '');
+
+                let errors = JSON.parse(response.responseText);
+                let error;
+
+                if(errors.message) {
+                    error = errors.message;
+                } else if(errors.error) {
+                    error = errors.error;
+                } else {
+                    // The errors object hold errors keys as well as error values in form of array of errors
+                    // because a field could have multiple validation constraints and then it could have multiple errors
+                    // strings. In this case we only need the first error of the first validation
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+
+                error_container.removeClass('none');
+                error_container.find('.thread-edit-error').html(error);
+                move_element_by_id('page-top');
             },
             complete: function() {
-                button.val(button_text_no_ing);
-                button.attr("disabled","disabled");
-                button.attr('style', 'background-color: #acacac; cursor: default');
+                
             }
         })
     }

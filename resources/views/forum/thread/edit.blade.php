@@ -17,7 +17,7 @@
 
 @section('content')
     @include('partials.left-panel', ['page' => 'questions'])
-    <div class="flex align-center space-between middle-padding-1">
+    <div id="page-top" class="flex align-center space-between middle-padding-1">
         <div class="flex align-center">
             <a href="/" class="link-path flex align-center unselectable">
                 <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M503.4,228.88,273.68,19.57a26.12,26.12,0,0,0-35.36,0L8.6,228.89a26.26,26.26,0,0,0,17.68,45.66H63V484.27A15.06,15.06,0,0,0,78,499.33H203.94A15.06,15.06,0,0,0,219,484.27V356.93h74V484.27a15.06,15.06,0,0,0,15.06,15.06H434a15.05,15.05,0,0,0,15-15.06V274.55h36.7a26.26,26.26,0,0,0,17.68-45.67ZM445.09,42.73H344L460.15,148.37V57.79A15.06,15.06,0,0,0,445.09,42.73Z"/></svg>
@@ -35,8 +35,17 @@
     </div>
     <div class="full-width middle-padding-1" style="padding-top: 0; margin-bottom: 20px">
         <h1 class="fs26 no-margin forum-color" style="margin-bottom: 12px">{{ __('Edit your discussion') }}</h1>
-        <div class="error-container none">
-            <p class="error-message"></p>
+        <div class="my8 thread-edit-error-container none">
+            <div class="flex">
+                <svg class="size14 mr4" style="min-width: 14px; margin-top: 1px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                <span class="error fs13 bold no-margin thread-edit-error"></span>
+            </div>
+        </div>
+        <div>
+            <!-- validation errors messages -->
+            <input type="hidden" class="subject-required-error" value="{{ __('Subject field is required') }}">
+            <input type="hidden" class="category-required-error" value="{{ __('Category field is required') }}">
+            <input type="hidden" class="content-required-error" value="{{ __('Content field is required') }}">
         </div>
         <div class="input-container">
             @error('category_id')
@@ -92,7 +101,7 @@
                     </div>
                 </div>
             </div>
-            <input type="text" id="subject" name="subject" class="full-width styled-input" value="{{ $thread->subject }}" required autocomplete="off" placeholder="eg. Kifach nwli b7al Arnold f simana ?">
+            <input type="text" id="subject" name="subject" class="full-width styled-input" value="{{ $thread->subject }}" required autocomplete="off" placeholder="{{ __('Update your title here') }}">
             @error('subject')
                 <p class="error" role="alert">{{ $message }}</p>
             @enderror
@@ -201,14 +210,16 @@
                 @endif
             </div>
         </div>
-        <div class="input-container">
-            <input type="hidden" class="thread_id" value="{{ $thread->id }}">
-            <input type="submit" class="button-style block edit-thread" value="{{ __('Save Changes') }}">
-            <input type="hidden" class="text-button-no-ing" value="{{ __('Save Changes') }}">
-            <input type="hidden" class="text-button-ing" value="{{ __('Saving changes..') }}">
-
-            <input type="hidden" class="subject-required-error" value="{{ __('Subject field is required') }}">
-            <input type="hidden" class="content-required-error" value="{{ __('Content field is required') }}">
+        <div class="flex align-center">
+            <div class="input-container">
+                <input type="hidden" class="thread_id" value="{{ $thread->id }}">
+                <input type="submit" class="button-style block edit-thread" value="{{ __('Save Changes') }}">
+                <input type="hidden" class="text-button-no-ing" value="{{ __('Save Changes') }}">
+                <input type="hidden" class="text-button-ing" value="{{ __('Saving changes..') }}">
+            </div>
+            <div class="spinner size20 ml8 opacity0" id="edit-thread-button-spinner">
+                <svg class="size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+            </div>
         </div>
     </div>
     <div id="right-panel">

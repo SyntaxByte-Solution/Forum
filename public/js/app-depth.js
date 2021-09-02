@@ -1921,17 +1921,22 @@ $('.thread-add-share').on('click', function(event) {
                 progress_bar.css('width', '0%');
             }
             
-            let er;
-            let error = JSON.parse(response.responseText).error;
-            if(error) {
-                er = JSON.parse(response.responseText).error;
+            let errors = JSON.parse(response.responseText);
+            let error;
+
+            if(errors.message) {
+                error = errors.message;
+            } else if(errors.error) {
+                error = errors.error;
             } else {
-                let errorObject = JSON.parse(response.responseText).errors;
-                er = errorObject[Object.keys(errorObject)[0]][0];
+                // The errors object hold errors keys as well as error values in form of array of errors
+                // because a field could have multiple validation constraints and then it could have multiple errors
+                // strings. In this case we only need the first error of the first validation
+                error = errors[Object.keys(errors)[0]][0];
             }
 
             container.find('.thread-add-error-container').removeClass('none');
-            container.find('.thread-add-error').html(er);
+            container.find('.thread-add-error').html(error);
 
             $('#subject').attr('disabled', false);
             $codemirror.setOption('readOnly', false);

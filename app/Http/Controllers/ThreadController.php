@@ -22,9 +22,7 @@ use App\Http\Controllers\PostController;
 class ThreadController extends Controller
 {
     public function show(Request $request, Forum $forum, Category $category, Thread $thread) {
-        $pagesize = 10;
-        $thread_owner = $thread->user;
-        $thread_subject = strlen($thread->subject) > 60 ? substr($thread->subject, 0, 60) : $thread->subject;
+        $posts_per_page = 10;
         if(!(Auth::check() && auth()->user()->id == $thread->user->id)) {
             $thread->update([
                 'view_count'=>$thread->view_count+1
@@ -33,14 +31,15 @@ class ThreadController extends Controller
 
         $tickedPost = $thread->tickedPost();
         if($tickedPost) {
-            $posts = $thread->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->paginate($pagesize);
+            $posts = $thread->posts()->where('id', '<>', $tickedPost->id)->orderBy('created_at', 'desc')->paginate($posts_per_page);
             if(request()->has('page') && request()->get('page') != 1) {
                 $tickedPost = false;
             }
         } else {
-            $posts = $thread->posts()->orderBy('created_at', 'desc')->paginate($pagesize);
+            $posts = $thread->posts()->orderBy('created_at', 'desc')->paginate($posts_per_page);
         }
 
+        // redirect the user to the appropriate page is thread has too many posts
         if(request()->has('reply')) {
             $reply_id = request()->get('reply');
             $count = 1;
@@ -50,7 +49,7 @@ class ThreadController extends Controller
                 }
                 $count++;
             }
-            $page = ceil($count / $pagesize);
+            $page = ceil($count / $posts_per_page);
 
             return redirect($thread->link . "?page=".$page);
         }
@@ -105,15 +104,10 @@ class ThreadController extends Controller
 
         return view('forum.thread.show')
             ->with(compact('forum'))
-            ->with(compact('category'))
             ->with(compact('thread'))
-            ->with(compact('thread_subject'))
-            ->with(compact('thread_owner'))
             ->with(compact('tickedPost'))
-            ->with(compact('pagesize'))
             ->with(compact('posts'));
     }
-
     public function announcement_show(Request $request, Forum $forum, Thread $announcement) {
         $forums = Forum::all();
         $at = (new Carbon($announcement->created_at))->toDayDateTimeString();
@@ -144,7 +138,6 @@ class ThreadController extends Controller
         ->with(compact('tickedPost'))
         ->with(compact('announcement'));
     }
-
     public function create() {
         $this->authorize('create', Thread::class);
 
@@ -155,13 +148,39 @@ class ThreadController extends Controller
             ->with(compact('forums'))
             ->with(compact('categories'));
     }
+    public function edit(User $user, Thread $thread) {
+        $this->authorize('edit', $thread);
 
+        $category = Category::find($thread->category_id);
+        $forum = Forum::find($category->forum_id);
+        $categories = $forum->categories->where('slug', '<>', 'announcements');
+        $medias = [];
+        if($thread->has_media) {
+            $medias_urls = Storage::disk('public')->files('users/' . $user->id . '/threads/' . $thread->id . '/medias');
+            foreach($medias_urls as $media) {
+                $media_type;
+                $media_source = $media;
+                $mime = mime_content_type($media);
+                if(strstr($mime, "video/")){
+                    $media_type = 'video';
+                }else if(strstr($mime, "image/")){
+                    $media_type = 'image';
+                }
+
+                $medias[] = ['frame'=>$media_source, 'type'=>$media_type];
+            }
+        }
+
+        return view('forum.thread.edit')
+            ->with(compact('forum'))
+            ->with(compact('category'))
+            ->with(compact('categories'))
+            ->with(compact('medias'))
+            ->with(compact('thread'));
+    }
     public function store(Request $request) {
-        $this->authorize('store', Thread::class);
-
         /**
-         * Notice status_id we check the slug because we take it as slug from request and change it to its
-         * associated threadstatus id
+         * Notice that we accept visibility_id as slug change it to its associated visibility id later
          * Also it's optional (sometimes) because it has a default value
          */
         $data = request()->validate([
@@ -171,6 +190,7 @@ class ThreadController extends Controller
             'visibility_id'=>'sometimes|exists:thread_visibility,slug',
             'content'=>'required|min:2|max:40000',
         ]);
+        $this->authorize('store', [Thread::class, $data['category_id']]);
 
         // If the user add images to thread we have to validate them
         if(request()->has('images')) {
@@ -205,23 +225,16 @@ class ThreadController extends Controller
         }
 
         // Prevent user from sharing two threads with the same subject in the same category
-        $duplicated_thread;        
-        $duplicated_thread_url;        
-        try {
-            /**
-             * User could not have two threads with the same subject in the same category
-             */
-            if(auth()->user()->threads
-                ->where('subject', $data['subject'])
-                ->where('category_id', $data['category_id'])->count()) {
+        $duplicated_thread;
+        $duplicated_thread_url;
+        if(auth()->user()->threads
+            ->where('subject', $data['subject'])
+            ->where('category_id', $data['category_id'])->count()) {
 
-                $duplicated_thread = auth()->user()->threads
-                ->where('subject', $data['subject'])
-                ->where('category_id', $data['category_id'])->first();
-                throw new DuplicateThreadException();
-            }
-        } catch(DuplicateThreadException $exception) {
-            \Session::flash('type', 'error');
+            $duplicated_thread = auth()->user()->threads
+            ->where('subject', $data['subject'])
+            ->where('category_id', $data['category_id'])->first();
+
             /**
              * If there's a duplicate subjects in the same category we need to 
              * reload the page by passing flash message to inform the user
@@ -230,23 +243,7 @@ class ThreadController extends Controller
             $category = Category::find($data['category_id'])->slug;
 
             $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-            return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " ( <a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>discussion</a> ), " . __("please choose another title or edit the old one")], 422);
-        }
-
-        // Verify category by preventing normal user to post on announcements
-        // Note: these check normally should be in thread policy because we do want the admins to post announcements
-        $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();
-        if(in_array($data['category_id'], $announcements_ids)) {
-            throw new AccessDeniedException("Only admins could share announcements");
-        }
-        
-        // Verify the category status before creating the thread
-        $category_status_slug = CategoryStatus::find(Category::find($data['category_id'])->status)->slug;
-        if($category_status_slug == 'closed') {
-            throw new CategoryClosedException("You can't post a thread on a closed category");
-        }
-        if($category_status_slug == 'temp.closed') {
-            throw new CategoryClosedException("You can't post a thread on a temporarily closed category");
+            return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>discussion</a>), " . __("please choose another title or edit the old one")], 422);
         }
 
         $data['user_id'] = auth()->user()->id;
@@ -306,76 +303,11 @@ class ThreadController extends Controller
             'id'=>$thread->id
         ];
     }
-
-    public function edit(User $user, Thread $thread) {
-        $this->authorize('edit', $thread);
-
-        $category = Category::find($thread->category_id);
-        $forum = Forum::find($category->forum_id);
-        $forums = Forum::where('id', '<>', $forum->id)->get();
-        $categories = $forum->categories->where('slug', '<>', 'announcements');
-        $medias = [];
-        if($thread->has_media) {
-            $medias_urls = Storage::disk('public')->files('users/' . $user->id . '/threads/' . $thread->id . '/medias');
-            foreach($medias_urls as $media) {
-                $media_type;
-                $media_source = $media;
-                $mime = mime_content_type($media);
-                if(strstr($mime, "video/")){
-                    $media_type = 'video';
-                }else if(strstr($mime, "image/")){
-                    $media_type = 'image';
-                }
-
-                $medias[] = ['frame'=>$media_source, 'type'=>$media_type];
-            }
-        }
-
-        return view('forum.thread.edit')
-            ->with(compact('forums'))
-            ->with(compact('forum'))
-            ->with(compact('category'))
-            ->with(compact('categories'))
-            ->with(compact('medias'))
-            ->with(compact('thread'));
-    }
-
     public function update(Request $request, Thread $thread) {
         $this->authorize('update', $thread);
 
         $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;
         $category = Category::find($thread->category_id)->slug;
-        $duplicated_thread;
-        /**
-         * Notice here we need to verify if that user has already a thread with the submitted subject.
-         * If so we need to reject the changes and tell that user that he has already a thread with that subject
-         */
-        try {
-
-            /**
-             * User could not update the thread with a subject that already exists
-             * in the same category
-             */
-            if(auth()->user()->threads
-                ->where('subject', request()->subject)
-                ->where('category_id', request()->category_id)
-                ->where('id', '<>', $thread->id)->count()) {
-                $duplicated_thread = auth()->user()->threads
-                    ->where('subject', request()->subject)
-                    ->where('category_id', request()->category_id)
-                    ->where('id', '<>', $thread->id)->first();
-                throw new DuplicateThreadException();
-            }
-        } catch(DuplicateThreadException $exception) {
-            \Session::flash('type', 'error');
-            /**
-             * If there's a duplicate subjects in the same category we need to 
-             * reload the page by passing flash message to inform the user
-             */ 
-            $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-            \Session::flash('message', "This title is already exists in your thread list withing the same category(<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>click here</a>), please choose another one !");
-            return route('thread.edit', ['user'=>auth()->user()->username, 'thread'=>$thread->id]);
-        }
 
         $data = request()->validate([
             'subject'=>'sometimes|min:2|max:1000',
@@ -384,6 +316,22 @@ class ThreadController extends Controller
             'category_id'=>'sometimes|exists:categories,id',
             'status_id'=>'sometimes|exists:thread_status,id',
         ]);
+
+        // Prevent sharing a thread with the same subject in the same category
+        if(auth()->user()->threads
+            ->where('subject', $data['subject'])
+            ->where('category_id', $data['category_id'])
+            ->where('id', '<>', $thread->id)->count()) {
+
+            $duplicated_thread = auth()->user()->threads
+                ->where('subject', $data['subject'])
+                ->where('category_id', $data['category_id'])
+                ->where('id', '<>', $thread->id)->first();
+
+            // If same subject within same category found, we simply abort the request with the appropriate erro and return it
+            $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+            return abort(422, __("This title you're using is already exists in your discussions list within the same category which is not allowed") . " ( <a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>" . __('see discussion') . "</a> ), " . __("please choose another title or edit the title of the old discussion"));
+        }
 
         // If the user add images to thread we have to validate them
         if(request()->has('images')) {

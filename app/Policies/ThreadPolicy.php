@@ -2,8 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Thread;
-use App\Models\User;
+use App\Models\{User, Thread, Category, CategoryStatus};
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use App\Exceptions\UserBannedException;
@@ -12,10 +11,11 @@ class ThreadPolicy
 {
     use HandlesAuthorization;
 
+    const THREADS_RATE_PER_DAY = 20;
+
     public function create(User $user) {
         if($user->isBanned()) {
-            return $this->deny("You can't update your threads because you're currently banned");
-            throw new UserBannedException();
+            return $this->deny(__("You can't create new discussions because you're currently banned"));
         }
 
         return true;
@@ -35,14 +35,33 @@ class ThreadPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function store(User $user)
+    public function store(User $user, $category_id)
     {
         if($user->isBanned()) {
             throw new UserBannedException();
         }
+        
+        // The user could only share 20 threads per day.
+        if($user->threads()->today()->count() >= self::THREADS_RATE_PER_DAY)
+            return $this->deny(__("You reached your discussions sharing limit allowed per day, try out later") . '. (' . self::THREADS_RATE_PER_DAY . ' ' . 'discussions' . ')');
 
-        // The user should be: authenticated, not banned and post less than 20 threads per day.
-        return $user->threads()->today()->count() < 20;
+        // Verify the category status
+        $category_status_slug = CategoryStatus::find(Category::find($category_id)->status)->slug;
+        if($category_status_slug == 'closed') {
+            return $this->deny(__("You could not share discussions on a closed category"));
+        }
+        if($category_status_slug == 'temp.closed') {
+            return $this->deny(__("You could not share discussions on a temporarily closed category"));
+        }
+        
+        // Verify category by preventing normal user to post on announcements
+        // Note: these check normally should be in thread policy because we do want the admins to post announcements
+        $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();
+        if(in_array($category_id, $announcements_ids)) {
+            return $this->deny(__("You could not share announcements because you don't have the right privileges"));
+        }
+
+        return true;
     }
 
     /**

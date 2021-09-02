@@ -34,7 +34,7 @@
         <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path">{{ $forum->forum . ' ' . __('Forum') }}</a>
         <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-        <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ $category->category }}</a>
+        <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$thread->category->slug]) }}" class="link-path">{{ $thread->category->category }}</a>
     </div>
     <div id="middle-container" class="index-middle-width" style="margin-bottom: 50px">
         <input type="hidden" class="page" value="thread-show">
@@ -64,7 +64,7 @@
                             </div>
                             <textarea name="subject" class="reply-content" id="post-reply" placeholder="{{ __('Your reply here') }}.."></textarea>
                         </div>
-                        <input type="hidden" name="thread_id" class="thread_id" value="{{ request()->thread->id }}">
+                        <input type="hidden" name="thread_id" class="thread_id" value="{{ $thread->id }}">
                         <button class="inline-block button-style @auth share-post @endauth @guest login-signin-button @endguest">
                             <span class="btn-text">{{__('Post your reply')}}</span>
                             <input type="hidden" class="btn-text-no-ing" autocomplete="off" value="{{ __('Post your reply') }}">
@@ -122,6 +122,6 @@
         </div>
     </div>
     <div id="right-panel">
-        @include('partials.thread.right-panel', ['thread_type'=>'threads'])
+        @include('partials.thread.right-panel', ['user'=>$thread->user])
     </div>
 @endsection

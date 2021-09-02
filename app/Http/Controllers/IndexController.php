@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\{Forum, Thread, Category};
 use App\View\Components\IndexResource;
+use App\Scopes\ExcludeAnnouncements;
 use Carbon\Carbon;
 
 class IndexController extends Controller
@@ -61,7 +62,7 @@ class IndexController extends Controller
 
     public function announcements() {
         $announcement_ids = Category::where('slug', 'announcements')->pluck('id');
-        $announcements = Thread::whereIn('category_id', $announcement_ids)->paginate(5);
+        $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereIn('category_id', $announcement_ids)->paginate(5);
         return view('announcements')
         ->with(compact('announcements'));
     }
@@ -73,7 +74,7 @@ class IndexController extends Controller
     public function about() {
         return view('aboutus');
     }
-    
+
     public function privacy() {
         return view('privacy-policy');
     }

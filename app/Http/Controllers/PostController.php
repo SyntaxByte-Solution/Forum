@@ -29,14 +29,6 @@ class PostController extends Controller
         $thread_owner = $thread->user;
         $thread_status_slug = ThreadStatus::find($thread->status_id)->slug;
 
-        if($thread_status_slug == 'closed') {
-            throw new ThreadClosedException("You can't share posts on a closed thread");
-        }
-        
-        if($thread_status_slug == 'temp.closed') {
-            throw new ThreadClosedException("You can't share posts on a temporarily closed thread");
-        }
-
         $data['user_id'] = auth()->user()->id;
         $from = $request->from;
         unset($data['from']);

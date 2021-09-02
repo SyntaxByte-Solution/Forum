@@ -23,7 +23,7 @@ class ThreadPolicy
 
     public function edit(User $user, Thread $thread) {
         if($user->isBanned()) {
-            throw new UserBannedException();
+            return $this->deny(__("You can't edit your threads because you're currently banned"));
         }
 
         return $thread->user_id == $user->id;
@@ -38,7 +38,7 @@ class ThreadPolicy
     public function store(User $user, $category_id)
     {
         if($user->isBanned()) {
-            throw new UserBannedException();
+            return $this->deny(__("You can't add threads because you're currently banned"));
         }
         
         // The user could only share 20 threads per day.
@@ -74,7 +74,11 @@ class ThreadPolicy
     public function update(User $user, Thread $thread)
     {
         if($user->isBanned()) {
-            return $this->deny("You can't update your threads because you're currently banned");
+            return $this->deny(__("You can't update your threads because you're currently banned"));
+        }
+
+        if($thread->status->slug == 'closed' || $thread->status->slug == 'temp.closed') {
+            return $this->deny(__("You could not update a closed thread"));
         }
 
         return $thread->user_id == $user->id;
@@ -90,7 +94,7 @@ class ThreadPolicy
     public function delete(User $user, Thread $thread)
     {
         if($user->isBanned()) {
-            throw new UserBannedException();
+            return $this->deny(__("You can't delete your threads because you're currently banned"));
         }
 
         return $thread->user_id == $user->id;
@@ -101,7 +105,7 @@ class ThreadPolicy
          * 1. User should not be banned
          */
         if($user->isBanned()) {
-            return $this->deny("You can't save threads because you're currently banned");
+            return $this->deny(__("You could not save threads because you're currently banned"));
         }
 
         return true;
@@ -110,7 +114,7 @@ class ThreadPolicy
     public function destroy(User $user, Thread $thread)
     {
         if($user->isBanned()) {
-            throw new UserBannedException();
+            return $this->deny(__("You could not remove your threads because you're currently banned"));
         }
 
         return $thread->user_id == $user->id;

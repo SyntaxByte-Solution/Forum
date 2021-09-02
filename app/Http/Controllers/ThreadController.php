@@ -317,6 +317,10 @@ class ThreadController extends Controller
             'status_id'=>'sometimes|exists:thread_status,id',
         ]);
 
+        if($category == 'announcements') {
+            return abort(422, __("You could not create announcements due to privileges unavailability"));
+        }
+
         // Prevent sharing a thread with the same subject in the same category
         if(auth()->user()->threads
             ->where('subject', $data['subject'])
@@ -341,7 +345,7 @@ class ThreadController extends Controller
                 'images' => 'max:20',
                 ],[
                     'images.*.mimes' => __('Only jpg,jpeg,png,gif and bmp images are alowed'),
-                    'images.*.max' => __('Sorry! Maximum allowed size for an image is 12MB'),
+                    'images.*.max' => __('Maximum allowed size for an image is 12MB'),
                 ]
             );
 
@@ -424,17 +428,14 @@ class ThreadController extends Controller
             'thread_id'=>'required|exists:threads,id',
             'visibility_slug'=>'required|exists:thread_visibility,slug'
         ]);
+        
         $thread = Thread::find($data['thread_id']);
-
         $this->authorize('update', $thread);
 
-        $thread_status_id = ThreadVisibility::where('slug', $data['visibility_slug'])->first()->id;
-
         $thread->update([
-            'visibility_id'=>$thread_status_id
+            'visibility_id'=>ThreadVisibility::where('slug', $data['visibility_slug'])->first()->id
         ]);
     }
-
     public function delete(Thread $thread) {
         $this->authorize('delete', $thread);
         
@@ -447,7 +448,6 @@ class ThreadController extends Controller
         $thread->delete();
         return route('user.activities', ['user'=>auth()->user()->username, 'section'=>'archived-threads']);
     }
-
     public function destroy($thread) {
         /**
          * The reason why we didn't use route model binding is because the model is already soft deleted
@@ -460,7 +460,6 @@ class ThreadController extends Controller
         $thread->forceDelete();
         return route('user.activities', ['user'=>auth()->user()->username]);
     }
-
     public function restore($thread) {
         /**
          * The reason why we didn't use route model binding see the method above docs
@@ -472,7 +471,6 @@ class ThreadController extends Controller
 
         return $thread->link;
     }
-
     public function thread_posts_switch(Request $request, Thread $thread) {
         $this->authorize('update', $thread);
 
@@ -492,7 +490,6 @@ class ThreadController extends Controller
 
         return route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$thread->id]);
     }
-
     public function thread_save_switch(Request $request, Thread $thread) {
         $this->authorize('save', $thread);
 
@@ -564,7 +561,6 @@ class ThreadController extends Controller
         ->with(compact('pagesize'))
         ->with(compact('hasmore'));
     }
-
     public function category_threads(Request $request, Forum $forum, Category $category) {
         $tab = "all";
         $tab_title = 'All';
@@ -605,14 +601,15 @@ class ThreadController extends Controller
         ->with(compact('pagesize'))
         ->with(compact('hasmore'));
     }
-
+    // --------------- Activity sections and components generating ---------------
+    // viewer infos component
     public function view_infos_component(Thread $thread) {
         $thread_component = (new ViewerInfos($thread));
         $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
 
         return $thread_component;
     }
-
+    // range of viewer replies
     public function viewer_replies_load(Request $request, Thread $thread) {
         $data = $request->validate([
             'range'=>'required|Numeric',
@@ -640,8 +637,6 @@ class ThreadController extends Controller
             "count"=>$posts_to_return->count()
         ];
     }
-
-    // --------------- Activity sections and components generating ---------------
     // sections
     public function generate_section(User $user, $section) {
         

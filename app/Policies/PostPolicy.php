@@ -28,6 +28,10 @@ class PostPolicy
         if($thread->status->slug == 'closed') {
             return $this->deny(__("You can't reply on closed threads"));
         }
+
+        if($thread->status->slug == 'temp.closed') {
+            return $this->deny(__("You can't reply on temporarily closed threads"));
+        }
         
         // The user should be: authenticated, not banned and post less than 280 posts per day.
         if($user->today_posts_count() > self::POST_LIMIT) {

@@ -86,7 +86,7 @@
                         </div>
                         <div>
                             <div class="flex align-center" style="height: 18px">
-                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> <span class="gray">-</span> <span class="thread-owner-username bblack">{{ $thread->user->username }}</span></a>
+                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> <span class="gray">-</span> <span class="thread-owner-username bblack fs13">{{ $thread->user->username }}</span></a>
                                 @if(auth()->user() && $thread->user->id != auth()->user()->id)
                                 <div class="follow-box thread-component-follow-box flex align-center">
                                     <!-- buttons labels -->

@@ -24,7 +24,7 @@
             <div class="toggle-container px8">
                 @foreach($forum->categories as $category)
                 <div class="my8" style="margin-left: 30px">
-                    <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="blue fs13 no-underline">{{ $category->category }}</a>
+                    <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="bold blue fs13 no-underline">{{ $category->category }}</a>
                 </div>
                 @endforeach
             </div>

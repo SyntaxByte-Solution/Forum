@@ -33,7 +33,6 @@ class SearchController extends Controller
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
             $tab = $request->validate(['tab'=>Rule::in($tab_whitelist)])['tab'];
-            dd($tab);
             if($tab == 'today') {
                 $threads = $threads->today()->orderBy('view_count', 'desc');
                 $tab_title = __('Today');
@@ -525,16 +524,15 @@ class SearchController extends Controller
                 }
             });
         } else {
-            $builder = $builder->orWhere(function($bld) use($columns, $operators, $keywords, &$fi) {
+            $builder = $builder->orWhere(function($bld) use($columns, $operators, $keywords) {
                 for($i=0; $i < count($columns); $i++) {
                     foreach($keywords as $keyword) {
                         // If $fi is true; it means count($keywords) == 1 (because $fi is still true only if the condition [count($keywords) > 1] is false)
                         if(strtolower($operators[$i]) == 'like') $keyword = "%$keyword%";
-                        if($fi) {
-                            $fi = false;
-                            $bld = $bld->where($columns[$i], $operators[$i], $keyword);
-                            continue;
-                        }
+                        /**
+                         * Here we have more than one keywords, meaning there's already a where binded to builder;
+                         * so we don't have to test for the first iteration to decide wether we should use where or orWhere
+                         */
                         $bld = $bld->orWhere($columns[$i], $operators[$i], $keyword);
                     }
                 }

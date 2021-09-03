@@ -81,7 +81,7 @@
                                 <span class="thread-add-selected-forum">{{ $forum->forum }}</span>
                                 <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </div>
-                            <div class="suboptions-container thread-add-suboptions-container">
+                            <div class="suboptions-container thread-add-suboptions-container" style="max-height: 236px; overflow-y: scroll">
                                 @foreach($forums as $f)
                                     <a href="{{ route('forum.all.threads', ['forum'=>$f->slug]) }}" class="@if($f->id == $forum->id) block-click @endif thread-add-suboption black no-underline flex align-center" style="@if($f->id == $forum->id) background-color: #e1e1e1; cursor: default @endif">
                                         <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -102,7 +102,7 @@
                                 <span class="fs13 bold">{{ __('All categories') }}</span>
                                 <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </div>
-                            <div class="suboptions-container thread-add-suboptions-container width-max-content">
+                            <div class="suboptions-container thread-add-suboptions-container width-max-content" style="width: max-content; max-height: 236px; overflow-y: scroll">
                                 <a href="{{ route('forum.all.threads', ['forum'=>$category->forum->slug]) }}" class="block-click thread-add-suboption black no-underline flex align-center" style="background-color: #e1e1e1; cursor: default">
                                     <span>{{ __('All categories') }}</span>
                                 </a>

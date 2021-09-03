@@ -3804,6 +3804,7 @@ function handle_thread_events(thread) {
     handle_expend_button_appearence(thread);
     // Keep in mind that images dimensions also handled withing lazy loading logic
     handle_thread_medias_containers(thread);
+    handle_login_lock(thread);
     /**
      * Handle image fade loading when image is not fetched from server yet 
      * Remember fade removing is handled in lazy loading scroll feature when scroll reach the image it will

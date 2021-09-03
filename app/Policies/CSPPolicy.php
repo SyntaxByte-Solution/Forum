@@ -18,9 +18,10 @@ class CSPPolicy extends Policy
         $this
             ->addDirective(Directive::BASE, Keyword::SELF)
             ->addDirective(Directive::CONNECT, [
+                // We hard coded the app url in routes for now because env doesn't read value from env file
                 'self',
-                'ws://' . env('APP_DOMAIN') . ':6001',
-                'wss://' . env('APP_DOMAIN') . ':6001',
+                'ws://127.0.0.1:6001',
+                'wss://127.0.0.1:6001',
                 'ws://ws-eu.pusher.com:6001',
                 'wss://ws-eu.pusher.com:6001',
             ])

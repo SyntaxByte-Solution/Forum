@@ -14,18 +14,14 @@
     <link rel="preload" as="image" href="{{ auth()->user()->sizedavatar(36, '-l') }}">
     @endauth
     <script src="{{ asset('js/bootstrap.js') }}"></script>
-    <script 
-        type="text/javascript"
-        src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous" defer></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-    
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <script type="text/javascript" src="{{ asset('js/imagesloaded.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/app-depth.js') }}" defer></script>
+    
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @stack('styles')
     @stack('scripts')
 </head>

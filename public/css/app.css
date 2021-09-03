@@ -2665,7 +2665,7 @@ a, input, textarea {
     background-color: white;
 }
 
-#thread-media-viewer, #thread-media-text-viewer {
+#thread-media-viewer {
     display: flex;
     position: fixed;
     top: 52px;
@@ -2680,13 +2680,6 @@ a, input, textarea {
     justify-content: center;
     width: 100%;
     background-color: black;
-    overflow: hidden;
-}
-
-.textual-thread-viewer-content-section {
-    width: 100%;
-    background-color: white;
-    border-right: 1px solid #dbdbdb;
     overflow: hidden;
 }
 
@@ -2712,24 +2705,6 @@ a, input, textarea {
 
 .close-thread-media-viewer:hover {
     background-color: #0000007a;
-}
-
-.close-thread-media-text-viewer {
-    position: absolute;
-    z-index: 5;
-    right: 6px;
-    top: 6px;
-    color: black;
-    background-color: #e7e7e7;
-    font-size: 25px;
-    padding: 4px 11.1px 6px 11.5px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: 0.8s ease background-color;
-}
-
-.close-thread-media-text-viewer:hover {
-    background-color: #cfcfcf;
 }
 
 .thread-viewer-nav {

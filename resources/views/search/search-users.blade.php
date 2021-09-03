@@ -65,8 +65,7 @@
                 <div class="full-center flex-column">
                     <div class="size36 sprite sprite-2-size notfound36-icon" style="margin-top: 16px"></div>
                     <p class="fs20 bold gray my4">{{ __("No Users found with your search keywords !") }}</p>
-                    <p class="my4 text-center">{{ __("Search for users based on their username, firstname or lastname.") }} </p>
-                    <p class="my4 text-center">{{ __("If you already have a thread that belong to that user you could go to that thread and reach his profile from there.") }} </p>
+                    <p class="my4 text-center">{{ __("Search for users based on their usernames or their names.") }} </p>
                 </div>
             </div>
         @endif

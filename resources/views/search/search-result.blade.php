@@ -159,11 +159,11 @@
                                 </a>
                             </div>
                         </div>
-                        <div>
+                        <div class="flex flex-column">
                             @if($threads->count() >= 6)
                             <div class="flex">
                                 <div class="flex align-center my4 move-to-right">
-                                    <span class="mr4 fs13 gray">{{ __('discussions') }}/{{ __('page') }} :</span>
+                                    <span class="mr4 fs13 gray">{{ __('Discussions') }}/{{ __('Page') }} :</span>
                                     <select name="" class="small-dropdown row-num-changer" autocomplete="off">
                                         <option value="6" @if($pagesize == 6) selected @endif>6</option>
                                         <option value="10" @if($pagesize == 10) selected @endif>10</option>
@@ -172,7 +172,9 @@
                                 </div>
                             </div>
                             @endif
-                            {{ $threads->onEachSide(0)->links() }}
+                            <div class="width-max-content move-to-right">
+                                {{ $threads->onEachSide(0)->links() }}
+                            </div>
                         </div>
                     </div>
                     <div id="threads-global-container">

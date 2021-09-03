@@ -162,7 +162,7 @@
                     @if($threads->count() >= 6)
                     <div class="flex">
                         <div class="flex align-center my4 move-to-right">
-                            <span class="mr4 fs13 gray">posts/page :</span>
+                            <span class="mr4 fs13 gray">{{ __('Discussions') }}/{{ __('Page') }} :</span>
                             <select name="" class="small-dropdown row-num-changer" autocomplete="off">
                                 <option value="6" @if($pagesize == 6) selected @endif>6</option>
                                 <option value="10" @if($pagesize == 10) selected @endif>10</option>

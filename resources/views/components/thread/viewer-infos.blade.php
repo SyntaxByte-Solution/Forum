@@ -119,15 +119,6 @@
         <div class="simple-line-separator mb4"></div>
         <div class="flex align-center thread-viewer-react-container px8">
             <div class="relative vote-box thread-vote-box">
-                <div class="informer-message-container absolute zi1" style="left: -1px; bottom: calc(100% + 2px)">
-                    <div class="flex align-center">
-                        <p class="informer-message"></p>
-                        <div class="remove-informer-message-container rounded pointer">
-                            <span style="margin-top: -1px">✖</span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="flex align-center mx4 pr8" style="border-right: 1px solid #c1c1c1">
                     <input type="hidden" class="votable-type" value="thread">
                     <input type="hidden" class="votable-id" value="{{ $thread->id }}">

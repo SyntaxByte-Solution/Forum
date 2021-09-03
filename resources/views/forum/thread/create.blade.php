@@ -24,10 +24,10 @@
             <span class="current-link-path">{{ __('Create') }}</span>
         </div>
     </div>
-    <div class="index-middle-width">
+    <div class="index-middle-width" style="margin-bottom: 60px">
         <h1 id="page-title">{{ __('Start a discussion or ask a question') }}</h1>
         @auth
-            @include('partials.thread.thread-add', ['editor_height'=>150])
+            @include('partials.thread.thread-add', ['editor_height'=>200])
         @endauth
     </div>
     <div id="right-panel">

@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="ml8">
-        @foreach($forums as $forum)
+        @foreach($forums->take(6) as $forum)
         <div class="my8 py4 toggle-box">
             <div class="px8 flex align-center toggle-container-button pointer unselectable">
                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -22,7 +22,7 @@
                 <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="stop-propagation move-to-right link-style fs13 mr8">visit</a>
             </div>
             <div class="toggle-container px8">
-                @foreach($forum->categories as $category)
+                @foreach($forum->categories()->excludeannouncements()->get() as $category)
                 <div class="my8" style="margin-left: 30px">
                     <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="bold blue fs13 no-underline">{{ $category->category }}</a>
                 </div>

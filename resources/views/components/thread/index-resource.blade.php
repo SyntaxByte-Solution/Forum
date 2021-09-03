@@ -86,7 +86,7 @@
                         </div>
                         <div>
                             <div class="flex align-center" style="height: 18px">
-                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $thread->user->fullname }}</span> <span class="gray">-</span> <span class="thread-owner-username bblack fs13">{{ $thread->user->username }}</span></a>
+                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $thread->user->fullname }}</span></a>
                                 @if(auth()->user() && $thread->user->id != auth()->user()->id)
                                 <div class="follow-box thread-component-follow-box flex align-center">
                                     <!-- buttons labels -->
@@ -125,8 +125,10 @@
                                 @endif
                             </div>
                             <div class="flex align-center">
+                                <span class="thread-owner-username bblack fs13 bold">{{ $thread->user->username }}</span>
+                                <div class="gray height-max-content mx4 fs10">•</div>
                                 <div class="relative height-max-content">
-                                    <p class="no-margin fs11 flex align-center tooltip-section gray" style="margin-top:1px">{{ $at_hummans }}</p>
+                                    <p class="no-margin fs11 flex align-center tooltip-section gray">{{ $at_hummans }}</p>
                                     <div class="tooltip tooltip-style-1">
                                         {{ $at }}
                                     </div>
@@ -241,14 +243,16 @@
             <div class="thread-content-section">
                 <!-- textual content -->
                 <div style="padding: 10px 10px 4px 10px">
-                    <div class="flex align-center path-blue-when-hover width-max-content">
-                        <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            {!! $forum->icon !!}
-                        </svg>
-                        <div class="flex align-center">
-                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
-                            <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                            <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ $category->category }}</a>
+                    <div class="flex space-between">
+                        <div class="flex align-center path-blue-when-hover width-max-content">
+                            <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                {!! $forum->icon !!}
+                            </svg>
+                            <div class="flex align-center">
+                                <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
+                                <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+                                <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ $category->category }}</a>
+                            </div>
                         </div>
                     </div>
                     <div class="mt8 mb4 expand-box">
@@ -341,7 +345,7 @@
                         <p class="no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
                         <p class="no-margin fs12 unselectable ml4">{{ __('like') . (($thread->likes->count()>1) ? 's' : '' ) }}</p>
                     </div>
-                    <div class="thread-react-hover move-to-thread-replies flex align-center no-underline">
+                    <div class="thread-react-hover move-to-thread-replies flex align-center no-underline" style="cursor: default">
                         <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                         <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" fill="#1c1c1c" viewBox="0 0 512 512"><path d="M221.09,253a23,23,0,1,1-23.27,23A23.13,23.13,0,0,1,221.09,253Zm93.09,0a23,23,0,1,1-23.27,23A23.12,23.12,0,0,1,314.18,253Zm93.09,0A23,23,0,1,1,384,276,23.13,23.13,0,0,1,407.27,253Zm62.84-137.94h-51.2V42.9c0-23.62-19.38-42.76-43.29-42.76H43.29C19.38.14,0,19.28,0,42.9V302.23C0,325.85,19.38,345,43.29,345h73.07v50.58c.13,22.81,18.81,41.26,41.89,41.39H332.33l16.76,52.18a32.66,32.66,0,0,0,26.07,23H381A32.4,32.4,0,0,0,408.9,496.5L431,437h39.1c23.08-.13,41.76-18.58,41.89-41.39V156.47C511.87,133.67,493.19,115.21,470.11,115.09ZM46.55,299V46.12H372.36v69H158.25c-23.08.12-41.76,18.58-41.89,41.38V299Zm418.9,92H397.5l-15.83,46-15.82-46H162.91V161.07H465.45Z"/></svg>
                         <p class="no-margin unselectable fs12"><span class="thread-replies-counter">{{ $replies }}</span> {{__('replies')}}</p>
@@ -354,7 +358,7 @@
                         </div>
                         <div class="absolute button-simple-container suboptions-container" style="z-index: 1;right: 0; background-color: white; border: 1px solid gray">
                             <div class="flex">
-                                <input type="text" value="{{ $thread->link }}" autocomplete="off" class="simple-input" style="width: 280px; padding: 3px 8px 3px 8px; height: 28px; background-color: #e1e1e1; border: unset">
+                                <input type="text" value="{{ $thread->link }}" autocomplete="off" class="simple-input" style="width: 280px; padding: 3px 8px 3px 8px; height: 28px; background-color: #f4f4f4; border: 1px solid #d0d0d0">
                                 <div class="pointer input-button-style flex align-center copy-thread-link bold" style="height: 28px; background-color: #373737; color: white; fill: white; border: unset; padding: 2px 10px">
                                     <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352.8 352.8"><path d="M318.54,57.28H270.89V15a15,15,0,0,0-15-15H34.26a15,15,0,0,0-15,15V280.52a15,15,0,0,0,15,15H81.92V337.8a15,15,0,0,0,15,15H318.54a15,15,0,0,0,15-15V72.28A15,15,0,0,0,318.54,57.28ZM49.26,265.52V30H240.89V57.28h-144a15,15,0,0,0-15,15V265.52ZM303.54,322.8H111.92V87.28H303.54Z"/></svg>
                                     {{ __('copy') }}

@@ -6,6 +6,9 @@
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
     <style>
+        body {
+            overflow: unset;
+        }
         .forum-component-container {
             display: flex;
             border-bottom: 1px solid #d5d5d5;
@@ -68,12 +71,10 @@
 
         .forums-table {
             width: 100%;
-            position: relative;
             border-spacing: 0px;
             border: 1px solid #c7c7c7;
             box-shadow: 0 0 6px 2px rgba(159, 159, 159, 0.2);
             border-radius: 6px;
-            overflow: hidden;
         }
 
         td, th {
@@ -94,6 +95,7 @@
         }
 
         table thead {
+            position: -webkit-sticky;
             position: sticky;
             top: 52px; /* Don't forget this, required for the stickiness */
             z-index: 2;
@@ -136,7 +138,7 @@
                 @endif
             </div>
             <div class="flex space-between align-end mb8">
-                <h1 class="fs26 no-margin forum-color">Forums</h1>
+                <h1 class="fs26 no-margin forum-color">{{ __('All Forums') }}</h1>
                 @auth
                 <a href="{{ route('thread.add') }}" class="flex button-style-2 black no-underline height-max-content">
                     <svg class="size14" style="margin-right: 6px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M402.29,237.71v36.58A13.76,13.76,0,0,1,388.57,288H288V388.57a13.76,13.76,0,0,1-13.71,13.72H237.71A13.76,13.76,0,0,1,224,388.57V288H123.43a13.76,13.76,0,0,1-13.72-13.71V237.71A13.76,13.76,0,0,1,123.43,224H224V123.43a13.76,13.76,0,0,1,13.71-13.72h36.58A13.76,13.76,0,0,1,288,123.43V224H388.57A13.76,13.76,0,0,1,402.29,237.71ZM512,54.86V457.14A54.87,54.87,0,0,1,457.14,512H54.86A54.87,54.87,0,0,1,0,457.14V54.86A54.87,54.87,0,0,1,54.86,0H457.14A54.87,54.87,0,0,1,512,54.86ZM457.14,450.29V61.71a6.87,6.87,0,0,0-6.85-6.85H61.71a6.87,6.87,0,0,0-6.85,6.85V450.29a6.87,6.87,0,0,0,6.85,6.85H450.29A6.87,6.87,0,0,0,457.14,450.29Z"/></svg>

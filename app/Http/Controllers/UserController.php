@@ -37,23 +37,19 @@ class UserController extends Controller
         }
 
         // --- profile view checking .. ---
+        $profile_view = new ProfileView;
+        $profile_view->visitor_ip = $request->ip();
+        $profile_view->visited_id = $user->id;
+        $profile_view->visitor_id = null;
+        if($current_user = auth()->user()) {
+            $profile_view->visitor_id = $current_user->id;
+        }
         // We count only 1 profile view per day for the same user
-        $found = ProfileView::
-            where('created_at', '>', Carbon::now()->subHours(24)->toDateTimeString())
-            ->where('visitor_ip', $request->ip())
-            ->where('visited_id', $user->id)
-            ->where('visitor_id', $profile_view->visitor_id)
-            ->count();
-        if(!$found) {
-            $profile_view = new ProfileView;
-            $profile_view = new ProfileView;
-            $profile_view->visitor_ip = $request->ip();
-            $profile_view->visited_id = $user->id;
-            $profile_view->visitor_id = null;
-            if($current_user = auth()->user()) {
-                $profile_view->visitor_id = $current_user->id;
-            }
-
+        if(!ProfileView::where('created_at', '>', Carbon::now()->subHours(24)->toDateTimeString())
+        ->where('visitor_ip', $request->ip())
+        ->where('visited_id', $user->id)
+        ->where('visitor_id', $profile_view->visitor_id)
+        ->count()) {
             if(auth()->user()) {
                 if($user->id != auth()->user()->id) {
                     $profile_view->save();

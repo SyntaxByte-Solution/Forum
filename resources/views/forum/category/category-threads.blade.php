@@ -52,7 +52,7 @@
             </svg>
             <div>
                 <h1 class="forum-color fs30 no-margin">{{ __(request()->forum->forum . ' Forum') }}</h1>
-                <h2 class="forum-color fs15 no-margin ml4">{{ __('Category') . " : " . __($category->category) }}</h2>
+                <h2 class="forum-color fs15 no-margin">{{ __('Category') . " : " . __($category->category) }}</h2>
             </div>
         </div>
         <div class="flex align-center">

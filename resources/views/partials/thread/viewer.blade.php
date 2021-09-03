@@ -1,15 +1,6 @@
 <div id="thread-media-viewer" class="none">
     <div class="thread-media-viewer-content-section relative has-fade">
-        <div class="close-thread-media-viewer unselectable">✖</div>
-        <div class="thread-viewer-medias-indicator unselectable block-click none"><span class="thread-counter-current-index"></span>/<span class="thread-counter-total-medias"></span></div>
-        <div class="thread-viewer-nav thread-viewer-left unselectable fs18 none">◄</div>
-        <div class="thread-viewer-nav thread-viewer-right unselectable fs18 none">►</div>
-
-        <img src="" id="thread-viewer-media-image" class="image-that-fade-wait" alt="">
-        <video id="thread-viewer-media-video" style="width: calc(100% - 128px);" controls class="none full-height">
-            Your browser does not support the video tag.
-        </video>
-
+        
     </div>
     <div class="thread-media-viewer-infos-section">
         <div class="thread-media-viewer-infos-header-pattern">

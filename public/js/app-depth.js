@@ -890,7 +890,7 @@ function handle_down_vote(button) {
                 let errorObject = JSON.parse(xhr.responseText);
                 let er = errorObject.message;
                 // Here we change displaying from thread embedded message container to global message notification
-                display_top_informer_message(er);
+                display_top_informer_message(er, 'warning');
             },
             complete: function() {
                 vote_lock = true;

@@ -7,9 +7,9 @@
     <div class="already-reported-container none">
         <div class="flex align-center justify-center move-to-middle">
             <svg class="size17 mr8" style="fill: #1d1d1d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>
-            <h2 class="text-center gray my8">{{ __('You already report this reply.') }}</h2>
+            <h2 class="text-center gray my8">{{ __('You already report this reply') }}</h2>
         </div>
-        <p class="text-center my8">{{ __('We have received your report submit and we are going to verify if this reply respects our guidelines and standards as soon as possible.') }}</p>
+        <p class="text-center my8">{{ __('We have received your report submit and we are going to verify if this reply respects our guidelines and standards as soon as possible') }}</p>
     </div>
     <div class="report-section">
         <div style="width: calc(100% - 20px);">
@@ -37,7 +37,7 @@
                 <input type="radio" name="report" value="not-a-reply" class="height-max-content report-input">
                 <div class="ml8">
                     <p class="bold no-margin">{{__('not a reply')}}</p>
-                    <p class="no-margin gray">{{__('This was posted as an answer, but it is irrelevent and does not add anything useful to discussion. It should possibly be an edit, a comment, another question, or deleted altogether')}}.</p>
+                    <p class="no-margin gray">{{__('This was posted as an answer, but it is irrelevent and does not add anything useful to discussion. It should possibly be an edit, a comment, or deleted altogether')}}.</p>
                 </div>
             </label>
             <label class="resource-report-option has-child-to-be-opened">
@@ -49,7 +49,7 @@
                         <textarea name="content" class="report-section-textarea" placeholder="{{ __('Be specific and detailed') }}"></textarea>
                         <p class="no-margin ml4 fs12 gray report-content-counter"><span class="report-content-count"></span> <span class="report-content-count-phrase">{{ __('Enter at least 10 characters') }}</span></p>
                         <input type="hidden" class="first-phrase-text" value="{{ __('Enter at least 10 characters') }}">
-                        <input type="hidden" class="more-to-go-text" value="{{ __('more to go..') }}">
+                        <input type="hidden" class="more-to-go-text" value="{{ __('more to go') }}.">
                         <input type="hidden" class="chars-left-text" value="{{ __('characters left') }}">
                         <input type="hidden" class="too-long-text" value="{{ __('Too long by ') }}">
                         <input type="hidden" class="characters-text" value="{{ __('characters') }}">
@@ -61,8 +61,8 @@
         <div class="flex align-center">
             <input type="button" class="submit-report button-style mr8" value="{{ __('Submit') }}" disabled style="background-color: #a6d5ff; cursor: default">
             <input type="hidden" class="button-no-ing-text" value="{{ __('Submit') }}">
-            <input type="hidden" class="button-ing-text" value="{{ __('Submitting ..') }}">
-            <input type="hidden" class="reported-text" value="{{ __('Your report has been sent successfully.') }}">
+            <input type="hidden" class="button-ing-text" value="{{ __('Submitting') }}..">
+            <input type="hidden" class="reported-text" value="{{ __('Your report has been sent successfully') }}">
             <div class="pointer close-report-container link-path">{{ __('Cancel') }}</div>
         </div>
     </div>

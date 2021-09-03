@@ -44,7 +44,7 @@
     </style>
     <div id="middle-container" class="middle-padding-1 flex">
         <div class="full-width">
-            <h1 class="my8">Multilanguage Helper</h1>
+            <h1 class="my8">Internationalization Helper</h1>
             <div class="flex space-between">
                 <div class="part half-width">
                     <div class="flex align-end space-between">

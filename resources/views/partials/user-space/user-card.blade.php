@@ -39,7 +39,7 @@
                             <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#919191"/></svg>
                             @endif
                         </div>
-                        <p class="fs12 no-margin">@if(Cache::has('user-is-online-' . $user->id)) Online @else Offline @endif</p>
+                        <p class="fs12 no-margin">@if(Cache::has('user-is-online-' . $user->id)) {{__('Online')}} @else {{__('Offline')}} @endif</p>
                     </div>
                 </div>
             </div>

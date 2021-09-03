@@ -52,7 +52,7 @@
                             <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#919191"/></svg>
                             @endif
                         </div>
-                        <p class="fs12 no-margin">@if(Cache::has('user-is-online-' . $user->id)) Online @else Offline @endif</p>
+                        <p class="fs12 no-margin">@if(Cache::has('user-is-online-' . $user->id)) {{ __('Online') }} @else {{ __('Offline') }} @endif</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     <div class="flex align-center">
                         <div class="flex align-center">
                             <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M384.72,275.71l-21.2,21.21-21.21-21.21,84.83-84.84-42.41-42.41,21.2-21.21,21.21,21.21,63.63-63.63L427.14,21.21,363.52,84.83,384.73,106l-21.21,21.21L321.1,84.83l-84.83,84.84-21.21-21.21,21.21-21.21L109,0,3,106,130.22,233.29l21.21-21.21,21.21,21.21-42.42,42.42,42.41,42.42-24.92,24.95a105.13,105.13,0,0,0-137.08,9.86L0,363.54l63.62,63.63-53,53L31.84,501.4l53-53L148.48,512l10.61-10.61a105.12,105.12,0,0,0,9.83-137.1l24.93-25,42.42,42.42,42.41-42.42,21.21,21.21-21.21,21.21L405.93,509,512,403ZM427.14,63.63l21.21,21.2L427.14,106,405.93,84.83ZM147.42,468.52,43.51,364.61A75,75,0,0,1,147.42,468.52Zm237.3-150.39,31.82,31.81-21.21,21.21-31.81-31.82ZM215.06,190.88l-21.21,21.2-21.21-21.2,21.21-21.21ZM109,42.42l31.81,31.81L119.62,95.44,87.81,63.63ZM45.39,106,66.6,84.83l31.81,31.82L77.2,137.86Zm84.83,84.84L98.41,159.06l21.21-21.21,31.81,31.82Zm42.42-42.42-31.81-31.81L162,95.44l31.81,31.81Zm63.63,190.87-63.63-63.62L321.1,127.25l63.63,63.63Zm63.62-21.2,21.21-21.21,21.21,21.21-21.21,21.2Zm21.21,63.62,21.21-21.21,31.81,31.81-21.21,21.21Zm84.83,84.83-31.81-31.81,21.21-21.21,31.81,31.82Zm10.61-74.23,21.2-21.2L469.56,403l-21.21,21.21Z"/></svg>
-                            <p class="inline-block my4 fs13 black">Reach: </p><span class="fs15 bold ml4">{{ $user->reachcount }}</span>
+                            <p class="inline-block my4 fs13 black">{{__('Reach')}}: </p><span class="fs15 bold ml4">{{ $user->reachcount }}</span>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,10 @@
                 <div>
                     <div class="flex align-center">
                         <svg class="size12 mr4" style="min-width: 14px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g id="Layer_1_copy" data-name="Layer 1 copy"><path d="M287.81,219.72h-238c-21.4,0-32.1-30.07-17-47.61l119-138.2c9.4-10.91,24.6-10.91,33.9,0l119,138.2C319.91,189.65,309.21,219.72,287.81,219.72ZM224.22,292l238,.56c21.4,0,32,30.26,16.92,47.83L359.89,478.86c-9.41,10.93-24.61,10.9-33.9-.08l-118.75-139C192.07,322.15,202.82,292,224.22,292Z" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:49px"/></g></svg>
-                        <p class="inline-block my4 fs13 black">{{ __('Votes') }}: </p><span class="fs15 bold ml4">{{ $user->votes_on_threads()->count() }}</span>
+                        <div class="flex align-center my4">
+                            <div class="inline-block fs13 black width-max-content">{{ __('Votes') }}: </div>
+                            <span class="fs15 bold ml4">{{ $user->votes_on_threads()->count() }}</span>
+                        </div>
                         <div class="fill-thin-line"></div>
                         <div class="relative size14" style="margin-left: auto">
                             <svg class="size14 pointer button-with-suboptions" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
@@ -104,7 +107,7 @@
                     <div class="flex align-center">
                         <div class="flex align-center">
                             <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M221.09,253a23,23,0,1,1-23.27,23A23.13,23.13,0,0,1,221.09,253Zm93.09,0a23,23,0,1,1-23.27,23A23.12,23.12,0,0,1,314.18,253Zm93.09,0A23,23,0,1,1,384,276,23.13,23.13,0,0,1,407.27,253Zm62.84-137.94h-51.2V42.9c0-23.62-19.38-42.76-43.29-42.76H43.29C19.38.14,0,19.28,0,42.9V302.23C0,325.85,19.38,345,43.29,345h73.07v50.58c.13,22.81,18.81,41.26,41.89,41.39H332.33l16.76,52.18a32.66,32.66,0,0,0,26.07,23H381A32.4,32.4,0,0,0,408.9,496.5L431,437h39.1c23.08-.13,41.76-18.58,41.89-41.39V156.47C511.87,133.67,493.19,115.21,470.11,115.09ZM46.55,299V46.12H372.36v69H158.25c-23.08.12-41.76,18.58-41.89,41.38V299Zm418.9,92H397.5l-15.83,46-15.82-46H162.91V161.07H465.45Z"/></svg>
-                            <p class="inline-block my4 fs13 black">Replies: </p><span class="fs15 bold ml8">{{ $user->posts_count() }}</span>
+                            <p class="inline-block my4 fs13 black">{{__('Replies')}}: </p><span class="fs15 bold ml8">{{ $user->posts_count() }}</span>
                         </div>
                     </div>
                 </div>

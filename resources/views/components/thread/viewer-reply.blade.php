@@ -111,14 +111,6 @@
                     <div class="flex align-center mr8 vote-box relative">
                         <input type="hidden" class="votable-type" value="post">
                         <input type="hidden" class="votable-id" value="{{ $post->id }}">
-                        <div class="informer-message-container absolute zi1" style="left: -1px; bottom: calc(100% + 2px)">
-                            <div class="flex align-center">
-                                <p class="informer-message"></p>
-                                <div class="remove-informer-message-container rounded pointer">
-                                    <span style="margin-top: -1px">✖</span>
-                                </div>
-                            </div>
-                        </div>
 
                         <svg class="size14 pointer @auth votable-up-vote inside-viewer @endauth @guest login-signin-button @endguest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                             <title>{{ __('UP') }}</title>

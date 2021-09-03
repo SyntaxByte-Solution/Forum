@@ -596,13 +596,12 @@ $('.toggle-container-button').on('click', function() {
         container.addClass('none');
 
         if(box.find('.toggle-arrow').length) {
-            console.log('arrow exists');
             box.find('.toggle-arrow').css({
+                transform:'rotate(0deg)',
                 '-ms-transform':'rotate(0deg)',
                 '-moz-transform':'rotate(0deg)',
                 '-webkit-transform':'rotate(0deg)',
-                '-o-transform':'rotate(0deg)',
-                transform:'rotate(0deg)',
+                '-o-transform':'rotate(0deg)'
             });
         }
     }

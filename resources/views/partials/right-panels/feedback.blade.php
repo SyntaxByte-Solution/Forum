@@ -1,7 +1,7 @@
 <div class="mt8">
-    <div class="right-panel-header-container" style="padding: 8px">
+    <div class="right-panel-header-container" style="padding: 8px; align-items: start">
         <svg class="mr4 size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8ZM397.4,397.4A200,200,0,1,1,114.6,114.6,200,200,0,1,1,397.4,397.4ZM336,224a32,32,0,1,0-32-32A32,32,0,0,0,336,224Zm-160,0a32,32,0,1,0-32-32A32,32,0,0,0,176,224Zm194.4,64H141.6a13.42,13.42,0,0,0-13.5,15c7.5,59.2,58.9,105,121.1,105h13.6c62.2,0,113.6-45.8,121.1-105a13.42,13.42,0,0,0-13.5-15Z"/></svg>
-        <p class="bold no-margin">{{ __('How are you feeling today') }}</p>
+        <p class="bold no-margin" style="padding-top: 2px">{{ __('How are you feeling today') }}</p>
     </div>
     <div class="mx8 px8 mb8" style="margin-top: 16px">
         @canemoji
@@ -87,7 +87,7 @@
                 </svg>
             </div>
             <div class="toggle-container">
-                <p class="fs12 my8">{{ __("We are here to anwser any questions you may have about us or any feedback you have about the website. Reach out to us using below form") }}.</p>
+                <p class="fs12 my8">{{ __("We are here to answer any questions you may have about us or any feedback you have about the website. Reach out to us using below form") }}.</p>
                 <div class="feedback-container">
                     <div class="feedback-sec">
                         <div class="flex error-box none">
@@ -122,7 +122,7 @@
                                         <span class="btn-text">{{ __('send') }}</span>
                                         <input type="hidden" class="btn-text-ing" value="{{ __('Sending') }}..">
                                         <input type="hidden" class="btn-text-no-ing" value="{{ __('Send') }}">
-                                        <input type="hidden" class="message-sent" value="{{ __('Your feedback has been sent successfully.') }}">
+                                        <input type="hidden" class="message-sent" value="{{ __('Your feedback has been sent successfully') }}.">
                                     </button>
                                 </div>
                                 <input type="hidden" class="max-textarea-characters" value="800">

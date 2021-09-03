@@ -16,15 +16,15 @@
 <div>
     <div class="right-panel-header-container">
         <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 559.98 559.98"><path d="M280,0C125.6,0,0,125.6,0,280S125.6,560,280,560s280-125.6,280-280S434.38,0,280,0Zm0,498.78C159.35,498.78,61.2,400.63,61.2,280S159.35,61.2,280,61.2,498.78,159.35,498.78,280,400.63,498.78,280,498.78Zm24.24-218.45V163a23.72,23.72,0,0,0-47.44,0V287.9c0,.38.09.73.11,1.1a23.62,23.62,0,0,0,6.83,17.93l88.35,88.33a23.72,23.72,0,1,0,33.54-33.54Z"/></svg>
-        <p class="bold no-margin fs16">{{ __('Recent threads') }}</p>
+        <p class="bold no-margin fs16">{{ __('Recent discussions') }}</p>
     </div>
     @foreach($recent_threads as $thread)
     <div class="my8 mx8">
         <div>
             <div class="flex align-center" style="margin-bottom: 2px">
-                <a href="{{ route('forum.all.threads', ['forum'=>$thread->forum()->slug]) }}" class="blue no-underline fs11">{{ $thread->forum()->forum }}</a>
+                <a href="{{ route('forum.all.threads', ['forum'=>$thread->forum()->slug]) }}" class="blue no-underline fs11">{{ __($thread->forum()->forum) }}</a>
                 <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                <a href="{{ route('category.threads', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug]) }}" class="blue no-underline fs11">{{ $thread->category->category }}</a>
+                <a href="{{ route('category.threads', ['forum'=>$thread->forum()->slug, 'category'=>$thread->category->slug]) }}" class="blue no-underline fs11">{{ __($thread->category->category) }}</a>
             </div>
             <div class="flex">
                 <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="small-image-3 rounded mr4 hidden-overflow relative has-lazy" style="min-width: 22px">

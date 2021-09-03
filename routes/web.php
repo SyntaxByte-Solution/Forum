@@ -35,7 +35,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
     
-    dd(\Purifier::clean('<a href="/" onload="" onclick="console.log()" title="ok">my name is mouad</a>'));
+    dd(\App\Models\Category::distinct()->pluck('category')->all());
 
 });
 

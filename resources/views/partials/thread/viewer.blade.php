@@ -7,7 +7,7 @@
 
         <img src="" id="thread-viewer-media-image" class="image-that-fade-wait" alt="">
         <video id="thread-viewer-media-video" style="width: calc(100% - 128px);" controls class="none full-height">
-            Your browser does not support the video tag.
+            {{__('Your browser does not support the video tag')}}.
         </video>
     </div>
     <div class="thread-media-viewer-infos-section">

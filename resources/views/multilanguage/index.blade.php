@@ -51,7 +51,7 @@
                         <p class="fs13 my4">Past the entire view content here to extract the trans keys: </p>
                         <button class="find-keys">Find keys</button>
                     </div>
-                    <textarea name="content" id="multilang_textarea" placeholder="PAST YOUR VIEW CONTENT HERE"></textarea>
+                    <textarea name="content" id="multilang_textarea" spellcheck="false" placeholder="PAST YOUR VIEW CONTENT HERE"></textarea>
                 </div>
                 <div class="part half-width">
                     <div class="flex align-end space-between">
@@ -65,7 +65,7 @@
                             </select>
                         </div>
                     </div>
-                    <textarea name="content" id="multilang_result_textarea"></textarea>
+                    <textarea name="content" id="multilang_result_textarea" spellcheck="false"></textarea>
                 </div>
             </div>
         </div>

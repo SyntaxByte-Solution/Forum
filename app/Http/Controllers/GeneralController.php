@@ -10,8 +10,11 @@ use Illuminate\Validation\Rule;
 class GeneralController extends Controller
 {
     public function get_forum_categories_ids(Forum $forum) {
-        $f = $forum;
-        return \json_encode($forum->categories()->excludeannouncements()->pluck('category', 'id'));
+        $category_id = $forum->categories()->excludeannouncements()->pluck('category', 'id');
+        $category_id = $category_id->map(function($item) { 
+            return __($item);
+        });
+        return \json_encode($category_id);
     }
 
     public function setlang(Request $request) {

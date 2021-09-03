@@ -59,7 +59,7 @@
                 </div>
                 <div class="px8 mx8">
                     <p class="fs12"><span class="bold mr4">+</span>{{ __("Use the") }} <a href="{{ route('advanced.search') }}" class="blue bold no-underline">{{ __('advanced search') }}</a> {{ __("by specifying the forum and category (or select [all] option to search in all categories of all forums)") }}.</p>
-                    <p class="fs12"><span class="bold mr4">+</span>{{ __("Or you can") }} <a href="{{ route('thread.add') }}" class="blue bold no-underline">{{ __("create") }}</a> {{ __(' your own discussion') }}</p>
+                    <p class="fs12"><span class="bold mr4">+</span>{{ __("Or you can") }} <a href="{{ route('thread.add') }}" class="blue bold no-underline">{{ __("create") }}</a> {{ __('your own discussion') }}</p>
                 </div>
             </div>
         </div>

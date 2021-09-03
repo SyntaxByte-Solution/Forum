@@ -570,7 +570,7 @@ function handle_hide_parent(item) {
     })
 }
 
-$('.toggle-container-button').click(function() {
+$('.toggle-container-button').on('click', function() {
     let box = $(this);
     while(!box.hasClass('toggle-box')) {
         box = box.parent();
@@ -591,16 +591,18 @@ $('.toggle-container-button').click(function() {
             });
         }
     } else {
+        console.log('bring it to 0deg');
         container.removeClass('block');
         container.addClass('none');
 
         if(box.find('.toggle-arrow').length) {
+            console.log('arrow exists');
             box.find('.toggle-arrow').css({
-                transform:'rotate(0deg)',
                 '-ms-transform':'rotate(0deg)',
                 '-moz-transform':'rotate(0deg)',
                 '-webkit-transform':'rotate(0deg)',
-                '-o-transform':'rotate(0deg)'
+                '-o-transform':'rotate(0deg)',
+                transform:'rotate(0deg)',
             });
         }
     }

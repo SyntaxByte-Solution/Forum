@@ -15,7 +15,7 @@
             <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'search') {{ 'lp-selected bold white white' }} @endif">
                 <svg class="size17 mr4" fill="#FFFFFF" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
                 {{__('Search')}}
-                <svg class="toggle-arrow mx4 size7" style="margin-top: 1px; @if($page == 'search') rotate: 90deg; @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                <svg class="toggle-arrow mx4 size7" style="margin-top: 1px; @if($page == 'search') transform: rotate(90deg) @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
                     <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                 </svg>
             </a>
@@ -90,7 +90,7 @@
                     <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size24" alt="{{ __('your profile picture') }}">
                 </div>
                 {{__('My Space')}} 
-                <svg class="toggle-arrow mx4 size7" style="margin-top: 1px; @if($page == 'user' && $same_user) rotate: 90deg; @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                <svg class="toggle-arrow mx4 size7" style="margin-top: 1px; @if($page == 'user' && $same_user) transform: rotate(90deg) @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
                     <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                 </svg>
             </a>
@@ -228,7 +228,7 @@
             <div style="max-height: 19px; height: 19px; max-width: 19px; width: 19px" class="full-center mx4" title="{{ __('LOVE') }}">
                 <svg class="heart-beating" fill="#FF0000" style="width: 16px; stroke: #331010; stroke-width: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 94.5"><path d="M86.82,26.63v-7.3H78.64V12H62.27v7.29H54.09v7.3H45.91v-7.3H37.73V12H21.36v7.29H13.18v7.3H5V48.5h8.18v7.29h8.18v7.29h8.19v7.29h8.18v7.3h8.18V85h8.18V77.67h8.18v-7.3h8.18V63.08h8.19V55.79h8.18V48.5H95V26.63Z"/></svg>
             </div>
-            <p class="unselectable fs13">by <a href="https://www.mouad-dev.com" target="_blank" class="no-underline mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
+            <p class="unselectable fs13">by<a href="https://www.mouad-dev.com" target="_blank" class="no-underline mx4 bold" style="color: rgb(58, 186, 236)">mouad</a></p>
         </div>
     </div>
 </div>

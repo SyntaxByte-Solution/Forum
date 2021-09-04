@@ -22,15 +22,15 @@ class PostPolicy
 
         $thread = Thread::find($thread_id);
         if($thread->replies_off == 1) {
-            return $this->deny(__("You can't reply on this thread because the owner is turning off the replies"));
+            return $this->deny(__("You can't reply on this discussion because the owner is turning off the replies"));
         }
         
         if($thread->status->slug == 'closed') {
-            return $this->deny(__("You can't reply on closed threads"));
+            return $this->deny(__("You can't reply on closed discussions"));
         }
 
         if($thread->status->slug == 'temp.closed') {
-            return $this->deny(__("You can't reply on temporarily closed threads"));
+            return $this->deny(__("You can't reply on temporarily closed discussions"));
         }
         
         // The user should be: authenticated, not banned and post less than 280 posts per day.
@@ -73,7 +73,7 @@ class PostPolicy
 
     public function fetch(User $user, Post $post) {
         if($user->isBanned()) {
-            return $this->deny("You can't update your threads because you're currently banned");
+            return $this->deny(__("You cannot update replies because you're currently banned"));
         }
         
         return $post->user_id == $user->id;
@@ -81,7 +81,7 @@ class PostPolicy
 
     public function tick(User $user, Post $post) {
         if($user->isBanned()) {
-            return $this->deny("You can't tick replies because you're currently banned");
+            return $this->deny(__("You can't tick replies because you're currently banned"));
         }
 
         /**
@@ -93,16 +93,16 @@ class PostPolicy
          */
 
         if($post->thread->user->id != $user->id) {
-            return $this->deny("You can't tick a post attached to a thread you don't own");
+            return $this->deny(__("You can't tick a post attached to a discussion you don't own"));
         }
 
         if($post->thread->isClosed()) {
-            return $this->deny("You can't tick a post attached to a closed thread");
+            return $this->deny(__("You can't tick a post attached to a closed discussion"));
         }
 
         foreach($post->thread->posts as $p) {
             if($p->ticked && $p->id != $post->id) {
-                return $this->deny("This thread has already a ticked reply");
+                return $this->deny(__("This discussion has already a ticked reply"));
                 break;
             }
         }

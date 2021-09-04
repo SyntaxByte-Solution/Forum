@@ -61,19 +61,23 @@ class LikesController extends Controller
             if(!$disabled) {
                 if($current_user->id != $resource->user->id) {
                     $type_name = strtolower(substr($type, strrpos($type, '\\') + 1));
-                    if($type_name == 'post') {
-                        $type_name = 'reply';
-                    }
+                    if($type_name == 'post') $type_name = 'reply';
+                    if($type_name == 'thread') $type_name = 'discussion';
     
+                    $resource_link = $resource->link;
+                    if($type_name == "reply") {
+                        $resource_link = $resource->thread->link . '?reply='.$resource->id;
+                    }
+
                     $resource->user->notify(
                         new \App\Notifications\UserAction([
                             'action_user'=>$current_user->id,
-                            'action_statement'=>__("liked your") . ' ' . $type_name . ':',
+                            'action_statement'=>"liked your $type_name :",
                             'resource_string_slice'=> $resource->slice,
                             'action_type'=>$type_name.'-like',
                             'action_date'=>now(),
                             'action_resource_id'=>$resource->id,
-                            'action_resource_link'=>$resource->link
+                            'action_resource_link'=>$resource_link
                         ])
                     );
                 }

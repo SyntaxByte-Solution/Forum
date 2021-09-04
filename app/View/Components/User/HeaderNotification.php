@@ -32,7 +32,7 @@ class HeaderNotification extends Component
         $this->notification_id = isset($notification['notif_id']) ? $notification['notif_id'] : '';
         $this->action_user = $notification['action_user'];
         $this->action_takers = $notification['action_takers'];
-        $this->action_statement = $notification['action_statement'];
+        $this->action_statement = __($notification['action_statement']);
         $this->resource_string_slice = $notification['resource_string_slice'];
         $this->action_date = $notification['action_date'];
         $this->action_resource_link = $notification['action_resource_link'];

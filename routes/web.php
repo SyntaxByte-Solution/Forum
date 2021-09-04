@@ -35,7 +35,8 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
     
-    dd(\App\Models\Category::distinct()->pluck('category')->all());
+    $string = __("Hello :attribute", ['attribute'=>'MOUAD']);
+    dd($string);
 
 });
 

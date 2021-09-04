@@ -26,7 +26,7 @@ class VoteController extends Controller
             $thread->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
-                    'action_statement'=>__("voted your thread") . " :",
+                    'action_statement'=>"voted your thread :",
                     'resource_string_slice'=>$thread->slice,
                     'action_type'=>'thread-vote',
                     'action_date'=>now(),
@@ -48,12 +48,12 @@ class VoteController extends Controller
             $post->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
-                    'action_statement'=>"voted your reply: '",
+                    'action_statement'=>"voted your reply :",
                     'resource_string_slice'=>$post->slice . "' on:" . $thread->slice,
                     'action_type'=>'reply-vote',
                     'action_date'=>now(),
                     'action_resource_id'=>$post->id,
-                    'action_resource_link'=>$thread->link,
+                    'action_resource_link'=>$thread->link.'?reply='.$post->id,
                 ])
             );
         }

@@ -56,7 +56,7 @@ class ReportPolicy
             ->where('reportable_type', 'App\Models\Post')
             ->count();
         if($found) {
-            return $this->deny("You can't report this reply because you already report it.");
+            return $this->deny(__("You can't report this reply because you already report it"));
         }
 
         return true;

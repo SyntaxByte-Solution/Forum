@@ -44,7 +44,7 @@ class FollowController extends Controller
         $user->notify(
             new \App\Notifications\UserAction([
                 'action_user'=>auth()->user()->id,
-                'action_statement'=>__("starts following you"),
+                'action_statement'=>"starts following you",
                 'resource_string_slice'=>"",
                 'action_type'=>'user-follow',
                 'action_date'=>now(),

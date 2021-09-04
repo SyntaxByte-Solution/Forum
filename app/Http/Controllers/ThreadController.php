@@ -285,7 +285,7 @@ class ThreadController extends Controller
             $follower->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
-                    'action_statement'=>__("Shared a new discussion") . ':',
+                    'action_statement'=>"Shared a new discussion :",
                     'resource_string_slice'=>$thread->slice,
                     'action_type'=>'thread-action',
                     'action_date'=>now(),

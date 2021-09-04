@@ -61,26 +61,26 @@ class IsValidPassword implements Rule
         switch (true) {
             case ! $this->uppercasePasses
                 && $this->numericPasses:
-                return 'The :attribute must be at least 8 characters and contain at least one uppercase character.';
+                return __('The :attribute must be at least 8 characters and contain at least one uppercase character', ['attribute'=>$attribute]);
 
             case ! $this->numericPasses
                 && $this->uppercasePasses:
-                return 'The :attribute must be at least 8 characters and contain at least one number.';
+                return __('The :attribute must be at least 8 characters and contain at least one number', ['attribute'=>$attribute]);
 
             case ! $this->uppercasePasses
                 && ! $this->numericPasses:
-                return 'The :attribute must be at least 8 characters and contain at least one uppercase character and one number.';
+                return __('The :attribute must be at least 8 characters and contain at least one uppercase character and one number', ['attribute'=>$attribute]);
 
             case ! $this->uppercasePasses
                 && $this->numericPasses:
-                return 'The :attribute must be at least 8 characters and contain at least one uppercase character and one special character.';
+                return __('The :attribute must be at least 8 characters and contain at least one uppercase character and one special character', ['attribute'=>$attribute]);
 
             case ! $this->uppercasePasses
                 && ! $this->numericPasses:
-                return 'The :attribute must be at least 8 characters and contain at least one uppercase character, one number, and one special character.';
+                return __('The :attribute must be at least 8 characters and contain at least one uppercase character, one number, and one special character', ['attribute'=>$attribute]);
 
             default:
-                return 'The :attribute must be at least 8 characters.';
+                return __('The :attribute must be at least 8 characters', ['attribute'=>$attribute]);
         }
     }
 }

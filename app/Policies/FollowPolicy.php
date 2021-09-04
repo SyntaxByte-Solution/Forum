@@ -20,7 +20,7 @@ class FollowPolicy
             $this->deny(__("You can't follow yourself"));
 
         if(!$u->has_status('active'))
-            $this->deny(__("Something wrong happen"));
+            $this->deny(__("Something wrong happens"));
 
         return true;
     }

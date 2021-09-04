@@ -17,7 +17,7 @@
                             <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 {!! $forum->icon !!}
                             </svg>
-                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
+                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ __($forum->forum) }}</a>
                         </div>
                         <div class="flex align-center move-to-right">
                             <div class="simple-border-container mr4">

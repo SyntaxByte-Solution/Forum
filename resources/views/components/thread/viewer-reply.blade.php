@@ -14,7 +14,7 @@
                     <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
                     <input type="hidden" class="message-when-delete" value="{{ __('Your reply deleted successfully') }}.">
                 </button>
-                <button class="simple-link close-shadowed-view-button" style="background: unset; border: unset; cursor: pointer; margin-left: 6px; font-size: 10px; font-weight: bold">{{ __('CANCEL') }}</button>
+                <button class="simple-link close-shadowed-view-button" style="background: unset; border: unset; cursor: pointer; margin-left: 6px; font-size: 10px; font-weight: bold">{{ __('Cancel') }}</button>
                 <input type="hidden" class="post-id" value="{{ $post->id }}">
             </div>
         </div>

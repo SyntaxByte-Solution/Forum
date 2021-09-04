@@ -2567,7 +2567,7 @@ function handle_open_media_viewer(thread) {
                             let button_text_ing = $(this).parent().find('.button-text-ing').val();
                             let button_text_no_ing = $(this).parent().find('.button-text-no-ing').val();
                             
-                            let post_content = viewer_reply_simplemde.value();
+                            let post_content = $codemirror.getValue();
                             let thread_id = button.parent().find('.thread-id').val();
 
                             let data = {
@@ -2695,7 +2695,6 @@ function handle_viewer_reply_events(reply_component) {
     reply_component.find('textarea').each(function() {
         var simplemde = new SimpleMDE({
             element: this,
-            placeholder: "{{ __('Edit Your reply') }}",
             hideIcons: ["guide", "heading", "link", "image"],
             spellChecker: false,
             status: false,

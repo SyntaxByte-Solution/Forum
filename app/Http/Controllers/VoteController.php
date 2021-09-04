@@ -26,7 +26,7 @@ class VoteController extends Controller
             $thread->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
-                    'action_statement'=>"voted your thread :",
+                    'action_statement'=>"voted your discussion :",
                     'resource_string_slice'=>$thread->slice,
                     'action_type'=>'thread-vote',
                     'action_date'=>now(),

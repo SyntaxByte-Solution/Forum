@@ -33,10 +33,10 @@
             <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 {!! $forum->icon !!}
             </svg>
-            {{ $forum->forum }}
+            {{ __($forum->forum) }}
         </a>
         <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-        <span class="current-link-path unselectable">{{ __('All Categories') }}</span>
+        <span class="current-link-path unselectable">{{ __('All categories') }}</span>
     </div>
     <div class="index-middle-width middle-container-style">
         <input type="hidden" class="current-threads-count" autocomplete="off" value="{{ $pagesize }}">
@@ -78,7 +78,7 @@
                                 <svg class="small-image-size thread-add-forum-icon mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     {!! $forum->icon !!}
                                 </svg>
-                                <span class="thread-add-selected-forum">{{ $forum->forum }}</span>
+                                <span class="thread-add-selected-forum">{{ __($forum->forum) }}</span>
                                 <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </div>
                             <div class="suboptions-container thread-add-suboptions-container" style="max-height: 236px; overflow-y: scroll">
@@ -87,7 +87,7 @@
                                         <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                             {!! $f->icon !!}
                                         </svg>
-                                        <span>{{ $f->forum }}</span>
+                                        <span>{{ __($f->forum) }}</span>
                                     </a>
                                 @endforeach
                             </div>
@@ -108,7 +108,7 @@
                                 </a>
                                 @foreach($categories as $category)
                                     <a href="{{ route('category.threads', ['forum'=>$category->forum->slug, 'category'=>$category->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
-                                        <span>{{ $category->category }}</span>
+                                        <span>{{ __($category->category) }}</span>
                                     </a>
                                 @endforeach
                             </div>
@@ -125,7 +125,7 @@
                         <a href="?tab=all" class="no-underline thread-add-suboption sort-by-option flex">
                             <div>
                                 <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get all discussions sorted by the newest created') }}</p>
                                 <input type="hidden" class="tab" value="all">
                             </div>
                             <div class="loading-dots-anim ml4 none">•</div>
@@ -133,7 +133,7 @@
                         <a href="?tab=today" class="no-underline thread-add-suboption sort-by-option flex">
                             <div>
                                 <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get only threads created today. (This will be sorted by number of views)') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get only discussions created today. (This will be sorted by number of views)') }}</p>
                                 <input type="hidden" class="tab" value="today">
                             </div>
                             <div class="loading-dots-anim ml4 none">•</div>
@@ -141,7 +141,7 @@
                         <a href="?tab=thisweek" class="no-underline thread-add-suboption sort-by-option flex">
                             <div>
                                 <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get only threads created this week. (This will be sorted by number of views)') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get only discussions created this week. (This will be sorted by number of views)') }}</p>
                                 <input type="hidden" class="sort-by-key" value="votes">
                             </div>
                             <div class="loading-dots-anim ml4 none">•</div>

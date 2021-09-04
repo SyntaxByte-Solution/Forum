@@ -5,8 +5,8 @@
         </svg>
     </td>
     <td class="forum-component-forum-section-width">
-        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="no-underline bold blue no-margin fs17 mb2">{{ $forum->forum }}</a>
-        <p class="no-margin fs13">{{ $forum->description }}</p>
+        <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="no-underline bold blue no-margin fs17 mb2">{{ __($forum->forum) }}</a>
+        <p class="no-margin fs13">{{ __($forum->description) }}</p>
     </td>
     <td class="full-center fs15 bold bblack forum-component-threads-section-width">
         {{ $threads_count }}
@@ -31,7 +31,7 @@
             </div>
         </div>
         @else
-        <em class="fs12">{{ __('No threads for the moment') }} !</em>
+        <em class="fs12">{{ __('No discussions for the moment') }} !</em>
         @endif
     </td>
 </tr>

@@ -15,7 +15,7 @@
                         <input type="hidden" class="following-text" autocomplete="off" value="{{ __('Following') }}..">
                         <input type="hidden" class="unfollow-text" autocomplete="off" value="{{ __('Unfollow') }}">
                         <input type="hidden" class="unfollowing-text" autocomplete="off" value="{{ __('Unfollowing') }}..">
-                        <input type="hidden" class="follow-success-text" autocomplete="off" value="{{ __('Follow success !') }}">
+                        <input type="hidden" class="follow-success-text" autocomplete="off" value="{{ __('Follow success') }}">
 
                         <div class="pointer @guest login-signin-button @endguest">
                             <div class="relative follow-notif-container @if(!$followed) none @endif">
@@ -62,9 +62,9 @@
                     </svg>
                     <div class="button-text">
                         @if($thread->is_saved)
-                            {{ __('Unsave thread') }}
+                            {{ __('Unsave discussion') }}
                         @else
-                            {{ __('Save thread') }}
+                            {{ __('Save discussion') }}
                         @endif
                     </div>
                     <div style="width: 12px">
@@ -72,10 +72,10 @@
                     </div>
                     <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                     <input type="hidden" class="status" value="@if($thread->is_saved) unsave @else save @endif">
-                    <input type="hidden" class="button-text-save" value="{{ __('Save thread') }}">
-                    <input type="hidden" class="button-text-unsave" value="{{ __('Unsave thread') }}">
-                    <input type="hidden" class="saved-message" value="{{ __('Thread saved successfully.') }}">
-                    <input type="hidden" class="unsaved-message" value="{{ __('Thread unsaved successfully.') }}">
+                    <input type="hidden" class="button-text-save" value="{{ __('Save discussion') }}">
+                    <input type="hidden" class="button-text-unsave" value="{{ __('Unsave discussion') }}">
+                    <input type="hidden" class="saved-message" value="{{ __('Discussion saved successfully') }}">
+                    <input type="hidden" class="unsaved-message" value="{{ __('Discussion unsaved successfully') }}">
                 </div>
                 @endcan
             </div>
@@ -88,9 +88,9 @@
                     {!! $thread->forum()->icon !!}
                 </svg>
                 <div class="flex align-center">
-                    <a href="{{ route('forum.all.threads', ['forum'=>$thread->forum()->slug]) }}" class="fs11 black-link">{{ $thread->forum()->forum }}</a>
+                    <a href="{{ route('forum.all.threads', ['forum'=>$thread->forum()->slug]) }}" class="fs11 black-link">{{ __($thread->forum()->forum) }}</a>
                     <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                    <a href="{{ route('category.threads', ['forum'=>$thread->forum()->slug,'category'=>$thread->category->slug]) }}" class="fs11 black-link">{{ $thread->category->category }}</a>
+                    <a href="{{ route('category.threads', ['forum'=>$thread->forum()->slug,'category'=>$thread->category->slug]) }}" class="fs11 black-link">{{ __($thread->category->category) }}</a>
                 </div>
             </div>
             <div class="expand-box mb8">
@@ -162,12 +162,12 @@
             <div class="flex space-between my4" id="reply-site">
                 <p class="bold fs15 my4 ml8 forum-color" id="viewer-reply-text-label">{{ __('Reply') }}</p>
                 <input type="button" value="{{ __('Share reply') }}" class="share-viewer-reply button-style-1 height-max-content mr4">
-                <input type="hidden" class="button-text-ing" value="{{ __('Sharing your reply..') }}">
+                <input type="hidden" class="button-text-ing" value="{{ __('Sharing your reply') }}..">
                 <input type="hidden" class="button-text-no-ing" value="{{ __('Share reply') }}">
                 <input type="hidden" class="thread-id" value="{{ $thread->id }}">
 
-                <input type="hidden" class="required-error" value="{{ __('* Reply field is required') }}">
-                <input type="hidden" class="reply-size-error" value="{{ __('* Reply must contain at least 2 characters') }}">
+                <input type="hidden" class="required-error" value="* {{ __('Reply field is required') }}">
+                <input type="hidden" class="reply-size-error" value="* {{ __('Reply must contain at least 2 characters') }}">
             </div>
             <p class="reply-error error ml8 none"></p>
             <textarea name="content" id="viewer-reply-input" placeholder="{{ __('Your reply here') }}"></textarea>

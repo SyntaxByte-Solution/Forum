@@ -23,9 +23,9 @@
         <input type="hidden" class="status" value="-1">
         @endif
         <input type="hidden" class="follow-text" value="{{ __('Follow') }}">
-        <input type="hidden" class="following-text" value="{{ __('Following ..') }}">
+        <input type="hidden" class="following-text" value="{{ __('Following') }}..">
         <input type="hidden" class="followed-text" value="{{ __('Followed') }}">
-        <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing ..') }}">
+        <input type="hidden" class="unfollowing-text" value="{{ __('Unfollowing') }}..">
         <input type="hidden" class="followable-id" value="{{ $followed_by_current_user->id }}">
         <input type="hidden" class="followable-type" value="user">
 

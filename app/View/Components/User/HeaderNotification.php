@@ -40,7 +40,7 @@ class HeaderNotification extends Component
         $this->notif_read = $notification['notif_read'];
         $this->disabled = isset($notification['disabled']) ? $notification['disabled'] : false;
         $this->could_be_disabled = false;
-        $resources_could_be_disabled = ['thread', 'reply', 'post'];
+        $resources_could_be_disabled = ['thread', 'discussion', 'reply', 'post'];
         $action_type = $notification['action_type'];
         
         foreach ($resources_could_be_disabled as $resource_type) {

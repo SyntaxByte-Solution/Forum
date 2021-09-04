@@ -1,6 +1,6 @@
 <div class="resource-container thread-container-box relative shadow-contained-box">
     <div class="hidden-thread-section none px8 py8">
-        <p class="my4 fs12">Thread hidden. If you want to show it again <span class="pointer blue thread-display-button">click here</span></p>
+        <p class="my4 fs12">{{__('Discussion hidden. If you want to show it again')}} <span class="pointer blue thread-display-button">{{ __('click here') }}</span></p>
     </div>
     @can('update', $thread)
     <div class="absolute full-shadowed br6 turn-off-posts-viewer" style="z-index: 1">
@@ -14,14 +14,14 @@
                 @endphp
                 
                 @if(!$thread->replies_off)
-                <p class="white bold fs15 my4">{{ __('Important: If you turn off replies, no one could reply to your tread') }}.</p>
-                <p class="white fs15 mt4 mb8">{{ __('However if there are already some replies, they will not disappeared') }}.</p>
+                <p class="white bold fs15 my4 text-center">{{ __('Important: If you turn off replies, no one could reply to your discussion') }}.</p>
+                <p class="white fs15 mt4 mb8 text-center">{{ __('However if there are already some replies, they will not disappeared') }}.</p>
                 @else
-                <p class="white bold fs15 my8">{{ __('Turn on replies on this thread') }}.</p>
+                <p class="white bold fs15 my8">{{ __('Turn on replies on this discussion') }}.</p>
                 @endif
                 <div class="full-center">
-                    <input type="button" class="simple-white-button pointer turn-off-posts fs13" value="Turn {{ $posts_switch }} replies">
-                    <div class="pointer white close-shadowed-view-button fs14" style="text-decoration: none; margin-left: 6px;">{{ __('cancel') }}</div>
+                    <input type="button" class="simple-white-button pointer turn-off-posts fs13" value="{{ __('Turn ' . $posts_switch . ' replies') }}">
+                    <div class="pointer white close-shadowed-view-button fs14 bold" style="text-decoration: none; margin-left: 6px;">{{ __('cancel') }}</div>
                     <input type="hidden" class="id" value="{{ $thread->id }}">
                     <input type="hidden" class="switch" value="{{ $switch }}">
                     <input type="hidden" class="button-text-ing" value="{{ __('Please wait') }}..">
@@ -32,8 +32,8 @@
     <div class="absolute full-shadowed zi12 thread-deletion-viewer br6">
         <svg class="size14 simple-button-style rounded hide-parent" style="position: absolute; top: 6px; right: 6px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"/></svg>
         <div class="white px8 py8 full-height flex flex-column justify-center border-box">
-            <h2 class="no-margin fs18 text-center">{{ __('Please make sure you want to delete the thread !') }}</h2>
-            <p class="fs12 no-margin text-center">{{ __('This will throw the thread to the archive in case you decide to restore It. You can either restore it or delete it permanently later by going to your activities -> archive !') }}</p>
+            <h2 class="no-margin fs18 text-center">{{ __('Please make sure you want to delete the discussion') }} !</h2>
+            <p class="fs12 no-margin text-center">{{ __('This will throw the discussion to the archive in case you decide to restore It. You can either restore it or delete it permanently later by going to your activities -> archive !') }}</p>
             
             <div class="full-center mt8">
                 <div class="simple-white-button move-to-trash-button align-center" style="display: flex">
@@ -71,7 +71,7 @@
                 </svg>
 
             </div>
-            <div class="@if(!$thread->tickedPost()) none @endif thread-component-tick" title="{{ __('This thread has a ticked reply') }}">
+            <div class="@if(!$thread->tickedPost()) none @endif thread-component-tick" title="{{ __('This discussion has a best reply') }}">
                 <svg class="size20 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/></svg>
             </div>
         </div>
@@ -94,7 +94,7 @@
                                     <input type="hidden" class="following-text" autocomplete="off" value="{{ __('Following') }}..">
                                     <input type="hidden" class="unfollow-text" autocomplete="off" value="{{ __('Unfollow') }}">
                                     <input type="hidden" class="unfollowing-text" autocomplete="off" value="{{ __('Unfollowing') }}..">
-                                    <input type="hidden" class="follow-success-text" autocomplete="off" value="{{ __('Follow success !') }}">
+                                    <input type="hidden" class="follow-success-text" autocomplete="off" value="{{ __('Follow success') }} !">
                                     <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
                                     <div class="pointer @guest login-signin-button @endguest">
                                         <div class="size14 relative follow-notif-container @if(!$followed) none @endif">
@@ -199,9 +199,9 @@
                                 </svg>
                                 <div class="button-text">
                                     @if($thread->is_saved)
-                                        {{ __('Unsave thread') }}
+                                        {{ __('Unsave discussion') }}
                                     @else
-                                        {{ __('Save thread') }}
+                                        {{ __('Save discussion') }}
                                     @endif
                                 </div>
                                 <div style="width: 12px">
@@ -209,20 +209,20 @@
                                 </div>
                                 <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                                 <input type="hidden" class="status" value="@if($thread->is_saved) unsave @else save @endif">
-                                <input type="hidden" class="button-text-save" value="{{ __('Save thread') }}">
-                                <input type="hidden" class="button-text-unsave" value="{{ __('Unsave thread') }}">
-                                <input type="hidden" class="saved-message" value="{{ __('Thread saved successfully.') }}">
-                                <input type="hidden" class="unsaved-message" value="{{ __('Thread unsaved successfully.') }}">
+                                <input type="hidden" class="button-text-save" value="{{ __('Save discussion') }}">
+                                <input type="hidden" class="button-text-unsave" value="{{ __('Unsave discussion') }}">
+                                <input type="hidden" class="saved-message" value="{{ __('Discussion saved successfully') }}">
+                                <input type="hidden" class="unsaved-message" value="{{ __('Discussion unsaved successfully') }}">
                             </div>
                             @endcan
                             @can('update', $thread)
                             <a href="{{ $edit_link }}" class="no-underline simple-suboption flex align-center">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"/></svg>
-                                <div class="black">{{ __('Edit thread') }}</div>
+                                <div class="black">{{ __('Edit discussion') }}</div>
                             </a>
                             <div class="pointer simple-suboption flex align-center open-thread-shadowed-viewer">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
-                                <div class="no-underline black">{{ __('Delete thread') }}</div>
+                                <div class="no-underline black">{{ __('Delete discussion') }}</div>
                                 <input type="hidden" value=".thread-deletion-viewer" class="viewer">
                             </div>
                             <div class="simple-suboption flex align-center open-thread-shadowed-viewer">
@@ -233,7 +233,7 @@
                             @endcan
                             <div class="pointer simple-suboption thread-display-button flex align-center">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490.03 490.03"><path d="M435.67,54.31a18,18,0,0,0-25.5,0l-64,64c-79.3-36-163.9-27.2-244.6,25.5C41.47,183,5,232.31,3.47,234.41a18.16,18.16,0,0,0,.5,22c34.2,42,70,74.7,106.6,97.5l-56.3,56.3a18,18,0,1,0,25.4,25.5l356-355.9A18.11,18.11,0,0,0,435.67,54.31ZM200.47,264a46.82,46.82,0,0,1-3.9-19,48.47,48.47,0,0,1,67.5-44.6Zm90.2-90.1a84.37,84.37,0,0,0-116.6,116.6L137,327.61c-32.5-18.8-64.5-46.6-95.6-82.9,13.3-15.6,41.4-45.7,79.9-70.8,66.6-43.4,132.9-52.8,197.5-28.1Zm195.4,59.7c-24.7-30.4-50.3-56-76.3-76.3a18.05,18.05,0,1,0-22.3,28.4c20.6,16.1,41.2,36.1,61.2,59.5a394.59,394.59,0,0,1-66,61.3c-60.1,43.7-120.8,59.5-180.3,46.9a18,18,0,0,0-7.4,35.2,224.08,224.08,0,0,0,46.8,4.9,237.92,237.92,0,0,0,71.1-11.1c31.1-9.7,62-25.7,91.9-47.5,50.4-36.9,80.5-77.6,81.8-79.3A18.16,18.16,0,0,0,486.07,233.61Z"/></svg>
-                                <div>{{ __('Hide thread') }}</div>
+                                <div>{{ __('Hide discussion') }}</div>
                             </div>
                         </div>
                     </div>
@@ -249,9 +249,9 @@
                                 {!! $forum->icon !!}
                             </svg>
                             <div class="flex align-center">
-                                <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ $forum->forum }}</a>
+                                <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ __($forum->forum) }}</a>
                                 <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                                <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ $category->category }}</a>
+                                <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ __($category->category) }}</a>
                             </div>
                         </div>
                     </div>
@@ -316,7 +316,7 @@
                             </div>
                             <video class="thread-media full-height full-width" controls preload="none">
                                 <source src="{{ asset($media['frame']) }}" type="{{ $media['mime'] }}">
-                                {{ __('Your browser does not support HTML video') }}
+                                {{ __('Your browser does not support the video tag') }}
                             </video>
                             <div class="full-shadow-stretched none">
                                 <p class="fs26 bold white unselectable">+<span class="thread-media-more-counter"></span></p>
@@ -362,7 +362,7 @@
                                 <div class="pointer input-button-style flex align-center copy-thread-link bold" style="height: 28px; background-color: #373737; color: white; fill: white; border: unset; padding: 2px 10px">
                                     <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352.8 352.8"><path d="M318.54,57.28H270.89V15a15,15,0,0,0-15-15H34.26a15,15,0,0,0-15,15V280.52a15,15,0,0,0,15,15H81.92V337.8a15,15,0,0,0,15,15H318.54a15,15,0,0,0,15-15V72.28A15,15,0,0,0,318.54,57.28ZM49.26,265.52V30H240.89V57.28h-144a15,15,0,0,0-15,15V265.52ZM303.54,322.8H111.92V87.28H303.54Z"/></svg>
                                     {{ __('copy') }}
-                                    <input type="hidden" class="copied" value="link copied to your clipboard">
+                                    <input type="hidden" class="copied" value="{{__('link copied to your clipboard')}}">
                                 </div>
                             </div>
                         </div>

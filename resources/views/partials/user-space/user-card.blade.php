@@ -18,7 +18,7 @@
                     </a>
                 </div>
                 <div class="ms-profile-infos-container" style="margin-top: 45px">
-                    <h4 class="no-margin forum-color flex align-center">
+                    <h4 class="no-margin forum-color flex align-center fs18">
                         {{ $user->firstname . ' ' . $user->lastname }}
                     </h4>
                     <p class="fs12 bold no-margin">[{{ $user->username }}]</p>
@@ -46,21 +46,23 @@
         </div>
     </div>
     @else
-    <div class="flex py8">
+    <div class="flex pb8">
         <div class="small-image-1 br6 mr8 hidden-overflow">
             <img src="{{ $user->sizedavatar(36, '-l') }}" class="handle-image-center-positioning" alt="">
         </div>
         <div class="mr8">
             <h2 class="no-margin">{{ $user->firstname . ' ' . $user->lastname }}</h2>
-            <p class="fs12 no-margin gray">Join Date: {{ (new \Carbon\Carbon($user->created_at))->toDayDateTimeString() }}</p>
             <div class="flex align-center">
-                <div class="flex align-center">
-                    @if($ustatus == 'active')
-                    <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#25BD54"/></svg>
-                    @else
-                    <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#919191"/></svg>
-                    @endif
-                    <span class="fs13 gray">{{ $login_status }}</span>
+                <p class="fs13 no-margin bold bblack">{{ $user->username }}</p>
+                <div class="flex align-center ml4">
+                    <div class="flex align-center">
+                        @if($ustatus == 'active')
+                        <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#25BD54"/></svg>
+                        @else
+                        <svg class="tiny-image mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Z" style="fill:#919191"/></svg>
+                        @endif
+                        <span class="fs13 gray">{{ __($login_status) }}</span>
+                    </div>
                 </div>
             </div>
         </div>

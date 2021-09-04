@@ -26,9 +26,9 @@
                 @include('partials.user-space.basic-header', ['page'=>'activities'])
                 <div class="flex">
                     @if($is_current)
-                    <h1 class="my8 fs20">My Activities</h1>
+                    <h1 class="my8 fs20">{{__('My Activities')}}</h1>
                     @else
-                    <h1 class="my8 fs20">{{ $user->username }} activities</h1>
+                    <h1 class="my8 fs20">{{ $user->username }} {{__('activities')}}</h1>
                     @endif
                 </div>
                 <div class="activities-sections-container">
@@ -36,31 +36,31 @@
                         <div class="flex inline-buttons-container">
                             <div class="inline-button-style align-center selected-inline-button-style activity-section-switcher" style="border-top-left-radius: 4px">
                                 <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M492.21,3.82a21.45,21.45,0,0,0-22.79-1l-448,256a21.34,21.34,0,0,0,3.84,38.77L171.77,346.4l9.6,145.67a21.3,21.3,0,0,0,15.48,19.12,22,22,0,0,0,5.81.81,21.37,21.37,0,0,0,17.41-9l80.51-113.67,108.68,36.23a21,21,0,0,0,6.74,1.11,21.39,21.39,0,0,0,21.06-17.84l64-384A21.31,21.31,0,0,0,492.21,3.82ZM184.55,305.7,84,272.18,367.7,110.06ZM220,429.28,215.5,361l42.8,14.28Zm179.08-52.07-170-56.67L447.38,87.4Z"/></svg>
-                                {{ __('Threads') }}
+                                {{ __('Discussions') }}
                                 <input type="hidden" class="activity-section-name" value="threads">
                             </div>
                             @if(\Illuminate\Support\Facades\Auth::check() && auth()->user()->id == $user->id)
                             <div class="inline-button-style align-center activity-section-switcher">
                                 <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M400,0H112A48,48,0,0,0,64,48V512L256,400,448,512V48A48,48,0,0,0,400,0Zm0,428.43-144-84-144,84V54a6,6,0,0,1,6-6H394a6,6,0,0,1,6,6Z"/></svg>
-                                {{ __('Saved threads') }}
+                                {{ __('Saved disc.') }}
                                 <input type="hidden" class="activity-section-name" value="saved-threads">
                             </div>
                             @endif
                             <div class="inline-button-style align-center activity-section-switcher">
                                 <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M458.4,64.3C400.6,15.7,311.3,23,256,79.3,200.7,23,111.4,15.6,53.6,64.3-21.6,127.6-10.6,230.8,43,285.5L218.4,464.2a52.52,52.52,0,0,0,75.2.1L469,285.6C522.5,230.9,533.7,127.7,458.4,64.3ZM434.8,251.8,259.4,430.5c-2.4,2.4-4.4,2.4-6.8,0L77.2,251.8c-36.5-37.2-43.9-107.6,7.3-150.7,38.9-32.7,98.9-27.8,136.5,10.5l35,35.7,35-35.7c37.8-38.5,97.8-43.2,136.5-10.6,51.1,43.1,43.5,113.9,7.3,150.8Z"/></svg>
                                 @if(\Illuminate\Support\Facades\Auth::check() && auth()->user()->id == $user->id)
-                                {{ __('Threads I liked') }}
+                                {{ __('disc. I liked') }}
                                 @else
-                                {{ __('Liked threads') }}
+                                {{ __('Liked disc.') }}
                                 @endif
                                 <input type="hidden" class="activity-section-name" value="liked-threads">
                             </div>
                             <div class="inline-button-style align-center activity-section-switcher">
                                 <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M287.81,219.72h-238c-21.4,0-32.1-30.07-17-47.61l119-138.2c9.4-10.91,24.6-10.91,33.9,0l119,138.2C319.91,189.65,309.21,219.72,287.81,219.72ZM224.22,292l238,.56c21.4,0,32,30.26,16.92,47.83L359.89,478.86c-9.41,10.93-24.61,10.9-33.9-.08l-118.75-139C192.07,322.15,202.82,292,224.22,292Z" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:49px"/></svg>
                                 @if(\Illuminate\Support\Facades\Auth::check() && auth()->user()->id == $user->id)
-                                {{ __('Threads I voted on') }}
+                                {{ __('disc. I voted on') }}
                                 @else
-                                {{ __('Voted Threads') }}
+                                {{ __('Voted disc.') }}
                                 @endif
                                 <input type="hidden" class="activity-section-name" value="voted-threads">
                             </div>
@@ -89,11 +89,11 @@
                                     </div>
                                     <div class="flex mb8">
                                         <svg class="size4 mr8" style="margin-top: 6px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 29.11 29.11"><image width="30" height="30" transform="translate(0 -0.89)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsSAAALEgHS3X78AAAAp0lEQVRIS+2XQRaAIAhEB+5/Z1pRhmj2Etj0d/pyvsMqSUTwBiLqDogIed/OoBWxJ5uxcpGp+K3QMruAK/4qbBnJ2W7slALjvJt4t1Txck9xlFSx+d2oI2nlbDeySG0MXCW5oi1Q0FgpExOAf9Qp/OIURIRKxEBRYwDglf+jCNIba1FuF9G0nvTGyimObm3zb42j5F5uN+rd8lFe2EviqcD2t9OTUDkArQVWIcCC1LoAAAAASUVORK5CYII="/></svg>
-                                        <p class="no-margin fs13">{{ __('Private threads will not be displayed in any section') }}.</p>
+                                        <p class="no-margin fs13">{{ __('Private discussions will not be displayed in any section') }}.</p>
                                     </div>
                                     <div class="flex">
                                         <svg class="size4 mr8" style="margin-top: 6px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 29.11 29.11"><image width="30" height="30" transform="translate(0 -0.89)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsSAAALEgHS3X78AAAAp0lEQVRIS+2XQRaAIAhEB+5/Z1pRhmj2Etj0d/pyvsMqSUTwBiLqDogIed/OoBWxJ5uxcpGp+K3QMruAK/4qbBnJ2W7slALjvJt4t1Txck9xlFSx+d2oI2nlbDeySG0MXCW5oi1Q0FgpExOAf9Qp/OIURIRKxEBRYwDglf+jCNIba1FuF9G0nvTGyimObm3zb42j5F5uN+rd8lFe2EviqcD2t9OTUDkArQVWIcCC1LoAAAAASUVORK5CYII="/></svg>
-                                        <p class="no-margin fs13">{{ __('If you are not either authenticated or follower of this person, threads that are marked as followers only visibility will no be displayed as well') }}.</p>
+                                        <p class="no-margin fs13">{{ __('Followers only discussions will not be displayed in any section as well') }}.</p>
                                     </div>
                                 </div>
                             </div>

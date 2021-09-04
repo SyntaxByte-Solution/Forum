@@ -882,7 +882,7 @@ function handle_down_vote(button) {
                     down_vote.addClass('none');
                     vote_icons_state = 'fill-down';
                 }
-    
+
                 // If there's an error we simply set the old value
                 vote_box.find('.votable-count').text(vote_count);
                 new_vote_count = vote_count;

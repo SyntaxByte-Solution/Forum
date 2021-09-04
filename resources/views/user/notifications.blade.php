@@ -22,7 +22,7 @@
     <div id="middle-container" class="middle-padding-1">
         <div class="flex">
             <div class="notifications-wrapper">
-                <h1 id="page-title">Notifications</h1>
+                <h1 id="page-title">{{__('Notifications')}}</h1>
                 <div class="flex flex-column notifs-box">
                     <input type="hidden" class="notif-state-couter" value="1">
                     @foreach($user->notifs as $notification)

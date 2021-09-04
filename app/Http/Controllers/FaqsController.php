@@ -28,6 +28,6 @@ class FaqsController extends Controller
 
         FAQ::create($data);
 
-        \Session::flash('message', __('Your question has been sent successfully !'));
+        \Session::flash('message', __('Your question has been sent successfully'));
     }
 }

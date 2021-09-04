@@ -103,7 +103,7 @@ class SearchController extends Controller
                         $categories_ids[] = 0;
 
                         if(!in_array($value, $categories_ids)) {
-                            $fail('The '.$attribute." doesn't exists in our records.");
+                            $fail(__("The category doesn't exists in our records"));
                         } else {
                             if($value != 0) {
                                 $filters[] = [__('Category'), \App\Models\Category::find($value)->category, 'category'];

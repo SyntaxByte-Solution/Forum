@@ -148,7 +148,7 @@ class UserController extends Controller
             if(User::where('username', $request->username)->count()) {
                 $response = [
                     'status'=>'taken',
-                    'message'=>'this username is already taken, choose another one',
+                    'message'=>__('this username is already taken, choose another one'),
                     'valid'=>false
                 ];
             }
@@ -228,7 +228,7 @@ class UserController extends Controller
                 $follower->notify(
                     new \App\Notifications\UserAction([
                         'action_user'=>auth()->user()->id,
-                        'action_statement'=>"changed his profile avatar",
+                        'action_statement'=>__("changed his profile avatar"),
                         'resource_string_slice'=>"",
                         'action_type'=>'avatar-change',
                         'action_date'=>now(),
@@ -255,7 +255,7 @@ class UserController extends Controller
                 $follower->notify(
                     new \App\Notifications\UserAction([
                         'action_user'=>auth()->user()->id,
-                        'action_statement'=>"changed his profile cover",
+                        'action_statement'=>__("changed his profile cover"),
                         'resource_string_slice'=>"",
                         'action_type'=>'image-action',
                         'action_date'=>now(),
@@ -267,7 +267,7 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        return redirect()->route('user.settings')->with('message', __('Your profile settings has been updated successfully') . '!');
+        return redirect()->route('user.settings')->with('message', __('Your profile settings has been updated successfully'));
     }
     public function update_personal(Request $request) {
         $user = auth()->user();
@@ -284,7 +284,7 @@ class UserController extends Controller
         ]);
 
         $user->personal->update($data);
-        return redirect()->route('user.personal.settings')->with('message',__('Your profile informations has been updated successfully !'));
+        return redirect()->route('user.personal.settings')->with('message',__('Your profile informations has been updated successfully'));
     }
     public function update_password(Request $request) {
         $user = auth()->user();
@@ -302,7 +302,7 @@ class UserController extends Controller
         
         $user->update($data);
 
-        return redirect()->route('user.passwords.settings')->with('message', __('Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password) !'));
+        return redirect()->route('user.passwords.settings')->with('message', __('Your password is saved successfully. Now you can loggin using either your social network or usual login (email & password)'));
     }
     public function delete_account(Request $request) {
         $user = auth()->user();
@@ -312,7 +312,7 @@ class UserController extends Controller
             $user->delete();
 
             Auth::logout();
-            return redirect("/home")->with('message', __('Your account has been deleted successfully.'));
+            return redirect("/home")->with('message', __('Your account has been deleted successfully'));
         } else {
             return redirect()->back()->with('error', __('Invalid password'));
         }
@@ -333,9 +333,9 @@ class UserController extends Controller
             $user->set_account_status('deactivated');
 
             Auth::logout();
-            return redirect("/")->with('message', __('Your account is deactivated successfully !'));
+            return redirect("/")->with('message', __('Your account is deactivated successfully'));
         } else {
-            return redirect()->back()->with('errordeactiv', 'Invalid password !');
+            return redirect()->back()->with('errordeactiv', __('Invalid password !'));
         }
     }
     public function activate_account() {
@@ -352,12 +352,12 @@ class UserController extends Controller
         $user = auth()->user();
         // If an admin ban the current user then the user could not active or deactive his account and then if he visit activation page we prevent him
         if($user->isBanned()) {
-            return $this->deny("Unauthorized action. You are currently banned !");
+            return $this->deny("Unauthorized action. You are currently banned");
         }
 
         if($user->account_deactivated()) {
             $user->set_account_status('active');
-            return redirect('/')->with('message', __("Your account is activated successfully !"));
+            return redirect('/')->with('message', __("Your account is activated successfully"));
         }
         
         abort(404);

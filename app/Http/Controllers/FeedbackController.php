@@ -19,11 +19,11 @@ class FeedbackController extends Controller
          */
         if(Auth::check()) {
             if(Feedback::today()->where('user_id', auth()->user()->id)->count() >= self::RATE_LIMIT) {
-                abort(429, __("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . ' ' . __('messages') . ')'));
+                abort(429, __("You have a limited number of messages per day") . '.(' . self::RATE_LIMIT . ' ' . __('messages') . ')');
             }
         } else {
             if(Feedback::today()->where('ip', $request->ip())->count() >= self::RATE_LIMIT) {
-                abort(429, __("You have a limited number of messages per day." . '(' . self::RATE_LIMIT . ' ' . __('messages') . ')'));
+                abort(429, __("You have a limited number of messages per day") . '.(' . self::RATE_LIMIT . ' ' . __('messages') . ')');
             }
         }
 

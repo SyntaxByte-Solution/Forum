@@ -51,3 +51,7 @@ $('.find-keys').click(function() {
       $('#multilang_result_textarea').val(generated_json + '\n');        
   }
 });
+
+$('.select-all').on('click', function() {
+    $('#multilang_textarea').trigger('select');
+});

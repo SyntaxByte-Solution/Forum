@@ -196,8 +196,8 @@ class ThreadController extends Controller
                 'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000',
                 'images' => 'max:20',
                 ],[
-                    'images.*.mimes' => __('Only jpg,jpeg,png,gif and bmp images are alowed'),
-                    'images.*.max' => __('Sorry! Maximum allowed size for an image is 12MB'),
+                    'images.*.mimes' => __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported'),
+                    'images.*.max' => __('Maximum allowed size for an image is 12MB'),
                 ]
             );
 
@@ -211,8 +211,8 @@ class ThreadController extends Controller
                 'videos.*' => 'file|mimes:mp4,webm,mpg,mp2,mpeg,mpe,mpv,ogg,mp4,m4p,m4v,avi|max:500000',
                 'videos' => 'max:4',
                 ],[
-                    'videos.*.mimes' => __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported'),
-                    'videos.*.max' => __('Sorry! Maximum allowed size for a video is 500MB'),
+                    'videos.*.mimes' => __('Only .MP4, .WEBM, .MPG, .MP2, .MPEG, .MPE, .MPV, .OGG, .M4P, .M4V, .AVI video formats are supported'),
+                    'videos.*.max' => __('Maximum allowed size for a video is 500MB'),
                 ]
             );
 
@@ -240,7 +240,7 @@ class ThreadController extends Controller
             $category = Category::find($data['category_id'])->slug;
 
             $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-            return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>discussion</a>), " . __("please choose another title or edit the old one")], 422);
+            return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>" . __('see discussion') . "</a>), " . __("please choose another title or edit the title of the old discussion")], 422);
         }
 
         $data['user_id'] = auth()->user()->id;
@@ -285,7 +285,7 @@ class ThreadController extends Controller
             $follower->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
-                    'action_statement'=>"Shared a new thread: ",
+                    'action_statement'=>__("Shared a new discussion") . ':',
                     'resource_string_slice'=>$thread->slice,
                     'action_type'=>'thread-action',
                     'action_date'=>now(),
@@ -315,7 +315,7 @@ class ThreadController extends Controller
         ]);
 
         if($category == 'announcements') {
-            return abort(422, __("You could not create announcements due to privileges unavailability"));
+            return abort(403, __("You could not create announcements due to privileges unavailability"));
         }
 
         // Prevent sharing a thread with the same subject in the same category
@@ -331,7 +331,7 @@ class ThreadController extends Controller
 
             // If same subject within same category found, we simply abort the request with the appropriate erro and return it
             $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
-            return abort(422, __("This title you're using is already exists in your discussions list within the same category which is not allowed") . " ( <a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>" . __('see discussion') . "</a> ), " . __("please choose another title or edit the title of the old discussion"));
+            return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " ( <a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>" . __('see discussion') . "</a> ), " . __("please choose another title or edit the title of the old discussion")], 422);
         }
 
         // If the user add images to thread we have to validate them
@@ -341,7 +341,7 @@ class ThreadController extends Controller
                 'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000',
                 'images' => 'max:20',
                 ],[
-                    'images.*.mimes' => __('Only jpg,jpeg,png,gif and bmp images are alowed'),
+                    'images.*.mimes' => __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported'),
                     'images.*.max' => __('Maximum allowed size for an image is 12MB'),
                 ]
             );
@@ -364,8 +364,8 @@ class ThreadController extends Controller
                 'videos.*' => 'file|mimes:mp4,webm,mpg,mp2,mpeg,mpe,mpv,ogg,mp4,m4p,m4v,avi|max:500000',
                 'videos' => 'max:4',
                 ],[
-                    'videos.*.mimes' => __('Only .mp4,.webm,.mpg,.mp2,.mpeg,.mpe,.mpv,.ogg,.mp4,.m4p,.m4v,.avi video formats are supported'),
-                    'videos.*.max' => __('Sorry! Maximum allowed size for a video is 500MB'),
+                    'videos.*.mimes' => __('Only .MP4, .WEBM, .MPG, .MP2, .MPEG, .MPE, .MPV, .OGG, .M4P, .M4V, .AVI video formats are supported'),
+                    'videos.*.max' => __('Maximum allowed size for a video is 500MB'),
                 ]
             );
 

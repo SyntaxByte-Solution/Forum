@@ -54,7 +54,7 @@ class PostController extends Controller
                 
                 $notif_data = [
                     'action_user'=>$current_user->id,
-                    'action_statement'=>"replied to your thread:",
+                    'action_statement'=>__("replied to your thread") . ' :',
                     'resource_string_slice'=>mb_convert_encoding($thread->slice, 'UTF-8', 'UTF-8'),
                     'action_type'=>'thread-reply',
                     'action_date'=>now(),

@@ -33,7 +33,7 @@
             border: 1px solid gray;
         }
 
-        .find-keys {
+        .find-keys, .select-all {
             padding: 2px 8px;
             margin-bottom: 2px;
         }
@@ -49,7 +49,10 @@
                 <div class="part half-width">
                     <div class="flex align-end space-between">
                         <p class="fs13 my4">Past the entire view content here to extract the trans keys: </p>
-                        <button class="find-keys">Find keys</button>
+                        <div class="flex align-center">
+                            <button class="select-all mr4">Select all</button>
+                            <button class="find-keys">Find keys</button>
+                        </div>
                     </div>
                     <textarea name="content" id="multilang_textarea" spellcheck="false" placeholder="PAST YOUR VIEW CONTENT HERE"></textarea>
                 </div>

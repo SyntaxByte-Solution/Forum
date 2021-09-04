@@ -68,7 +68,7 @@ class LikesController extends Controller
                     $resource->user->notify(
                         new \App\Notifications\UserAction([
                             'action_user'=>$current_user->id,
-                            'action_statement'=>"liked your " . $type_name . ':',
+                            'action_statement'=>__("liked your") . ' ' . $type_name . ':',
                             'resource_string_slice'=> $resource->slice,
                             'action_type'=>$type_name.'-like',
                             'action_date'=>now(),

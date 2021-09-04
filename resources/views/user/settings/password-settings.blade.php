@@ -2,6 +2,7 @@
 
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
 @endpush
 
 @section('header')
@@ -18,7 +19,7 @@
         <section class="flex">
             <div class="full-width">
                 @include('partials.user-space.basic-header', ['page' => 'settings'])
-                <h1 class="">Password Settings</h1>
+                <h1 class="">{{__('Password Settings')}}</h1>
 
                 @if($errors->any())
                 <div class="error-container">
@@ -43,7 +44,7 @@
                         </div>
                         <div class="flex" style="margin-top: 12px">
                             <p class="no-margin" style="margin-right: 8px">●</p>
-                            <p class="no-margin fs13" style="line-height: 150%">{{ __("However keep in mind when you choose a password and forget it later, you can't reset your password because this feature is not present for the moment. Instead you can login directly using your social netweork service") }}.</p>
+                            <p class="no-margin fs13" style="line-height: 150%">{{ __("However keep in mind when you choose a password and forget it later, you can't reset your password because this feature is not present for the moment. Instead you can login directly using your social network service") }}.</p>
                         </div>
                     </div>
                     @if($user->password == NULL && $user->provider)
@@ -87,19 +88,19 @@
                     @endif
                 </div>
             </div>
-            <div>
-                @include('partials.settings.profile-right-side-menu', ['item'=>'settings-password'])
-                <div class="ms-right-panel my8 toggle-box">
-                    <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Password rules <span class="toggle-arrow">▾</span></a>
-                    <div class="toggle-container ml8 block" style="max-width: 280px">
-                        <p class="fs12 my8">• {{ __("Password must contains at least 8 characters") }}.</p>
-                        <p class="fs12 my8">• {{ __("Password must contains at least one lowercase character") }}.</p>
-                        <p class="fs12 my8">• {{ __("Password must contains at least one uppercasecase character") }}.</p>
-                        <p class="fs12 my8">• {{ __("Password must contains at least one number") }}.</p>
-                        <p class="fs12 my8">• {{ __("The two passwords must match each others") }}.</p>
-                    </div>
+        </section>
+        <div id="right-panel" class="pt8">
+            @include('partials.settings.profile-right-side-menu', ['item'=>'settings-password'])
+            <div class="ms-right-panel my8 toggle-box">
+                <a href="" class="black-link bold blue toggle-container-button" style="margin-bottom: 12px; margin-top: 0">Password rules <span class="toggle-arrow">▾</span></a>
+                <div class="toggle-container ml8 block" style="max-width: 280px">
+                    <p class="fs12 my8">• {{ __("Password must contains at least 8 characters") }}.</p>
+                    <p class="fs12 my8">• {{ __("Password must contains at least one lowercase character") }}.</p>
+                    <p class="fs12 my8">• {{ __("Password must contains at least one uppercasecase character") }}.</p>
+                    <p class="fs12 my8">• {{ __("Password must contains at least one number") }}.</p>
+                    <p class="fs12 my8">• {{ __("The two passwords must match each others") }}.</p>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 @endsection

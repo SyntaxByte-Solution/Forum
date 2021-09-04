@@ -2,6 +2,7 @@
 
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{{ asset('js/jq-plugins/country-picker-flags/build/css/countrySelect.min.css') }}"><link rel="stylesheet" href="{{ asset('js/jq-plugins/country-picker-flags/build/css/countrySelect.min.css') }}">
 @endpush
@@ -45,7 +46,7 @@
                     <div class="half-width mx8">
                         <div class="input-container">
                             <div class="flex align-center">
-                                <label for="datepicker" class="label-style-2 mr8">{{ __('Date of birth') }} @error('birth') <span class="error ml4">*</span> @enderror</label>
+                                <label for="datepicker" class="label-style-2 mr8">{{ __('Birth') }} @error('birth') <span class="error ml4">*</span> @enderror</label>
                                 <input type="text" id="datepicker" name="birth" value="@if(@old('birth')) {{ @old('birth') }} @else {{ $user->personal->birth }} @endif" form="personal-infos-form" class="basic-input" style="min-width: unset" placeholder="birth">
                             </div>
                         </div>
@@ -116,9 +117,9 @@
                 </div>
                 </div>
             </div>
-            <div>
-                @include('partials.settings.profile-right-side-menu', ['item'=>'settings-personal'])
-            </div>
         </section>
+        <div id="right-panel" class="pt8">
+            @include('partials.settings.profile-right-side-menu', ['item'=>'settings-personal'])
+        </div>
     </div>
 @endsection

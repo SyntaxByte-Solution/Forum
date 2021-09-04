@@ -2,6 +2,7 @@
 
 @push('styles')
     <link href="{{ asset('css/left-panel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/right-panel.css') }}" rel="stylesheet">
 @endpush
 
 @push('scripts')
@@ -74,12 +75,12 @@
                     </div>
                     <p class="error avatar-error none" style="margin-top: 10px">* {{ __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported for avatar') }}.</p>
                     <div class="flex my8">
-                        <div class="relative full-center" id="settings-avatar-area" style="height: max-content;">
+                        <div class="relative full-center" id="settings-avatar-area" style="height: max-content; border: 1px solid #515C6896; border-radius: 8px">
                             <div class="absolute full-shadowed full-center remove-avatar-dialog br6" style="z-index: 5">
-                                <p class="white bold my4 text-center">Remove avatar ?</p>
+                                <p class="white bold my4 text-center">{{__('Remove avatar')}} ?</p>
                                 <div class="flex flex-column align-center">
-                                    <div class="simple-white-button remove-avatar-button">Delete</div>
-                                    <a href="" class="white no-underline my4 fs13 close-shadowed-view-button">cancel</a>
+                                    <div class="simple-white-button remove-avatar-button">{{__('Delete')}}</div>
+                                    <a href="" class="white no-underline my4 fs13 close-shadowed-view-button">{{__('cancel')}}</a>
                                 </div>
                             </div>
                             <div class="absolute" style="z-index: 2; right: 4px; top: 4px;">
@@ -166,38 +167,41 @@
                     </div>
                 </div>
             </div>
+        </section>
+    </div>
+    <div id="right-panel" style="padding-top: 8px">
+        @include('partials.settings.profile-right-side-menu', ['item'=>'settings-general'])
+        <div class="ms-right-panel my8">
             <div>
-                @include('partials.settings.profile-right-side-menu', ['item'=>'settings-general'])
-                <div class="ms-right-panel my8">
-                    <div>
-                        <div class="bold blue" style="margin-bottom: 12px; margin-top: 0">{{ __('Settings rules') }}</div>
-                        <div class="ml8 block">
-                            <p class="bold forum-color fs13" style="margin-bottom: 12px;">Cover</p>
-                            <p class="fs12 my4">• {{__('Supported types')}}: PNG, BMP, GIF or JPG. At most 5MB.</p>
-                            <p class="fs12 my4">• {{ __('Maximum dimensions:') }}</p>
-                            <div class="ml8">
-                                <p class="fs12 my4">* Height: 1280px max</p>
-                                <p class="fs12 my4">* Width: 2050px max</p>
-                            </div>
-                        </div>
-                        <div class="ml8 block">
-                            <p class="bold forum-color fs13" style="margin-bottom: 12px;">Avatar</p>
-                            <p class="fs12 my4">• {{__('Supported types')}}: PNG, BMP, GIF or JPG. At most 5MB.</p>
-                            <p class="fs12 my4">• {{ __('Maximum dimensions:') }}</p>
-                            <div class="ml8">
-                                <p class="fs12 my4">* Height: 1000px max</p>
-                                <p class="fs12 my4">* Width: 1000px max</p>
-                            </div>
-                        </div>
-                        <div class="ml8 block">
-                            <p class="bold forum-color fs13" style="margin-bottom: 12px;">Username</p>
-                            <p class="fs12 my4">• {{ __('Should be unique(check it before saving your changes)') }}.</p>
-                            <p class="fs12 my4">• {{ __('Should contain at least 6 characters') }}.</p>
-                            <p class="fs12 my4">• {{ __('Only contains characters, numbers, dashes or underscores') }}.</p>
-                        </div>
+                <div class="flex align-center">
+                    <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                    <div class="bold bblack">{{ __('Settings rules') }}</div>
+                </div>
+                <div class="ml8 block">
+                    <p class="bold forum-color fs13" style="margin-bottom: 12px;">Cover</p>
+                    <p class="fs12 my4">• {{__('Supported types')}}: PNG, BMP, GIF or JPG. {{__('At most')}} 5MB.</p>
+                    <p class="fs12 my4">• {{ __('Maximum dimensions') }} :</p>
+                    <div class="ml8">
+                        <p class="fs12 my4">* {{__('Height')}}: 1280px {{__('max')}}</p>
+                        <p class="fs12 my4">* {{__('Width')}}: 2050px {{__('max')}}</p>
                     </div>
                 </div>
+                <div class="ml8 block">
+                    <p class="bold forum-color fs13" style="margin-bottom: 12px;">Avatar</p>
+                    <p class="fs12 my4">• {{__('Supported types')}}: PNG, BMP, GIF or JPG. {{__('At most')}} 5MB.</p>
+                    <p class="fs12 my4">• {{ __('Maximum dimensions') }} :</p>
+                    <div class="ml8">
+                        <p class="fs12 my4">* {{__('Height')}}: 1000px max</p>
+                        <p class="fs12 my4">* {{__('Width')}}: 1000px max</p>
+                    </div>
+                </div>
+                <div class="ml8 block">
+                    <p class="bold forum-color fs13" style="margin-bottom: 12px;">{{__('Username')}}</p>
+                    <p class="fs12 my4">• {{ __('Should be unique(check it before saving your changes)') }}.</p>
+                    <p class="fs12 my4">• {{ __('Should contain at least 6 characters') }}.</p>
+                    <p class="fs12 my4">• {{ __('Only contains characters, numbers, dashes or underscores') }}.</p>
+                </div>
             </div>
-        </section>
+        </div>
     </div>
 @endsection

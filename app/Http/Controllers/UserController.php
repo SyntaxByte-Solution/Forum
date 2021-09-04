@@ -339,13 +339,21 @@ class UserController extends Controller
         }
     }
     public function activate_account() {
-        $this->authorize('activate_account');
-
-        return view('user.settings.account-activation')
-            ->with(compact('user'));
+        if(!auth()->user() || (auth()->user() && !auth()->user()->account_deactivated())) {
+            abort(404);
+        }
+        return view('user.settings.account-activation');
     }
     public function activating_account() {
-        $this->authorize('activate_account');
+        if(!auth()->user() || (auth()->user() && !auth()->user()->account_deactivated())) {
+            abort(404);
+        }
+        
+        $user = auth()->user();
+        // If an admin ban the current user then the user could not active or deactive his account and then if he visit activation page we prevent him
+        if($user->isBanned()) {
+            return $this->deny("Unauthorized action. You are currently banned !");
+        }
 
         if($user->account_deactivated()) {
             $user->set_account_status('active');

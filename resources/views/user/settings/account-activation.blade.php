@@ -27,7 +27,7 @@
 
                 <div class="my8">
                     <div style="margin-top: 20px">
-                        <h2 class="my8">{{ __("This account is currently deactivated. You can activate it by clicking on activate account button down bellow.") }}</h2>
+                        <h2 class="my8">{{ __("This account is currently deactivated. You can activate it by clicking on activate account button down bellow") }}.</h2>
                         <p class="fs16 my8">{{ __("Notice that If you don't click the below activate button, your account still hidden from public access, and you can't access any page as an authenticated user") }}.</p>
                         <form action="{{ route('user.account.activating') }}" method="post" id="account-deactivation-form">
                             @method('patch')

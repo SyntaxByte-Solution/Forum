@@ -84,14 +84,13 @@
             @endif
             <div class="full-center move-to-middle">
                 <svg class="size24 mr8 mt8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.63 23.63"><path d="M11.81,0A11.82,11.82,0,1,0,23.63,11.81,11.81,11.81,0,0,0,11.81,0Zm2.46,18.31c-.61.24-1.09.42-1.45.54a3.81,3.81,0,0,1-1.27.19,2.49,2.49,0,0,1-1.71-.54,1.71,1.71,0,0,1-.61-1.36,4.87,4.87,0,0,1,0-.66,6.75,6.75,0,0,1,.15-.76L10.18,13c.07-.26.12-.5.17-.73a3,3,0,0,0,.07-.63,1,1,0,0,0-.21-.72,1.27,1.27,0,0,0-.82-.2,2.18,2.18,0,0,0-.6.09,4.61,4.61,0,0,0-.53.18l.2-.83c.5-.21,1-.38,1.43-.52a4.16,4.16,0,0,1,1.29-.22,2.46,2.46,0,0,1,1.69.53,1.74,1.74,0,0,1,.6,1.37c0,.12,0,.33,0,.62a3.75,3.75,0,0,1-.16.81l-.75,2.68a5.83,5.83,0,0,0-.17.74,3.61,3.61,0,0,0-.07.62.9.9,0,0,0,.24.73,1.29,1.29,0,0,0,.82.2,2.63,2.63,0,0,0,.63-.1,2.79,2.79,0,0,0,.5-.17ZM14.14,7.43a1.92,1.92,0,0,1-2.56,0,1.61,1.61,0,0,1,0-2.39,1.84,1.84,0,0,1,1.28-.5,1.81,1.81,0,0,1,1.28.5,1.61,1.61,0,0,1,0,2.39Z" style="fill:#030104"/></svg>
-                <h1 id="cu-heading">ABOUT US</h1>
+                <h1 id="cu-heading">{{__('ABOUT US')}}</h1>
             </div>
             <div class="flex justify-center">
-                <em class="fs15 flex">{{ __("Together to take sports to the next level") }} ~ Nassri</em>
+                <em class="fs15 flex">{{ __("Together to take sports to the next level") }}</em>
             </div>
             <p class="text bordered-guideline text-center" style="margin: 20px 0 10px 0">
-                {{ __("As part of seeking to rise and promote the educational sports in our arabic countries (Morocco in particular), we place among the dear members this 
-                forum to build a great and fantastic sports community with sublime goals and purposes") }}.
+                {{ __("As part of seeking to rise and promote the educational sports in our arabic countries (Morocco in particular), we place among the dear members this forum to build a great and fantastic sports community with sublime goals and purposes") }}.
             </p>
             <h3 class="no-margin fs20 mb4" style='margin-top: 20px'>{{ __('OUR PURPOSE') }}</h3>
             <p class="text">{{ __("Everything in this forum is rooted to sport. Sport plays an increasingly important role in more and more people’s lives, on and off the field of play. It is central to every culture and society and is core to our health and happiness") }}.</p>

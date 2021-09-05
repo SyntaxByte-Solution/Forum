@@ -63,8 +63,9 @@ class IndexController extends Controller
     public function announcements() {
         $announcement_ids = Category::where('slug', 'announcements')->pluck('id');
         $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereIn('category_id', $announcement_ids)->paginate(6);
-        
+        $forums = Forum::all();
         return view('announcements')
+        ->with(compact('forums'))
         ->with(compact('announcements'));
     }
 

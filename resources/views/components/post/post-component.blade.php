@@ -12,7 +12,7 @@
                     <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
                     <input type="hidden" class="message-when-delete" value="{{ __('Your reply deleted successfully') }}.">
                 </button>
-                <button class="simple-link close-shadowed-view-button" style="background: unset; border: unset; cursor: pointer; margin-left: 6px; font-size: 10px; font-weight: bold">{{ __('CANCEL') }}</button>
+                <button class="simple-link close-shadowed-view-button" style="background: unset; border: unset; cursor: pointer; margin-left: 6px; font-size: 10px; font-weight: bold">{{ __('Cancel') }}</button>
                 <input type="hidden" class="post-id" value="{{ $post->id }}">
                 <input type="hidden" class="button-ing-text" value="{{ __('Deleting') }}..">
             </div>
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe438; @endif">
-            <div class="flex align-center space-between p4">
+            <div class="flex align-center space-between p4" style="background-color: #f2f2f2">
                 <div>
                     <div class="no-margin" style="max-height: 34px">
                         <div class="inline-block relative">
@@ -152,7 +152,7 @@
                 @can('update', $post)
                 <div class="post-edit-container px8 py8 none">
                     <div class="flex align-end space-between mb4">
-                        <p class="fs12 bold no-margin">{{ __('EDIT YOUR POST') }} <span class="error fs13"></span></p>
+                        <p class="fs12 bold no-margin">{{ __('Edit your reply') }} <span class="error fs13"></span></p>
                         <div class="flex align-center">
                             <button class="button-style-2 save-edit-post save-edit-post-from-outside-viewer" style="font-size: 12px">
                                 <span class="btn-text">{{ __('Save') }}</span>

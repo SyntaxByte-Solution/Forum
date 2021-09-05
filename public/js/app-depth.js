@@ -290,6 +290,7 @@ if($('#right-panel').height() > $(window).height()-52) {
 }
 
 $('#left-panel').height($(window).height() - $('header').height() - 30);
+$('#quick-access-box').height($(window).height() - $('header').height() - 61); // 1px of border-bottom and 60 to make some space between bottom of viewer and the menu
 if($('#thread-media-viewer').length) {
     $('#thread-media-viewer').height($(window).height() - $('header').height());
     handle_viewer_infos_height($('.thread-media-viewer-infos-content'));

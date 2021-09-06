@@ -3928,64 +3928,79 @@ $('.thread-add-container textarea').each(function() {
 });
 
 let fcc_lock = true;
-$('.forum-category-changer').on('click', function() {
-    if(!fcc_lock) {
-        return false;
-    }
-    fcc_lock = false;
-
-    let button = $(this);
-    let changer_box = button;
-    while(!changer_box.hasClass('forum-category-changer-box')) {
-        changer_box = changer_box.parent();
-    }
-    let spinner = changer_box.find('.fcc_spinner');
-
-    start_spinner(spinner, 'fcc_spinner');
-    spinner.removeClass('opacity0');
-    button.attr('style', 'background-color: #e3e3e3');
-
-    let forum_id = button.find('.forum-id').val();
-
-    $.ajax({
-        url: `/forums/${forum_id}/categories/ids`,
-        type: 'get',
-        success: function(response) {
-            // // First change the icon
-            changer_box.find('.fcc-selected-forum-ico').html(button.find('.forum-ico').html());
-            changer_box.find('.fcc-selected-forum').text(button.find('.forum-name').text());
-
-            let categories = JSON.parse(response);
-            changer_box.find('.fcc-category:not(:first)').remove();
-
-            let first_iteration = true;
-            $.each(categories, function(id, category){
-                if(first_iteration) {
-                    first_iteration = false;
-                    changer_box.find('.fcc-category:first').attr('href', category.forum_link);
-                } else {
-                    $('.fcc-categories-container').append(`
-                        <a href="${category.link}" class="no-underline black thread-add-suboption fcc-category flex align-center">
-                            <span class="thread-add-category-val">${category.category}</span>
-                        </a>
-                    `);
-                }
-            });
-        },
-        complete: function() {
-            button.attr('style', '');
-            fcc_lock = true;
-            spinner.addClass('opacity0');
-            stop_spinner(spinner, 'fcc_spinner');
-
-            let forums_container = button;
-            while(!forums_container.hasClass('suboptions-container')) {
-                forums_container = forums_container.parent();
-            }
-
-            forums_container.css('display', 'none');
+function handle_fcc(button) {
+    button.on('click', function() {
+        if(!fcc_lock) {
+            return false;
         }
+        fcc_lock = false;
+        
+        let btn = $(this);
+        let changer_box = btn;
+        while(!changer_box.hasClass('forum-category-changer-box')) {
+            changer_box = changer_box.parent();
+        }
+        let spinner = changer_box.find('.fcc_spinner');
+    
+        start_spinner(spinner, 'fcc_spinner');
+        spinner.removeClass('opacity0');
+        btn.attr('style', 'background-color: #e3e3e3');
+    
+        let forum_id = btn.find('.forum-id').val();
+    
+        $.ajax({
+            url: `/forums/${forum_id}/categories/ids`,
+            type: 'get',
+            success: function(response) {
+                // // First change the icon
+                changer_box.find('.fcc-selected-forum-ico').html(btn.find('.forum-ico').html());
+                changer_box.find('.fcc-selected-forum').text(btn.find('.forum-name').text());
+    
+                let categories = JSON.parse(response);
+                changer_box.find('.fcc-category:not(:first)').remove();
+    
+                let first_iteration = true;
+                $.each(categories, function(id, category){
+                    if(first_iteration) {
+                        first_iteration = false;
+                        changer_box.find('.fcc-category:first').attr('href', category.forum_link);
+                    } else {
+                        $('.fcc-categories-container').append(`
+                            <a href="${category.link}" class="no-underline black thread-add-suboption fcc-category flex align-center">
+                                <span class="thread-add-category-val">${category.category}</span>
+                            </a>
+                        `);
+                    }
+                });
+            },
+            complete: function() {
+                button.attr('style', '');
+                fcc_lock = true;
+                spinner.addClass('opacity0');
+                stop_spinner(spinner, 'fcc_spinner');
+    
+                let forums_container = button;
+                while(!forums_container.hasClass('suboptions-container')) {
+                    forums_container = forums_container.parent();
+                }
+    
+                forums_container.css('display', 'none');
+            }
+        })
+    
+        return false;
+    });
+}
+function handle_search_path_switcher(container) {
+    container.find('.search-path-switcher').each(function() {
+        $(this).on('click', function() {
+            container.find('.search-path-switcher').removeClass('search-path-switcher-selected');
+            $(this).addClass('search-path-switcher-selected');
+            let path = $(this).find('.search-path').val();
+            container.find('.quick-access-search-form').attr('action', path);
+        });
     })
+}
 
-    return false;
-});
+handle_search_path_switcher($('#quick-access-box'));
+handle_fcc($('#quick-access-box').find('.forum-category-changer'));

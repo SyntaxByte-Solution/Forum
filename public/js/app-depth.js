@@ -4002,5 +4002,24 @@ function handle_search_path_switcher(container) {
     })
 }
 
-handle_search_path_switcher($('#quick-access-box'));
-handle_fcc($('#quick-access-box').find('.forum-category-changer'));
+let quick_access_fetched = false;
+$('.quick-access-generate').on('click', function() {
+    if(quick_access_fetched) {
+        return;
+    }
+    $.ajax({
+        type: 'get',
+        url: '/generatequickaccess',
+        success: function(response) {
+            $('#quick-access-content-box').html('');
+            $('#quick-access-content-box').html(response);
+
+            handle_search_path_switcher($('#quick-access-box'));
+            handle_fcc($('#quick-access-box').find('.forum-category-changer'));
+            $('#quick-access-box .nested-soc-button').each(function() {
+                handle_nested_soc($(this));
+            });
+            quick_access_fetched = true;
+        }
+    })
+});

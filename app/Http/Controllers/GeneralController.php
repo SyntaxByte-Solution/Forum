@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\Forum;
 use Illuminate\Validation\Rule;
+use App\View\Components\User\Quickaccess;
 
 class GeneralController extends Controller
 {
@@ -21,7 +22,6 @@ class GeneralController extends Controller
         }
         return \json_encode($data);
     }
-
     public function setlang(Request $request) {
         $lang = $request->validate([
             'lang'=>[
@@ -31,5 +31,10 @@ class GeneralController extends Controller
         ]);
 
         Cookie::queue('lang', $lang['lang'], 2628000);
+    }
+    public function generate_quickaccess() {
+        $quickaccess = new Quickaccess();
+        $quickaccess = $quickaccess->render(get_object_vars($quickaccess))->render();
+        return $quickaccess;
     }
 }

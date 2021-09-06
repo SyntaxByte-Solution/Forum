@@ -83,7 +83,7 @@
                     <a href="/" class="no-underline thread-add-suboption sort-by-option flex">
                         <div>
                             <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
-                            <p class="no-margin fs12 gray">{{ __('Get all discussions sorted by the newest created discussions') }}</p>
+                            <p class="no-margin fs12 gray">{{ __('Get all discussions sorted by the newest created') }}</p>
                             <input type="hidden" class="tab" value="all">
                         </div>
                         <div class="loading-dots-anim ml4 none">•</div>

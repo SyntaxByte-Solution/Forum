@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/threads/{thread}/component/generate', [ThreadController::class, 'generate_thread_component']);
     Route::get('/threads/add', [ThreadController::class, 'create'])->name('thread.add');
     Route::get('/{user:username}/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('thread.edit');
+    Route::get('/generatequickaccess', [GeneralController::class, 'generate_quickaccess']);
 
     Route::post('/forums', [ForumController::class, 'store']);
     Route::patch('/forums/{forum}', [ForumController::class, 'update']);

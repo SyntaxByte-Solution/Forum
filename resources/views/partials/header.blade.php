@@ -199,7 +199,7 @@
                                                 </div>
                                                 <a href="{{ route('forums') }}" class="flex align-center no-underline blue fs12 bold move-to-right">
                                                     <svg class="size14 mr4" style="margin-top: -2px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M352,289V416H64V128h96V64H32A32,32,0,0,0,0,96V448a32,32,0,0,0,32,32H384a32,32,0,0,0,32-32V289Z"/><path d="M505.6,131.2l-128-96A16,16,0,0,0,352,48V96H304C206.94,96,128,175,128,272a16,16,0,0,0,12.32,15.59A16.47,16.47,0,0,0,144,288a16,16,0,0,0,14.3-8.83l3.78-7.52A143.2,143.2,0,0,1,290.88,192H352v48a16,16,0,0,0,25.6,12.8l128-96a16,16,0,0,0,0-25.6Z"/></svg>
-                                                    {{ __('forums') }}
+                                                    {{ __('Forums') }}
                                                 </a>
                                             </div>
                                             <div class="relative flex width-max-content" style="margin-left: 17px">
@@ -271,8 +271,8 @@
                                                 </div>
                                             </div>
                                             <form action="{{ route('search') }}" method="GET" class="quick-access-search-form relative flex">
-                                                <svg class="header-search-field-icon" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
-                                                <input type="text" name="k" value="{{ request()->get('k') }}" class="search-field full-width" style="min-width: unset; border: 1px solid #c1c1c1" placeholder="{{ __('Search keywords') }}.." title="{{ __('search field') }}" required>
+                                                <svg class="header-search-field-icon" style="width: 13px; height: 13px" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
+                                                <input type="text" name="k" value="{{ request()->get('k') }}" class="search-field full-width" style="min-width: unset; border: 1px solid #c1c1c1; font-size: 12px; padding: 6px 6px 6px 26px" placeholder="{{ __('Search keywords') }}.." title="{{ __('search field') }}" required>
                                                 <button type="submit" class="search-button full-center">
                                                     <svg class="size14" fill="#fff" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
                                                 </button>
@@ -317,7 +317,7 @@
                                                     <svg class="size15 mr4" style="min-width: 15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#353535"/></svg>
                                                     <div>
                                                         <p class="no-margin sort-by-val bold forum-color">{{ __('Discussions with best reply') }}</p>
-                                                        <p class="no-margin fs12 gray">{{ __('List discussions that has a best reply sorted from the newest to the oldest') }}</p>
+                                                        <p class="no-margin fs12 gray">{{ __('List discussions that has a best reply and sorting from the newest to the oldest') }}</p>
                                                         <input type="hidden" class="sort-by-key" value="has-best-reply">
                                                     </div>
                                                 </a>

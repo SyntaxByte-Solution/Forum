@@ -156,6 +156,7 @@ main {
     top: 52px;
     right: 20px;
     width: 520px;
+    max-height: 460px;
     background-color: #FDFDFD;
     border: 1px solid #d9d9d9;
     border-top: unset;
@@ -185,6 +186,7 @@ main {
 
 #quick-access-content {
     box-sizing: border-box;
+    padding: 10px;
     width: 100%;
     overflow-y: scroll;
 }
@@ -1416,6 +1418,10 @@ a, input, textarea {
 
 .path-blue-when-hover:hover {
     fill: #2ca0ff;
+}
+
+.underline-when-hover:hover {
+    text-decoration: underline;
 }
 
 .black-link {

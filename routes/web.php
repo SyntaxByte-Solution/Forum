@@ -42,7 +42,7 @@ Route::get('/test', function() {
 
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/home', [IndexController::class, 'index']);
-Route::get('/forums', [IndexController::class, 'forums']);
+Route::get('/forums', [IndexController::class, 'forums'])->name('forums');
 
 Route::post('/setlang', [GeneralController::class, 'setlang']);
 

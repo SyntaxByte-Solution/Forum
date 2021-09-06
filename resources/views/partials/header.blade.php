@@ -154,14 +154,77 @@
                                                 </div>
                                             </div>
                                             <div class="simple-line-separator my8"></div>
-                                            <a href="{{ auth()->user()->profilelink }}" class="no-underline flex align-center button-with-icon-style">
+                                            <a href="{{ route('contactus') }}" class="no-underline flex align-center button-with-icon-style">
                                                 <svg class="size20 mr8" fill="#181818" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
                                                 <span class="fs16 bblack">{{ __('Feedback') }}</span>
                                             </a>
                                         </div>
                                     </div>
                                     <div id="quick-access-content">
-        
+                                        @php
+                                            $forums = \App\Models\Forum::all();
+                                            $categories = $forums->first()->categories()->excludeannouncements()->get();
+                                            $category = $categories->first();
+                                        @endphp
+                                        <span class="block bold forum-color fs19 mb8">{{ __('Forums & Categories') }}</span>
+                                        <div class="forum-category-changer-box">
+                                            <div class="flex align-center">
+                                                <span class="fs11 lblack bold mr4">{{__('FORUM')}} :</span>
+                                                <div class="relative flex align-center">
+                                                    <div class="relative flex align-center forum-color nested-soc-button pointer thread-add-posted-to fs12">
+                                                        <svg class="small-image-size fcc-selected-forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                            <polygon points="207.22 174.76 309.32 0 457.57 0 355.48 174.76 207.22 174.76" style="fill:#f1543f"/><polygon points="58.46 0 160.55 174.76 308.81 174.76 206.72 0 58.46 0" style="fill:#ff7058"/><circle cx="258.02" cy="323.63" r="188.37" style="fill:#f8b64c"/><circle cx="258.02" cy="323.63" r="148.86" style="fill:#ffd15c"/><circle cx="258.02" cy="323.63" r="112.68" style="fill:#f8b64c"/><polygon points="258.02 244.31 283.82 296.52 341.37 304.88 299.74 345.5 309.52 402.95 258.02 375.84 206.51 402.95 216.29 345.5 174.66 304.88 232.21 296.52 258.02 244.31" style="fill:#ffd15c"/>
+                                                        </svg>
+                                                        <span class="fcc-selected-forum">{{ __($forums->first()->forum) }}</span>
+                                                        <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                                                    </div>
+                                                    <div class="spinner fcc_spinner size14 opacity0" style="fill: #2ca0ff; margin-left: 2px">
+                                                        <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+                                                    </div>
+                                                    <div class="suboptions-container nested-soc thread-add-suboptions-container" style="max-height: 236px; overflow-y: scroll">
+                                                        @foreach($forums as $forum)
+                                                        <div class="flex align-center">
+                                                            <div class="thread-add-suboption forum-category-changer flex align-center full-width">
+                                                                <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                    {!! $forum->icon !!}
+                                                                </svg>
+                                                                <span class="forum-name mr8">{{ __($forum->forum) }}</span>
+                                                                <div class="loading-dots-anim ml4 none">•</div>
+                                                                <input type="hidden" class="forum-id" value="{{ $forum->id }}">
+                                                            </div>
+                                                            <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="flex no-underline underline-when-hover blue bold fs13 ml8">{{ __('visit') }}</a>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                                <a href="{{ route('forums') }}" class="flex align-center no-underline blue fs12 bold move-to-right">
+                                                    <svg class="size14 mr4" style="margin-top: -1px" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M352,289V416H64V128h96V64H32A32,32,0,0,0,0,96V448a32,32,0,0,0,32,32H384a32,32,0,0,0,32-32V289Z"/><path d="M505.6,131.2l-128-96A16,16,0,0,0,352,48V96H304C206.94,96,128,175,128,272a16,16,0,0,0,12.32,15.59A16.47,16.47,0,0,0,144,288a16,16,0,0,0,14.3-8.83l3.78-7.52A143.2,143.2,0,0,1,290.88,192H352v48a16,16,0,0,0,25.6,12.8l128-96a16,16,0,0,0,0-25.6Z"/></svg>
+                                                    {{ __('forums') }}
+                                                </a>
+                                            </div>
+                                            <div class="relative flex width-max-content" style="margin-left: 17px">
+                                                <svg class="size14 mr8" style="margin-top: 1px" fill="#d2d2d2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.93 284.93"><polygon points="281.33 281.49 281.33 246.99 38.25 246.99 38.25 4.75 3.75 4.75 3.75 281.5 38.25 281.5 38.25 281.49 281.33 281.49"/></svg>
+                                                <span class="fs11 lblack bold mr4" style="margin-top: 6px">{{__('CATEGORY')}} :</span>
+                                                <div class="flex align-center">
+                                                    <div class="flex align-center fcc-selected-category forum-color nested-soc-button pointer light-grey-hover fs12 br4" style="padding: 5px 8px">
+                                                        <span class="thread-add-selected-category">{{ __('All categories') }}</span>
+                                                        <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                                                    </div>
+                                                    <div class="suboptions-container nested-soc thread-add-suboptions-container" style="width: max-content; max-height: 236px; overflow-y: scroll; right: 0">
+                                                        <div class="fcc-categories-container">
+                                                            <a href="{{ route('forum.all.threads', ['forum'=>$forums->first()->slug]) }}" class="no-underline black thread-add-suboption fcc-category flex align-center">
+                                                                <span class="thread-add-category-val">{{ __('All categories') }}</span>
+                                                            </a>
+                                                            @foreach($categories as $category)
+                                                                <a href="{{ route('category.threads', ['forum'=>$category->forum->slug, 'category'=>$category->slug]) }}" class="no-underline black thread-add-suboption fcc-category flex align-center">
+                                                                    <span class="thread-add-category-val">{{ __($category->category) }}</span>
+                                                                </a>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

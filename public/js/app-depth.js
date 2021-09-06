@@ -290,7 +290,7 @@ if($('#right-panel').height() > $(window).height()-52) {
 }
 
 $('#left-panel').height($(window).height() - $('header').height() - 30);
-$('#quick-access-box').height($(window).height() - $('header').height() - 61); // 1px of border-bottom and 60 to make some space between bottom of viewer and the menu
+$('#quick-access-box').height($(window).height() - $('header').height() - 21); // 1px of border-bottom and 20 to make some space between bottom of viewer and the menu
 if($('#thread-media-viewer').length) {
     $('#thread-media-viewer').height($(window).height() - $('header').height());
     handle_viewer_infos_height($('.thread-media-viewer-infos-content'));
@@ -1425,7 +1425,7 @@ function handle_disable_switch_notification(button) {
 
 // Thread Add scripts
 let thread_add_forum_lock = true;
-$('.thread-add-forum').click(function() {
+$('.thread-add-forum').on('click', function() {
     if(!thread_add_forum_lock) {
         return;
     }
@@ -1456,16 +1456,16 @@ $('.thread-add-forum').click(function() {
             let first_iteration = true;
             $.each(categories, function(id, category){
                 if(first_iteration) {
-                    $('.thread-add-selected-category').text(category);
-                    $('.thread-add-category').find('.thread-add-category-val').text(category);
-                    $('.thread-add-category').find('.category-id').text(id);
-                    thread_add_container.find('.category').val(id);
+                    $('.thread-add-selected-category').text(category.category);
+                    $('.thread-add-category').find('.thread-add-category-val').text(category.category);
+                    $('.thread-add-category').find('.category-id').text(category.id);
+                    thread_add_container.find('.category').val(category.id);
                     first_iteration = false;
                 } else {
                     $('.thread-add-categories-container').append(`
                         <div class="thread-add-suboption thread-add-category flex align-center">
-                            <span class="thread-add-category-val">${category}</span>
-                            <input type="hidden" class="category-id" value="${id}">
+                            <span class="thread-add-category-val">${category.category}</span>
+                            <input type="hidden" class="category-id" value="${category.id}">
                         </div>
                     `);
 
@@ -3925,4 +3925,67 @@ $('.thread-add-container textarea').each(function() {
         mode: 'markdown',
         showMarkdownLineBreaks: true,
     });
+});
+
+let fcc_lock = true;
+$('.forum-category-changer').on('click', function() {
+    if(!fcc_lock) {
+        return false;
+    }
+    fcc_lock = false;
+
+    let button = $(this);
+    let changer_box = button;
+    while(!changer_box.hasClass('forum-category-changer-box')) {
+        changer_box = changer_box.parent();
+    }
+    let spinner = changer_box.find('.fcc_spinner');
+
+    start_spinner(spinner, 'fcc_spinner');
+    spinner.removeClass('opacity0');
+    button.attr('style', 'background-color: #e3e3e3');
+
+    let forum_id = button.find('.forum-id').val();
+
+    $.ajax({
+        url: `/forums/${forum_id}/categories/ids`,
+        type: 'get',
+        success: function(response) {
+            // // First change the icon
+            changer_box.find('.fcc-selected-forum-ico').html(button.find('.forum-ico').html());
+            changer_box.find('.fcc-selected-forum').text(button.find('.forum-name').text());
+
+            let categories = JSON.parse(response);
+            changer_box.find('.fcc-category:not(:first)').remove();
+
+            let first_iteration = true;
+            $.each(categories, function(id, category){
+                if(first_iteration) {
+                    first_iteration = false;
+                    changer_box.find('.fcc-category:first').attr('href', category.forum_link);
+                } else {
+                    $('.fcc-categories-container').append(`
+                        <a href="${category.link}" class="no-underline black thread-add-suboption fcc-category flex align-center">
+                            <span class="thread-add-category-val">${category.category}</span>
+                        </a>
+                    `);
+                }
+            });
+        },
+        complete: function() {
+            button.attr('style', '');
+            fcc_lock = true;
+            spinner.addClass('opacity0');
+            stop_spinner(spinner, 'fcc_spinner');
+
+            let forums_container = button;
+            while(!forums_container.hasClass('suboptions-container')) {
+                forums_container = forums_container.parent();
+            }
+
+            forums_container.css('display', 'none');
+        }
+    })
+
+    return false;
 });

@@ -10,11 +10,16 @@ use Illuminate\Validation\Rule;
 class GeneralController extends Controller
 {
     public function get_forum_categories_ids(Forum $forum) {
-        $category_id = $forum->categories()->excludeannouncements()->pluck('category', 'id');
-        $category_id = $category_id->map(function($item) { 
-            return __($item);
-        });
-        return \json_encode($category_id);
+        $data = [];
+        foreach($forum->categories()->excludeannouncements()->get() as $category) {
+            $data[] = [
+                'id'=>$category->id,
+                'category'=>$category->category,
+                'link'=>route('category.threads', ['forum'=>$category->forum->slug, 'category'=>$category->slug]),
+                'forum_link'=>route('forum.all.threads', ['forum'=>$category->forum->slug])
+            ];
+        }
+        return \json_encode($data);
     }
 
     public function setlang(Request $request) {

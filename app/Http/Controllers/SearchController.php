@@ -77,7 +77,7 @@ class SearchController extends Controller
         $filters = [];
 
         $data = $request->validate([
-            'k'=>'required|min:1|max:2000',
+            'k'=>'sometimes|min:1|max:2000',
             'forum'=> [
                 'sometimes',
                 function ($attribute, $value, $fail) use (&$filters) {
@@ -125,8 +125,11 @@ class SearchController extends Controller
                 Rule::in(['created_at_desc', 'created_at_asc', 'views', 'votes', 'likes']),
             ]
         ]);
-
-        $search_query = $data['k'];
+        if($request->has('k')) {
+            $search_query = $data['k'];
+        } else {
+            $search_query = '';
+        }
 
         // 1. First fetch threads based on search query
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);

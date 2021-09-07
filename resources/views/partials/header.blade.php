@@ -60,7 +60,7 @@
                     }
                 @endphp
                 <div class="flex align-center">
-                    <div class="relative">
+                    <div class="relative"> <!-- notifs -->
                         <div class="header-button-counter-indicator @if(!$unread_notifications_counter) none @endif">{{ $unread_notifications_counter }}</div>
                         <div class="header-button button-with-suboptions pointer notification-button" title="Notifications">
                             <!-- let's try using paths -->
@@ -76,7 +76,7 @@
                                 <a href="{{ route('user.notifications') }}" class="link-path">{{ __('See all') }}</a>
                             </div>
                             <div class="suboptions-container-dims notifs-box">
-                                @foreach($user->notifs as $notification)
+                                <!-- @foreach($user->notifs as $notification)
                                     @if($loop->index == 6)
                                         @break
                                     @endif
@@ -89,11 +89,107 @@
                                 </div>
                                 @if($user->notifs->count() > 6)
                                     <input type='button' class="see-all-full-style notifications-load" value="{{__('load more')}}">
-                                @endif
+                                @endif -->
+                                <div class="flex" style="padding: 6px">
+                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                    <div class="full-width">
+                                        <div class="flex align-center">
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex" style="padding: 6px">
+                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                    <div class="full-width">
+                                        <div class="flex align-center">
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex" style="padding: 6px">
+                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                    <div class="full-width">
+                                        <div class="flex align-center">
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex" style="padding: 6px">
+                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                    <div class="full-width">
+                                        <div class="flex align-center">
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="relative">
+                    <div class="relative"> <!-- messages (soon) -->
                         <div class="header-button button-with-suboptions pointer" title="Messages">
                             <svg class="small-image-2" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M317,31H45A44.94,44.94,0,0,0,0,76V256a44.94,44.94,0,0,0,45,45H60v45c0,10.84,11.22,18.69,22.2,13.2.3-.3.9-.3,1.2-.6,82.52-55.33,64-43,82.5-55.2A15.09,15.09,0,0,1,174,301H317a44.94,44.94,0,0,0,45-45V76A44.94,44.94,0,0,0,317,31ZM197,211H75c-19.77,0-19.85-30,0-30H197C216.77,181,216.85,211,197,211Zm90-60H75c-19.77,0-19.85-30,0-30H287C306.77,121,306.85,151,287,151Zm180,0H392V256a75,75,0,0,1-75,75H178.5L150,349.92V376a44.94,44.94,0,0,0,45,45H342.5l86.1,57.6c11.75,6.53,23.4-1.41,23.4-12.6V421h15a44.94,44.94,0,0,0,45-45V196A44.94,44.94,0,0,0,467,151Z"/></svg>
                         </div>
@@ -114,7 +210,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div> <!-- quick access -->
                         <div class="header-button button-with-suboptions quick-access-generate pointer" title="{{ __('Quick access') }}">
                             <svg class="small-image-2" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M106.67,0H21.33A21.34,21.34,0,0,0,0,21.33v85.34A21.34,21.34,0,0,0,21.33,128h85.34A21.34,21.34,0,0,0,128,106.67V21.33A21.34,21.34,0,0,0,106.67,0Zm0,192H21.33A21.34,21.34,0,0,0,0,213.33v85.34A21.34,21.34,0,0,0,21.33,320h85.34A21.34,21.34,0,0,0,128,298.67V213.33A21.34,21.34,0,0,0,106.67,192Zm0,192H21.33A21.34,21.34,0,0,0,0,405.33v85.34A21.34,21.34,0,0,0,21.33,512h85.34A21.34,21.34,0,0,0,128,490.67V405.33A21.34,21.34,0,0,0,106.67,384Zm192-384H213.33A21.34,21.34,0,0,0,192,21.33v85.34A21.34,21.34,0,0,0,213.33,128h85.34A21.34,21.34,0,0,0,320,106.67V21.33A21.34,21.34,0,0,0,298.67,0Zm0,192H213.33A21.34,21.34,0,0,0,192,213.33v85.34A21.34,21.34,0,0,0,213.33,320h85.34A21.34,21.34,0,0,0,320,298.67V213.33A21.34,21.34,0,0,0,298.67,192Zm0,192H213.33A21.34,21.34,0,0,0,192,405.33v85.34A21.34,21.34,0,0,0,213.33,512h85.34A21.34,21.34,0,0,0,320,490.67V405.33A21.34,21.34,0,0,0,298.67,384Zm192-384H405.33A21.34,21.34,0,0,0,384,21.33v85.34A21.34,21.34,0,0,0,405.33,128h85.34A21.34,21.34,0,0,0,512,106.67V21.33A21.34,21.34,0,0,0,490.67,0Zm0,192H405.33A21.34,21.34,0,0,0,384,213.33v85.34A21.34,21.34,0,0,0,405.33,320h85.34A21.34,21.34,0,0,0,512,298.67V213.33A21.34,21.34,0,0,0,490.67,192Zm0,192H405.33A21.34,21.34,0,0,0,384,405.33v85.34A21.34,21.34,0,0,0,405.33,512h85.34A21.34,21.34,0,0,0,512,490.67V405.33A21.34,21.34,0,0,0,490.67,384Z"/></svg>
                         </div>

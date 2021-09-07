@@ -116,6 +116,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'notifications'])->name('user.notifications');
     Route::post('/notifications/markasread', [NotificationController::class, 'mark_as_read']);
     Route::post('/notification/generate', [NotificationController::class, 'notification_generate']);
+    Route::get('/notifications/bootstrap', [NotificationController::class, 'generate_header_notifications_bootstrap']);
     Route::get('/notifications/generate', [NotificationController::class, 'notification_generate_range']);
     Route::post('/notification/{notification_id}/disable', [NotificationController::class, 'disable']);
     Route::post('/notification/{notification_id}/enable', [NotificationController::class, 'enable']);

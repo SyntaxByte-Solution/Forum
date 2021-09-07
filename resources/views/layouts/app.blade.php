@@ -30,10 +30,8 @@
         <!-- IMPORT HEADER FROM PARTIALS LATER -->
         @yield('header')
         <main class="relative">
-            @include('partials.general.top-message-informer')
+            @include('partials.shared-components')
             @yield('content')
-            @include('partials.notification')
-            @include('partials.general.basic-notification')
         </main>
     </div>
 </body>

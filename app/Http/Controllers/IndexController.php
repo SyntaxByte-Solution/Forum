@@ -18,14 +18,9 @@ class IndexController extends Controller
         $tab_title = 'All'; // By default is all, until the user choose other option
         $tab = "all";
         $pagesize = self::PAGESIZE;
+
         if($request->has('tab')) {
-            $data = $request->validate([
-                'tab'=>[
-                    'alpha',
-                    Rule::in(['today', 'thisweek', 'all']),
-                ]
-            ]);
-            $tab = $data['tab'];
+            $tab = $request->get('tab');
             if($tab == 'today') {
                 $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->paginate($pagesize);
                 $tab_title = 'Today';
@@ -52,14 +47,12 @@ class IndexController extends Controller
         ->with(compact('recent_threads'))
         ->with(compact('forums'));
     }
-
     public function forums() {
         $forums = Forum::all();
         
         return view('forums')
             ->with(compact('forums'));
     }
-
     public function announcements() {
         $announcement_ids = Category::where('slug', 'announcements')->pluck('id');
         $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereIn('category_id', $announcement_ids)->paginate(6);
@@ -68,15 +61,12 @@ class IndexController extends Controller
         ->with(compact('forums'))
         ->with(compact('announcements'));
     }
-
     public function guidelines() {
         return view('guidelines');
     }
-
     public function about() {
         return view('aboutus');
     }
-
     public function privacy() {
         return view('privacy-policy');
     }

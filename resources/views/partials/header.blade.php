@@ -1,8 +1,3 @@
-<?php
-    error_reporting(E_ALL);
-    ini_set('display_errors', 'On');
-?>
-
 <header>
     <input type="hidden" class="uid" autocomplete="off" value="@auth{{ auth()->user()->id }}@endauth">
     <div id="header" class="relative">
@@ -50,20 +45,24 @@
                     <input type="submit" value="{{ __('search') }}" class="search-button">
                 </form>
             </div>
+            <!--
+                Here in case the user is authenticated, we need to fetch unread notifications explicitely using DB facade 
+                without sorting them by created_at like how $user->unreadNotifications method do (see docs: unreadNotifications fetch unread notifs AND sorts them desc by 
+                which affect the performence of the query). Here we only need to get the count so we don't have to order the result
+            -->
             @auth
                 @php
                     $user = auth()->user();
-                    if($unread_notifications_counter = $user->unreadNotifications->count()) {
+                    if($unread_notifications_counter = $user->unreadNotifications()->count()) {
                         $unread_notifications_counter = ($unread_notifications_counter > 99) 
-                            ? ('+'.$unread_notifications_counter)
+                            ? '+' . $unread_notifications_counter
                             : $unread_notifications_counter;
                     }
                 @endphp
                 <div class="flex align-center">
-                    <div class="relative"> <!-- notifs -->
+                    <div class="relative"> <!-- header notifications -->
                         <div class="header-button-counter-indicator @if(!$unread_notifications_counter) none @endif">{{ $unread_notifications_counter }}</div>
                         <div class="header-button button-with-suboptions pointer notification-button" title="Notifications">
-                            <!-- let's try using paths -->
                             <svg class="small-image-2" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,512a64,64,0,0,0,64-64H192A64,64,0,0,0,256,512ZM471.39,362.29c-19.32-20.76-55.47-52-55.47-154.29,0-77.7-54.48-139.9-127.94-155.16V32a32,32,0,1,0-64,0V52.84C150.56,68.1,96.08,130.3,96.08,208c0,102.3-36.15,133.53-55.47,154.29A31.24,31.24,0,0,0,32,384c.11,16.4,13,32,32.1,32H447.9c19.12,0,32-15.6,32.1-32A31.23,31.23,0,0,0,471.39,362.29Z"/></svg>
                         </div>    
                         <div class="suboptions-container suboptions-header-button-style">
@@ -76,20 +75,6 @@
                                 <a href="{{ route('user.notifications') }}" class="link-path">{{ __('See all') }}</a>
                             </div>
                             <div class="suboptions-container-dims notifs-box">
-                                <!-- @foreach($user->notifs as $notification)
-                                    @if($loop->index == 6)
-                                        @break
-                                    @endif
-                                    <x-user.header-notification :notification="$notification"/>
-                                @endforeach
-                                <div class="notification-empty-box my8 @if($user->notifications->count()) none @endif">
-                                    <svg class="flex size28 move-to-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 438.53 438.53"><path d="M431.4,211l-68-157.6A25.47,25.47,0,0,0,353,41.4q-7.56-4.86-15-4.86H100.5q-7.43,0-15,4.86a25.52,25.52,0,0,0-10.42,12L7.14,211A91.85,91.85,0,0,0,0,246.1V383.72a17.59,17.59,0,0,0,5.42,12.85A17.61,17.61,0,0,0,18.27,402h402a18.51,18.51,0,0,0,18.26-18.27V246.1A91.84,91.84,0,0,0,431.4,211ZM292.07,237.54,265,292.36H173.59l-27.12-54.82H56.25a12.85,12.85,0,0,0,.71-2.28,13.71,13.71,0,0,1,.72-2.29L118.2,91.37H320.34L380.86,233c.2.58.43,1.34.71,2.29s.53,1.7.72,2.28Z"/></svg>
-                                    <h3 class="my4 fs17 text-center">{{__('Notifications box is empty')}}</h3>
-                                    <p class="my4 fs13 gray text-center">{{ __('Try to start discussions/questions or react to people posts') }}.</p>
-                                </div>
-                                @if($user->notifs->count() > 6)
-                                    <input type='button' class="see-all-full-style notifications-load" value="{{__('load more')}}">
-                                @endif -->
                                 <div class="flex" style="padding: 6px">
                                     <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
                                         <div class="fade-loading"></div>

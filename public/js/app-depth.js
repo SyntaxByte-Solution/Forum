@@ -1152,9 +1152,23 @@ $('.set-lang').on('click', function(event) {
     event.preventDefault();
 });
 
+let header_notifs_bootstrap_fetched = false;
 $('.notification-button').on('click', function() {
-    handle_mark_as_read();
-    handle_lazy_loading();
+    if(header_notifs_bootstrap_fetched) {
+        return;
+    }
+
+    $.ajax({
+        type: 'get',
+        url: '/notifications/bootstrap',
+        success: function(response) {
+            header_notifs_bootstrap_fetched = true;
+            $('.notifs-box').html(response);
+            loadNotifications($('.notifs-box .notifications-load'));
+            handle_lazy_loading();
+            handle_mark_as_read();
+        }
+    })
 });
 
 function handle_mark_as_read() {
@@ -1208,33 +1222,39 @@ if(userId != "") {
                 });
             }, 5000);
 
-            $.ajax({
-                type: 'post',
-                url: '/notification/generate',
-                data: {
-                    _token: csrf,
-                    notif_id: notification.id,
-                    action_user: notification.action_user,
-                    action_statement: notification.action_statement,
-                    resource_string_slice: notification.resource_string_slice,
-                    action_date: notification.resource_date,
-                    action_resource_link: notification.action_resource_link,
-                    resource_action_icon: notification.resource_action_icon,
-                    notif_read: notification.notif_read,
-                    action_type: notification.action_type
-                },
-                success: function(response) {
-                    $('.notifs-box').prepend(response);
-                    let appended_component = $('.notifs-box').last().find('.notification-container').first();
-                    handle_image_dimensions(appended_component.find('.action_takers_image'));
-                    handle_notification_menu_appearence(appended_component);
-                    handle_notification_menu_buttons(appended_component.find('.notification-menu-button'));
-                    handle_nested_soc(appended_component.find('.notification-menu-button'));
-                    handle_delete_notification(appended_component.find('.delete-notification'));
-                    handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
-                    handle_lazy_loading();
-                }
-            })
+            /**
+             * Notice here that we only append the notification to the header notifs container if the user has already 
+             * open the notifications container in the header.
+             */
+            if(header_notifs_bootstrap_fetched) {
+                $.ajax({
+                    type: 'post',
+                    url: '/notification/generate',
+                    data: {
+                        _token: csrf,
+                        notif_id: notification.id,
+                        action_user: notification.action_user,
+                        action_statement: notification.action_statement,
+                        resource_string_slice: notification.resource_string_slice,
+                        action_date: notification.resource_date,
+                        action_resource_link: notification.action_resource_link,
+                        resource_action_icon: notification.resource_action_icon,
+                        notif_read: notification.notif_read,
+                        action_type: notification.action_type
+                    },
+                    success: function(response) {
+                        $('.notifs-box').prepend(response);
+                        let appended_component = $('.notifs-box').last().find('.notification-container').first();
+                        handle_image_dimensions(appended_component.find('.action_takers_image'));
+                        handle_notification_menu_appearence(appended_component);
+                        handle_notification_menu_buttons(appended_component.find('.notification-menu-button'));
+                        handle_nested_soc(appended_component.find('.notification-menu-button'));
+                        handle_delete_notification(appended_component.find('.delete-notification'));
+                        handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
+                        handle_lazy_loading();
+                    }
+                })
+            }
 
             if($("#page").length) {
                 if($("#page").val() == "notifications-page") {
@@ -1251,54 +1271,56 @@ $('.notifications-load').on('click', function(event) {
     loadNotifications(button);
 });
 function loadNotifications(button) {
-    button.val('loading..')
-    button.attr("disabled","disabled");
-    button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
-    
-    let notifs_box = button;
-    while(!notifs_box.hasClass('notifs-box')) {
-        notifs_box = notifs_box.parent();
-    }
-
-    let present_notifs_count = notifs_box.find('.notification-container').length;
-
-    $.ajax({
-        url: '/notifications/generate?range='+6+'&skip='+present_notifs_count,
-        type: 'get',
-        success: function(notifications_components) {
-            if(notifications_components.hasNext == false) {
-                button.addClass('none');
-            }
-
-            if(notifications_components.content != "") {
-                $(`${notifications_components.content}`).insertBefore(button);
-    
-                /**
-                 * Notice here when we fetch the notifications we return the number of fetched notifs
-                 * because we need to handle the last count of appended components events
-                 * 
-                 */
-                let unhandled_event_notification_components = 
-                    $('.notifs-box > .notification-container').slice(notifications_components.count*(-1));
-                
-                unhandled_event_notification_components.each(function() {
-                    handle_notification_menu_appearence($(this));
-                    handle_notification_menu_buttons($(this).find('.notification-menu-button'));
-                    handle_nested_soc($(this).find('.notification-menu-button'));
-                    handle_delete_notification($(this).find('.delete-notification'));
-                    handle_disable_switch_notification($(this).find('.disable-switch-notification'));
-                    handle_image_dimensions($(this).find('.action_takers_image'));
-                    handle_lazy_loading();
-                });
-            }
-        },
-        complete: function() {
-            button.val('load more');
-            button.attr('style', '');
-            button.prop("disabled", false);
-            $('.notif-state-couter').val(present_notifs_count+1);
+    button.on('click', function() {
+        button.val('loading..')
+        button.attr("disabled","disabled");
+        button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
+        
+        let notifs_box = button;
+        while(!notifs_box.hasClass('notifs-box')) {
+            notifs_box = notifs_box.parent();
         }
-    })
+        
+        let present_notifs_count = notifs_box.find('.notification-container').length;
+        
+        $.ajax({
+            url: '/notifications/generate?range='+6+'&skip='+present_notifs_count,
+            type: 'get',
+            success: function(notifications_components) {
+                if(notifications_components.hasNext == false) {
+                    button.addClass('none');
+                }
+        
+                if(notifications_components.content != "") {
+                    $(`${notifications_components.content}`).insertBefore(button);
+        
+                    /**
+                     * Notice here when we fetch the notifications we return the number of fetched notifs
+                     * because we need to handle the last count of appended components events
+                     * 
+                     */
+                    let unhandled_event_notification_components = 
+                        $('.notifs-box > .notification-container').slice(notifications_components.count*(-1));
+                    
+                    unhandled_event_notification_components.each(function() {
+                        handle_notification_menu_appearence($(this));
+                        handle_notification_menu_buttons($(this).find('.notification-menu-button'));
+                        handle_nested_soc($(this).find('.notification-menu-button'));
+                        handle_delete_notification($(this).find('.delete-notification'));
+                        handle_disable_switch_notification($(this).find('.disable-switch-notification'));
+                        handle_image_dimensions($(this).find('.action_takers_image'));
+                        handle_lazy_loading();
+                    });
+                }
+            },
+            complete: function() {
+                button.val('load more');
+                button.attr('style', '');
+                button.prop("disabled", false);
+                $('.notif-state-couter').val(present_notifs_count+1);
+            }
+        })
+    });
 }
 
 $('.hidden-notification-container').on({

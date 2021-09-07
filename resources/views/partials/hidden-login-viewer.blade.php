@@ -17,7 +17,7 @@
         </div>
         <div id="login-view" class="auth-card">
             <div>
-                <img id="login-top-logo" class="move-to-middle" src="{{ asset('assets/images/logos/large-logo(200black).png') }}" load="lazy" alt="logo">
+                <img id="login-top-logo" class="move-to-middle" src="{{ asset('assets/images/logos/header-logo.png') }}" load="lazy" alt="logo">
             </div>
             <h1>{{ __('Login') }}</h1>
             <form method="POST" action="{{ route('login') }}" class="move-to-middle">

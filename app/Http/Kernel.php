@@ -40,7 +40,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\AccountActivationCheck::class,
             \App\Http\Middleware\LastUserActivity::class,
             \App\Http\Middleware\XssSanitizer::class,
-            \Spatie\Csp\AddCspHeaders::class,
+            // \Spatie\Csp\AddCspHeaders::class,
         ],
 
         'api' => [

@@ -14,7 +14,7 @@
     <link rel="preload" as="image" href="{{ auth()->user()->sizedavatar(36, '-l') }}">
     @endauth
     <script src="{{ asset('js/bootstrap.js') }}"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <script type="text/javascript" src="{{ asset('js/imagesloaded.js') }}" defer></script>

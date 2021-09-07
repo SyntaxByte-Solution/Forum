@@ -44,7 +44,7 @@ $('.block-click').on('click', function() {
     return false;
 });
 
-$('.x-close-container').click(function(event) {
+$('.x-close-container').on('click', function(event) {
     $(this).parent().addClass('none');
 
     event.stopPropagation();
@@ -119,7 +119,7 @@ function handle_suboptions_container(button) {
 
 function handle_nested_soc(button) {
     // nested-soc: nested suboptions container
-    button.click(function() {
+    button.on('click', function() {
         // Handle only the third level of suboptions, later we're gonna handle infinite number of suboptions level
 
         if(button.parent().find('.nested-soc').css('display') == 'block') {
@@ -133,7 +133,7 @@ function handle_nested_soc(button) {
 }
 
 function handle_notification_menu_buttons(button) {
-    button.click(function(event) {
+    button.on('click', function(event) {
         $('.notification-menu-button-container').addClass('none');
         button.parent().removeClass('none');
     })
@@ -186,7 +186,7 @@ function handle_section_suboptions_hinding(section) {
     });
 }
 
-$('.close-shadowed-view-button').click(function() {
+$('.close-shadowed-view-button').on('click', function() {
     let shadowed_container = $(this);
 
     while(!shadowed_container.hasClass('full-shadowed')) {
@@ -309,7 +309,7 @@ function handle_viewer_infos_height(infos) {
     infos.height($('#thread-media-viewer').height() - $('.thread-media-viewer-infos-header').height() - 16);
 }
 
-$('.reply-to-thread').click(function() {
+$('.reply-to-thread').on('click', function() {
     setTimeout(function(){$('textarea').focus();}, 200);
     
     location.hash = "#reply-site";
@@ -557,7 +557,7 @@ function handle_close_shadowed_view(component) {
     })
 }
 
-$('.hide-parent').click(function() {
+$('.hide-parent').on('click', function() {
     $(this).parent().css('display', 'none');
 
     return false;
@@ -628,7 +628,7 @@ function updateQueryStringParameter(uri, key, value) {
     }
 }
 
-$('.send-feedback').click(function() {
+$('.send-feedback').on('click', function() {
     let button = $(this);
     let btn_text_ing = button.find('.btn-text-ing').val();
     let btn_text_no_ing = button.find('.btn-text-no-ing').val();
@@ -719,7 +719,7 @@ $('.send-feedback').click(function() {
     })
 });
 
-$('.emoji-button').click(function(event) {
+$('.emoji-button').on('click', function(event) {
     event.preventDefault();
     let emoji_button = $(this);
 
@@ -1029,7 +1029,7 @@ $('.like-resource').each(function() {
     handle_resource_like($(this));
 });
 function handle_resource_like(like_button) {
-    like_button.click(function() {
+    like_button.on('click', function() {
         let likable_id = like_button.find('.likable-id').val();
         let likable_type = like_button.find('.likable-type').val();
 
@@ -1132,7 +1132,7 @@ function handle_like_sync(button, like_icon_status, new_like_count) {
     }
 }
 
-$('.set-lang').click(function(event) {
+$('.set-lang').on('click', function(event) {
     let language = $(this).find('.lang-value').val();
     let loading = $(this).find('.loading-dots-anim');
     loading.removeClass('none');
@@ -1244,7 +1244,7 @@ if(userId != "") {
         });
 }
 
-$('.notifications-load').click(function(event) {
+$('.notifications-load').on('click', function(event) {
     event.preventDefault();
     let button = $(this);
 
@@ -1331,7 +1331,7 @@ $('.disable-switch-notification').each(function() {
 
 let notification_delete_lock = true;
 function handle_delete_notification(button) {
-    button.click(function() {
+    button.on('click', function() {
         if(!notification_delete_lock) {
             return false;;
         }
@@ -1369,7 +1369,7 @@ function handle_delete_notification(button) {
 
 let notification_disable_switch_lock = true;
 function handle_disable_switch_notification(button) {
-    button.click(function() {
+    button.on('click', function() {
         if(!notification_disable_switch_lock) {
             return false;;
         }
@@ -1498,7 +1498,7 @@ $('.thread-add-category').each(function() {
 })
 
 function handle_category_selection(category_button) {
-    category_button.click(function(event) {
+    category_button.on('click', function(event) {
         event.stopPropagation();
         $(".thread-add-selected-category").text(category_button.find('.thread-add-category-val').text());
 
@@ -1537,7 +1537,7 @@ $('.thread-container-box').each(function() {
 });
 
 function handle_thread_display(thread_container_box) {
-    thread_container_box.find('.thread-display-button').click(function() {
+    thread_container_box.find('.thread-display-button').on('click', function() {
         let thread_component_display = thread_container_box.find('.thread-component').css('display');
 
         if(thread_component_display == 'none') {
@@ -1629,7 +1629,7 @@ $('.follow-resource').each(function() {
 
 let follow_resource_lock = true;
 function handle_follow_resource(button) {
-    button.click(function() {
+    button.on('click', function() {
         if(!follow_resource_lock) {
             return;
         }
@@ -2794,11 +2794,11 @@ $('.thread-viewer-right').on('click', function(event) {
     }
 });
 
-$('#thread-viewer-media-image').click(function(event) {
+$('#thread-viewer-media-image').on('click', function(event) {
     event.stopPropagation();
 });
 
-$('.thread-media-viewer-content-section').click(function() {
+$('.thread-media-viewer-content-section').on('click', function() {
     handle_viewer_closing();
 })
 function handle_viewer_closing() {
@@ -3038,7 +3038,7 @@ function stop_loading_strip() {
 }
 
 function handle_viewer_replies_load(button) {
-    button.click(function() {
+    button.on('click', function() {
         let button_text_ing = button.parent().find('.button-text-ing').val();
         let button_text_no_ing = button.parent().find('.button-text-no-ing').val();
         
@@ -3084,7 +3084,7 @@ $('.move-to-thread-replies').each(function() {
 });
 
 function handle_move_to_thread_replies(button) {
-    button.click(function() {
+    button.on('click', function() {
         if($('#thread-show-replies-section').length) {
             location.hash = "#thread-show-replies-section";
             // we scroll to top by 50 because header's height is 52px and header is absolute (50 and not 52 because 50 look better :=D )
@@ -3101,7 +3101,7 @@ function handle_move_to_thread_replies(button) {
                 let c = container.find('.thread-media-container').first();
                 let c_type = c.find('.media-type').val();
                 if(c_type == 'image') {
-                    container.find('.thread-media-container').first().click();
+                    container.find('.thread-media-container').first().on('click', );
                     if(last_opened_thread && last_opened_thread == container.find('.thread-id').first().val()) {
                         document.getElementById("viewer-replies-site").scrollIntoView(true);
                     } else {
@@ -3130,7 +3130,7 @@ $('.save-thread').each(function() {
 });
 
 function handle_save_threads(save_button) {
-    save_button.click(function() {
+    save_button.on('click', function() {
         let loading = save_button.find('.loading-dots-anim');
         loading.removeClass('none');
         start_loading_anim(loading);
@@ -3183,7 +3183,7 @@ function basic_notification_show(message, icon='') {
 }
 
 // -------------------------------------    reporting section    -------------------------------------
-$('.close-report-container').click(function() {
+$('.close-report-container').on('click', function() {
     let report_container = $(this);
     while(!report_container.hasClass('report-resource-container')) {
         report_container = report_container.parent();
@@ -3735,7 +3735,7 @@ $('.move-to-trash-button').each(function() {
     handle_move_to_trash($(this));
 });
 function handle_move_to_trash(button) {
-    button.click(function() {
+    button.on('click', function() {
         let button_text_no_ing = button.find('.btn-text-no-ing').val();
         let button_text_ing = button.find('.btn-text-ing').val();
         let moved_successfully = button.find('.moved-successfully').val();
@@ -4007,6 +4007,7 @@ $('.quick-access-generate').on('click', function() {
     if(quick_access_fetched) {
         return;
     }
+
     $.ajax({
         type: 'get',
         url: '/generatequickaccess',

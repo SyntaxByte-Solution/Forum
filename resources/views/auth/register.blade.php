@@ -25,10 +25,13 @@
 
 
 @section('content')
-    <div class="auth-card relative">
-        <a href="/login" class="back-to-login link-style">< {{ __('Back to login') }}</a>
-        <div>
-            <a href="../"><img id="login-top-logo" class="move-to-middle" src="/assets/images/logos/large-logo.png" alt="logo"></a>
+    <div class="auth-card relative" style="margin-top: 80px; padding: 26px 80px">
+        <a href="{{ route('login') }}" class="back-to-login link-style flex align-center mb4">
+            <svg class="mr4" style="width: 13px; height: 13px" fill="#2ca0ff" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M31.7,239l136-136a23.9,23.9,0,0,1,33.8-.1l.1.1,22.6,22.6a23.91,23.91,0,0,1,.1,33.8l-.1.1L127.9,256l96.4,96.4a23.91,23.91,0,0,1,.1,33.8l-.1.1L201.7,409a23.9,23.9,0,0,1-33.8.1l-.1-.1L31.8,273a23.93,23.93,0,0,1-.26-33.84l.16-.16Z"/></svg>
+            {{ __('Back to login') }}
+        </a>
+        <div class="mt8">
+            <a href="../"><img id="login-top-logo" class="move-to-middle" src="{{ asset('assets/images/logos/header-logo.png') }}" alt="logo"></a>
         </div>
         <h1 class="forum-color fs26 text-center">{{ __('SIGNUP') }}</h1>
         <p class="fs20 text-center">{{ __('In order to prevent abuse we require users to sign up using social login') }}</p>

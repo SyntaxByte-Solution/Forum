@@ -285,7 +285,7 @@
     "Delete": "Effacer",
     "Firstname": "Prénom",
     "Lastname": "Nom de famille",
-    "Change username": "Changer de nom d'utilisateur",
+    "Change username": "Changer le nom d'utilisateur",
     "check": "vérifier",
     "checking": "vérification",
     "About me": "À propos de moi",
@@ -735,5 +735,8 @@
     "EXPLORE DISCUSSIONS": "EXPLORER LES DISCUSSIONS",
     "Discussions with best reply": "Discussions avec une meilleure réponse",
     "List discussions that has a best reply and sorting from the newest to the oldest": "Liste les discussions qui ont la meilleure réponse et tri de la plus récente à la plus ancienne",
-    "OTHER LINKS": "AUTRES LIENS"
+    "OTHER LINKS": "AUTRES LIENS",
+    "Back to login": "Retour à la connexion",
+    "SIGNUP": "S'INSCRIRE",
+    "In order to prevent abuse we require users to sign up using social login": "Afin d'éviter les abus, nous demandons aux utilisateurs de s'inscrire en utilisant l'un des identifiants sociaux suivants"
 }

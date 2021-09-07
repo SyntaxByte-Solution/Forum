@@ -27,6 +27,22 @@ jQuery.fn.rotate = function(degrees) {
 //     $(window).scrollTop(0);
 //  });
 
+/**
+ * Update user activity in every page (because this js file is included in every page) and update the user
+ * activity every 2 seconds if the user doesn't change the page
+ */
+update_user_last_activity();
+setInterval(function() {
+    update_user_last_activity();
+}, 120000);
+
+function update_user_last_activity() {
+    $.ajax({
+        type: 'get',
+        url: '/user/update_last_activity',
+    });
+}
+
 $('.button-with-strip').on({
     mouseenter: function() {
         $(this).find('.menu-botton-bottm-strip').css('display', 'block');

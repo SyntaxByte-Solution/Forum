@@ -34,10 +34,7 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
-    
-    $string = __("Hello :attribute", ['attribute'=>'MOUAD']);
-    dd($string);
-
+    dd(\Illuminate\Support\Facades\Auth::user());
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -121,6 +118,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notification/{notification_id}/disable', [NotificationController::class, 'disable']);
     Route::post('/notification/{notification_id}/enable', [NotificationController::class, 'enable']);
     Route::delete('/notification/{notification_id}/delete', [NotificationController::class, 'destroy']);
+
+    Route::get('/user/update_last_activity', [GeneralController::class, 'update_user_last_activity']);
 
     Route::post('/users/{user}/follow', [FollowController::class, 'follow_user']);
     Route::post('/threads/{thread}/follow', [FollowController::class, 'follow_thread']);

@@ -46,14 +46,14 @@
                 </form>
             </div>
             <!--
-                Here in case the user is authenticated, we need to fetch unread notifications explicitely using DB facade 
-                without sorting them by created_at like how $user->unreadNotifications method do (see docs: unreadNotifications fetch unread notifs AND sorts them desc by 
-                which affect the performence of the query). Here we only need to get the count so we don't have to order the result
+                Here in case the user is authenticated, we need to fetch unread notifications without sorting them by created_at 
+                ike how $authuser->unreadNotifications method do (see docs: unreadNotifications fetch unread notifs AND sorts them desc by 
+                which affect the performence of the query). Here we need to use unreadNotifications() relationship instead of fetch the collection and get the count
             -->
             @auth
                 @php
-                    $user = auth()->user();
-                    if($unread_notifications_counter = $user->unreadNotifications()->count()) {
+                    $authuser = auth()->user();
+                    if($unread_notifications_counter = $authuser->unreadNotifications()->count()) {
                         $unread_notifications_counter = ($unread_notifications_counter > 99) 
                             ? '+' . $unread_notifications_counter
                             : $unread_notifications_counter;
@@ -294,28 +294,28 @@
                                 <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="header-profile-picture size36">
                             </div>
                             <p class="no-margin fs13 mx4 light-gray flex align-center">
-                                {{ $user->username }} 
+                                {{ $authuser->username }} 
                                 <svg class="size7 ml8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </p>
                         </div>
                         <div class="suboptions-container suboptions-account-style">
                             <div class="flex first-profile-container-part">
-                                <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="relative">
+                                <a href="{{ route('user.profile', ['user'=>$authuser->username]) }}" class="relative">
                                     <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="rounded size36 mr8">
                                 </a>
                                 <div>
-                                    <p class="no-margin fs15 bold unselectable">{{ $user->firstname . ' ' . $user->lastname }}</p>
-                                    <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="no-underline">
-                                        <p class="no-margin fs12 blue">{{ $user->username }}</p>
+                                    <p class="no-margin fs15 bold unselectable">{{ $authuser->firstname . ' ' . $authuser->lastname }}</p>
+                                    <a href="{{ route('user.profile', ['user'=>$authuser->username]) }}" class="no-underline">
+                                        <p class="no-margin fs12 blue">{{ $authuser->username }}</p>
                                     </a>
 
                                 </div>
                             </div>
-                            <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="suboption-style-1">
+                            <a href="{{ route('user.profile', ['user'=>$authuser->username]) }}" class="suboption-style-1">
                                 <svg class="size17 mr8" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z"></path></svg>
                                 <p class="no-margin">{{__('Profile')}}</p>
                             </a>
-                            <a href="{{ route('user.activities', ['user'=>$user->username]) }}" class="suboption-style-1">
+                            <a href="{{ route('user.activities', ['user'=>$authuser->username]) }}" class="suboption-style-1">
                                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448,0H64A64.08,64.08,0,0,0,0,64V448a64.08,64.08,0,0,0,64,64H448a64.07,64.07,0,0,0,64-64V64A64.08,64.08,0,0,0,448,0Zm21.33,448A21.35,21.35,0,0,1,448,469.33H64A21.34,21.34,0,0,1,42.67,448V64A21.36,21.36,0,0,1,64,42.67H448A21.36,21.36,0,0,1,469.33,64ZM147.63,119.89a22.19,22.19,0,0,0-4.48-7c-1.07-.85-2.14-1.7-3.2-2.56a16.41,16.41,0,0,0-3.84-1.92,13.77,13.77,0,0,0-3.84-1.28,20.49,20.49,0,0,0-12.38,1.28,24.8,24.8,0,0,0-7,4.48,22.19,22.19,0,0,0-4.48,7,20.19,20.19,0,0,0,0,16.22,22.19,22.19,0,0,0,4.48,7A22.44,22.44,0,0,0,128,149.33a32.71,32.71,0,0,0,4.27-.42,13.77,13.77,0,0,0,3.84-1.28,16.41,16.41,0,0,0,3.84-1.92c1.06-.86,2.13-1.71,3.2-2.56A22.44,22.44,0,0,0,149.33,128,21.38,21.38,0,0,0,147.63,119.89ZM384,106.67H213.33a21.33,21.33,0,0,0,0,42.66H384a21.33,21.33,0,0,0,0-42.66ZM148.91,251.73a13.77,13.77,0,0,0-1.28-3.84,16.41,16.41,0,0,0-1.92-3.84c-.86-1.06-1.71-2.13-2.56-3.2a24.8,24.8,0,0,0-7-4.48,21.38,21.38,0,0,0-16.22,0,24.8,24.8,0,0,0-7,4.48c-.85,1.07-1.7,2.14-2.56,3.2a16.41,16.41,0,0,0-1.92,3.84,13.77,13.77,0,0,0-1.28,3.84,32.71,32.71,0,0,0-.42,4.27A21.1,21.1,0,0,0,128,277.33,21.12,21.12,0,0,0,149.34,256,34.67,34.67,0,0,0,148.91,251.73ZM384,234.67H213.33a21.33,21.33,0,0,0,0,42.66H384a21.33,21.33,0,0,0,0-42.66ZM147.63,375.89a20.66,20.66,0,0,0-27.74-11.52,24.8,24.8,0,0,0-7,4.48,24.8,24.8,0,0,0-4.48,7,21.38,21.38,0,0,0-1.7,8.11,21.33,21.33,0,1,0,42.66,0A17.9,17.9,0,0,0,147.63,375.89ZM384,362.67H213.33a21.33,21.33,0,0,0,0,42.66H384a21.33,21.33,0,0,0,0-42.66Z"/></svg>
                                 <p class="no-margin">{{__('My activities')}}</p>
                             </a>

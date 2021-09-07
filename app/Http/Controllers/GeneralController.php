@@ -37,4 +37,8 @@ class GeneralController extends Controller
         $quickaccess = $quickaccess->render(get_object_vars($quickaccess))->render();
         return $quickaccess;
     }
+    public function update_user_last_activity() {
+        $expiresAt = \Carbon\Carbon::now()->addMinutes(4);
+        \Cache::put('user-is-online-' . \Auth::user()->id, true, $expiresAt);
+    }
 }

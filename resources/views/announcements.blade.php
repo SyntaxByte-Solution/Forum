@@ -16,7 +16,6 @@
 @endsection
 
 @section('content')
-    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'announcements'])
     <style>
         #middle-padding {

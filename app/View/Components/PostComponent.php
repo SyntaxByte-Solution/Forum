@@ -25,11 +25,7 @@ class PostComponent extends Component
 
         $this->post_date = (new Carbon($post->created_at))->diffForHumans();
 
-        $vote_count = 0;
-        foreach($post->votes as $vote) {
-            $vote_count += $vote->vote;
-        }
-        $this->votes = $vote_count;
+        $this->votes = $post->votevalue;
     }
 
     /**

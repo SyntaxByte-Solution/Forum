@@ -34,15 +34,15 @@ class IndexResource extends Component
 
     public function __construct(Thread $thread) {
         $this->thread = $thread;
-        $this->forum = Forum::find($thread->category->forum_id);
-        $this->category = Category::find($thread->category_id);
+        $this->forum = $thread->category->forum;
+        $this->category = $thread->category;
         $forum = $this->forum->slug;
 
         $this->at = (new Carbon($thread->created_at))->toDayDateTimeString();
         $this->at_hummans = (new Carbon($thread->created_at))->diffForHumans();
         $this->views = $thread->view_count;
-        $this->replies = $thread->posts->count();
-        $this->likes = $thread->likes->count();
+        $this->replies = $thread->posts()->count();
+        $this->likes = $thread->likes()->count();
         $this->content = Str::markdown($thread->content);
 
         if(Auth::check()) {

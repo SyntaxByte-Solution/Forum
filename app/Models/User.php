@@ -231,7 +231,7 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function votes() {
-        return Vote::where('user_id', $this->id)->get();
+        return $this->hasMany(Vote::class);
     }
 
     public function voted_threads($order="desc") {

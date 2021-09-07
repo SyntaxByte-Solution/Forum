@@ -54,9 +54,13 @@ class IndexController extends Controller
             ->with(compact('forums'));
     }
     public function announcements() {
-        $announcement_ids = Category::where('slug', 'announcements')->pluck('id');
-        $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereIn('category_id', $announcement_ids)->paginate(6);
-        $forums = Forum::all();
+        // $announcement_ids = Category::where('slug', 'announcements')->pluck('id'); // Use where Has instead
+        // $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereIn('category_id', $announcement_ids)->paginate(6);
+
+        $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereHas('category', function($query) {
+            $query->where('slug', 'announcements');
+        })->paginate(6);
+        $forums = Forum::take(6)->get();
         return view('announcements')
         ->with(compact('forums'))
         ->with(compact('announcements'));

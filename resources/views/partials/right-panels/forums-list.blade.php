@@ -5,11 +5,14 @@
             <p class="no-margin bold fs16">{{ __('Forums') }}</p>
         </div>
         <div class="move-to-right">
-            <a href="/forums" class="link-style">{{ __('see all') }}</a>
+            <a href="/forums" class="link-style flex align-center">
+                <svg class="size14 mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M352,289V416H64V128h96V64H32A32,32,0,0,0,0,96V448a32,32,0,0,0,32,32H384a32,32,0,0,0,32-32V289Z"/><path d="M505.6,131.2l-128-96A16,16,0,0,0,352,48V96H304C206.94,96,128,175,128,272a16,16,0,0,0,12.32,15.59A16.47,16.47,0,0,0,144,288a16,16,0,0,0,14.3-8.83l3.78-7.52A143.2,143.2,0,0,1,290.88,192H352v48a16,16,0,0,0,25.6,12.8l128-96a16,16,0,0,0,0-25.6Z"/></svg>
+                {{ __('see all') }}
+            </a>
         </div>
     </div>
     <div class="ml8">
-        @foreach($forums->take(6) as $forum)
+        @foreach($forums as $forum)
         <div class="my8 py4 toggle-box">
             <div class="px8 flex align-center toggle-container-button pointer unselectable">
                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

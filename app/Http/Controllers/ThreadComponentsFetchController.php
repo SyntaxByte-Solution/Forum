@@ -118,18 +118,24 @@ class ThreadComponentsFetchController extends Controller
         
         switch($indexes['tab']) {
             case 'all':
-                $threads = Thread::orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
+                $threads = Thread::orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
                 break;
             case 'today':
-                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
+                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
                 break;
             case 'thisweek':
                 $threads = Thread::where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE)->get();
+                )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
                 break;
+        }
+
+        $hasmore = false;
+        if($threads->count() > self::FETCH_PAGESIZE) {
+            $hasmore = true;
+            $threads = $threads->take(self::FETCH_PAGESIZE);
         }
 
         $payload = "";
@@ -142,6 +148,7 @@ class ThreadComponentsFetchController extends Controller
         return [
             "content"=>$payload,
             'count'=>$threads->count(),
+            'hasmore'=>$hasmore
         ];
     }
     public function profile_threads_load_more(Request $request) {

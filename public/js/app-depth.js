@@ -3892,6 +3892,10 @@ if(index_fetch_more.length) {
                     });
                     // This will prevent appended suboptions from disappearing when cursor click on suboption containers
                     handle_document_suboptions_hiding();
+
+                    if(!response.hasmore) {
+                        index_fetch_more.remove();
+                    }
                     index_fetch_more_lock = true;
                 },
                 error: function(response) {

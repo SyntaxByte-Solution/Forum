@@ -39,8 +39,8 @@ class IndexResource extends Component
         $this->at = (new Carbon($thread->created_at))->toDayDateTimeString();
         $this->at_hummans = (new Carbon($thread->created_at))->diffForHumans();
         $this->views = $thread->view_count;
-        $this->replies = $thread->posts()->count();
-        $this->likes = $thread->likes()->count();
+        $this->replies = $thread->posts->count();
+        $this->likes = $thread->likes->count();
         $this->content = Str::markdown($thread->content);
 
         if(Auth::check()) {

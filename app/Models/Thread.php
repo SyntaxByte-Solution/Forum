@@ -14,6 +14,7 @@ class Thread extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+    public $with = ['category.forum','likes','posts', 'visibility', 'votes', 'user.status'];
 
     public static function boot() {
         parent::boot();
@@ -248,10 +249,10 @@ class Thread extends Model
     }
 
     public function getLinkAttribute() {
-        return route('thread.show', ['forum'=>$this->forum()->slug, 'category'=>$this->category->slug, 'thread'=>$this->id]);
+        return route('thread.show', ['forum'=>$this->category->forum->slug, 'category'=>$this->category->slug, 'thread'=>$this->id]);
     }
 
     public function getAnnouncementLinkAttribute() {
-        return route('announcement.show', ['forum'=>$this->forum()->slug, 'announcement'=>$this->id]);
+        return route('announcement.show', ['forum'=>$this->category->forum->slug, 'announcement'=>$this->id]);
     }
 }

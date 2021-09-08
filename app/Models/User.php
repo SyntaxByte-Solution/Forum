@@ -152,6 +152,10 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->hasMany(UserReach::class, 'reachable');
     }
 
+    public function status() {
+        return $this->belongsTo(AccountStatus::class, 'status_id');
+    }
+
     public function getReachcountAttribute() {
         return UserReach::where('reachable', $this->id)->count();
     }
@@ -267,7 +271,7 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function isBanned() {
-        return $this->has_status('banned');
+        return $this->status->slug == 'banned';
     }
 
     public function isAdmin() {

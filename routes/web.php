@@ -34,7 +34,7 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
-    dd(\Illuminate\Support\Facades\Auth::user());
+    dd($user->votes->count());
 });
 
 Route::get('/', [IndexController::class, 'index']);

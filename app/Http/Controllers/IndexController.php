@@ -34,27 +34,24 @@ class IndexController extends Controller
         } else {
             $threads = Thread::orderBy('created_at', 'desc')->paginate($pagesize);
         }
-        
-        $forums = Forum::all();
-        $recent_threads = Thread::orderBy('created_at', 'desc')->take(4)->get();
 
         return view('index')
         ->with(compact('threads'))
         ->with(compact('tab'))
         ->with(compact('tab_title'))
-        ->with(compact('pagesize'))
-        ->with(compact('recent_threads'))
-        ->with(compact('forums'));
+        ->with(compact('pagesize'));
     }
+
     public function forums() {
         $forums = Forum::all();
         
         return view('forums')
             ->with(compact('forums'));
     }
+    
     public function announcements() {
-        $announcements = Thread::with(['category.forum', 'visibility', 'posts', 'likes'])
-            ->withoutGlobalScope(ExcludeAnnouncements::class)
+        $announcements = Thread::
+            withoutGlobalScope(ExcludeAnnouncements::class)
             ->withoutGlobalScope(FollowersOnlyScope::class)
             ->whereHas('category', function($query) {
                 $query->where('slug', 'announcements');

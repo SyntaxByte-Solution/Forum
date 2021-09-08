@@ -43,14 +43,13 @@ class IndexResource extends Component
         $this->likes = $thread->likes->count();
         $this->content = Str::markdown($thread->content);
 
-        if(Auth::check()) {
+        if(Auth::check() && Auth::user()->id != $thread->id) {
             $this->followed = Follow::where('follower', auth()->user()->id)
             ->where('followable_id', $thread->user->id)
             ->where('followable_type', 'App\Models\User')
             ->count() > 0;
-        } else {
+        } else
             $this->followed = false;
-        }
 
         $this->edit_link = route('thread.edit', ['user'=>$thread->user->username, 'thread'=>$thread->id]);
         $this->category_threads_link = route('category.threads', ['forum'=>$this->forum->slug, 'category'=>$this->category->slug]);

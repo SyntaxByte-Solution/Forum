@@ -21,21 +21,28 @@ class IndexController extends Controller
         if($request->has('tab')) {
             $tab = $request->get('tab');
             if($tab == 'today') {
-                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->paginate($pagesize);
+                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
                 $tab_title = 'Today';
             } else if($tab == 'thisweek') {
                 $threads = Thread::where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
-                )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->paginate($pagesize);
+                )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
                 $tab_title = 'This week';
             }
         } else {
-            $threads = Thread::orderBy('created_at', 'desc')->paginate($pagesize);
+            $threads = Thread::orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
+        }
+
+        $hasmore = false;
+        if($threads->count() > self::PAGESIZE) {
+            $hasmore = true;
+            $threads =$threads->take(self::PAGESIZE);
         }
 
         return view('index')
+        ->with(compact('hasmore'))
         ->with(compact('threads'))
         ->with(compact('tab'))
         ->with(compact('tab_title'))

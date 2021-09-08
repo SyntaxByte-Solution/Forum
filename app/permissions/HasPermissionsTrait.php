@@ -71,7 +71,7 @@ trait HasPermissionsTrait {
     }
 
     public function has_status($slug) {
-        return $this->status()->slug == $slug;
+        return $this->status->slug == $slug;
     }
 
     

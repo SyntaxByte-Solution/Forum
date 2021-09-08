@@ -2,12 +2,10 @@
     $show_login_view = '';
 @endphp
 @if(!auth()->user())
-    @if($errors->has('email'))
-        @if($errors->first('email') == __("These credentials do not match our records"))
-            @php
-                $show_login_view = "display:block;opacity:1;z-index:100";
-            @endphp
-        @endif
+    @if(!$errors->isEmpty())
+        @php
+            $show_login_view = "display:block;opacity:1;z-index:100";
+        @endphp
     @endif
 @endif
 

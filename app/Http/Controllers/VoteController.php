@@ -78,7 +78,7 @@ class VoteController extends Controller
          */
         $exists = false;
         $founded_vote;
-        foreach($current_user->votes() as $vote) {
+        foreach($current_user->votes as $vote) {
             if($vote->votable_id == $resource->id && $vote->votable_type == $type) {
                 $exists = true;
                 $founded_vote = $vote;

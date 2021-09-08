@@ -33,15 +33,11 @@ class FollowersOnlyScope implements Scope
         if(!Auth::check()) {
             $builder->where('visibility_id', '<>', 2);
         } else {
-            $builder->where(function($query) {
-                $query->where('visibility_id', '<>', 2);
-            })->orWhere(function($query) {
-                $query->where('visibility_id', 2)
-                ->where(function($query) {
-                    $query->where('user_id', auth()->user()->id)
-                    ->orWhereIn('user_id', auth()->user()->followed_users->pluck('followable_id'));
-                });
-            });;
+            $builder->where('visibility_id', '<>', 2)
+            ->orWhere(function($query) {
+                $query->where('user_id', auth()->user()->id) // where the thread owner is the same as logged in user : this case the user could see the thread
+                ->orWhereIn('user_id', auth()->user()->follows->pluck('followable_id'));
+            });
         }
     }
 }

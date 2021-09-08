@@ -193,6 +193,10 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->morphMany(Follow::class, 'followable');
     }
 
+    public function follows() {
+        return $this->hasMany(Follow::class, 'follower');
+    }
+
     public function faqs() {
         return $this->hasMany(FAQ::class);
     }

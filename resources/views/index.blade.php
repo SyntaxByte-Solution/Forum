@@ -107,14 +107,14 @@
                     <p class="my4 text-center">{{ __("Try to create a new") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
                 </div>
             </div>
-        @else
+        @endif
+        @if($hasmore)
             @include('partials.thread.faded-thread', ['classes'=>'index-fetch-more'])
         @endif
     </div>
 
     <div id="right-panel">
         <x-right-panels.forumslist/>
-        @include('partials.right-panels.recent-forum-threads')
         @include('partials.right-panels.statistics')
         @include('partials.right-panels.feedback')
     </div>

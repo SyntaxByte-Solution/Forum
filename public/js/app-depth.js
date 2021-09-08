@@ -608,7 +608,6 @@ $('.toggle-container-button').on('click', function() {
             });
         }
     } else {
-        console.log('bring it to 0deg');
         container.removeClass('block');
         container.addClass('none');
 
@@ -2120,7 +2119,6 @@ $("#thread-videos").on('change', function(event) {
     /**
      * IMPORTANT: see notices inside thread-image change event handler above
      */
-    console.log(already_uploaded_thread_videos_assets.length);
      let media_container = $(this);
      while(!media_container.hasClass('thread-add-media-section')) {
          media_container = media_container.parent();    
@@ -4062,3 +4060,31 @@ $('.quick-access-generate').on('click', function() {
         }
     })
 });
+
+let fetched_categories_forums = [];
+$('.forumslist-categories-load').on('click', function() {
+    let forum = $(this).find('.forum').val();
+    let button = $(this);
+    if(fetched_categories_forums.includes(parseInt(forum))) {
+        return;
+    }
+    fetched_categories_forums.push(parseInt(forum));
+
+    $.ajax({
+        url: `/forums/${forum}/categories/ids`,
+        type: 'get',
+        success: function(response) {
+            let categories = JSON.parse(response);
+            let categories_html = "";
+            $.each(categories, function(id, category){
+                categories_html +=
+                `
+                    <div class="my8" style="margin-left: 30px">
+                        <a href="${category.link}" class="bold blue fs13 no-underline">${category.category}</a>
+                    </div>
+                `;
+            });
+            button.parent().find('.forumslist-categories').html(categories_html);
+        }
+    })
+})

@@ -23,7 +23,7 @@ class Category extends Model
     }
 
     public function getLinkAttribute() {
-        return route('category.threads', ['category'=>$this->id]);
+        return route('category.threads', ['forum'=>$this->forum->slug, 'category'=>$this->slug]);
     }
 
     /**

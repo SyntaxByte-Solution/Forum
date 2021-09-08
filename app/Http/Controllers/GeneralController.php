@@ -15,8 +15,8 @@ class GeneralController extends Controller
         foreach($forum->categories()->excludeannouncements()->get() as $category) {
             $data[] = [
                 'id'=>$category->id,
-                'category'=>$category->category,
-                'link'=>route('category.threads', ['forum'=>$category->forum->slug, 'category'=>$category->slug]),
+                'category'=>__($category->category),
+                'link'=>$category->link,
                 'forum_link'=>route('forum.all.threads', ['forum'=>$category->forum->slug])
             ];
         }

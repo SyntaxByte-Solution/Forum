@@ -7,10 +7,10 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
-use App\Models\{Thread, EmojiFeedback, Feedback, Vote};
+use Illuminate\Database\Eloquent\Model;
+use App\Models\{EmojiFeedback, Feedback, Vote};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Model::preventLazyLoading(! app()->isProduction());
+
         Paginator::defaultView('vendor.pagination.default');
         Paginator::defaultSimpleView('vendor.pagination.simple-default');
         Blade::if('canemoji', function () {

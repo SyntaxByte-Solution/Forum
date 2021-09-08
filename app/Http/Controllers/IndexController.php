@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Models\{Forum, Thread, Category};
+use App\Models\{Forum, Thread};
 use App\View\Components\IndexResource;
-use App\Scopes\{ExcludeAnnouncements, ExcludeAnnouncementFromCategories};
+use App\Scopes\{ExcludeAnnouncements, FollowersOnlyScope};
 use Carbon\Carbon;
 
 class IndexController extends Controller
@@ -54,15 +53,14 @@ class IndexController extends Controller
             ->with(compact('forums'));
     }
     public function announcements() {
-        // $announcement_ids = Category::where('slug', 'announcements')->pluck('id'); // Use where Has instead
-        // $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereIn('category_id', $announcement_ids)->paginate(6);
+        $announcements = Thread::with(['category.forum', 'visibility', 'posts', 'likes'])
+            ->withoutGlobalScope(ExcludeAnnouncements::class)
+            ->withoutGlobalScope(FollowersOnlyScope::class)
+            ->whereHas('category', function($query) {
+                $query->where('slug', 'announcements');
+            })->paginate(4);
 
-        $announcements = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->whereHas('category', function($query) {
-            $query->where('slug', 'announcements');
-        })->paginate(6);
-        $forums = Forum::take(6)->get();
         return view('announcements')
-        ->with(compact('forums'))
         ->with(compact('announcements'));
     }
     public function guidelines() {

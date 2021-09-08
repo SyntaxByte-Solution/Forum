@@ -134,7 +134,7 @@
     </div>
 
     <div id="right-panel">
-        @include('partials.right-panels.forums-list')
+        <x-right-panels.forumslist/>
         @include('partials.right-panels.recent-forum-threads')
         @include('partials.right-panels.statistics')
         <!-- <div class="line-separator"></div>

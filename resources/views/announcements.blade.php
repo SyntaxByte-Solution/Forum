@@ -11,7 +11,6 @@
     @guest
         @include('partials.hidden-login-viewer')
     @endguest
-    
     @include('partials.header', ['globalpage'=>'announcements'])
 @endsection
 
@@ -43,7 +42,7 @@
             </div>
             <div>
                 @foreach($announcements as $announcement)
-                    <x-thread.announcement :announcid="$announcement->id"/>
+                    <x-thread.announcement :announcement="$announcement"/>
                 @endforeach
             </div>
             <div class="flex my8">
@@ -54,7 +53,7 @@
         </div>
     </div>
     <div id="right-panel">
-        @include('partials.right-panels.forums-list')
+        <x-right-panels.forumslist/>
         @include('partials.right-panels.statistics')
     </div>
 @endsection

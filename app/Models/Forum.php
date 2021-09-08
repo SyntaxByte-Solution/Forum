@@ -11,7 +11,6 @@ class Forum extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $with = [];
 
     public function getStatusAttribute($value) {
         return ForumStatus::find($value);

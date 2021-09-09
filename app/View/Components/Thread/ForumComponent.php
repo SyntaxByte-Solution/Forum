@@ -22,6 +22,7 @@ class ForumComponent extends Component
         $forum_threads = $forum->threads()->without(['category.forum', 'category', 'likes','posts', 'visibility', 'status', 'votes', 'user.status']);
         $this->threads_count = $forum_threads->count();
 
+        $this->posts_count = $forum->posts()->count();
         // $last_thread = Thread::without(['category.forum','likes','posts', 'visibility', 'status', 'votes', 'user.status'])->first();
         $last_thread = $forum_threads->orderBy('created_at', 'desc')->first();
         if($last_thread) {

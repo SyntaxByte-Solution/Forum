@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.5",
         "mews/purifier": "^3.3",
         "pusher/pusher-php-server": "~3.0",
-        "spatie/laravel-csp": "^2.6"
+        "spatie/laravel-csp": "^2.6",
+        "staudenmeir/eloquent-has-many-deep": "^1.7"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

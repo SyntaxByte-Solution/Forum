@@ -8,8 +8,9 @@ use App\Models\{ForumStatus, Category, Thread};
 
 class Forum extends Model
 {
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
+    
     use HasFactory;
-
     protected $guarded = [];
 
     public function getStatusAttribute($value) {
@@ -22,6 +23,10 @@ class Forum extends Model
 
     public function threads() {
         return $this->hasManyThrough(Thread::class, Category::class);
+    }
+
+    public function posts() {
+        return $this->hasManyDeep(\App\Models\Post::class, [Category::class, Thread::class]);
     }
 
     // public function threads() {

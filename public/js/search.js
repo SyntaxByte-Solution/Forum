@@ -1,13 +1,28 @@
-$('#forum_category_dropdown').change(function() {
-    $(this).attr('disabled', true);
-    $('#category_dropdown').attr('disabled', true);
-    let forum_id = $(this).val();
+let forum_selection_lock = true;
+$('.select-forum').on('click', function(event) {
+    if(!forum_selection_lock)
+        return;
+    forum_category_dropdown = false;
+
+    let button = $(this);
+    let spinner = $('#forum-changer-box .spinner');
+    let forum_id = $(this).find('.forum-id').val();
+
     if(forum_id == 0) {
+        $('#forum').val('0');
         $('#category_dropdown option:not(:first)').remove();
 
-        $('#category_dropdown').attr('disabled', false);
-        $('#forum_category_dropdown').attr('disabled', false);
+        $('.select-forum').attr('style', '');
+        button.attr('style', '');
+        button.parent().css('display', 'none');
+        forum_category_dropdown = true;
     } else {
+        $('#forum').val(forum_id);
+        $('.select-forum').attr('style', 'cursor: default');
+        button.attr('style', 'background-color: #ddd; cursor: default');
+        start_spinner(spinner, 'search_forum_changer_spinner');
+        spinner.removeClass('opacity0');
+
         $.ajax({
             type: 'get',
             url: '/forums/' + forum_id + '/categories/ids',
@@ -19,10 +34,20 @@ $('#forum_category_dropdown').change(function() {
                 });
                 $('#category_dropdown').attr('disabled', false);
                 $('#forum_category_dropdown').attr('disabled', false);
+                $('#selected-forum-ico').html(button.find('.forum-ico').html());
+
+                forum_category_dropdown = true;
+                button.parent().css('display', 'none');
+            },
+            complete: function() {
+                stop_spinner(spinner, 'search_forum_changer_spinner');
+                spinner.addClass("opacity0");
+                $('.select-forum').attr('style', '');
             }
         })
     }
-})
+    event.stopPropagation();
+});
 
 $('.adv-search-remove-filter').on('click', function() {
     let removed_filer = $(this).parent().find('.removed-filter').val();

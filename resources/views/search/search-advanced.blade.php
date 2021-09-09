@@ -53,21 +53,49 @@
                 @error('forum')
                     <p class="error">{{ $message }}</p>
                 @enderror
-                <div class="full-width flex my8">
+                <div id="forum-changer-box" class="full-width flex align-center my8">
                     <label for="forum_category_dropdown" class="mr8 fs13 bold  no-margin" style="width: 160px">{{__('Forum')}} @error('forum')<span class="error">*</span>@enderror</label>
                     <span class="bold mx8">:</span>
-                    <select name="forum" id="forum_category_dropdown" class="dropdown-style" style="width: 180px">
+                    <!-- <select name="forum" id="forum_category_dropdown" class="dropdown-style" style="width: 180px">
                         <option value="0">{{ __("All forums") }}</option>
                         @foreach($forums as $forum)
                             <option value="{{ $forum->id }}">{{ __($forum->forum) }}</option>
                         @endforeach
-                    </select>
+                    </select> -->
+                    <input type="hidden" name="forum" id="forum" autocomplete="off" value='2'>
+                    <div class="relative">
+                        <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to">
+                            <svg id="selected-forum-ico" class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M458.67,0H53.33A53.39,53.39,0,0,0,0,53.33V458.67A53.39,53.39,0,0,0,53.33,512H458.67A53.39,53.39,0,0,0,512,458.67V53.33A53.39,53.39,0,0,0,458.67,0Zm10.66,53.33V234.67h-192v-192H458.67A10.68,10.68,0,0,1,469.33,53.33Zm-416-10.66H234.67v192h-192V53.33A10.68,10.68,0,0,1,53.33,42.67Zm-10.66,416V277.33h192v192H53.33A10.68,10.68,0,0,1,42.67,458.67Zm416,10.66H277.33v-192h192V458.67A10.68,10.68,0,0,1,458.67,469.33Z"/></svg>
+                            <span class="selected-forum-title">{{ __('All forums') }}</span>
+                            <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                        </div>
+                        <div class="suboptions-container thread-add-suboptions-container" style="max-height: 236px; overflow-y: scroll">
+                            <div class="thread-add-suboption select-forum flex align-center">
+                                <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M458.67,0H53.33A53.39,53.39,0,0,0,0,53.33V458.67A53.39,53.39,0,0,0,53.33,512H458.67A53.39,53.39,0,0,0,512,458.67V53.33A53.39,53.39,0,0,0,458.67,0Zm10.66,53.33V234.67h-192v-192H458.67A10.68,10.68,0,0,1,469.33,53.33Zm-416-10.66H234.67v192h-192V53.33A10.68,10.68,0,0,1,53.33,42.67Zm-10.66,416V277.33h192v192H53.33A10.68,10.68,0,0,1,42.67,458.67Zm416,10.66H277.33v-192h192V458.67A10.68,10.68,0,0,1,458.67,469.33Z"/></svg>
+                                <span class="thread-add-forum-val">{{ __('All forums') }}</span>
+                                <input type="hidden" class="forum-id" value="0">
+                            </div>
+                            <div class="simple-line-separator" style="margin: 2px 0"></div>
+                            @foreach($forums as $forum)
+                                <div class="thread-add-suboption select-forum flex align-center">
+                                    <svg class="small-image-size forum-ico mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        {!! $forum->icon !!}
+                                    </svg>
+                                    <span class="thread-add-forum-val">{{ __($forum->forum) }}</span>
+                                    <input type="hidden" class="forum-id" value="{{ $forum->id }}">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="spinner sfc_spinner size14 opacity0" style="fill: #2ca0ff; margin: -1px 0 0 3px">
+                        <svg class="size14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+                    </div>
                 </div>
                 <div class="simple-line-separator my8"></div>
                 @error('category')
                     <p class="error">{{ $message }}</p>
                 @enderror
-                <div class="full-width flex">
+                <div class="full-width flex align-center">
                     <label for="category_dropdown" class="mr8 fs13 bold" style="width: 160px">{{ __('Category') }}</label>
                     <span class="bold mx8">:</span>
                     <select name="category" id="category_dropdown" class="dropdown-style" style="width: 180px">
@@ -87,7 +115,7 @@
                 @error('threads_date')
                     <p class="error">{{ $message }}</p>
                 @enderror
-                <div class="full-width flex">
+                <div class="full-width flex align-center">
                     <label for="threads_date" class="mr8 fs13 bold" style="width: 160px">{{ __('Discussions Creation Date') }}</label>
                     <span class="bold mx8">:</span>
                     <select name="threads_date" id="threads_date" class="dropdown-style" style="width: 180px">
@@ -99,7 +127,7 @@
                     </select>
                 </div>
                 <div class="simple-line-separator my8"></div>
-                <div class="full-width flex">
+                <div class="full-width flex  align-center">
                     <label for="sorted_by" class="mr8 fs13 bold" style="width: 160px">{{ __('Sorted by') }}</label>
                     <span class="bold mx8">:</span>
                     <select name="sorted_by" id="sorted_by" class="dropdown-style" style="width: 180px">

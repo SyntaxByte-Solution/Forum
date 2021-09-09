@@ -22,6 +22,7 @@
                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
                 <span class="button-text">{{ __('Delete this notification') }}</span>
                 <input type="hidden" class="message-ing" value="{{ __('Deleting notification') }}..">
+                <input type="hidden" class="delete-success" value="{{ __('Notification deleted successfully') }}">
             </a>
             @if($could_be_disabled)
             <a href="" class="suboption-style-1 fs13 disable-switch-notification @if($disabled) enable-notification @else disable-notification @endif align-center" style="width: 230px;">
@@ -35,6 +36,8 @@
                 <input type="hidden" class="enable-message-ing" value="{{ __('Enabling notifications') }}..">
                 <input type="hidden" class="disable-action-text" value="{{ __('Disable notifications') }}">
                 <input type="hidden" class="enable-action-text" value="{{ __('Enable notifications') }}">
+                <input type="hidden" class="notifications-enabled" value="{{ __('Notifications enabled') }}">
+                <input type="hidden" class="notifications-disabled" value="{{ __('Notifications disabled') }}">
             </a>
             @endif
         </div>

@@ -32,7 +32,7 @@ class UserAction extends Notification implements ShouldBroadcast
     public function __construct($data)
     {
         $this->action_user = $data['action_user'];
-        $this->action_statement = $data['action_statement'];
+        $this->action_statement = __($data['action_statement']);
         $this->resource_string_slice = $data['resource_string_slice'];
         $this->action_type = $data['action_type'];
         $this->action_resource_id = $data['action_resource_id'];

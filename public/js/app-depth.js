@@ -1181,6 +1181,19 @@ $('.notification-button').on('click', function() {
         success: function(response) {
             header_notifs_bootstrap_fetched = true;
             $('.notifs-box').html(response);
+            
+            let unhandled_notification_components = 
+                $('.notifs-box .notification-container');
+            
+                unhandled_notification_components.each(function() {
+                handle_notification_menu_appearence($(this));
+                handle_notification_menu_buttons($(this).find('.notification-menu-button'));
+                handle_nested_soc($(this).find('.notification-menu-button'));
+                handle_delete_notification($(this).find('.delete-notification'));
+                handle_disable_switch_notification($(this).find('.disable-switch-notification'));
+                handle_image_dimensions($(this).find('.action_takers_image'));
+            });
+
             loadNotifications($('.notifs-box .notifications-load'));
             handle_lazy_loading();
             handle_mark_as_read();
@@ -1268,7 +1281,7 @@ if(userId != "") {
                         handle_nested_soc(appended_component.find('.notification-menu-button'));
                         handle_delete_notification(appended_component.find('.delete-notification'));
                         handle_disable_switch_notification(appended_component.find('.disable-switch-notification'));
-                        handle_lazy_loading();
+                        force_lazy_load(appended_component);
                     }
                 })
             }
@@ -1393,6 +1406,7 @@ function handle_delete_notification(button) {
             },
             success: function() {
                 notif_container.remove();
+                basic_notification_show(button.find('.delete-success').val(), 'basic-notification-round-tick');
                 if(!$('.notifs-box .notification-container')[0]) {
                     $('.notification-empty-box').removeClass('none');
                 }
@@ -1442,6 +1456,8 @@ function handle_disable_switch_notification(button) {
                     button.addClass('disable-notification');
 
                     button.find('.button-text').text(button.find('.disable-action-text').val());
+                    button.parent().css('display', 'none');
+                    basic_notification_show(button.find('.notifications-enabled').val(), 'basic-notification-round-tick');
                 } else {
                     button.find('.notif-switch-icon').removeClass('disablenotif17b-icon');
                     button.find('.notif-switch-icon').addClass('enablenotif17b-icon');
@@ -1450,6 +1466,8 @@ function handle_disable_switch_notification(button) {
                     button.addClass('enable-notification');
 
                     button.find('.button-text').text(button.find('.enable-action-text').val());
+                    button.parent().css('display', 'none');
+                    basic_notification_show(button.find('.notifications-disabled').val(), 'basic-notification-round-tick');
                 }
             },
             complete: function() {
@@ -3206,7 +3224,10 @@ function handle_save_threads(save_button) {
 }
 
 let basic_notification;
+let basic_notif_timeout;
 function basic_notification_show(message, icon='') {
+    clearInterval(basic_notif_timeout);
+
     if(icon != '') {
         $('.basic-notification-container').find('.'+icon).removeClass('none');
     }
@@ -3214,7 +3235,7 @@ function basic_notification_show(message, icon='') {
     $('.basic-notification-container').removeClass('none');
     $('.basic-notification-container').find('.basic-notification-content').html(message);
 
-    setTimeout(function() {
+    basic_notif_timeout = setTimeout(function() {
         $('.basic-notification-container').addClass('none');
         $('.basic-notification-container').find('.basic-notification-content').html('');
    }, 5000);

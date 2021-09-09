@@ -18,7 +18,7 @@
                     <p class="my4 fs12"> - {{ ucfirst(mb_strtolower($country, 'UTF-8')) }}</p>
                 @endif
             </div>
-            <p class="fs11 gray my4">{{ 'Member since: ' . $member_since }}</p>
+            <p class="fs11 gray my4">{{ __('Member since') . ': ' . $member_since }}</p>
         </div>
     </div>
 </div>

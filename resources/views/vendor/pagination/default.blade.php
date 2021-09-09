@@ -60,7 +60,7 @@
         @endphp
 
         @if (!$paginator->onFirstPage())
-            <a href="{{ $previous_page_url }}" class="pagination-item pag-active" rel="prev" aria-label="@lang('pagination.previous')">Prev</a>
+            <a href="{{ $previous_page_url }}" class="pagination-item pag-active" rel="prev" aria-label="@lang('pagination.previous')">{{__('Back')}}</a>
         @endif
 
         {{-- Pagination Elements --}}
@@ -111,7 +111,7 @@
 
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
-            <a href="{{ $next_page_url }}" class="pagination-item pag-active" aria-disabled="true" aria-label="@lang('pagination.next')">Next</a>
+            <a href="{{ $next_page_url }}" class="pagination-item pag-active" aria-disabled="true" aria-label="@lang('pagination.next')">{{__('Next')}}</a>
         @endif
     </div>
 @endif

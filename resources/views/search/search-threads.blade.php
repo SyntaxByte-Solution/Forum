@@ -39,7 +39,7 @@
             <form action="{{ route('threads.search') }}" method='get' class="flex align-end full-width">
                 <div class="full-width">
                     <div class="flex align-end space-between mb4">
-                        <label for='main-srch' class="fs12 no-margin mt8">{{ __('Search for discussions.') }}</label>
+                        <label for='main-srch' class="fs12 no-margin mt8">{{ __('Search for discussions') }}</label>
                         <a href="{{ route('advanced.search') }}" class="link-path flex align-center">
                             <svg class="size14 mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 511 511">
                                 <path d="M492,0H21A20,20,0,0,0,1,20,195,195,0,0,0,66.37,165.55l87.42,77.7a71.1,71.1,0,0,1,23.85,53.12V491a20,20,0,0,0,31,16.6l117.77-78.51a20,20,0,0,0,8.89-16.6V296.37a71.1,71.1,0,0,1,23.85-53.12l87.41-77.7A195,195,0,0,0,512,20,20,20,0,0,0,492,0ZM420.07,135.71l-87.41,77.7a111.1,111.1,0,0,0-37.25,83V401.82l-77.85,51.9V296.37a111.1,111.1,0,0,0-37.25-83L92.9,135.71A155.06,155.06,0,0,1,42.21,39.92H470.76A155.06,155.06,0,0,1,420.07,135.71Z"/>
@@ -47,7 +47,7 @@
                             {{__("Advanced search")}}
                         </a>
                     </div>
-                    <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="{{ __('Search for threads') }}" required>
+                    <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="{{ __('Search for discussions') }}" required>
                 </div>
                 <button type="submit" class="button-style-1 flex align-center ml8">
                     <svg class="size15 mr4" fill="#fff" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"/></svg>
@@ -135,7 +135,7 @@
                         <a href="?tab=all{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
                             <div>
                                 <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get search results for all threads at any time') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get search results for all discussions at any time') }}</p>
                                 <input type="hidden" class="tab" value="all">
                             </div>
                             <div class="loading-dots-anim ml4 none">•</div>
@@ -143,7 +143,7 @@
                         <a href="?tab=today{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
                             <div>
                                 <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get search results for only threads created today. (This will be sorted by number of views)') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get search results for only discussions created today. (This will be sorted by number of views)') }}</p>
                                 <input type="hidden" class="tab" value="today">
                             </div>
                             <div class="loading-dots-anim ml4 none">•</div>
@@ -151,7 +151,7 @@
                         <a href="?tab=thisweek{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
                             <div>
                                 <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
-                                <p class="no-margin fs12 gray">{{ __('Get search results for only threads created this week. (This will be sorted by number of views)') }}</p>
+                                <p class="no-margin fs12 gray">{{ __('Get search results for only discussions created this week. (This will be sorted by number of views)') }}</p>
                                 <input type="hidden" class="sort-by-key" value="votes">
                             </div>
                             <div class="loading-dots-anim ml4 none">•</div>
@@ -183,8 +183,8 @@
                 <div class="full-center">
                     <div>
                         <div class="size36 sprite sprite-2-size notfound36-icon" style="margin: 16px auto 0 auto"></div>
-                        <p class="fs20 bold gray my4">{{ __("No discussions matched your search !") }}</p>
-                        <p class="my4 text-center">{{ __("Start your own ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
+                        <p class="fs20 bold gray my4">{{ __("No discussions matched your search") }}</p>
+                        <p class="my4 text-center">{{ __("Or create your own") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
                     </div>
                 </div>
             @endif

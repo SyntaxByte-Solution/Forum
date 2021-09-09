@@ -44,8 +44,8 @@
         <div>
             <form action="{{ route('advanced.search.results') }}" method='get' class="full-width">
                 <div class="full-width">
-                    <label for='main-srch' class="fs12 no-margin flex mb4 mt8">{{ __('Search for thread by putting its keywords in the textbox down bellow') }}</label>
-                    <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="Thread keywords" required>
+                    <label for='main-srch' class="fs12 no-margin flex mb4 mt8">{{ __('Search for discussions by putting its keywords in the textbox down bellow') }}</label>
+                    <input type="text" id="main-srch" name="k" class="input-style-1 full-width" value="{{ request()->input('k') }}" placeholder="{{__('Discussion keywords')}}" required>
                 </div>
                 <div class="my8">
                     <p class="bold gray fs16">{{__('Filters')}}</p>
@@ -59,7 +59,7 @@
                     <select name="forum" id="forum_category_dropdown" class="dropdown-style" style="width: 180px">
                         <option value="0">{{ __("All forums") }}</option>
                         @foreach($forums as $forum)
-                            <option value="{{ $forum->id }}">{{ __("$forum->forum") }}</option>
+                            <option value="{{ $forum->id }}">{{ __($forum->forum) }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -81,21 +81,21 @@
                 <div class="full-width flex">
                     <label class="mr8 fs13 bold" style="width: 160px">{{ __('Select only discussions with best reply') }}</label>
                     <span class="bold mx8">:</span>
-                    <input type="checkbox" name="hasbestreply" autocomplete="off">
+                    <input type="checkbox" name="hasbestreply" autocomplete="off" class="height-max-content">
                 </div>
                 <div class="simple-line-separator my8"></div>
                 @error('threads_date')
                     <p class="error">{{ $message }}</p>
                 @enderror
                 <div class="full-width flex">
-                    <label for="threads_date" class="mr8 fs13 bold" style="width: 160px">{{ __('Thread Creation Date') }}</label>
+                    <label for="threads_date" class="mr8 fs13 bold" style="width: 160px">{{ __('Discussions Creation Date') }}</label>
                     <span class="bold mx8">:</span>
                     <select name="threads_date" id="threads_date" class="dropdown-style" style="width: 180px">
                         <option value="anytime">{{ __("anytime") }}</option>
-                        <option value="past24hours">{{ __("past 24 hours") }}</option>
-                        <option value="pastweek">{{ __("past week") }}</option>
-                        <option value="pastmonth">{{ __("past month") }}</option>
-                        <option value="pastyear">{{ __("past year") }}</option>
+                        <option value="past24hours">{{ __("Past 24 hours") }}</option>
+                        <option value="pastweek">{{ __("Last week") }}</option>
+                        <option value="pastmonth">{{ __("Last month") }}</option>
+                        <option value="pastyear">{{ __("Last year") }}</option>
                     </select>
                 </div>
                 <div class="simple-line-separator my8"></div>
@@ -103,8 +103,8 @@
                     <label for="sorted_by" class="mr8 fs13 bold" style="width: 160px">{{ __('Sorted by') }}</label>
                     <span class="bold mx8">:</span>
                     <select name="sorted_by" id="sorted_by" class="dropdown-style" style="width: 180px">
-                        <option selected value="created_at_desc">{{ __("Creation date --Newest--") }}</option>
-                        <option value="created_at_asc">{{ __("Creation date --Oldest--") }}</option>
+                        <option selected value="created_at_desc">{{ __("Creation date (new to old)") }}</option>
+                        <option value="created_at_asc">{{ __("Creation date (old to new)") }}</option>
                         <option value="views">{{ __("Number of views") }}</option>
                         <option value="votes">{{ __("Number of votes") }}</option>
                         <option value="likes">{{ __("number of likes") }}</option>
@@ -127,22 +127,21 @@
                 </div>
                 <div class="ml8 block">
                     <p class="bold forum-color fs13" style="margin-bottom: 12px;">{{ __('Resource type') }}</p>
-                    <p class="fs12 my4">• {{__('Choose the resource you want to search (user, thread, [product in market - not supported yet])')}}.</p>
-                    <p class="fs12 my4">• {{ __('Th filters will be changed based on the resource type') }}</p>
+                    <p class="fs12 my4">• {{__('This section is for discussions advanced search only. If you decide to search for a user click on the users search link on very top right corner')}}.</p>
                 </div>
             </div>
             <div>
-                <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">Thread Filters</p>
+                <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">{{__('Discussions Filters')}}</p>
                 <div class="ml8">
                     <p class="fs12 my4">• {{ __('Select the forum where you want to search, or select all forums to search in the entire forums') }}.</p>
-                    <p class="fs12 my4">• {{ __("Select the category where you want to search, or select all categories to search in all forum's categories") }}.</p>
-                    <p class="fs12 my4">• {{ __('If you want to return only the threads where the owner mark as best reply, check the Select only threads with best reply checkbox') }}.</p>
+                    <p class="fs12 my4">• {{ __("Select the category where you want to search, or select all categories to search in all the forum or all the forums") }}.</p>
+                    <p class="fs12 my4">• {{ __('If you want to return only the discussions where the owner mark as best reply, check the Select only discussions with best reply checkbox') }}.</p>
                 </div>
             </div>
             <div>
-                <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">Users Search</p>
+                <p class="bold forum-color fs13 ml8 pointer" style="margin-bottom: 12px;">{{__('Users Search')}}</p>
                 <div class="ml8">
-                    <p class="fs12 my4">• {{ __('If you want to search for a user, go to ') }} <a href="{{ route('users.search') }}" class="link-path">{{ __('users search') }}</a> {{ __(' page') }}.</p>
+                    <p class="fs12 my4">• {{ __('If you want to search for a user, go to') }} <a href="{{ route('users.search') }}" class="link-path">{{ __('users search') }}</a> {{ __('page') }}.</p>
                 </div>
             </div>
         </div>

@@ -49,7 +49,7 @@ class SearchController extends Controller
                       ->orderBy('username', 'asc')
                       ->paginate(4);
 
-        return view('search.search-result')
+        return view('search.search')
             ->with(compact('threads'))
             ->with(compact('users'))
             ->with(compact('pagesize'))

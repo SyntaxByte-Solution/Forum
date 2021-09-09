@@ -36,7 +36,7 @@
         <div class="index-middle-width middle-container-style">
             <div class="flex">
                 <div>
-                    <h1 id="page-title" class="my8 fs28 forum-color">{{ __('Explore discussions, users..') }}</h1>
+                    <h1 id="page-title" class="my8 fs28 forum-color">{{ __('Explore discussions, users') }}..</h1>
                 </div>
             </div>
             
@@ -136,7 +136,7 @@
                                 <a href="?tab=all{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
                                     <div>
                                         <p class="no-margin sort-by-val bold forum-color">{{ __('All') }}</p>
-                                        <p class="no-margin fs12 gray">{{ __('Get all threads sorted by the newest created threads') }}</p>
+                                        <p class="no-margin fs12 gray">{{ __('Get all discussions sorted by the newest created') }}</p>
                                         <input type="hidden" class="tab" value="all">
                                     </div>
                                     <div class="loading-dots-anim ml4 none">•</div>
@@ -144,7 +144,7 @@
                                 <a href="?tab=today{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
                                     <div>
                                         <p class="no-margin sort-by-val bold forum-color">{{ __('Today') }}</p>
-                                        <p class="no-margin fs12 gray">{{ __('Get only threads created today. (This will be sorted by number of views)') }}</p>
+                                        <p class="no-margin fs12 gray">{{ __('Get only discussions created today. (This will be sorted by number of views)') }}</p>
                                         <input type="hidden" class="tab" value="today">
                                     </div>
                                     <div class="loading-dots-anim ml4 none">•</div>
@@ -152,7 +152,7 @@
                                 <a href="?tab=thisweek{{ $appendings }}" class="no-underline thread-add-suboption sort-by-option flex">
                                     <div>
                                         <p class="no-margin sort-by-val bold forum-color">{{ __('This week') }}</p>
-                                        <p class="no-margin fs12 gray">{{ __('Get only threads created this week. (This will be sorted by number of views)') }}</p>
+                                        <p class="no-margin fs12 gray">{{ __('Get only discussions created this week. (This will be sorted by number of views)') }}</p>
                                         <input type="hidden" class="sort-by-key" value="votes">
                                     </div>
                                     <div class="loading-dots-anim ml4 none">•</div>
@@ -185,8 +185,8 @@
                     @if(!$threads->count())
                         <div class="full-center">
                             <div>
-                                <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("No discussions matched your search !") }}</p>
-                                <p class="my4 text-center">{{ __("Try to create a new ") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
+                                <p class="fs20 bold gray" style="margin-bottom: 2px">{{ __("No discussions matched your search") }} !</p>
+                                <p class="my4 text-center">{{ __("Or create your own") }} <a href="{{ route('thread.add') }}" class="link-path">{{__('discussion')}}</a></p>
                             </div>
                         </div>
                     @endif

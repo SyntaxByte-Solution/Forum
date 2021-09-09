@@ -15,7 +15,7 @@ $('#forum_category_dropdown').change(function() {
                 let categories = JSON.parse(response);
                 $('#category_dropdown option:not(:first)').remove();
                 $.each(categories, function(id, category){
-                    $('#category_dropdown').append("<option value='" + id + "'>" + category + "</option>");
+                    $('#category_dropdown').append("<option value='" + id + "'>" + category.category + "</option>");
                 });
                 $('#category_dropdown').attr('disabled', false);
                 $('#forum_category_dropdown').attr('disabled', false);

@@ -189,7 +189,7 @@
             </table>
         </div>
         <div id="right-panel">
-            @include('partials.right-panels.recent-forum-threads')
+            <x-right-panels.recentthreads/>
             @include('partials.right-panels.statistics')
         </div>
     </div>

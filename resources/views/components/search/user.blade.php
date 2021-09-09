@@ -7,7 +7,7 @@
         <div class="relative user-profile-card-box">
             <input type="hidden" class="user-card-container-index"> <!-- value will be initialized at run time by js, to identify each container with incremented index (go to depth.js file) -->
             <a href="{{ $user->profilelink }}" class="my4 fs16 bold no-underline blue user-profile-card-displayer">{{ $user->username }}</a>
-            @include('partials.user-profile-card', ['user'=>$user])
+            <!--@ include ('partials.user-profile-card', ['user'=>$user])-->
         </div>
         <div>
             <div class="flex align-center">

@@ -44,7 +44,7 @@ class IndexResource extends Component
         $this->content = Str::markdown($thread->content);
 
         if(Auth::check() && Auth::user()->id != $thread->id) {
-            $this->followed = Follow::where('follower', auth()->user()->id)
+            $this->followed = auth()->user()->follows
             ->where('followable_id', $thread->user->id)
             ->where('followable_type', 'App\Models\User')
             ->count() > 0;

@@ -18,10 +18,8 @@ class AccountActivationCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()) {
-            if(auth()->user()->account_deactivated()) {
-                return redirect()->route('user.account.activate');
-            }
+        if(auth()->user() && auth()->user()->account_deactivated()) {
+            return redirect()->route('user.account.activate');
         }
         return $next($request);
     }

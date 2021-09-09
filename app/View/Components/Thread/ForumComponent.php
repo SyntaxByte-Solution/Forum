@@ -3,7 +3,7 @@
 namespace App\View\Components\Thread;
 
 use Illuminate\View\Component;
-use App\Models\Forum;
+use App\Models\{Forum, Thread};
 use Carbon\Carbon;
 
 class ForumComponent extends Component
@@ -18,17 +18,12 @@ class ForumComponent extends Component
 
     public function __construct(Forum $forum)
     {
-        $forum_threads = $forum->threads();
-
         $this->forum = $forum;
+        $forum_threads = $forum->threads()->without(['category.forum', 'category', 'likes','posts', 'visibility', 'status', 'votes', 'user.status']);
         $this->threads_count = $forum_threads->count();
-        $posts_count = 0;
-        foreach($forum_threads as $thread) {
-            $posts_count += $thread->posts->count();
-        }
-        $this->posts_count = $posts_count;
 
-        $last_thread = $forum_threads->sortBy('created_at')->last();
+        // $last_thread = Thread::without(['category.forum','likes','posts', 'visibility', 'status', 'votes', 'user.status'])->first();
+        $last_thread = $forum_threads->orderBy('created_at', 'desc')->first();
         if($last_thread) {
             $this->last_thread = $last_thread;
             $this->at = (new Carbon($last_thread->created_at))->toDayDateTimeString();

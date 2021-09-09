@@ -51,7 +51,6 @@ class IndexController extends Controller
 
     public function forums() {
         $forums = Forum::all();
-        
         return view('forums')
             ->with(compact('forums'));
     }

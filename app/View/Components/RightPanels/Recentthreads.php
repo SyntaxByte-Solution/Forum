@@ -15,13 +15,13 @@ class Recentthreads extends Component
         $threads_count = 5;
         if($forum = request()->forum) {
             if($category = request()->category) {
-                $this->recent_threads = $category->threads->sortByDesc('created_at')->take($threads_count);
+                $this->recent_threads = $category->threads()->without(['category.forum','likes','posts', 'visibility', 'status', 'votes', 'user.status'])->orderBy('created_at', 'desc')->take($threads_count)->get();
             } else {
                 $forum_categories_ids = \App\Models\forum::find($forum)->first()->categories->pluck('id');
-                $this->recent_threads = Thread::whereIn('category_id', $forum_categories_ids)->orderBy('created_at', 'desc')->take($threads_count)->get();
+                $this->recent_threads = Thread::without(['category.forum','likes','posts', 'visibility', 'status', 'votes', 'user.status'])->whereIn('category_id', $forum_categories_ids)->orderBy('created_at', 'desc')->take($threads_count)->get();
             }
         } else {
-            $this->recent_threads = Thread::orderBy('created_at', 'desc')->take($threads_count)->get();
+            $this->recent_threads = Thread::without(['category.forum','likes','posts', 'visibility', 'status', 'votes', 'user.status'])->orderBy('created_at', 'desc')->take($threads_count)->get();
         }
     }
 

@@ -119,7 +119,7 @@
         </div>
     </div>
     <div id="right-panel">
-        @include('partials.right-panels.forums-list')
+        <x-right-panels.forumslist/>
         <div class="mb8">
             <div>
                 <div class="right-panel-header-container">

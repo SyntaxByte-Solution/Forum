@@ -29,7 +29,6 @@ class SearchController extends Controller
             $search_query = $keyword['k'];
         }
 
-        $forums = Forum::all();
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
             $tab = $request->validate(['tab'=>Rule::in($tab_whitelist)])['tab'];
@@ -51,7 +50,6 @@ class SearchController extends Controller
                       ->paginate(4);
 
         return view('search.search-result')
-            ->with(compact('forums'))
             ->with(compact('threads'))
             ->with(compact('users'))
             ->with(compact('pagesize'))

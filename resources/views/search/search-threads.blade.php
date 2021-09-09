@@ -191,7 +191,7 @@
         </div>
     </div>
     <div id="right-panel">
-        @include('partials.right-panels.forums-list')
-        @include('partials.right-panels.recent-forum-threads')
+        <x-right-panels.forumslist/>
+        <x-right-panels.recentthreads/>
     </div>
 @endsection

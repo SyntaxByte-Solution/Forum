@@ -10,7 +10,7 @@ use App\Http\Controllers\
     SearchController, FeedbackController, VoteController, FaqsController,
     LikesController, GeneralController, MultilanguageHelperController,
     NotificationController, FollowController, ReportController, ThreadComponentsFetchController};
-use App\Models\{User, Thread, Post};
+use App\Models\{User, Thread, Forum};
 use App\Http\Middleware\AccountActivationCheck;
 
 /*
@@ -34,7 +34,7 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
-    dd($user->follows);
+    dd(Forum::where('id', 3)->first()->threads);
 });
 
 Route::get('/', [IndexController::class, 'index']);

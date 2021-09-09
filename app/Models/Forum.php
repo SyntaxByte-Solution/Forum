@@ -21,11 +21,15 @@ class Forum extends Model
     }
 
     public function threads() {
-        $threads = collect([]);
-        foreach($this->categories as $category) {
-            $threads = $threads->merge($category->threads);
-        }
-
-        return $threads;
+        return $this->hasManyThrough(Thread::class, Category::class);
     }
+
+    // public function threads() {
+    //     $threads = collect([]);
+    //     foreach($this->categories as $category) {
+    //         $threads = $threads->merge($category->threads);
+    //     }
+
+    //     return $threads;
+    // }
 }

@@ -14,7 +14,7 @@ class Thread extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
-    public $with = ['category.forum','likes','posts', 'visibility', 'votes', 'user.status'];
+    public $with = ['category.forum','likes','posts', 'visibility', 'status', 'votes', 'user.status'];
 
     public static function boot() {
         parent::boot();
@@ -117,7 +117,8 @@ class Thread extends Model
 
     public function getLikedAttribute() {
         if($current_user = auth()->user()) {
-            return Like::where('user_id', $current_user->id)
+            return $this->likes
+                ->where('user_id', $current_user->id)
                 ->where('likable_type', 'App\Models\Thread')
                 ->where('likable_id', $this->id)
                 ->count();
@@ -126,7 +127,8 @@ class Thread extends Model
     }
 
     public function liked_by($user) {
-        $d = Like::where('user_id', $user->id)
+        $d = $this->likes
+            ->where('user_id', $user->id)
             ->where('likable_type', 'App\Models\Thread')
             ->where('likable_id', $this->id)
             ->count();
@@ -226,10 +228,6 @@ class Thread extends Model
 
     public function getPostsandlikescountAttribute() {
         return $this->posts->count() + $this->likes->count();
-    }
-
-    public function forum() {
-        return Forum::find($this->category->forum_id);
     }
 
     public function getSliceAttribute() {

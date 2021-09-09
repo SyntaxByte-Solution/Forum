@@ -38,7 +38,7 @@
             <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 {!! $forum->icon !!}
             </svg>
-            {{ $forum->forum }}
+            {{ __($forum->forum) }}
         </a>
         <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <a href="{{ route('category.threads', ['forum'=>request()->forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ __($category->category) }}</a>
@@ -72,8 +72,8 @@
         </div>
         <div class="simple-line-separator my8"></div>
         <h2 class="fs22 blue unselectable my8 flex align-center">{{ __('Discussions') }}</h2>
-        <div class="flex align-center space-between mb2">
-            <div class="flex align-center">
+        <div class="flex align-end space-between mb2">
+            <div class="mb4">
                 <div class="flex align-center">
                     <p class="no-margin gray fs12 unselectable">{{__('Forum')}}</p>
                     <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
@@ -97,27 +97,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="gray height-max-content mx8 fs10">•</div>
-                <div class="flex align-center">
-                    <p class="no-margin fs12 gray">{{ __('Category') }} </p>
-                    <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-                    <div class="relative">
-                        <div class="flex align-center forum-color button-with-suboptions pointer fs12">
-                            <span class="fs13 bold">{{ __($category->category) }}</span>
-                            <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
-                        </div>
-                        <div class="suboptions-container thread-add-suboptions-container width-max-content" style="width: max-content; max-height: 236px; overflow-y: scroll">
-                            <a href="{{ route('forum.all.threads', ['forum'=>$category->forum->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
-                                <span>{{ __('All categories') }}</span>
-                            </a>
-                            @foreach($categories as $c)
-                                <a href="{{ route('category.threads', ['forum'=>$c->forum->slug, 'category'=>$c->slug]) }}" class="@if($c->id == $category->id) block-click @endif thread-add-suboption black no-underline flex align-center" style="@if($c->id == $category->id) background-color: #e1e1e1; cursor: default @endif">
-                                    <span>{{ __($c->category) }}</span>
+                <div class="flex" style="margin-left: 17px">
+                    <svg class="size14 mr8" style="margin-top: 3px" fill="#d2d2d2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.93 284.93"><polygon points="281.33 281.49 281.33 246.99 38.25 246.99 38.25 4.75 3.75 4.75 3.75 281.5 38.25 281.5 38.25 281.49 281.33 281.49"/></svg>
+                    <div class="flex align-center mt8">
+                        <p class="no-margin fs12 gray">{{ __('Category') }} </p>
+                        <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
+                        <div class="relative">
+                            <div class="flex align-center forum-color button-with-suboptions pointer fs12">
+                                <span class="fs13 bold">{{ __($category->category) }}</span>
+                                <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                            </div>
+                            <div class="suboptions-container thread-add-suboptions-container width-max-content" style="width: max-content; max-height: 236px; overflow-y: scroll">
+                                <a href="{{ route('forum.all.threads', ['forum'=>$category->forum->slug]) }}" class="thread-add-suboption black no-underline flex align-center">
+                                    <span>{{ __('All categories') }}</span>
                                 </a>
-                            @endforeach
+                                @foreach($categories as $c)
+                                    <a href="{{ route('category.threads', ['forum'=>$c->forum->slug, 'category'=>$c->slug]) }}" class="@if($c->id == $category->id) block-click @endif thread-add-suboption black no-underline flex align-center" style="@if($c->id == $category->id) background-color: #e1e1e1; cursor: default @endif">
+                                        <span>{{ __($c->category) }}</span>
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div>  
             </div>
             <div class="relative mr4">
                 <div class="flex align-center forum-color button-with-suboptions pointer fs13 py4">
@@ -175,8 +177,8 @@
 
     </div>
     <div id="right-panel">
-        @include('partials.right-panels.forums-list')
-        @include('partials.right-panels.recent-forum-threads')
+        <x-right-panels.forumslist/>
+        <x-right-panels.recentthreads/>
         <div class="sticky" style="top: 70px">
             @include('partials.right-panels.feedback')
         </div>

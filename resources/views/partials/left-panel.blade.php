@@ -82,7 +82,7 @@
         <div class="relative toggle-box pb8">
             <a href="" class="left-panel-item toggle-container-button simple-suboption-button lp-wpadding @if($page == 'user' && $same_user) {{ 'lp-selected bold white white' }} @endif">
                 <div class="relative size24 mr8 rounded hidden-overflow">
-                    <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size24" alt="{{ __('your profile picture') }}">
+                    <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size24" style='background-color: #10151e' alt="{{ __('your profile picture') }}">
                 </div>
                 {{__('My Space')}} 
                 <svg class="toggle-arrow mx4 size7" style="margin-top: 1px; @if($page == 'user' && $same_user) transform: rotate(90deg) @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">

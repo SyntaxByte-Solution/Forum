@@ -32,7 +32,8 @@
                 <div class="gray full-center my4 fs10 unselectable">•</div>
             </div>
             @else
-            <i>{{ __('NOT SET') }}</i> 
+
+            <i style="margin-left: 10px">{{ __('NOT SET') }}</i> 
             @endisset
         </div>
     </div>

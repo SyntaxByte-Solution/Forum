@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="post-main-section" style="@if($post->ticked) background-color: #e1ffe438; @endif">
-            <div class="flex align-center space-between p4" style="background-color: #f2f2f2">
+            <div class="flex align-center space-between p4" style="background-color: #f2f2f2; border-top-right-radius: 8px">
                 <div>
                     <div class="no-margin" style="max-height: 34px">
                         <div class="inline-block relative">

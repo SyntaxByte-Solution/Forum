@@ -55,10 +55,10 @@
                         <input type='hidden' class="button-text-ing" value="{{ __('loading') }}..">
                     @endif
                 @else
-                    <div class="flex flex-column align-center">
+                    <div class="flex flex-column align-center px8">
                         <div class="size36 sprite sprite-2-size nofollow36-icon" style="margin-top: 16px"></div>
                         @if(auth()->user() && $user->id == auth()->user()->id)
-                        <p class="bold fs17 gray mb8 unselectable">{{ __("You don't have any followers at that time") }}</h2>
+                        <p class="bold fs17 gray mb8 unselectable text-center">{{ __("You don't have any followers at that time") }}</h2>
                         <p class="no-margin forum-color unselectable text-center">{{ __("Try to follow people and react to others's discussions to get more followers") }}.</p>
                         @else
                         <p class="bold fs17 gray my8 unselectable">{{ $user->username . ' ' . __("has no followers") }}</h2>
@@ -100,13 +100,13 @@
                         <input type='hidden' class="button-text-ing" value="{{ __('loading') }}..">
                     @endif
                 @else
-                    <div class="flex flex-column align-center">
+                    <div class="flex flex-column align-center px8">
                         <div class="size36 sprite sprite-2-size nofollow36-icon" style="margin-top: 16px"></div>
                         @if(auth()->user() && $user->id == auth()->user()->id)
-                        <p class="bold fs17 gray mb8 unselectable">{{ __("You don't follow any one at the moment") }}</h2>
-                        <p class="no-margin forum-color unselectable text-center">{{ __("tip: Try to follow people in order to get notifications about their activities and see their posts") }}.</p>
+                        <p class="bold fs17 gray mb8 unselectable text-center">{{ __("You don't follow any one at the moment") }}</h2>
+                        <p class="no-margin forum-color unselectable text-center px8">{{ __("tip: Try to follow people in order to get notifications about their activities and see their posts") }}.</p>
                         @else
-                        <p class="bold fs17 gray my8 unselectable">{{ $user->username . ' ' . __("doesn't follow anyone") }}</h2>
+                        <p class="bold fs17 gray my8 unselectable text-center">{{ $user->username . ' ' . __("doesn't follow anyone") }}</h2>
                         @endif
                     </div>
                 @endif

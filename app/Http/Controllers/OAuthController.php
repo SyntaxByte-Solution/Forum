@@ -95,7 +95,7 @@ class OAuthController extends Controller
             );
 
             Auth::login($user, true);
-
+            \Session::flash('message', __('WELCOME TO MOROCCAN FORUMS WEBSITE ! CHECK YOUR NOTIFICATIONS BOX')); 
             // Then we have to create folders that will hold avatars, covers, threads images ..
             $path = public_path().'/users/' . $user->id;
             File::makeDirectory($path, 0777, true, true);

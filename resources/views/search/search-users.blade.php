@@ -41,7 +41,8 @@
             </form>
         </div>
         @if($search_query != "")
-        <h2 class="fs20 flex align-center gray">{{ __('Users search results for') }}: "<span class="black">{{ $search_query }}</span>" ({{$users->total()}} {{__('found')}})</h2>
+        <h2 class="fs20 flex align-center gray" style="margin: 16px 0 6px 0">{{ __('Users search results for') }} : </h2>
+        <h3 class="fs18 flex align-center no-margin ml8 gray">"<span class="black">{{ $search_query }}</span>" ({{$users->total()}} {{__('found')}})</h3>
         @endif
         <div class="simple-line-separator my8"></div>
         <div style='margin-bottom: 16px'>

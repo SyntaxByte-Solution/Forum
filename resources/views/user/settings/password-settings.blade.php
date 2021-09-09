@@ -34,17 +34,31 @@
 
                 <div class="my8">
                     <div>
+                        @if($user->password != NULL && $user->provider)
+                        <style>
+                            .bordered-text {
+                                padding: 6px 10px;
+                                border-radius: 4px;
+                                border: 1px solid #ddd;
+                                background-color: #fbfbfb;
+                            }
+                        </style>
+                        <div class="flex" style="margin-bottom: 18px">
+                            <p class="no-margin fs15 bordered-text" style="line-height: 150%">{{ __("Your password has been set previously. If you forgot your password you still can login using your social network account or wait until we add password reset feature") }}.</p>
+                        </div>
+                        <div class="simple-line-separator my8"></div>
+                        @endif
                         <div class="flex">
                             <p class="no-margin" style="margin-right: 8px">●</p>
-                            <p class="no-margin fs13" style="line-height: 150%">{{ __("Your're currently using ") }} <b> {{ $user->provider }} </b> {{ __(" service and you can access your account by choosing this service in the login section without using a password. However If you intend to create a password for your account, this will allow you to loggin using normal authentication(email & password) or login directly using your social network service") }}.</p>
+                            <p class="no-margin" style="line-height: 150%">{{ __("Your're currently using") }} <b> {{ $user->provider }} </b> {{ __("service and you can access your account by choosing this service in the login section without using a password. However If you intend to create a password for your account, this will allow you to loggin using normal authentication(email & password) or login directly using your social network service") }}.</p>
                         </div>
                         <div class="flex" style="margin-top: 12px;">
                             <p class="no-margin mr8">●</p>
-                            <p class="no-margin fs13" style="line-height: 150%">{{ __("However, If you close the browser, and you come back later you need to login again using your social account. To keep your account logged-in, try to create a password to your account below and connect normally using your email and password and then use REMEMBER ME feature to keep your account logged-in") }}.</p>
+                            <p class="no-margin" style="line-height: 150%">{{ __("However, If you close the browser, and you come back later you need to login again using your social account. To keep your account logged-in, try to create a password to your account below and connect normally using your email and password and then use REMEMBER ME feature to keep your account logged-in") }}.</p>
                         </div>
                         <div class="flex" style="margin-top: 12px">
                             <p class="no-margin" style="margin-right: 8px">●</p>
-                            <p class="no-margin fs13" style="line-height: 150%">{{ __("However keep in mind when you choose a password and forget it later, you can't reset your password because this feature is not present for the moment. Instead you can login directly using your social network service") }}.</p>
+                            <p class="no-margin" style="line-height: 150%">{{ __("However keep in mind when you choose a password and forget it later, you can't reset your password because this feature is not present for the moment. Instead you can login directly using your social network service") }}.</p>
                         </div>
                     </div>
                     @if($user->password == NULL && $user->provider)
@@ -78,12 +92,6 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
-                    @else
-                        <div class="simple-line-separator my8"></div>
-                        <div class="flex" style="margin-top: 18px">
-                            <p class="no-margin bold" style="margin-right: 8px">+</p>
-                            <p class="no-margin fs13" style="line-height: 150%">{{ __("Your password has been set previously. If you forgot your password you still can login using your social network account or wait until we add password reset feature") }}.</p>
                         </div>
                     @endif
                 </div>

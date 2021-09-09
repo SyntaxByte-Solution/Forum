@@ -17,7 +17,7 @@ class CreateForumsTable extends Migration
             $table->id();
             $table->string('forum')->unique();
             $table->string('slug')->unique();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('icon')->nullable();
 
             $table->unsignedBigInteger('status')->default('1');

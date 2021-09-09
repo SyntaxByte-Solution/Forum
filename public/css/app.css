@@ -2603,10 +2603,15 @@ a, input, textarea {
 }
 
 .thread-container-box {
-    margin-bottom: 12px;
-    border-radius: 4px;
+    margin-bottom: 8px;
+    border-radius: 3px;
     box-shadow: 0 0 6px 0.2px #0000000f;
     border: 1px solid #d0d0d0;
+    transition: border-color 0.6s ease;
+}
+
+.thread-container-box:hover {
+    box-shadow: 0 0 5px 0.2px #0000002d;
 }
 
 .thread-vote-section {
@@ -2644,10 +2649,6 @@ a, input, textarea {
 .thread-content-section {
     background-color: white;
     overflow: hidden;
-}
-
-.thread-container-box:hover {
-    box-shadow: 0 0 5px 0.2px #0000001c;
 }
 
 .simple-border-container {

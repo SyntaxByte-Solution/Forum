@@ -53,7 +53,7 @@
                 <svg class="size30 mr8" fill="#202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     {!! $forum->icon !!}
                 </svg>
-                <h1 class="forum-color fs30 no-margin">{{ __(request()->forum->forum . ' Forum') }}</h1>
+                <h1 class="forum-color fs30 no-margin">{{ __(request()->forum->forum) . ' ' . __('Forum') }}</h1>
             </div>
             @if($announcements->count() != 0)
                 <div class="flex align-center space-between">

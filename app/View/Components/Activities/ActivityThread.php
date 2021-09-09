@@ -24,7 +24,7 @@ class ActivityThread extends Component
         $this->thread = $thread;
         $this->edit_link = route('thread.edit', ['user'=>$thread->user->username, 'thread'=>$thread->id]);
         $this->is_ticked = $thread->posts->where('ticked', 1)->count();
-        $this->forum = $thread->forum();
+        $this->forum = $thread->category->forum;
         $this->category = $thread->category;
 
         $this->at = (new Carbon($thread->created_at))->toDayDateTimeString();

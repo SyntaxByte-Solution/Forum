@@ -138,8 +138,8 @@
     <div id="right-panel">
         <div>
             <div class="right-panel-header-container">
-                <div class="flex align-center">
-                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M65.4,453.77h85.53V512l55-24.76L261,512V453.77H446.6V0H65.4ZM231,465.61l-25-11.27-25,11.27V423.74H231ZM155.44,30H416.6V333.7H155.44Zm-60,0h30.05V333.7h-30Zm0,333.7H416.6v60.07H261v-30H150.93v30H95.4ZM301,231.9V161.85H241v30h30V231.9H241v30h90.07v-30ZM271,101.8h30v30H271Z"/></svg>
+                <div class="flex">
+                    <svg class="size17 mr4 mt4" style="min-width: 17px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M65.4,453.77h85.53V512l55-24.76L261,512V453.77H446.6V0H65.4ZM231,465.61l-25-11.27-25,11.27V423.74H231ZM155.44,30H416.6V333.7H155.44Zm-60,0h30.05V333.7h-30Zm0,333.7H416.6v60.07H261v-30H150.93v30H95.4ZM301,231.9V161.85H241v30h30V231.9H241v30h90.07v-30ZM271,101.8h30v30H271Z"/></svg>
                     <p class="bold no-margin unselectable my4">{{ __('Contact & Feedback guidelines') }}</p>
                 </div>
             </div>
@@ -147,8 +147,7 @@
                 <p class="fs12 my8"><strong>1. {{ __('Include the topic for your contact in the first line of message section') }}</strong></p>
                 <p class="fs12 my8 ml8"><strong>1.1</strong> {{ __('Including the topic of your message help our team to help you when you ask a question or ask for something') }}.</p>
                 <p class="fs12 my8"><strong>2. {{ __('Use what is appropriate') }}</strong></p>
-                <p class="fs12 my8 ml8"><strong>2.1</strong> {{ __('Be clear, thoughtful, and respectful. Make sure the feedback you offer is accurate, specific, and is limited only to the behavior in question or suggestion') }}.</p>
-                <p class="fs12 my8 ml8"><strong>2.2</strong> {{ __('Deliver feedback in a timely manner. It is best to give feedback as close as possible to the occurrence of the behavior or issue that requires correction') }}.</p>
+                <p class="fs12 my8 ml8"><strong>2.1</strong> {{ __('Deliver feedback in a timely manner. It is best to give feedback as close as possible to the occurrence of the behavior or issue that requires correction') }}.</p>
                 <p class="fs12 my8"><strong>3. {{ __('How to Share Useful – and Respectful – Feedback') }}</strong></p>
                 <p class="fs12 my8 ml8"><strong>3.1</strong> {{ __('Concentrate on the positive first before giving criticism. Feedback should start with positive observations about the contributions we are making before detailing areas that need improvement') }}.</p>
                 <p class="fs12 my8 ml8"><strong>3.2</strong> {{ __('Be clear about what you want to say before you say it') }}.</p>

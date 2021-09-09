@@ -11,8 +11,8 @@ use App\Models\{Thread, User, Forum, Vote, Like};
 
 class SearchController extends Controller
 {
+    const TAB_WHITE_LIST = ['all', 'today', 'thisweek'];
     public function search(Request $request) {
-        $tab_whitelist = ['all', 'today', 'thisweek'];
         $tab = 'all';
         $tab_title = __('All');
         $pagesize = 10;
@@ -31,7 +31,7 @@ class SearchController extends Controller
 
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
-            $tab = $request->validate(['tab'=>Rule::in($tab_whitelist)])['tab'];
+            $tab = $request->validate(['tab'=>Rule::in(self::TAB_WHITE_LIST)])['tab'];
             if($tab == 'today') {
                 $threads = $threads->today()->orderBy('view_count', 'desc');
                 $tab_title = __('Today');
@@ -129,8 +129,24 @@ class SearchController extends Controller
             $search_query = '';
         }
 
+        
         // 1. First fetch threads based on search query
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
+
+        if($request->has('tab')) {
+            $tab = $request->validate(['tab'=>Rule::in(self::TAB_WHITE_LIST)])['tab'];
+            if($tab == 'today') {
+                $threads = $threads->today();
+                $tab_title = __('Today');
+            } else if($tab == 'thisweek') {
+                $threads = $threads->where(
+                    'created_at', 
+                    '>=', 
+                    \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)
+                );
+                $tab_title = __('This week');
+            }
+        }
         /**
          * 2. Then we check for forum and category existence and based on that we set our conditions and checks;
          *    (because the user could choose all forums and all categories)
@@ -239,7 +255,7 @@ class SearchController extends Controller
         $forums = Forum::all();
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
-            $tab = $request->validate(['tab'=>Rule::in($tab_whitelist)])['tab'];
+            $tab = $request->validate(['tab'=>Rule::in(self::TAB_WHITE_LIST)])['tab'];
             if($tab == 'today') {
                 $threads = $threads->today()->orderBy('view_count', 'desc');
                 $tab_title = __('Today');

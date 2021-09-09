@@ -3,7 +3,7 @@
     <div id="header" class="relative">
         <div id="header-logo-container" style="min-width: 144px; max-width: 144px">
             <a href="/">
-                <img src='{{ asset("assets/images/logos/header-logo.png") }}' alt="header logo" id="header-logo">
+                <img src='{{ asset("assets/images/logos/header-logo.png") }}' alt="logo" id="header-logo">
             </a>
         </div>
         <div class="flex align-center full-height" style="margin-left: 10px;">
@@ -291,22 +291,22 @@
                     <div class="relative">
                         <div class="flex align-center pointer button-with-suboptions">
                             <div class='header-profile-button relative' style="align-items: flex-start">
-                                <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="header-profile-picture size36">
+                                <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="{{__('your profile picture')}}" class="header-profile-picture size36 fs10" style='background-color: #10151e'>
                             </div>
                             <p class="no-margin fs13 mx4 light-gray flex align-center">
                                 {{ $authuser->username }} 
                                 <svg class="size7 ml8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                             </p>
                         </div>
-                        <div class="suboptions-container suboptions-account-style">
+                        <div class="suboptions-container suboptions-account-style" style="width: 196px">
                             <div class="flex first-profile-container-part">
-                                <a href="{{ route('user.profile', ['user'=>$authuser->username]) }}" class="relative">
-                                    <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="profile picture" class="rounded size36 mr8">
+                                <a href="{{ route('user.profile', ['user'=>$authuser->username]) }}" class="relative size36 mr8" style="min-width: 36px">
+                                    <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" alt="{{__('your profile picture')}}" class="rounded size36 fs10" style='background-color: white'>
                                 </a>
                                 <div>
                                     <p class="no-margin fs15 bold unselectable">{{ $authuser->firstname . ' ' . $authuser->lastname }}</p>
                                     <a href="{{ route('user.profile', ['user'=>$authuser->username]) }}" class="no-underline">
-                                        <p class="no-margin fs12 blue">{{ $authuser->username }}</p>
+                                        <p class="no-margin fs12 blue bold">{{ $authuser->username }}</p>
                                     </a>
 
                                 </div>

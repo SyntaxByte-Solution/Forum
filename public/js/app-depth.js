@@ -31,12 +31,12 @@ jQuery.fn.rotate = function(degrees) {
  * Update user activity in every page (because this js file is included in every page) and update the user
  * activity every 2 seconds if the user doesn't change the page
  */
-if(userId) {
-    update_user_last_activity();
-    setInterval(function() {
-        update_user_last_activity();
-    }, 120000);
-}
+// if(userId) { // Disable this for debugging purposes
+//     update_user_last_activity();
+//     setInterval(function() {
+//         update_user_last_activity();
+//     }, 120000);
+// }
 
 function update_user_last_activity() {
     $.ajax({

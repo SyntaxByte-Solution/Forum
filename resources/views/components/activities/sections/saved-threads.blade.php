@@ -2,14 +2,14 @@
     <div class="activities-section-content-header flex">
         <h3 class="move-to-middle forum-color flex align-center unselectable">
             <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M400,0H112A48,48,0,0,0,64,48V512L256,400,448,512V48A48,48,0,0,0,400,0Zm0,428.43-144-84-144,84V54a6,6,0,0,1,6-6H394a6,6,0,0,1,6,6Z"/></svg>
-            {{ __('Saved discussions') }} [<span class="current-section-thread-count mx4">{{ 10 * ($savedthreads->count() / 10) }}</span> / {{ $user->savedthreads->count() }} ]
+            {{ __('Saved discussions') }} [<span class="current-section-thread-count mx4">{{ $savedthreads->count() }}</span> / {{ $user->savedthreads()->count() }} ]
         </h3>
     </div>
     <div class="activities-section-content">
         @foreach($savedthreads as $thread)
             <x-activities.activity-thread :thread="$thread" :user="$user"/>
         @endforeach
-        @if($user->savedthreads->count() > 10)
+        @if($user->savedthreads()->count() > 10)
         <div class="flex activity-section-load-more">
             <input type="hidden" class="section" value="saved-threads">
             <div class="flex align-center move-to-middle">

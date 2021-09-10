@@ -291,14 +291,12 @@ class SearchController extends Controller
             $search_query = $keyword['k'];
         }
 
-        $forums = Forum::all();
         $users = $this->srch(
             User::query()->excludedeactivatedaccount(), $search_query, ['firstname', 'lastname', 'username'], ['LIKE']
         )->orderBy('username', 'asc')
         ->paginate($pagesize);
 
         return view('search.search-users')
-            ->with(compact('forums'))
             ->with(compact('users'))
             ->with(compact('pagesize'))
             ->with(compact('search_query'));

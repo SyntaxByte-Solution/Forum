@@ -181,6 +181,10 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->hasMany(Thread::class);
     }
 
+    public function posts() {
+        return $this->hasManyThrough(Post::class, Thread::class);
+    }
+
     public function savedthreads() {
         return $this->belongsToMany(Thread::class, 'saved_threads', 'user', 'thread')->withTimestamps()->withPivot('created_at')->orderBy('saved_threads.created_at', 'desc');
     }

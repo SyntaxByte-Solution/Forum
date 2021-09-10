@@ -7,14 +7,16 @@ use App\Models\{User, Thread, Category};
 
 class Threads extends Component
 {
+    public $user_threads_count;
     public $user;
     public $threads;
 
     public function __construct(User $user)
     {
         $this->user = $user;
-        
-        $this->threads = $user->threads()->orderBy('created_at', 'desc')->take(10)->get();
+        $this->threads = $user->threads()
+        ->orderBy('created_at', 'desc')->take(10)->get();
+        $this->user_threads_count = $user->threads()->count();
     }
 
     /**

@@ -20,16 +20,15 @@ class UserController extends Controller
 
     public function activities(Request $request, User $user) {
         $is_current = Auth::check() ? auth()->user()->id == $user->id : false;
-        // Take 6 threads created by the current user (the profile owner) to display as the first section in activities page
-        $threads = Thread::where('user_id', $user->id)->orderBy('created_at', 'desc')->take(6)->get();
 
-        $threads_count = $user->threads->count();
+        $threads_count = $user
+        ->threads()
+        ->count();
 
         return view('user.activities')
             ->with(compact('user'))
             ->with(compact('is_current'))
-            ->with(compact('threads_count'))
-            ->with(compact('threads'));
+            ->with(compact('threads_count'));
     }
     public function profile(Request $request, User $user) {
         if($user->account_status->id == 2) {
@@ -228,7 +227,7 @@ class UserController extends Controller
                 $follower->notify(
                     new \App\Notifications\UserAction([
                         'action_user'=>auth()->user()->id,
-                        'action_statement'=>__("changed his profile avatar"),
+                        'action_statement'=>"changed his profile avatar",
                         'resource_string_slice'=>"",
                         'action_type'=>'avatar-change',
                         'action_date'=>now(),

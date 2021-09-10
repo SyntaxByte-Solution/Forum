@@ -2,14 +2,14 @@
     <div class="activities-section-content-header flex">
         <h3 class="move-to-middle forum-color flex align-center unselectable">
             <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M287.81,219.72h-238c-21.4,0-32.1-30.07-17-47.61l119-138.2c9.4-10.91,24.6-10.91,33.9,0l119,138.2C319.91,189.65,309.21,219.72,287.81,219.72ZM224.22,292l238,.56c21.4,0,32,30.26,16.92,47.83L359.89,478.86c-9.41,10.93-24.61,10.9-33.9-.08l-118.75-139C192.07,322.15,202.82,292,224.22,292Z" style="fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:49px"/></svg>
-            {{ __('Voted discussions') }} [<span class="current-section-thread-count mx4">{{ 10 * ($votedthreads->count() / 10) }}</span> / {{ $user->voted_threads()->count() }} ]
+            {{ __('Voted discussions') }} [<span class="current-section-thread-count mx4">{{ $votedthreads->count() }}</span> / {{ $votedthreadscount }} ]
         </h3>
     </div>
     <div class="activities-section-content">
         @foreach($votedthreads as $thread)
             <x-activities.activity-thread :thread="$thread" :user="$user"/>
         @endforeach
-        @if($user->voted_threads()->count() > 10)
+        @if($votedthreadscount > 10)
         <div class="flex activity-section-load-more">
             <input type="hidden" class="section" value="voted-threads">
             <div class="flex align-center move-to-middle">

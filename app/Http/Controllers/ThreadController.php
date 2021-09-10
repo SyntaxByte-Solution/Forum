@@ -747,7 +747,8 @@ class ThreadController extends Controller
                 ];
                 break;
             case 'voted-threads':
-                $votedthreads = $user->voted_threads()->skip($data['skip'])->take(10);
+                $totaluservotedthreads = $user->threadsvotes()->count();
+                $votedthreads = $user->voted_threads($data['skip'], $data['range']);
 
                 $payload = "";
 
@@ -758,7 +759,7 @@ class ThreadController extends Controller
                 }
 
                 return [
-                    "hasNext"=> $user->voted_threads()->skip($data['skip'] + $data['range'])->count() > 0,
+                    "hasNext"=> $totaluservotedthreads > $data['skip'] + $votedthreads->count(),
                     "content"=>$payload,
                     "count"=>$votedthreads->count()
                 ];

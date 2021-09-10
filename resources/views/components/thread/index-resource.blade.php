@@ -190,7 +190,6 @@
                     <div class="relative" style="height: 20px">
                         <svg class="pointer path-blue-when-hover button-with-suboptions size20 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M320,256a64,64,0,1,1-64-64A64.06,64.06,0,0,1,320,256Zm-192,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,128,256Zm384,0a64,64,0,1,1-64-64A64.06,64.06,0,0,1,512,256Z"/></svg>
                         <div class="suboptions-container suboptions-container-right-style">
-                            @can('update', $thread)
                             @can('save', $thread)
                             <div class="pointer simple-suboption save-thread flex align-center">
                                 <input type="hidden" class="save-icon" value="M400,0H112A48,48,0,0,0,64,48V512L256,400,448,512V48A48,48,0,0,0,400,0Zm0,428.43-144-84-144,84V54a6,6,0,0,1,6-6H394a6,6,0,0,1,6,6Z">
@@ -219,7 +218,8 @@
                                 <input type="hidden" class="saved-message" value="{{ __('Discussion saved successfully') }}">
                                 <input type="hidden" class="unsaved-message" value="{{ __('Discussion unsaved successfully') }}">
                             </div>
-                            @endcan
+                            @endcan    
+                            @can('update', $thread)
                             <a href="{{ $edit_link }}" class="no-underline simple-suboption flex align-center">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"/></svg>
                                 <div class="black">{{ __('Edit discussion') }}</div>

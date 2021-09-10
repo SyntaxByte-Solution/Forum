@@ -182,12 +182,22 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->hasMany(Thread::class);
     }
 
+    public function threadsvotes() {
+        return $this->hasManyDeep(
+            'App\Models\User',
+            ['votes', 'App\Models\Thread'],
+            [null, 'id', 'id'],
+            [null, ['votable_type', 'votable_id'], 'user_id']
+        );
+    }
+
     public function threadslikes() {
         // Here we can't use hasManyThrough (many likes through thread) because the relation between likes and thread is morph
         return $this->hasManyDeep(
-            'App\Models\Like',
-            ['App\Models\Thread'],
-            [null, ['likable_type', 'likable_id']]
+            'App\Models\User',
+            ['likes', 'App\Models\Thread'],
+            [null, 'id', 'id'],
+            [null, ['likable_type', 'likable_id'], 'user_id']
         );
     }
 
@@ -239,6 +249,18 @@ class User extends UserAuthenticatable implements Authenticatable
         return Thread::without(['votes', 'posts', 'likes'])->findMany($likedthreads);
     }
 
+    public function voted_threads($skip=10, $pagesize=10) {
+        $votedthreads = $this
+            ->threadsvotes()
+            ->without(['posts', 'likes'])
+            ->orderBy('votes.created_at', 'desc')
+            ->pluck('votable_id')
+            ->skip($skip)
+            ->take($pagesize);
+        
+        return Thread::without(['votes', 'posts', 'likes'])->findMany($votedthreads);
+    }
+
     public function likes_on_threads() {
         return Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Thread')->get();
     }
@@ -257,20 +279,6 @@ class User extends UserAuthenticatable implements Authenticatable
 
     public function votes() {
         return $this->hasMany(Vote::class);
-    }
-
-    public function voted_threads($order="desc") {
-        $threads_ids = Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->orderBy('created_at', $order)->pluck('votable_id');
-        /**
-         * The reason why we add reject is because sometimes the fetched threads from votes table are private or follower only threads and the
-         * visitor is not a follower of the owners of these threads so the global scopes(ExcludePrivate and Followersonly) return null
-         */
-        return $threads_ids
-        ->map(function($value) {
-            return Thread::find($value);
-        })->reject(function($value) {
-            return $value == null;
-        });
     }
 
     public function votes_count() {

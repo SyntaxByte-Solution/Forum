@@ -58,7 +58,7 @@
                                     <div class="flex align-center space-between">
                                             <div class="flex align-center">
                                                 <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    {!! $announcement->forum()->icon !!}
+                                                    {!! $announcement->category->forum->icon !!}
                                                 </svg>
                                                 <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ __($forum->forum) }}</a>
                                             </div>
@@ -195,8 +195,8 @@
         </div>
     </div>
     <div id="right-panel">
-        @include('partials.right-panels.forums-list')
+        <x-right-panels.forumslist/>
+        <x-right-panels.recentthreads/>
         @include('partials.right-panels.statistics')
-        @include('partials.right-panels.recent-forum-threads')
     </div>
 @endsection

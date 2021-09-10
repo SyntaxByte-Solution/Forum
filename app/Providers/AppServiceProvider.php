@@ -53,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
         });
         Blade::if('upvoted', function ($resource, $type) {
             if($user=auth()->user()) {
-                return $resource->votes
+                return $resource->votes()
                         ->where('vote', '1')
                         ->where('user_id', $user->id)
                         ->count() > 0;
@@ -63,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
         });
         Blade::if('downvoted', function ($resource, $type) {
             if($user=auth()->user()) {
-                return $resource->votes
+                return $resource->votes()
                     ->where('vote', '-1')
                     ->where('user_id', $user->id)
                     ->count() > 0;

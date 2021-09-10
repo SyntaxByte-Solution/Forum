@@ -13,7 +13,7 @@ class SavedThreads extends Component
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->savedthreads = $user->savedthreads()->take(10)->get();
+        $this->savedthreads = $user->savedthreads()->without(['votes', 'posts', 'likes'])->take(10)->get();
     }
 
     /**

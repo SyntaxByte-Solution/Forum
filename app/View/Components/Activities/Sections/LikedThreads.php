@@ -9,7 +9,7 @@ class LikedThreads extends Component
 {
     public $user;
     public $likedthreads;
-    public $likedthreads_count;
+    public $likedthreadscount;
 
     public function __construct(User $user)
     {
@@ -20,7 +20,8 @@ class LikedThreads extends Component
          * So before fetching threads we have to check if the thread is null or not (we solve this problem 
          * by adding reject to map function User - liked_users method)
          */
-        $this->likedthreads = $user->liked_threads()->take(10);
+        $this->likedthreads = $user->liked_threads(0, 10); // Skip 0 and get 10
+        $this->likedthreadscount = $user->threadslikes()->count();
     }
 
     /**

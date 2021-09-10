@@ -23,7 +23,7 @@ class ActivityThread extends Component
         $this->activity_user = $user;
         $this->thread = $thread;
         $this->edit_link = route('thread.edit', ['user'=>$thread->user->username, 'thread'=>$thread->id]);
-        $this->is_ticked = $thread->posts->where('ticked', 1)->count();
+        $this->is_ticked = $thread->isticked();
         $this->forum = $thread->category->forum;
         $this->category = $thread->category;
 

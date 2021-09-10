@@ -19,6 +19,7 @@ use App\Scopes\ExcludeDeactivatedUser;
 class User extends UserAuthenticatable implements Authenticatable
 {
     use HasFactory, Notifiable, HasPermissionsTrait, SoftDeletes;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $guarded = [];
     private $avatar_dims = [26, 36, 100, 160, 200, 300, 400];
@@ -181,6 +182,15 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->hasMany(Thread::class);
     }
 
+    public function threadslikes() {
+        // Here we can't use hasManyThrough (many likes through thread) because the relation between likes and thread is morph
+        return $this->hasManyDeep(
+            'App\Models\Like',
+            ['App\Models\Thread'],
+            [null, ['likable_type', 'likable_id']]
+        );
+    }
+
     public function posts() {
         return $this->hasManyThrough(Post::class, Thread::class);
     }
@@ -212,18 +222,21 @@ class User extends UserAuthenticatable implements Authenticatable
             ->get();
     }
 
-    public function liked_threads($order="desc") {
-        $threads_ids = Like::where('user_id', $this->id)->where('likable_type', 'App\Models\Thread')->orderBy('created_at', $order)->pluck('likable_id');
+    public function liked_threads($skip=10, $pagesize=10) {
         /**
-         * The reason why we add reject is because sometimes the fetched threads from likes table are private or follower only threads and the
-         * visitor is not a follower of the owners of these threads so the global scopes(ExcludePrivate and Followersonly) return null
+         * To fetch liked threads in form of chunks we have to do the following (due to performence purposes)
+         * 1. Use threadslikes relationship to fetch likes on threads only.
+         * 2. 
          */
-        return $threads_ids
-            ->map(function($value) {
-                return Thread::find($value);
-            })->reject(function($value) {
-                return $value == null;
-            });
+        $likedthreads = $this
+            ->threadslikes()
+            ->without(['votes', 'posts', 'likes'])
+            ->orderBy('likes.created_at', 'desc')
+            ->pluck('likable_id')
+            ->skip($skip)
+            ->take($pagesize);
+        
+        return Thread::without(['votes', 'posts', 'likes'])->findMany($likedthreads);
     }
 
     public function likes_on_threads() {

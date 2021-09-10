@@ -696,7 +696,7 @@ class ThreadController extends Controller
 
         switch($data['section']) {
             case 'threads':
-                $threads = $user->threads()->orderBy('created_at', 'desc')->skip($data['skip'])->take($data['range'])->get();
+                $threads = $user->threads()->without(['votes', 'posts', 'likes'])->orderBy('created_at', 'desc')->skip($data['skip'])->take($data['range'])->get();
 
                 $payload = "";
 
@@ -707,13 +707,13 @@ class ThreadController extends Controller
                 }
 
                 return [
-                    "hasNext"=> $user->threads->skip($data['skip'] + $data['range'])->count() > 0,
+                    "hasNext"=> $user->threads()->count() > $data['skip'] + $data['range'],
                     "content"=>$payload,
                     "count"=>$threads->count()
                 ];
                 break;
             case 'saved-threads':
-                $savedthreads = $user->savedthreads()->skip($data['skip'])->take($data['range'])->get();
+                $savedthreads = $user->savedthreads()->without(['votes', 'posts', 'likes'])->skip($data['skip'])->take($data['range'])->get();
 
                 $payload = "";
 
@@ -724,16 +724,16 @@ class ThreadController extends Controller
                 }
 
                 return [
-                    "hasNext"=> $user->savedthreads->skip($data['skip'] + $data['range'])->count() > 0,
+                    "hasNext"=> $user->savedthreads()->count() > $data['skip'] + $data['range'],
                     "content"=>$payload,
                     "count"=>$savedthreads->count()
                 ];
                 break;
             case 'liked-threads':
-                $likedthreads = $user->liked_threads()->skip($data['skip'])->take(10);
+                $totaluserlikedthreads = $user->threadslikes()->count();
+                $likedthreads = $user->liked_threads($data['skip'], $data['range']); // Skip skip and take range
 
                 $payload = "";
-
                 foreach($likedthreads as $thread) {
                     $thread_component = (new ActivityThread($thread, $user));
                     $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
@@ -741,7 +741,7 @@ class ThreadController extends Controller
                 }
 
                 return [
-                    "hasNext"=> $user->liked_threads()->skip($data['skip'] + $data['range'])->count() > 0,
+                    "hasNext"=> $totaluserlikedthreads > $data['skip'] + $likedthreads->count(),
                     "content"=>$payload,
                     "count"=>$likedthreads->count()
                 ];

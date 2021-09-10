@@ -34,7 +34,8 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
-    dd(Forum::where('id', 3)->first()->threads);
+    
+    dd(Thread::without(['posts'])->first());
 });
 
 Route::get('/', [IndexController::class, 'index']);

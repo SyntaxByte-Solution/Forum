@@ -21,14 +21,9 @@ class UserController extends Controller
     public function activities(Request $request, User $user) {
         $is_current = Auth::check() ? auth()->user()->id == $user->id : false;
 
-        $threads_count = $user
-        ->threads()
-        ->count();
-
         return view('user.activities')
             ->with(compact('user'))
-            ->with(compact('is_current'))
-            ->with(compact('threads_count'));
+            ->with(compact('is_current'));
     }
     public function profile(Request $request, User $user) {
         if($user->account_status->id == 2) {

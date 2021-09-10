@@ -14,7 +14,7 @@ class Threads extends Component
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->threads = $user->threads()
+        $this->threads = $user->threads()->without(['votes', 'posts', 'likes'])
         ->orderBy('created_at', 'desc')->take(10)->get();
         $this->user_threads_count = $user->threads()->count();
     }

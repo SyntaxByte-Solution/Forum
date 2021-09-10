@@ -127,7 +127,7 @@ class Thread extends Model
     }
 
     public function liked_by($user) {
-        $d = $this->likes
+        $d = $this->likes()
             ->where('user_id', $user->id)
             ->where('likable_type', 'App\Models\Thread')
             ->where('likable_id', $this->id)
@@ -166,12 +166,7 @@ class Thread extends Model
     }
 
     public function getVotevalueAttribute() {
-        $count = 0;
-        foreach($this->votes as $vote) {
-            $count += $vote->vote;
-        }
-
-        return $count;
+        return $this->votes()->sum('vote');
     }
 
     public function getVoteCountAttribute() {
@@ -224,6 +219,10 @@ class Thread extends Model
         }
 
         return false;
+    }
+
+    public function isticked() {
+        return $this->posts()->where('ticked', 1)->count() > 0;
     }
 
     public function getPostsandlikescountAttribute() {

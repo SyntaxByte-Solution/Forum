@@ -444,7 +444,7 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function getArchivedthreadsAttribute() {
-        return $this->threads()->onlyTrashed()->get();
+        return $this->threads()->onlyTrashed();
     }
 
     public function getAboutminAttribute() {

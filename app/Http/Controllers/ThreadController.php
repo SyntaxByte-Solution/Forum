@@ -765,10 +765,9 @@ class ThreadController extends Controller
                 ];
                 break;
             case 'archived-threads':
-                $archivedthreads = $user->archivedthreads->sortByDesc('deleted_at')->skip($data['skip'])->take(10);
-
+                $archivedthreads = $user->archivedthreads->without(['posts', 'likes', 'votes'])->orderBy('deleted_at', 'desc')->skip($data['skip'])->take(10)->get();
+                
                 $payload = "";
-
                 foreach($archivedthreads as $thread) {
                     $thread_component = (new ActivityThread($thread, $user));
                     $thread_component = $thread_component->render(get_object_vars($thread_component))->render();
@@ -776,7 +775,7 @@ class ThreadController extends Controller
                 }
 
                 return [
-                    "hasNext"=> $user->archivedthreads->skip($data['skip'] + $data['range'])->count() > 0,
+                    "hasNext"=> $user->archivedthreads->count() >  $data['skip'] + $data['range'],
                     "content"=>$payload,
                     "count"=>$archivedthreads->count()
                 ];

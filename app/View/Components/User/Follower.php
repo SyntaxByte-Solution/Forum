@@ -11,17 +11,16 @@ class Follower extends Component
     public $follower;
     public $followed;
 
-    public function __construct(User $user)
+    public function __construct(Follow $follower)
     {
-        $this->follower = $user;
+        $this->follower = User::find($follower->follower);
         if(Auth::check()) {
-            $this->followed = (bool) Follow::where('follower', auth()->user()->id)
-            ->where('followable_id', $user->id)
+            $this->followed = (bool) auth()->user()->follows()
+            ->where('followable_id', $follower->follower)
             ->where('followable_type', 'App\Models\User')
             ->count();
-        } else {
+        } else
             $this->followed = false;
-        }
     }
 
     /**

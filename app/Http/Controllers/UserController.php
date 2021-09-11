@@ -55,26 +55,19 @@ class UserController extends Controller
 
         // Check if the visitor is a follower of the visited profile
         $followed = false;
-        if(Auth::check()) {
-            $followed = (bool) Follow::where('follower', auth()->user()->id)
+        if(Auth::check() && auth()->user()->id != $user->id) {
+            $followed = auth()->user()->follows()
             ->where('followable_id', $user->id)
             ->where('followable_type', 'App\Models\User')
             ->count() > 0;
         }
 
-        $threads = $user->threads()
-            ->orderBy('created_at', 'desc')->paginate(self::PROFILE_THREADS_SIZE);
+        $threads = $user->threads()->without(['posts', 'votes', 'likes'])
+            ->orderBy('created_at', 'desc')->take(self::PROFILE_THREADS_SIZE)->get();
         $pagesize = self::PROFILE_THREADS_SIZE;
 
-        $followers = $user->followers;
-        $followers = $followers->map(function($item, $key) {
-            return User::find($item->follower);
-        })->take(8);
-
-        $followed_users = $user->followed_users;
-        $followed_users = $followed_users->map(function($item, $key) {
-            return User::find($item->followable_id);
-        })->take(8);
+        $followers = $user->followers()->take(8)->get();
+        $followed_users = $user->follows()->take(8)->get();
 
         return view('user.profile')
             ->with(compact('user'))

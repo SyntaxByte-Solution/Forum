@@ -29,7 +29,7 @@ class SearchController extends Controller
             $search_query = $keyword['k'];
         }
 
-        $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
+        $threads = $this->srch(Thread::query()->without(['posts','likes','votes']), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
             $tab = $request->validate(['tab'=>Rule::in(self::TAB_WHITE_LIST)])['tab'];
             if($tab == 'today') {
@@ -67,7 +67,6 @@ class SearchController extends Controller
     public function search_advanced_results(Request $request) {
         $tab = 'all';
         $tab_title = __('All');
-        $forums = Forum::all();
         $pagesize = 10;
         if($request->has('pagesize')) {
             $pagesize = $request->validate(['pagesize'=>'numeric'])['pagesize'];
@@ -131,7 +130,7 @@ class SearchController extends Controller
 
         
         // 1. First fetch threads based on search query
-        $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
+        $threads = $this->srch(Thread::query()->without(['posts','likes','votes']), $search_query, ['subject', 'content'], ['LIKE']);
 
         if($request->has('tab')) {
             $tab = $request->validate(['tab'=>Rule::in(self::TAB_WHITE_LIST)])['tab'];
@@ -226,7 +225,6 @@ class SearchController extends Controller
 
         return view('search.search-threads')
             ->with(compact('filters'))
-            ->with(compact('forums'))
             ->with(compact('threads'))
             ->with(compact('pagesize'))
             ->with(compact('tab'))
@@ -252,7 +250,6 @@ class SearchController extends Controller
             $search_query = $keyword['k'];
         }
 
-        $forums = Forum::all();
         $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
             $tab = $request->validate(['tab'=>Rule::in(self::TAB_WHITE_LIST)])['tab'];
@@ -271,7 +268,6 @@ class SearchController extends Controller
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
 
         return view('search.search-threads')
-            ->with(compact('forums'))
             ->with(compact('threads'))
             ->with(compact('pagesize'))
             ->with(compact('tab_title'))

@@ -44,11 +44,9 @@ class IndexResource extends Component
         $this->views = $thread->view_count;
         $this->replies = $thread->posts()->count();
         
-        // $likemanager = $thread->likedandlikescount;
-        // $this->likes = $likemanager['count'];
-        // $this->liked = $likemanager['liked'];
-        $this->likes = $thread->likes()->count();
-        $this->liked = $thread->liked;
+        $likemanager = $thread->likedandlikescount;
+        $this->likes = $likemanager['count'];
+        $this->liked = $likemanager['liked'];
         $this->content = Str::markdown($thread->content);
 
         if(Auth::check() && Auth::user()->id != $thread->id) {

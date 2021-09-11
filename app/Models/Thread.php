@@ -124,15 +124,25 @@ class Thread extends Model
         return false;
     }
 
+    public function foo() {
+        $thread_likes = 
+        \DB::table('likes')
+            ->where('likable_id', $this->id)->where('likable_type', 'App\Models\Thread')
+            ->where('user_id', auth()->user()->id)
+            ->count();
+        return $thread_likes;
+    }
+
     public function getLikedandlikescountAttribute() {
         $liked = false;
         $count = 0;
         if(!auth()->user()) {
             $liked = false;
+            $count = $this->likes()->count();
         } else {
-            foreach($this->likes() as $like) {
-                
-            }
+            $count = $this->likes()->count();
+            if($count) // We don't have to check whether a user like a thread if it has no likes
+                $liked = $this->likes()->where('user_id', auth()->user()->id)->count();
         }
 
         return [

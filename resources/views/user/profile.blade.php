@@ -34,13 +34,13 @@
             </div>
             <div class="follow-box-body">
                 <input type="hidden" class="profile_owner_id" value="{{ $user->id }}">
-                @if($user->followers->count())
+                @if($user->followers()->count())
                     <div id="followers-box">
                         @foreach($followers as $follower)
-                            <x-user.follower :user="$follower"/>
+                            <x-user.follower :follower="$follower"/>
                         @endforeach
                     </div>
-                    @if($user->followers->count() > 8)
+                    @if($user->followers()->count() > 8)
                         <button class="see-all-full-style followers-load relative">
                             <div class="relative flex align-center">
                                 <span class="button-text">{{__('load more')}}</span>
@@ -79,13 +79,13 @@
             </div>
             <div class="follow-box-body">
                 <input type="hidden" class="profile_owner_id" value="{{ $user->id }}">
-                @if($user->followed_users->count())
+                @if($user->follows()->count())
                     <div id="follows-box">
                         @foreach($followed_users as $followed_user)
-                            <x-user.follows :user="$followed_user"/>
+                            <x-user.follows :followeduser="$followed_user"/>
                         @endforeach
                     </div>
-                    @if($user->followed_users->count() > 8)
+                    @if($user->follows()->count() > 8)
                         <button class="see-all-full-style follows-load relative">
                             <div class="relative flex align-center">
                                 <span class="button-text">{{__('load more')}}</span>
@@ -150,11 +150,11 @@
                             <div class="move-to-right flex align-center height-max-content follow-box">
                                 <div class="flex align-center">
                                     <div class="flex align-center px8 py4 pointer br4 followers-display light-grey-hover">
-                                        <div class="forum-color">{{ __('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers->count() }}</span></div>
+                                        <div class="forum-color">{{ __('Followers') }}:<span class="bold followers-counter black" style="margin-left: 1px">{{ $user->followers()->count() }}</span></div>
                                     </div>
                                     <div class="gray height-max-content mx4 fs10 unselectable">•</div>
                                     <div class="flex align-center px8 py4 pointer br4 follows-display light-grey-hover mr8">
-                                        <div class="forum-color">{{ __('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->followed_users->count() }}</span></div>
+                                        <div class="forum-color">{{ __('Follows') }}:<span class="bold follows-counter black" style="margin-left: 1px">{{ $user->follows()->count() }}</span></div>
                                     </div>
                                 </div>
                                 @if(auth()->user() && $user->id != auth()->user()->id)
@@ -210,7 +210,7 @@
                             @endforeach
                         </div>
 
-                        @if($user->threads->count() > $pagesize)
+                        @if($user->threads()->count() > $pagesize)
                             @include('partials.thread.faded-thread', ['classes'=>'profile-fetch-more'])
                         @endif
                     @else

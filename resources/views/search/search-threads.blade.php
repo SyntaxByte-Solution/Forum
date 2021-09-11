@@ -189,6 +189,11 @@
                 </div>
             @endif
         </div>
+        <div class="flex my8">
+            <div class="move-to-right">
+                {{ $threads->onEachSide(0)->links() }}
+            </div>
+        </div>
     </div>
     <div id="right-panel">
         <x-right-panels.forumslist/>

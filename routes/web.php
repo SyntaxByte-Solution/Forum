@@ -35,7 +35,10 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
 
-    dd(Thread::first()->likedandlikescount);
+    dd(auth()->user()->follows()
+    ->where('followable_id', 2)
+    ->where('followable_type', 'App\Models\User')
+    ->count() > 0);
 });
 
 Route::get('/', [IndexController::class, 'index']);

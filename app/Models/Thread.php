@@ -256,7 +256,7 @@ class Thread extends Model
     }
 
     public function getPostsandlikescountAttribute() {
-        return $this->posts->count() + $this->likes->count();
+        return $this->posts()->count() + $this->likes()->count();
     }
 
     public function getSliceAttribute() {

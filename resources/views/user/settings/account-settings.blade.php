@@ -59,7 +59,7 @@
                             <div class="input-container">
                                 <label for="password" class="label-style-1">{{ __('Your current password') }} @error('password') <span class="error">*</span> @enderror </label>
                                 <p class="mini-label">{{ __("Enter your current password to verify your identity") }}</p>
-                                <input type="password" id="password" name="password" form="account-deactivation-form" class="full-width input-style-1" required autocomplete="off" placeholder="{{__('Your current password')}}">
+                                <input type="password" autocomplete="off" id="password" name="password" form="account-deactivation-form" class="full-width input-style-1" required autocomplete="off" placeholder="{{__('Your current password')}}">
                                 @error('password')
                                     <p class="error" role="alert">{{ $message }}</p>
                                 @enderror
@@ -83,7 +83,7 @@
                             <div class="input-container">
                                 <label for="password" class="label-style-1">{{ __('Your current password') }} @error('password') <span class="error">*</span> @enderror </label>
                                 <p class="mini-label">{{ __("Enter your current password to verify your identity") }}</p>
-                                <input type="password" id="password" name="password" form="account-delete-form" class="full-width input-style-1" required autocomplete="off" placeholder="Your current password">
+                                <input type="password" autocomplete="off" id="password" name="password" form="account-delete-form" class="full-width input-style-1" required autocomplete="off" placeholder="Your current password">
                                 @error('password')
                                     <p class="error" role="alert">{{ $message }}</p>
                                 @enderror

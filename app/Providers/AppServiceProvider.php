@@ -71,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
         });
+
         if (($lang = Cookie::get('lang')) !== null) {
             App::setLocale($lang);
         }

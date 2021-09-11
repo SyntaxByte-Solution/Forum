@@ -16,6 +16,7 @@ class IndexResource extends Component
 {
     
     public $thread;
+    public $owner;
     public $forum;
     public $category;
     public $content;
@@ -26,6 +27,7 @@ class IndexResource extends Component
     public $followed;
     public $views;
     public $likes;
+    public $liked;
     public $replies;
     public $at;
     public $at_hummans;
@@ -34,13 +36,19 @@ class IndexResource extends Component
 
     public function __construct(Thread $thread) {
         $this->thread = $thread;
+        $this->owner = $thread->user;
         $this->forum = $thread->category->forum;
         $this->category = $thread->category;
         $this->at = (new Carbon($thread->created_at))->toDayDateTimeString();
         $this->at_hummans = (new Carbon($thread->created_at))->diffForHumans();
         $this->views = $thread->view_count;
-        $this->replies = $thread->posts->count();
-        $this->likes = $thread->likes->count();
+        $this->replies = $thread->posts()->count();
+        
+        // $likemanager = $thread->likedandlikescount;
+        // $this->likes = $likemanager['count'];
+        // $this->liked = $likemanager['liked'];
+        $this->likes = $thread->likes()->count();
+        $this->liked = $thread->liked;
         $this->content = Str::markdown($thread->content);
 
         if(Auth::check() && Auth::user()->id != $thread->id) {

@@ -118,13 +118,13 @@ class ThreadComponentsFetchController extends Controller
         
         switch($indexes['tab']) {
             case 'all':
-                $threads = Thread::orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
+                $threads = Thread::without(['posts', 'votes', 'likes', 'status'])->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
                 break;
             case 'today':
-                $threads = Thread::today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
+                $threads = Thread::without(['posts', 'votes', 'likes', 'status'])->today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->skip($indexes['skip'])->take(self::FETCH_PAGESIZE+1)->get();
                 break;
             case 'thisweek':
-                $threads = Thread::where(
+                $threads = Thread::without(['posts', 'votes', 'likes', 'status'])->where(
                     'created_at', 
                     '>=', 
                     \Carbon\Carbon::now()->subDays(7)->setTime(0, 0)

@@ -58,16 +58,24 @@
             <div class="vote-box full-center flex-column relative">
                 <input type="hidden" class="votable-type" value="thread">
                 <input type="hidden" class="votable-id" value="{{ $thread->id }}">
+                @php
+                    $upvoted = $downvoted = false;
+                    $votevalue = $thread->voted();
+                    if($votevalue == 1)
+                        $upvoted = true;
+                    else if($votevalue == -1)
+                        $downvoted = true;
+                @endphp
                 <svg class="size15 pointer @auth votable-up-vote outside-viewer @endauth @guest login-signin-button @endguest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                     <title>{{ __('UP') }}</title>
-                    <path class="up-vote-filled @unlessupvoted($thread, 'App\Models\Thread') none @endupvoted" d="M63.89,55.78v28.3h-28V55.78H24.09V88.5a7.56,7.56,0,0,0,7.53,7.58H68.21a7.56,7.56,0,0,0,7.53-7.58V55.78ZM97.8,53.5,57.85,7.29A10.28,10.28,0,0,0,50,3.92a10.25,10.25,0,0,0-7.87,3.37L2.23,53.52A6.9,6.9,0,0,0,1,61.14c1.46,3.19,5,5.25,9.09,5.25h14V55.78H19.83a1.83,1.83,0,0,1-1.67-1A1.61,1.61,0,0,1,18.42,53L48.61,18a1.9,1.9,0,0,1,2.78.05L81.57,53a1.61,1.61,0,0,1,.26,1.75,1.83,1.83,0,0,1-1.67,1H75.74v10.6H89.88c4.05,0,7.61-2.06,9.08-5.24A6.92,6.92,0,0,0,97.8,53.5Zm-16,1.24a1.83,1.83,0,0,1-1.67,1H63.89v28.3h-28V55.78H19.83a1.83,1.83,0,0,1-1.67-1A1.61,1.61,0,0,1,18.42,53L48.61,18a1.9,1.9,0,0,1,2.78.05L81.57,53A1.61,1.61,0,0,1,81.83,54.74Z" style="fill:#28b1e7"/>
-                    <path class="up-vote @upvoted($thread, 'App\Models\Thread') none @endupvoted" d="M10.11,66.39c-4.06,0-7.63-2.06-9.09-5.25a6.9,6.9,0,0,1,1.21-7.62L42.11,7.29A10.25,10.25,0,0,1,50,3.92a10.28,10.28,0,0,1,7.87,3.37L97.8,53.5A6.92,6.92,0,0,1,99,61.13c-1.47,3.18-5,5.24-9.08,5.24H75.74V55.77h4.42a1.83,1.83,0,0,0,1.67-1A1.61,1.61,0,0,0,81.57,53L51.39,18A1.9,1.9,0,0,0,48.61,18L18.42,53a1.61,1.61,0,0,0-.26,1.75,1.83,1.83,0,0,0,1.67,1h4.26V66.39Zm58.1,29.69a7.56,7.56,0,0,0,7.53-7.58V55.78H63.89v28.3h-28V55.78H24.09V88.5a7.56,7.56,0,0,0,7.53,7.58Z" style="fill:#010202"/>
+                    <path class="up-vote-filled @unless($upvoted) none @endunless" d="M63.89,55.78v28.3h-28V55.78H24.09V88.5a7.56,7.56,0,0,0,7.53,7.58H68.21a7.56,7.56,0,0,0,7.53-7.58V55.78ZM97.8,53.5,57.85,7.29A10.28,10.28,0,0,0,50,3.92a10.25,10.25,0,0,0-7.87,3.37L2.23,53.52A6.9,6.9,0,0,0,1,61.14c1.46,3.19,5,5.25,9.09,5.25h14V55.78H19.83a1.83,1.83,0,0,1-1.67-1A1.61,1.61,0,0,1,18.42,53L48.61,18a1.9,1.9,0,0,1,2.78.05L81.57,53a1.61,1.61,0,0,1,.26,1.75,1.83,1.83,0,0,1-1.67,1H75.74v10.6H89.88c4.05,0,7.61-2.06,9.08-5.24A6.92,6.92,0,0,0,97.8,53.5Zm-16,1.24a1.83,1.83,0,0,1-1.67,1H63.89v28.3h-28V55.78H19.83a1.83,1.83,0,0,1-1.67-1A1.61,1.61,0,0,1,18.42,53L48.61,18a1.9,1.9,0,0,1,2.78.05L81.57,53A1.61,1.61,0,0,1,81.83,54.74Z" style="fill:#28b1e7"/>
+                    <path class="up-vote @if($upvoted) none @endif" d="M10.11,66.39c-4.06,0-7.63-2.06-9.09-5.25a6.9,6.9,0,0,1,1.21-7.62L42.11,7.29A10.25,10.25,0,0,1,50,3.92a10.28,10.28,0,0,1,7.87,3.37L97.8,53.5A6.92,6.92,0,0,1,99,61.13c-1.47,3.18-5,5.24-9.08,5.24H75.74V55.77h4.42a1.83,1.83,0,0,0,1.67-1A1.61,1.61,0,0,0,81.57,53L51.39,18A1.9,1.9,0,0,0,48.61,18L18.42,53a1.61,1.61,0,0,0-.26,1.75,1.83,1.83,0,0,0,1.67,1h4.26V66.39Zm58.1,29.69a7.56,7.56,0,0,0,7.53-7.58V55.78H63.89v28.3h-28V55.78H24.09V88.5a7.56,7.56,0,0,0,7.53,7.58Z" style="fill:#010202"/>
                 </svg>
                 <p class="bold fs15 text-center votable-count" style="margin: 1px 0 2px 0">{{ $thread->votevalue }}</p>
                 <svg class="size15 pointer @auth votable-down-vote outside-viewer @endauth @guest login-signin-button @endguest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                     <title>{{ __('DOWN') }}</title>
-                    <path class="down-vote-filled @unlessdownvoted($thread, 'App\Models\Thread') none @enddownvoted" d="M63.89,44.22V15.92h-28v28.3H24.09V11.5a7.56,7.56,0,0,1,7.53-7.58H68.21a7.56,7.56,0,0,1,7.53,7.58V44.22ZM97.8,46.5,57.85,92.71A10.28,10.28,0,0,1,50,96.08a10.25,10.25,0,0,1-7.87-3.37L2.23,46.48A6.9,6.9,0,0,1,1,38.86c1.46-3.19,5-5.25,9.09-5.25h14V44.22H19.83a1.83,1.83,0,0,0-1.67,1A1.61,1.61,0,0,0,18.42,47L48.61,82a1.9,1.9,0,0,0,2.78,0L81.57,47a1.61,1.61,0,0,0,.26-1.75,1.83,1.83,0,0,0-1.67-1H75.74V33.63H89.88c4.05,0,7.61,2.06,9.08,5.24A6.92,6.92,0,0,1,97.8,46.5Zm-16-1.24a1.83,1.83,0,0,0-1.67-1H63.89V15.92h-28v28.3H19.83a1.83,1.83,0,0,0-1.67,1A1.61,1.61,0,0,0,18.42,47L48.61,82a1.9,1.9,0,0,0,2.78,0L81.57,47A1.61,1.61,0,0,0,81.83,45.26Z" style="fill:#28b1e7"/>
-                    <path class="down-vote @downvoted($thread, 'App\Models\Thread') none @enddownvoted" d="M10.11,33.61c-4.06,0-7.63,2.06-9.09,5.25a6.9,6.9,0,0,0,1.21,7.62L42.11,92.71A10.25,10.25,0,0,0,50,96.08a10.28,10.28,0,0,0,7.87-3.37L97.8,46.5A6.92,6.92,0,0,0,99,38.87c-1.47-3.18-5-5.24-9.08-5.24H75.74v10.6h4.42a1.83,1.83,0,0,1,1.67,1A1.61,1.61,0,0,1,81.57,47L51.39,82a1.9,1.9,0,0,1-2.78,0L18.42,47a1.61,1.61,0,0,1-.26-1.75,1.83,1.83,0,0,1,1.67-1h4.26V33.61ZM68.21,3.92a7.56,7.56,0,0,1,7.53,7.58V44.22H63.89V15.92h-28v28.3H24.09V11.5a7.56,7.56,0,0,1,7.53-7.58Z" style="fill:#010202"/>
+                    <path class="down-vote-filled @unless($downvoted) none @endunless" d="M63.89,44.22V15.92h-28v28.3H24.09V11.5a7.56,7.56,0,0,1,7.53-7.58H68.21a7.56,7.56,0,0,1,7.53,7.58V44.22ZM97.8,46.5,57.85,92.71A10.28,10.28,0,0,1,50,96.08a10.25,10.25,0,0,1-7.87-3.37L2.23,46.48A6.9,6.9,0,0,1,1,38.86c1.46-3.19,5-5.25,9.09-5.25h14V44.22H19.83a1.83,1.83,0,0,0-1.67,1A1.61,1.61,0,0,0,18.42,47L48.61,82a1.9,1.9,0,0,0,2.78,0L81.57,47a1.61,1.61,0,0,0,.26-1.75,1.83,1.83,0,0,0-1.67-1H75.74V33.63H89.88c4.05,0,7.61,2.06,9.08,5.24A6.92,6.92,0,0,1,97.8,46.5Zm-16-1.24a1.83,1.83,0,0,0-1.67-1H63.89V15.92h-28v28.3H19.83a1.83,1.83,0,0,0-1.67,1A1.61,1.61,0,0,0,18.42,47L48.61,82a1.9,1.9,0,0,0,2.78,0L81.57,47A1.61,1.61,0,0,0,81.83,45.26Z" style="fill:#28b1e7"/>
+                    <path class="down-vote @if($downvoted) none @endif" d="M10.11,33.61c-4.06,0-7.63,2.06-9.09,5.25a6.9,6.9,0,0,0,1.21,7.62L42.11,92.71A10.25,10.25,0,0,0,50,96.08a10.28,10.28,0,0,0,7.87-3.37L97.8,46.5A6.92,6.92,0,0,0,99,38.87c-1.47-3.18-5-5.24-9.08-5.24H75.74v10.6h4.42a1.83,1.83,0,0,1,1.67,1A1.61,1.61,0,0,1,81.57,47L51.39,82a1.9,1.9,0,0,1-2.78,0L18.42,47a1.61,1.61,0,0,1-.26-1.75,1.83,1.83,0,0,1,1.67-1h4.26V33.61ZM68.21,3.92a7.56,7.56,0,0,1,7.53,7.58V44.22H63.89V15.92h-28v28.3H24.09V11.5a7.56,7.56,0,0,1,7.53-7.58Z" style="fill:#010202"/>
                 </svg>
 
             </div>
@@ -82,12 +90,12 @@
                     <div class="flex">
                         <div class="size36 relative rounded mr4 hidden-overflow has-lazy">
                             <div class="fade-loading"></div>
-                            <img data-src="{{ $thread->user->sizedavatar(36, '-l') }}" class="thread-owner-avatar size36 flex lazy-image image-with-fade" alt="">
+                            <img data-src="{{ $owner->sizedavatar(36, '-l') }}" class="thread-owner-avatar size36 flex lazy-image image-with-fade" alt="">
                         </div>
                         <div>
                             <div class="flex align-center" style="height: 18px">
-                                <a href="{{ route('user.profile', ['user'=>$thread->user->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $thread->user->fullname }}</span></a>
-                                @if(auth()->user() && $thread->user->id != auth()->user()->id)
+                                <a href="{{ route('user.profile', ['user'=>$owner->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $owner->fullname }}</span></a>
+                                @if(auth()->user() && $owner->id != auth()->user()->id)
                                 <div class="follow-box thread-component-follow-box flex align-center">
                                     <!-- buttons labels -->
                                     <input type="hidden" class="follow-text" autocomplete="off" value="{{ __('Follow') }}">
@@ -117,7 +125,7 @@
                                             <p class="no-margin fs12 bold btn-txt bblack unselectable">{{ __('Follow') }}</p>
                                         </div>
                                         <input type="hidden" class="thread-add-visibility-slug" value="public">
-                                        <input type="hidden" class="followable-id" value="{{ $thread->user->id }}">
+                                        <input type="hidden" class="followable-id" value="{{ $owner->id }}">
                                         <input type="hidden" class="followable-type" value="user">
                                         <input type="hidden" class="status" autocomplete="off" value="{{ $state }}">
                                     </div>
@@ -125,7 +133,7 @@
                                 @endif
                             </div>
                             <div class="flex align-center">
-                                <span class="thread-owner-username bblack fs13 bold">{{ $thread->user->username }}</span>
+                                <span class="thread-owner-username bblack fs13 bold">{{ $owner->username }}</span>
                                 <div class="gray height-max-content mx4 fs10">•</div>
                                 <div class="relative height-max-content">
                                     <p class="no-margin fs11 flex align-center tooltip-section gray">{{ $at_hummans }}</p>
@@ -343,11 +351,11 @@
                         <input type="hidden" class="likable-id" value="{{ $thread->id }}">
                         <input type="hidden" class="likable-type" value="thread">
                         <svg class="size17 like-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 391.84 391.84">
-                            <path class="red-like @if(!$thread->liked) none @endif" d="M285.26,35.53A107.1,107.1,0,0,1,391.84,142.11c0,107.62-195.92,214.2-195.92,214.2S0,248.16,0,142.11A106.58,106.58,0,0,1,106.58,35.53h0a105.54,105.54,0,0,1,89.34,48.06A106.57,106.57,0,0,1,285.26,35.53Z" style="fill:#d7453d"/>
-                            <path class="grey-like @if($thread->liked) none @endif" d="M273.52,56.75A92.93,92.93,0,0,1,366,149.23c0,93.38-170,185.86-170,185.86S26,241.25,26,149.23A92.72,92.72,0,0,1,185.3,84.94a14.87,14.87,0,0,0,21.47,0A92.52,92.52,0,0,1,273.52,56.75Z" style="fill:none;stroke:#1c1c1c;stroke-miterlimit:10;stroke-width:45px"/>
+                            <path class="red-like @if(!$liked) none @endif" d="M285.26,35.53A107.1,107.1,0,0,1,391.84,142.11c0,107.62-195.92,214.2-195.92,214.2S0,248.16,0,142.11A106.58,106.58,0,0,1,106.58,35.53h0a105.54,105.54,0,0,1,89.34,48.06A106.57,106.57,0,0,1,285.26,35.53Z" style="fill:#d7453d"/>
+                            <path class="grey-like @if($liked) none @endif" d="M273.52,56.75A92.93,92.93,0,0,1,366,149.23c0,93.38-170,185.86-170,185.86S26,241.25,26,149.23A92.72,92.72,0,0,1,185.3,84.94a14.87,14.87,0,0,0,21.47,0A92.52,92.52,0,0,1,273.52,56.75Z" style="fill:none;stroke:#1c1c1c;stroke-miterlimit:10;stroke-width:45px"/>
                         </svg>
-                        <p class="no-margin fs12 resource-likes-counter unselectable ml4">{{ $thread->likes->count() }}</p>
-                        <p class="no-margin fs12 unselectable ml4">{{ __('like') . (($thread->likes->count()>1) ? 's' : '' ) }}</p>
+                        <p class="no-margin fs12 resource-likes-counter unselectable ml4">{{ $likes }}</p>
+                        <p class="no-margin fs12 unselectable ml4">{{ __('like') . (($likes>1) ? 's' : '' ) }}</p>
                     </div>
                     <div class="thread-react-hover move-to-thread-replies flex align-center no-underline" style="cursor: default">
                         <input type="hidden" class="thread-id" value="{{ $thread->id }}">
@@ -372,9 +380,9 @@
                         </div>
                     </div>
                     <!-- Only display report button in thread show page -->
-                    @if(request()->route()->getName() == 'thread.show' && auth()->user() && auth()->user()->id != $thread->user->id)
+                    @if(request()->route()->getName() == 'thread.show' && auth()->user() && auth()->user()->id != $owner->id)
                     <div class="flex align-center ml4 report-thread-button-container">
-                        <div class="@auth @if(auth()->user()->id != $thread->user->id) open-thread-report @endif @endauth @guest login-signin-button @endguest thread-react-hover" style="margin-right: 0px">
+                        <div class="@auth @if(auth()->user()->id != $owner->id) open-thread-report @endif @endauth @guest login-signin-button @endguest thread-react-hover" style="margin-right: 0px">
                             <svg class="size14 mr4" style="fill: #242424" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M349.57,98.78C296,98.78,251.72,64,184.35,64a194.36,194.36,0,0,0-68,12A56,56,0,1,0,32,101.94V488a24,24,0,0,0,24,24H72a24,24,0,0,0,24-24V393.6c28.31-12.06,63.58-22.12,114.43-22.12,53.59,0,97.85,34.78,165.22,34.78,48.17,0,86.67-16.29,122.51-40.86A31.94,31.94,0,0,0,512,339.05V96a32,32,0,0,0-45.48-29C432.18,82.88,390.06,98.78,349.57,98.78Z"/></svg>
                             <div class="fs13">{{__('Report')}}</div>
                             <input type="hidden" class="thread-id" value="{{ $thread->id }}">

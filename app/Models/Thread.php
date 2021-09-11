@@ -117,13 +117,28 @@ class Thread extends Model
 
     public function getLikedAttribute() {
         if($current_user = auth()->user()) {
-            return $this->likes
+            return $this->likes()
                 ->where('user_id', $current_user->id)
-                ->where('likable_type', 'App\Models\Thread')
-                ->where('likable_id', $this->id)
                 ->count();
         }
         return false;
+    }
+
+    public function getLikedandlikescountAttribute() {
+        $liked = false;
+        $count = 0;
+        if(!auth()->user()) {
+            $liked = false;
+        } else {
+            foreach($this->likes() as $like) {
+                
+            }
+        }
+
+        return [
+            'liked'=>$liked,
+            'count'=>$count
+        ];
     }
 
     public function liked_by($user) {
@@ -143,6 +158,17 @@ class Thread extends Model
                 ->where('votable_id', $this->id)
                 ->where('votable_type', 'App\Models\Thread')
                 ->count();
+    }
+
+    public function voted() {
+        if($user=auth()->user()) {
+            $vote = $this->votes()->where('user_id', $user->id)->first();
+            if(!is_null($vote))
+                return $vote->vote;
+
+            return false;
+        }
+        return false;
     }
 
     public function getUpvotesAttribute() {
@@ -194,7 +220,7 @@ class Thread extends Model
     }
 
     public function getIsSavedAttribute() {
-        return $this->users_who_save->contains(auth()->user()->id);
+        return $this->users_who_save()->where('user_id', auth()->user()->id);
     }
 
     public function scopeToday($builder){
@@ -212,13 +238,7 @@ class Thread extends Model
     }
 
     public function tickedPost() {
-        foreach($this->posts as $post) {
-            if($post->ticked) {
-                return $post;
-            }
-        }
-
-        return false;
+        return $this->posts()->where('ticked', 1)->first();
     }
 
     public function isticked() {

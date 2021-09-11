@@ -72,14 +72,14 @@
                                 </div>
                                 <div class="input-container">
                                     <label for="password" class="label-style-2">{{ __('New Password') }} @error('password') <span class="error ml4">*</span> @enderror</label>
-                                    <input type="password" required id="password" name="password" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Your new password">
+                                    <input type="password" required autocomplete="off" id="password" name="password" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Your new password">
                                     @error('password')
                                         <p class="error" role="alert">{{ $message }}</p>
                                     @enderror
                                 </div>
                                 <div class="input-container">
                                     <label for="password_confirmation" class="label-style-2">{{ __('Confirm Your Password') }} @error('password_confirmation') <span class="error ml4">*</span> @enderror</label>
-                                    <input type="password" required id="password_confirmation" name="password_confirmation" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Confirm password">
+                                    <input type="password" required autocomplete="off" id="password_confirmation" name="password_confirmation" form="password-update-form" class="half-width input-style-1" autocomplete="off" placeholder="Confirm password">
                                     @error('password_confirmation')
                                         <p class="error" role="alert">{{ $message }}</p>
                                     @enderror

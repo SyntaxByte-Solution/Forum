@@ -73,6 +73,20 @@ class Post extends Model
         return false;
     }
 
+    public function voted() {
+        if($user=auth()->user()) {
+            $vote = $this->votes()
+                ->where('user_id', $user->id)
+                ->first();
+            
+            if(!is_null($vote))
+                return $vote->vote;
+                
+            return false;
+        }
+        return false;
+    }
+
     public function getVotevalueAttribute() {
         $count = 0;
         foreach($this->votes as $vote) {

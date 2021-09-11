@@ -35,7 +35,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
 
-    dd($user->threadslikes()->count());
+    dd(Thread::first()->likedandlikescount);
 });
 
 Route::get('/', [IndexController::class, 'index']);

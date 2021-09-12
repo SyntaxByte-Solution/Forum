@@ -30,6 +30,8 @@ $(window).on('DOMContentLoaded scroll', function() {
           $('#skip').val(response.skip);
           $('#threads-global-container').append(response.content);
           
+          console.log($('.thread-container-box').length);
+
           /**
            * When appending threads we have to handle their events (Notice that response.count is the number of threads appended)
            * Notice that we have faded thread container righgt after threads collection so we have to exclude it from unhandled threads collection

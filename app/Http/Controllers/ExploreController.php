@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class ExploreController extends Controller
 {
     const PAGESIZE = 8;
-    const FETCH_PAGESIZE = 6;
+    const FETCH_PAGESIZE = 16;
     /**
      * the following variable is as efficient as more threads are present between intervals
      * Let's say users posted 10 threads today, and then the next 10 days they don't post any thread
@@ -135,8 +135,8 @@ class ExploreController extends Controller
     public function explore_more(Request $request) {
         $interval_increase_by = self::FETCH_HOURS_INTERVAL;
         $indexes = $request->validate([
-            'from'=>'required|numeric|max:2000',
-            'to'=>'required|numeric|max:2000',
+            'from'=>'required|numeric|max:4000',
+            'to'=>'required|numeric|max:4000',
             'sortby'=>'sometimes|alpha-dash|max:200',
             'skip'=>'required|numeric|max:400'
         ]);
@@ -174,27 +174,32 @@ class ExploreController extends Controller
                         $from = $from + $interval_increase_by;
                         $gap = self::FETCH_PAGESIZE - $threadscount; // This is the number threads needed from the next interval
 
-                        // Here we take gap from next interval
-                        $temp = 
-                            Thread::without(['posts', 'likes', 'votes'])
-                            ->where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
-                            ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
-                            ->orderBy('view_count', 'desc')
-                            ->orderBy('created_at', 'desc')
-                            ->take($gap);
-
-                        // Then we check if the gap fetched actually fill the gap we have; If so then ok, otherwise
-                        // We loop through threads until we fill the gap
+                        /**
+                         * This limit is so important for now because when the app reach the end of threads list and enter the
+                         * following loop it will increase the interval each time and the temp will always be 0 because no threads left so we have to
+                         * add a limit to that loop by specifying how much times the loop should iterate if no threads found !
+                         * This section of the function is so reltve to the threads shared per day
+                         * NOTICE: If this number is so small and you have a lot of interval between threads it may not give you all the threads as demonstrated in the following example
+                         * let's say we have 31 threads and we fetch 10 threads each time, and imagine the 30 threads are created with 5hours interval between each one
+                         * and the last thread (31th) is created 2 months before the 30. In this when the 30 threads are fetched and we want to fetch this last one
+                         * It may not fetched because the hours interval between 30 threads and this last thread is big so the app when it reach the
+                         * following loop it will loop through threads $limit times and if it will not find any thread it will stop with count = 0
+                         */
+                        $limit = 0;
                         do {
-                            $temp =
+                            $limit++;
+                            // Here we take gap from next interval and we check if the gap fetched actually fill the gap we have; If so then ok, otherwise
+                            // We loop through threads until we fill the gap
+                            $temp = 
                                 Thread::without(['posts', 'likes', 'votes'])
                                 ->where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
                                 ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
                                 ->orderBy('view_count', 'desc')
-                                ->orderBy('created_at', 'desc');
+                                ->orderBy('created_at', 'desc')
+                                ->take($gap);
                         
                             $from+=$interval_increase_by;
-                        } while(($tempcount=$temp->count()) < $gap);
+                        } while(($tempcount=$temp->count()) < $gap && $limit < 40);
                         $from-=$interval_increase_by;
 
                         // Check if the fetched threads from the next interval are greather than gap; if so then we set the skip to $gap
@@ -236,7 +241,9 @@ class ExploreController extends Controller
                      * the reange we have to add hours to be subtracted.
                      */
 
+                    $limit = 0;
                     do {
+                        $limit++;
                         $threads = 
                             Thread::without(['posts', 'likes', 'votes'])
                             ->where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
@@ -245,8 +252,10 @@ class ExploreController extends Controller
                             ->orderBy('created_at', 'desc');
     
                         $from+=$interval_increase_by;
-                    } while(($threadscount=$threads->count()) < self::FETCH_PAGESIZE);
+                    } while(($threadscount=$threads->count()) < self::FETCH_PAGESIZE && $limit < 50);
                     $from-=$interval_increase_by;
+                    if($limit >= 20)
+                        return ["content"=>"", 'count'=>$threads->count(), "from"=>0, "to"=>0, 'skip'=>0];
 
                     if($threadscount > self::FETCH_PAGESIZE) {
                         /** 

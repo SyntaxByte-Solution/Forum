@@ -31,6 +31,8 @@ $(window).on('DOMContentLoaded scroll', function() {
           $('#threads-global-container').append(response.content);
           
           console.log($('.thread-container-box').length);
+          if(response.count == 0)
+            explore_more.remove();
 
           /**
            * When appending threads we have to handle their events (Notice that response.count is the number of threads appended)

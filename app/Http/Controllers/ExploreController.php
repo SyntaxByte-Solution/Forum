@@ -12,7 +12,15 @@ class ExploreController extends Controller
 {
     const PAGESIZE = 8;
     const FETCH_PAGESIZE = 6;
-    const INITIAL_FETCH_HOURS = 24;
+    /**
+     * the following variable is as efficient as more threads are present between intervals
+     * Let's say users posted 10 threads today, and then the next 10 days they don't post any thread
+     * in the logic of fetching thread chunks the loop will add this interval each time it doesn't find threads (5 times) so
+     * that means a lot of queries and threads table traversals which make the request really slow
+     * So this is relative to the number of threads posted per day, maybe started with 48 first and then
+     * when the website grows and number of threads per day grows we'll chnage it to 8 (8 means 8hours of difference between threads intervals)
+     */
+    const FETCH_HOURS_INTERVAL = 24;
 
     public function explore() {
         $threads = collect([]);
@@ -21,7 +29,7 @@ class ExploreController extends Controller
         $sort_title;
 
         // This code inside every switch case executed only in the first time the user visit explore page
-        $hours_from = self::INITIAL_FETCH_HOURS;
+        $hours_from = self::FETCH_HOURS_INTERVAL;
         $threads_builder = Thread::query()->without(['posts', 'votes', 'likes']);
         $sortby = request()->has('sortby') ? request()->get('sortby') : 'popular-and-recent';
         switch($sortby) {
@@ -32,6 +40,7 @@ class ExploreController extends Controller
                  * When threads returned are not enough (less than pagesize) we increase the number of hours to increase the range
                  * of time to cover more threads
                  */
+                $threadscount = 0;
                 do {
                     $threads = (clone $threads_builder)->where('created_at', '>=', 
                         Carbon::now()->subHours($hours_from)->toDateTimeString());
@@ -39,10 +48,11 @@ class ExploreController extends Controller
                      * The following line will be reverted if the following condition in do while is false,
                      * it is used to increment the interval just in case fetched threads are less than pagesize
                      */
-                    $hours_from+=self::PAGESIZE;
-                } while($threads->count() < self::PAGESIZE);
+                    $hours_from+=self::FETCH_HOURS_INTERVAL;
+                } while(($threadscount=$threads->count()) < self::PAGESIZE);
+                /** for decrementing hours_from in last false iteration we do that right after switch statement */
 
-                if($threads->count() > self::PAGESIZE) {
+                if($threadscount > self::PAGESIZE) {
                     $skip = self::PAGESIZE;
                 }
 
@@ -58,10 +68,10 @@ class ExploreController extends Controller
                     $threads = (clone $threads_builder)->where('created_at', '>=', 
                         Carbon::now()->subHours($hours_from)->toDateTimeString());
 
-                    $hours_from+=self::PAGESIZE;
-                } while($threads->count() < self::PAGESIZE);
+                    $hours_from+=self::FETCH_HOURS_INTERVAL;
+                } while(($threadscount=$threads->count()) < self::PAGESIZE);
 
-                if($threads->count() > self::PAGESIZE) {
+                if($threadscount > self::PAGESIZE) {
                     $skip = self::PAGESIZE;
                 }
 
@@ -80,10 +90,10 @@ class ExploreController extends Controller
                     $threads = (clone $threads_builder)->where('created_at', '>=', 
                         Carbon::now()->subHours($hours_from)->toDateTimeString());
 
-                    $hours_from+=self::PAGESIZE;
-                } while($threads->count() < self::PAGESIZE);
+                    $hours_from+=self::FETCH_HOURS_INTERVAL;
+                } while(($threadscount=$threads->count()) < self::PAGESIZE);
 
-                if($threads->count() > self::PAGESIZE) {
+                if($threadscount > self::PAGESIZE) {
                     $skip = self::PAGESIZE;
                 }
 
@@ -98,7 +108,7 @@ class ExploreController extends Controller
                 $sort_icon = "M50.25,340.54c-21,0-39.37-10.63-46.89-27.09-6.1-13.32-3.82-27.63,6.24-39.27L215.27,35.67c9.53-11.06,24.34-17.4,40.62-17.4S287,24.61,296.5,35.67l206.09,238.4c9.95,11.66,12.13,26,6,39.36-7.57,16.41-25.95,27-46.82,27h-73V285.76h22.81a9.4,9.4,0,0,0,8.61-5.32,8.34,8.34,0,0,0-1.34-9L263.19,91.07a9.92,9.92,0,0,0-7.28-3.24,9.73,9.73,0,0,0-7.06,3L93.08,271.49a8.31,8.31,0,0,0-1.33,9,9.4,9.4,0,0,0,8.61,5.34h22v54.72ZM350,493.73a39,39,0,0,0,38.81-39.15V285.82H327.68v146H183.33v-146h-61V454.58a39,39,0,0,0,38.81,39.15Z";
                 break;
         }
-        $hours_from-=self::PAGESIZE; // Because inside case's loop, when the condition is false, we already increment it by 8 so we have to decrement it
+        $hours_from-=self::FETCH_HOURS_INTERVAL; // Because inside case's loop, when the condition is false, we already increment it by 8 so we have to decrement it
 
         return view('explore')
             ->with(compact('threads'))
@@ -123,7 +133,7 @@ class ExploreController extends Controller
      * if the number of fetched threads equal PAGESIZE(8) we move the from indicator to (to) and extract 8 from (to) to fetch older threads
      */
     public function explore_more(Request $request) {
-        $interval_increase_by = 12; // Hours
+        $interval_increase_by = self::FETCH_HOURS_INTERVAL;
         $indexes = $request->validate([
             'from'=>'required|numeric|max:2000',
             'to'=>'required|numeric|max:2000',
@@ -140,31 +150,29 @@ class ExploreController extends Controller
                  * The skip variable is only non-zero if there are remaining threads in the previous interval
                  */
                 if($skip) {
-                    /** Because there's remaining threads we keep the interval as it is */
-                    $from = $indexes['from'];
-                    $to = $indexes['to'];
+                    /** Because there's remaining threads we keep the interval indocators as it is */
+                    $from = intval($indexes['from']);
+                    $to = intval($indexes['to']);
 
                     /** Then we fetch all the remaining threads */
                     $threads = 
                         Thread::without(['posts', 'likes', 'votes'])
-                        ->where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
+                        ->where('created_at', '<', Carbon::now()->subHours($to)->toDateTimeString())
                         ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
                         ->orderBy('view_count', 'desc')
                         ->orderBy('created_at', 'desc')
                         ->skip($skip)
-                        ->take(self::FETCH_PAGESIZE);
+                        ->take(self::FETCH_PAGESIZE+1)->get(); // Neccessary because you can"t have skip without a limit
 
-                    if($threads->count() < self::FETCH_PAGESIZE) {
+                    if(($threadscount=$threads->count()) < self::FETCH_PAGESIZE) { #1
                         /**
-                         * If the remaining threads are less than pagesize we need to do the following: 
-                         * 1. fetch those remaining threads
-                         * 2. calculate how many threads needed to fill the gap
-                         * threads until we have pagesize threads Of course by doing that we have to change 
-                         * the $from and $to and calculate the number to fill the gap
+                         * If the threads count is less than fetch size, we need to look for other threads from the next 
+                         * interval to fill the gap :
+                         * Before that we need to calculate how many threads needed to fill the gap
                          */
                         $to = $from;
-                        $from += $interval_increase_by;
-                        $gap = self::FETCH_PAGESIZE - $threads->count(); // This is the number threads needed from the next interval
+                        $from = $from + $interval_increase_by;
+                        $gap = self::FETCH_PAGESIZE - $threadscount; // This is the number threads needed from the next interval
 
                         // Here we take gap from next interval
                         $temp = 
@@ -177,35 +185,34 @@ class ExploreController extends Controller
 
                         // Then we check if the gap fetched actually fill the gap we have; If so then ok, otherwise
                         // We loop through threads until we fill the gap
-                        while($temp->count() < $gap) {
+                        do {
                             $temp =
                                 Thread::without(['posts', 'likes', 'votes'])
                                 ->where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
                                 ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
                                 ->orderBy('view_count', 'desc')
                                 ->orderBy('created_at', 'desc');
-                            
+                        
                             $from+=$interval_increase_by;
-                        }
+                        } while(($tempcount=$temp->count()) < $gap);
                         $from-=$interval_increase_by;
 
                         // Check if the fetched threads from the next interval are greather than gap; if so then we set the skip to $gap
                         // Otherwise the fetched threads from the other interval is equal to $gap so we set skip to 0
-                        if($temp->count() > $gap)
+                        if($tempcount > $gap)
                             $skip = $gap;
                         else // if $gap == $temp->count()
                             $skip = 0;
 
                         // Merge $threads along with $gap
-                        $threads = $threads->get()->concat($temp->take($gap)->get());
-                    } else {
+                        $threads = $threads->concat($temp->take($gap)->get());
+                    } else { #2
                         if($threads->count() == self::FETCH_PAGESIZE) {
                             /**
                              * Notice here that threads count equals to page size so we take $threads as it is and reset the
                              * values of skip to 0. Also notice we don't have to change the (to) and (from) time indicators
                              * because this is done in the next iteration where the skip is 0 (look at the code in the else of if($skip))
                              */
-                            $threads = $threads->get();
                             $skip = 0;
                         } else {
                             /**
@@ -213,12 +220,12 @@ class ExploreController extends Controller
                              * we already take the FETCH_PAGESIZE, we only need to get the threads.
                              * We also need to increase skip value by adding pagesize to skip that chunk of threads next time.
                              */
-                            $threads = $threads->take(self::FETCH_PAGESIZE)->get();
-                            $skip = self::FETCH_PAGESIZE;
+                            $threads->pop();
+                            $skip += self::FETCH_PAGESIZE;
                         }
                     }
 
-                } else {
+                } else { #3
                     // Define new range and this time between the old from and from-12 with interval of 12 hours
                     $to = $indexes['from'];
                     $from = $indexes['from'] + $interval_increase_by;
@@ -228,22 +235,20 @@ class ExploreController extends Controller
                      * + 12 instead of - 12 because we are using subHours so to increase 
                      * the reange we have to add hours to be subtracted.
                      */
-                    $bootstrap_loop = true;
-                    while($bootstrap_loop || $threads->count() < self::FETCH_PAGESIZE) {
-                        $bootstrap_loop = false;
 
+                    do {
                         $threads = 
                             Thread::without(['posts', 'likes', 'votes'])
                             ->where('created_at', '<=', Carbon::now()->subHours($to)->toDateTimeString())
                             ->where('created_at', '>=', Carbon::now()->subHours($from)->toDateTimeString())
                             ->orderBy('view_count', 'desc')
                             ->orderBy('created_at', 'desc');
-
+    
                         $from+=$interval_increase_by;
-                    }
+                    } while(($threadscount=$threads->count()) < self::FETCH_PAGESIZE);
                     $from-=$interval_increase_by;
 
-                    if($threads->count() > self::FETCH_PAGESIZE) {
+                    if($threadscount > self::FETCH_PAGESIZE) {
                         /** 
                          * If the threads fetched from the new interval is greather than pagesize we simply give skip
                          * value of page size.

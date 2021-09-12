@@ -35,10 +35,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
 
-    dd(auth()->user()->follows()
-    ->where('followable_id', 2)
-    ->where('followable_type', 'App\Models\User')
-    ->count() > 0);
+    dd(Thread::skip(1)->take(3)->take(2)->get());
 });
 
 Route::get('/', [IndexController::class, 'index']);

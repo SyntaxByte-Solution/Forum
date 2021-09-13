@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Markdown;
 use Carbon\Carbon;
-use App\Models\{Thread, Vote, Like};
+use App\Models\{Thread, Vote, Like, User};
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Scopes\ExcludeDeactivatedUserData;
 
@@ -45,6 +45,17 @@ class Post extends Model
     }
 
     public static function top_today_poster() {
+        $topposter = \DB::table('posts')
+        ->where('created_at', '>', today())
+        ->select(\DB::raw('count(*) as posts, user_id'))
+        ->groupBy('user_id')
+        ->orderBy('posts', 'desc')
+        ->first();
+
+        if(!is_null($topposter)) {
+            return User::find($topposter->user_id);
+        }
+
         return false;
     }
 

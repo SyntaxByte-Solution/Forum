@@ -3848,17 +3848,20 @@ function handle_move_to_trash(button) {
                 _method: 'DELETE'
             },
             success: function(response) {
-                thread.remove();
+                if($('.page').length && $('.page').val() == "thread-show") {
+                    window.location.href = response;
+                } else
+                    thread.remove();
                 basic_notification_show(moved_successfully + "<a class='blue no-underline bold' href='" + response + "'>" + go_to_archive + "</a>", 'basic-notification-round-tick');
             },
             error: function() {
                 button.find('.btn-text').text(button_text_no_ing);
                 button.find('.btn-text').attr("disabled",false);
                 button.find('.btn-text').attr('style', '');
-            },
-            complete: function() {
                 spinner.addClass('opacity0');
                 stop_spinner(spinner, 'restore-thread-inline-button');
+            },
+            complete: function() {
             }
         });
     });

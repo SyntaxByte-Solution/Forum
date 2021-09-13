@@ -24,6 +24,9 @@ $(window).on('DOMContentLoaded scroll', function() {
         type: 'get',
         url: url,
         success: function(response) {
+          if(response.terminated) {
+            explore_more.remove();
+          }
           $('#hours_interval_from').val(response.from);
           $('#hours_interval_to').val(response.to);
           $('#remains').val(response.remains);
@@ -31,8 +34,6 @@ $(window).on('DOMContentLoaded scroll', function() {
           $('#threads-global-container').append(response.content);
           
           console.log($('.thread-container-box').length);
-          if(response.count == 0)
-            explore_more.remove();
 
           /**
            * When appending threads we have to handle their events (Notice that response.count is the number of threads appended)

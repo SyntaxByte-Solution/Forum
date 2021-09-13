@@ -273,7 +273,7 @@
                         <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
                         <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
                         <input type="hidden" class="expand-text-state" value="0">
-                        <span class="pointer expand-button fs12 inline-block">{{ __('see all') }}</span>
+                        <span class="pointer expand-button fs12 inline-block gray bold">{{ __('see all') }}</span>
                         <input type="hidden" class="expand-text" value="{{ __('see all') }}">
                         <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
                         @endif

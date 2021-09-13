@@ -219,6 +219,32 @@ $('.close-shadowed-view-button').on('click', function() {
     return false;
 });
 
+function handle_expend(component) {
+    component.find('.expand-button').each(function() {
+        $(this).on('click', function() {
+            let button = $(this);
+            let status = button.parent().find('.expand-text-state');
+            
+            let textcontainer = button.parent().find('.expandable-text');
+            let whole_text = button.parent().find('.expand-whole-text').val();
+            let slice_text = button.parent().find('.expand-slice-text').val();
+            
+            let see_all = button.parent().find('.expand-text').val();
+            let see_less = button.parent().find('.collapse-text').val();
+
+            if(status.val() == "0") {
+                textcontainer.text(whole_text);
+                button.text(see_less);
+                status.val('1');
+            } else {
+                textcontainer.text(slice_text);
+                button.text(see_all);
+                status.val('0');
+            }
+        });
+    })
+}
+
 function handle_expend_button_appearence(thread) {
     if(!thread.find('.expend-thread-content-button').length) {
         return;
@@ -1591,6 +1617,7 @@ $('.thread-container-box').each(function() {
     handle_thread_shadowed_viewers($(this));
     handle_expend_button_appearence($(this));
     handle_thread_display($(this));
+    handle_expend($(this));
 });
 
 function handle_thread_display(thread_container_box) {
@@ -3862,6 +3889,7 @@ function handle_thread_events(thread) {
     handle_thread_visibility_switch(thread);
     handle_follow_resource(thread.find('.follow-resource'));
     handle_expend_button_appearence(thread);
+    handle_expend(thread);
     // Keep in mind that images dimensions also handled withing lazy loading logic
     handle_thread_medias_containers(thread);
     handle_login_lock(thread);

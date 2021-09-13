@@ -264,7 +264,7 @@ class Thread extends Model
     }
 
     public function getMediumsliceAttribute() {
-        return strlen($this->subject) > 120 ? substr($this->subject, 0, 120) . '..' : $this->subject;
+        return strlen($this->subject) > 110 ? substr($this->subject, 0, 110) . '..' : $this->subject;
     }
 
     public function getContentsliceAttribute() {

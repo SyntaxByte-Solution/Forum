@@ -34,13 +34,12 @@
         <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
         <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="link-path">{{ __($forum->forum) . ' ' . __('Forum') }}</a>
         <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-        <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$thread->category->slug]) }}" class="link-path">{{ __($thread->category->category) }}</a>
+        <a href="{{ route('category.threads', ['forum'=>$forum->slug, 'category'=>$category->slug]) }}" class="link-path">{{ __($category->category) }}</a>
     </div>
     <div id="middle-container" class="index-middle-width" style="margin-bottom: 50px">
         <input type="hidden" class="page" value="thread-show">
         <div class="flex">
             <div class="full-width">
-
                 <x-index-resource :thread="request()->thread"/>
 
                 @if($thread->replies_off)
@@ -80,10 +79,10 @@
                 </div>
                 <div id="replies-container" style="margin-bottom: 30px">
                     @if($tickedPost)
-                    <x-post-component :post="$tickedPost->id"/>
+                    <x-post-component :post="$tickedPost"/>
                     @endif
                     @foreach($posts as $post)
-                        <x-post-component :post="$post->id"/>
+                        <x-post-component :post="$post"/>
                     @endforeach
                     @if($posts->count() > 5)
                     <div class="flex">

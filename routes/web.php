@@ -35,7 +35,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
 
-    dd(\App\Models\Post::top_today_poster());
+    dd($user->userstatus);
 });
 
 Route::get('/', [IndexController::class, 'index']);

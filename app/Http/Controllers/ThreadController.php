@@ -105,6 +105,7 @@ class ThreadController extends Controller
 
         return view('forum.thread.show')
             ->with(compact('forum'))
+            ->with(compact('category'))
             ->with(compact('thread'))
             ->with(compact('tickedPost'))
             ->with(compact('posts'));

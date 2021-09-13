@@ -71,7 +71,7 @@ class PostController extends Controller
 
         if($from == 'thread-show') {
             // First we create a component class instance
-            $component = (new PostComponent($post->id));
+            $component = (new PostComponent($post));
             // Then we pass the data to the render method on component class and pass that data to the component view
             $component = $component->render(get_object_vars($component))->render();
             // Then return that view

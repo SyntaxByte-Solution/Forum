@@ -14,7 +14,7 @@ class Thread extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
-    public $with = ['category.forum','likes','posts', 'visibility', 'status', 'votes', 'user.status'];
+    public $with = ['category.forum', 'visibility', 'status', 'user.status'];
 
     public static function boot() {
         parent::boot();
@@ -152,13 +152,9 @@ class Thread extends Model
     }
 
     public function liked_by($user) {
-        $d = $this->likes()
-            ->where('user_id', $user->id)
-            ->where('likable_type', 'App\Models\Thread')
-            ->where('likable_id', $this->id)
-            ->count();
-
-        return $d;
+            return $this::likes()
+                    ->where('user_id', $user->id)
+                    ->count() > 0;
     }
 
     public function voted_by($user, $vote) {

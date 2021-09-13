@@ -60,13 +60,9 @@ class Post extends Model
     }
 
     public function liked_by($user) {
-        foreach($this->likes as $like) {
-            if($like->likable_id == $this->id && $like->likable_type == 'App\Models\Post' && $like->user_id == $user->id) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this::likes()
+                ->where('user_id', $user->id)
+                ->count() > 0;
     }
 
     public function voted() {
@@ -84,12 +80,7 @@ class Post extends Model
     }
 
     public function getVotevalueAttribute() {
-        $count = 0;
-        foreach($this->votes as $vote) {
-            $count += $vote->vote;
-        }
-
-        return $count;
+        return $this->votes()->sum('vote');
     }
 
     public function getIsUpdatedAttribute() {
@@ -98,10 +89,9 @@ class Post extends Model
 
     public function getAlreadyReportedAttribute() {
         if(auth()->user()) {
-            return $this->reports->where('user_id', auth()->user()->id)
-                ->where('reportable_id', $this->id)
-                ->where('reportable_type', 'App\Models\Post')
-                ->count();
+            return $this->reports()
+                ->where('user_id', auth()->user()->id)
+                ->count() > 0;
         }
 
         return 0;

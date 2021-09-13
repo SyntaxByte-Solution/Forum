@@ -13,18 +13,17 @@ class PostComponent extends Component
     public $post;
     public $votes;
     public $post_content;
+    public $tickedPost;
 
     public $post_created_at;
     public $post_date;
 
-    public function __construct($post)
+    public function __construct(Post $post)
     {
-        $post = $this->post = Post::find($post);
+        $this->post = $post;
         $this->post_content = Markdown::parse($post->content);
         $this->post_created_at = (new Carbon($post->created_at))->toDayDateTimeString();
-
         $this->post_date = (new Carbon($post->created_at))->diffForHumans();
-
         $this->votes = $post->votevalue;
     }
 

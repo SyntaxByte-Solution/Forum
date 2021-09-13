@@ -48,13 +48,11 @@ class IndexController extends Controller
         ->with(compact('tab_title'))
         ->with(compact('pagesize'));
     }
-
     public function forums() {
         $forums = Forum::all();
         return view('forums')
             ->with(compact('forums'));
     }
-    
     public function announcements() {
         $announcements = Thread::
             withoutGlobalScope(ExcludeAnnouncements::class)

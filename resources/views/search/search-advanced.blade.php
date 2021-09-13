@@ -62,7 +62,7 @@
                             <option value="{{ $forum->id }}">{{ __($forum->forum) }}</option>
                         @endforeach
                     </select> -->
-                    <input type="hidden" name="forum" id="forum" autocomplete="off" value='2'>
+                    <input type="hidden" name="forum" id="forum" autocomplete="off" value='0'>
                     <div class="relative">
                         <div class="flex align-center forum-color button-with-suboptions pointer thread-add-posted-to">
                             <svg id="selected-forum-ico" class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M458.67,0H53.33A53.39,53.39,0,0,0,0,53.33V458.67A53.39,53.39,0,0,0,53.33,512H458.67A53.39,53.39,0,0,0,512,458.67V53.33A53.39,53.39,0,0,0,458.67,0Zm10.66,53.33V234.67h-192v-192H458.67A10.68,10.68,0,0,1,469.33,53.33Zm-416-10.66H234.67v192h-192V53.33A10.68,10.68,0,0,1,53.33,42.67Zm-10.66,416V277.33h192v192H53.33A10.68,10.68,0,0,1,42.67,458.67Zm416,10.66H277.33v-192h192V458.67A10.68,10.68,0,0,1,458.67,469.33Z"/></svg>

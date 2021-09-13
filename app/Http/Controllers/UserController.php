@@ -26,7 +26,7 @@ class UserController extends Controller
             ->with(compact('is_current'));
     }
     public function profile(Request $request, User $user) {
-        if($user->account_status->id == 2) {
+        if($user->status->slug == 'deactivated') {
             return view('errors.custom.deactivated-account');
         }
 

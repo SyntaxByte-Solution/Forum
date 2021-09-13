@@ -84,7 +84,7 @@
                     @foreach($posts as $post)
                         <x-post-component :post="$post"/>
                     @endforeach
-                    @if($posts->count() > 5)
+                    @if($posts->count() > $posts_per_page)
                     <div class="flex">
                         <div class="move-to-right">
                             {{ $posts->onEachSide(0)->links() }}

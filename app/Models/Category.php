@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Scopes\ExcludeAnnouncementFromCategories;
-use App\Models\{Forum, Thread};
+use App\Models\{Forum, Thread, CategoryStatus};
 
 class Category extends Model
 {
@@ -24,6 +24,10 @@ class Category extends Model
 
     public function getLinkAttribute() {
         return route('category.threads', ['forum'=>$this->forum->slug, 'category'=>$this->slug]);
+    }
+
+    public function categorystatus() {
+        return $this->belongsTo(CategoryStatus::class, 'status');
     }
 
     /**

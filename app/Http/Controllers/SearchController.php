@@ -29,7 +29,7 @@ class SearchController extends Controller
             $search_query = $keyword['k'];
         }
 
-        $threads = $this->srch(Thread::query()->without(['posts','likes','votes']), $search_query, ['subject', 'content'], ['LIKE']);
+        $threads = $this->srch(Thread::query(), $search_query, ['subject', 'content'], ['LIKE']);
         if($request->has('tab')) {
             $tab = $request->validate(['tab'=>Rule::in(self::TAB_WHITE_LIST)])['tab'];
             if($tab == 'today') {

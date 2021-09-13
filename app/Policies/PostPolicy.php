@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Thread;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Scopes\ExcludeAnnouncements;
 
 class PostPolicy
 {
@@ -19,8 +20,8 @@ class PostPolicy
         if ($user->isBanned()) {
             $this->deny(__("You cannot reply because you're currently banned"));
         }
-
-        $thread = Thread::find($thread_id);
+        
+        $thread = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->find($thread_id);
         if($thread->replies_off == 1) {
             return $this->deny(__("You can't reply on this discussion because the owner is turning off the replies"));
         }

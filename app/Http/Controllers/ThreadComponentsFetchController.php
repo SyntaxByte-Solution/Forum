@@ -22,7 +22,7 @@ class ThreadComponentsFetchController extends Controller
             ]
         ]);
         $categories = Category::excludeannouncements()->where('forum_id', $forum->id)->get()->pluck('id');
-        $threads = Thread::whereIn('category_id', $categories);
+        $threads = Thread::without(['category.forum'])->whereIn('category_id', $categories);
         
         switch($indexes['tab']) {
             case 'all':

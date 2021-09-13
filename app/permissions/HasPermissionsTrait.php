@@ -74,16 +74,6 @@ trait HasPermissionsTrait {
         return $this->status->slug == $slug;
     }
 
-    
-    /**
-     * Here we use mutators to access the related account_status by getting the id
-     * and return the associated model
-     */
-    public function getAccountStatusAttribute($value) {
-        $model = AccountStatus::find($value);
-        return $model;
-    }
-
     public function set_account_status($slug) {
         // Here we fetch the account_status based on slug if the slug is not found the status will be set to active (id=1)
         if($slug) {
@@ -97,10 +87,6 @@ trait HasPermissionsTrait {
     }
 
     public function account_deactivated() {
-        if($as = auth()->user()->account_status) {
-            return $as->slug == 'deactivated';
-        }
-
-        return false;
+        return auth()->user()->status->slug == 'deactivated';
     }
 }

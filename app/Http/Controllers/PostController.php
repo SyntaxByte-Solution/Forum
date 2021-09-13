@@ -8,6 +8,7 @@ use App\Exceptions\ThreadClosedException;
 use App\Models\{Post, ThreadStatus, Thread};
 use App\View\Components\PostComponent;
 use App\View\Components\Thread\ViewerReply;
+use App\Scopes\ExcludeAnnouncements;
 use Markdown;
 
 class PostController extends Controller
@@ -25,7 +26,7 @@ class PostController extends Controller
         $this->authorize('store', [Post::class, $data['thread_id']]);
 
         $current_user = auth()->user();
-        $thread = Thread::find($data['thread_id']);
+        $thread = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->find($data['thread_id']);
         $thread_owner = $thread->user;
         $thread_status_slug = ThreadStatus::find($thread->status_id)->slug;
 

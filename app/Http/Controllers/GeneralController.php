@@ -12,12 +12,14 @@ class GeneralController extends Controller
 {
     public function get_forum_categories_ids(Forum $forum) {
         $data = [];
+        $forumslug = $forum->slug;
         foreach($forum->categories()->excludeannouncements()->get() as $category) {
             $data[] = [
                 'id'=>$category->id,
                 'category'=>__($category->category),
-                'link'=>$category->link,
-                'forum_link'=>route('forum.all.threads', ['forum'=>$category->forum->slug])
+                // Reason we don't use category link attribute is beacause we return a forum object in every category (performence purposes)
+                'link'=>route('category.threads', ['forum'=>$forumslug, 'category'=>$category->slug]),
+                'forum_link'=>route('forum.all.threads', ['forum'=>$forumslug])
             ];
         }
         return \json_encode($data);

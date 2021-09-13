@@ -46,7 +46,7 @@ class ThreadPolicy
             return $this->deny(__("You reached your discussions sharing limit allowed per day, try out later") . '. (' . self::THREADS_RATE_PER_DAY . ' ' . 'discussions' . ')');
 
         // Verify the category status
-        $category_status_slug = CategoryStatus::find(Category::find($category_id)->status)->slug;
+        $category_status_slug = Category::find($category_id)->categorystatus->slug;
         if($category_status_slug == 'closed' || $category_status_slug == 'temp.closed') {
             return $this->deny(__("You could not share discussions on a closed category"));
         }
@@ -68,7 +68,7 @@ class ThreadPolicy
      * @param  \App\Models\Thread  $thread
      * @return mixed
      */
-    public function update(User $user, Thread $thread)
+    public function update(User $user, Thread $thread, $catid=false)
     {
         if($user->isBanned()) {
             return $this->deny(__("You can't edit your discussions because you're currently banned"));
@@ -77,6 +77,14 @@ class ThreadPolicy
         if($thread->status->slug == 'closed' || $thread->status->slug == 'temp.closed') {
             return $this->deny(__("You could not update a closed discussions"));
         }
+
+        if($catid) { // catid is false if the user doesn't change the category because we want to check category only if the user change it
+            $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();
+            if(in_array($category_id, $announcements_ids)) {
+                return $this->deny(__("You could not share announcements because you don't have the right privileges"));
+            }
+        }
+
 
         return $thread->user_id == $user->id;
     }

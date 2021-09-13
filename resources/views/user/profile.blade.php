@@ -186,7 +186,7 @@
                     </div>
                 </div>
                 <div style="margin-top: 20px" class="index-middle-width">
-                    @if($user->account_status->slug == 'deactivated')
+                    @if($user->status->slug == 'deactivated')
                     <h2 class="text-center">{{__('DEACTIVATED ACCOUNT')}}</h2>
                     @endif
                     @if($threads->count())

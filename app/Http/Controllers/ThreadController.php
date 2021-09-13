@@ -106,13 +106,13 @@ class ThreadController extends Controller
         return view('forum.thread.show')
             ->with(compact('forum'))
             ->with(compact('category'))
+            ->with(compact('posts_per_page'))
             ->with(compact('thread'))
             ->with(compact('tickedPost'))
             ->with(compact('posts'));
     }
     public function announcement_show(Request $request, Forum $forum, $announcid) {
         $announcement = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->find($announcid);
-        $forums = Forum::all();
         $at = (new Carbon($announcement->created_at))->toDayDateTimeString();
         $at_hummans = (new Carbon($announcement->created_at))->diffForHumans();
         $pagesize = 6;
@@ -134,7 +134,6 @@ class ThreadController extends Controller
 
         return view('forum.thread.announcement-show')
         ->with(compact('forum'))
-        ->with(compact('forums'))
         ->with(compact('posts'))
         ->with(compact('at'))
         ->with(compact('at_hummans'))
@@ -149,8 +148,8 @@ class ThreadController extends Controller
     public function edit(User $user, Thread $thread) {
         $this->authorize('edit', $thread);
 
-        $category = Category::find($thread->category_id);
-        $forum = Forum::find($category->forum_id);
+        $category = $thread->category;
+        $forum = $category->forum;
         $categories = $forum->categories()->excludeannouncements()->get();
         $medias = [];
         if($thread->has_media) {
@@ -222,14 +221,16 @@ class ThreadController extends Controller
             }
         }
 
+        $currentuser = auth()->user();
         // Prevent user from sharing two threads with the same subject in the same category
         $duplicated_thread;
         $duplicated_thread_url;
-        if(auth()->user()->threads
+        $currentuser_threads = $currentuser->threads()->without(['category.forum', 'visibility', 'status', 'user.status']);
+        if($currentuser_threads
             ->where('subject', $data['subject'])
             ->where('category_id', $data['category_id'])->count()) {
 
-            $duplicated_thread = auth()->user()->threads
+            $duplicated_thread = $currentuser_threads
             ->where('subject', $data['subject'])
             ->where('category_id', $data['category_id'])->first();
 
@@ -237,10 +238,10 @@ class ThreadController extends Controller
              * If there's a duplicate subjects in the same category we need to 
              * reload the page by passing flash message to inform the user
              */
-            $forum = Forum::find(Category::find($data['category_id'])->forum_id)->slug;
-            $category = Category::find($data['category_id'])->slug;
+            $forum = $duplicated_thread->category->forum->slug;
+            $category = $duplicated_thread->category->slug;
 
-            $duplicate_thread_url = route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$duplicated_thread->id]);
+            $duplicate_thread_url = $duplicated_thread->link;
             return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>" . __('see discussion') . "</a>), " . __("please choose another title or edit the title of the old discussion")], 422);
         }
 
@@ -279,21 +280,19 @@ class ThreadController extends Controller
             }
         }
 
-        // Notify the followers
-        foreach(auth()->user()->followers as $follower) {
+        // Notify the followers [THIS MUST BE RUN IN QUEUED, because if the current user has multiple followers it will take a long time]
+        $notification =  new \App\Notifications\UserAction([
+            'action_user'=>auth()->user()->id,
+            'action_statement'=>"Shared a new discussion :",
+            'resource_string_slice'=>$thread->slice,
+            'action_type'=>'thread-action',
+            'action_date'=>now(),
+            'action_resource_id'=>$thread->id,
+            'action_resource_link'=>$thread->link,
+        ]);
+        foreach($currentuser->followers as $follower) {
             $follower = User::find($follower->follower);
-            
-            $follower->notify(
-                new \App\Notifications\UserAction([
-                    'action_user'=>auth()->user()->id,
-                    'action_statement'=>"Shared a new discussion :",
-                    'resource_string_slice'=>$thread->slice,
-                    'action_type'=>'thread-action',
-                    'action_date'=>now(),
-                    'action_resource_id'=>$thread->id,
-                    'action_resource_link'=>$thread->link,
-                ])
-            );
+            $follower->notify($notification);
         }
 
         return [
@@ -302,11 +301,10 @@ class ThreadController extends Controller
         ];
     }
     public function update(Request $request, Thread $thread) {
-        $this->authorize('update', $thread);
-
-        $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;
-        $category = Category::find($thread->category_id)->slug;
-
+        
+        $forum = $thread->category->forum->slug;
+        $category = $thread->category->slug;
+        
         $data = request()->validate([
             'subject'=>'sometimes|min:2|max:1000',
             'content'=>'sometimes|min:2|max:40000',
@@ -314,10 +312,8 @@ class ThreadController extends Controller
             'category_id'=>'sometimes|exists:categories,id',
             'status_id'=>'sometimes|exists:thread_status,id',
         ]);
-
-        if($category == 'announcements') {
-            return abort(403, __("You could not create announcements due to privileges unavailability"));
-        }
+        $newcatid = isset($data['category_id']) ? $data['category_id'] : false;
+        $this->authorize('update', $thread, $newcatid);
 
         // Prevent sharing a thread with the same subject in the same category
         if(auth()->user()->threads
@@ -516,7 +512,7 @@ class ThreadController extends Controller
         $tab = "all";
 
         $categories = $forum->categories()->excludeannouncements()->get();
-        $category = $forum->categories->first();
+        $category = $forum->categories()->first();
 
         // First get all forum's categories
         $categories_ids = $categories->pluck('id');
@@ -543,7 +539,7 @@ class ThreadController extends Controller
         }
         $hasmore = $threads->count() > $pagesize ? 1 : 0;
         $threads = $threads->orderBy('created_at', 'desc')->paginate($pagesize);
-        
+
         return view('forum.category.categories-threads')
         ->with(compact('tab'))
         ->with(compact('tab_title'))

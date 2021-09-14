@@ -62,7 +62,7 @@ class UserController extends Controller
             ->count() > 0;
         }
 
-        $threads = $user->threads()->without(['posts', 'votes', 'likes'])
+        $threads = $user->threads()
             ->orderBy('created_at', 'desc')->take(self::PROFILE_THREADS_SIZE)->get();
         $pagesize = self::PROFILE_THREADS_SIZE;
 

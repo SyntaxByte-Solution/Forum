@@ -92,6 +92,8 @@ Route::post('/faqs', [FaqsController::class, 'store'])->middleware('auth');
 
 Route::get('/privacy', [IndexController::class, 'privacy'])->name('privacy');
 
+Route::get('/users/{user}/card/generate', [GeneralController::class, 'generate_user_card']);
+
 Route::middleware(['auth'])->group(function () {
     /** 
      * The routes that are accessible for only admins should be placed in a group

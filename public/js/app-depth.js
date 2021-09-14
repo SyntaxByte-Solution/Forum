@@ -516,6 +516,7 @@ $('.user-card-container-index').each(function() {
 
 $('.user-profile-card-box').each(function() {
     handle_user_profile_card_displayer($(this));
+    handle_fetch_user_card($(this));
 })
 function handle_user_profile_card_displayer(user_profile_card_box) {
     user_profile_card_box.find('.user-profile-card-displayer').each(function() { 
@@ -581,6 +582,37 @@ function handle_user_profile_card_displayer(user_profile_card_box) {
                     }, 400);
                     user_profile_card_box.find('.user-profile-card').addClass('none');
                 }, 500);
+            }
+        });
+    });
+}
+
+let fetchings = [];
+function handle_fetch_user_card(component) {
+    component.find('.fetch-user-card').each(function() {
+        let displayer = $(this);
+        let uid = $(this).parent().find('.uid').val();
+        let card = $(this).parent().find('.user-profile-card');
+        displayer.on('mouseenter', function() {
+            if(!fetchings.contains(uid)) {
+                fetchings.push(uid);
+
+                $.ajax({
+                    url: `/users/${uid}/card/generate`,
+                    type: 'get',
+                    success: function(response) {
+                        card.html(response);
+                        // handle card events
+                        let image = card.find('.card-user-avatar');
+                        image.parent().imagesLoaded(function() {
+                            handle_image_dimensions(image);
+                        });
+                        handle_suboptions_container(card.find('.button-with-suboptions'));
+                    },
+                    error: function() {
+
+                    }
+                });
             }
         });
     });

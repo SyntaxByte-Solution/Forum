@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
-use App\Models\Forum;
+use App\Models\{Forum, User};
 use Illuminate\Validation\Rule;
-use App\View\Components\User\Quickaccess;
+use App\View\Components\User\{Quickaccess, Card};
 
 class GeneralController extends Controller
 {
@@ -42,5 +42,11 @@ class GeneralController extends Controller
     public function update_user_last_activity() {
         $expiresAt = \Carbon\Carbon::now()->addMinutes(4);
         \Cache::put('user-is-online-' . \Auth::user()->id, true, $expiresAt);
+    }
+
+    public function generate_user_card(User $user) {
+        $usercard_component = (new Card($user));
+        $usercard_component = $usercard_component->render(get_object_vars($usercard_component))->render();
+        return $usercard_component;
     }
 }

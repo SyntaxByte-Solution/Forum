@@ -11,8 +11,7 @@
         <p class="fs12 my8"><strong>2. {{ __('Do not post copyright-infringing material') }}</strong></p>
         <p class="fs12 my8 ml8">{{ __('Providing or asking for information on how to illegally obtain copyrighted materials is forbidden') }}.</p>
         <p class="fs12 my8"><strong>3. {{ __('Do not post “offensive” posts, links or images') }}</strong></p>
-        <p class="fs12 my8 ml8">{{ __('Any material which constitutes defamation, harassment, or abuse is strictly prohibited. Material that is sexually or otherwise obscene, racist, or otherwise overly discriminatory is not permitted on these forums. This includes user pictures. Use common sense while posting. 
-        This is a web site for accountancy professionals') }}.</p>
+        <p class="fs12 my8 ml8">{{ __('Any material which constitutes defamation, harassment, or abuse is strictly prohibited. Material that is sexually or otherwise obscene, racist, or otherwise overly discriminatory is not permitted on these forums. This includes user pictures. Use common sense while posting. This is a web site for accountancy professionals') }}.</p>
         <div class="flex">
             <a href="{{ route('guidelines') }}" class="link-style fs12 move-to-right">{{ __('visit guidelines') }}</a>
         </div>

@@ -1629,12 +1629,33 @@ function handle_category_selection(category_button) {
     });
 }
 
-$('.thread-add-type-change').on('click', function() {
-    /* 
-        Change the thread type [hidden input that will be used in server side to determine the type of thread 
-        && type title and type icon && change the structure of content from textual content to  options]
-    */
-    console.log('change thread type !');
+$('.thread-add-type-change').on('click', function(event) {
+    event.stopPropagation();
+
+    let container = $(this);
+    while(!container.hasClass('thread-add-container')) {
+        container = container.parent();
+    }
+
+    let selected_thread_type = $(this).find('.thread-type').val();
+    container.find('.thread-type-value').val(selected_thread_type)
+
+    let selected_icon_path = $(this).find('.selected-icon-path').val();
+    let status_ico = container.find('.thread-add-type-icon');
+    status_ico.find('path').attr('d', selected_icon_path);
+
+    switch(selected_thread_type) {
+        case 'discussion':
+            container.find('#thread-add-discussion').removeClass('none');
+            container.find('#thread-add-poll').addClass('none');
+            break;
+        case 'poll':
+            container.find('#thread-add-discussion').addClass('none');
+            container.find('#thread-add-poll').removeClass('none');
+            break;
+    }
+    
+    $(this).parent().css('display', 'none');
 });
 
 let loading_anim_interval;
@@ -1739,7 +1760,7 @@ $('.thread-add-visibility').on('click', function(event) {
         container = container.parent();
     }
 
-    container.find('.thread-add-visibility-slug').val($(this).find('.thread-visibility').val())
+    container.find('.thread-add-visibility-slug').val($(this).find('.thread-visibility').val());
 
     let selected_icon_path = $(this).find('.selected-icon-path').val();
     let status_ico = container.find('.thread-add-visibility-icon');
@@ -4188,3 +4209,34 @@ $('.forumslist-categories-load').on('click', function() {
         }
     })
 })
+
+$('.dynamic-input-wrapper').each(function() {
+    handle_input_with_dynamic_label($(this));
+});
+
+function handle_input_with_dynamic_label(inputwrapper) {
+    inputwrapper.find('.input-with-dynamic-label').on({
+        focus: function() {
+            if(inputwrapper.find('.input-with-dynamic-label').val().length == 0) {
+                inputwrapper.find('.dynamic-label').animate({
+                    fontSize: '10px',
+                    top: '2px'
+                }, 100, function() {
+                    inputwrapper.find('.dynamic-label').css('color', '#2ca0ff');
+                });
+            } else
+                inputwrapper.find('.dynamic-label').css('color', '#2ca0ff');
+        },
+        focusout: function() {
+            if(inputwrapper.find('.input-with-dynamic-label').val().length == 0) {
+                inputwrapper.find('.dynamic-label').animate({
+                    fontSize: '14px',
+                }, 100, function() {
+                    inputwrapper.find('.dynamic-label').css('color', '#555');
+                    inputwrapper.find('.dynamic-label').css('top', 'unset');
+                });
+            } else
+                inputwrapper.find('.dynamic-label').css('color', '#555');
+        }
+    });
+}

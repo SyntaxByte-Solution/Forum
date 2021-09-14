@@ -14,8 +14,9 @@
 
 <div id="thread-add-container-size">
     <div class="thread-add-container" id="thread-add-wrapper">
-        <input type="hidden" class="forum" value="{{ $forums->first()->id }}">
-        <input type="hidden" class="category" value="{{ $category->id }}">
+        <input type="hidden" class="forum" autocomplete="off" value="{{ $forums->first()->id }}">
+        <input type="hidden" class="category" autocomplete="off" value="{{ $category->id }}">
+        <input type="hidden" class="thread-type-value" autocomplete="off" value="discussion">
         <div class="thread-add-header flex align-center">
             <div class="size28 rounded hidden-overflow mr4 relative">
                 <img src="{{ auth()->user()->sizedavatar(36, '-l') }}" class="size28" alt="">
@@ -70,17 +71,17 @@
             <div class="relative move-to-right flex">
                 <svg class="pointer button-with-suboptions size20 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M207,200a20,20,0,0,0-20-20H107a20,20,0,0,0-20,20v35.88H0v40H87V310a20,20,0,0,0,20,20h80a20,20,0,0,0,20-20V275.88H512v-40H207Zm-40,90H127V220h40Z"/><path d="M431,382a20,20,0,0,0-20-20H331a20,20,0,0,0-20,20v35H0v40H311v35a20,20,0,0,0,20,20h80a20,20,0,0,0,20-20V457h81V417H431Zm-40,90H351V402h40Z"/><path d="M433,56V20A20,20,0,0,0,413,0H333a20,20,0,0,0-20,20V56H0V96H313v34a20,20,0,0,0,20,20h80a20,20,0,0,0,20-20V96h79V56Zm-40,54H353V40h40Z"/></svg>
                 <div class="suboptions-container suboptions-container-right-style">
-                    <div class="relative flex align-center space-between">
-                        <div class="flex align-center mr4">
+                    <div class="relative flex align-center">
+                        <div class="flex align-center" style="width: 74px">
                             <svg class="mr4 size12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill:none; stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;"><path d="M1,12S5,4,12,4s11,8,11,8-4,8-11,8S1,12,1,12ZM12,9a3,3,0,1,1-3,3A3,3,0,0,1,12,9Z"/></svg>
                             <p class="no-margin fs12 gray bold">{{__('Visibility')}}:</p>
                         </div>
                         <div class="audience-button nested-soc-button button-with-suboptions flex align-center pointer">
                             <svg class="size18 thread-add-visibility-icon" style="fill: #202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8ZM456,256a199.12,199.12,0,0,1-10.8,64.4H424.9a15.8,15.8,0,0,1-11.4-4.8l-32-32.6a11.92,11.92,0,0,1,.1-16.7l12.5-12.5v-8.7a11.36,11.36,0,0,0-3.3-8l-9.4-9.4a11.36,11.36,0,0,0-8-3.3h-16a11.31,11.31,0,0,1-8-19.3l9.4-9.4a11.36,11.36,0,0,1,8-3.3h32a11.35,11.35,0,0,0,11.3-11.3v-9.4a11.35,11.35,0,0,0-11.3-11.3H362.1a16,16,0,0,0-16,16v4.5a16,16,0,0,1-10.9,15.2l-31.6,10.5a8,8,0,0,0-5.5,7.6v2.2a8,8,0,0,1-8,8h-16a8,8,0,0,1-8-8,8,8,0,0,0-8-8H255a8.15,8.15,0,0,0-7.2,4.4l-9.4,18.7a15.92,15.92,0,0,1-14.3,8.8H202a16,16,0,0,1-16-16V199a16.06,16.06,0,0,1,4.7-11.3l20.1-20.1a24.74,24.74,0,0,0,7.2-17.5,8,8,0,0,1,5.5-7.6l40-13.3a11.64,11.64,0,0,0,4.4-2.7l26.8-26.8a11.31,11.31,0,0,0-8-19.3H266l-16,16v8a8,8,0,0,1-8,8H226a8,8,0,0,1-8-8v-20a8.05,8.05,0,0,1,3.2-6.4l28.9-21.7c1.9-.1,3.8-.3,5.7-.3C366.3,56,456,145.7,456,256ZM138.1,149.1a11.36,11.36,0,0,1,3.3-8l25.4-25.4a11.31,11.31,0,0,1,19.3,8v16a11.36,11.36,0,0,1-3.3,8l-9.4,9.4a11.36,11.36,0,0,1-8,3.3h-16A11.35,11.35,0,0,1,138.1,149.1Zm128,306.4v-7.1a16,16,0,0,0-16-16H229.9c-10.8,0-26.7-5.3-35.4-11.8l-22.2-16.7a45.42,45.42,0,0,1-18.2-36.4V343.6a45.44,45.44,0,0,1,22.1-39l42.9-25.7a46.1,46.1,0,0,1,23.4-6.5h31.2a45.62,45.62,0,0,1,29.6,10.9l43.2,37.1h18.3a31.94,31.94,0,0,1,22.6,9.4l17.3,17.3a18.32,18.32,0,0,0,12.9,5.3H431A199.64,199.64,0,0,1,266.1,455.5Z"/></svg>
-                            <span class="visibility-title ml4">{{ __('Public') }}</span>
-                            <input type="hidden" class="thread-add-visibility-slug" value="public">
+                            <svg class="size7 ml4 faq-toggled-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350"><path d="M192,271.31l136-136a23.9,23.9,0,0,0,.1-33.8.94.94,0,0,1-.1-.1l-22.6-22.6a23.9,23.9,0,0,0-33.8-.1l-.1.1L175,175.11,78.6,78.7a23.91,23.91,0,0,0-33.8-.1l-.1.1L22,101.3a23.9,23.9,0,0,0-.1,33.8l.1.1,136,136a23.94,23.94,0,0,0,33.84.26l.16-.16Z"></path></svg>
+                            <input type="hidden" autocomplete="off" class="thread-add-visibility-slug" value="public">
                         </div>
-                        <div class="nested-soc thread-add-suboptions-container" style="right: 0; min-width: 156px; width: max-content; z-index: 2">
+                        <div class="nested-soc thread-add-suboptions-container" style="right: 0; min-width: unset; width: max-content; z-index: 2">
                             <div class="thread-add-suboption thread-add-visibility flex align-center">
                                 <svg class="size17 mr8" style="fill: #202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8ZM456,256a199.12,199.12,0,0,1-10.8,64.4H424.9a15.8,15.8,0,0,1-11.4-4.8l-32-32.6a11.92,11.92,0,0,1,.1-16.7l12.5-12.5v-8.7a11.36,11.36,0,0,0-3.3-8l-9.4-9.4a11.36,11.36,0,0,0-8-3.3h-16a11.31,11.31,0,0,1-8-19.3l9.4-9.4a11.36,11.36,0,0,1,8-3.3h32a11.35,11.35,0,0,0,11.3-11.3v-9.4a11.35,11.35,0,0,0-11.3-11.3H362.1a16,16,0,0,0-16,16v4.5a16,16,0,0,1-10.9,15.2l-31.6,10.5a8,8,0,0,0-5.5,7.6v2.2a8,8,0,0,1-8,8h-16a8,8,0,0,1-8-8,8,8,0,0,0-8-8H255a8.15,8.15,0,0,0-7.2,4.4l-9.4,18.7a15.92,15.92,0,0,1-14.3,8.8H202a16,16,0,0,1-16-16V199a16.06,16.06,0,0,1,4.7-11.3l20.1-20.1a24.74,24.74,0,0,0,7.2-17.5,8,8,0,0,1,5.5-7.6l40-13.3a11.64,11.64,0,0,0,4.4-2.7l26.8-26.8a11.31,11.31,0,0,0-8-19.3H266l-16,16v8a8,8,0,0,1-8,8H226a8,8,0,0,1-8-8v-20a8.05,8.05,0,0,1,3.2-6.4l28.9-21.7c1.9-.1,3.8-.3,5.7-.3C366.3,56,456,145.7,456,256ZM138.1,149.1a11.36,11.36,0,0,1,3.3-8l25.4-25.4a11.31,11.31,0,0,1,19.3,8v16a11.36,11.36,0,0,1-3.3,8l-9.4,9.4a11.36,11.36,0,0,1-8,3.3h-16A11.35,11.35,0,0,1,138.1,149.1Zm128,306.4v-7.1a16,16,0,0,0-16-16H229.9c-10.8,0-26.7-5.3-35.4-11.8l-22.2-16.7a45.42,45.42,0,0,1-18.2-36.4V343.6a45.44,45.44,0,0,1,22.1-39l42.9-25.7a46.1,46.1,0,0,1,23.4-6.5h31.2a45.62,45.62,0,0,1,29.6,10.9l43.2,37.1h18.3a31.94,31.94,0,0,1,22.6,9.4l17.3,17.3a18.32,18.32,0,0,0,12.9,5.3H431A199.64,199.64,0,0,1,266.1,455.5Z"/></svg>
                                 <span class="thread-add-forum-val">{{ __('Public') }}</span>
@@ -102,17 +103,15 @@
                         </div>
                     </div>
                     <div class="simple-line-separator my4"></div>
+                    <!-- THREAD TYPE -->
                     <div class="relative flex align-center">
-                        <!-- THREAD TYPE -->
-                        <input type="hidden" class="thread-type" value="discussion">
-                        <div class="flex align-center mr4">
+                        <div class="flex align-center" style="width: 74px">
                             <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M255,395H80A80.09,80.09,0,0,1,0,315V197a80.09,80.09,0,0,1,80-80H255a20,20,0,1,1,0,40H80a40,40,0,0,0-40,40V315a40,40,0,0,0,40,40H255a20,20,0,1,1,0,40ZM432,117H414a20,20,0,0,0,0,40h18a40,40,0,0,1,40,40V315a40,40,0,0,1-40,40H414a20,20,0,0,0,0,40h18a80.09,80.09,0,0,0,80-80V197A80.09,80.09,0,0,0,432,117ZM414,472a60.07,60.07,0,0,1-60-60V100a60.07,60.07,0,0,1,60-60,20,20,0,0,0,0-40,99.91,99.91,0,0,0-80,40.07A99.91,99.91,0,0,0,254,0a20,20,0,0,0,0,40,60.07,60.07,0,0,1,60,60V412a60.07,60.07,0,0,1-60,60,20,20,0,0,0,0,40,99.91,99.91,0,0,0,80-40.07A99.91,99.91,0,0,0,414,512a20,20,0,0,0,0-40Z"/></svg>
                             <p class="no-margin fs12 gray bold">{{__('Type')}}:</p>
                         </div>
                         <div class="audience-button nested-soc-button button-with-suboptions flex align-center pointer">
                             <svg class="size18 thread thread-add-type-icon" style="fill: #202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M317,31H45A44.94,44.94,0,0,0,0,76V256a44.94,44.94,0,0,0,45,45H60v45c0,10.84,11.22,18.69,22.2,13.2.3-.3.9-.3,1.2-.6,82.52-55.33,64-43,82.5-55.2A15.09,15.09,0,0,1,174,301H317a44.94,44.94,0,0,0,45-45V76A44.94,44.94,0,0,0,317,31ZM197,211H75c-19.77,0-19.85-30,0-30H197C216.77,181,216.85,211,197,211Zm90-60H75c-19.77,0-19.85-30,0-30H287C306.77,121,306.85,151,287,151Zm180,0H392V256a75,75,0,0,1-75,75H178.5L150,349.92V376a44.94,44.94,0,0,0,45,45H342.5l86.1,57.6c11.75,6.53,23.4-1.41,23.4-12.6V421h15a44.94,44.94,0,0,0,45-45V196A44.94,44.94,0,0,0,467,151Z"/></svg>
-                            <span class="thread-type-title ml4">{{ __('Discussion') }}</span>
-                            <input type="hidden" class="thread-add-thread-type" value="public">
+                            <svg class="size7 ml4 faq-toggled-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350"><path d="M192,271.31l136-136a23.9,23.9,0,0,0,.1-33.8.94.94,0,0,1-.1-.1l-22.6-22.6a23.9,23.9,0,0,0-33.8-.1l-.1.1L175,175.11,78.6,78.7a23.91,23.91,0,0,0-33.8-.1l-.1.1L22,101.3a23.9,23.9,0,0,0-.1,33.8l.1.1,136,136a23.94,23.94,0,0,0,33.84.26l.16-.16Z"></path></svg>
                         </div>
                         <div class="nested-soc thread-add-suboptions-container" style="right: 0; width: max-content; min-width: unset">
                             <div class="thread-add-suboption thread-add-type-change flex align-center">
@@ -143,7 +142,7 @@
             <input type="hidden" class="required-text" value="{{ __('Title field is required') }}">
             <input type="text" id="subject" name="subject" class="styled-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re talking to another person") }}'>
         </div>
-        <div id="thread-add-discussion">
+        <div id="thread-add-discussion" class="none">
             <div>
                 <div class="flex align-center space-between mb4 mx8">
                     <label for="content" class="flex align-center bold forum-color">{{ __('Content') }}<span class="error ml4 none">*</span></label>
@@ -221,10 +220,31 @@
                 </div>
             </div>
         </div>
-        <div id="thread-add-poll" class="none">
-            <div class="flex align-center">
-                <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M302.16,471.18H216a14,14,0,0,1-14-14V53.47a14,14,0,0,1,14-14h86.18a14,14,0,0,1,14,14V457.15A14,14,0,0,1,302.16,471.18ZM162.78,458.53V146.85a14,14,0,0,0-14-14H62.57a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,162.78,458.53Zm300.69,0V220a14,14,0,0,0-14-14H363.26a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,463.47,458.53Z" style="stroke:#fff;stroke-miterlimit:10"/></svg>
-                <span class="block bold bblack fs16">{{ __('Add Poll') }}</span>
+        <div id="thread-add-poll">
+            <div class="flex align-center mb8">
+                <svg class="size20 mr4" style="margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M302.16,471.18H216a14,14,0,0,1-14-14V53.47a14,14,0,0,1,14-14h86.18a14,14,0,0,1,14,14V457.15A14,14,0,0,1,302.16,471.18ZM162.78,458.53V146.85a14,14,0,0,0-14-14H62.57a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,162.78,458.53Zm300.69,0V220a14,14,0,0,0-14-14H363.26a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,463.47,458.53Z" style="stroke:#fff;stroke-miterlimit:10"/></svg>
+                <span class="block bold bblack fs19">{{ __('Add Poll') }}</span>
+            </div>
+            <div class="thread-add-poll-option-container my4">
+                <div class="flex align-center dynamic-input-wrapper">
+                    <span class="dynamic-label">{{ __('Option') }} <span class="ta-option-index">1</span></span>
+                    <input type="text" id="subject" name="subject" class="input-with-dynamic-label full-width fs15" autocomplete="off">
+                    <svg class="ml8 size10 remove-poll-option simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
+                </div>
+            </div>
+            <div class="thread-add-poll-option-container my4">
+                <div class="flex align-center dynamic-input-wrapper">
+                    <span class="dynamic-label">{{ __('Option') }} <span class="ta-option-index">2</span></span>
+                    <input type="text" id="subject" name="subject" class="input-with-dynamic-label full-width fs15" autocomplete="off">
+                    <svg class="ml8 size10 remove-poll-option simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
+                </div>
+            </div>
+            <div class="thread-add-poll-option-container my4">
+                <div class="flex align-center dynamic-input-wrapper">
+                    <span class="dynamic-label">{{ __('Option') }} <span class="ta-option-index">2</span></span>
+                    <input type="text" id="subject" name="subject" class="input-with-dynamic-label full-width fs15" autocomplete="off">
+                    <svg class="ml8 size10 remove-poll-option simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
+                </div>
             </div>
         </div>
         <div class="mb8 px8 flex">

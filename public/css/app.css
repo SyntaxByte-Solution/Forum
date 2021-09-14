@@ -149,6 +149,32 @@ main {
     background-color: rgb(240, 240, 240);
 }
 
+.dynamic-input-wrapper {
+    position: relative;
+}
+
+.dynamic-label {
+    color: #555;
+    position: absolute;
+    top: auto;
+    left: 8px;
+    pointer-events: none;
+}
+
+.input-with-dynamic-label {
+    padding: 15px 12px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #b9b9b9;   
+}
+
+.input-with-dynamic-label:focus {
+    border-color: #64ceff;
+    box-shadow: 0 0 0px 3px #def2ff;
+}
+
 #quick-access-box {
     position: absolute;
     display: flex;
@@ -2442,7 +2468,7 @@ a, input, textarea {
 
 .thread-add-container {
     background-color: white;
-    border-radius: 6px 0 6px 6px;
+    border-radius: 6px;
     border: 1px solid #b9b9b9;
 }
 

@@ -48,7 +48,7 @@
         <div class="mt4 px8">
             <div class="flex align-center">
                 <div class="flex align-center my4 fs12 black">
-                    <span class="gray">{{ __('Member since') }}:</span>
+                    <span class="gray bold">{{ __('Member since') }}:</span>
                     <svg class="size14 ml4 mx8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 559.98 559.98"><path d="M280,0C125.6,0,0,125.6,0,280S125.6,560,280,560s280-125.6,280-280S434.38,0,280,0Zm0,498.78C159.35,498.78,61.2,400.63,61.2,280S159.35,61.2,280,61.2,498.78,159.35,498.78,280,400.63,498.78,280,498.78Zm24.24-218.45V163a23.72,23.72,0,0,0-47.44,0V287.9c0,.38.09.73.11,1.1a23.62,23.62,0,0,0,6.83,17.93l88.35,88.33a23.72,23.72,0,1,0,33.54-33.54Z"/></svg>
                     <span class="fs12">{{ (new \Carbon\Carbon($user->created_at))->toFormattedDateString() }}</span>
                 </div>

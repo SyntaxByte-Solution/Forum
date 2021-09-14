@@ -87,11 +87,15 @@
             <!-- thread header section -->
             <div class="thread-header-section space-between">
                 <div class="flex">
-                    <div class="flex">
-                        <div class="size36 relative rounded mr4 hidden-overflow has-lazy">
+                    <div class="relative flex user-profile-card-box">
+                        <a href="{{ $owner->profilelink }}" class="size36 relative rounded mr4 hidden-overflow has-lazy pointer user-profile-card-displayer fetch-user-card">
                             <div class="fade-loading"></div>
                             <img data-src="{{ $owner->sizedavatar(36, '-l') }}" class="thread-owner-avatar size36 flex lazy-image image-with-fade" alt="">
-                        </div>
+                        </a>
+                        <input type="hidden" class="user-card-container-index">
+                        <input type="hidden" class="uid" value="{{ $owner->id }}">
+                        <!-- user card component -->
+                        @include('partials.user-space.faded-card')
                         <div>
                             <div class="flex align-center" style="height: 18px">
                                 <a href="{{ route('user.profile', ['user'=>$owner->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $owner->fullname }}</span></a>

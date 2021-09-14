@@ -31,12 +31,12 @@ jQuery.fn.rotate = function(degrees) {
  * Update user activity in every page (because this js file is included in every page) and update the user
  * activity every 2 seconds if the user doesn't change the page
  */
-// if(userId) { // Disable this for debugging purposes
-//     update_user_last_activity();
-//     setInterval(function() {
-//         update_user_last_activity();
-//     }, 120000);
-// }
+if(userId) { // Disable this for debugging purposes
+    update_user_last_activity();
+    setInterval(function() {
+        update_user_last_activity();
+    }, 120000);
+}
 
 function update_user_last_activity() {
     $.ajax({
@@ -56,7 +56,7 @@ $('.button-with-strip').on({
 
 $('.stop-propagation').on('click', function(event) {
     event.stopPropagation();
-})
+});
 
 $('.block-click').on('click', function() {
     return false;
@@ -67,7 +67,7 @@ $('.x-close-container').on('click', function(event) {
 
     event.stopPropagation();
     event.preventDefault();
-})
+});
 
 $('.handle-image-center-positioning').each(function() {
     let image = $(this);
@@ -593,15 +593,17 @@ function handle_fetch_user_card(component) {
         let displayer = $(this);
         let uid = $(this).parent().find('.uid').val();
         let card = $(this).parent().find('.user-profile-card');
+        let cardid = $(this).parent().find('.user-card-container-index').val();
         displayer.on('mouseenter', function() {
-            if(!fetchings.contains(uid)) {
-                fetchings.push(uid);
+            if(!fetchings.contains(cardid)) {
+                fetchings.push(cardid);
 
                 $.ajax({
                     url: `/users/${uid}/card/generate`,
                     type: 'get',
                     success: function(response) {
                         card.html(response);
+                        
                         // handle card events
                         let image = card.find('.card-user-avatar');
                         image.parent().imagesLoaded(function() {

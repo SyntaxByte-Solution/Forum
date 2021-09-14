@@ -35,9 +35,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
 
-    foreach($user->followers as $f) {
-        dump($f);
-    }
+    dd($user->savedthreads()->where('thread', 241)->count());
 });
 
 Route::get('/', [IndexController::class, 'index']);

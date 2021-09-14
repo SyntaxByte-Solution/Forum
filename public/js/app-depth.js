@@ -31,12 +31,12 @@ jQuery.fn.rotate = function(degrees) {
  * Update user activity in every page (because this js file is included in every page) and update the user
  * activity every 2 seconds if the user doesn't change the page
  */
-if(userId) { // Disable this for debugging purposes
-    update_user_last_activity();
-    setInterval(function() {
-        update_user_last_activity();
-    }, 120000);
-}
+// if(userId) { // Disable this for debugging purposes
+//     update_user_last_activity();
+//     setInterval(function() {
+//         update_user_last_activity();
+//     }, 120000);
+// }
 
 function update_user_last_activity() {
     $.ajax({
@@ -1628,6 +1628,14 @@ function handle_category_selection(category_button) {
         $(this).parent().parent().css('display', 'none');
     });
 }
+
+$('.thread-add-type-change').on('click', function() {
+    /* 
+        Change the thread type [hidden input that will be used in server side to determine the type of thread 
+        && type title and type icon && change the structure of content from textual content to  options]
+    */
+    console.log('change thread type !');
+});
 
 let loading_anim_interval;
 function start_loading_anim(loading_anim) {

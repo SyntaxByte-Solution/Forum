@@ -225,6 +225,10 @@ class User extends UserAuthenticatable implements Authenticatable
         return $this->hasMany(FAQ::class);
     }
 
+    public function isthatthreadsaved($thread) {
+        return $this->savedthreads()->where('thread', $thread->id)->count() > 0;
+    }
+
     public function getFollowedUsersAttribute() {
         return 
             Follow::where('follower', $this->id)

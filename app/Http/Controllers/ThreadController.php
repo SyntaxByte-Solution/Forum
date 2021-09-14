@@ -497,7 +497,7 @@ class ThreadController extends Controller
         $current_user = auth()->user();
         if($data['save_switch'] == 'save') {
             // Check first if it exists; only save it if it's not exist
-            if(!$current_user->savedthreads->contains($thread->id)) {
+            if(!$current_user->isthatthreadsaved($thread)) {
                 $current_user->savedthreads()->attach($thread->id);
             }
 

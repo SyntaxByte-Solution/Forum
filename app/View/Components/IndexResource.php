@@ -25,6 +25,7 @@ class IndexResource extends Component
     public $category_threads_link;
 
     public $followed;
+    public $saved;
     public $views;
     public $likes;
     public $liked;
@@ -55,6 +56,8 @@ class IndexResource extends Component
                 ->select('followable_id')
                 ->where('follower', auth()->user()->id)
                 ->pluck('followable_id')->toArray());
+
+            $this->saved = auth()->user()->isthatthreadsaved($thread);
         } else
             $this->followed = false;
 

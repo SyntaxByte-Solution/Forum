@@ -2266,7 +2266,7 @@ a, input, textarea {
 
 .user-profile-card {
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     top: calc(100% + 4px);
     min-width: 285px;
     width: 285px;
@@ -2442,12 +2442,12 @@ a, input, textarea {
 
 .thread-add-container {
     background-color: white;
-    border-radius: 6px;
+    border-radius: 6px 0 6px 6px;
     border: 1px solid #b9b9b9;
 }
 
 .thread-add-header {
-    padding: 6px;
+    padding: 4px 6px;
     border-radius: 6px 6px 0 0;
     border-bottom: 1px solid #b9b9b9;
     background-color: rgb(244, 244, 244);
@@ -2592,6 +2592,13 @@ a, input, textarea {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.479);
+}
+
+#thread-add-poll {
+    border: 1px solid #b9b9b9;
+    border-radius: 3px;
+    margin: 0 8px 8px 8px;
+    padding: 10px;
 }
 
 /* index thread component */

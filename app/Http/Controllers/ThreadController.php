@@ -183,15 +183,26 @@ class ThreadController extends Controller
          * Also it's optional (sometimes) because it has a default value
          */
         $data = request()->validate([
+            'type'=>[
+                'sometimes',
+                Rule::in(['discussion', 'poll']),
+            ],
             'subject'=>'required|min:2|max:1000',
             'content'=>'required|min:2|max:40000',
             'category_id'=>'required|exists:categories,id',
             'visibility_id'=>'sometimes|exists:thread_visibility,slug',
-            'content'=>'required|min:2|max:40000',
+            'content'=>'required_if:type,discussion|min:2|max:40000',
         ]);
         $this->authorize('store', [Thread::class, $data['category_id']]);
-
+        
         $currentuser = auth()->user();
+        $data['user_id'] = $currentuser->id;
+
+        // Verify if thread visibility is submitted
+        if(isset($data['visibility_id'])) {
+            $data['visibility_id'] = ThreadVisibility::where('slug', $data['visibility_id'])->first()->id;
+        }
+
         // Prevent user from sharing two threads with the same subject in the same category
         $duplicated_thread;
         $duplicated_thread_url;
@@ -247,13 +258,6 @@ class ThreadController extends Controller
                 abort(422, $validator->errors());
             } else
                 $data['has_media'] = 1;
-        }
-
-        $data['user_id'] = auth()->user()->id;
-
-        // Verify if thread visibility is submitted
-        if($data['visibility_id']) {
-            $data['visibility_id'] = ThreadVisibility::where('slug', $data['visibility_id'])->first()->id;
         }
 
         // Create the thread

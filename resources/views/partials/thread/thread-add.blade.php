@@ -225,6 +225,8 @@
             <input type="hidden" class="allow-people-to-add-options" autocomplete="off" value="no">
             <!-- errors -->
             <input type="hidden" id="options-length-limit-error" value="{{ __('You could only add 20 options maximum') }}">
+            <input type="hidden" id="options-length-required" value="{{ __('Poll requires at least 2 options') }}">
+            <input type="hidden" id="options-length-fillables-required" value="{{ __('Your poll should have at least 2 fillable options') }}">
 
             <div class="flex space-between align-end mb8">
                 <div class="flex align-center">
@@ -263,7 +265,7 @@
             <div class="thread-add-poll-option-container thread-add-poll-option-factory my8 none">
                 <div class="flex align-center dynamic-input-wrapper">
                     <span class="dynamic-label">{{ __('Option') }} <span class="ta-option-index">2</span></span>
-                    <input type="text" id="subject" name="subject" class="input-with-dynamic-label full-width fs15" autocomplete="off">
+                    <input type="text" maxlength="140" name="options[]" class="input-with-dynamic-label poll-option-value full-width fs15" autocomplete="off">
                     <svg class="mx8 size12 remove-poll-option simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
                 </div>
             </div>
@@ -271,21 +273,21 @@
                 <div class="thread-add-poll-option-container my8">
                     <div class="flex align-center dynamic-input-wrapper">
                         <span class="dynamic-label">{{ __('Option') }} <span class="ta-option-index">1</span></span>
-                        <input type="text" id="subject" name="subject" class="input-with-dynamic-label full-width fs15" autocomplete="off">
+                        <input type="text" maxlength="140" name="options[]" class="input-with-dynamic-label poll-option-value full-width fs15" autocomplete="off">
                         <svg class="mx8 size12 remove-poll-option simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
                     </div>
                 </div>
                 <div class="thread-add-poll-option-container my8">
                     <div class="flex align-center dynamic-input-wrapper">
                         <span class="dynamic-label">{{ __('Option') }} <span class="ta-option-index">2</span></span>
-                        <input type="text" id="subject" name="subject" class="input-with-dynamic-label full-width fs15" autocomplete="off">
+                        <input type="text" maxlength="140" name="options[]" class="input-with-dynamic-label poll-option-value full-width fs15" autocomplete="off">
                         <svg class="mx8 size12 remove-poll-option simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
                     </div>
                 </div>
                 <div class="thread-add-poll-option-container my8">
                     <div class="flex align-center dynamic-input-wrapper">
                         <span class="dynamic-label">{{ __('Option') }} <span class="ta-option-index">3</span></span>
-                        <input type="text" id="subject" name="subject" class="input-with-dynamic-label full-width fs15" autocomplete="off">
+                        <input type="text" maxlength="140" name="options[]" class="input-with-dynamic-label poll-option-value full-width fs15" autocomplete="off">
                         <svg class="mx8 size12 remove-poll-option simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
                     </div>
                 </div>

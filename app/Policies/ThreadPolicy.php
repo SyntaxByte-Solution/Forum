@@ -53,8 +53,7 @@ class ThreadPolicy
         
         // Verify category by preventing normal user to post on announcements
         // Note: these check normally should be in thread policy because we do want the admins to post announcements
-        $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();
-        if(in_array($category_id, $announcements_ids)) {
+        if(Category::find($category_id)->first()->slug == 'announcements') {
             return $this->deny(__("You could not share announcements because you don't have the right privileges"));
         }
 
@@ -79,8 +78,7 @@ class ThreadPolicy
         }
 
         if($catid) { // catid is false if the user doesn't change the category because we want to check category only if the user change it
-            $announcements_ids = Category::where('slug', 'announcements')->pluck('id')->toArray();
-            if(in_array($category_id, $announcements_ids)) {
+            if(Category::find($catid)->slug == 'announcements') {
                 return $this->deny(__("You could not share announcements because you don't have the right privileges"));
             }
         }

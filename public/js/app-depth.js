@@ -1276,7 +1276,7 @@ function handle_mark_as_read() {
 }
 
 let notification_timeout;
-if(userId != "") {
+if(userId != "" && false) { // Disable any websockets function due to dev performence
     Echo.private('user.' + userId + '.notifications')
         .notification((notification) => {
             // Stop animatio if there's already animation
@@ -1656,6 +1656,11 @@ $('.thread-add-type-change').on('click', function(event) {
     }
     $('.thread-add-type-change').attr('style', '');
     $(this).attr('style', 'background-color: #dfdfdf; cursor: default;');
+
+    // Hide errors
+    $('.thread-add-error-container').addClass('none');
+    $('#thread-add-wrapper .error:not(.thread-add-error)').addClass('none');
+
     $('body').trigger('click'); // This will hide all suboptions containers
 });
 
@@ -1724,7 +1729,7 @@ function handle_thread_visibility_switch(component) {
             start_loading_anim(loading);
         
             let thread_id = visibility_box.find('.thread-id').val();
-            let visibility_slug = button.find('.thread-add-visibility-slug').val();
+            let visibility_slug = button.find('.thread-visibility-slug').val();
         
             $.ajax({
                 url: `/thread/visibility/patch`,
@@ -1902,9 +1907,6 @@ $('.thread-add-share').on('click', function(event) {
     form_data.append('subject' ,$('#subject').val());
     form_data.append('category_id' ,$('.category').val());
     form_data.append('visibility_id' ,$('.thread-add-visibility-slug').val());
-    // Append thread content to the thread
-    const $threadcontent = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
-    form_data.append('content' ,$threadcontent.getValue());
 
     let button = $(this);
     let btn_text_ing = button.parent().find('.message-ing').val();
@@ -1926,51 +1928,90 @@ $('.thread-add-share').on('click', function(event) {
         container.find('.thread-add-error-container').addClass('none');
     }
 
-    if(form_data.get('content') == '') {
-        $('#content').parent().find('.error').removeClass('none');
-        container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
-        container.find('.thread-add-error-container').removeClass('none');
-        move_element_by_id('thread-add-wrapper');
-        return;
-    } else {
-        $('#content').parent().find('.error').addClass('none');
-        container.find('.thread-add-error-container').addClass('none');
+    switch(threadtype) {
+        case 'discussion':
+            // Append thread content to the thread in case the user keep it as discussion
+            const $threadcontent = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
+            form_data.append('content' ,$threadcontent.getValue());
+
+            if(form_data.get('content') == '') {
+                $('#content').parent().find('.error').removeClass('none');
+                container.find('.thread-add-error').text($('#content').parent().find('.required-text').val());
+                container.find('.thread-add-error-container').removeClass('none');
+                move_element_by_id('thread-add-wrapper');
+                return;
+            } else {
+                $('#content').parent().find('.error').addClass('none');
+                container.find('.thread-add-error-container').addClass('none');
+            }
+            // ---------------- WE CHECK FOR MEDIAS ONLY IN DISCUSSION TYPE ----------------
+            let has_upload = false;
+            // Checking images existence in the thread
+            /**
+             * Update: instead of directly append files to form data, we take first the old filename and extract the extension
+             * then we use the counter and append the extension to the counter value, in that way we get ascending order of file names to maintain order
+             * when saving those files
+             */
+            if(uploaded_thread_images_assets.length) {
+                has_upload = true;
+                // Append image files
+                for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
+                    // First filename
+                    let filename = uploaded_thread_images_assets[i][1].name.toLowerCase();
+                    // Get file extension with the preceding dot (ex: file.jpg => .jpg)
+                    let ext = filename.substr(filename.lastIndexOf('.'));
+                    // Then we store the file with the combination of counter and extension to preserve the order when saving files
+                    filename = uploaded_thread_images_assets[i][0] + ext;
+                    form_data.append('images[]', uploaded_thread_images_assets[i][1], filename);
+                }
+            }
+            // Checking videos existence in the thread
+            if(uploaded_thread_videos_assets.length) {
+                has_upload = true;
+                // Append videos files
+                for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
+                    // First filename
+                    let filename = uploaded_thread_videos_assets[i][1].name.toLowerCase();
+                    // Get file extension with the preceding dot (ex: file.jpg => .jpg)
+                    let ext = filename.substr(filename.lastIndexOf('.'));
+                    // Then we store the file with the combination of counter and extension to preserve the order when saving files
+                    filename = uploaded_thread_videos_assets[i][0] + ext;
+                    form_data.append('videos[]', uploaded_thread_videos_assets[i][1], filename);
+                }
+            }
+
+            break;
+        case 'poll':
+            // Here the user choose a poll se we have to append the thread type
+            // The validation in the serverside of the content is : only required if the user choose discussion type
+            // But in db level the content is required for that reason we're going to add two dashes as content just to fulfil the validation
+            form_data.append('type' , 'poll');
+            // Appending the poll settings will be added here when we will create polls table
+            form_data.append('content' , '##');
+
+            // Validating options rules
+            let options = $('#thread-add-poll-options-box .thread-add-poll-option-container');
+            if(options.length < 2) {
+                container.find('.thread-add-error').text($('#options-length-required').val());
+                container.find('.thread-add-error-container').removeClass('none');
+                return;
+            }
+            let fillables = 0;
+            options.each(function() {
+                if($(this).find('.poll-option-value').val() != "") fillables++;
+            });
+            if(fillables < 2) {
+                container.find('.thread-add-error').text($('#options-length-fillables-required').val());
+                container.find('.thread-add-error-container').removeClass('none');
+                return;
+            } else
+                container.find('.thread-add-error-container').addClass('none');
+            break;
     }
 
-    let has_upload = false;
-    // Checking images existence in the thread
-    /**
-     * Update: instead of directly append files to form data, we take first the old filename and extract the extension
-     * then we use the counter and append the extension to the counter value, in that way we get ascending order of file names to maintain order
-     * when saving those files
-     */
-    if(uploaded_thread_images_assets.length) {
-        has_upload = true;
-        // Append image files
-        for(let i = 0;i<uploaded_thread_images_assets.length;i++) {
-            // First filename
-            let filename = uploaded_thread_images_assets[i][1].name.toLowerCase();
-            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
-            let ext = filename.substr(filename.lastIndexOf('.'));
-            // Then we store the file with the combination of counter and extension to preserve the order when saving files
-            filename = uploaded_thread_images_assets[i][0] + ext;
-            form_data.append('images[]', uploaded_thread_images_assets[i][1], filename);
-        }
-    }
-    // Checking videos existence in the thread
-    if(uploaded_thread_videos_assets.length) {
-        has_upload = true;
-        // Append videos files
-        for(let i = 0;i<uploaded_thread_videos_assets.length;i++) {
-            // First filename
-            let filename = uploaded_thread_videos_assets[i][1].name.toLowerCase();
-            // Get file extension with the preceding dot (ex: file.jpg => .jpg)
-            let ext = filename.substr(filename.lastIndexOf('.'));
-            // Then we store the file with the combination of counter and extension to preserve the order when saving files
-            filename = uploaded_thread_videos_assets[i][0] + ext;
-            form_data.append('videos[]', uploaded_thread_videos_assets[i][1], filename);
-        }
-    }
+    console.log("everything's ok !");
+    return;
+
     // When user click share and everything is validated we need to disable both subject and content inputs
     $('#subject').attr('disabled', 'disabled');
     $threadcontent.setOption('readOnly', 'nocursor');
@@ -2015,6 +2056,7 @@ $('.thread-add-share').on('click', function(event) {
         contentType: false,
         data: form_data,
         success: function(response) {
+            return;
             if($('#threads-global-container').length) {
                 // Show notification flash
                 $.ajax({
@@ -4221,23 +4263,28 @@ $('.thread-add-poll-option-container').each(function() {
 function handle_input_with_dynamic_label(option) {
     option.find('.input-with-dynamic-label').on({
         focus: function() {
+            let input = $(this);
             if(option.find('.input-with-dynamic-label').val().length == 0) {
                 option.find('.dynamic-label').animate({
                     fontSize: '10px',
-                    top: '8px'
+                    top: '10px'
                 }, 100, function() {
                     option.find('.dynamic-label').css('color', '#2ca0ff');
+                    input.css('paddingTop', '18px');
+                    input.css('paddingBottom', '12px');
                 });
             } else
             option.find('.dynamic-label').css('color', '#2ca0ff');
         },
         focusout: function() {
+            let input = $(this);
             if(option.find('.input-with-dynamic-label').val().length == 0) {
                 option.find('.dynamic-label').animate({
                     fontSize: '14px',
                     top: '50%'
                 }, 100, function() {
                     option.find('.dynamic-label').css('color', '#555');
+                    input.css('padding', '15px 12px');
                 });
             } else
             option.find('.dynamic-label').css('color', '#555');

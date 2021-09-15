@@ -4258,12 +4258,15 @@ function handle_poll_option_delete(option) {
         });
 
         option_container.remove();
+        if($('#thread-add-poll-options-box .thread-add-poll-option-container').length < 4) {
+            $('#thread-add-poll-options-box').css('overflow-y', 'unset');
+        }
     });
 }
 
 $('.poll-add-option').on('click', function() {
     let existing_options_length = $('#thread-add-poll-options-box .thread-add-poll-option-container').length;
-    if(existing_options_length <= 20) {
+    if(existing_options_length < 30) { // Allow only 30 option
         let newoption = $('.thread-add-poll-option-factory').clone();
         newoption.removeClass('thread-add-poll-option-factory none');
         newoption.find('.ta-option-index').text(existing_options_length+1);
@@ -4272,5 +4275,45 @@ $('.poll-add-option').on('click', function() {
         // Handle events
         handle_input_with_dynamic_label(newoption.find('.dynamic-input-wrapper'));
         handle_poll_option_delete(newoption);
+
+        if(existing_options_length >= 3) {
+            $('#thread-add-poll-options-box').css('overflow-y', 'scroll');
+            $('#thread-add-poll-options-box').scrollTop(function() { return this.scrollHeight; });
+        }
+    } else {
+        let limit_error = $('#options-length-limit-error').val();
+        display_top_informer_message(limit_error, 'warning');
+    }
+});
+
+$('.custom-checkbox-button').on('click', function() {
+    let status = $(this).find('.checkbox-status');
+    if(status.val() == '0') {
+        $(this).find('.custom-checkbox').addClass('custom-checkbox-checked');
+        $(this).find('.custom-checkbox-tick').removeClass('none');
+        status.val('1');
+    } else {
+        $(this).find('.custom-checkbox').removeClass('custom-checkbox-checked');
+        $(this).find('.custom-checkbox-tick').addClass('none');
+        status.val('0');
+    }
+});
+
+$('.allow-multiple-choices-button').on('click', function() {
+    let status = $("#thread-add-poll").find('.allow-multiple-choices');
+    console.log(status);
+    if(status.val() == 'no') {
+        status.val('yes');
+    } else {
+        status.val('no');
+    }
+});
+
+$('.allow-others-to-add-choices-button').on('click', function() {
+    let status = $("#thread-add-poll").find('.allow-people-to-add-options');
+    if(status.val() == 'no') {
+        status.val('yes');
+    } else {
+        status.val('no');
     }
 });

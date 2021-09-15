@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="index-middle-width" style="margin-bottom: 60px">
-        <h1 id="page-title">{{ __('Start a new discussion') }}</h1>
+        <h1 class="my8" style="color: #1e2027;">{{ __('Start a new discussion') }}</h1>
         @auth
             @include('partials.thread.thread-add', ['editor_height'=>200])
         @endauth

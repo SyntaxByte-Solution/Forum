@@ -156,8 +156,9 @@ main {
 .dynamic-label {
     color: #555;
     position: absolute;
-    top: auto;
-    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 12px;
     pointer-events: none;
 }
 
@@ -173,6 +174,26 @@ main {
 .input-with-dynamic-label:focus {
     border-color: #64ceff;
     box-shadow: 0 0 0px 3px #def2ff;
+}
+
+.flat-button-style {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #0d0d0d;
+    fill: #0d0d0d;
+    background-color: #f0f1f4;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.flat-button-style:hover {
+    background-color: #e0e2ea;
 }
 
 #quick-access-box {

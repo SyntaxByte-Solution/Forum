@@ -4210,33 +4210,67 @@ $('.forumslist-categories-load').on('click', function() {
     })
 })
 
-$('.dynamic-input-wrapper').each(function() {
+$('.thread-add-poll-option-container').each(function() {
     handle_input_with_dynamic_label($(this));
+    handle_poll_option_delete($(this));
 });
 
-function handle_input_with_dynamic_label(inputwrapper) {
-    inputwrapper.find('.input-with-dynamic-label').on({
+function handle_input_with_dynamic_label(option) {
+    option.find('.input-with-dynamic-label').on({
         focus: function() {
-            if(inputwrapper.find('.input-with-dynamic-label').val().length == 0) {
-                inputwrapper.find('.dynamic-label').animate({
+            if(option.find('.input-with-dynamic-label').val().length == 0) {
+                option.find('.dynamic-label').animate({
                     fontSize: '10px',
-                    top: '2px'
+                    top: '8px'
                 }, 100, function() {
-                    inputwrapper.find('.dynamic-label').css('color', '#2ca0ff');
+                    option.find('.dynamic-label').css('color', '#2ca0ff');
                 });
             } else
-                inputwrapper.find('.dynamic-label').css('color', '#2ca0ff');
+            option.find('.dynamic-label').css('color', '#2ca0ff');
         },
         focusout: function() {
-            if(inputwrapper.find('.input-with-dynamic-label').val().length == 0) {
-                inputwrapper.find('.dynamic-label').animate({
+            if(option.find('.input-with-dynamic-label').val().length == 0) {
+                option.find('.dynamic-label').animate({
                     fontSize: '14px',
+                    top: '50%'
                 }, 100, function() {
-                    inputwrapper.find('.dynamic-label').css('color', '#555');
-                    inputwrapper.find('.dynamic-label').css('top', 'unset');
+                    option.find('.dynamic-label').css('color', '#555');
                 });
             } else
-                inputwrapper.find('.dynamic-label').css('color', '#555');
+            option.find('.dynamic-label').css('color', '#555');
         }
     });
 }
+
+function handle_poll_option_delete(option) {
+    option.find('.remove-poll-option').on('click', function() {
+        let option_container = $(this);
+        while(!option_container.hasClass('thread-add-poll-option-container')) {
+            option_container = option_container.parent();
+        }
+        let deleted_index = parseInt(option_container.find('.ta-option-index').text())-1;
+
+        // Adjusting indexes of options' labels (Option n) that come after the deleted option
+        $('#thread-add-poll-options-box .thread-add-poll-option-container').each(function(index) {
+            if(index >= deleted_index) {
+                $(this).find('.ta-option-index').text(parseInt($(this).find('.ta-option-index').text())-1);
+            }
+        });
+
+        option_container.remove();
+    });
+}
+
+$('.poll-add-option').on('click', function() {
+    let existing_options_length = $('#thread-add-poll-options-box .thread-add-poll-option-container').length;
+    if(existing_options_length <= 20) {
+        let newoption = $('.thread-add-poll-option-factory').clone();
+        newoption.removeClass('thread-add-poll-option-factory none');
+        newoption.find('.ta-option-index').text(existing_options_length+1);
+        // Append option
+        $('#thread-add-poll-options-box').append(newoption);
+        // Handle events
+        handle_input_with_dynamic_label(newoption.find('.dynamic-input-wrapper'));
+        handle_poll_option_delete(newoption);
+    }
+});

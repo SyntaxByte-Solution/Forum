@@ -12,7 +12,7 @@ use Illuminate\Filesystem\Filesystem;
 use Request as Rqst;
 use Carbon\Carbon;
 use App\Exceptions\{DuplicateThreadException, CategoryClosedException, AccessDeniedException};
-use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post, Like};
+use App\Models\{Forum, Thread, Category, CategoryStatus, User, UserReach, ThreadVisibility, Post, Like, Poll, PollOption};
 use App\View\Components\IndexResource;
 use App\View\Components\Thread\{ViewerInfos, ViewerReply};
 use App\View\Components\Activities\ActivityThread;
@@ -194,7 +194,7 @@ class ThreadController extends Controller
             'content'=>'required_if:type,discussion|min:2|max:40000',
         ]);
         $this->authorize('store', [Thread::class, $data['category_id']]);
-        
+
         $currentuser = auth()->user();
         $data['user_id'] = $currentuser->id;
 
@@ -262,6 +262,54 @@ class ThreadController extends Controller
 
         // Create the thread
         $thread = Thread::create($data);
+        // Check if the thread is a poll to add poll and poll options records
+        if(isset($data['type']) && $data['type'] == 'poll') {
+            // validate the poll attributes
+            $polldata;
+            $polldata = $request->validate([
+                'allow_multiple_choice'=>[Rule::in(['yes', 'no'])],
+                'allow_choice_add'=>[Rule::in(['yes', 'no'])],
+            ]);
+            $polldata['allow_multiple_choice'] = ($polldata['allow_multiple_choice'] == 'no') ? 0 : 1;
+            $polldata['allow_choice_add'] = ($polldata['allow_choice_add'] == 'no') ? 0 : 1;
+            $polldata['thread_id'] = $thread->id;
+
+            // validate the poll options
+            $polloptions = [];
+            $request->validate([
+                'options'=>[
+                    'required',
+                    function ($attribute, $value, $fail) use (&$polloptions) {
+                        $options = json_decode($value); // Parse the json array and take distinct values
+                        $uniqueoptions = array_unique(json_decode($value));
+                        if(count($options) != count($uniqueoptions))
+                            abort(422, __('Poll options must be unique'));
+
+                        $optionlength = count($options);
+                        if(!is_array($options))
+                            abort(422, __('Poll options must be an array'));
+                        if($optionlength < 2)
+                            abort(422, __('Poll requires at least 2 options'));
+                        if($optionlength > 30)
+                            abort(422, __('You could only add 20 options maximum'));
+
+                        $polloptions = $options;
+                    }
+                ]
+            ]);
+
+            // Create poll
+            $poll = Poll::create($polldata);
+            // create poll options
+            foreach($polloptions as $option) {
+                $opt = new PollOption;
+                $opt->content = $option;
+                $opt->poll_id = $poll->id;
+                $opt->user_id = $currentuser->id;
+
+                $opt->save();
+            }
+        }
 
         // Create a folder inside thread_owner folder with its id as name
         $path = public_path().'/users/' . $data['user_id'] . '/threads/' . $thread->id;

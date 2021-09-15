@@ -33,9 +33,9 @@ use App\Http\Middleware\AccountActivationCheck;
 
 Route::get('/test', function() {
     $user = auth()->user();
-    // $thread = $user->threads->first();
+    $thread = Thread::find(266);
 
-    dd(\App\Models\PollOption::all());
+    dd($thread->poll->options);
 });
 
 Route::get('/', [IndexController::class, 'index']);

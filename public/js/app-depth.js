@@ -1927,11 +1927,12 @@ $('.thread-add-share').on('click', function(event) {
         container.find('.thread-add-error').text("");
         container.find('.thread-add-error-container').addClass('none');
     }
+    let has_upload = false;
 
+    const $threadcontent = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
     switch(threadtype) {
         case 'discussion':
             // Append thread content to the thread in case the user keep it as discussion
-            const $threadcontent = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
             form_data.append('content' ,$threadcontent.getValue());
 
             if(form_data.get('content') == '') {
@@ -1945,7 +1946,6 @@ $('.thread-add-share').on('click', function(event) {
                 container.find('.thread-add-error-container').addClass('none');
             }
             // ---------------- WE CHECK FOR MEDIAS ONLY IN DISCUSSION TYPE ----------------
-            let has_upload = false;
             // Checking images existence in the thread
             /**
              * Update: instead of directly append files to form data, we take first the old filename and extract the extension
@@ -1986,8 +1986,9 @@ $('.thread-add-share').on('click', function(event) {
             // The validation in the serverside of the content is : only required if the user choose discussion type
             // But in db level the content is required for that reason we're going to add two dashes as content just to fulfil the validation
             form_data.append('type' , 'poll');
-            // Appending the poll settings will be added here when we will create polls table
             form_data.append('content' , '##');
+            form_data.append('allow_multiple_choice', $('#thread-add-poll .allow-multiple-choices').val());
+            form_data.append('allow_choice_add', $('#thread-add-poll .allow-people-to-add-options').val());
 
             // Validating options rules
             let options = $('#thread-add-poll-options-box .thread-add-poll-option-container');
@@ -1996,25 +1997,34 @@ $('.thread-add-share').on('click', function(event) {
                 container.find('.thread-add-error-container').removeClass('none');
                 return;
             }
-            let fillables = 0;
+            let fillables_count = 0;
+            let optionsvalues = [];
             options.each(function() {
-                if($(this).find('.poll-option-value').val() != "") fillables++;
+                if($(this).find('.poll-option-value').val() != "") {
+                    fillables_count++;
+                    optionsvalues.push($(this).find('.poll-option-value').val());
+                }
             });
-            if(fillables < 2) {
+            if(fillables_count < 2) {
                 container.find('.thread-add-error').text($('#options-length-fillables-required').val());
                 container.find('.thread-add-error-container').removeClass('none');
                 return;
-            } else
+            } else {
+                form_data.append('options' , JSON.stringify(optionsvalues));
                 container.find('.thread-add-error-container').addClass('none');
+            }
             break;
     }
 
-    console.log("everything's ok !");
-    return;
-
     // When user click share and everything is validated we need to disable both subject and content inputs
     $('#subject').attr('disabled', 'disabled');
-    $threadcontent.setOption('readOnly', 'nocursor');
+    if(threadtype == 'discussion') {
+        $threadcontent.setOption('readOnly', 'nocursor');
+    } else if(threadtype == 'poll') {
+        $('#thread-add-poll-options-box .thread-add-poll-option-container').each(function() {
+            $(this).find('.poll-option-value').attr('disabled', 'disabled');
+        })
+    }
 
     button.text(btn_text_ing);
     button.attr("disabled","disabled");
@@ -2022,7 +2032,7 @@ $('.thread-add-share').on('click', function(event) {
     $.ajax({
         xhr: function() {
             var xhr = new window.XMLHttpRequest();
-        
+            
             if(has_upload) {
                 let progress_bar_box = container.find('.progress-bar-box');
                 let progress_bar = progress_bar_box.find('.progress-bar');
@@ -2056,36 +2066,44 @@ $('.thread-add-share').on('click', function(event) {
         contentType: false,
         data: form_data,
         success: function(response) {
-            return;
             if($('#threads-global-container').length) {
                 // Show notification flash
                 $.ajax({
                     url: `/threads/${response.id}/component/generate`,
                     type: 'get',
                     success: function(thread) {
-                        if(has_upload) {
-                            let progress_bar_box = container.find('.progress-bar-box');
-                            let progress_bar = progress_bar_box.find('.progress-bar');
-            
-                            progress_bar_box.addClass('none');
-                            progress_bar_box.find('.text-above-progress-bar').text(progress_bar_box.find('.uploading-text').val());
-                            progress_bar_box.find('.progress-bar-percentage').css('color', 'black');
-                            progress_bar.css('width', '0%');
+                        if(threadtype == 'discussion') {
+                            $('.thread-add-uploaded-media').slice(1).remove();
+                            // Clear thread add component inputs
+                            $('.uploaded-images-counter').val('0');
+                            $('.uploaded-videos-counter').val('0');
+
+                            $threadcontent.setOption('readOnly', false);
+                            $threadcontent.getDoc().setValue("");
+                            $('#thread-photos').val('');
+                            $('#thread-videos').val('');
+                            uploaded_thread_images_assets = [];
+                            uploaded_thread_videos_assets = [];
+                            uploaded_thread_media_counter = 0;
+
+                            if(has_upload) {
+                                let progress_bar_box = container.find('.progress-bar-box');
+                                let progress_bar = progress_bar_box.find('.progress-bar');
+                
+                                progress_bar_box.addClass('none');
+                                progress_bar_box.find('.text-above-progress-bar').text(progress_bar_box.find('.uploading-text').val());
+                                progress_bar_box.find('.progress-bar-percentage').css('color', 'black');
+                                progress_bar.css('width', '0%');
+                            }
+                        } else if(threadtype == 'poll') {
+                            $('#thread-add-poll-options-box .thread-add-poll-option-container').each(function() {
+                                $(this).find('.poll-option-value').attr('disabled', false);
+                                $(this).find('.poll-option-value').text('');
+                            });
                         }
 
-                        $('.thread-add-uploaded-media').slice(1).remove();
-                        // Clear thread add component inputs
-                        $('.uploaded-images-counter').val('0');
-                        $('.uploaded-videos-counter').val('0');
                         $('#subject').attr('disabled', false);
                         $('#subject').val('');
-                        $threadcontent.setOption('readOnly', false);
-                        $threadcontent.getDoc().setValue("");
-                        $('#thread-photos').val('');
-                        $('#thread-videos').val('');
-                        uploaded_thread_images_assets = [];
-                        uploaded_thread_videos_assets = [];
-                        uploaded_thread_media_counter = 0;
 
                         button.text(btn_text_no_ing);
                         button.attr("disabled",false);
@@ -2101,7 +2119,7 @@ $('.thread-add-share').on('click', function(event) {
                     }
                 })
             } else {
-                window.location.href = response.link;
+                // window.location.href = response.link;
             }
         },
         error: function(response) {

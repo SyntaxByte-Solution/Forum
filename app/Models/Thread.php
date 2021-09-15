@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Scopes\{ExcludePrivateScope, FollowersOnlyScope, ExcludeDeactivatedUserData, ExcludeAnnouncements};
-use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, ThreadVisibility, Like, Report, Notification, SavedThread};
+use App\Models\{User, Post, Category, Forum, Vote, ThreadStatus, ThreadVisibility, Like, Report, Notification, SavedThread, Poll};
 
 class Thread extends Model
 {
@@ -102,6 +102,10 @@ class Thread extends Model
 
     public function reports() {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function poll() {
+        return $this->hasOne(Poll::class);
     }
 
     public function getAlreadyReportedAttribute() {

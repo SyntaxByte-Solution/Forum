@@ -16,6 +16,7 @@ class IndexResource extends Component
 {
     
     public $thread;
+    public $type;
     public $owner;
     public $forum;
     public $category;
@@ -37,6 +38,7 @@ class IndexResource extends Component
 
     public function __construct(Thread $thread) {
         $this->thread = $thread;
+        $this->type = $thread->type;
         $this->owner = $thread->user;
         $this->forum = $thread->category->forum;
         $this->category = $thread->category;

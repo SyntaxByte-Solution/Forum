@@ -35,7 +35,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     // $thread = $user->threads->first();
 
-    dd($user->savedthreads()->where('thread', 241)->count());
+    dd(\App\Models\PollOption::all());
 });
 
 Route::get('/', [IndexController::class, 'index']);

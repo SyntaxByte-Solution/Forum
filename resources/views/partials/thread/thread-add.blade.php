@@ -114,7 +114,7 @@
                             <svg class="size7 ml4 faq-toggled-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350"><path d="M192,271.31l136-136a23.9,23.9,0,0,0,.1-33.8.94.94,0,0,1-.1-.1l-22.6-22.6a23.9,23.9,0,0,0-33.8-.1l-.1.1L175,175.11,78.6,78.7a23.91,23.91,0,0,0-33.8-.1l-.1.1L22,101.3a23.9,23.9,0,0,0-.1,33.8l.1.1,136,136a23.94,23.94,0,0,0,33.84.26l.16-.16Z"></path></svg>
                         </div>
                         <div class="nested-soc thread-add-suboptions-container" style="right: 0; width: max-content; min-width: unset">
-                            <div class="thread-add-suboption thread-add-type-change flex align-center">
+                            <div class="thread-add-suboption thread-add-type-change flex align-center" style="background-color: #dfdfdf; cursor: default;">
                                 <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" style="fill: #202020" viewBox="0 0 512 512"><path d="M317,31H45A44.94,44.94,0,0,0,0,76V256a44.94,44.94,0,0,0,45,45H60v45c0,10.84,11.22,18.69,22.2,13.2.3-.3.9-.3,1.2-.6,82.52-55.33,64-43,82.5-55.2A15.09,15.09,0,0,1,174,301H317a44.94,44.94,0,0,0,45-45V76A44.94,44.94,0,0,0,317,31ZM197,211H75c-19.77,0-19.85-30,0-30H197C216.77,181,216.85,211,197,211Zm90-60H75c-19.77,0-19.85-30,0-30H287C306.77,121,306.85,151,287,151Zm180,0H392V256a75,75,0,0,1-75,75H178.5L150,349.92V376a44.94,44.94,0,0,0,45,45H342.5l86.1,57.6c11.75,6.53,23.4-1.41,23.4-12.6V421h15a44.94,44.94,0,0,0,45-45V196A44.94,44.94,0,0,0,467,151Z"/></svg>
                                 <span class="thread-add-forum-val">{{ __('Discussion') }}</span>
                                 <input type="hidden" class="thread-type" value="discussion">
@@ -142,7 +142,7 @@
             <input type="hidden" class="required-text" value="{{ __('Title field is required') }}">
             <input type="text" id="subject" name="subject" class="styled-input" required autocomplete="off" placeholder='{{ __("Be specific and imagine you’re talking to another person") }}'>
         </div>
-        <div id="thread-add-discussion" class="none">
+        <div id="thread-add-discussion">
             <div>
                 <div class="flex align-center space-between mb4 mx8">
                     <label for="content" class="flex align-center bold forum-color">{{ __('Content') }}<span class="error ml4 none">*</span></label>
@@ -220,7 +220,7 @@
                 </div>
             </div>
         </div>
-        <div id="thread-add-poll">
+        <div id="thread-add-poll" class="none">
             <input type="hidden" class="allow-multiple-choices" autocomplete="off" value="no">
             <input type="hidden" class="allow-people-to-add-options" autocomplete="off" value="no">
             <!-- errors -->
@@ -231,7 +231,7 @@
                     <svg class="size20 mr4" style="margin-bottom: 2px; fill: #202020" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M302.16,471.18H216a14,14,0,0,1-14-14V53.47a14,14,0,0,1,14-14h86.18a14,14,0,0,1,14,14V457.15A14,14,0,0,1,302.16,471.18ZM162.78,458.53V146.85a14,14,0,0,0-14-14H62.57a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,162.78,458.53Zm300.69,0V220a14,14,0,0,0-14-14H363.26a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,463.47,458.53Z" style="stroke:#fff;stroke-miterlimit:10"/></svg>
                     <span class="block bold forum-color fs19">{{ __('Add Poll') }}</span>
                 </div>
-                <div class="flex align-center mt8">
+                <div class="flex align-center">
                     <div class="flat-button-style poll-add-option mr8 unselectable">
                         <svg class="size10 mr4" style="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="40.44" width="19.13" height="100" rx="4"/><rect x="40.37" y="0.06" width="19.26" height="100" rx="4" transform="translate(-0.06 100.06) rotate(-90)"/></svg>
                         {{ __('Add option') }}

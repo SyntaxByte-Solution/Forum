@@ -1654,8 +1654,9 @@ $('.thread-add-type-change').on('click', function(event) {
             container.find('#thread-add-poll').removeClass('none');
             break;
     }
-    
-    $(this).parent().css('display', 'none');
+    $('.thread-add-type-change').attr('style', '');
+    $(this).attr('style', 'background-color: #dfdfdf; cursor: default;');
+    $('body').trigger('click'); // This will hide all suboptions containers
 });
 
 let loading_anim_interval;
@@ -1894,14 +1895,16 @@ function handle_follow_resource(button) {
 
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
 $('.thread-add-share').on('click', function(event) {
-    const $codemirror = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
+    let threadtype = $('#thread-add-wrapper .thread-type-value').val(); // discussion or poll
 
     let form_data = new FormData();
     form_data.append('_token' ,csrf);
     form_data.append('subject' ,$('#subject').val());
     form_data.append('category_id' ,$('.category').val());
     form_data.append('visibility_id' ,$('.thread-add-visibility-slug').val());
-    form_data.append('content' ,$codemirror.getValue());
+    // Append thread content to the thread
+    const $threadcontent = $('.thread-add-container #content').nextAll('.CodeMirror')[0].CodeMirror;
+    form_data.append('content' ,$threadcontent.getValue());
 
     let button = $(this);
     let btn_text_ing = button.parent().find('.message-ing').val();
@@ -1970,7 +1973,7 @@ $('.thread-add-share').on('click', function(event) {
     }
     // When user click share and everything is validated we need to disable both subject and content inputs
     $('#subject').attr('disabled', 'disabled');
-    $codemirror.setOption('readOnly', 'nocursor');
+    $threadcontent.setOption('readOnly', 'nocursor');
 
     button.text(btn_text_ing);
     button.attr("disabled","disabled");
@@ -2034,8 +2037,8 @@ $('.thread-add-share').on('click', function(event) {
                         $('.uploaded-videos-counter').val('0');
                         $('#subject').attr('disabled', false);
                         $('#subject').val('');
-                        $codemirror.setOption('readOnly', false);
-                        $codemirror.getDoc().setValue("");
+                        $threadcontent.setOption('readOnly', false);
+                        $threadcontent.getDoc().setValue("");
                         $('#thread-photos').val('');
                         $('#thread-videos').val('');
                         uploaded_thread_images_assets = [];
@@ -2088,7 +2091,7 @@ $('.thread-add-share').on('click', function(event) {
             container.find('.thread-add-error').html(error);
 
             $('#subject').attr('disabled', false);
-            $codemirror.setOption('readOnly', false);
+            $threadcontent.setOption('readOnly', false);
 
             button.text(btn_text_no_ing);
             button.attr("disabled",false);
@@ -4301,7 +4304,6 @@ $('.custom-checkbox-button').on('click', function() {
 
 $('.allow-multiple-choices-button').on('click', function() {
     let status = $("#thread-add-poll").find('.allow-multiple-choices');
-    console.log(status);
     if(status.val() == 'no') {
         status.val('yes');
     } else {

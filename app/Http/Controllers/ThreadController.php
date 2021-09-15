@@ -178,6 +178,8 @@ class ThreadController extends Controller
     public function store(Request $request) {
         /**
          * Notice that we accept visibility_id as slug change it to its associated visibility id later
+         * You may want to call it visibility_slug, but the reason we do it like that is because the table in
+         * database has attribute as visibility_id and create method will table this to put that in db.
          * Also it's optional (sometimes) because it has a default value
          */
         $data = request()->validate([
@@ -188,38 +190,6 @@ class ThreadController extends Controller
             'content'=>'required|min:2|max:40000',
         ]);
         $this->authorize('store', [Thread::class, $data['category_id']]);
-
-        // If the user add images to thread we have to validate them
-        if(request()->has('images')) {
-            $validator = Validator::make(
-                $request->all(), [
-                'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000',
-                'images' => 'max:20',
-                ],[
-                    'images.*.mimes' => __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported'),
-                    'images.*.max' => __('Maximum allowed size for an image is 12MB'),
-                ]
-            );
-
-            if ($validator->fails()) {
-                abort(422, $validator->errors());
-            }
-        }
-        if(request()->has('videos')) {
-            $validator = Validator::make(
-                $request->all(), [
-                'videos.*' => 'file|mimes:mp4,webm,mpg,mp2,mpeg,mpe,mpv,ogg,mp4,m4p,m4v,avi|max:500000',
-                'videos' => 'max:4',
-                ],[
-                    'videos.*.mimes' => __('Only .MP4, .WEBM, .MPG, .MP2, .MPEG, .MPE, .MPV, .OGG, .M4P, .M4V, .AVI video formats are supported'),
-                    'videos.*.max' => __('Maximum allowed size for a video is 500MB'),
-                ]
-            );
-
-            if ($validator->fails()) {
-                abort(422, $validator->errors());
-            }
-        }
 
         $currentuser = auth()->user();
         // Prevent user from sharing two threads with the same subject in the same category
@@ -245,15 +215,45 @@ class ThreadController extends Controller
             return response()->json(['error' => __("This title is already exists in your discussions list within the same category which is not allowed") . " (<a class='link-path' target='_blank' href='" . $duplicate_thread_url . "'>" . __('see discussion') . "</a>), " . __("please choose another title or edit the title of the old discussion")], 422);
         }
 
+        // If the user add images to thread we have to validate them
+        if(request()->has('images')) {
+            $validator = Validator::make(
+                $request->all(), [
+                'images.*' => 'file|mimes:jpg,png,jpeg,gif,bmp|max:12000',
+                'images' => 'max:20',
+                ],[
+                    'images.*.mimes' => __('Only JPG, PNG, JPEG, BMP and GIF image formats are supported'),
+                    'images.*.max' => __('Maximum allowed size for an image is 12MB'),
+                ]
+            );
+
+            if ($validator->fails()) {
+                abort(422, $validator->errors());
+            } else
+                $data['has_media'] = 1;
+        }
+        if(request()->has('videos')) {
+            $validator = Validator::make(
+                $request->all(), [
+                'videos.*' => 'file|mimes:mp4,webm,mpg,mp2,mpeg,mpe,mpv,ogg,mp4,m4p,m4v,avi|max:500000',
+                'videos' => 'max:4',
+                ],[
+                    'videos.*.mimes' => __('Only .MP4, .WEBM, .MPG, .MP2, .MPEG, .MPE, .MPV, .OGG, .M4P, .M4V, .AVI video formats are supported'),
+                    'videos.*.max' => __('Maximum allowed size for a video is 500MB'),
+                ]
+            );
+
+            if ($validator->fails()) {
+                abort(422, $validator->errors());
+            } else
+                $data['has_media'] = 1;
+        }
+
         $data['user_id'] = auth()->user()->id;
 
-        // Verify if status is submitted !
+        // Verify if thread visibility is submitted
         if($data['visibility_id']) {
             $data['visibility_id'] = ThreadVisibility::where('slug', $data['visibility_id'])->first()->id;
-        }
-        // Verify if medias are uploaded with thread !
-        if(request()->has('images') || request()->has('videos')) {
-            $data['has_media'] = 1;   
         }
 
         // Create the thread

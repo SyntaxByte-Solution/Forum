@@ -1,5 +1,5 @@
 <div class="poll-option-box flex align-center mb8">
-    <div class="flex align-center pointer custom-checkbox-button">
+    <div class="flex align-center pointer @if($multiple_choice) custom-checkbox-button @else custom-radio-button @endif">
         @if($multiple_choice)
         <div class="custom-checkbox-background mr4">
             <div class="custom-checkbox" style="width: 24px; height: 24px">
@@ -11,7 +11,7 @@
         <div class="custom-radio-background mr4">
             <div class="custom-radio size18">
                 <span class="radio-check-tick none" style="width: 14px; height: 14px"></span>
-                <input type="hidden" class="checkbox-status" autocomplete="off" value="0">
+                <input type="hidden" class="radio-status" autocomplete="off" value="0">
             </div>
         </div>
         @endif

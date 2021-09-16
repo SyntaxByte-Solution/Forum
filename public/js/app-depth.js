@@ -4354,19 +4354,6 @@ $('.poll-add-option').on('click', function() {
     }
 });
 
-$('.custom-checkbox-button').on('click', function() {
-    let status = $(this).find('.checkbox-status');
-    if(status.val() == '0') {
-        $(this).find('.custom-checkbox').addClass('custom-checkbox-checked');
-        $(this).find('.custom-checkbox-tick').removeClass('none');
-        status.val('1');
-    } else {
-        $(this).find('.custom-checkbox').removeClass('custom-checkbox-checked');
-        $(this).find('.custom-checkbox-tick').addClass('none');
-        status.val('0');
-    }
-});
-
 $('.allow-multiple-choices-button').on('click', function() {
     let status = $("#thread-add-poll").find('.allow-multiple-choices');
     if(status.val() == 'no') {
@@ -4384,3 +4371,50 @@ $('.allow-others-to-add-choices-button').on('click', function() {
         status.val('no');
     }
 });
+
+$('.custom-checkbox-button').each(function() {
+    handle_custom_checkbox($(this));
+});
+
+function handle_custom_checkbox(button) {
+    button.on('click', function() {
+        let status = button.find('.checkbox-status');
+        if(status.val() == '0') {
+            button.find('.custom-checkbox').addClass('custom-checkbox-checked');
+            button.find('.custom-checkbox-tick').removeClass('none');
+            status.val('1');
+        } else {
+            button.find('.custom-checkbox').removeClass('custom-checkbox-checked');
+            button.find('.custom-checkbox-tick').addClass('none');
+            status.val('0');
+        }
+    });
+}
+
+$('.custom-radio-button').each(function() {
+    handle_custom_radio($(this));
+});
+
+function handle_custom_radio(button) {
+    button.on('click', function() {
+        let status = button.find('.radio-status');
+        if(status.val() == 1) {
+            status.val('0');
+            button.find('.radio-check-tick').addClass('none');
+            button.find('.custom-radio').removeClass('custom-radio-checked');
+            return;
+        }
+        let group = button;
+        while(!group.hasClass('radio-group')) {
+            group = group.parent();
+        }
+        // Remove all others' radio buttons style and reset their status
+        group.find('.radio-status').val('0');
+        group.find('.radio-check-tick').addClass('none');
+        group.find('.custom-radio').removeClass('custom-radio-checked');
+        // handle the new pressed radio button
+        button.find('.radio-status').val('1');
+        button.find('.radio-check-tick').removeClass('none');
+        button.find('.custom-radio').addClass('custom-radio-checked');
+    });
+}

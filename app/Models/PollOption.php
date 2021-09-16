@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{Poll,User};
+use App\Models\{Poll,User,OptionVote};
 
 class PollOption extends Model
 {
@@ -19,5 +19,9 @@ class PollOption extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function votes() {
+        return $this->hasMany(OptionVote::class);
     }
 }

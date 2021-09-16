@@ -1,4 +1,5 @@
 <div class="poll-option-box flex align-center mb8">
+    <input type="hidden" class="voted" autocomplete="off" value="{{ $int_voted }}">
     <div class="flex align-center pointer 
         @auth vote-option
             @if($multiple_choice) custom-checkbox-button @else custom-radio-button @endif 
@@ -20,7 +21,7 @@
             </div>
         </div>
         @endif
-        <div class="poll-option-container full-width">
+        <div class="poll-option-container full-width" style="@if($voted) background-color: #F0F2F5; @endif">
             <div>
                 <span class="gray fs11 block unselectable">{{ __('Added by') }} {{ $addedby }}</span>
                 <p class="no-margin mt4 fs16 unselectable">{{ $option->content }}</p>

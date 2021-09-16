@@ -4448,13 +4448,31 @@ function handle_option_vote(votebutton) {
             success: function(response) {
                 // response will return how much votes table increment or decrement 
                 // (-1: vote deleted; 1: vote added; 0: when poll owner disable multiple choice and user already vote an option and then choose another one)
-                let result = parseInt(votecount.text()) + parseInt(response);
+                let result = parseInt(votecount.text()) + parseInt(response.diff);
                 votecount.text(result);
 
+                // Get poll options container
                 let poll_options_box = votebutton;
                 while(!poll_options_box.hasClass('thread-poll-options-container')) {
                     poll_options_box = poll_options_box.parent();
                 }
+
+                // Style the voted option
+                poll_options_box.find('.poll-option-container').css('backgroundColor', 'unset');
+                if(response.type != "deleted")
+                    votebutton.find('.poll-option-container').css('backgroundColor', '#F0F2F5');
+
+                if(poll_options_box.hasClass('radio-group')) {
+                    if(response.type == "flipped") {
+                        let option_vote_removed = poll_options_box.find('.voted[value=1]').parent();
+                        option_vote_removed.find('.option-vote-count').text(parseInt(option_vote_removed.find('.option-vote-count').text())-1);
+                        option_vote_removed.find('.voted').val('0');
+                    }
+                } else {
+
+                }
+                
+                votebutton.parent().find('.voted').val(1);
             },
             complete: function() {
                 

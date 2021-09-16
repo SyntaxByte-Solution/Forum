@@ -37,10 +37,16 @@ class PollController extends Controller
                     ->where('optionsvotes.user_id', $currenuser->id)
                     ->where('optionsvotes.option_id', $option->id)
                     ->delete();
-                return -1;
+                return [
+                    'diff'=>-1,
+                    'type'=>'deleted'
+                ];
             }
             OptionVote::create($optionvote);
-            return 1;
+            return [
+                'diff'=>1,
+                'type'=>'added'
+            ];
         } else {
             // Here the poll owner disable multiple choices
             if($poll->voted) { // Delete user vote on the poll and add the new one if the user already vote the poll
@@ -49,19 +55,28 @@ class PollController extends Controller
                         ->where('optionsvotes.user_id', $currenuser->id)
                         ->where('optionsvotes.option_id', $option->id)
                         ->delete();
-                    return -1;
+                    return [
+                        'diff'=>-1,
+                        'type'=>'deleted'
+                    ];
                 }
                 else {
                     $poll->votes()
                     ->where('optionsvotes.user_id', $currenuser->id)
                     ->delete();
                     OptionVote::create($optionvote);
-                    return 1;
+                    return [
+                        'diff'=>1,
+                        'type'=>'flipped'
+                    ];
                 }
             }
             
             OptionVote::create($optionvote);
-            return 1;
+            return [
+                'diff'=>1,
+                'type'=>'added'
+            ];
         }
     }
 }

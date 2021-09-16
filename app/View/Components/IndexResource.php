@@ -21,6 +21,10 @@ class IndexResource extends Component
     public $forum;
     public $category;
     public $content;
+    // in case the thread is poll
+    public $options;
+    public $multiple_choice;
+    public $allow_options_creation;
     
     public $edit_link;
     public $category_threads_link;
@@ -46,6 +50,12 @@ class IndexResource extends Component
         $this->at_hummans = (new Carbon($thread->created_at))->diffForHumans();
         $this->views = $thread->view_count;
         $this->replies = $thread->posts()->count();
+        if($thread->type == 'poll') {
+            $poll = $thread->poll;
+            $this->options = $poll->options;
+            $this->multiple_choice = (bool)$poll->allow_multiple_choice;
+            $this->allow_options_creation = (bool)$poll->allow_choice_add;
+        }
         
         $likemanager = $thread->likedandlikescount;
         $this->likes = $likemanager['count'];

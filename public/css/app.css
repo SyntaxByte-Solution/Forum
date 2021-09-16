@@ -168,7 +168,7 @@ main {
     width: 100%;
     box-sizing: border-box;
     border-radius: 5px;
-    border: 1px solid #b9b9b9;   
+    border: 1px solid #999;   
 }
 
 .input-with-dynamic-label:focus {
@@ -196,19 +196,55 @@ main {
     background-color: #e0e2ea;
 }
 
+.custom-checkbox-background, .custom-radio-background {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-radio-background {
+    border-radius: 50%;
+}
+.custom-checkbox-background {
+    border-radius: 4px;
+}
+
+.custom-checkbox-background:hover, .custom-radio-background:hover {
+    background-color: #f2f0f0b3;
+}
+
 .custom-checkbox {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 18px;
-    height: 18px;
-    border: 1px solid #2f2f2f;
+    border: 1px solid #595959;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .custom-checkbox-checked {
     border-color: #333d51 !important;
     background-color: #333d51;
+}
+
+.custom-radio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #595959;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.radio-check-tick {
+    background-color: #333d51;
+    border-radius: 50%;
+}
+
+.custom-radio-checked {
+    border-color: #333d51 !important;
 }
 
 #quick-access-box {
@@ -318,6 +354,12 @@ a, input, textarea {
     box-sizing: border-box;
     overflow: hidden;
 }
+
+.thread-content-padding {
+    padding: 10px 10px 4px 10px;
+}
+
+
 
 .thread-content-box-max-height {
     max-height: 310px;
@@ -653,7 +695,7 @@ a, input, textarea {
 }
 
 .bottom0 {
-    bottom: 0;
+    bottom: 0 !important;
 }
 
 .rmb-selected {
@@ -2667,6 +2709,14 @@ a, input, textarea {
 
 #thread-add-poll-options-box {
     max-height: 170px;
+}
+
+.poll-option-container {
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    max-width: 350px;
+    min-width: 350px;
 }
 
 /* index thread component */

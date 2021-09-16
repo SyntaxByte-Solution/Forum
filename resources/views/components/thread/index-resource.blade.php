@@ -259,9 +259,9 @@
             <div class="thread-content-section">
                 <!-- textual content -->
                 <div>
-                    <div style="padding: 10px 10px 4px 10px">
+                    <div>
                         <!-- forum and category header -->
-                        <div class="flex align-center path-blue-when-hover width-max-content">
+                        <div class="flex align-center path-blue-when-hover width-max-content" style="margin: 10px 10px 0px 10px">
                             <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 {!! $forum->icon !!}
                             </svg>
@@ -270,38 +270,74 @@
                                 <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
                                 <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ __($category->category) }}</a>
                             </div>
+                            @if($type == 'poll')
+                                <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
+                                <div class="flex">
+                                    <svg class="size12" style="fill:#202020; margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M302.16,471.18H216a14,14,0,0,1-14-14V53.47a14,14,0,0,1,14-14h86.18a14,14,0,0,1,14,14V457.15A14,14,0,0,1,302.16,471.18ZM162.78,458.53V146.85a14,14,0,0,0-14-14H62.57a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,162.78,458.53Zm300.69,0V220a14,14,0,0,0-14-14H363.26a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,463.47,458.53Z" style="stroke:#fff;stroke-miterlimit:10"/></svg>
+                                    <span class="bold fs12 gray ml4">{{ __('poll') }}</span>
+                                </div>
+                            @endif
                         </div>
                         @if($type == 'discussion')
-                        <div class="mt8 mb4 expand-box">
+                        <div class="mt8 mb4 expand-box" style="margin: 10px 10px 0px 10px">
                             <span><a href="{{ $thread->link }}" class="expandable-text bold fs18 blue no-underline">{{ $thread->mediumslice }}</a></span>
                             @if($thread->mediumslice != $thread->subject)
                             <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
                             <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
                             <input type="hidden" class="expand-text-state" value="0">
-                            <span class="pointer expand-button fs12 inline-block gray bold">{{ __('see all') }}</span>
+                            <span class="pointer expand-button fs12 inline-block bblock bold">{{ __('see all') }}</span>
                             <input type="hidden" class="expand-text" value="{{ __('see all') }}">
                             <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
                             @endif
                         </div>
                         <div>
-                            <div class="thread-content-box thread-content-box-max-height">
+                            <div class="thread-content-box thread-content-box-max-height" style="margin: 4px 10px 4px 10px">
                                 <div class="thread-content">{!! $content !!}</div>
                                 <input type="hidden" class="expand-state" autocomplete="off" value="0">
                                 <input type="hidden" class="expand-button-text" autocomplete="off" value="{{ __('see all') }}">
                                 <input type="hidden" class="expand-button-collapse-text" autocomplete="off" value="{{ __('see less') }}">
-                            </div>    
+                            </div>
+                            <div class="expend-thread-content-button none">
+                                <span class="btn-text">{{ __('see all') }}</span>
+                                <svg class="size7 expand-arrow" style="margin-left: 5px; fill: #2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36">
+                                    <path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/>
+                                </svg>
+                                <input type="hidden" class="down-arr" value="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z">
+                                <input type="hidden" class="up-arr" value="M286.93,223.05a17.5,17.5,0,0,1-12.84,5.38H18.27a17.58,17.58,0,0,1-12.85-5.38,18,18,0,0,1-.34-25.36l.34-.33L133.33,69.43a17.92,17.92,0,0,1,25.34-.36l.36.36,127.9,127.93a17.9,17.9,0,0,1,.36,25.32Z">
+                            </div>
                         </div>
                         @else
-                            <!-- thread poll details -->
+                        <div class="thread-content-padding" style="padding-bottom: 0">
+                            <div class="mb4 expand-box">
+                                <span class="expandable-text fs15">{{ $thread->mediumslice }}</span>
+                                @if($thread->mediumslice != $thread->subject)
+                                <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
+                                <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">
+                                <input type="hidden" class="expand-text-state" value="0">
+                                <span class="pointer expand-button fs12 inline-block bblock bold">{{ __('see all') }}</span>
+                                <input type="hidden" class="expand-text" value="{{ __('see all') }}">
+                                <input type="hidden" class="collapse-text" value="{{ __('see less') }}">
+                                @endif
+                            </div>
+                            <div class="mt8 thread-poll-options-container @if($multiple_choice) checkbox-group @else radio-group @endif">
+                                @foreach($options as $option)
+                                    <x-thread.poll-option-component 
+                                        :option="$option" 
+                                        :multiplechoice="$multiple_choice" 
+                                        :allowoptionscreation="$allow_options_creation"/>
+                                @endforeach
+                            </div>
+                            @if($allow_options_creation)
+                            <div class="thread-add-poll-option-container my8" style="margin-left: 45px; max-width: 350px">
+                                <div class="simple-line-separator my8"></div>
+                                <div class="flex align-center dynamic-input-wrapper">
+                                    <span class="dynamic-label">{{ __('Add an option') }}</span>
+                                    <input type="text" maxlength="140" name="option" class="input-with-dynamic-label poll-option-value full-width fs15" autocomplete="off">
+                                </div>
+                            </div>
+                            @endif
+                        </div>
                         @endif
-                    </div>
-                    <div class="expend-thread-content-button none">
-                        <span class="btn-text">{{ __('see all') }}</span>
-                        <svg class="size7 expand-arrow" style="margin-left: 5px; fill: #2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36">
-                            <path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/>
-                        </svg>
-                        <input type="hidden" class="down-arr" value="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z">
-                        <input type="hidden" class="up-arr" value="M286.93,223.05a17.5,17.5,0,0,1-12.84,5.38H18.27a17.58,17.58,0,0,1-12.85-5.38,18,18,0,0,1-.34-25.36l.34-.33L133.33,69.43a17.92,17.92,0,0,1,25.34-.36l.36.36,127.9,127.93a17.9,17.9,0,0,1,.36,25.32Z">
                     </div>
                 </div>
                 <!-- media content -->

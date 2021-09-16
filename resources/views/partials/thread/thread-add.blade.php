@@ -246,15 +246,15 @@
                         <div class="suboptions-container thread-add-suboptions-container" style="right: 0; width: max-content">
                             <div class="allow-multiple-choices-button custom-checkbox-button thread-add-suboption flex align-center space-between">
                                 <span class="unselectable">{{ __('Allow people to choose multiple options') }}</span>
-                                <div class="custom-checkbox" style="margin-left: 12px">
-                                    <svg class="size12 custom-checkbox-tick none" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.9,439.4,7.5,273a25.59,25.59,0,0,1,0-36.2l36.2-36.2a25.59,25.59,0,0,1,36.2,0L192,312.69,432.1,72.6a25.59,25.59,0,0,1,36.2,0l36.2,36.2a25.59,25.59,0,0,1,0,36.2L210.1,439.4a25.59,25.59,0,0,1-36.2,0Z"/></svg>
+                                <div class="custom-checkbox size20" style="margin-left: 12px">
+                                    <svg class="size14 custom-checkbox-tick none" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.9,439.4,7.5,273a25.59,25.59,0,0,1,0-36.2l36.2-36.2a25.59,25.59,0,0,1,36.2,0L192,312.69,432.1,72.6a25.59,25.59,0,0,1,36.2,0l36.2,36.2a25.59,25.59,0,0,1,0,36.2L210.1,439.4a25.59,25.59,0,0,1-36.2,0Z"/></svg>
                                     <input type="hidden" class="checkbox-status" autocomplete="off" value="0">
                                 </div>
                             </div>
                             <div class="allow-others-to-add-choices-button custom-checkbox-button thread-add-suboption flex align-center space-between">
                                 <span class="unselectable">{{ __('Allow anyone to add options') }}</span>
-                                <div class="custom-checkbox" style="margin-left: 12px">
-                                    <svg class="size12 custom-checkbox-tick none" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.9,439.4,7.5,273a25.59,25.59,0,0,1,0-36.2l36.2-36.2a25.59,25.59,0,0,1,36.2,0L192,312.69,432.1,72.6a25.59,25.59,0,0,1,36.2,0l36.2,36.2a25.59,25.59,0,0,1,0,36.2L210.1,439.4a25.59,25.59,0,0,1-36.2,0Z"/></svg>
+                                <div class="custom-checkbox size20" style="margin-left: 12px">
+                                    <svg class="size14 custom-checkbox-tick none" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.9,439.4,7.5,273a25.59,25.59,0,0,1,0-36.2l36.2-36.2a25.59,25.59,0,0,1,36.2,0L192,312.69,432.1,72.6a25.59,25.59,0,0,1,36.2,0l36.2,36.2a25.59,25.59,0,0,1,0,36.2L210.1,439.4a25.59,25.59,0,0,1-36.2,0Z"/></svg>
                                     <input type="hidden" class="checkbox-status" autocomplete="off" value="0">
                                 </div>
                             </div>

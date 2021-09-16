@@ -9,7 +9,8 @@ use App\Http\Controllers\
     IndexController, UserController, OAuthController, ContactController,
     SearchController, FeedbackController, VoteController, FaqsController,
     LikesController, GeneralController, MultilanguageHelperController,
-    NotificationController, FollowController, ReportController, ThreadComponentsFetchController};
+    NotificationController, FollowController, ReportController, ThreadComponentsFetchController,
+    PollController};
 use App\Models\{User, Thread, Forum};
 use App\Http\Middleware\AccountActivationCheck;
 
@@ -24,18 +25,11 @@ use App\Http\Middleware\AccountActivationCheck;
 |
 */
 
-// for sql testing purposes
-// \Event::listen('Illuminate\Database\Events\QueryExecuted', function ($query) {
-//     Log::info( json_encode($query->sql) );
-//     Log::info( json_encode($query->bindings) );
-//     Log::info( json_encode($query->time));
-// });
-
 Route::get('/test', function() {
     $user = auth()->user();
     $thread = Thread::find(266);
 
-    dd($thread->poll->options);
+    dd(\App\Models\PollOption::find(5)->votes);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -158,6 +152,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/{post}/show/generate', [PostController::class, 'thread_show_post_generate']);
     Route::get('/post/{post}/viewer/generate', [PostController::class, 'thread_viewer_post_generate']);
     Route::post('/post/{post}/tick', [PostController::class, 'tick']);
+
+    Route::post('/options/vote', [PollController::class, 'option_vote']);
 
     Route::get('/settings', [UserController::class, 'edit'])->name('user.settings');
     Route::get('/settings/personal', [UserController::class, 'edit_personal_infos'])->name('user.personal.settings');

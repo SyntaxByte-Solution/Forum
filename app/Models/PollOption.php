@@ -22,6 +22,13 @@ class PollOption extends Model
     }
 
     public function votes() {
-        return $this->hasMany(OptionVote::class);
+        return $this->hasMany(OptionVote::class, 'option_id');
+    }
+
+    public function getVotedAttribute() {
+        if(($currentuser = auth()->user()))
+            return $this->votes()->where('user_id', $currentuser->id)->count() > 0;
+
+        return false;
     }
 }

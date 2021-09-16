@@ -4418,3 +4418,34 @@ function handle_custom_radio(button) {
         button.find('.custom-radio').addClass('custom-radio-checked');
     });
 }
+
+$('.vote-option').each(function() {
+    handle_option_vote($(this));
+});
+
+/**
+ * The reason we use this queue is because we want to handle only one vote at the time
+ * If two votes came at the same time we take the first one and handle it, and the second one we push it to the queue,
+ * then when the ajax call terminate, we check the queue if there's a vote there, if it is we call take that first element
+ * in the queue and trigger the click event to handle it again
+ */
+//let votes_queue = [];
+function handle_option_vote(votebutton) {
+    votebutton.on('click', function() {
+        let optionid = votebutton.find('.optionid').val();
+        $.ajax({
+            url: `/options/vote`,
+            type: 'post',
+            data: {
+                _token: csrf,
+                option_id: optionid
+            },
+            success: function(response) {
+
+            },
+            complete: function() {
+
+            }
+        });
+    });
+}

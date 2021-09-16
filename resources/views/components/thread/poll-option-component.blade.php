@@ -1,5 +1,10 @@
 <div class="poll-option-box flex align-center mb8">
-    <div class="flex align-center pointer @if($multiple_choice) custom-checkbox-button @else custom-radio-button @endif">
+    <div class="flex align-center pointer 
+        @auth vote-option
+            @if($multiple_choice) custom-checkbox-button @else custom-radio-button @endif 
+        @endauth 
+        @guest login-signin-button @endguest">
+        <input type="hidden" class="optionid" autocomplete="off" value="{{ $option->id }}">
         @if($multiple_choice)
         <div class="custom-checkbox-background mr4">
             <div class="custom-checkbox" style="width: 24px; height: 24px">

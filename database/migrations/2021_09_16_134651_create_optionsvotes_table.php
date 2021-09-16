@@ -20,6 +20,7 @@ class CreateOptionsvotesTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('option_id')->references('id')->on('polloptions');
+            $table->unique(['user_id', 'option_id']);
             $table->timestamps();
         });
     }

@@ -4375,48 +4375,52 @@ $('.allow-others-to-add-choices-button').on('click', function() {
 $('.custom-checkbox-button').each(function() {
     handle_custom_checkbox($(this));
 });
-
 function handle_custom_checkbox(button) {
     button.on('click', function() {
-        let status = button.find('.checkbox-status');
-        if(status.val() == '0') {
-            button.find('.custom-checkbox').addClass('custom-checkbox-checked');
-            button.find('.custom-checkbox-tick').removeClass('none');
-            status.val('1');
-        } else {
-            button.find('.custom-checkbox').removeClass('custom-checkbox-checked');
-            button.find('.custom-checkbox-tick').addClass('none');
-            status.val('0');
-        }
+        trigger_checkbox_button(button);
     });
+}
+function trigger_checkbox_button(button) {
+    let status = button.find('.checkbox-status');
+    if(status.val() == '0') {
+        button.find('.custom-checkbox').addClass('custom-checkbox-checked');
+        button.find('.custom-checkbox-tick').removeClass('none');
+        status.val('1');
+    } else {
+        button.find('.custom-checkbox').removeClass('custom-checkbox-checked');
+        button.find('.custom-checkbox-tick').addClass('none');
+        status.val('0');
+    }
 }
 
 $('.custom-radio-button').each(function() {
     handle_custom_radio($(this));
 });
-
 function handle_custom_radio(button) {
     button.on('click', function() {
-        let status = button.find('.radio-status');
-        if(status.val() == 1) {
-            status.val('0');
-            button.find('.radio-check-tick').addClass('none');
-            button.find('.custom-radio').removeClass('custom-radio-checked');
-            return;
-        }
-        let group = button;
-        while(!group.hasClass('radio-group')) {
-            group = group.parent();
-        }
-        // Remove all others' radio buttons style and reset their status
-        group.find('.radio-status').val('0');
-        group.find('.radio-check-tick').addClass('none');
-        group.find('.custom-radio').removeClass('custom-radio-checked');
-        // handle the new pressed radio button
-        button.find('.radio-status').val('1');
-        button.find('.radio-check-tick').removeClass('none');
-        button.find('.custom-radio').addClass('custom-radio-checked');
+        trigger_radio_button($(this));
     });
+}
+function trigger_radio_button(button) {
+    let status = button.find('.radio-status');
+    if(status.val() == 1) {
+        status.val('0');
+        button.find('.radio-check-tick').addClass('none');
+        button.find('.custom-radio').removeClass('custom-radio-checked');
+        return;
+    }
+    let group = button;
+    while(!group.hasClass('radio-group')) {
+        group = group.parent();
+    }
+    // Remove all others' radio buttons style and reset their status
+    group.find('.radio-status').val('0');
+    group.find('.radio-check-tick').addClass('none');
+    group.find('.custom-radio').removeClass('custom-radio-checked');
+    // handle the new pressed radio button
+    button.find('.radio-status').val('1');
+    button.find('.radio-check-tick').removeClass('none');
+    button.find('.custom-radio').addClass('custom-radio-checked');
 }
 
 $('.vote-option').each(function() {
@@ -4432,6 +4436,7 @@ $('.vote-option').each(function() {
 //let votes_queue = [];
 function handle_option_vote(votebutton) {
     votebutton.on('click', function() {
+        let votecount = votebutton.parent().find('.option-vote-count');
         let optionid = votebutton.find('.optionid').val();
         $.ajax({
             url: `/options/vote`,
@@ -4441,10 +4446,18 @@ function handle_option_vote(votebutton) {
                 option_id: optionid
             },
             success: function(response) {
+                // response will return how much votes table increment or decrement 
+                // (-1: vote deleted; 1: vote added; 0: when poll owner disable multiple choice and user already vote an option and then choose another one)
+                let result = parseInt(votecount.text()) + parseInt(response);
+                votecount.text(result);
 
+                let poll_options_box = votebutton;
+                while(!poll_options_box.hasClass('thread-poll-options-container')) {
+                    poll_options_box = poll_options_box.parent();
+                }
             },
             complete: function() {
-
+                
             }
         });
     });

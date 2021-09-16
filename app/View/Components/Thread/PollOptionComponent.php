@@ -11,6 +11,8 @@ class PollOptionComponent extends Component
     public $addedby;
     public $multiple_choice;
     public $allow_options_creation;
+    public $voted;
+    public $int_voted;
 
     public function __construct(PollOption $option, $multiplechoice, $allowoptionscreation)
     {
@@ -21,6 +23,8 @@ class PollOptionComponent extends Component
             ((auth()->user() && $option->user->id == auth()->user()->id) 
             ? __('you') 
             : $option->user->username);
+        $this->voted = $option->voted;
+        $this->int_voted = (int)$this->voted;
     }
 
     public function render()

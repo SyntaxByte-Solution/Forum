@@ -37,19 +37,31 @@ class PollController extends Controller
                     ->where('optionsvotes.user_id', $currenuser->id)
                     ->where('optionsvotes.option_id', $option->id)
                     ->delete();
-            } else {
-                OptionVote::create($optionvote);
+                return -1;
             }
+            OptionVote::create($optionvote);
+            return 1;
         } else {
             // Here the poll owner disable multiple choices
             if($poll->voted) { // Delete user vote on the poll and add the new one if the user already vote the poll
-                if($option->voted)
-                    $poll->votes()->where('optionsvotes.user_id', $currenuser->id)->delete();
-                else
+                if($option->voted) {
+                    $poll->votes()
+                        ->where('optionsvotes.user_id', $currenuser->id)
+                        ->where('optionsvotes.option_id', $option->id)
+                        ->delete();
+                    return -1;
+                }
+                else {
+                    $poll->votes()
+                    ->where('optionsvotes.user_id', $currenuser->id)
+                    ->delete();
                     OptionVote::create($optionvote);
-            } else
-                OptionVote::create($optionvote);
-
+                    return 1;
+                }
+            }
+            
+            OptionVote::create($optionvote);
+            return 1;
         }
     }
 }

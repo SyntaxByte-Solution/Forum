@@ -13,6 +13,14 @@ class PollOption extends Model
     protected $guarded = [];
     protected $table = 'polloptions';
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($option) {
+            $option->votes()->delete();
+        });
+    }
+
     public function poll() {
         return $this->belongsTo(Poll::class);
     }

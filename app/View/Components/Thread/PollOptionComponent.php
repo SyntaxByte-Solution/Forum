@@ -10,6 +10,7 @@ class PollOptionComponent extends Component
     public $option;
     public $addedby;
     public $multiple_choice;
+    public $poll_owner;
     public $allow_options_creation;
     public $voted;
     public $int_voted;
@@ -19,6 +20,7 @@ class PollOptionComponent extends Component
         $this->option = $option;
         $this->multiple_choice = $multiplechoice;
         $this->allow_options_creation = $allowoptionscreation;
+        $this->poll_owner = auth()->user() && $option->poll->thread->user->id == auth()->user()->id;
         $this->addedby = 
             ((auth()->user() && $option->user->id == auth()->user()->id) 
             ? __('you') 

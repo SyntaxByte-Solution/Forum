@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{PollOption, OptionVote};
+use App\Models\{PollOption, OptionVote, Thread};
 
 class Poll extends Model
 {
@@ -12,6 +12,10 @@ class Poll extends Model
 
     protected $guarded = [];
     public $timestamps = false;
+
+    public function thread() {
+        return $this->belongsTo(Thread::class);
+    }
 
     public function options() {
         return $this->hasMany(PollOption::class);

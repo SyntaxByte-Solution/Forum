@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{PollOption,OptionVote};
+use App\Models\{PollOption, OptionVote};
 
 class PollController extends Controller
 {
@@ -78,5 +78,10 @@ class PollController extends Controller
                 'type'=>'added'
             ];
         }
+    }
+
+    public function option_delete(PollOption $option) {
+        // We need to delete the option votes first before deletin the option itself
+        $option->delete();
     }
 }

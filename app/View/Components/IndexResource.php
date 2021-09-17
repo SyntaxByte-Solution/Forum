@@ -52,7 +52,7 @@ class IndexResource extends Component
         $this->replies = $thread->posts()->count();
         if($thread->type == 'poll') {
             $poll = $thread->poll;
-            $this->options = $poll->options;
+            $this->options = $poll->options()->withCount('votes as votes')->orderBy('votes', 'desc')->get();
             $this->multiple_choice = (bool)$poll->allow_multiple_choice;
             $this->allow_options_creation = (bool)$poll->allow_choice_add;
         }

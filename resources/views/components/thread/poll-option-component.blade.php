@@ -32,4 +32,10 @@
         <span class="block fs11 gray">(0%)</span>
         <div class="block forum-color"><span class="option-vote-count">{{ $option->votes()->count() }}</span><span style="margin-left: 2px">{{__('votes')}}</span></div>
     </div>
+    @if($poll_owner)
+    <div class="open-option-delete-check-view move-to-right">
+        <svg class="mx8 size12 simple-icon-button-style" style="padding:6px; margin-bottom: 2px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"></path></svg>
+        <input type="hidden" class="optionid" autocomplete="off" value="{{ $option->id }}">
+    </div>
+    @endif
 </div>

@@ -1,5 +1,6 @@
 <div class="resource-container thread-container-box relative shadow-contained-box">
     <input type="hidden" class="thread-add-visibility-slug" value="public">
+    <input type="hidden" class="thread-type" autocomplete="off" value="{{ $type }}">
     <div class="hidden-thread-section none px8 py8">
         <p class="my4 fs12">{{__('Discussion hidden. If you want to show it again')}} <span class="pointer blue thread-display-button">{{ __('click here') }}</span></p>
     </div>

@@ -4468,8 +4468,6 @@ function handle_option_vote(votebutton) {
                         option_vote_removed.find('.option-vote-count').text(parseInt(option_vote_removed.find('.option-vote-count').text())-1);
                         option_vote_removed.find('.voted').val('0');
                     }
-                } else {
-
                 }
                 
                 votebutton.parent().find('.voted').val(1);
@@ -4478,5 +4476,23 @@ function handle_option_vote(votebutton) {
                 
             }
         });
+    });
+}
+
+$('.delete-option').each(function() {
+    handle_option_delete($(this));
+});
+
+function handle_option_delete(delete_button) {
+    delete_button.on('click', function() {
+        let optionid = $(this).parent().find('.optionid').val();
+        $.ajax({
+            url: `/options/${optionid}/delete`,
+            type: 'delete',
+            data: {_token: csrf},
+            success: function(response) {
+                console.log(response);
+            }
+        })
     });
 }

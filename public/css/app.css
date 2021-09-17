@@ -70,6 +70,14 @@ header {
 main {
     margin: 0 auto;
 }
+#abs-scrollbar {
+    overflow-y: scroll;
+    top: 0;
+    right: 0;
+    height: 100%;
+    position: fixed;
+    z-index: 2525;
+}
 .menu-button-style {
     position: relative;
     display: flex;
@@ -120,11 +128,13 @@ main {
 }
 .global-viewer {
     position: fixed;
-    height: calc(100% - 52px);
+    top: 0;
+    height: 100%;
     width: 100%;
     background-color: #22242b9e;
     z-index: 11111;
 }
+
 .close-button-style-1 {
     position: absolute;
     z-index: 5;
@@ -3274,7 +3284,9 @@ a, input, textarea {
 
 /* viewers styles */
 .viewer-box-style-1 {
+    margin-top: 160px;
     width: 600px;
+    height: max-content;
     border-radius: 4px;
     background-color: #f0f0f0;
     box-shadow: 0 3px 10px 0px #3c3c3c;

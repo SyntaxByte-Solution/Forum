@@ -262,11 +262,11 @@
                 <div>
                     <div>
                         <!-- forum and category header -->
-                        <div class="flex align-center path-blue-when-hover width-max-content" style="margin: 10px 10px 0px 10px">
+                        <div class="flex align-center full-width" style="padding: 10px 10px 0px 10px">
                             <svg class="small-image-size mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 {!! $forum->icon !!}
                             </svg>
-                            <div class="flex align-center">
+                            <div class="flex align-center path-blue-when-hover">
                                 <a href="{{ route('forum.all.threads', ['forum'=>$forum->slug]) }}" class="fs11 black-link">{{ __($forum->forum) }}</a>
                                 <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
                                 <a href="{{ $category_threads_link }}" class="fs11 black-link">{{ __($category->category) }}</a>
@@ -276,6 +276,13 @@
                                 <div class="flex">
                                     <svg class="size12" style="fill:#202020; margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M302.16,471.18H216a14,14,0,0,1-14-14V53.47a14,14,0,0,1,14-14h86.18a14,14,0,0,1,14,14V457.15A14,14,0,0,1,302.16,471.18ZM162.78,458.53V146.85a14,14,0,0,0-14-14H62.57a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,162.78,458.53Zm300.69,0V220a14,14,0,0,0-14-14H363.26a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,463.47,458.53Z" style="stroke:#fff;stroke-miterlimit:10"/></svg>
                                     <span class="bold fs12 gray ml4">{{ __('poll') }}</span>
+                                </div>
+
+                                <div class="flex align-center move-to-right">
+                                    <a href="{{ $thread->link }}" class="link-style flex align-center">
+                                        <svg class="size14 mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M352,289V416H64V128h96V64H32A32,32,0,0,0,0,96V448a32,32,0,0,0,32,32H384a32,32,0,0,0,32-32V289Z"/><path d="M505.6,131.2l-128-96A16,16,0,0,0,352,48V96H304C206.94,96,128,175,128,272a16,16,0,0,0,12.32,15.59A16.47,16.47,0,0,0,144,288a16,16,0,0,0,14.3-8.83l3.78-7.52A143.2,143.2,0,0,1,290.88,192H352v48a16,16,0,0,0,25.6,12.8l128-96a16,16,0,0,0,0-25.6Z"/></svg>
+                                        {{ __('See poll post') }}
+                                    </a>
                                 </div>
                             @endif
                         </div>

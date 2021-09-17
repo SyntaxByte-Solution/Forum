@@ -23,6 +23,20 @@ jQuery.fn.rotate = function(degrees) {
     return $(this);
 };
 
+function disable_page_scroll() {
+    $('body').attr('style', 'overflow-y: hidden; margin-right: 16px');
+    $('header').attr('style', 'width: calc(100% - 17px)');
+    $('#abs-scrollbar').removeClass('none');
+}
+
+function enable_page_scroll() {
+    $('body').attr('style', '');
+    $('header').attr('style', '');
+    $('#abs-scrollbar').addClass('none');
+}
+
+
+
 // $(window).on('unload', function() {
 //     $(window).scrollTop(0);
 //  });
@@ -4485,29 +4499,51 @@ $('.delete-option').each(function() {
 
 function handle_option_delete(delete_button) {
     delete_button.on('click', function() {
+        let button = $(this);
+        let btn_text_ing = button.parent().find('.button-ing-text').val();
+        let btn_text_no_ing = button.parent().find('.button-no-ing-text').val();
+        let option_deleted = button.parent().find('.option-removed').val();
+
+        button.attr('disabled', true);
+        button.attr('style', 'background-color: #686b73');
+        button.val(btn_text_ing);
+
         let optionid = $(this).parent().find('.optionid').val();
         $.ajax({
             url: `/options/${optionid}/delete`,
             type: 'delete',
             data: {_token: csrf},
             success: function(response) {
-                console.log(response);
+                // First we delete the option component from the poll
+                $('.poll-option-box').each(function() {
+                    if($(this).find('.optionid').first().val() == optionid) {
+                        $(this).remove();
+                        return false;
+                    }
+                });
+                $('.close-global-viewer').trigger('click');
+                basic_notification_show(option_deleted, 'basic-notification-round-tick');
+            },
+            error: function() {
+                button.attr('disabled', false);
+                button.attr('style', '');
+                button.val(btn_text_no_ing);
             }
         })
     });
 }
 
 $('.open-option-delete-check-view').each(function() {
-    handle_option_deleteion_view($(this));
+    handle_option_deletion_view($(this));
 });
 
-function handle_option_deleteion_view(openviewerbutton) {
+function handle_option_deletion_view(openviewerbutton) {
     openviewerbutton.on('click', function() {
         let optionid = openviewerbutton.find('.optionid').val();
         $('#poll-option-deletion-viewer').find('.optionid').val(optionid);
         $('#poll-option-deletion-viewer').removeClass('none');
 
-        $('body').css('overflow-y', 'hidden');
+        disable_page_scroll();
     });
 }
 
@@ -4521,6 +4557,5 @@ $('.close-global-viewer').on('click', function() {
     }
 
     globalviewer.addClass('none');
-    $('body').css('overflow-y', 'unset');
-
+    enable_page_scroll();
 });

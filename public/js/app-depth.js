@@ -4497,14 +4497,27 @@ function handle_option_vote(votebutton) {
                     optioncomponent.find('.voted').val(1);
 
                 // Reorder options after votes based on number of votes
-                poll_options_box.find('.poll-option-box').each(function() {
-                    let votevalue = parseInt($(this).find('.option-vote-count').text());
-                    console.log(votevalue);
-                    if(result >= votevalue) {
-                        optioncomponent.insertBefore($(this));
-                        return false;
-                    }
-                })
+                // If the user add vote we order options by looking for the first element that is less than or equal to the 
+                // voted option and then we insert the voted option right before it.
+                // If the user delete a vote of an option, we reverse the options and then looking for the first item that has 
+                // votes more than or equals to the deleted option vote and we insert it right after it (TRACE AN EXAMPLE IN PAPER TO UNDERSTAND)
+                if(response.diff == 1) {
+                    poll_options_box.find('.poll-option-box').each(function() {
+                        let votevalue = parseInt($(this).find('.option-vote-count').text());
+                        if(result >= votevalue) {
+                            optioncomponent.insertBefore($(this));
+                            return false;
+                        }
+                    });
+                } else {
+                    $(poll_options_box.find('.poll-option-box').get().reverse()).each(function() {
+                        let votevalue = parseInt($(this).find('.option-vote-count').text());
+                        if(result <= votevalue) {
+                            optioncomponent.insertAfter($(this));
+                            return false;
+                        }
+                    });
+                }
 
             },
             complete: function() {

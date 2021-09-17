@@ -2,7 +2,7 @@
     <input type="hidden" class="thread-add-visibility-slug" value="public">
     <input type="hidden" class="thread-type" autocomplete="off" value="{{ $type }}">
     <div class="hidden-thread-section none px8 py8">
-        <p class="my4 fs12">{{__('Discussion hidden. If you want to show it again')}} <span class="pointer blue thread-display-button">{{ __('click here') }}</span></p>
+        <p class="my4 fs12">{{__('Post hidden. If you want to show it again')}} <span class="pointer blue thread-display-button">{{ __('click here') }}</span></p>
     </div>
     @can('update', $thread)
     <div class="absolute full-shadowed br6 turn-off-posts-viewer" style="z-index: 1">
@@ -16,7 +16,7 @@
                 @endphp
                 
                 @if(!$thread->replies_off)
-                <p class="white bold fs15 my4 text-center">{{ __('Important: If you turn off replies, no one could reply to your discussion') }}.</p>
+                <p class="white bold fs15 my4 text-center">{{ __('Important: If you turn off replies, no one could reply to your post') }}.</p>
                 <p class="white fs15 mt4 mb8 text-center">{{ __('However if there are already some replies, they will not disappeared') }}.</p>
                 @else
                 <p class="white bold fs15 my8">{{ __('Turn on replies on this discussion') }}.</p>
@@ -33,7 +33,7 @@
     </div>
     <div class="absolute full-shadowed zi12 thread-deletion-viewer br6">
         <svg class="size14 simple-button-style rounded hide-parent" style="position: absolute; top: 6px; right: 6px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"/></svg>
-        <div class="white px8 py8 full-height flex flex-column justify-center border-box">
+        <div class="white px8 py8 flex flex-column justify-center border-box" style="margin-top: 50px">
             <h2 class="no-margin fs18 text-center">{{ __('Please make sure you want to delete the discussion') }} !</h2>
             <p class="fs12 no-margin text-center">{{ __('This will throw the discussion to the archive in case you decide to restore It. You can either restore it or delete it permanently later by going to your activities -> archive !') }}</p>
             
@@ -216,9 +216,9 @@
                                 </svg>
                                 <div class="button-text">
                                     @if($saved)
-                                        {{ __('Unsave discussion') }}
+                                        {{ __('Unsave post') }}
                                     @else
-                                        {{ __('Save discussion') }}
+                                        {{ __('Save post') }}
                                     @endif
                                 </div>
                                 <div style="width: 12px">
@@ -226,31 +226,33 @@
                                 </div>
                                 <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                                 <input type="hidden" class="status" value="@if($saved) unsave @else save @endif">
-                                <input type="hidden" class="button-text-save" value="{{ __('Save discussion') }}">
-                                <input type="hidden" class="button-text-unsave" value="{{ __('Unsave discussion') }}">
-                                <input type="hidden" class="saved-message" value="{{ __('Discussion saved successfully') }}">
-                                <input type="hidden" class="unsaved-message" value="{{ __('Discussion unsaved successfully') }}">
+                                <input type="hidden" class="button-text-save" value="{{ __('Save post') }}">
+                                <input type="hidden" class="button-text-unsave" value="{{ __('Unsave post') }}">
+                                <input type="hidden" class="saved-message" value="{{ __('Post saved successfully') }}">
+                                <input type="hidden" class="unsaved-message" value="{{ __('Post unsaved successfully') }}">
                             </div>
                             @endcan    
                             @can('update', $thread)
-                            <a href="{{ $edit_link }}" class="no-underline simple-suboption flex align-center">
-                                <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"/></svg>
-                                <div class="black">{{ __('Edit discussion') }}</div>
-                            </a>
-                            <div class="pointer simple-suboption flex align-center open-thread-shadowed-viewer">
-                                <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
-                                <div class="no-underline black">{{ __('Delete discussion') }}</div>
-                                <input type="hidden" value=".thread-deletion-viewer" class="viewer">
-                            </div>
-                            <div class="simple-suboption flex align-center open-thread-shadowed-viewer">
-                                <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') turnoffreplies17-icon @else turnonreplies17-icon @endif mr4"></div>
-                                <div>{{ __('Turn ' . $posts_switch .  ' replies') }}</div>
-                                <input type="hidden" value=".turn-off-posts-viewer" class="viewer">
-                            </div>
+                                @if($type == 'discussion')
+                                <a href="{{ $edit_link }}" class="no-underline simple-suboption flex align-center">
+                                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"/></svg>
+                                    <div class="black">{{ __('Edit post') }}</div>
+                                </a>
+                                @endif
+                                <div class="pointer simple-suboption flex align-center open-thread-shadowed-viewer">
+                                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                                    <div class="no-underline black">{{ __('Delete post') }}</div>
+                                    <input type="hidden" value=".thread-deletion-viewer" class="viewer">
+                                </div>
+                                <div class="simple-suboption flex align-center open-thread-shadowed-viewer">
+                                    <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') turnoffreplies17-icon @else turnonreplies17-icon @endif mr4"></div>
+                                    <div>{{ __('Turn ' . $posts_switch .  ' replies') }}</div>
+                                    <input type="hidden" value=".turn-off-posts-viewer" class="viewer">
+                                </div>
                             @endcan
                             <div class="pointer simple-suboption thread-display-button flex align-center">
                                 <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490.03 490.03"><path d="M435.67,54.31a18,18,0,0,0-25.5,0l-64,64c-79.3-36-163.9-27.2-244.6,25.5C41.47,183,5,232.31,3.47,234.41a18.16,18.16,0,0,0,.5,22c34.2,42,70,74.7,106.6,97.5l-56.3,56.3a18,18,0,1,0,25.4,25.5l356-355.9A18.11,18.11,0,0,0,435.67,54.31ZM200.47,264a46.82,46.82,0,0,1-3.9-19,48.47,48.47,0,0,1,67.5-44.6Zm90.2-90.1a84.37,84.37,0,0,0-116.6,116.6L137,327.61c-32.5-18.8-64.5-46.6-95.6-82.9,13.3-15.6,41.4-45.7,79.9-70.8,66.6-43.4,132.9-52.8,197.5-28.1Zm195.4,59.7c-24.7-30.4-50.3-56-76.3-76.3a18.05,18.05,0,1,0-22.3,28.4c20.6,16.1,41.2,36.1,61.2,59.5a394.59,394.59,0,0,1-66,61.3c-60.1,43.7-120.8,59.5-180.3,46.9a18,18,0,0,0-7.4,35.2,224.08,224.08,0,0,0,46.8,4.9,237.92,237.92,0,0,0,71.1-11.1c31.1-9.7,62-25.7,91.9-47.5,50.4-36.9,80.5-77.6,81.8-79.3A18.16,18.16,0,0,0,486.07,233.61Z"/></svg>
-                                <div>{{ __('Hide discussion') }}</div>
+                                <div>{{ __('Hide post') }}</div>
                             </div>
                         </div>
                     </div>
@@ -273,9 +275,8 @@
                             </div>
                             @if($type == 'poll')
                                 <span class="fs10 gray" style="margin: 0 4px 2px 4px">•</span>
-                                <div class="flex">
-                                    <svg class="size12" style="fill:#202020; margin-top: 1px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M302.16,471.18H216a14,14,0,0,1-14-14V53.47a14,14,0,0,1,14-14h86.18a14,14,0,0,1,14,14V457.15A14,14,0,0,1,302.16,471.18ZM162.78,458.53V146.85a14,14,0,0,0-14-14H62.57a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,162.78,458.53Zm300.69,0V220a14,14,0,0,0-14-14H363.26a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,463.47,458.53Z" style="stroke:#fff;stroke-miterlimit:10"/></svg>
-                                    <span class="bold fs12 gray ml4">{{ __('poll') }}</span>
+                                <div class="flex" title="{{ __('poll') }}">
+                                    <svg class="size12" style="fill:#202020;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M302.16,471.18H216a14,14,0,0,1-14-14V53.47a14,14,0,0,1,14-14h86.18a14,14,0,0,1,14,14V457.15A14,14,0,0,1,302.16,471.18ZM162.78,458.53V146.85a14,14,0,0,0-14-14H62.57a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,162.78,458.53Zm300.69,0V220a14,14,0,0,0-14-14H363.26a14,14,0,0,0-14,14V458.53a14,14,0,0,0,14,14h86.17A14,14,0,0,0,463.47,458.53Z" style="stroke:#fff;stroke-miterlimit:10"/></svg>
                                 </div>
 
                                 <div class="flex align-center move-to-right">
@@ -410,11 +411,11 @@
                         <p class="no-margin fs12 resource-likes-counter unselectable ml4">{{ $likes }}</p>
                         <p class="no-margin fs12 unselectable ml4">{{ __('like') . (($likes>1) ? 's' : '' ) }}</p>
                     </div>
-                    <div class="thread-react-hover move-to-thread-replies flex align-center no-underline" style="cursor: default">
+                    <a href="{{ $thread->link . '#thread-show-replies-section' }}" class="thread-react-hover move-to-thread-replies flex align-center no-underline black">
                         <input type="hidden" class="thread-id" value="{{ $thread->id }}">
                         <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" fill="#1c1c1c" viewBox="0 0 512 512"><path d="M221.09,253a23,23,0,1,1-23.27,23A23.13,23.13,0,0,1,221.09,253Zm93.09,0a23,23,0,1,1-23.27,23A23.12,23.12,0,0,1,314.18,253Zm93.09,0A23,23,0,1,1,384,276,23.13,23.13,0,0,1,407.27,253Zm62.84-137.94h-51.2V42.9c0-23.62-19.38-42.76-43.29-42.76H43.29C19.38.14,0,19.28,0,42.9V302.23C0,325.85,19.38,345,43.29,345h73.07v50.58c.13,22.81,18.81,41.26,41.89,41.39H332.33l16.76,52.18a32.66,32.66,0,0,0,26.07,23H381A32.4,32.4,0,0,0,408.9,496.5L431,437h39.1c23.08-.13,41.76-18.58,41.89-41.39V156.47C511.87,133.67,493.19,115.21,470.11,115.09ZM46.55,299V46.12H372.36v69H158.25c-23.08.12-41.76,18.58-41.89,41.38V299Zm418.9,92H397.5l-15.83,46-15.82-46H162.91V161.07H465.45Z"/></svg>
                         <p class="no-margin unselectable fs12"><span class="thread-replies-counter">{{ $replies }}</span> {{__('replies')}}</p>
-                    </div>
+                    </a>
                 </div>
                 <div class="flex align-center">
                     <div class="relative">

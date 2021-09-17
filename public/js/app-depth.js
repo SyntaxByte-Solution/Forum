@@ -4452,6 +4452,11 @@ function handle_option_vote(votebutton) {
     votebutton.on('click', function() {
         let votecount = votebutton.parent().find('.option-vote-count');
         let optionid = votebutton.find('.optionid').val();
+        // fetch option component
+        let optioncomponent = votebutton;
+        while(!optioncomponent.hasClass('poll-option-box'))
+            optioncomponent = optioncomponent.parent();
+        // Vote the option
         $.ajax({
             url: `/options/vote`,
             type: 'post',
@@ -4470,21 +4475,37 @@ function handle_option_vote(votebutton) {
                 while(!poll_options_box.hasClass('thread-poll-options-container')) {
                     poll_options_box = poll_options_box.parent();
                 }
-
                 // Style the voted option
                 poll_options_box.find('.poll-option-container').css('backgroundColor', 'unset');
                 if(response.type != "deleted")
                     votebutton.find('.poll-option-container').css('backgroundColor', '#F0F2F5');
 
+                // If multiple options are disabled (radio) and the vote is flipped we handle the situation
                 if(poll_options_box.hasClass('radio-group')) {
                     if(response.type == "flipped") {
                         let option_vote_removed = poll_options_box.find('.voted[value=1]').parent();
-                        option_vote_removed.find('.option-vote-count').text(parseInt(option_vote_removed.find('.option-vote-count').text())-1);
+                        let new_deleted_option_votevalue = parseInt(option_vote_removed.find('.option-vote-count').text())-1;
+                        option_vote_removed.find('.option-vote-count').text(new_deleted_option_votevalue);
                         option_vote_removed.find('.voted').val('0');
                     }
                 }
-                
-                votebutton.parent().find('.voted').val(1);
+
+                // If user delete vote we have to set voted value to 0 otherwise we set it to 1
+                if(response.type == 'deleted') {
+                    optioncomponent.find('.voted').val(0);
+                } else
+                    optioncomponent.find('.voted').val(1);
+
+                // Reorder options after votes based on number of votes
+                poll_options_box.find('.poll-option-box').each(function() {
+                    let votevalue = parseInt($(this).find('.option-vote-count').text());
+                    console.log(votevalue);
+                    if(result >= votevalue) {
+                        optioncomponent.insertBefore($(this));
+                        return false;
+                    }
+                })
+
             },
             complete: function() {
                 

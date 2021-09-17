@@ -3,6 +3,9 @@
 }
 
 /*         -------------------      HEADER         -------------------     */
+#app {
+    padding-top: 52px;
+}
 header {
     position: fixed;
     top: 0;
@@ -66,7 +69,6 @@ header {
 }
 main {
     margin: 0 auto;
-    margin-top: 52px;
 }
 .menu-button-style {
     position: relative;
@@ -115,6 +117,30 @@ main {
 
     width: 15px;
     height: 15px;
+}
+.global-viewer {
+    position: fixed;
+    height: calc(100% - 52px);
+    width: 100%;
+    background-color: #22242b9e;
+    z-index: 11111;
+}
+.close-button-style-1 {
+    position: absolute;
+    z-index: 5;
+    right: 12px;
+    top: 12px;
+    color: white;
+    background-color: #0000003d;
+    font-size: 22px;
+    padding: 4px 11.1px 6px 11.5px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.8s ease background-color;
+}
+
+.close-button-style-1:hover {
+    background-color: #0000007a;
 }
 .suboptions-container-header {
     padding: 10px;
@@ -3219,6 +3245,10 @@ a, input, textarea {
     fill: #222;
 }
 
+.light-gray-border-bottom {
+    border-bottom: 1px solid #ccc
+}
+
 .progress-bar-container {
     border: 2px solid #494f64;
     border-radius: 3px;
@@ -3240,4 +3270,12 @@ a, input, textarea {
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+/* viewers styles */
+.viewer-box-style-1 {
+    width: 600px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    box-shadow: 0 3px 10px 0px #3c3c3c;
 }

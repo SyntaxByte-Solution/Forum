@@ -4496,3 +4496,31 @@ function handle_option_delete(delete_button) {
         })
     });
 }
+
+$('.open-option-delete-check-view').each(function() {
+    handle_option_deleteion_view($(this));
+});
+
+function handle_option_deleteion_view(openviewerbutton) {
+    openviewerbutton.on('click', function() {
+        let optionid = openviewerbutton.find('.optionid').val();
+        $('#poll-option-deletion-viewer').find('.optionid').val(optionid);
+        $('#poll-option-deletion-viewer').removeClass('none');
+
+        $('body').css('overflow-y', 'hidden');
+    });
+}
+
+$('.close-parent').on('click', function() {
+    $(this).parent().addClass('none');
+});
+$('.close-global-viewer').on('click', function() {
+    let globalviewer = $(this);
+    while(!globalviewer.hasClass('global-viewer')) {
+        globalviewer = globalviewer.parent();
+    }
+
+    globalviewer.addClass('none');
+    $('body').css('overflow-y', 'unset');
+
+});

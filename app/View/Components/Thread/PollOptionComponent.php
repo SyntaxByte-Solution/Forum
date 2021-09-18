@@ -36,8 +36,8 @@ class PollOptionComponent extends Component
         $this->int_voted = (int)$this->voted;
     }
 
-    public function render()
+    public function render($data=[])
     {
-        return view('components.thread.poll-option-component');
+        return view('components.thread.poll-option-component', $data);
     }
 }

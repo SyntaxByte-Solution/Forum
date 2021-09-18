@@ -156,6 +156,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/options', [PollController::class, 'add_option']);
     Route::post('/options/vote', [PollController::class, 'option_vote']);
     Route::delete('/options/{option}/delete', [PollController::class, 'option_delete']);
+    Route::get('/options/{option}/component/generate', [PollController::class, 'get_poll_option_component']);
 
     Route::get('/settings', [UserController::class, 'edit'])->name('user.settings');
     Route::get('/settings/personal', [UserController::class, 'edit_personal_infos'])->name('user.personal.settings');

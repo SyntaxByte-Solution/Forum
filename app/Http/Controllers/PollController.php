@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{PollOption, OptionVote};
+use App\View\Components\Thread\PollOptionComponent;
 
 class PollController extends Controller
 {
@@ -23,6 +24,8 @@ class PollController extends Controller
         $optionvote = $request->validate([
             'option_id'=>'required|exists:polloptions,id'
         ]);
+        //Authorization here
+
         $optionvote['user_id'] = $currenuser->id;
 
         $option = PollOption::find($optionvote['option_id']);
@@ -82,10 +85,28 @@ class PollController extends Controller
 
     public function option_delete(PollOption $option) {
         // We need to delete the option votes first before deletin the option itself
+        //Authorization here
         $option->delete();
     }
 
     public function add_option(Request $request) {
-        
+        $option = $request->validate([
+            'poll_id'=>'required|exists:polls,id',
+            'content'=>'required|min:1|max:400'
+        ]);
+
+        // Authorization here
+        $option['user_id'] = auth()->user()->id;
+        $option = PollOption::create($option);
+
+        return $option->id;
+    }
+
+    public function get_poll_option_component(PollOption $option) {
+        $poll = $option->poll;
+        $option_component = (new PollOptionComponent($option, $poll->allow_multiple_choice, $poll->allow_choice_add));
+        $option_component = $option_component->render(get_object_vars($option_component))->render();
+
+        return $option_component;
     }
 }

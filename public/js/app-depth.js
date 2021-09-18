@@ -24,7 +24,7 @@ jQuery.fn.rotate = function(degrees) {
 };
 
 function disable_page_scroll() {
-    $('body').attr('style', 'overflow-y: hidden; margin-right: 16px');
+    $('body').attr('style', 'overflow-y: hidden; margin-right: 17px');
     $('header').attr('style', 'width: calc(100% - 17px)');
     $('#abs-scrollbar').removeClass('none');
 }
@@ -4563,6 +4563,9 @@ function handle_option_delete(delete_button) {
                     }
                 });
                 $('.close-global-viewer').trigger('click');
+                button.attr('disabled', false);
+                button.attr('style', '');
+                button.val(btn_text_no_ing);
                 basic_notification_show(option_deleted, 'basic-notification-round-tick');
             },
             error: function() {
@@ -4655,7 +4658,47 @@ function handle_option_keyup(optioninput) {
             } else {
                 optioncontainer.find('.poll-option-input-error').addClass('none');
                 if(options_wrapper.hasClass('option-add-pow')) {
-                    
+                    let input = optioncontainer.find('.poll-option-value');
+                    let poll_id = optioncontainer.find('.poll-id').val();
+                    let content = optioncontainer.find('.poll-option-value').val();
+
+                    input.attr('disabled', true);
+
+                    let data = {
+                        _token: csrf,
+                        poll_id: poll_id,
+                        content: content,
+                    };
+
+                    $.ajax({
+                        type: 'post',
+                        data: data,
+                        url: '/options',
+                        success: function(response) {
+                            $.ajax({
+                                url: `/options/${response}/component/generate`,
+                                success: function(response) {
+                                    optioninput.val('');
+                                    options_wrapper.find('.thread-poll-options-container').append(response);
+                                    let unhandled_option = options_wrapper.find('.thread-poll-options-container .poll-option-box').last();
+                                    handle_option_vote(unhandled_option.find('.vote-option'));
+                                    handle_option_deletion_view(unhandled_option.find('.open-option-delete-check-view'));
+                                    handle_custom_radio(unhandled_option.find('.custom-radio-button'));
+                                    handle_custom_radio(unhandled_option.find('.custom-checkbox-button'));
+                                    basic_notification_show(optioncontainer.find('.option-saved-message').val(), 'basic-notification-round-tick');
+                                    
+                                    input.attr('disabled', false);
+                                }
+                            });
+                            
+                        },
+                        error: function(response) {
+                            input.attr('disabled', false);
+                        },
+                        complete: function() {
+                            
+                        }
+                    })
                 }
             }
             

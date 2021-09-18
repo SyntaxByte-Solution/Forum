@@ -331,7 +331,7 @@
                             <!-- poll-options -->
                             <div class="poll-options-wrapper option-add-pow">
                                 <input type="hidden" class="uniqueness-pass" autocomplete="off" value="1">
-                                <!-- errors -->
+                                <!-- messages -->
                                 <input type="hidden" class="length-error" value="{{ __('Option must contains at least 1 character') }}">
                                 <input type="hidden" class="uniqueness-error" value="{{ __('Option already exists') }} !">
                                 <input type="hidden" class="owner-options-limit-error" value="{{ __('Poll could have only 30 options max') }} !">
@@ -357,9 +357,8 @@
                                     <div class="flex align-center dynamic-input-wrapper">
                                         <span class="dynamic-label">{{ __('Add an option') }}</span>
                                         <input type="text" maxlength="140" name="option" class="input-with-dynamic-label poll-option-validation poll-option-value full-width fs15" autocomplete="off">
-                                        <input type="hidden" class="isowner" value="{{ auth()->user()->id == $owner->id }}">
                                         <input type="hidden" class="poll-id" value="{{ $poll->id }}">
-                                        <input type="hidden" class="user-id" value="{{ auth()->user()->id }}">
+                                        <input type="hidden" class="option-saved-message" value="{{ __('Your option is saved successfully') }} !">
                                     </div>
                                 </div>
                                 @endif

@@ -4610,8 +4610,7 @@ $('.poll-option-validation').each(function(event) {
 
 function handle_option_keyup(optioninput) {
     optioninput.on('keyup', function(event) {
-        let value = $(this).val();
-        
+        let value = $.trim($(this).val());
         let optioncontainer;
         let options_wrapper = $(this);
         while(!options_wrapper.hasClass('poll-options-wrapper')) {
@@ -4656,7 +4655,7 @@ function handle_option_keyup(optioninput) {
             } else {
                 optioncontainer.find('.poll-option-input-error').addClass('none');
                 if(options_wrapper.hasClass('option-add-pow')) {
-                    console.log('send option to poll');
+                    
                 }
             }
             
@@ -4677,9 +4676,7 @@ function handle_option_keyup(optioninput) {
     })
 }
 
-function poll_options_uniqueness_check(options_wrapper, current_optionbox, optiontext) {
-    let value = optiontext.trim();
-
+function poll_options_uniqueness_check(options_wrapper, current_optionbox, value) {
     if(value.length == 0) {
         options_wrapper.find('.uniqueness-pass').val('1'); // For empty option inputs, we keep the uniqueness to pass (1)
         return;
@@ -4691,7 +4688,7 @@ function poll_options_uniqueness_check(options_wrapper, current_optionbox, optio
          * we do this check because in thread-add component we have options as inputs, but in thread component we have options
          * as spans, so we need text() to get the value
          */
-        let option_value = $(this).is('input') ? $(this).val() : $(this).text();
+        let option_value = $(this).is('input') ? $.trim($(this).val()) : $.trim($(this).text());
         if(option_value == value) {
             // Here we have to exclude the current option from checking
             found++;

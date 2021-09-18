@@ -20,7 +20,14 @@ class PollOptionComponent extends Component
         $this->option = $option;
         $this->multiple_choice = $multiplechoice;
         $this->allow_options_creation = $allowoptionscreation;
-        $this->poll_owner = auth()->user() && $option->poll->thread->user->id == auth()->user()->id;
+        $poll_owner_id = \DB::select(
+            "SELECT user_id FROM threads
+            WHERE id IN 
+                (SELECT thread_id FROM polls
+                 WHERE id IN
+                    (SELECT poll_id FROM polloptions WHERE id = $option->id))")[0]->user_id;
+        $this->poll_owner = auth()->user() && $poll_owner_id == auth()->user()->id;
+
         $this->addedby = 
             ((auth()->user() && $option->user->id == auth()->user()->id) 
             ? __('you') 

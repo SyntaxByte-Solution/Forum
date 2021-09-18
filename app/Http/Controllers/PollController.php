@@ -84,4 +84,8 @@ class PollController extends Controller
         // We need to delete the option votes first before deletin the option itself
         $option->delete();
     }
+
+    public function add_option(Request $request) {
+        
+    }
 }

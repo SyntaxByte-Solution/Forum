@@ -22,6 +22,7 @@ class IndexResource extends Component
     public $category;
     public $content;
     // in case the thread is poll
+    public $poll;
     public $options;
     public $multiple_choice;
     public $allow_options_creation;
@@ -52,8 +53,10 @@ class IndexResource extends Component
         $this->views = $thread->view_count;
         $this->replies = $thread->posts()->count();
         if($thread->type == 'poll') {
+            $thread->load(['poll']);
             $poll = $thread->poll;
-            $this->options = $poll->options()->withCount('votes as votes')->orderBy('votes', 'desc')->get();
+            $this->poll = $poll;
+            $this->options = $poll->options()->with(['user'])->withCount('votes as votes')->orderBy('votes', 'desc')->get();
             $this->multiple_choice = (bool)$poll->allow_multiple_choice;
             $allow_choice_add = (bool)$poll->allow_choice_add;
             $this->allow_options_creation = $allow_choice_add;

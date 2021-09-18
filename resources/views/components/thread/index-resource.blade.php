@@ -356,8 +356,10 @@
                                     </div>
                                     <div class="flex align-center dynamic-input-wrapper">
                                         <span class="dynamic-label">{{ __('Add an option') }}</span>
-                                        <input type="text" maxlength="140" name="option" class="input-with-dynamic-label poll-option-input-adder poll-option-validation poll-option-value full-width fs15" autocomplete="off">
+                                        <input type="text" maxlength="140" name="option" class="input-with-dynamic-label poll-option-validation poll-option-value full-width fs15" autocomplete="off">
                                         <input type="hidden" class="isowner" value="{{ auth()->user()->id == $owner->id }}">
+                                        <input type="hidden" class="poll-id" value="{{ $poll->id }}">
+                                        <input type="hidden" class="user-id" value="{{ auth()->user()->id }}">
                                     </div>
                                 </div>
                                 @endif

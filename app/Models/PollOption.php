@@ -12,6 +12,7 @@ class PollOption extends Model
 
     protected $guarded = [];
     protected $table = 'polloptions';
+    public $with = ['user'];
 
     public static function boot() {
         parent::boot();

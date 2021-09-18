@@ -153,6 +153,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/post/{post}/viewer/generate', [PostController::class, 'thread_viewer_post_generate']);
     Route::post('/post/{post}/tick', [PostController::class, 'tick']);
 
+    Route::post('/options', [PollController::class, 'add_option']);
     Route::post('/options/vote', [PollController::class, 'option_vote']);
     Route::delete('/options/{option}/delete', [PollController::class, 'option_delete']);
 

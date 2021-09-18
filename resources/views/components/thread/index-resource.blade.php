@@ -316,7 +316,7 @@
                             </div>
                         </div>
                         @else
-                        <div class="poll-box thread-content-padding" style="padding-bottom: 0">
+                        <div class="thread-content-padding" style="padding-bottom: 0">
                             <div class="mb4 expand-box">
                                 <span class="expandable-text fs15">{{ $thread->mediumslice }}</span>
                                 @if($thread->mediumslice != $thread->subject)
@@ -329,35 +329,39 @@
                                 @endif
                             </div>
                             <!-- poll-options -->
-                            <div class="mt8 thread-poll-options-container @if($multiple_choice) checkbox-group @else radio-group @endif">
-                                @foreach($options as $option)
-                                    <x-thread.poll-option-component 
-                                        :option="$option" 
-                                        :multiplechoice="$multiple_choice" 
-                                        :allowoptionscreation="$allow_options_creation"/>
-                                @endforeach
-                            </div>
-                            @if($could_add_choice)
-                            <div class="thread-add-poll-option-container my8" style="margin-left: 45px; max-width: 350px">
-                                <div class="simple-line-separator my8"></div>
-                                <div class="my4 pr8 pt8 options-input-adder-error none">
-                                    <div class="flex">
-                                        <svg class="size14 mr4" style="fill: rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
-                                        <span class="error fs13 bold no-margin thread-add-error"></span>
+                            <div class="poll-options-wrapper option-add-pow">
+                                <input type="hidden" class="uniqueness-pass" autocomplete="off" value="1">
+                                <!-- errors -->
+                                <input type="hidden" class="length-error" value="{{ __('Option must contains at least 1 character') }}">
+                                <input type="hidden" class="uniqueness-error" value="{{ __('Option already exists') }} !">
+                                <input type="hidden" class="owner-options-limit-error" value="{{ __('Poll could have only 30 options max') }} !">
+                                <input type="hidden" class="notowner-options-limit-error" value="{{ __('You could only add one option in polls that you don\'t own') }} !">
+
+                                <div class="mt8 thread-poll-options-container @if($multiple_choice) checkbox-group @else radio-group @endif">
+                                    @foreach($options as $option)
+                                        <x-thread.poll-option-component 
+                                            :option="$option" 
+                                            :multiplechoice="$multiple_choice" 
+                                            :allowoptionscreation="$allow_options_creation"/>
+                                    @endforeach
+                                </div>
+                                @if($could_add_choice)
+                                <div class="thread-add-poll-option-container poll-option-validation-box my8" style="margin-left: 45px; max-width: 350px">
+                                    <div class="simple-line-separator my8"></div>
+                                    <div class="my4 pr8 pt8 poll-option-input-error none">
+                                        <div class="flex align-center">
+                                            <svg class="size12 mr4" style="fill: rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                                            <span class="error fs12 bold no-margin"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex align-center dynamic-input-wrapper">
+                                        <span class="dynamic-label">{{ __('Add an option') }}</span>
+                                        <input type="text" maxlength="140" name="option" class="input-with-dynamic-label poll-option-input-adder poll-option-validation poll-option-value full-width fs15" autocomplete="off">
+                                        <input type="hidden" class="isowner" value="{{ auth()->user()->id == $owner->id }}">
                                     </div>
                                 </div>
-                                <div class="flex align-center dynamic-input-wrapper">
-                                    <span class="dynamic-label">{{ __('Add an option') }}</span>
-                                    <input type="text" maxlength="140" name="option" class="input-with-dynamic-label poll-option-input-adder full-width fs15" autocomplete="off">
-                                    <input type="hidden" class="isowner" value="{{ auth()->user()->id == $owner->id }}">
-                                    <!-- errors -->
-                                    <input type="hidden" class="length-error" value="{{ __('Option must contains at least 1 character') }}">
-                                    <input type="hidden" class="uniqueness-error" value="{{ __('Option already exists') }} !">
-                                    <input type="hidden" class="owner-options-limit-error" value="{{ __('Poll could have only 30 options max') }} !">
-                                    <input type="hidden" class="notowner-options-limit-error" value="{{ __('You could only add one option in polls that you don\'t own') }} !">
-                                </div>
+                                @endif
                             </div>
-                            @endif
                         </div>
                         @endif
                     </div>

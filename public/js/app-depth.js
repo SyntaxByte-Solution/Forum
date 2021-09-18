@@ -1673,7 +1673,7 @@ $('.thread-add-type-change').on('click', function(event) {
 
     // Hide errors
     $('.thread-add-error-container').addClass('none');
-    $('#thread-add-wrapper .error:not(.thread-add-error)').addClass('none');
+    $('#thread-add-wrapper .asterisk-error').addClass('none');
 
     $('body').trigger('click'); // This will hide all suboptions containers
 });
@@ -4360,6 +4360,7 @@ $('.poll-add-option').on('click', function() {
         // Handle events
         handle_input_with_dynamic_label(newoption.find('.dynamic-input-wrapper'));
         handle_poll_option_delete(newoption);
+        handle_option_keyup(newoption.find('.poll-option-validation'));
 
         if(existing_options_length >= 3) {
             $('#thread-add-poll-options-box').css('overflow-y', 'scroll');
@@ -4600,65 +4601,108 @@ $('.close-global-viewer').on('click', function() {
     enable_page_scroll();
 });
 
-let option_uniqueness_pass = true;
 let notownersubmittedoptions = 0;
-$('.poll-option-input-adder').on('keyup', function(event) {
-    let value = $(this).val();
-    let poll = $(this);
-    while(!poll.hasClass('poll-box')) {
-        poll = poll.parent();
-    }
+let thread_add_option_uniqueness_broken = false;
+let option_add_uniqueness_broken = false;
+$('.poll-option-validation').each(function(event) {
+    handle_option_keyup($(this));
+});
 
-    if(event.key == 'Enter') {
-        if(value.trim().length < 1) {
-            let error = $(this).parent().find('.length-error').val();
-            poll.find('.options-input-adder-error').find('.error').text(error);
-            poll.find('.options-input-adder-error').removeClass('none');
-            return;
-        } else
-            poll.find('.options-input-adder-error').addClass('none');
+function handle_option_keyup(optioninput) {
+    optioninput.on('keyup', function(event) {
+        let value = $(this).val();
         
-        if(poll.find('.poll-option-box').length >= 30) {
-            let error = $(this).parent().find('.owner-options-limit-error').val();
-            poll.find('.options-input-adder-error').find('.error').text(error);
-            poll.find('.options-input-adder-error').removeClass('none');
-            return;
-        } else
-            poll.find('.options-input-adder-error').addClass('none');
-
-        if(notownersubmittedoptions > 0) {
-            let error = $(this).parent().find('.notowner-options-limit-error').val();
-            poll.find('.options-input-adder-error').find('.error').text(error);
-            poll.find('.options-input-adder-error').removeClass('none');
-            return;
-        } else
-            poll.find('.options-input-adder-error').addClass('none');
-
-        if(!option_uniqueness_pass) {
-            let error = $(this).parent().find('.uniqueness-error').val();
-            poll.find('.options-input-adder-error').find('.error').text(error);
-            poll.find('.options-input-adder-error').removeClass('none');
-            return;
-        } else {
-            // Everything is OK
-            console.log('everythings ok !');
+        let optioncontainer;
+        let options_wrapper = $(this);
+        while(!options_wrapper.hasClass('poll-options-wrapper')) {
+            if(options_wrapper.hasClass('poll-option-validation-box'))
+                optioncontainer = options_wrapper;
+            options_wrapper = options_wrapper.parent();
         }
+    
+        if(event.key == 'Enter') {
+            if(value.trim().length < 1) {
+                let error = options_wrapper.find('.length-error').val();
+                optioncontainer.find('.poll-option-input-error .error').text(error);
+                optioncontainer.find('.poll-option-input-error').removeClass('none');
+                return;
+            } else
+                optioncontainer.find('.poll-option-input-error').addClass('none');
+            
+            if(options_wrapper.find('.poll-option-box').length >= 30) {
+                console.log('limit error');
+                let error = options_wrapper.find('.owner-options-limit-error').val();
+                optioncontainer.find('.poll-option-input-error .error').text(error);
+                optioncontainer.find('.poll-option-input-error').removeClass('none');
+                return;
+            } else
+                optioncontainer.find('.poll-option-input-error').addClass('none');
+    
+            if(notownersubmittedoptions > 0) {
+                console.log('notowner limit error');
+                let error = options_wrapper.find('.notowner-options-limit-error').val();
+                optioncontainer.find('.poll-option-input-error .error').text(error);
+                optioncontainer.find('.poll-option-input-error').removeClass('none');
+                return;
+            } else
+                optioncontainer.find('.poll-option-input-error').addClass('none');
+            
+            poll_options_uniqueness_check(options_wrapper, optioncontainer, value);
+            if(options_wrapper.find('.uniqueness-pass').val() == 0) {
+                let error = options_wrapper.find('.uniqueness-error').val();
+                optioncontainer.find('.poll-option-input-error .error').text(error);
+                optioncontainer.find('.poll-option-input-error').removeClass('none');
+                return;
+            } else {
+                optioncontainer.find('.poll-option-input-error').addClass('none');
+                if(options_wrapper.hasClass('option-add-pow')) {
+                    console.log('send option to poll');
+                }
+            }
+            
+            return;
+        }
+        
+        // The following function call will set uniqueness hidden input to wether the uniqueness pass or not
+        poll_options_uniqueness_check(options_wrapper, optioncontainer, value);
+        let are_options_unique = options_wrapper.find('.uniqueness-pass').val();
+
+        if(are_options_unique == 0) {
+            let error = options_wrapper.find('.uniqueness-error').val();
+            optioncontainer.find('.poll-option-input-error .error').text(error);
+            optioncontainer.find('.poll-option-input-error').removeClass('none');
+        } else
+            optioncontainer.find('.poll-option-input-error').addClass('none');
+        
+    })
+}
+
+function poll_options_uniqueness_check(options_wrapper, current_optionbox, optiontext) {
+    let value = optiontext.trim();
+
+    if(value.length == 0) {
+        options_wrapper.find('.uniqueness-pass').val('1'); // For empty option inputs, we keep the uniqueness to pass (1)
         return;
     }
-    
-    option_uniqueness_pass = true;
-    poll.find('.poll-option-value').each(function() {
-        if($(this).text() == value.trim()) {
-            let error = poll.find('.uniqueness-error').val();
-            poll.find('.options-input-adder-error').find('.error').text(error);
-            poll.find('.options-input-adder-error').removeClass('none');
-            option_uniqueness_pass = false;
-            return false;
+
+    let found = 0;
+    options_wrapper.find('.poll-option-value').each(function() {
+        /**
+         * we do this check because in thread-add component we have options as inputs, but in thread component we have options
+         * as spans, so we need text() to get the value
+         */
+        let option_value = $(this).is('input') ? $(this).val() : $(this).text();
+        if(option_value == value) {
+            // Here we have to exclude the current option from checking
+            found++;
         }
-    })
-    if(option_uniqueness_pass) {
-        poll.find('.options-input-adder-error').addClass('none');
-    }
-    
-    //console.log(poll.find(".poll-option-value:contains('" + value + "')").length);
-});
+    });
+
+    if(found > 1) {
+        current_optionbox.find('.poll-option-input-error').find('.error').text(options_wrapper.find('.uniqueness-error').val());
+        current_optionbox.find('.poll-option-input-error').removeClass('none');
+        options_wrapper.find('.uniqueness-pass').val('0');
+    } else
+        options_wrapper.find('.uniqueness-pass').val('1');
+
+}

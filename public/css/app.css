@@ -3288,6 +3288,6 @@ a, input, textarea {
     width: 600px;
     height: max-content;
     border-radius: 4px;
-    background-color: #f0f0f0;
+    background-color: white;
     box-shadow: 0 3px 10px 0px #3c3c3c;
 }

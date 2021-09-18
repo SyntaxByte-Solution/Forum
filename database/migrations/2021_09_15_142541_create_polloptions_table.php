@@ -20,6 +20,7 @@ class CreatePolloptionsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('poll_id')->references('id')->on('polls');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['content', 'poll_id']); // Options are unique per poll
             $table->timestamps();
         });
     }

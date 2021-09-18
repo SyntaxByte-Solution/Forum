@@ -17,7 +17,6 @@ class IndexResource extends Component
     
     public $thread;
     public $type;
-    public $typestring;
     public $owner;
     public $forum;
     public $category;
@@ -26,6 +25,7 @@ class IndexResource extends Component
     public $options;
     public $multiple_choice;
     public $allow_options_creation;
+    public $could_add_choice;
     
     public $edit_link;
     public $category_threads_link;
@@ -52,11 +52,12 @@ class IndexResource extends Component
         $this->views = $thread->view_count;
         $this->replies = $thread->posts()->count();
         if($thread->type == 'poll') {
-            $this->typestring = 'poll';
             $poll = $thread->poll;
             $this->options = $poll->options()->withCount('votes as votes')->orderBy('votes', 'desc')->get();
             $this->multiple_choice = (bool)$poll->allow_multiple_choice;
-            $this->allow_options_creation = (bool)$poll->allow_choice_add;
+            $allow_choice_add = (bool)$poll->allow_choice_add;
+            $this->allow_options_creation = $allow_choice_add;
+            $this->could_add_choice = $allow_choice_add || (auth()->user() && auth()->user()->id == $this->owner->id);
         } else
             $this->typestring = 'discussion';
             

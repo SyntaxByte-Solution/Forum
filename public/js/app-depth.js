@@ -2111,9 +2111,12 @@ $('.thread-add-share').on('click', function(event) {
                             }
                         } else if(threadtype == 'poll') {
                             $('#thread-add-poll-options-box .thread-add-poll-option-container').each(function() {
-                                $(this).find('.poll-option-value').attr('disabled', false);
-                                $(this).find('.poll-option-value').text('');
+                                let option_input = $(this).find('.poll-option-value');
+                                option_input.attr('disabled', false);
+                                option_input.val('');
+                                option_input.trigger('focus');
                             });
+                            $('body').trigger('click');
                         }
 
                         $('#subject').attr('disabled', false);
@@ -4476,7 +4479,9 @@ function handle_option_vote(votebutton) {
                     poll_options_box = poll_options_box.parent();
                 }
                 // Style the voted option
-                poll_options_box.find('.poll-option-container').css('backgroundColor', 'unset');
+                /** Notice that here we only need to remove previous style and style the new one if the multiple selection is disabled */
+                if(poll_options_box.hasClass('radio-group'))
+                    poll_options_box.find('.poll-option-container').css('backgroundColor', 'unset');
                 if(response.type != "deleted")
                     votebutton.find('.poll-option-container').css('backgroundColor', '#F0F2F5');
 
@@ -4493,6 +4498,7 @@ function handle_option_vote(votebutton) {
                 // If user delete vote we have to set voted value to 0 otherwise we set it to 1
                 if(response.type == 'deleted') {
                     optioncomponent.find('.voted').val(0);
+                    votebutton.find('.poll-option-container').css('backgroundColor', '');
                 } else
                     optioncomponent.find('.voted').val(1);
 
@@ -4592,4 +4598,67 @@ $('.close-global-viewer').on('click', function() {
 
     globalviewer.addClass('none');
     enable_page_scroll();
+});
+
+let option_uniqueness_pass = true;
+let notownersubmittedoptions = 0;
+$('.poll-option-input-adder').on('keyup', function(event) {
+    let value = $(this).val();
+    let poll = $(this);
+    while(!poll.hasClass('poll-box')) {
+        poll = poll.parent();
+    }
+
+    if(event.key == 'Enter') {
+        if(value.trim().length < 1) {
+            let error = $(this).parent().find('.length-error').val();
+            poll.find('.options-input-adder-error').find('.error').text(error);
+            poll.find('.options-input-adder-error').removeClass('none');
+            return;
+        } else
+            poll.find('.options-input-adder-error').addClass('none');
+        
+        if(poll.find('.poll-option-box').length >= 30) {
+            let error = $(this).parent().find('.owner-options-limit-error').val();
+            poll.find('.options-input-adder-error').find('.error').text(error);
+            poll.find('.options-input-adder-error').removeClass('none');
+            return;
+        } else
+            poll.find('.options-input-adder-error').addClass('none');
+
+        if(notownersubmittedoptions > 0) {
+            let error = $(this).parent().find('.notowner-options-limit-error').val();
+            poll.find('.options-input-adder-error').find('.error').text(error);
+            poll.find('.options-input-adder-error').removeClass('none');
+            return;
+        } else
+            poll.find('.options-input-adder-error').addClass('none');
+
+        if(!option_uniqueness_pass) {
+            let error = $(this).parent().find('.uniqueness-error').val();
+            poll.find('.options-input-adder-error').find('.error').text(error);
+            poll.find('.options-input-adder-error').removeClass('none');
+            return;
+        } else {
+            // Everything is OK
+            console.log('everythings ok !');
+        }
+        return;
+    }
+    
+    option_uniqueness_pass = true;
+    poll.find('.poll-option-value').each(function() {
+        if($(this).text() == value.trim()) {
+            let error = poll.find('.uniqueness-error').val();
+            poll.find('.options-input-adder-error').find('.error').text(error);
+            poll.find('.options-input-adder-error').removeClass('none');
+            option_uniqueness_pass = false;
+            return false;
+        }
+    })
+    if(option_uniqueness_pass) {
+        poll.find('.options-input-adder-error').addClass('none');
+    }
+    
+    //console.log(poll.find(".poll-option-value:contains('" + value + "')").length);
 });

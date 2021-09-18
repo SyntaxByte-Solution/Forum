@@ -24,7 +24,7 @@
         <div class="poll-option-container full-width" style="@if($voted) background-color: #F0F2F5; @endif">
             <div>
                 <span class="gray fs11 block unselectable">{{ __('Added by') }} {{ $addedby }}</span>
-                <p class="no-margin mt4 fs16 unselectable">{{ $option->content }}</p>
+                <p class="poll-option-value no-margin mt4 fs16 unselectable">{{ $option->content }}</p>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<div class="poll-option-box flex align-center mb8">
+<div class="poll-option-box flex align-center mb8" id="polloption{{ $option->id }}">
     <input type="hidden" class="voted" autocomplete="off" value="{{ $int_voted }}">
     <div class="flex align-center pointer 
         @auth vote-option

@@ -40,8 +40,10 @@ class PollOptionComponent extends Component
                 (SELECT id FROM polloptions
                  WHERE poll_id IN
                     (SELECT id FROM polls WHERE id = $option->poll_id))")[0]->total_poll_votes;
-        $this->vote_percentage = floor($option->votes()->count() * 100 / $poll_votes_count);
-
+        if($poll_votes_count == 0)
+            $this->vote_percentage = 0;
+        else
+            $this->vote_percentage = floor($option->votes()->count() * 100 / $poll_votes_count);
         $this->int_voted = (int)$this->voted;
     }
 

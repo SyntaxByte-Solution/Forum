@@ -4499,34 +4499,45 @@ function handle_option_vote(votebutton) {
                 }
 
                 // If user delete vote we have to set voted value to 0 otherwise we set it to 1
-                if(response.type == 'deleted') {
+                if(response.type == 'deleted')
                     optioncomponent.find('.voted').val(0);
-                    votebutton.find('.poll-option-container').css('backgroundColor', '');
-                } else
+                else
                     optioncomponent.find('.voted').val(1);
 
-                // Reorder options after votes based on number of votes
-                // If the user add vote we order options by looking for the first element that is less than or equal to the 
-                // voted option and then we insert the voted option right before it.
-                // If the user delete a vote of an option, we reverse the options and then looking for the first item that has 
-                // votes more than or equals to the deleted option vote and we insert it right after it (TRACE AN EXAMPLE IN PAPER TO UNDERSTAND)
-                if(response.diff == 1) {
-                    poll_options_box.find('.poll-option-box').each(function() {
-                        let votevalue = parseInt($(this).find('.option-vote-count').text());
-                        if(result >= votevalue) {
-                            optioncomponent.insertBefore($(this));
-                            return false;
+                // Reorder options after votes based on number of votes (using bubble sort)
+                let options = poll_options_box.find('.poll-option-box').get();
+                let count = options.length;
+                let i, j;
+                for (i = 0; i < count-1; i++) {
+                    options = poll_options_box.find('.poll-option-box').get();
+                    // Last i elements are already in place
+                    for (j = 0; j < count-i-1; j++) {
+                        let va = parseInt($(options[j]).find('.option-vote-count').text());
+                        let vb = parseInt($(options[j+1]).find('.option-vote-count').text());
+
+                        if(va <= vb) {
+                            $(options[j]).insertAfter($(options[j+1]));
                         }
-                    });
-                } else {
-                    $(poll_options_box.find('.poll-option-box').get().reverse()).each(function() {
-                        let votevalue = parseInt($(this).find('.option-vote-count').text());
-                        if(result <= votevalue) {
-                            optioncomponent.insertAfter($(this));
-                            return false;
-                        }
-                    });
+                    }
                 }
+
+                // if(response.diff == 1) {
+                //     poll_options_box.find('.poll-option-box').each(function() {
+                //         let votevalue = parseInt($(this).find('.option-vote-count').text());
+                //         if(result >= votevalue) {
+                //             optioncomponent.insertBefore($(this));
+                //             return false;
+                //         }
+                //     });
+                // } else {
+                //     $(poll_options_box.find('.poll-option-box').get().reverse()).each(function() {
+                //         let votevalue = parseInt($(this).find('.option-vote-count').text());
+                //         if(result <= votevalue) {
+                //             optioncomponent.insertAfter($(this));
+                //             return false;
+                //         }
+                //     });
+                // }
 
                 // Adjusting percentage
                 let total_poll_votes = poll_options_box.find('.total-poll-votes');

@@ -338,6 +338,7 @@
                                 <input type="hidden" class="notowner-options-limit-error" value="{{ __('You could only add one option in polls that you don\'t own') }} !">
 
                                 <div class="mt8 thread-poll-options-container @if($multiple_choice) checkbox-group @else radio-group @endif">
+                                    <input type="hidden" class="total-poll-votes" autocomplete="off" value="{{ $poll_total_votes }}">
                                     @foreach($options as $option)
                                         <x-thread.poll-option-component 
                                             :option="$option" 

@@ -4487,12 +4487,6 @@ function handle_option_vote(votebutton) {
                 while(!poll_options_box.hasClass('thread-poll-options-container')) {
                     poll_options_box = poll_options_box.parent();
                 }
-                // Style the voted option
-                /** Notice that here we only need to remove previous style and style the new one if the multiple selection is disabled */
-                if(poll_options_box.hasClass('radio-group'))
-                    poll_options_box.find('.poll-option-container').css('backgroundColor', 'unset');
-                if(response.type != "deleted")
-                    // votebutton.find('.poll-option-container').css('backgroundColor', '#F0F2F5'); // Here we have to 
 
                 // If multiple options are disabled (radio) and the vote is flipped we handle the situation
                 if(poll_options_box.hasClass('radio-group')) {
@@ -4534,6 +4528,24 @@ function handle_option_vote(votebutton) {
                     });
                 }
 
+                // Adjusting percentage
+                let total_poll_votes = poll_options_box.find('.total-poll-votes');
+                switch(response.type) {
+                    // Here before handling the percentages we have to adjust the total poll votes first based on response.diff
+                    case 'added':
+                        total_poll_votes.val(parseInt(total_poll_votes.val()) + 1);
+                        adjust_poll_options_percentage(poll_options_box);
+                        break;
+                    case 'deleted':
+                        total_poll_votes.val(parseInt(total_poll_votes.val()) - 1);
+                        adjust_poll_options_percentage(poll_options_box);
+                        break;
+                    case 'flipped':
+                        // Here the votes are flipped so we don't have to edit the poll options votes because it stays the same
+                        adjust_poll_options_percentage(poll_options_box);
+                        break;
+                    
+                }
             },
             error: function(response) {
                 if(votebutton.hasClass('custom-radio-button')) {
@@ -4560,6 +4572,17 @@ function handle_option_vote(votebutton) {
                 
             }
         });
+    });
+}
+
+function adjust_poll_options_percentage(options_wrapper) {
+    let total_poll_votes = options_wrapper.find('.total-poll-votes');
+    options_wrapper.find('.poll-option-box').each(function() {
+        let option_votes_count = $(this).find('.option-vote-count').text();
+        let new_votes_percentage = parseInt(option_votes_count) * 100 / parseInt(total_poll_votes.val());
+        // Here we set the new percentage to the counter as well as to div strip
+        $(this).find('.option-vote-percentage').text(new_votes_percentage);
+        $(this).find('.vote-option-percentage-strip').css('width',new_votes_percentage+'%');
     });
 }
 

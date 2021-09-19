@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="ml8">
-        <span class="block fs11 gray">({{ $vote_percentage }}%)</span>
+        <span class="block fs11 gray">(<span class="option-vote-percentage">{{ $vote_percentage }}</span>%)</span>
         <div class="block forum-color"><span class="option-vote-count">{{ $option->votes()->count() }}</span><span style="margin-left: 2px">{{__('votes')}}</span></div>
     </div>
     @if($poll_owner)

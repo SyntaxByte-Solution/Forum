@@ -27,6 +27,7 @@ class IndexResource extends Component
     public $multiple_choice;
     public $allow_options_creation;
     public $could_add_choice;
+    public $poll_total_votes;
     
     public $edit_link;
     public $category_threads_link;
@@ -61,6 +62,7 @@ class IndexResource extends Component
             $allow_choice_add = (bool)$poll->allow_choice_add;
             $this->allow_options_creation = $allow_choice_add;
             $this->could_add_choice = $allow_choice_add || (auth()->user() && auth()->user()->id == $this->owner->id);
+            $this->poll_total_votes = $poll->votes()->count();
         } else
             $this->typestring = 'discussion';
             

@@ -25,8 +25,8 @@ class PollController extends Controller
             'option_id'=>'required|exists:polloptions,id'
         ]);
         $this->authorize('option_vote', [Poll::class]);
+        
         $optionvote['user_id'] = $currenuser->id;
-
         $option = PollOption::find($optionvote['option_id']);
         $poll = $option->poll;
 
@@ -83,9 +83,8 @@ class PollController extends Controller
     }
 
     public function option_delete(PollOption $option) {
-        // We need to delete the option votes first before deletin the option itself
-        //Authorization here
-        $option->delete();
+        $this->authorize('option_delete', [Poll::class, $option]);
+        $option->delete(); // We delete related items in boot method on the model
     }
 
     public function add_option(Request $request) {
@@ -94,7 +93,7 @@ class PollController extends Controller
             'content'=>'required|min:1|max:400'
         ]);
 
-        // Authorization here
+        $this->authorize('add_option', [Poll::class, $option['poll_id']]);
         $option['user_id'] = auth()->user()->id;
         $option = PollOption::create($option);
 

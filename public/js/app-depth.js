@@ -72,6 +72,14 @@ $('.stop-propagation').on('click', function(event) {
     event.stopPropagation();
 });
 
+function handle_stop_propagation(component) {
+    component.find('.stop-propagation').each(function() {
+        $(this).on('click', function(event) {
+            event.stopPropagation();
+        })
+    });
+}
+
 $('.block-click').on('click', function() {
     return false;
 });
@@ -4704,6 +4712,7 @@ function handle_option_keyup(optioninput) {
                                     let unhandled_option = options_wrapper.find('.thread-poll-options-container .poll-option-box').last();
                                     handle_option_vote(unhandled_option.find('.vote-option'));
                                     handle_option_deletion_view(unhandled_option.find('.open-option-delete-check-view'));
+                                    handle_stop_propagation(unhandled_option);
                                     handle_custom_radio(unhandled_option.find('.custom-radio-button'));
                                     handle_custom_radio(unhandled_option.find('.custom-checkbox-button'));
                                     basic_notification_show(optioncontainer.find('.option-saved-message').val(), 'basic-notification-round-tick');
@@ -4715,6 +4724,10 @@ function handle_option_keyup(optioninput) {
                         },
                         error: function(response) {
                             input.attr('disabled', false);
+                            let errorObject = JSON.parse(response.responseText);
+                            let er = errorObject.message;
+                            
+                            display_top_informer_message(er, 'warning');
                         },
                         complete: function() {
                             

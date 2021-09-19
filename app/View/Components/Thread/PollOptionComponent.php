@@ -27,11 +27,11 @@ class PollOptionComponent extends Component
                  WHERE id IN
                     (SELECT poll_id FROM polloptions WHERE id = $option->id))")[0]->user_id;
         $this->poll_owner = auth()->user() && $poll_owner_id == auth()->user()->id;
-
+        $optionuser = $option->user;
         $this->addedby = 
-            ((auth()->user() && $option->user->id == auth()->user()->id) 
+            ((auth()->user() && $option->user->id == auth()->user()->id))
             ? __('you') 
-            : $option->user->username);
+            : '<a href="' . $optionuser->profilelink . '" class="blue no-underline stop-propagation underline-when-hover">' . $option->user->username . "</a>";
         $this->voted = $option->voted;
         $this->int_voted = (int)$this->voted;
     }

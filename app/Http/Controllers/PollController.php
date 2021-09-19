@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{PollOption, OptionVote};
+use App\Models\{Poll, PollOption, OptionVote};
 use App\View\Components\Thread\PollOptionComponent;
 
 class PollController extends Controller
@@ -24,8 +24,7 @@ class PollController extends Controller
         $optionvote = $request->validate([
             'option_id'=>'required|exists:polloptions,id'
         ]);
-        //Authorization here
-
+        $this->authorize('option_vote', [Poll::class]);
         $optionvote['user_id'] = $currenuser->id;
 
         $option = PollOption::find($optionvote['option_id']);

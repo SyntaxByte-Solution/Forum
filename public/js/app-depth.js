@@ -4527,6 +4527,27 @@ function handle_option_vote(votebutton) {
                 }
 
             },
+            error: function(response) {
+                if(votebutton.hasClass('custom-radio-button')) {
+                    let radio = votebutton.find('.custom-radio');
+                    if(radio.hasClass('custom-radio-checked')) {
+                        radio.removeClass('custom-radio-checked');
+                        radio.find('.radio-check-tick').addClass('none');
+                        radio.find('.radio-status').val('0');
+                    } else {
+                        radio.addClass('custom-radio-checked');
+                        radio.find('.radio-check-tick').removeClass('none');
+                        radio.find('.radio-status').val('1');
+                    }
+                } else if(votebutton.hasClass('custom-checkbox-button')) {
+
+                }
+
+                let errorObject = JSON.parse(response.responseText);
+                let er = errorObject.message;
+                
+                display_top_informer_message(er, 'warning');
+            },
             complete: function() {
                 
             }

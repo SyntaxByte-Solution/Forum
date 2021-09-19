@@ -19,7 +19,7 @@ class VotePolicy
         if($resource_name == 'post') $resource_name = 'replies';
 
         if ($user->isBanned()) {
-            $this->deny("You cannot vote because you're currently banned !");
+            return $this->deny("You cannot vote because you're currently banned !");
         }
 
         if ($resource->user->id == $user->id) {

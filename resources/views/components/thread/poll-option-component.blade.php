@@ -21,15 +21,16 @@
             </div>
         </div>
         @endif
-        <div class="poll-option-container full-width" style="@if($voted) background-color: #F0F2F5; @endif">
-            <div>
+        <div class="relative poll-option-container full-width">
+            <div class="vote-option-percentage-strip" style="width: {{ $vote_percentage }}%;"> <!-- vote percentage --></div>
+            <div class="relative" style="z-index: 1">
                 <span class="gray fs11 block unselectable">{{ __('Added by') }} {!! $addedby !!}</span>
                 <p class="poll-option-value no-margin mt4 fs16 unselectable">{{ $option->content }}</p>
             </div>
         </div>
     </div>
     <div class="ml8">
-        <span class="block fs11 gray">(0%)</span>
+        <span class="block fs11 gray">({{ $vote_percentage }}%)</span>
         <div class="block forum-color"><span class="option-vote-count">{{ $option->votes()->count() }}</span><span style="margin-left: 2px">{{__('votes')}}</span></div>
     </div>
     @if($poll_owner)

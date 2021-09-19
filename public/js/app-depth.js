@@ -4492,7 +4492,7 @@ function handle_option_vote(votebutton) {
                 if(poll_options_box.hasClass('radio-group'))
                     poll_options_box.find('.poll-option-container').css('backgroundColor', 'unset');
                 if(response.type != "deleted")
-                    votebutton.find('.poll-option-container').css('backgroundColor', '#F0F2F5');
+                    // votebutton.find('.poll-option-container').css('backgroundColor', '#F0F2F5'); // Here we have to 
 
                 // If multiple options are disabled (radio) and the vote is flipped we handle the situation
                 if(poll_options_box.hasClass('radio-group')) {

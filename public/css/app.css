@@ -2751,8 +2751,18 @@ a, input, textarea {
     padding: 8px;
     border: 1px solid #999;
     border-radius: 4px;
-    max-width: 350px;
+    width: 350px;
     min-width: 350px;
+    overflow: hidden;
+}
+
+.vote-option-percentage-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    background-color: #F0F2F5;
 }
 
 /* index thread component */

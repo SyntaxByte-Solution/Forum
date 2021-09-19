@@ -2756,6 +2756,12 @@ a, input, textarea {
     overflow: hidden;
 }
 
+.poll-options-vertical-inputs-style {
+    width: 350px;
+    min-width: 350px;
+    margin-left: 45px;
+}
+
 .vote-option-percentage-strip {
     position: absolute;
     top: 0;

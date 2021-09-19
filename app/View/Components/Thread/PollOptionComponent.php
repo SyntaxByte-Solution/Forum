@@ -8,6 +8,11 @@ use App\Models\PollOption;
 class PollOptionComponent extends Component
 {
     public $option;
+    /**
+     * classes: Used to append extra classes to the current option component (e.g hide the options after the first 5 options 
+     * and display a button to display more options
+     */
+    public $classes; 
     public $addedby;
     public $multiple_choice;
     public $poll_owner;
@@ -16,9 +21,10 @@ class PollOptionComponent extends Component
     public $vote_percentage;
     public $int_voted;
 
-    public function __construct(PollOption $option, $multiplechoice, $allowoptionscreation)
+    public function __construct(PollOption $option, $multiplechoice, $allowoptionscreation, $classes="") // look at declaration
     {
         $this->option = $option;
+        $this->classes = $classes;
         $this->multiple_choice = $multiplechoice;
         $this->allow_options_creation = $allowoptionscreation;
         $poll_owner_id = \DB::select(

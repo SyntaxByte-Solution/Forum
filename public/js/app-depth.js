@@ -4505,39 +4505,21 @@ function handle_option_vote(votebutton) {
                     optioncomponent.find('.voted').val(1);
 
                 // Reorder options after votes based on number of votes (using bubble sort)
-                let options = poll_options_box.find('.poll-option-box').get();
-                let count = options.length;
+                let count = poll_options_box.find('.poll-option-box').length;
                 let i, j;
                 for (i = 0; i < count-1; i++) {
-                    options = poll_options_box.find('.poll-option-box').get();
                     // Last i elements are already in place
                     for (j = 0; j < count-i-1; j++) {
-                        let va = parseInt($(options[j]).find('.option-vote-count').text());
-                        let vb = parseInt($(options[j+1]).find('.option-vote-count').text());
+                        let optiona = $(poll_options_box.find('.poll-option-box')[j]);
+                        let optionb = $(poll_options_box.find('.poll-option-box')[j+1]);
+                        let va = parseInt(optiona.find('.option-vote-count').text());
+                        let vb = parseInt(optionb.find('.option-vote-count').text());
 
-                        if(va <= vb) {
-                            $(options[j]).insertAfter($(options[j+1]));
+                        if(va < vb) {
+                            optiona.insertAfter(optionb);
                         }
                     }
                 }
-
-                // if(response.diff == 1) {
-                //     poll_options_box.find('.poll-option-box').each(function() {
-                //         let votevalue = parseInt($(this).find('.option-vote-count').text());
-                //         if(result >= votevalue) {
-                //             optioncomponent.insertBefore($(this));
-                //             return false;
-                //         }
-                //     });
-                // } else {
-                //     $(poll_options_box.find('.poll-option-box').get().reverse()).each(function() {
-                //         let votevalue = parseInt($(this).find('.option-vote-count').text());
-                //         if(result <= votevalue) {
-                //             optioncomponent.insertAfter($(this));
-                //             return false;
-                //         }
-                //     });
-                // }
 
                 // Adjusting percentage
                 let total_poll_votes = poll_options_box.find('.total-poll-votes');
@@ -4590,7 +4572,7 @@ function adjust_poll_options_percentage(options_wrapper) {
     let total_poll_votes = options_wrapper.find('.total-poll-votes');
     options_wrapper.find('.poll-option-box').each(function() {
         let option_votes_count = $(this).find('.option-vote-count').text();
-        let new_votes_percentage = parseInt(option_votes_count) * 100 / parseInt(total_poll_votes.val());
+        let new_votes_percentage = Math.floor(parseInt(option_votes_count) * 100 / parseInt(total_poll_votes.val()));
         // Here we set the new percentage to the counter as well as to div strip
         $(this).find('.option-vote-percentage').text(new_votes_percentage);
         $(this).find('.vote-option-percentage-strip').css('width',new_votes_percentage+'%');
@@ -4813,4 +4795,16 @@ function poll_options_uniqueness_check(options_wrapper, current_optionbox, value
     } else
         options_wrapper.find('.uniqueness-pass').val('1');
 
+}
+
+$('.thread-poll-options-container').each(function() {
+    handle_options_display_switch($(this));
+});
+
+function handle_options_display_switch(options_wrapper) {
+    options_wrapper.find('.options-display-switch').on('click', function() {
+        options_wrapper.find('.poll-option-box').removeClass('none');
+
+        $(this).remove();
+    });
 }

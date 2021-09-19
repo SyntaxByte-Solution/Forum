@@ -340,14 +340,28 @@
                                 <div class="mt8 thread-poll-options-container @if($multiple_choice) checkbox-group @else radio-group @endif">
                                     <input type="hidden" class="total-poll-votes" autocomplete="off" value="{{ $poll_total_votes }}">
                                     @foreach($options as $option)
-                                        <x-thread.poll-option-component 
+                                        @if($loop->index < 5)
+                                        <x-thread.poll-option-component
                                             :option="$option" 
                                             :multiplechoice="$multiple_choice" 
                                             :allowoptionscreation="$allow_options_creation"/>
+                                        @else
+                                        <x-thread.poll-option-component
+                                            :option="$option" 
+                                            :multiplechoice="$multiple_choice" 
+                                            :allowoptionscreation="$allow_options_creation"
+                                            classes="none"/>
+                                        @endif
                                     @endforeach
+                                    @if($options->count() > 5)
+                                    <div class="flat-button-style unselectable options-display-switch poll-options-vertical-inputs-style border-box" style="padding: 10px">
+                                        {{ __('Load more options') }}
+                                        <svg class="size7 mx4 more-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
+                                    </div>
+                                    @endif
                                 </div>
                                 @if($could_add_choice)
-                                <div class="thread-add-poll-option-container poll-option-validation-box my8" style="margin-left: 45px; max-width: 350px">
+                                <div class="thread-add-poll-option-container poll-option-validation-box my8 poll-options-vertical-inputs-style">
                                     <div class="simple-line-separator my8"></div>
                                     <div class="my4 pr8 pt8 poll-option-input-error none">
                                         <div class="flex align-center">

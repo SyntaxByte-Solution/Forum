@@ -28,18 +28,15 @@ function disable_page_scroll() {
     $('header').attr('style', 'width: calc(100% - 17px)');
     $('#abs-scrollbar').removeClass('none');
 }
-
 function enable_page_scroll() {
     $('body').attr('style', '');
     $('header').attr('style', '');
     $('#abs-scrollbar').addClass('none');
 }
 
-
-
-// $(window).on('unload', function() {
-//     $(window).scrollTop(0);
-//  });
+$(window).on('unload', function() {
+    $(window).scrollTop(0);
+ });
 
 /**
  * Update user activity in every page (because this js file is included in every page) and update the user

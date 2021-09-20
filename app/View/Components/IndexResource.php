@@ -37,6 +37,9 @@ class IndexResource extends Component
     public $views;
     public $likes;
     public $liked;
+    
+    public $totalvotevalue, $upvoted = false, $downvoted = false; // Voting
+
     public $replies;
     public $at;
     public $at_hummans;
@@ -70,6 +73,14 @@ class IndexResource extends Component
         $likemanager = $thread->likedandlikescount;
         $this->likes = $likemanager['count'];
         $this->liked = $likemanager['liked'];
+
+        $votemanager = $thread->votedandvotescount;
+        $this->totalvotevalue = $votemanager['totalvotevalue'];
+        if($votemanager['votevalue'] == 1)
+            $this->upvoted = true;
+        else if($votemanager['votevalue'] == -1)
+            $this->downvoted = true;
+
         $this->content = Str::markdown($thread->content);
 
         if(Auth::check() && Auth::user()->id != $thread->id) {

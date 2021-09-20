@@ -138,20 +138,55 @@ class Thread extends Model
     }
 
     public function getLikedandlikescountAttribute() {
+        /**
+         * Here, in order to get resource number of likes and at the same time check if the current user
+         * like this resource or not, we con't achieve that in one query ! INSTEAD what we can do is to fetch
+         * resource likes records and pluck the result to get only user_id's;
+         * That way we count the number of records to get count, and check if the current user_id exists there
+         * in that way we achive that in only one query
+         */
         $liked = false;
         $count = 0;
+        
+        $result = \DB::select('SELECT user_id FROM likes WHERE likable_type=? AND likable_id=?', ['App\Models\Thread', $this->id]);
+        $result =  array_column($result, 'user_id');
         if(!auth()->user()) {
             $liked = false;
-            $count = $this->likes()->count();
+            $count = count($result);
         } else {
-            $count = $this->likes()->count();
+            $count = count($result);
             if($count) // We don't have to check whether a user like a thread if it has no likes
-                $liked = $this->likes()->where('user_id', auth()->user()->id)->count();
+                $liked = in_array(auth()->user()->id, $result);
         }
 
         return [
             'liked'=>$liked,
             'count'=>$count
+        ];
+    }
+
+    function getVotedandvotescountAttribute() {
+        $votevalue = 0;
+        $totalvotevalue = 0;
+        
+        $result = \DB::select('SELECT vote,user_id FROM votes WHERE votable_type=? AND votable_id=?', ['App\Models\Thread', $this->id]);
+        if(!auth()->user()) {
+            $voted = false;
+            $count = count($result);
+        } else {
+            $count = count($result);
+            if($count) { // We don't have to check whether a user like a thread if it has no likes
+                foreach($result as $vote) {
+                    $totalvotevalue+=$vote->vote;
+                    if($vote->user_id == auth()->user()->id)
+                        $votevalue = $vote->vote;
+                }
+            }
+        }
+
+        return [
+            'votevalue'=>$votevalue,
+            'totalvotevalue'=>$totalvotevalue,
         ];
     }
 

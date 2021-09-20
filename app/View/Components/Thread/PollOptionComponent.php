@@ -18,6 +18,7 @@ class PollOptionComponent extends Component
     public $poll_owner;
     public $allow_options_creation;
     public $voted;
+    public $votescount;
     public $vote_percentage;
     public $int_voted;
 
@@ -39,12 +40,16 @@ class PollOptionComponent extends Component
                 ((auth()->user() && $optionuser->id == auth()->user()->id))
                 ? __('you') 
                 : '<a href="' . $optionuser->profilelink . '" class="blue no-underline stop-propagation underline-when-hover">' . $option->user->username . "</a>";
-            $this->voted = $option->voted;
+
+            $votedandvotescount = $option->votedandvotescount;
+            $this->voted = $votedandvotescount['voted'];
+            $this->votescount = $votedandvotescount['count'];
+            
             if($totalpollvotes == 0)
                 $this->vote_percentage = 0;
             else
-                $this->vote_percentage = floor($option->votes()->count() * 100 / $totalpollvotes);
-            $this->int_voted = (int)$this->voted;
+                $this->vote_percentage = floor($votedandvotescount['count'] * 100 / $totalpollvotes);
+            $this->int_voted = (int)$votedandvotescount['voted'];
     }
 
     public function render($data=[])

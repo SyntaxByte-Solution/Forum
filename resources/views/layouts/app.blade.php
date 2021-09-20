@@ -18,7 +18,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <script type="text/javascript" src="{{ asset('js/imagesloaded.js') }}" defer></script>
-    <script type="text/javascript" src="{{ asset('js/app-depth.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/core.js') }}" defer></script>
     
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

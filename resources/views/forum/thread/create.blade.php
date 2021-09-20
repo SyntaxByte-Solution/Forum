@@ -6,6 +6,10 @@
     <link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
 @endpush
 
+@push('scripts')
+    <script src="{{ asset('js/thread/create.js') }}" defer></script>
+@endpush
+
 @section('header')
     @include('partials.header')
 @endsection

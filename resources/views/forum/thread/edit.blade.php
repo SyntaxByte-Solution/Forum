@@ -8,6 +8,7 @@
 
 @push('scripts')
     <script src="{{ asset('js/simplemde.js') }}"></script>
+    <script src="{{ asset('js/thread/create.js') }}" defer></script>
     <script src="{{ asset('js/thread/edit.js') }}" defer></script>
 @endpush
 

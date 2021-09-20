@@ -1,4 +1,4 @@
-<div class="resource-container thread-container-box relative shadow-contained-box">
+<div id="thread{{ $thread->id }}" class="resource-container thread-container-box relative shadow-contained-box">
     <input type="hidden" class="thread-add-visibility-slug" value="public">
     <input type="hidden" class="thread-type" autocomplete="off" value="{{ $type }}">
     <div class="hidden-thread-section none px8 py8">

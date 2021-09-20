@@ -2144,7 +2144,7 @@ $('.thread-add-share').on('click', function(event) {
                     }
                 })
             } else {
-                // window.location.href = response.link;
+                window.location.href = response.link;
             }
         },
         error: function(response) {
@@ -4056,6 +4056,17 @@ function handle_thread_events(thread) {
     handle_open_media_viewer(thread);
     // Handle link copy
     handle_copy_thread_link(thread.find('.copy-thread-link'));
+
+    // If thread is a poll we have to handlme all poll events
+    if(thread.find('.thread-type').val() == 'poll') {
+        handle_input_with_dynamic_label(thread);
+        handle_option_deletion_view(thread);
+        handle_option_vote(thread);
+        handle_custom_radio(thread);
+        handle_custom_checkbox(thread);
+        handle_options_display_switch(thread.find('.thread-poll-options-container'));
+        handle_option_keyup(thread.find('.poll-option-validation'));
+    }
 }
 
 let index_fetch_more = $('.index-fetch-more');
@@ -4399,11 +4410,13 @@ $('.allow-others-to-add-choices-button').on('click', function() {
 });
 
 $('.custom-checkbox-button').each(function() {
-    handle_custom_checkbox($(this));
+    handle_custom_checkbox($(this).parent());
 });
-function handle_custom_checkbox(button) {
-    button.on('click', function() {
-        trigger_checkbox_button(button);
+function handle_custom_checkbox(component) {
+    component.find('.custom-checkbox-button').each(function() {
+        $(this).on('click', function() {
+            trigger_checkbox_button(button);
+        })
     });
 }
 function trigger_checkbox_button(button) {
@@ -4420,11 +4433,13 @@ function trigger_checkbox_button(button) {
 }
 
 $('.custom-radio-button').each(function() {
-    handle_custom_radio($(this));
+    handle_custom_radio($(this).parent());
 });
-function handle_custom_radio(button) {
-    button.on('click', function() {
-        trigger_radio_button($(this));
+function handle_custom_radio(component) {
+    component.find('.custom-radio-button').each(function() {
+        $(this).on('click', function() {
+            trigger_radio_button($(this));
+        })
     });
 }
 function trigger_radio_button(button) {
@@ -4450,7 +4465,7 @@ function trigger_radio_button(button) {
 }
 
 $('.vote-option').each(function() {
-    handle_option_vote($(this));
+    handle_option_vote($(this).parent());
 });
 
 /**
@@ -4460,112 +4475,115 @@ $('.vote-option').each(function() {
  * in the queue and trigger the click event to handle it again
  */
 //let votes_queue = [];
-function handle_option_vote(votebutton) {
-    votebutton.on('click', function() {
-        let votecount = votebutton.parent().find('.option-vote-count');
-        let optionid = votebutton.find('.optionid').val();
-        // fetch option component
-        let optioncomponent = votebutton;
-        while(!optioncomponent.hasClass('poll-option-box'))
-            optioncomponent = optioncomponent.parent();
-        // Vote the option
-        $.ajax({
-            url: `/options/vote`,
-            type: 'post',
-            data: {
-                _token: csrf,
-                option_id: optionid
-            },
-            success: function(response) {
-                // response will return how much votes table increment or decrement 
-                // (-1: vote deleted; 1: vote added; 0: when poll owner disable multiple choice and user already vote an option and then choose another one)
-                let result = parseInt(votecount.text()) + parseInt(response.diff);
-                votecount.text(result);
-
-                // Get poll options container
-                let poll_options_box = votebutton;
-                while(!poll_options_box.hasClass('thread-poll-options-container')) {
-                    poll_options_box = poll_options_box.parent();
-                }
-
-                // If multiple options are disabled (radio) and the vote is flipped we handle the situation
-                if(poll_options_box.hasClass('radio-group')) {
-                    if(response.type == "flipped") {
-                        let option_vote_removed = poll_options_box.find('.voted[value=1]').parent();
-                        let new_deleted_option_votevalue = parseInt(option_vote_removed.find('.option-vote-count').text())-1;
-                        option_vote_removed.find('.option-vote-count').text(new_deleted_option_votevalue);
-                        option_vote_removed.find('.voted').val('0');
+function handle_option_vote(component) {
+    component.find('.vote-option').each(function() {
+        let votebutton = $(this);
+        votebutton.on('click', function() {
+            let votecount = votebutton.parent().find('.option-vote-count');
+            let optionid = votebutton.find('.optionid').val();
+            // fetch option component
+            let optioncomponent = votebutton;
+            while(!optioncomponent.hasClass('poll-option-box'))
+                optioncomponent = optioncomponent.parent();
+            // Vote the option
+            $.ajax({
+                url: `/options/vote`,
+                type: 'post',
+                data: {
+                    _token: csrf,
+                    option_id: optionid
+                },
+                success: function(response) {
+                    // response will return how much votes table increment or decrement 
+                    // (-1: vote deleted; 1: vote added; 0: when poll owner disable multiple choice and user already vote an option and then choose another one)
+                    let result = parseInt(votecount.text()) + parseInt(response.diff);
+                    votecount.text(result);
+    
+                    // Get poll options container
+                    let poll_options_box = votebutton;
+                    while(!poll_options_box.hasClass('thread-poll-options-container')) {
+                        poll_options_box = poll_options_box.parent();
                     }
-                }
-
-                // If user delete vote we have to set voted value to 0 otherwise we set it to 1
-                if(response.type == 'deleted')
-                    optioncomponent.find('.voted').val(0);
-                else
-                    optioncomponent.find('.voted').val(1);
-
-                // Reorder options after votes based on number of votes (using bubble sort)
-                let count = poll_options_box.find('.poll-option-box').length;
-                let i, j;
-                for (i = 0; i < count-1; i++) {
-                    // Last i elements are already in place
-                    for (j = 0; j < count-i-1; j++) {
-                        let optiona = $(poll_options_box.find('.poll-option-box')[j]);
-                        let optionb = $(poll_options_box.find('.poll-option-box')[j+1]);
-                        let va = parseInt(optiona.find('.option-vote-count').text());
-                        let vb = parseInt(optionb.find('.option-vote-count').text());
-
-                        if(va < vb) {
-                            optiona.insertAfter(optionb);
+    
+                    // If multiple options are disabled (radio) and the vote is flipped we handle the situation
+                    if(poll_options_box.hasClass('radio-group')) {
+                        if(response.type == "flipped") {
+                            let option_vote_removed = poll_options_box.find('.voted[value=1]').parent();
+                            let new_deleted_option_votevalue = parseInt(option_vote_removed.find('.option-vote-count').text())-1;
+                            option_vote_removed.find('.option-vote-count').text(new_deleted_option_votevalue);
+                            option_vote_removed.find('.voted').val('0');
                         }
                     }
-                }
-
-                // Adjusting percentage
-                let total_poll_votes = poll_options_box.find('.total-poll-votes');
-                switch(response.type) {
-                    // Here before handling the percentages we have to adjust the total poll votes first based on response.diff
-                    case 'added':
-                        total_poll_votes.val(parseInt(total_poll_votes.val()) + 1);
-                        adjust_poll_options_percentage(poll_options_box);
-                        break;
-                    case 'deleted':
-                        total_poll_votes.val(parseInt(total_poll_votes.val()) - 1);
-                        adjust_poll_options_percentage(poll_options_box);
-                        break;
-                    case 'flipped':
-                        // Here the votes are flipped so we don't have to edit the poll options votes because it stays the same
-                        adjust_poll_options_percentage(poll_options_box);
-                        break;
+    
+                    // If user delete vote we have to set voted value to 0 otherwise we set it to 1
+                    if(response.type == 'deleted')
+                        optioncomponent.find('.voted').val(0);
+                    else
+                        optioncomponent.find('.voted').val(1);
+    
+                    // Reorder options after votes based on number of votes (using bubble sort)
+                    let count = poll_options_box.find('.poll-option-box').length;
+                    let i, j;
+                    for (i = 0; i < count-1; i++) {
+                        // Last i elements are already in place
+                        for (j = 0; j < count-i-1; j++) {
+                            let optiona = $(poll_options_box.find('.poll-option-box')[j]);
+                            let optionb = $(poll_options_box.find('.poll-option-box')[j+1]);
+                            let va = parseInt(optiona.find('.option-vote-count').text());
+                            let vb = parseInt(optionb.find('.option-vote-count').text());
+    
+                            if(va < vb) {
+                                optiona.insertAfter(optionb);
+                            }
+                        }
+                    }
+    
+                    // Adjusting percentage
+                    let total_poll_votes = poll_options_box.find('.total-poll-votes');
+                    switch(response.type) {
+                        // Here before handling the percentages we have to adjust the total poll votes first based on response.diff
+                        case 'added':
+                            total_poll_votes.val(parseInt(total_poll_votes.val()) + 1);
+                            adjust_poll_options_percentage(poll_options_box);
+                            break;
+                        case 'deleted':
+                            total_poll_votes.val(parseInt(total_poll_votes.val()) - 1);
+                            adjust_poll_options_percentage(poll_options_box);
+                            break;
+                        case 'flipped':
+                            // Here the votes are flipped so we don't have to edit the poll options votes because it stays the same
+                            adjust_poll_options_percentage(poll_options_box);
+                            break;
+                        
+                    }
+                },
+                error: function(response) {
+                    if(votebutton.hasClass('custom-radio-button')) {
+                        let radio = votebutton.find('.custom-radio');
+                        if(radio.hasClass('custom-radio-checked')) {
+                            radio.removeClass('custom-radio-checked');
+                            radio.find('.radio-check-tick').addClass('none');
+                            radio.find('.radio-status').val('0');
+                        } else {
+                            radio.addClass('custom-radio-checked');
+                            radio.find('.radio-check-tick').removeClass('none');
+                            radio.find('.radio-status').val('1');
+                        }
+                    } else if(votebutton.hasClass('custom-checkbox-button')) {
+    
+                    }
+    
+                    let errorObject = JSON.parse(response.responseText);
+                    let er = errorObject.message;
+                    
+                    display_top_informer_message(er, 'warning');
+                },
+                complete: function() {
                     
                 }
-            },
-            error: function(response) {
-                if(votebutton.hasClass('custom-radio-button')) {
-                    let radio = votebutton.find('.custom-radio');
-                    if(radio.hasClass('custom-radio-checked')) {
-                        radio.removeClass('custom-radio-checked');
-                        radio.find('.radio-check-tick').addClass('none');
-                        radio.find('.radio-status').val('0');
-                    } else {
-                        radio.addClass('custom-radio-checked');
-                        radio.find('.radio-check-tick').removeClass('none');
-                        radio.find('.radio-status').val('1');
-                    }
-                } else if(votebutton.hasClass('custom-checkbox-button')) {
-
-                }
-
-                let errorObject = JSON.parse(response.responseText);
-                let er = errorObject.message;
-                
-                display_top_informer_message(er, 'warning');
-            },
-            complete: function() {
-                
-            }
+            });
         });
-    });
+    })
 }
 
 function adjust_poll_options_percentage(options_wrapper) {
@@ -4623,16 +4641,17 @@ function handle_option_delete(delete_button) {
 }
 
 $('.open-option-delete-check-view').each(function() {
-    handle_option_deletion_view($(this));
+    handle_option_deletion_view($(this).parent());
 });
-
-function handle_option_deletion_view(openviewerbutton) {
-    openviewerbutton.on('click', function() {
-        let optionid = openviewerbutton.find('.optionid').val();
-        $('#poll-option-deletion-viewer').find('.optionid').val(optionid);
-        $('#poll-option-deletion-viewer').removeClass('none');
-
-        disable_page_scroll();
+function handle_option_deletion_view(component) {
+    component.find('.open-option-delete-check-view').each(function() {
+        $(this).on('click', function() {
+            let optionid = $(this).find('.optionid').val();
+            $('#poll-option-deletion-viewer').find('.optionid').val(optionid);
+            $('#poll-option-deletion-viewer').removeClass('none');
+    
+            disable_page_scroll();
+        });
     });
 }
 
@@ -4726,7 +4745,7 @@ function handle_option_keyup(optioninput) {
                                     optioninput.val('');
                                     options_wrapper.find('.thread-poll-options-container').append(response);
                                     let unhandled_option = options_wrapper.find('.thread-poll-options-container .poll-option-box').last();
-                                    handle_option_vote(unhandled_option.find('.vote-option'));
+                                    handle_option_vote(unhandled_option);
                                     handle_option_deletion_view(unhandled_option.find('.open-option-delete-check-view'));
                                     handle_stop_propagation(unhandled_option);
                                     handle_custom_radio(unhandled_option.find('.custom-radio-button'));

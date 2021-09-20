@@ -23,7 +23,7 @@ class PollPolicy
         if ($user->isBanned())
             return $this->deny(__("Unauthorized action ! you're currently banned"));
         
-        if($option->poll->thread->id != $user->id)
+        if($option->poll->thread->user_id != $user->id)
             return $this->deny(__("Unauthorized action"));
 
         return true;

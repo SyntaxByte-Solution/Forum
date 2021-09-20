@@ -21,36 +21,30 @@ class PollOptionComponent extends Component
     public $vote_percentage;
     public $int_voted;
 
-    public function __construct(PollOption $option, $multiplechoice, $allowoptionscreation, $classes="") // look at declaration
-    {
-        $this->option = $option;
-        $this->classes = $classes;
-        $this->multiple_choice = $multiplechoice;
-        $this->allow_options_creation = $allowoptionscreation;
-        $poll_owner_id = \DB::select(
-            "SELECT user_id FROM threads
-            WHERE id IN 
-                (SELECT thread_id FROM polls
-                 WHERE id IN
-                    (SELECT poll_id FROM polloptions WHERE id = $option->id))")[0]->user_id;
-        $this->poll_owner = auth()->user() && $poll_owner_id == auth()->user()->id;
-        $optionuser = $option->user;
-        $this->addedby = 
-            ((auth()->user() && $option->user->id == auth()->user()->id))
-            ? __('you') 
-            : '<a href="' . $optionuser->profilelink . '" class="blue no-underline stop-propagation underline-when-hover">' . $option->user->username . "</a>";
-        $this->voted = $option->voted;
-        $poll_votes_count = \DB::select(
-            "SELECT COUNT(*) as total_poll_votes FROM optionsvotes
-            WHERE option_id IN 
-                (SELECT id FROM polloptions
-                 WHERE poll_id IN
-                    (SELECT id FROM polls WHERE id = $option->poll_id))")[0]->total_poll_votes;
-        if($poll_votes_count == 0)
-            $this->vote_percentage = 0;
-        else
-            $this->vote_percentage = floor($option->votes()->count() * 100 / $poll_votes_count);
-        $this->int_voted = (int)$this->voted;
+    public function __construct(
+        PollOption $option, 
+        $multiplechoice, 
+        $allowoptionscreation, 
+        $totalpollvotes, 
+        $pollownerid,
+        $classes="") // look at declaration
+        {
+            $this->option = $option;
+            $this->classes = $classes;
+            $this->multiple_choice = $multiplechoice;
+            $this->allow_options_creation = $allowoptionscreation;
+            $this->poll_owner = auth()->user() && $pollownerid == auth()->user()->id;
+            $optionuser = $option->user;
+            $this->addedby = 
+                ((auth()->user() && $optionuser->id == auth()->user()->id))
+                ? __('you') 
+                : '<a href="' . $optionuser->profilelink . '" class="blue no-underline stop-propagation underline-when-hover">' . $option->user->username . "</a>";
+            $this->voted = $option->voted;
+            if($totalpollvotes == 0)
+                $this->vote_percentage = 0;
+            else
+                $this->vote_percentage = floor($option->votes()->count() * 100 / $totalpollvotes);
+            $this->int_voted = (int)$this->voted;
     }
 
     public function render($data=[])

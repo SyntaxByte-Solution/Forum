@@ -25,7 +25,8 @@ class Vote extends Model
     }
 
     protected static function booted() {
-        static::addGlobalScope(new ExcludeDeactivatedUserData);
+        // We don't want to check the vote owner if his account is deactivated or not in every vote because there's no point to do so and It affect the performance
+        // static::addGlobalScope(new ExcludeDeactivatedUserData);
     }
 
     public function scopeToday($builder){

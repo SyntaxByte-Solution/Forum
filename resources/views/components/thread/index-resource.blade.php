@@ -344,12 +344,17 @@
                                         <x-thread.poll-option-component
                                             :option="$option" 
                                             :multiplechoice="$multiple_choice" 
-                                            :allowoptionscreation="$allow_options_creation"/>
+                                            :allowoptionscreation="$allow_options_creation"
+                                            :totalpollvotes="$poll_total_votes" 
+                                            :pollownerid="$owner->id"
+                                            :totalpollvotes="$poll_total_votes"/>
                                         @else
                                         <x-thread.poll-option-component
                                             :option="$option" 
                                             :multiplechoice="$multiple_choice" 
-                                            :allowoptionscreation="$allow_options_creation"
+                                            :allowoptionscreation="$allow_options_creation" 
+                                            :totalpollvotes="$poll_total_votes" 
+                                            :pollownerid="$owner->id"
                                             classes="none"/>
                                         @endif
                                     @endforeach

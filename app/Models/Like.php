@@ -23,6 +23,7 @@ class Like extends Model
     }
 
     protected static function booted() {
-        static::addGlobalScope(new ExcludeDeactivatedUserData);
+        // We don't want to check the like owner if his account is deactivated or not in every like because there's no point to do so and It affect the performance
+        // static::addGlobalScope(new ExcludeDeactivatedUserData);
     }
 }

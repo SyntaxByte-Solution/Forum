@@ -102,7 +102,13 @@ class PollController extends Controller
 
     public function get_poll_option_component(PollOption $option) {
         $poll = $option->poll;
-        $option_component = (new PollOptionComponent($option, $poll->allow_multiple_choice, $poll->allow_choice_add));
+        $option_component = (new PollOptionComponent(
+            $option,
+            $poll->allow_multiple_choice,
+            $poll->allow_choice_add,
+            $poll->totalvotes,
+            $poll->thread->user_id,
+        ));
         $option_component = $option_component->render(get_object_vars($option_component))->render();
 
         return $option_component;

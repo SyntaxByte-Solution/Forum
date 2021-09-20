@@ -226,7 +226,10 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function isthatthreadsaved($thread) {
-        return $this->savedthreads()->where('thread', $thread->id)->count() > 0;
+        return \DB::select(
+            "SELECT COUNT(*) as saved
+            FROM saved_threads
+            WHERE user=$this->id AND thread=$thread->id")[0]->saved > 0;
     }
 
     public function getFollowedUsersAttribute() {

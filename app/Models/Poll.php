@@ -32,6 +32,15 @@ class Poll extends Model
         );
     }
 
+    public function getTotalvotesAttribute() {
+        \DB::select(
+            "SELECT COUNT(*) as totalvotescount FROM optionsvotes
+            WHERE option_id IN 
+                (SELECT id FROM polloptions
+                 WHERE poll_id IN
+                    (SELECT id FROM polls WHERE id = $this->id))")[0]->totalvotescount;
+    }
+
     /**
      *  This will check If the current user already voted an option associated with this poll
      *  voted attribute in PollOption modelc check if the current user vote a particular option

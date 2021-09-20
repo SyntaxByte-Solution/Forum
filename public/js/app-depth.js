@@ -2192,10 +2192,10 @@ $('.thread-add-share').on('click', function(event) {
     return false;
 });
 
-function move_element_by_id(id) {
+function move_element_by_id(id, target_top=56) {
     location.hash = "#" + id;
     var y = $(window).scrollTop();  //your current y position on the page
-    $(window).scrollTop(y-56);
+    $(window).scrollTop(y-target_top);
 }
 
 // The following three variables will be used in edit thread (look at /thread/edit.js)
@@ -4063,6 +4063,7 @@ function handle_thread_events(thread) {
         handle_option_deletion_view(thread);
         handle_option_vote(thread);
         handle_custom_radio(thread);
+        handle_stop_propagation(thread);
         handle_custom_checkbox(thread);
         handle_options_display_switch(thread.find('.thread-poll-options-container'));
         handle_option_keyup(thread.find('.poll-option-validation'));
@@ -4537,9 +4538,14 @@ function handle_option_vote(component) {
                             }
                         }
                     }
+
+                    if(count > 5) {
+                        move_element_by_id(optioncomponent.attr('id'), 100);
+                    }
     
                     // Adjusting percentage
                     let total_poll_votes = poll_options_box.find('.total-poll-votes');
+                    console.log('total votes: ' + total_poll_votes.val());
                     switch(response.type) {
                         // Here before handling the percentages we have to adjust the total poll votes first based on response.diff
                         case 'added':
@@ -4554,7 +4560,6 @@ function handle_option_vote(component) {
                             // Here the votes are flipped so we don't have to edit the poll options votes because it stays the same
                             adjust_poll_options_percentage(poll_options_box);
                             break;
-                        
                     }
                 },
                 error: function(response) {
@@ -4590,7 +4595,12 @@ function adjust_poll_options_percentage(options_wrapper) {
     let total_poll_votes = options_wrapper.find('.total-poll-votes');
     options_wrapper.find('.poll-option-box').each(function() {
         let option_votes_count = $(this).find('.option-vote-count').text();
-        let new_votes_percentage = Math.floor(parseInt(option_votes_count) * 100 / parseInt(total_poll_votes.val()));
+        let new_votes_percentage;
+        if(parseInt(total_poll_votes.val()) == 0)
+            new_votes_percentage = 0;
+        else
+            new_votes_percentage = Math.floor(parseInt(option_votes_count) * 100 / parseInt(total_poll_votes.val()));
+
         // Here we set the new percentage to the counter as well as to div strip
         $(this).find('.option-vote-percentage').text(new_votes_percentage);
         $(this).find('.vote-option-percentage-strip').css('width',new_votes_percentage+'%');
@@ -4739,19 +4749,28 @@ function handle_option_keyup(optioninput) {
                         data: data,
                         url: '/options',
                         success: function(response) {
+                            let optionid = response;
                             $.ajax({
                                 url: `/options/${response}/component/generate`,
                                 success: function(response) {
+                                    let loadmore_exists = options_wrapper.find('.options-display-switch').length;
+                                    if(loadmore_exists) {
+                                        options_wrapper.find('.poll-option-box').removeClass('none');
+                                        options_wrapper.find('.options-display-switch').remove();
+                                    }
                                     optioninput.val('');
                                     options_wrapper.find('.thread-poll-options-container').append(response);
                                     let unhandled_option = options_wrapper.find('.thread-poll-options-container .poll-option-box').last();
                                     handle_option_vote(unhandled_option);
                                     handle_option_deletion_view(unhandled_option.find('.open-option-delete-check-view'));
                                     handle_stop_propagation(unhandled_option);
-                                    handle_custom_radio(unhandled_option.find('.custom-radio-button'));
-                                    handle_custom_radio(unhandled_option.find('.custom-checkbox-button'));
+                                    handle_custom_radio(unhandled_option.find('.custom-radio-button').parent());
+                                    handle_custom_checkbox(unhandled_option.find('.custom-checkbox-button').parent());
                                     basic_notification_show(optioncontainer.find('.option-saved-message').val(), 'basic-notification-round-tick');
-                                    
+                                    // After appending the option and handling its events we move the scroll to it
+                                    if(loadmore_exists) {
+                                        move_element_by_id('polloption' + optionid, 100);
+                                    }
                                     input.attr('disabled', false);
                                 }
                             });

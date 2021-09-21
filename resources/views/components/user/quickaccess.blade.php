@@ -24,9 +24,9 @@
             </a>
         </div>
         <div class="simple-line-separator my8"></div>
-        <a href="{{ route('contactus') }}" class="no-underline flex align-center button-with-icon-style">
-            <svg class="size20 mr8" fill="#181818" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
-            <span class="fs16 bblack">{{ __('Feedback') }}</span>
+        <a href="{{ route('contactus') }}" class="no-underline button-with-icon-style" style="align-items: unset;">
+            <svg class="size20 mr8" style="min-width: 20px; fill: #181818;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
+            <span class="fs16 bblack">{{ __('Feedback & Contact') }}</span>
         </a>
     </div>
 </div>
@@ -178,7 +178,7 @@
                     <input type="hidden" class="sort-by-key" value="votes">
                 </div>
             </a>
-            <a href="" class="thread-add-suboption flex no-underline">
+            <a href="{{ route('advanced.search.results') . '?forum=0&category=0&hasbestreply=on' }}" class="thread-add-suboption flex no-underline">
                 <svg class="size15 mr4" style="min-width: 15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#353535"/></svg>
                 <div>
                     <p class="no-margin sort-by-val bold forum-color">{{ __('Discussions with best reply') }}</p>

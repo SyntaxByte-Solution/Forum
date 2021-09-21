@@ -43,7 +43,7 @@ class PollPolicy
         if($user->id != $poll_owner_id) {
             // Only nonowners add option if allow_choice_add is enabled
             if($poll->allow_choice_add == 0) {
-                return $this->deny(__("Poll owner disable choice adding"));
+                return $this->deny(__("Poll owner disable options adding"));
             } else {
                 $alreadyadded = $poll->options()->where('user_id', $user->id)->count() > 0;
                 if($alreadyadded) {

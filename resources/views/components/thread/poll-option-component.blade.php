@@ -30,8 +30,13 @@
         </div>
     </div>
     <div class="ml8">
+        @php
+            $vtext = __('vote');
+            if($votescount > 1)
+                $vtext = __('votes');
+        @endphp
         <span class="block fs11 gray">(<span class="option-vote-percentage">{{ $vote_percentage }}</span>%)</span>
-        <div class="block forum-color"><span class="option-vote-count">{{ $votescount }}</span><span style="margin-left: 2px">{{__('votes')}}</span></div>
+        <div class="block forum-color"><span class="option-vote-count">{{ $votescount }}</span><span style="margin-left: 2px">{{ $vtext }}</span></div>
     </div>
     @if($poll_owner)
     <div class="open-option-delete-check-view move-to-right">

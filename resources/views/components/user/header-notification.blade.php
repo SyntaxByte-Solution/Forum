@@ -9,7 +9,7 @@
         </div>
         <div>
             <div class="fs14">
-                <strong class="action_takers">{{ $action_takers }}</strong> <span class="action_statement">{{ $action_statement }}</span> <span class="action_resource_slice">{{ $resource_string_slice }}</span>
+                <strong class="action_takers">{{ $action_takers }}</strong> <span class="action_statement bblack">{{ $action_statement }}</span> <span class="action_resource_slice">{{ $resource_string_slice }}</span>
             </div>
             <div class="fs12 blue bold">{{ $action_date }}</div>
         </div>

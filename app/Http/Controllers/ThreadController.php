@@ -293,7 +293,7 @@ class ThreadController extends Controller
                         if($optionlength < 2)
                             abort(422, __('Poll requires at least 2 options'));
                         if($optionlength > 30)
-                            abort(422, __('You could only add 20 options maximum'));
+                            abort(422, __('You could only add 30 options maximum'));
 
                         $polloptions = $options;
                     }

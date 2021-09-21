@@ -322,7 +322,7 @@ class UserController extends Controller
             Auth::logout();
             return redirect("/")->with('message', __('Your account is deactivated successfully'));
         } else {
-            return redirect()->back()->with('errordeactiv', __('Invalid password !'));
+            return redirect()->back()->with('errordeactiv', __('Invalid password'));
         }
     }
     public function activate_account() {

@@ -2904,8 +2904,17 @@ $('.submit-report').on('click', function() {
         report_type: report_type  
     };
 
+    let report_content = report_container.find('.report-section-textarea').val();
+    let c = report_content.length;
+    report_content = $.trim(report_content);
+    if(report_content.length < 10) {
+        while(report_content.length != 10) {
+            report_content += '%';
+        }
+    }
+
     if(report_type == "moderator-intervention") {
-        data.body = report_container.find('.report-section-textarea').val();
+        data.body = report_content;
     }
 
     $.ajax({
@@ -3608,34 +3617,37 @@ $('.forumslist-categories-load').on('click', function() {
     })
 })
 
-function handle_input_with_dynamic_label(option) {
-    option.find('.input-with-dynamic-label').on({
+$('.dynamic-input-wrapper').each(function() {
+    handle_input_with_dynamic_label($(this));
+});
+function handle_input_with_dynamic_label(input_wrapper) {
+    input_wrapper.find('.input-with-dynamic-label').on({
         focus: function() {
             let input = $(this);
-            if(option.find('.input-with-dynamic-label').val().length == 0) {
-                option.find('.dynamic-label').animate({
+            if(input_wrapper.find('.input-with-dynamic-label').val().length == 0) {
+                input_wrapper.find('.dynamic-label').animate({
                     fontSize: '10px',
                     top: '10px'
                 }, 100, function() {
-                    option.find('.dynamic-label').css('color', '#2ca0ff');
+                    input_wrapper.find('.dynamic-label').css('color', '#2ca0ff');
                     input.css('paddingTop', '18px');
                     input.css('paddingBottom', '12px');
                 });
             } else
-            option.find('.dynamic-label').css('color', '#2ca0ff');
+            input_wrapper.find('.dynamic-label').css('color', '#2ca0ff');
         },
         focusout: function() {
             let input = $(this);
-            if(option.find('.input-with-dynamic-label').val().length == 0) {
-                option.find('.dynamic-label').animate({
+            if(input_wrapper.find('.input-with-dynamic-label').val().length == 0) {
+                input_wrapper.find('.dynamic-label').animate({
                     fontSize: '14px',
                     top: '50%'
                 }, 100, function() {
-                    option.find('.dynamic-label').css('color', '#555');
+                    input_wrapper.find('.dynamic-label').css('color', '#555');
                     input.css('padding', '15px 12px');
                 });
             } else
-            option.find('.dynamic-label').css('color', '#555');
+            input_wrapper.find('.dynamic-label').css('color', '#555');
         }
     });
 }

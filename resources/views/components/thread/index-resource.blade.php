@@ -309,8 +309,8 @@
                         </div>
                         @else
                         <div class="thread-content-padding" style="padding-bottom: 0">
-                            <div class="mb4 expand-box">
-                                <span class="expandable-text fs15">{{ $thread->mediumslice }}</span>
+                            <div class="expand-box" style="margin-bottom: 16px">
+                                <span class="expandable-text fs16">{{ $thread->mediumslice }}</span>
                                 @if($thread->mediumslice != $thread->subject)
                                 <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
                                 <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">

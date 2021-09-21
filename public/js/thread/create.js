@@ -1,3 +1,23 @@
+
+
+let urlprms = new URLSearchParams(window.location.search);
+
+if(urlprms.has('type')) {
+    if(urlprms.get('type') == 'poll') {
+        let thread_add_container = $('#thread-add-wrapper');
+        thread_add_container.find('.thread-type-value').val('poll');
+        thread_add_container.find('#thread-add-discussion').addClass('none');
+        thread_add_container.find('#thread-add-poll').removeClass('none');
+
+        thread_add_container.find('.tap-discussion').attr('style', '');
+        thread_add_container.find('.tap-poll').attr('style', 'background-color: #dfdfdf; cursor: default;');
+
+        let selected_icon_path = thread_add_container.find('.tap-poll .selected-icon-path').val();
+        let status_ico = thread_add_container.find('.thread-add-type-icon');
+        status_ico.find('path').attr('d', selected_icon_path);
+    }
+}
+
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
 $('.thread-add-share').on('click', function(event) {
   let threadtype = $('#thread-add-wrapper .thread-type-value').val(); // discussion or poll

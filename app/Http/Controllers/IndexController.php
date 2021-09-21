@@ -21,18 +21,18 @@ class IndexController extends Controller
         if($request->has('tab')) {
             $tab = $request->get('tab');
             if($tab == 'today') {
-                $threads = Thread::without(['posts', 'votes', 'likes', 'user.status'])->today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
+                $threads = Thread::without(['user.status'])->today()->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
                 $tab_title = 'Today';
             } else if($tab == 'thisweek') {
                 $threads = Thread::where(
                     'created_at', 
                     '>=', 
-                    \Carbon\Carbon::without(['posts', 'votes', 'likes', 'user.status'])->now()->subDays(7)->setTime(0, 0)
+                    \Carbon\Carbon::without(['user.status'])->now()->subDays(7)->setTime(0, 0)
                 )->orderBy('view_count', 'desc')->orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
                 $tab_title = 'This week';
             }
         } else {
-            $threads = Thread::without(['posts', 'votes', 'likes', 'user.status'])->orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
+            $threads = Thread::without(['user.status'])->orderBy('created_at', 'desc')->take(self::PAGESIZE+1)->get();
         }
 
         $hasmore = false;

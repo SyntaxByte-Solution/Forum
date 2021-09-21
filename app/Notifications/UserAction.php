@@ -83,6 +83,12 @@ class UserAction extends Notification implements ShouldBroadcast
             $resource_action_icon = 'followfilled24-icon';
         } else if($action_type == 'avatar-change') {
             $resource_action_icon = 'image24-icon';
+        } else if($action_type == 'poll-add') {
+            $resource_action_icon = 'poll24-icon';
+        } else if($action_type == 'poll-vote') {
+            $resource_action_icon = 'pollvote24-icon';
+        } else if($action_type == 'poll-option-add') {
+            $resource_action_icon = 'polloptionadd24-icon';
         } else {
             $resource_action_icon = 'notification24-icon';
         }

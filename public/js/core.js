@@ -1295,7 +1295,7 @@ function handle_mark_as_read() {
 }
 
 let notification_timeout;
-if(userId != "" && false) { // Disable any websockets function due to dev performence
+if(userId != "") { // Disable any websockets function due to dev performence
     Echo.private('user.' + userId + '.notifications')
         .notification((notification) => {
             // Stop animatio if there's already animation

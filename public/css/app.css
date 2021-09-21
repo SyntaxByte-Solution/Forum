@@ -1135,6 +1135,18 @@ a, input, textarea {
     background-position: 0px -264px;
 }
 
+.poll24-icon {
+    background-position: -24px -264px;
+}
+
+.pollvote24-icon {
+    background-position: -24px -288px;
+}
+
+.polloptionadd24-icon {
+    background-position: 0px -288px;
+}
+
 .menu24-icon {
     background-position: 0px -48px;
     border-radius: 50%;

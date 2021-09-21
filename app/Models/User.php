@@ -396,6 +396,12 @@ class User extends UserAuthenticatable implements Authenticatable
                         $resource_action_icon = 'followfilled24-icon';
                     } else if($cloned_notification_data->data['action_type'] == 'avatar-change') {
                         $resource_action_icon = 'image24-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'poll-action') {
+                        $resource_action_icon = 'poll24-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'poll-vote') {
+                        $resource_action_icon = 'pollvote24-icon';
+                    } else if($cloned_notification_data->data['action_type'] == 'poll-option-add') {
+                        $resource_action_icon = 'polloptionadd24-icon';
                     } else {
                         $resource_action_icon = 'notification24-icon';
                     }

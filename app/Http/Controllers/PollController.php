@@ -45,6 +45,7 @@ class PollController extends Controller
                 ];
             }
             OptionVote::create($optionvote);
+            $this->notify($poll, 'voted on your poll :', 'poll-vote');
             return [
                 'diff'=>1,
                 'type'=>'added'
@@ -75,6 +76,7 @@ class PollController extends Controller
             }
             
             OptionVote::create($optionvote);
+            $this->notify($poll, 'voted on your poll :', 'poll-vote');
             return [
                 'diff'=>1,
                 'type'=>'added'
@@ -97,7 +99,34 @@ class PollController extends Controller
         $option['user_id'] = auth()->user()->id;
         $option = PollOption::create($option);
 
+        $this->notify($option->poll, 'added an option to your poll :', 'poll-option-add');
+
         return $option->id;
+    }
+
+    public function notify($poll, $action_statement, $action_type) {
+        $currentuser = auth()->user();
+
+        $thread = $poll->thread;
+        $thread_owner = $thread->user;
+        if(!$thread_owner->thread_disabled($thread->id)) {
+            if($thread_owner->id != $currentuser->id) {
+                $notif_data = [
+                    'action_user'=>$currentuser->id,
+                    'action_statement'=>$action_statement,
+                    'resource_string_slice'=>mb_convert_encoding($thread->slice, 'UTF-8', 'UTF-8'),
+                    'action_type'=>$action_type,
+                    'action_date'=>now(),
+                    'action_resource_id'=>$thread->id,
+                    'action_resource_link'=>$thread->link,
+                ];
+                
+                // Only notify thread owner if he didn't disable notif on the thread
+                $thread_owner->notify(
+                    new \App\Notifications\UserAction($notif_data)
+                );
+            }
+        }
     }
 
     public function get_poll_option_component(PollOption $option) {

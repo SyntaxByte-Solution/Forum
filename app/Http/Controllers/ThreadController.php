@@ -260,10 +260,12 @@ class ThreadController extends Controller
                 $data['has_media'] = 1;
         }
 
+        $action_type = 'discussion-add';
         // Create the thread
         $thread = Thread::create($data);
         // Check if the thread is a poll to add poll and poll options records
         if(isset($data['type']) && $data['type'] == 'poll') {
+            $action_type = 'poll-add';
             // validate the poll attributes
             $polldata;
             $polldata = $request->validate([
@@ -335,9 +337,9 @@ class ThreadController extends Controller
         // Notify the followers [THIS MUST BE RUN IN QUEUED, because if the current user has multiple followers it will take a long time]
         $notification =  new \App\Notifications\UserAction([
             'action_user'=>auth()->user()->id,
-            'action_statement'=>"Shared a new discussion :",
+            'action_statement'=>"Shared a new $type :",
             'resource_string_slice'=>$thread->slice,
-            'action_type'=>'thread-action',
+            'action_type'=>"thread-action",
             'action_date'=>now(),
             'action_resource_id'=>$thread->id,
             'action_resource_link'=>$thread->link,
@@ -468,7 +470,6 @@ class ThreadController extends Controller
 
         return $thread->link;
     }
-
     public function update_visibility(Request $request) {
         $data = $request->validate([
             'thread_id'=>'required|exists:threads,id',

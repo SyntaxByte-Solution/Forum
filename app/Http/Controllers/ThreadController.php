@@ -261,10 +261,12 @@ class ThreadController extends Controller
         }
 
         $action_type = 'discussion-add';
+        $type = 'discussion';
         // Create the thread
         $thread = Thread::create($data);
         // Check if the thread is a poll to add poll and poll options records
         if(isset($data['type']) && $data['type'] == 'poll') {
+            $type = 'poll';
             $action_type = 'poll-add';
             // validate the poll attributes
             $polldata;
@@ -535,7 +537,9 @@ class ThreadController extends Controller
         $forum = Forum::find(Category::find($thread->category_id)->forum_id)->slug;
         $category = Category::find($thread->category_id)->slug;
 
-        return route('thread.show', ['forum'=>$forum, 'category'=>$category, 'thread'=>$thread->id]);
+        return [
+            'switched_to'=>$data['switch']
+        ];
     }
     public function thread_save_switch(Request $request, Thread $thread) {
         $this->authorize('save', $thread);

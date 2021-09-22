@@ -31,6 +31,7 @@
         @yield('header')
         @include('partials.thread.poll.option-delete-viewer')
         @include('partials.thread.delete-viewer')
+        @include('partials.thread.replies-disable-viewer')
         <main class="relative">
             @include('partials.shared-components')
             @yield('content')

@@ -4,34 +4,6 @@
     <div class="hidden-thread-section none px8 py8">
         <p class="my4 fs12">{{__('Post hidden. If you want to show it again')}} <span class="pointer blue thread-display-button">{{ __('click here') }}</span></p>
     </div>
-    @can('update', $thread)
-    <div class="absolute full-shadowed br6 turn-off-posts-viewer" style="z-index: 1">
-        <div class="full-center full-width full-height">
-            <div>
-                @php
-                    $posts_switch = ($thread->replies_off) ? 'on' : 'off';
-                    // Here we flip it back because the switch will be used to set the replies_off value
-                    // and not an indicator of the state of replies
-                    $switch = ($thread->replies_off) ? 0 : 1;
-                @endphp
-                
-                @if(!$thread->replies_off)
-                <p class="white bold fs15 my4 text-center">{{ __('Important: If you turn off replies, no one could reply to your post') }}.</p>
-                <p class="white fs15 mt4 mb8 text-center">{{ __('However if there are already some replies, they will not disappeared') }}.</p>
-                @else
-                <p class="white bold fs15 my8">{{ __('Turn on replies on this discussion') }}.</p>
-                @endif
-                <div class="full-center">
-                    <input type="button" class="simple-white-button pointer turn-off-posts fs13" value="{{ __('Turn ' . $posts_switch . ' replies') }}">
-                    <div class="pointer white close-shadowed-view-button fs14 bold" style="text-decoration: none; margin-left: 6px;">{{ __('cancel') }}</div>
-                    <input type="hidden" class="id" value="{{ $thread->id }}">
-                    <input type="hidden" class="switch" value="{{ $switch }}">
-                    <input type="hidden" class="button-text-ing" value="{{ __('Please wait') }}..">
-                </div>
-            </div>
-        </div>
-    </div>
-    @endcan
     <div class="flex thread-component">
         <div class="thread-vote-section">
             <div class="vote-box full-center flex-column relative">
@@ -213,10 +185,16 @@
                                     <div class="no-underline black">{{ __('Delete post') }}</div>
                                     <input type="hidden" class="thread-id" value="{{ $thread->id }}" autocomplete="off">
                                 </div>
-                                <div class="simple-suboption flex align-center open-thread-shadowed-viewer">
-                                    <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') turnoffreplies17-icon @else turnonreplies17-icon @endif mr4"></div>
-                                    <div>{{ __('Turn ' . $posts_switch .  ' replies') }}</div>
-                                    <input type="hidden" value=".turn-off-posts-viewer" class="viewer">
+                                <div class="simple-suboption flex align-center open-thread-replies-switch">
+                                    @php
+                                        $switch_text = ($thread->replies_off) ? 'on' : 'off';
+                                        $switch = ($thread->replies_off) ? 0 : 1;
+                                    @endphp
+                                    <div class="pointer small-image-2 sprite sprite-2-size replies-switch-icon @if($switch_text == 'off') turnoffreplies17-icon @else turnonreplies17-icon @endif mr4"></div>
+                                    <div class="button-text">{{ __('Turn ' . $switch_text .  ' replies') }}</div>
+                                    <input type="hidden" class="thread-id" value="{{ $thread->id }}" autocomplete="off">
+                                    <!-- the following value will be used to set the state of replies and not the current state of the replyinh ability -->
+                                    <input type="hidden" class="thread-replies-switch-to" value="{{ $switch }}" autocomplete="off">
                                 </div>
                             @endcan
                             <div class="pointer simple-suboption thread-display-button flex align-center">

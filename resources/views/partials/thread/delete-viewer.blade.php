@@ -2,7 +2,10 @@
     <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
     <div class="global-viewer-content-box viewer-box-style-1">        
         <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
-            <span class="fs20 bold forum-color">{{ __('Delete Post') }}</span>
+            <span class="fs20 bold forum-color flex align-center">
+                <svg class="size20 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                {{ __('Delete Post') }}
+            </span>
             <div class="pointer fs20 close-global-viewer unselectable">✖</div>
         </div>
         <div style="padding: 14px">

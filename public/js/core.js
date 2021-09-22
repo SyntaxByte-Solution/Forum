@@ -34,9 +34,9 @@ function enable_page_scroll() {
     $('#abs-scrollbar').addClass('none');
 }
 
-$(window).on('unload', function() {
-    $(window).scrollTop(0);
- });
+// $(window).on('unload', function() {
+//     $(window).scrollTop(0);
+//  });
 
 /**
  * Update user activity in every page (because this js file is included in every page) and update the user
@@ -414,40 +414,75 @@ $('.share-thread').on('click', function(event) {
     return false;
 });
 
-$('.turn-off-posts').on('click', function() {
-    handle_turn_off_posts($(this));
-});
-function handle_turn_off_posts(button) {
-    button.on('click', function() {
-        let button_text_no_ing = button.val();
-        let button_text_ing = button.parent().find('.button-text-ing').val();
-        button.val(button_text_ing);
-        button.attr("disabled","disabled");
-        button.attr('style', 'background-color: #acacac; cursor: default');
-    
-        let thread_id = button.parent().find('.id').val();
-        let swtch = button.parent().find('.switch').val();
-    
-        $.ajax({
-            type: 'post',
-            url: '/thread/'+thread_id+'/posts/switch',
-            data: {
-                _token: csrf,
-                switch: swtch
-            },
-            success: function(response) {
-                window.location.href = response;
-            },
-            error: function(response) {
-                button.val(button_text_no_ing);
-                button.attr('style', '');
-                button.prop("disabled", false);
-            },
-        })
-    });
-}
+$('#thread-replies-switcher').on('click', function() {
+    let button = $(this);
+    let button_text_no_ing = button.find('button-text').text();
+    let button_text_ing = button.find('.button-text-ing').val();
+    button.find('.button-text').text(button_text_ing);
+    button.attr("disabled","disabled");
+    button.attr('style', 'cursor: not-allowed; background-color: #5f657b;');
+    button.find('.button-text').attr('style', 'margin-right: 20px'); // Make space to spinner
 
-$('#category-dropdown').change(function() {
+    
+    let spinner = button.find('.spinner');
+    start_spinner(spinner, 'move-to-trash-thread');
+    spinner.removeClass('opacity0');
+    
+    let thread_id = button.find('.thread-id').val();
+    let swtch = $('#thread-replies-switch-viewer').find('.switch-to').val();
+    $.ajax({
+        type: 'post',
+        url: '/thread/'+thread_id+'/posts/switch',
+        data: {
+            _token: csrf,
+            switch: swtch
+        },
+        success: function(response) {
+            let thread = $('#thread'+thread_id);
+            let viewer = $('#thread-replies-switch-viewer');
+            let turn_on_label = viewer.find('.turn-on-label').val();
+            let turn_off_label = viewer.find('.turn-off-label').val();
+            let message;
+
+            if(response.switched_to == 1) {
+                thread.find('.open-thread-replies-switch .button-text').text(turn_on_label)
+                thread.find('.replies-switch-icon').addClass('turnonreplies17-icon');
+                thread.find('.replies-switch-icon').removeClass('turnoffreplies17-icon');
+                thread.find('.open-thread-replies-switch .thread-replies-switch-to').val(0);
+
+                message = button.find('.turn-on-message').val();
+            } else {
+                thread.find('.open-thread-replies-switch .button-text').text(turn_off_label)
+                thread.find('.replies-switch-icon').addClass('turnoffreplies17-icon');
+                thread.find('.replies-switch-icon').removeClass('turnonreplies17-icon');
+                thread.find('.open-thread-replies-switch .thread-replies-switch-to').val(1);
+
+                message = button.find('.turn-off-message').val();
+            }
+
+            basic_notification_show(message, 'basic-notification-round-tick');
+        },
+        error: function(response) {
+            button.find('.button-text').text(button_text_bo_ing);
+            let errorObject = JSON.parse(response.responseText);
+            let er = errorObject.message;
+
+            display_top_informer_message(er, 'error');
+        },
+        complete: function() {
+            spinner.addClass('opacity0');
+            stop_spinner(spinner, 'move-to-trash-thread');
+
+            button.attr("disabled",false);
+            button.attr('style', '');
+            button.find('.button-text').attr('style', '');
+
+            $('.close-global-viewer').trigger('click');
+        }
+    })
+});
+
+$('#category-dropdown').on('change', function() {
     let forum_slug = $('#forum-slug').val();
     let category_slug = $('#category-dropdown').val();
     if(category_slug == 'all') {
@@ -1584,6 +1619,7 @@ $('.thread-container-box').each(function() {
     handle_thread_display($(this));
     handle_expend($(this));
     handle_open_thread_delete_viewer($(this));
+    handle_open_thread_replies_switch($(this));
 });
 
 function handle_open_thread_delete_viewer(thread) {
@@ -1595,17 +1631,41 @@ function handle_open_thread_delete_viewer(thread) {
         disable_page_scroll();
     });
 }
+function handle_open_thread_replies_switch(thread) {
+    thread.find('.open-thread-replies-switch').on('click', function() {
+        let button = $(this);
+        let threadid = button.find('.thread-id').val();
+        let switchto = button.find('.thread-replies-switch-to').val();
+        $('#thread-replies-switch-viewer').find('.thread-id').val(threadid);
+        $('#thread-replies-switch-viewer').find('.switch-to').val(switchto);
 
-function handle_thread_display(thread_container_box) {
-    thread_container_box.find('.thread-display-button').on('click', function() {
-        let thread_component_display = thread_container_box.find('.thread-component').css('display');
+        let turn_on_label = $('#thread-replies-switcher').find('.turn-on-label').val();
+        let turn_off_label = $('#thread-replies-switcher').find('.turn-off-label').val();
+        if(switchto == 1) { // REMEMBER THAT 1 means replies are off and not true or set it to on
+            $('#thread-replies-switch-viewer').find('.thread-replies-switched-on').removeClass('none');
+            $('#thread-replies-switch-viewer').find('.thread-replies-switched-off').addClass('none');
+            $('#thread-replies-switcher .button-text').text(turn_off_label);
+        } else {
+            $('#thread-replies-switch-viewer').find('.thread-replies-switched-on').addClass('none');
+            $('#thread-replies-switch-viewer').find('.thread-replies-switched-off').removeClass('none');
+            $('#thread-replies-switcher .button-text').text(turn_on_label);
+        }
+        $('#thread-replies-switch-viewer').removeClass('none');
+
+
+        disable_page_scroll();
+    });
+}
+function handle_thread_display(thread) {
+    thread.find('.thread-display-button').on('click', function() {
+        let thread_component_display = thread.find('.thread-component').css('display');
 
         if(thread_component_display == 'none') {
-            thread_container_box.find('.thread-component').css('display', 'flex');
-            thread_container_box.find('.hidden-thread-section').addClass('none');
+            thread.find('.thread-component').css('display', 'flex');
+            thread.find('.hidden-thread-section').addClass('none');
         } else {
-            thread_container_box.find('.thread-component').css('display', 'none');
-            thread_container_box.find('.hidden-thread-section').removeClass('none');
+            thread.find('.thread-component').css('display', 'none');
+            thread.find('.hidden-thread-section').removeClass('none');
         }
     });
 }
@@ -3372,7 +3432,8 @@ function handle_thread_events(thread) {
     handle_hide_parent(thread);
     // Handle thread events
     handle_save_threads(thread.find('.save-thread'));
-    handle_turn_off_posts(thread.find('.turn-off-posts'));
+    handle_open_thread_delete_viewer(thread);
+    handle_open_thread_replies_switch(thread);
     handle_thread_display(thread);
     handle_tooltip(thread);
     handle_thread_visibility_switch(thread);

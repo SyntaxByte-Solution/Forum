@@ -569,7 +569,6 @@ class ThreadController extends Controller
         $tab = "all";
 
         $categories = $forum->categories()->excludeannouncements()->get();
-        $category = $forum->categories()->first();
 
         // First get all forum's categories
         $categories_ids = $categories->pluck('id');
@@ -602,7 +601,6 @@ class ThreadController extends Controller
         ->with(compact('tab_title'))
         ->with(compact('forum'))
         ->with(compact('categories'))
-        ->with(compact('category'))
         ->with(compact('announcements'))
         ->with(compact('threads'))
         ->with(compact('pagesize'))

@@ -87,7 +87,7 @@ class SearchController extends Controller
                         $fail('The '.$attribute."  doesn't exists in our records.");
                     } else {
                         if($value != 0) {
-                            $filters[] = [__('Forum'), \App\Models\Forum::find($value)->forum, 'forum'];
+                            $filters[] = [__('Forum'), __(\App\Models\Forum::find($value)->forum), 'forum'];
                         }
                     }
                 },
@@ -105,7 +105,7 @@ class SearchController extends Controller
                             $fail(__("The category doesn't exists in our records"));
                         } else {
                             if($value != 0) {
-                                $filters[] = [__('Category'), \App\Models\Category::find($value)->category, 'category'];
+                                $filters[] = [__('Category'), __(\App\Models\Category::find($value)->category), 'category'];
                             }
                         }
                     } else { /** This case the user doesn't choose a forum and category is not 0 so we have to stop the exec */

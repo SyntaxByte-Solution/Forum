@@ -75,6 +75,8 @@ class AppServiceProvider extends ServiceProvider
         if (($lang = Cookie::get('lang')) !== null) {
             App::setLocale($lang);
         }
+        setlocale(LC_TIME, $lang.'.utf8');
+
         Schema::defaultStringLength(191);
     }
 }

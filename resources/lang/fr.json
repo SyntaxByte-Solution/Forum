@@ -447,7 +447,7 @@
     "Update your title here": "Mettez à jour votre titre ici",
     "Include all the information someone would need to understand your discussion": "Incluez toutes les informations dont quelqu'un aurait besoin pour comprendre votre discussion",
     "Update your discussion": "Mettez à jour votre discussion",
-    "Turn off replies on this discussion": "Désactiver les réponses sur cette discussion",
+    "Turn off replies on this post": "Désactiver les réponses sur ce post",
     "Medias": "Médias",
     "Add media": "Ajouter média",
     "Saving changes": "Enregistrement en cours",
@@ -826,5 +826,9 @@
     "Your account has been deleted successfully": "Votre compte a été supprimé avec succès",
     "Invalid password": "Mot de passe incorrect",
     "Your account is deactivated successfully": "Votre compte est désactivé avec succès",
-    "Your account is activated successfully": "Votre compte est activé avec succès"
+    "Your account is activated successfully": "Votre compte est activé avec succès",
+    "Poste replies enable/disable": "Activer/désactiver les réponses du poste",
+    "Replies are enabled on this post": "Les réponses sont activées sur ce poste",
+    "Replies are disabled on this post": "Les réponses sont désactivées sur ce poste",
+    "There are no threads at the moment try out later or change the category or date filter": "Il n'y a pas des postes pour le moment essayez plus tard ou modifiez la catégorie ou le filtre de date"
 }

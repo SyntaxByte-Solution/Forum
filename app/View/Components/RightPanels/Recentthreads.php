@@ -37,6 +37,10 @@ class Recentthreads extends Component
         } else {
             $this->recent_threads = Thread::without(['visibility', 'status', 'user.status'])->orderBy('created_at', 'desc')->take($threads_count)->get();
         }
+
+        if($this->recent_threads->count() < $threads_count) {
+            $this->recent_threads = Thread::without(['visibility', 'status', 'user.status'])->orderBy('created_at', 'desc')->take($threads_count)->get();
+        }
     }
 
     /**

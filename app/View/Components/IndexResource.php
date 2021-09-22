@@ -52,7 +52,7 @@ class IndexResource extends Component
         $this->owner = $thread->user;
         $this->forum = $thread->category->forum;
         $this->category = $thread->category;
-        $this->at = (new Carbon($thread->created_at))->toDayDateTimeString();
+        $this->at = (new Carbon($thread->created_at))->isoFormat("dddd D MMM YYYY - H:M A");
         $this->at_hummans = (new Carbon($thread->created_at))->diffForHumans();
         $this->views = $thread->view_count;
         $this->replies = $thread->posts()->count();

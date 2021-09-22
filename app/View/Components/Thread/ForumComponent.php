@@ -27,7 +27,7 @@ class ForumComponent extends Component
         $last_thread = $forum_threads->orderBy('created_at', 'desc')->first();
         if($last_thread) {
             $this->last_thread = $last_thread;
-            $this->at = (new Carbon($last_thread->created_at))->toDayDateTimeString();
+            $this->at = (new Carbon($last_thread->created_at))->isoFormat("dddd D MMM YYYY - H:M A");
             $this->at_hummans = (new Carbon($last_thread->created_at))->diffForHumans();
         }
     }

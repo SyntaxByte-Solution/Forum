@@ -21,7 +21,6 @@
 @endsection
 
 @section('content')
-    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
     <input type="hidden" id="forum-slug" value="{{ request('forum')->slug }}">
     <input type="hidden" class="current-threads-count" autocomplete="off" value="{{ $pagesize }}">

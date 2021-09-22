@@ -21,7 +21,6 @@
 @endsection
 
 @section('content')
-    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'search', 'subpage'=>'threads-search'])
     <div class="flex align-center middle-padding-1">
         <a href="/" class="link-path flex align-center unselectable">

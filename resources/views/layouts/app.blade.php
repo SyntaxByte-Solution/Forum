@@ -30,8 +30,7 @@
         <!-- IMPORT HEADER FROM PARTIALS LATER -->
         @yield('header')
         @include('partials.thread.poll.option-delete-viewer')
-        @include('partials.thread.delete-viewer')
-        @include('partials.thread.replies-disable-viewer')
+        @include('partials.thread.viewers')
         <main class="relative">
             @include('partials.shared-components')
             @yield('content')

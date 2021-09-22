@@ -22,7 +22,6 @@
 @endsection
 
 @section('content')
-    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'home'])
     <div>
         <img src="{{ asset('assets/images/img/welcome.jpg') }}" class="block full-width" alt="">

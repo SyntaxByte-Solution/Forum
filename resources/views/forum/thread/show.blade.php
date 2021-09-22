@@ -20,7 +20,6 @@
     @include('partials.header')
 @endsection
 @section('content')
-    @include('partials.thread.viewer')
     @include('partials.left-panel', ['page' => 'threads'])
     @if(auth()->user() && auth()->user()->id != $thread->user->id)
         @include('partials.thread.report.thread-report')

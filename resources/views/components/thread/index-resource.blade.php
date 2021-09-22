@@ -31,29 +31,6 @@
             </div>
         </div>
     </div>
-    <div class="absolute full-shadowed zi12 thread-deletion-viewer br6">
-        <svg class="size14 simple-button-style rounded hide-parent" style="position: absolute; top: 6px; right: 6px" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 95.94 95.94"><path d="M62.82,48,95.35,15.44a2,2,0,0,0,0-2.83l-12-12A2,2,0,0,0,81.92,0,2,2,0,0,0,80.5.59L48,33.12,15.44.59a2.06,2.06,0,0,0-2.83,0l-12,12a2,2,0,0,0,0,2.83L33.12,48,.59,80.5a2,2,0,0,0,0,2.83l12,12a2,2,0,0,0,2.82,0L48,62.82,80.51,95.35a2,2,0,0,0,2.82,0l12-12a2,2,0,0,0,0-2.83Z"/></svg>
-        <div class="white px8 py8 flex flex-column justify-center border-box" style="margin-top: 50px">
-            <h2 class="no-margin fs18 text-center">{{ __('Please make sure you want to delete the discussion') }} !</h2>
-            <p class="fs12 no-margin text-center">{{ __('This will throw the discussion to the archive in case you decide to restore It. You can either restore it or delete it permanently later by going to your activities -> archive !') }}</p>
-            
-            <div class="full-center mt8">
-                <div class="simple-white-button move-to-trash-button align-center" style="display: flex">
-                    <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
-                    <div class="btn-text">{{ __('Move to trash') }}</div>
-                    <input type="hidden" class="trash-move-link" value="{{ route('thread.delete', ['thread'=>$thread->id]) }}">
-                    <input type="hidden" class="btn-text-no-ing" value="{{ __('Move to trash') }}">
-                    <input type="hidden" class="btn-text-ing" value="{{ __('Moving to trash') }}..">
-                    <input type="hidden" class="moved-successfully" value="{{ __('Your discussion is moved successfully to trash') }}.">
-                    <input type="hidden" class="go-to-archive" value="{{ __('Go to archive') }}.">
-                </div>
-                <div class="spinner size17 ml4 opacity0">
-                    <svg class="size17" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 197.21 197.21"><path d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
-                </div>
-            </div>
-            
-        </div>
-    </div>
     @endcan
     <div class="flex thread-component">
         <div class="thread-vote-section">
@@ -87,7 +64,7 @@
                             <img data-src="{{ $owner->sizedavatar(36, '-l') }}" class="thread-owner-avatar size36 flex lazy-image image-with-fade" alt="">
                         </a>
                         <input type="hidden" class="user-card-container-index">
-                        <input type="hidden" class="uid" value="{{ $owner->id }}">
+                        <input type="hidden" class="uid" value="{{ $owner->id }}" autocomplete="off">
                         <!-- user card component -->
                         @include('partials.user-space.faded-card')
                         <div>
@@ -231,10 +208,10 @@
                                     <div class="black">{{ __('Edit post') }}</div>
                                 </a>
                                 @endif
-                                <div class="pointer simple-suboption flex align-center open-thread-shadowed-viewer">
+                                <div class="pointer simple-suboption flex align-center open-thread-delete-viewer">
                                     <svg class="size17 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
                                     <div class="no-underline black">{{ __('Delete post') }}</div>
-                                    <input type="hidden" value=".thread-deletion-viewer" class="viewer">
+                                    <input type="hidden" class="thread-id" value="{{ $thread->id }}" autocomplete="off">
                                 </div>
                                 <div class="simple-suboption flex align-center open-thread-shadowed-viewer">
                                     <div class="pointer action-verification small-image-2 sprite sprite-2-size @if($posts_switch == 'off') turnoffreplies17-icon @else turnonreplies17-icon @endif mr4"></div>

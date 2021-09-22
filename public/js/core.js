@@ -1583,7 +1583,18 @@ $('.thread-container-box').each(function() {
     handle_expend_button_appearence($(this));
     handle_thread_display($(this));
     handle_expend($(this));
+    handle_open_thread_delete_viewer($(this));
 });
+
+function handle_open_thread_delete_viewer(thread) {
+    thread.find('.open-thread-delete-viewer').on('click', function() {
+        let threadid = $(this).find('.thread-id').val();
+        $('#thread-delete-viewer').find('.thread-id').val(threadid);
+        $('#thread-delete-viewer').removeClass('none');
+
+        disable_page_scroll();
+    });
+}
 
 function handle_thread_display(thread_container_box) {
     thread_container_box.find('.thread-display-button').on('click', function() {
@@ -3294,55 +3305,54 @@ function handle_restore_thread_button(thread) {
     });
 }
 
-$('.move-to-trash-button').each(function() {
-    handle_move_to_trash($(this));
-});
-function handle_move_to_trash(button) {
-    button.on('click', function() {
-        let button_text_no_ing = button.find('.btn-text-no-ing').val();
-        let button_text_ing = button.find('.btn-text-ing').val();
-        let moved_successfully = button.find('.moved-successfully').val();
-        let go_to_archive = button.find('.go-to-archive').val();
-    
-        let thread = button;
-        while(!thread.hasClass('thread-container-box')) {
-            thread = thread.parent();
-        }
+$('#move-thread-to-trash').on('click', function() {
+    let button = $(this);
 
-        button.find('.btn-text').text(button_text_ing);
-        button.find('.btn-text').attr("disabled","disabled");
-        button.find('.btn-text').attr('style', 'cursor: default');
-    
-        let spinner = button.parent().find('.spinner');
-        start_spinner(spinner, 'restore-thread-inline-button');
-        spinner.removeClass('opacity0');
-    
-        $.ajax({
-            type: 'post',
-            url: button.find('.trash-move-link').val(),
-            data: {
-                _token: csrf,
-                _method: 'DELETE'
-            },
-            success: function(response) {
-                if($('.page').length && $('.page').val() == "thread-show") {
-                    window.location.href = response;
-                } else
-                    thread.remove();
-                basic_notification_show(moved_successfully + "<a class='blue no-underline bold' href='" + response + "'>" + go_to_archive + "</a>", 'basic-notification-round-tick');
-            },
-            error: function() {
-                button.find('.btn-text').text(button_text_no_ing);
-                button.find('.btn-text').attr("disabled",false);
-                button.find('.btn-text').attr('style', '');
-                spinner.addClass('opacity0');
-                stop_spinner(spinner, 'restore-thread-inline-button');
-            },
-            complete: function() {
+    let button_text_no_ing = button.find('.btn-text-no-ing').val();
+    let button_text_ing = button.find('.btn-text-ing').val();
+    let moved_successfully = button.find('.moved-successfully').val();
+    let go_to_archive = button.find('.go-to-archive').val();
+
+    button.find('.btn-text').text(button_text_ing);
+    button.find('.btn-text').attr('style', 'margin-right: 20px');
+    button.attr("disabled","disabled");
+    button.attr('style', 'cursor: not-allowed; background-color: #5f657b;');
+    let spinner = button.find('.spinner');
+    start_spinner(spinner, 'move-to-trash-thread');
+    spinner.removeClass('opacity0');
+
+    let threadid = button.find('.thread-id').val();
+    $.ajax({
+        type: 'post',
+        url: `/thread/${threadid}`,
+        data: {
+            _token: csrf,
+            _method: 'DELETE'
+        },
+        success: function(response) {
+            if($('.page').length && $('.page').val() == "thread-show") {
+                window.location.href = response;
+            } else {
+                $('#thread'+threadid).remove();
             }
-        });
+            basic_notification_show(moved_successfully + "<a class='blue no-underline bold' href='" + response + "'>" + go_to_archive + "</a>", 'basic-notification-round-tick');
+        },
+        error: function(response) {
+            display_top_informer_message('error occured', 'error');
+        },
+        complete: function() {
+            spinner.addClass('opacity0');
+            stop_spinner(spinner, 'move-to-trash-thread');
+
+            button.find('.btn-text').text(button_text_no_ing);
+            button.attr("disabled",false);
+            button.find('.btn-text').attr('style', '');
+            button.attr('style', '');
+
+            $('.close-global-viewer').trigger('click');
+        }
     });
-}
+});
 
 function handle_thread_events(thread) {
     thread.find('.button-with-suboptions').each(function() {
@@ -3362,7 +3372,6 @@ function handle_thread_events(thread) {
     handle_hide_parent(thread);
     // Handle thread events
     handle_save_threads(thread.find('.save-thread'));
-    handle_move_to_trash(thread.find('.move-to-trash-button'));
     handle_turn_off_posts(thread.find('.turn-off-posts'));
     handle_thread_display(thread);
     handle_tooltip(thread);

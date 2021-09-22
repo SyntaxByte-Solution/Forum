@@ -29,7 +29,8 @@
     <div id="app">
         <!-- IMPORT HEADER FROM PARTIALS LATER -->
         @yield('header')
-        @include('partials.thread.poll.delete-viewer')
+        @include('partials.thread.poll.option-delete-viewer')
+        @include('partials.thread.delete-viewer')
         <main class="relative">
             @include('partials.shared-components')
             @yield('content')

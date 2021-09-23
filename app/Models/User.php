@@ -452,20 +452,77 @@ class User extends UserAuthenticatable implements Authenticatable
      * and get only the data field because that field is the only one we want from notifications table
      */
     public function unique_notifications($skip=0, $take=6, $goover=0) {
-        $result = collect([]);
         $notifications = DB::select("SELECT `data` FROM `notifications` 
         WHERE notifiable_id = $this->id
         ORDER BY created_at DESC,
                  JSON_EXTRACT(data, '$.action_resource_id'),
                  JSON_EXTRACT(data, '$.action_type')");
 
-        $c = 0;
+        /**
+         * Loop through notification and get $take number of unique notifications (unique by action_resource_id and action_type)
+         * after that, look for their groups of similar action_resourceè_id and action type of each of them to extract the 
+         * action_takers name (X, Y and Z likes your ..)
+         */
+        $result = [];
+        $uniques = [];
+        $similars = [];
+        $count = -1;
         foreach($notifications as $notification) {
-            /**
-             * Loop through notification and get $take number of unique notifications (unique by action_resource_id and action_type)
-             * after that, look for their groups of similar action_resourceè_id and action type of each of them to extract the 
-             * action_takers name (X, Y and Z likes your ..)
+            if(++$count < $goover) continue; // This is used in second and next fetches to skip already fetched notifs
+            
+            /* 
+             * Now as we are looping through the user notifications we check first if current notification
+             * exists in  the result or not; If it's not, we simple push it to the uniques; otherwise if the notification exists
+             * in the uniques we push it to similars in order to use it to fetch action takers names and counts
              */
+            $data = json_decode($notification->data);
+
+            $already_exists = false;
+            $i=0;
+            foreach($uniques as $unique) {
+                if($unique->action_resource_id == $data->action_resource_id && $unique->action_type == $data->action_type) {
+                    $already_exists = true;
+                    $similars[$i][] = $data;
+                }
+                $i++;
+            }
+
+            // We want unique notifications as well as only $take number of them
+            if(!$already_exists && count($uniques) < $take)
+                $uniques[] = $data;
+        }
+
+        // Dumping unique notifications as well as similarities that will be used to generate action_takers
+        dump($uniques);
+        dump($similars);
+        dd('end');
+    }
+
+    function notification_icon($action_type) {
+
+        switch($action_type) {
+            case 'thread-reply':
+                return 'resource24-reply-icon';
+            case 'thread-vote':
+            case 'reply-vote':
+                return 'resource24-vote-icon';
+            case 'reply-like':
+            case 'discussion-like':
+                return 'resource24-like-icon';
+            case 'warning-warning':
+                return 'warning24-icon';
+            case 'user-follow':
+                return 'followfilled24-icon';
+            case 'avatar-change':
+                return 'image24-icon';
+            case 'poll-action':
+                return 'poll24-icon';
+            case 'poll-vote':
+                return 'pollvote24-icon';
+            case 'poll-option-add':
+                return 'polloptionadd24-icon';
+            default:
+                return 'notification24-icon';
         }
     }
 

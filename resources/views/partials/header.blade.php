@@ -360,22 +360,22 @@
                     <div class="triangle"></div>
                     <span class="suboption-style-1 block-click">
                         <div class="small-image-2 sprite sprite-2-size ma-arabic17-flag mr8" style="min-width: 17px"></div>
-                        <p class="no-margin">{{ __('Arabic-Morocco (قريبا)') }}</p>
+                        <p class="no-margin unselectable">{{ __('Arabic-Morocco (قريبا)') }}</p>
                         <div class="loading-dots-anim ml4 none">•</div>
                         <input type="hidden" class="lang-value" value="ar">
                     </span>
-                    <a href="" class="suboption-style-1 @if($local == 'en') block-click @else set-lang @endif" style="@if($local == 'en') background-color: #e6e6e6; cursor: pointer @endif">
+                    <span class="suboption-style-1 pointer @if($local == 'en') block-click @else set-lang @endif" style="@if($local == 'en') background-color: #e6e6e6; cursor: pointer @endif">
                         <div class="small-image-2 sprite sprite-2-size english17-flag mr8"></div>
-                        <p class="no-margin">{{__('English')}}</p>
+                        <p class="no-margin unselectable">{{__('English')}}</p>
                         <div class="loading-dots-anim ml4 none">•</div>
                         <input type="hidden" class="lang-value" value="en">
-                    </a>
-                    <a href="" class="suboption-style-1 @if($local == 'fr') block-click @else set-lang @endif" style="@if($local == 'fr') background-color: #e6e6e6; cursor: pointer @endif">
+                    </span>
+                    <span class="suboption-style-1 pointer @if($local == 'fr') block-click @else set-lang @endif" style="@if($local == 'fr') background-color: #e6e6e6; cursor: pointer @endif">
                         <div class="small-image-2 sprite sprite-2-size french17-flag mr8"></div>
-                        <p class="no-margin">{{__('French')}}</p>
+                        <p class="no-margin unselectable">{{__('French')}}</p>
                         <div class="loading-dots-anim ml4 none">•</div>
                         <input type="hidden" class="lang-value" value="fr">
-                    </a>
+                    </span>
                 </div>
             </div>
         </div>

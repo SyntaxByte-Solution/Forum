@@ -502,7 +502,10 @@ class User extends UserAuthenticatable implements Authenticatable
 
 
         if($count == -1) // count == -1 means user has no notifications => return empty collection
-            return $result;
+            return [
+                'notifs'=>$result,
+                'hasmore'=>false
+            ];
 
         for($i=0;$i<count($uniques);$i++) {
             $data = json_decode($uniques[$i]->data);

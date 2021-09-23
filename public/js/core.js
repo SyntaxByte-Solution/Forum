@@ -1265,9 +1265,7 @@ function handle_like_sync(button, like_icon_status, new_like_count) {
 
 $('.set-lang').on('click', function(event) {
     let language = $(this).find('.lang-value').val();
-    let loading = $(this).find('.loading-dots-anim');
-    loading.removeClass('none');
-    start_loading_anim(loading);
+    start_loading_strip();
     $.ajax({
         type: 'post',
         url: '/setlang',

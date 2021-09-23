@@ -62,7 +62,7 @@ class LikesController extends Controller
                 if($current_user->id != $resource->user->id) {
                     $type_name = strtolower(substr($type, strrpos($type, '\\') + 1));
                     if($type_name == 'post') $type_name = 'reply';
-                    if($type_name == 'thread') $type_name = 'discussion';
+                    if($type_name == 'thread') $type_name = 'post';
     
                     $resource_link = $resource->link;
                     if($type_name == "reply") {

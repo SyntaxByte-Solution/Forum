@@ -76,21 +76,18 @@ class NotificationController extends Controller
         $payload = "";
         $user = auth()->user();
 
-        $c = 0;
-        foreach($user->notifs as $notification) {
-            if($c == 6) {
-                break;
-            }
-            $c++;
-
+        $hasnotifs = false;
+        // unique_notifications($skip, $take, $goover)
+        foreach($user->unique_notifications(0, 6, 0) as $notification) {
+            $hasnotifs = true;
             $notification_component = (new HeaderNotification($notification));
             $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
             $payload .= $notification_component;
         }
 
-        $none = "none"; // We remove none class from <empty notifs container> when $c == 0 which means when there are no notifs
-        if($c == 0) {
-            $none="";
+        $none = "";
+        if(!$hasnotifs) {
+            $none="none";
         }
 
         $notif_empty = __('Notifications box is empty');

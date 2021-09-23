@@ -42,6 +42,7 @@ class User extends UserAuthenticatable implements Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        //"data" => "array"
     ];
 
     protected static function booted() {
@@ -337,9 +338,6 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function getNotifsAttribute() {
-        // Grouped based on action_type and action_resource_id
-        $grouped_notifications = $this->notifications;
-
         // First let's group by action_resource_id
         $groups_by_resource_id = $this->notifications->pluck('data')
         ->groupBy('action_type');
@@ -440,6 +438,35 @@ class User extends UserAuthenticatable implements Authenticatable
         }
 
         return $notifications->sortByDesc('action_real_date');
+    }
+
+    /**
+     * fetching notification is more complicated than expected.
+     * The function above fo the job but it ruin the performance :( It actually fetch all user notifications to the memory
+     * and increase number of queries drastically ! simply the above function is not efficient
+     * For that reason, the following function is a reimplementation of notifications fetch that try to get notifications 
+     * by taking performance into account
+     * 
+     * The first query is the most important query in notifications fetching; It sort user notifications by
+     * data->action_resource_id AND data->action_type to get notifications of same resource and same action
+     * and get only the data field because that field is the only one we want from notifications table
+     */
+    public function unique_notifications($skip=0, $take=6, $goover=0) {
+        $result = collect([]);
+        $notifications = DB::select("SELECT `data` FROM `notifications` 
+        WHERE notifiable_id = $this->id
+        ORDER BY created_at DESC,
+                 JSON_EXTRACT(data, '$.action_resource_id'),
+                 JSON_EXTRACT(data, '$.action_type')");
+
+        $c = 0;
+        foreach($notifications as $notification) {
+            /**
+             * Loop through notification and get $take number of unique notifications (unique by action_resource_id and action_type)
+             * after that, look for their groups of similar action_resourceè_id and action type of each of them to extract the 
+             * action_takers name (X, Y and Z likes your ..)
+             */
+        }
     }
 
     public function getMinifiedNameAttribute() {

@@ -18,7 +18,7 @@ class Announcement extends Component
     {
         $this->announcement = $announcement;
         $this->forum = $announcement->category->forum;
-        $this->at = (new Carbon($announcement->created_at))->toDayDateTimeString();
+        $this->at = (new Carbon($announcement->created_at))->isoFormat("dddd D MMM YYYY - H:M A");
         $this->at_hummans = (new Carbon($announcement->created_at))->diffForHumans();
     }
 

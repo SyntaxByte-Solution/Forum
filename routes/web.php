@@ -29,7 +29,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     $thread = Thread::find(266);
 
-    dd(\App\Models\PollOption::find(5)->votes);
+    dd($user->unique_notifications());
 });
 
 Route::get('/', [IndexController::class, 'index']);

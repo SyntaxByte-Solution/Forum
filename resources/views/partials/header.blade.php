@@ -358,12 +358,12 @@
                 </div>
                 <div class="suboptions-container suboptions-account-style">
                     <div class="triangle"></div>
-                    <a href="" class="suboption-style-1 @if($local == 'ar') block-click @else set-lang @endif" style="@if($local == 'ar') background-color: #e6e6e6; cursor: pointer @endif">
-                        <div class="small-image-2 sprite sprite-2-size ma-arabic17-flag mr8"></div>
-                        <p class="no-margin">{{ __('Arabic-Morocco') }}</p>
+                    <span class="suboption-style-1 block-click">
+                        <div class="small-image-2 sprite sprite-2-size ma-arabic17-flag mr8" style="min-width: 17px"></div>
+                        <p class="no-margin">{{ __('Arabic-Morocco (قريبا)') }}</p>
                         <div class="loading-dots-anim ml4 none">•</div>
                         <input type="hidden" class="lang-value" value="ar">
-                    </a>
+                    </span>
                     <a href="" class="suboption-style-1 @if($local == 'en') block-click @else set-lang @endif" style="@if($local == 'en') background-color: #e6e6e6; cursor: pointer @endif">
                         <div class="small-image-2 sprite sprite-2-size english17-flag mr8"></div>
                         <p class="no-margin">{{__('English')}}</p>

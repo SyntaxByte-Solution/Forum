@@ -16,6 +16,7 @@ class HeaderNotification extends Component
     public $action_takers;
     public $action_statement;
     public $resource_string_slice;
+    public $resource_type;
     public $resource_action_icon;
     public $action_date;
     public $notif_read;
@@ -34,6 +35,7 @@ class HeaderNotification extends Component
         $this->action_takers = $notification['action_takers'];
         $this->action_statement = __($notification['action_statement']);
         $this->resource_string_slice = $notification['resource_string_slice'];
+        $this->resource_type = $notification['resource_type'];
         $this->action_date = $notification['action_date'];
         $this->action_resource_link = $notification['action_resource_link'];
         $this->resource_action_icon = $notification['resource_action_icon'];

@@ -57,6 +57,7 @@ class PostController extends Controller
                     'action_user'=>$current_user->id,
                     'action_statement'=>"replied to your discussion :",
                     'resource_string_slice'=>mb_convert_encoding($thread->slice, 'UTF-8', 'UTF-8'),
+                    'resource_type'=>'post',
                     'action_type'=>'thread-reply',
                     'action_date'=>now(),
                     'action_resource_id'=>$thread->id,

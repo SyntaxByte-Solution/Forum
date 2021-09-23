@@ -172,7 +172,9 @@ class Thread extends Model
         $result = \DB::select('SELECT vote,user_id FROM votes WHERE votable_type=? AND votable_id=?', ['App\Models\Thread', $this->id]);
         if(!auth()->user()) {
             $voted = false;
-            $count = count($result);
+            foreach($result as $vote) {
+                $totalvotevalue+=$vote->vote;
+            }
         } else {
             $count = count($result);
             if($count) { // We don't have to check whether a user like a thread if it has no likes

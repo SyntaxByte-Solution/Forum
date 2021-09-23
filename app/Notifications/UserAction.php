@@ -9,6 +9,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\User;
+use App\Classes\Helper;
 use Carbon\Carbon;
 
 class UserAction extends Notification implements ShouldBroadcast
@@ -19,6 +20,7 @@ class UserAction extends Notification implements ShouldBroadcast
     public $action_user;
     public $action_statement;
     public $resource_string_slice;
+    public $resource_type;
     public $action_type;
     public $action_date;
     public $action_resource_id;
@@ -34,6 +36,7 @@ class UserAction extends Notification implements ShouldBroadcast
         $this->action_user = $data['action_user'];
         $this->action_statement = $data['action_statement']; // The action stetement is only translated to the current locale while fetching
         $this->resource_string_slice = $data['resource_string_slice'];
+        $this->resource_type = $data['resource_type'];
         $this->action_type = $data['action_type'];
         $this->action_resource_id = $data['action_resource_id'];
         $this->action_resource_link = $data['action_resource_link'];
@@ -56,6 +59,7 @@ class UserAction extends Notification implements ShouldBroadcast
             'action_user'=>$this->action_user,
             'action_statement'=>$this->action_statement,
             'resource_string_slice'=>$this->resource_string_slice,
+            'resource_type'=>$this->resource_type,
             'action_type'=>$this->action_type,
             'action_resource_id'=>$this->action_resource_id,
             'action_resource_link'=>$this->action_resource_link,
@@ -71,27 +75,7 @@ class UserAction extends Notification implements ShouldBroadcast
     public function toBroadcast($notifiable): BroadcastMessage
     {
         $action_type = $this->action_type;
-        $resource_action_icon = '';
-
-        if($action_type == 'thread-reply') {
-            $resource_action_icon = 'resource24-reply-icon';
-        } else if($action_type == 'thread-vote' || $action_type == 'reply-vote') {
-            $resource_action_icon = 'resource24-vote-icon';
-        } else if($action_type == 'reply-like' || $action_type == 'thread-like') {
-            $resource_action_icon = 'resource24-like-icon';
-        } else if($action_type == 'user-follow') {
-            $resource_action_icon = 'followfilled24-icon';
-        } else if($action_type == 'avatar-change') {
-            $resource_action_icon = 'image24-icon';
-        } else if($action_type == 'poll-add') {
-            $resource_action_icon = 'poll24-icon';
-        } else if($action_type == 'poll-vote') {
-            $resource_action_icon = 'pollvote24-icon';
-        } else if($action_type == 'poll-option-add') {
-            $resource_action_icon = 'polloptionadd24-icon';
-        } else {
-            $resource_action_icon = 'notification24-icon';
-        }
+        $resource_action_icon = (new Helper)->notification_icon($action_type);
 
         return (new BroadcastMessage([
             "image"=>User::find($this->action_user)->sizedavatar(100),
@@ -99,6 +83,7 @@ class UserAction extends Notification implements ShouldBroadcast
             "action_taker_name"=>User::find($this->action_user)->minified_name,
             "action_statement"=>$this->action_statement,
             'resource_string_slice'=>$this->resource_string_slice,
+            'resource_type'=>$this->resource_type,
             'resource_date'=>$this->action_date,
             'action_resource_link'=>$this->action_resource_link,
             'resource_action_icon'=>$resource_action_icon,

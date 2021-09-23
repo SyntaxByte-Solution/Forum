@@ -217,6 +217,7 @@ class UserController extends Controller
                         'action_user'=>auth()->user()->id,
                         'action_statement'=>"changed his profile avatar",
                         'resource_string_slice'=>"",
+                        'resource_type'=>"user",
                         'action_type'=>'avatar-change',
                         'action_date'=>now(),
                         'action_resource_id'=>auth()->user()->id,

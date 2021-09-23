@@ -449,27 +449,26 @@ class User extends UserAuthenticatable implements Authenticatable
      * 
      * The first query is the most important query in notifications fetching; It sort user notifications by
      * data->action_resource_id AND data->action_type to get notifications of same resource and same action
-     * and get only the data field because that field is the only one we want from notifications table
+     * Actually wa have to take all notification columns because we need created_at and updated_at when showing notifs
      */
-    public function unique_notifications($skip=0, $take=6, $goover=0) {
-        $notifications = DB::select("SELECT `data` FROM `notifications` 
+    public function unique_notifications($skip=0, $take=6) {
+        $notifications = DB::select("SELECT * FROM `notifications` 
         WHERE notifiable_id = $this->id
         ORDER BY created_at DESC,
                  JSON_EXTRACT(data, '$.action_resource_id'),
                  JSON_EXTRACT(data, '$.action_type')");
 
-        /**
-         * Loop through notification and get $take number of unique notifications (unique by action_resource_id and action_type)
-         * after that, look for their groups of similar action_resourceè_id and action type of each of them to extract the 
-         * action_takers name (X, Y and Z likes your ..)
-         */
-        $result = [];
+        $result = collect([]);
         $uniques = [];
         $similars = [];
         $count = -1;
+        $hasmore = false;
+        /**
+         * Loop through notification and get $take number of unique notifications (unique by action_resource_id and action_type)
+         * after that, look for their groups of similar action_resource_id and action type of each of them to extract the 
+         * action_takers name (X, Y and Z likes your ..)
+         */
         foreach($notifications as $notification) {
-            if(++$count < $goover) continue; // This is used in second and next fetches to skip already fetched notifs
-            
             /* 
              * Now as we are looping through the user notifications we check first if current notification
              * exists in  the result or not; If it's not, we simple push it to the uniques; otherwise if the notification exists
@@ -480,50 +479,85 @@ class User extends UserAuthenticatable implements Authenticatable
             $already_exists = false;
             $i=0;
             foreach($uniques as $unique) {
-                if($unique->action_resource_id == $data->action_resource_id && $unique->action_type == $data->action_type) {
+                $d = json_decode($unique->data);
+                if($d->action_resource_id == $data->action_resource_id && $d->action_type == $data->action_type) {
                     $already_exists = true;
-                    $similars[$i][] = $data;
+                    $similars[$i][] = $notification;
                 }
                 $i++;
             }
 
-            // We want unique notifications as well as only $take number of them
-            if(!$already_exists && count($uniques) < $take)
-                $uniques[] = $data;
+            /**
+             * We want unique notifications and only $take(=6) number of them
+             * Notice that before pushing notification to unique we have to skip the already taken notifications
+             */
+            if(++$count >= $skip)
+                if(!$already_exists) {
+                    if(count($uniques) < $take) $uniques[] = $notification;
+                    else $hasmore = true; 
+                    // Has more will be true only if the unique notifications are pushed to uniques and then after 
+                    // that we find other uniques which means more notifications still there.
+                }
         }
 
-        // Dumping unique notifications as well as similarities that will be used to generate action_takers
-        dump($uniques);
-        dump($similars);
-        dd('end');
-    }
 
-    function notification_icon($action_type) {
+        if($count == -1) // count == -1 means user has no notifications => return empty collection
+            return $result;
 
-        switch($action_type) {
-            case 'thread-reply':
-                return 'resource24-reply-icon';
-            case 'thread-vote':
-            case 'reply-vote':
-                return 'resource24-vote-icon';
-            case 'reply-like':
-            case 'discussion-like':
-                return 'resource24-like-icon';
-            case 'warning-warning':
-                return 'warning24-icon';
-            case 'user-follow':
-                return 'followfilled24-icon';
-            case 'avatar-change':
-                return 'image24-icon';
-            case 'poll-action':
-                return 'poll24-icon';
-            case 'poll-vote':
-                return 'pollvote24-icon';
-            case 'poll-option-add':
-                return 'polloptionadd24-icon';
-            default:
-                return 'notification24-icon';
+        for($i=0;$i<count($uniques);$i++) {
+            $data = json_decode($uniques[$i]->data);
+            $notification = $uniques[$i]; // NOTICE THAT $notification hold only data field as stdObject
+
+            $action_takers = User::find($data->action_user)->minified_name;
+            if(isset($similars[$i])) {
+                $c = count($similars[$i]);
+                if($c == 1) { // Means X and Y liked your ..
+                    $action_takers .= __(' and ') . User::find(json_decode($similars[$i][0]->data)->action_user)->minified_name;
+                } else { // Means X, Y and n($c-1) others liked your ..
+                    $k=-1; // -1 because we take one before the comma (X, Y <- look at the appending after foreach)
+                    foreach($similars[$i] as $similar)
+                        $k++;
+                    $action_takers .= ', ' . User::find(json_decode($similars[$i][0]->data)->action_user)->minified_name;
+                    $action_takers .= __(' and ') . $k . (($k>1) ? __(' others ') : __(' other '));
+                }
+            }
+
+            $resource_type = $data->action_type;
+            if($resource_type == 'thread') {
+                $resource_type = "App\Models\Thread";
+            } else if($resource_type == 'reply') {
+                $resource_type = "App\Models\Post";
+            }
+
+            $resource_id = $data->action_resource_id;
+            $disabled = (bool)
+                $this->disables
+                ->where('disabled_type', $resource_type)
+                ->where('disabled_id', $resource_id)
+                ->count();
+
+            $result->push([
+                'notif_id'=>$notification->id,
+                'action_takers'=>$action_takers,
+                'action_statement'=> __($data->action_statement),
+                'resource_string_slice'=>$data->resource_string_slice,
+                'resource_type'=>isset($data->resource_type) ? $data->resource_type : '',
+                'action_date'=>(new Carbon($notification->created_at))->diffForHumans(),
+                'action_real_date'=>$notification->created_at,
+                'action_type'=>$data->action_type,
+                'action_resource_link'=>$data->action_resource_link,
+                'action_user' => User::find($data->action_user),
+                'resource_id' => $data->action_resource_id,
+                'resource_action_icon' => (new \App\Classes\Helper)->notification_icon($data->action_type),
+                'notif_read' => !is_null($notification->read_at),
+                'disabled'=>$disabled
+            ]);
         }
+
+        return [
+            'notifs'=>$result,
+            'hasmore'=>$hasmore
+        ];
     }
 
     public function getMinifiedNameAttribute() {

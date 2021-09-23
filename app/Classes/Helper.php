@@ -3,13 +3,12 @@
 namespace App\Classes;
 
 class Helper {
-    /**
- * Encode array from latin1 to utf8 recursively
- * @param $dat
- * @return array|string
- */
-   public static function convert_from_latin1_to_utf8($dat)
-   {
+   /**
+    * Encode array from latin1 to utf8 recursively
+    * @param $dat
+    * @return array|string
+    */
+   public static function convert_from_latin1_to_utf8($dat) {
       if (is_string($dat)) {
          return utf8_encode($dat);
       } elseif (is_array($dat)) {
@@ -25,4 +24,29 @@ class Helper {
          return $dat;
       }
    }
+
+   function notification_icon($action_type) {
+      switch($action_type) {
+          case 'thread-reply':
+              return 'resource24-reply-icon';
+          case 'resource-vote':
+              return 'resource24-vote-icon';
+          case 'resource-like':
+              return 'resource24-like-icon';
+          case 'warning-warning':
+              return 'warning24-icon';
+          case 'user-follow':
+              return 'followfilled24-icon';
+          case 'avatar-change':
+              return 'image24-icon';
+          case 'poll-action':
+              return 'poll24-icon';
+          case 'poll-vote':
+              return 'pollvote24-icon';
+          case 'poll-option-add':
+              return 'polloptionadd24-icon';
+          default:
+              return 'notification24-icon';
+      }
+  }
 }

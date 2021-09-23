@@ -28,7 +28,8 @@ class VoteController extends Controller
                     'action_user'=>auth()->user()->id,
                     'action_statement'=>"voted your discussion :",
                     'resource_string_slice'=>$thread->slice,
-                    'action_type'=>'thread-vote',
+                    'resource_type'=>'thread',
+                    'action_type'=>'resource-vote',
                     'action_date'=>now(),
                     'action_resource_id'=>$thread->id,
                     'action_resource_link'=>$thread->link,
@@ -50,7 +51,8 @@ class VoteController extends Controller
                     'action_user'=>auth()->user()->id,
                     'action_statement'=>"voted your reply :",
                     'resource_string_slice'=>$post->slice . "' on:" . $thread->slice,
-                    'action_type'=>'reply-vote',
+                    'resource_type'=>'thread',
+                    'action_type'=>'resource-vote',
                     'action_date'=>now(),
                     'action_resource_id'=>$post->id,
                     'action_resource_link'=>$thread->link.'?reply='.$post->id,
@@ -103,7 +105,7 @@ class VoteController extends Controller
             $vote_value = $founded_vote->vote;
             $founded_vote->delete();
             foreach($resource->user->notifications as $notification) {
-                if($notification->data['action_type'] == $type_name."-vote" 
+                if($notification->data['action_type'] == "thread-vote" 
                 && $notification->data['action_user'] == $current_user->id
                 && $notification->data['action_resource_id'] == $resource->id) {
                     $notification->delete();

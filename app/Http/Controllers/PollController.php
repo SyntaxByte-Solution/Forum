@@ -115,6 +115,7 @@ class PollController extends Controller
                     'action_user'=>$currentuser->id,
                     'action_statement'=>$action_statement,
                     'resource_string_slice'=>mb_convert_encoding($thread->slice, 'UTF-8', 'UTF-8'),
+                    'resource_type'=>"thread",
                     'action_type'=>$action_type,
                     'action_date'=>now(),
                     'action_resource_id'=>$thread->id,

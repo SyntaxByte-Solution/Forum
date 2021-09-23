@@ -341,6 +341,7 @@ class ThreadController extends Controller
             'action_user'=>auth()->user()->id,
             'action_statement'=>"Shared a new $type :",
             'resource_string_slice'=>$thread->slice,
+            'resource_type'=>'thread',
             'action_type'=>"thread-action",
             'action_date'=>now(),
             'action_resource_id'=>$thread->id,

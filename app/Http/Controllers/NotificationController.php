@@ -33,6 +33,7 @@ class NotificationController extends Controller
             'action_user'=>'required|exists:users,id',
             'action_statement'=>'sometimes|max:400',
             'resource_string_slice'=>'sometimes|max:400',
+            'resource_type'=>'sometimes|max:40',
             'action_date'=>'required|max:400',
             'action_resource_link'=>'required|max:400',
             'resource_action_icon'=>'required|max:400',
@@ -76,17 +77,16 @@ class NotificationController extends Controller
         $payload = "";
         $user = auth()->user();
 
-        $hasnotifs = false;
-        // unique_notifications($skip, $take, $goover)
-        foreach($user->unique_notifications(0, 6, 0) as $notification) {
-            $hasnotifs = true;
+        $notifications = $user->unique_notifications(0, 6);
+        // unique_notifications($skip, $take)
+        foreach($notifications['notifs'] as $notification) {
             $notification_component = (new HeaderNotification($notification));
             $notification_component = $notification_component->render(get_object_vars($notification_component))->render();
             $payload .= $notification_component;
         }
 
         $none = "";
-        if(!$hasnotifs) {
+        if($notifications['notifs']->count()) {
             $none="none";
         }
 
@@ -100,7 +100,7 @@ class NotificationController extends Controller
                 <p class="my4 fs13 gray text-center">$text_after_empty.</p>
             </div>
             EMPTY;
-        if($c == 6) {
+        if($notifications['hasmore']) {
             $load_more = __('load more');
             $payload .=
                 <<<AE

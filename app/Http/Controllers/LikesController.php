@@ -61,8 +61,14 @@ class LikesController extends Controller
             if(!$disabled) {
                 if($current_user->id != $resource->user->id) {
                     $type_name = strtolower(substr($type, strrpos($type, '\\') + 1));
-                    if($type_name == 'post') $type_name = 'reply';
-                    if($type_name == 'thread') $type_name = 'post';
+                    $resource_type = 'thread';
+                    if($type_name == 'post') {
+                        $type_name = 'reply';
+                        $resource_type = 'post';
+                    }
+                    if($type_name == 'thread') {
+                        $type_name = 'post';
+                    }
     
                     $resource_link = $resource->link;
                     if($type_name == "reply") {
@@ -74,7 +80,8 @@ class LikesController extends Controller
                             'action_user'=>$current_user->id,
                             'action_statement'=>"liked your $type_name :",
                             'resource_string_slice'=> $resource->slice,
-                            'action_type'=>$type_name.'-like',
+                            'resource_type'=>$resource_type,
+                            'action_type'=>'resource-like',
                             'action_date'=>now(),
                             'action_resource_id'=>$resource->id,
                             'action_resource_link'=>$resource_link

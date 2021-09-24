@@ -75,7 +75,7 @@
                     <span class="thread-add-selected-category">{{ __('All categories') }}</span>
                     <svg class="size7 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                 </div>
-                <div class="suboptions-container nested-soc thread-add-suboptions-container" style="width: max-content; max-height: 236px; overflow-y: scroll; right: 0">
+                <div class="suboptions-container nested-soc thread-add-suboptions-container" style="width: max-content; max-height: 236px; max-width: 200px; overflow-y: scroll; right: 0">
                     <div class="fcc-categories-container">
                         <a href="{{ route('forum.all.threads', ['forum'=>$forums->first()->slug]) }}" class="no-underline black thread-add-suboption fcc-category flex align-center">
                             <span class="thread-add-category-val">{{ __('All categories') }}</span>

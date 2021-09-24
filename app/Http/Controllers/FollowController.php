@@ -22,18 +22,17 @@ class FollowController extends Controller
          * If so ($found->count()>0), we need to delete the follow record because in this case the user click on unfollow button
          * If not we simply create a follow model and attach the current user as follower to the followed user
          * and finally notify this user that the current user follow him
+         * If the user unfollow the visited user, we have to delete the notification of following process
          */
         
         if($found->count()) {
             $found->first()->delete();
 
-            foreach($user->notifications as $notification) {
-                if($notification->data['action_type'] == "user-follow" 
-                && $notification->data['action_user'] == $current_user->id
-                && $notification->data['action_resource_id'] == $user->id) {
-                    $notification->delete();
-                }
-            }
+            \DB::statement("DELETE FROM `notifications` 
+            WHERE notifiable_id = " . $user->id .
+            " AND JSON_EXTRACT(data, '$.action_type') = 'user-follow'
+            AND JSON_EXTRACT(data, '$.action_user') = " . $current_user->id);
+
             return -1;
         }
 

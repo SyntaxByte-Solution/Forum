@@ -9,7 +9,7 @@ use App\View\Components\Thread\PollOptionComponent;
 class PollController extends Controller
 {
     public function option_vote(Request $request) {
-        $currenuser = auth()->user();
+        $currentuser = auth()->user();
         /** 
          *  Before storing the vote we have to do some checks:
          *  We need to see If the poll of this option is allowing multiple choices or not;
@@ -26,7 +26,7 @@ class PollController extends Controller
         ]);
         $this->authorize('option_vote', [Poll::class]);
         
-        $optionvote['user_id'] = $currenuser->id;
+        $optionvote['user_id'] = $currentuser->id;
         $option = PollOption::find($optionvote['option_id']);
         $poll = $option->poll;
 
@@ -36,15 +36,29 @@ class PollController extends Controller
                 // In this case we have to delete the vote
                 $poll
                     ->votes()
-                    ->where('optionsvotes.user_id', $currenuser->id)
+                    ->where('optionsvotes.user_id', $currentuser->id)
                     ->where('optionsvotes.option_id', $option->id)
                     ->delete();
+
                 return [
                     'diff'=>-1,
                     'type'=>'deleted'
                 ];
             }
+            /**
+             * Because users could only add one option to other people polls we still have to delete previous notifications
+             * on that poll, in case where the poll owner delete the added option by the user
+             */
             OptionVote::create($optionvote);
+            // Before notify user we delete all previous notification by the current user votes
+            \DB::statement(
+                "DELETE FROM `notifications` 
+                WHERE JSON_EXTRACT(data, '$.action_type')='poll-vote'
+                AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
+                " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
+                AND JSON_EXTRACT(data, '$.action_resource_id')=" . $poll->thread->id
+            );
+
             $this->notify($poll, 'voted on your poll :', 'poll-vote');
             return [
                 'diff'=>1,
@@ -52,22 +66,40 @@ class PollController extends Controller
             ];
         } else {
             // Here the poll owner disable multiple choices
-            if($poll->voted) { // Delete user vote on the poll and add the new one if the user already vote the poll
-                if($option->voted) {
+            if($poll->voted) {
+                if($option->voted) { // Simply delete option vote if user already vote the same option
                     $poll->votes()
-                        ->where('optionsvotes.user_id', $currenuser->id)
+                        ->where('optionsvotes.user_id', $currentuser->id)
                         ->where('optionsvotes.option_id', $option->id)
                         ->delete();
+
+                    // Delete vote option notification when user delete his vote
+                    \DB::statement(
+                        "DELETE FROM `notifications` 
+                        WHERE JSON_EXTRACT(data, '$.action_type')='poll-vote'
+                        AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
+                        " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
+                        AND JSON_EXTRACT(data, '$.action_resource_id')=" . $poll->thread->id
+                    );
                     return [
                         'diff'=>-1,
                         'type'=>'deleted'
                     ];
                 }
-                else {
+                else { // Delete user vote on the poll and add the new one if the user already vote the poll
                     $poll->votes()
-                    ->where('optionsvotes.user_id', $currenuser->id)
+                    ->where('optionsvotes.user_id', $currentuser->id)
                     ->delete();
                     OptionVote::create($optionvote);
+
+                    \DB::statement(
+                        "DELETE FROM `notifications` 
+                        WHERE JSON_EXTRACT(data, '$.action_type')='poll-vote'
+                        AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
+                        " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
+                        AND JSON_EXTRACT(data, '$.action_resource_id')=" . $poll->thread->id
+                    );
+                    $this->notify($poll, 'voted on your poll :', 'poll-vote');
                     return [
                         'diff'=>1,
                         'type'=>'flipped'
@@ -86,19 +118,35 @@ class PollController extends Controller
 
     public function option_delete(PollOption $option) {
         $this->authorize('option_delete', [Poll::class, $option]);
+
+        \DB::statement(
+            "DELETE FROM `notifications` 
+            WHERE JSON_EXTRACT(data, '$.action_type')='poll-option-add'
+            AND JSON_EXTRACT(data, '$.action_user') = " . $option->user->id .
+            " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
+            AND JSON_EXTRACT(data, '$.action_resource_id')=" . $option->poll->thread->id
+        );
         $option->delete(); // We delete related items in boot method on the model
     }
 
     public function add_option(Request $request) {
+        $currentuser = auth()->user();
         $option = $request->validate([
             'poll_id'=>'required|exists:polls,id',
             'content'=>'required|min:1|max:400'
         ]);
 
         $this->authorize('add_option', [Poll::class, $option['poll_id']]);
-        $option['user_id'] = auth()->user()->id;
+        $option['user_id'] = $currentuser->id;
         $option = PollOption::create($option);
 
+        \DB::statement(
+            "DELETE FROM `notifications` 
+            WHERE JSON_EXTRACT(data, '$.action_type')='poll-option-add'
+            AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
+            " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
+            AND JSON_EXTRACT(data, '$.action_resource_id')=" . $option->poll->thread->id
+        );
         $this->notify($option->poll, 'added an option to your poll :', 'poll-option-add');
 
         return $option->id;

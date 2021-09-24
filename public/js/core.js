@@ -571,7 +571,25 @@ $('.user-card-container-index').each(function() {
 $('.user-profile-card-box').each(function() {
     handle_user_profile_card_displayer($(this));
     handle_fetch_user_card($(this));
-})
+});
+
+function handle_thread_user_card_fetch(thread) {
+    // Here we have to set up the index because this handler will be attached on ly to the newly appended threads
+    thread.find('.user-card-container-index').val(index);
+    user_card_mouse_states.set(index, {
+        mouse_over_displayer: false,
+        mouse_over_container: false,
+    });
+    user_card_mouse_displayer_timeouts.set(index, false);
+    user_card_mouse_container_timeouts.set(index, false);
+    index++;
+    
+    thread.find('.user-profile-card-box').each(function() {
+        handle_user_profile_card_displayer($(this));
+        handle_fetch_user_card($(this));
+    });
+}
+
 function handle_user_profile_card_displayer(user_profile_card_box) {
     user_profile_card_box.find('.user-profile-card-displayer').each(function() { 
         let container_index = $(this).parent().find('.user-card-container-index').val();
@@ -640,7 +658,6 @@ function handle_user_profile_card_displayer(user_profile_card_box) {
         });
     });
 }
-
 let fetchings = [];
 function handle_fetch_user_card(component) {
     component.find('.fetch-user-card').each(function() {
@@ -3453,6 +3470,7 @@ function handle_thread_events(thread) {
     handle_open_media_viewer(thread);
     // Handle link copy
     handle_copy_thread_link(thread.find('.copy-thread-link'));
+    handle_thread_user_card_fetch(thread);
 
     // If thread is a poll we have to handlme all poll events
     if(thread.find('.thread-type').val() == 'poll') {

@@ -28,8 +28,10 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     $thread = Thread::find(266);
-
-    dd($user->unique_notifications());
+    
+    $followers = \DB::select("SELECT follower FROM follows WHERE followable_id=$user->id AND `followable_type`=?", ['App\Models\User']);
+    $followers_ids = array_column($followers, 'follower');
+    dd($followers_ids);
 });
 
 Route::get('/', [IndexController::class, 'index']);

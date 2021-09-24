@@ -347,11 +347,11 @@ class ThreadController extends Controller
             'action_resource_id'=>$thread->id,
             'action_resource_link'=>$thread->link,
         ]);
-        foreach($currentuser->followers as $follower) {
-            $follower = User::find($follower->follower);
-            $follower->notify($notification);
-        }
-
+        $followers = \DB::select("SELECT follower FROM follows WHERE followable_id=$currentuser->id AND `followable_type`=?", ['App\Models\User']);
+        $followers_ids = array_column($followers, 'follower');
+        foreach($followers_ids as $follower_id)
+            User::find($follower_id)->notify($notification);
+        
         return [
             'link'=>$thread->link,
             'id'=>$thread->id

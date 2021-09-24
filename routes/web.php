@@ -122,7 +122,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/threads/{thread}/follow', [FollowController::class, 'follow_thread']);
     Route::get('/users/{user}/followers/load', [FollowController::class, 'followers_load']);
     Route::get('/users/{user}/follows/load', [FollowController::class, 'follows_load']);
-    Route::get('/users/{user}/followers/generate', [FollowController::class, 'generate_follower_component']);
+    Route::get('/users/{followable}/followers/generate', [FollowController::class, 'generate_follower_component']);
 
     Route::get('/threads/{thread}/component/generate', [ThreadController::class, 'generate_thread_component']);
     Route::get('/threads/add', [ThreadController::class, 'create'])->name('thread.add');

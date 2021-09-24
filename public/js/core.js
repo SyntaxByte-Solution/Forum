@@ -1828,7 +1828,7 @@ function handle_follow_resource(button) {
                             // Generate follower component with the current user and append it to the followers viewer
                             $.ajax({
                                 type: 'get', 
-                                url: `/users/${userId}/followers/generate`,
+                                url: `/users/${followable_id}/followers/generate`,
                                 success: function(response) {
                                     $('#followers-box').append(response);
                                 }

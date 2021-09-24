@@ -105,8 +105,9 @@ class FollowController extends Controller
             "count"=>$follows_to_return->count()
         ];
     }
-    public function generate_follower_component(User $user) {
-        $follower_component = (new Follower($user));
+    public function generate_follower_component(User $followable) {
+        $follower = Follow::where('follower', auth()->user()->id)->where('followable_id', $followable->id)->first();
+        $follower_component = (new Follower($follower));
         $follower_component = $follower_component->render(get_object_vars($follower_component))->render();
 
         return $follower_component;

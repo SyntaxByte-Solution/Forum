@@ -25,37 +25,30 @@ class PostController extends Controller
         ]);
         $this->authorize('store', [Post::class, $data['thread_id']]);
 
-        $current_user = auth()->user();
+        $currentuser = auth()->user();
         $thread = Thread::withoutGlobalScope(ExcludeAnnouncements::class)->find($data['thread_id']);
         $thread_owner = $thread->user;
-        $thread_status_slug = ThreadStatus::find($thread->status_id)->slug;
 
         $data['user_id'] = auth()->user()->id;
         $from = $request->from;
         unset($data['from']);
         $post = Post::create($data);
+        $threadtype = ($thread->type == 'poll') ? 'poll' : 'discussion';
 
-        /**
-         * Before notify the user we have to fetch all the notifications that have the same resource_id
-         * and action_type and pluck the users's names and delete all those notifications and add one with the collection of names
-         * like following: 
-         * grotto_IV, hostname47 and hitman replied to your thread
-         * Take a look at User model->fetchNotifs()
-         */
-        if(!$thread_owner->thread_disabled($thread->id)) {
-            if($thread_owner->id != $current_user->id) {
+        if(!$thread_owner->thread_disabled($thread->id)) { // Only notify thread owner if he doesn't disable notifs for this thread
+            if($thread_owner->id != $currentuser->id) {
                 // If the user is already reply to this thread we have to delete the previous notification
-                foreach($thread_owner->notifications as $notification) {
-                    if($notification->data['action_type'] == "thread-reply" 
-                    && $notification->data['action_user'] == $current_user->id
-                    && $notification->data['action_resource_id'] == $thread->id) {
-                        $notification->delete();
-                    }
-                }
+                \DB::statement(
+                    "DELETE FROM `notifications` 
+                    WHERE JSON_EXTRACT(data, '$.action_type')='thread-reply'
+                    AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
+                    " AND JSON_EXTRACT(data, '$.resource_type')='post' 
+                    AND JSON_EXTRACT(data, '$.action_resource_id')=" . $thread->id
+                );
                 
                 $notif_data = [
-                    'action_user'=>$current_user->id,
-                    'action_statement'=>"replied to your discussion :",
+                    'action_user'=>$currentuser->id,
+                    'action_statement'=>"replied to your $threadtype :",
                     'resource_string_slice'=>mb_convert_encoding($thread->slice, 'UTF-8', 'UTF-8'),
                     'resource_type'=>'post',
                     'action_type'=>'thread-reply',
@@ -98,13 +91,13 @@ class PostController extends Controller
     public function destroy(Post $post) {
         $this->authorize('destroy', $post);
 
-        foreach($post->thread->user->notifications as $notification) {
-            if($notification->data['action_type'] == "thread-reply" 
-            && $notification->data['action_user'] == auth()->user()->id
-            && $notification->data['action_resource_id'] == $post->thread->id) {
-                $notification->delete();
-            }
-        }
+        \DB::statement(
+            "DELETE FROM `notifications` 
+            WHERE JSON_EXTRACT(data, '$.action_type')='thread-reply'
+            AND JSON_EXTRACT(data, '$.action_user') = " . $post->user->id .
+            " AND JSON_EXTRACT(data, '$.resource_type')='post' 
+            AND JSON_EXTRACT(data, '$.action_resource_id')=" . $post->thread->id
+        );
         // You may be wondering about deleting the related resources: look at the boot method in Post model
         $post->delete();
     }

@@ -40,30 +40,21 @@ class PollController extends Controller
                     ->where('optionsvotes.option_id', $option->id)
                     ->delete();
 
-                return [
+                $return = [
                     'diff'=>-1,
                     'type'=>'deleted'
                 ];
+            } else {
+                /**
+                 * Because users could only add one option to other people polls we still have to delete previous notifications
+                 * on that poll, in case where the poll owner delete the added option by the user
+                 */
+                OptionVote::create($optionvote);
+                $return = [
+                    'diff'=>1,
+                    'type'=>'added'
+                ];
             }
-            /**
-             * Because users could only add one option to other people polls we still have to delete previous notifications
-             * on that poll, in case where the poll owner delete the added option by the user
-             */
-            OptionVote::create($optionvote);
-            // Before notify user we delete all previous notification by the current user votes
-            \DB::statement(
-                "DELETE FROM `notifications` 
-                WHERE JSON_EXTRACT(data, '$.action_type')='poll-vote'
-                AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
-                " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
-                AND JSON_EXTRACT(data, '$.action_resource_id')=" . $poll->thread->id
-            );
-
-            $this->notify($poll, 'voted on your poll :', 'poll-vote');
-            return [
-                'diff'=>1,
-                'type'=>'added'
-            ];
         } else {
             // Here the poll owner disable multiple choices
             if($poll->voted) {
@@ -73,46 +64,42 @@ class PollController extends Controller
                         ->where('optionsvotes.option_id', $option->id)
                         ->delete();
 
-                    // Delete vote option notification when user delete his vote
-                    \DB::statement(
-                        "DELETE FROM `notifications` 
-                        WHERE JSON_EXTRACT(data, '$.action_type')='poll-vote'
-                        AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
-                        " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
-                        AND JSON_EXTRACT(data, '$.action_resource_id')=" . $poll->thread->id
-                    );
-                    return [
+                    $return = [
                         'diff'=>-1,
                         'type'=>'deleted'
                     ];
-                }
-                else { // Delete user vote on the poll and add the new one if the user already vote the poll
+                } else { // Delete user vote on the poll and add the new one if the user already vote the poll
                     $poll->votes()
                     ->where('optionsvotes.user_id', $currentuser->id)
                     ->delete();
-                    OptionVote::create($optionvote);
 
-                    \DB::statement(
-                        "DELETE FROM `notifications` 
-                        WHERE JSON_EXTRACT(data, '$.action_type')='poll-vote'
-                        AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
-                        " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
-                        AND JSON_EXTRACT(data, '$.action_resource_id')=" . $poll->thread->id
-                    );
-                    $this->notify($poll, 'voted on your poll :', 'poll-vote');
-                    return [
+                    OptionVote::create($optionvote);
+                    $return = [
                         'diff'=>1,
                         'type'=>'flipped'
                     ];
                 }
+            } else {
+                OptionVote::create($optionvote);
+                $return = [
+                    'diff'=>1,
+                    'type'=>'added'
+                ];
             }
+
+            // Before notify user we delete all previous notification by the current user votes
+            \DB::statement(
+                "DELETE FROM `notifications` 
+                WHERE JSON_EXTRACT(data, '$.action_type')='poll-vote'
+                AND JSON_EXTRACT(data, '$.action_user') = " . $currentuser->id .
+                " AND JSON_EXTRACT(data, '$.resource_type')='thread' 
+                AND JSON_EXTRACT(data, '$.action_resource_id')=" . $poll->thread->id
+            );
+
+            if($return['type'] != 'deleted') // Only notify poll owner when vote is added or flipped
+                $this->notify($poll, 'voted on your poll :', 'poll-vote');
             
-            OptionVote::create($optionvote);
-            $this->notify($poll, 'voted on your poll :', 'poll-vote');
-            return [
-                'diff'=>1,
-                'type'=>'added'
-            ];
+            return $return;
         }
     }
 
@@ -154,7 +141,6 @@ class PollController extends Controller
 
     public function notify($poll, $action_statement, $action_type) {
         $currentuser = auth()->user();
-
         $thread = $poll->thread;
         $thread_owner = $thread->user;
         if(!$thread_owner->thread_disabled($thread->id)) {

@@ -1335,12 +1335,14 @@ if(userId != "") { // Disable any websockets function due to dev performence
             $('.hidden-notification-container').stop();
             clearTimeout(notification_timeout);
 
-            $('.header-button-counter-indicator').removeClass('none');
-            let notif_counter_value = $('.header-button-counter-indicator').text();
-            if (!(notif_counter_value.indexOf('+') > -1)) {
-                $('.header-button-counter-indicator').text(parseInt(notif_counter_value) + 1);
+            if(!header_notifs_bootstrap_fetched) {
+                $('.header-button-counter-indicator').removeClass('none');
+                let notif_counter_value = $('.header-button-counter-indicator').text();
+                if (!(notif_counter_value.indexOf('+') > -1)) {
+                    $('.header-button-counter-indicator').text(parseInt(notif_counter_value) + 1);
+                }
+                $('.notification-empty-box').addClass('none');
             }
-            $('.notification-empty-box').addClass('none');
 
             $('.hidden-notification-container .hidden-notification-image').attr('src', notification.image);
             $('.hidden-notification-container .hidden-notification-action-taker').text(notification.action_taker_name);
@@ -1378,6 +1380,7 @@ if(userId != "") { // Disable any websockets function due to dev performence
                         action_user: notification.action_user,
                         action_statement: notification.action_statement,
                         resource_string_slice: notification.resource_string_slice,
+                        resource_type: notification.resource_type,
                         action_date: notification.resource_date,
                         action_resource_link: notification.action_resource_link,
                         resource_action_icon: notification.resource_action_icon,

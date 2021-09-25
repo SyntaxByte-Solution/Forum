@@ -448,16 +448,18 @@ class User extends UserAuthenticatable implements Authenticatable
 
     /**
      * fetching notification is more complicated than expected.
-     * The function above fo the job but it ruin the performance :( It actually fetch all user notifications to the memory
-     * and increase number of queries drastically ! simply the above function is not efficient
+     * The function above do the job but it is really bad in terms of performance :( It actually fetch all user notifications 
+     * models to the memory and increase number of queries drastically ! simply the above function is not efficient
      * For that reason, the following function is a reimplementation of notifications fetch that try to get notifications 
      * by taking performance into account
      * 
      * The first query is the most important query in notifications fetching; It sort user notifications by
      * data->action_resource_id AND data->action_type to get notifications of same resource and same action
-     * Actually wa have to take all notification columns because we need created_at and updated_at when showing notifs
      */
     public function unique_notifications($skip=0, $take=6) {
+        $skip = intval($skip);
+        $take = intval($take);
+
         $notifications = DB::select("SELECT * FROM `notifications` 
         WHERE notifiable_id = $this->id
         ORDER BY created_at DESC,
@@ -468,6 +470,7 @@ class User extends UserAuthenticatable implements Authenticatable
         $uniques = [];
         $similars = [];
         $hasmore = false;
+        $count = 0;
         /**
          * Loop through notification and get $take number of unique notifications (unique by action_resource_id and action_type)
          * after that, look for their groups of similar action_resource_id and action type of each of them to extract the 
@@ -487,33 +490,42 @@ class User extends UserAuthenticatable implements Authenticatable
                 $d = json_decode($unique->data);
                 if($d->action_resource_id == $data->action_resource_id && $d->action_type == $data->action_type) {
                     $already_exists = true;
-                    $similars[$i][] = $notification;
+                    if($i >= $skip) { // Only fetch similars of fetched chunk
+                        /**
+                         * $i-$skip because we get chunk of notifications along with previous notifications so $i will not be
+                         * relative to the fetched chunk, instead it will relative to the entire notifications that we fetch
+                         * The reason behind this, is we are going to fetch only $take notifications after skipping $skip
+                         * notifications using array_splice so we need the similars to be inserted relative to the uniques inserted
+                         * in order for the last loop to fetch action_takers properly !
+                         */
+                        $similars[$i-$skip][] = $notification;
+                    }
                 }
                 $i++;
             }
-
             /**
              * We want unique notifications and only $take(=6) number of them
              * Here what we need to do is to push skip+take elements and then take the last $take elements
              * that way we handle fetch more
              *   e.g. Let's say we have spik 6 and take 6 = here we have to fetch 12 unique notifs and then take the last 6
              */
-            if(!$already_exists) {
+            if(!$already_exists) { // if unique
                 if(count($uniques) < $take+$skip)
                     $uniques[] = $notification;
-                else {
-                    $hasmore = true; 
-                    break; 
-                    /**
-                     * If we found only one more unique notification after fetching $take+$skip, that's mean there's more
-                     * notifications so we set hasmore to true and stop iterating
-                     */
-                }
+                else
+                    $hasmore = true;
             }
         }
-        $uniques = array_slice($uniques, -$take); // After fetching $skip+$take we take last $take notifications
 
-        if(count($uniques) == 0) // count == -1 means user has no notifications => return empty collection
+        /**
+         * Here we have to skip $skip and take $take because if the last chunk has less element than $take
+         * and we take last $take we're going to have duplicates
+         * The same thing with similars we have to skip all similars of the last chunk and only take the similars of last
+         * iteration
+         */
+        $uniques = array_slice($uniques, $skip, $take);
+
+        if(count($uniques) == 0)
             return [
                 'notifs'=>$result,
                 'hasmore'=>false

@@ -35,6 +35,7 @@
             @include('partials.shared-components')
             @yield('content')
         </main>
+        @include('partials.cookie-notice')
     </div>
 </body>
 </html>

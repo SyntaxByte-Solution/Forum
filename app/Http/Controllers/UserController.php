@@ -174,6 +174,14 @@ class UserController extends Controller
         if($request->avatar_removed) {
             $data['provider_avatar'] = null;
             $data['avatar'] = null;
+
+            \DB::statement(
+                "DELETE FROM `notifications` 
+                WHERE JSON_EXTRACT(data, '$.action_type')='avatar-change'
+                AND JSON_EXTRACT(data, '$.action_user') = " . $user->id .
+                " AND JSON_EXTRACT(data, '$.resource_type')='user' 
+                AND JSON_EXTRACT(data, '$.action_resource_id')=" . $user->id
+            );
         }
         else if($request->hasFile('avatar')){
             $path = $request->file('avatar')->storeAs(
@@ -198,30 +206,31 @@ class UserController extends Controller
                 // *** 3) Save image ('image-name', 'quality [int]')
                 $resizeObj->saveImage($destination, $avatar_dim[1]);
             }
-
             $data['avatar'] = $path;
-            // Here we need to notify all the followers about avatar change
-            foreach($user->followers as $follower) {
-                $follower = User::find($follower->follower);
-                // First delete followers notifications about a previous avatar change if exists
-                foreach($follower->notifications as $notification) {
-                    if($notification->data['action_type'] == "avatar-change" 
-                    && $notification->data['action_user'] == $user->id
-                    && $notification->data['action_resource_id'] == $user->id) {
-                        $notification->delete();
-                    }
-                }
-                
-                $follower->notify(
+
+            // First delete followers notifications about a previous avatar change if exists
+            \DB::statement(
+                "DELETE FROM `notifications` 
+                WHERE JSON_EXTRACT(data, '$.action_type')='avatar-change'
+                AND JSON_EXTRACT(data, '$.action_user') = " . $user->id .
+                " AND JSON_EXTRACT(data, '$.resource_type')='user' 
+                AND JSON_EXTRACT(data, '$.action_resource_id')=" . $user->id
+            );
+
+            // Notify all followers about avatar change
+            $followers = \DB::select("SELECT follower FROM follows WHERE followable_id=$user->id AND `followable_type`=?", ['App\Models\User']);
+            $followers_ids = array_column($followers, 'follower');
+            foreach($followers_ids as $follower) {
+                User::find($follower)->notify(
                     new \App\Notifications\UserAction([
-                        'action_user'=>auth()->user()->id,
+                        'action_user'=>$user->id,
                         'action_statement'=>"changed his profile avatar",
                         'resource_string_slice'=>"",
                         'resource_type'=>"user",
                         'action_type'=>'avatar-change',
                         'action_date'=>now(),
-                        'action_resource_id'=>auth()->user()->id,
-                        'action_resource_link'=>route('user.profile', ['user'=>auth()->user()->username]),
+                        'action_resource_id'=>$user->id,
+                        'action_resource_link'=>route('user.profile', ['user'=>$user->username]),
                     ])
                 );
             }
@@ -229,23 +238,39 @@ class UserController extends Controller
 
         if($request->cover_removed) {
             $data['cover'] = null;
+
+            \DB::statement(
+                "DELETE FROM `notifications` 
+                WHERE JSON_EXTRACT(data, '$.action_type')='cover-change'
+                AND JSON_EXTRACT(data, '$.action_user') = " . $user->id .
+                " AND JSON_EXTRACT(data, '$.resource_type')='user' 
+                AND JSON_EXTRACT(data, '$.action_resource_id')=" . $user->id
+            );
         }
         else if($request->hasFile('cover')){
             $path = $request->file('cover')->storeAs(
                 'users/' . $user->id. '/usermedia/covers', 'cover.png', 'public'
             );
-
             $data['cover'] = $path;
 
-            foreach($user->followers as $follower) {
-                $follower = User::find($follower->follower);
-                
-                $follower->notify(
+            \DB::statement(
+                "DELETE FROM `notifications` 
+                WHERE JSON_EXTRACT(data, '$.action_type')='cover-change'
+                AND JSON_EXTRACT(data, '$.action_user') = " . $user->id .
+                " AND JSON_EXTRACT(data, '$.resource_type')='user' 
+                AND JSON_EXTRACT(data, '$.action_resource_id')=" . $user->id
+            );
+
+            $followers = \DB::select("SELECT follower FROM follows WHERE followable_id=$user->id AND `followable_type`=?", ['App\Models\User']);
+            $followers_ids = array_column($followers, 'follower');
+            foreach($followers_ids as $follower) {
+                User::find($follower)->notify(
                     new \App\Notifications\UserAction([
                         'action_user'=>auth()->user()->id,
                         'action_statement'=>__("changed his profile cover"),
                         'resource_string_slice'=>"",
-                        'action_type'=>'image-action',
+                        'resource_type'=>"user",
+                        'action_type'=>'cover-change',
                         'action_date'=>now(),
                         'action_resource_id'=>auth()->user()->id,
                         'action_resource_link'=>route('user.profile', ['user'=>auth()->user()->username]),

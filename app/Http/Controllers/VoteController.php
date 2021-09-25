@@ -17,12 +17,9 @@ class VoteController extends Controller
      *     vote and then add the down vote
      */
     public function thread_vote(Request $request, Thread $thread) {
-        $thread_vote_count = $thread->votes->count();
-        $result = $this->handle_vote($request, $thread, 'App\Models\Thread');
+        $voteaction = $this->handle_vote($request, $thread, 'App\Models\Thread');
 
-        // If the subtraction of the below operation is greater than 0 means he get rid of his vote
-        // meaning we don't have to notify the user of that action 
-        if($thread_vote_count - $thread->votes->count() <= 0 && !$thread->user->thread_disabled($thread->id)) {
+        if($voteaction != 'deleted' && !$thread->user->thread_disabled($thread->id)) {
             $thread->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
@@ -36,16 +33,13 @@ class VoteController extends Controller
                 ])
             );
         }
-
-        return $result;
     }
 
     public function post_vote(Request $request, Post $post) {
-        $post_vote_count = $post->votes->count();
-        $result = $this->handle_vote($request, $post, 'App\Models\Post');
+        $voteaction = $this->handle_vote($request, $post, 'App\Models\Post');
         
         $thread = $post->thread;
-        if($post_vote_count - $post->votes->count() <= 0 && !$post->user->post_disabled($post->id)) {
+        if($voteaction != 'deleted' && !$post->user->post_disabled($post->id)) {
             $post->user->notify(
                 new \App\Notifications\UserAction([
                     'action_user'=>auth()->user()->id,
@@ -59,10 +53,13 @@ class VoteController extends Controller
                 ])
             );
         }
-
-        return $result;
     }
 
+    /**
+     * handle_vote function will handle vote by either inserting the vote, flipping it (remove up and add down) or delete it
+     * completely, and then return the type of handling (either added, deleted, flipped)
+     * we use that return to decide whether we notify the resource owner or not
+     */
     private function handle_vote($request, $resource, $type) {
         $current_user = auth()->user();
         $data = $request->validate([
@@ -72,20 +69,18 @@ class VoteController extends Controller
             ]
         ]);
 
+        $voteaction;
         $type_name = strtolower(substr($type, strrpos($type, '\\') + 1)); // App\Models\Thread => thread
         $this->authorize('store', [\App\Models\Vote::class, $data['vote'], $resource, $type_name]);
 
         /**
          * we have to check if the user already vote the resources
          */
-        $exists = false;
+        $exists_result = \DB::select("SELECT * FROM votes WHERE user_id=$current_user->id AND votable_id=? AND votable_type=?", [$resource->id, 'App\Models\Thread']);
+        $exists = (bool)count($exists_result);
         $founded_vote;
-        foreach($current_user->votes as $vote) {
-            if($vote->votable_id == $resource->id && $vote->votable_type == $type) {
-                $exists = true;
-                $founded_vote = $vote;
-                break;
-            }
+        if($exists) {
+            $founded_vote = Vote::find($exists_result[0]->id);
         }
 
         $vote = new Vote;
@@ -104,26 +99,25 @@ class VoteController extends Controller
         if($exists) {
             $vote_value = $founded_vote->vote;
             $founded_vote->delete();
-            foreach($resource->user->notifications as $notification) {
-                if($notification->data['action_type'] == "thread-vote" 
-                && $notification->data['action_user'] == $current_user->id
-                && $notification->data['action_resource_id'] == $resource->id) {
-                    $notification->delete();
-                }
-            }
 
+            \DB::statement(
+                "DELETE FROM `notifications` 
+                WHERE JSON_EXTRACT(data, '$.action_type')='resource-vote'
+                AND JSON_EXTRACT(data, '$.action_user') = " . $current_user->id .
+                " AND JSON_EXTRACT(data, '$.resource_type')='" . $type_name .
+                "' AND JSON_EXTRACT(data, '$.action_resource_id')=" . $resource->id
+            );
+
+            $voteaction="deleted";
             if(($vote_value == -1 && $data['vote'] == 1) || ($vote_value == 1 && $data['vote'] == -1)) {
                 $resource->votes()->save($vote);
+                $voteaction="flipped";
             }
         } else {
             $resource->votes()->save($vote); // If the user never vote the resource we simply add the vote record
+            $voteaction="added";
         }
         
-        $resource->load('votes');
-        $vote_count = 0;
-        foreach($resource->votes as $vote) {
-            $vote_count += $vote->vote;
-        }
-        return $vote_count;
+        return $voteaction;
     }
 }

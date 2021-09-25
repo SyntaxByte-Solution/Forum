@@ -27,11 +27,11 @@ class VotePolicy
         }
 
         if($resource_name == 'discussions') {
-            if($user->votes_on_threads()->count() > self::THREADS_VOTE_LIMIT) {
+            if($user->votes_on_threads() > self::THREADS_VOTE_LIMIT) {
                 return $this->deny(__("You reached your discussions voting limit allowed per day, try out later") . '. (' . self::THREADS_VOTE_LIMIT . ' ' . 'votes' . ')');
             }
         } else if($resource_name == 'replies') {
-            if($user->votes_on_posts()->count() > self::THREADS_VOTE_LIMIT) {
+            if($user->votes_on_posts() > self::THREADS_VOTE_LIMIT) {
                 return $this->deny(__("You reached your replies voting limit allowed per day, try out later") . '. (' . self::POSTS_VOTE_LIMIT . ' ' . 'votes' . ')');
             }
         }

@@ -38,6 +38,7 @@ class Helper {
           case 'user-follow':
               return 'followfilled24-icon';
           case 'avatar-change':
+          case 'cover-change':
               return 'image24-icon';
           case 'poll-action':
               return 'poll24-icon';

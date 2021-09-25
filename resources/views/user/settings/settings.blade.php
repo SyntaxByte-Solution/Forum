@@ -94,7 +94,7 @@
                             </div>
                             <div class="us-settings-profile-picture-container full-center relative">
                                 <img src="{{ \App\Models\User::sizeddefaultavatar(100, '-l') }}" class="default-avatar us-settings-profile-picture @if(!is_null($user->avatar)) none @endif" alt="">
-                                <img src="@if($user->sizedavatar(100, '-l') != \App\Models\User::sizeddefaultavatar(100, '-l')) {{ $user->sizedavatar(100) }} @endif" class="original-avatar us-settings-profile-picture handle-image-center-positioning" alt="">
+                                <img src="@if($user->sizedavatar(100, '-l') != \App\Models\User::sizeddefaultavatar(100, '-l')) {{ $user->sizedavatar(100) }} @endif" class="original-avatar us-settings-profile-picture handle-image-center-positioning @if(!$user->hasavatar) none @endif" alt="">
                                 <img src="" class="uploaded-avatar @if(!$user->avatar) none @endif us-settings-profile-picture " alt="">
                             </div>
                         </div>

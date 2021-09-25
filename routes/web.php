@@ -27,11 +27,11 @@ use App\Http\Middleware\AccountActivationCheck;
 
 Route::get('/test', function() {
     $user = auth()->user();
-    $thread = Thread::find(266);
+    $thread = Thread::find(8);
     
-    $followers = \DB::select("SELECT follower FROM follows WHERE followable_id=$user->id AND `followable_type`=?", ['App\Models\User']);
-    $followers_ids = array_column($followers, 'follower');
-    dd($followers_ids);
+    $temp = \DB::select("SELECT * FROM votes WHERE user_id=$user->id AND votable_id=8 AND votable_type=?", ['App\Models\Thread']);
+
+    dd($thread->votevalue);
 });
 
 Route::get('/', [IndexController::class, 'index']);

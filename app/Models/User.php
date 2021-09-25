@@ -131,6 +131,12 @@ class User extends UserAuthenticatable implements Authenticatable
         return $value;
     }
 
+    public function getHasavatarAttribute() {
+        $avatar = DB::select('SELECT avatar, provider_avatar FROM users WHERE id=' . $this->id)[0];
+
+        return $avatar->avatar != null || $avatar->provider_avatar != null;
+    }
+
     public function sizedavatar($size, $quality="-h") {
         if(!is_null($this->avatar)) {
             if($this->avatar == $this->provider_avatar) {
@@ -278,11 +284,11 @@ class User extends UserAuthenticatable implements Authenticatable
     }
     
     public function votes_on_threads() {
-        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->get();
+        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Thread')->count();
     }
 
     public function votes_on_posts() {
-        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Post')->get();
+        return Vote::where('user_id', $this->id)->where('votable_type', 'App\Models\Post')->count();
     }
 
     public function votes() {

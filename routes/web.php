@@ -28,10 +28,11 @@ use App\Http\Middleware\AccountActivationCheck;
 Route::get('/test', function() {
     $user = auth()->user();
     $thread = Thread::find(8);
-    
-    $temp = \DB::select("SELECT * FROM votes WHERE user_id=$user->id AND votable_id=8 AND votable_type=?", ['App\Models\Thread']);
 
-    dd($thread->votevalue);
+    dd($user->disables
+    ->where('disabled_type', 'App\Models\Thread')
+    ->where('disabled_id', 281)
+    ->count());
 });
 
 Route::get('/', [IndexController::class, 'index']);

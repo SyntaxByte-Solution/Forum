@@ -531,7 +531,7 @@ class User extends UserAuthenticatable implements Authenticatable
                 }
             }
 
-            $resource_type = $data->action_type;
+            $resource_type = $data->resource_type;
             if($resource_type == 'thread') {
                 $resource_type = "App\Models\Thread";
             } else if($resource_type == 'reply') {

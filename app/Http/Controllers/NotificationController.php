@@ -119,7 +119,7 @@ class NotificationController extends Controller
         
         $current_user = auth()->user();
         $resource_id = $notification_data->action_resource_id;
-        $resource_type = explode('-', $notification_data->action_type)[0];
+        $resource_type = $notification_data->resource_type;
 
         $disable = new NotificationDisable;
         $disable->user_id = $current_user->id;
@@ -141,7 +141,7 @@ class NotificationController extends Controller
         
         $current_user = auth()->user();
         $resource_id = $notification_data->action_resource_id;
-        $resource_type = explode('-', $notification_data->action_type)[0];
+        $resource_type = $notification_data->resource_type;
 
         $disable = new NotificationDisable;
         $disable->user_id = $current_user->id;
@@ -167,24 +167,25 @@ class NotificationController extends Controller
 
         $notification = Notification::find($notification_id);
         $notification_data = \json_decode($notification->data);
-        $current_user = auth()->user();
+        $currentuser = auth()->user();
 
-        foreach($current_user->notifications as $notif) {
-            if($notif->data['action_resource_id'] == $notification_data->action_resource_id && $notif->data['action_type'] == $notification_data->action_type) {
-                $notif->delete();
-            }
-        }
+        \DB::statement(
+            "DELETE FROM `notifications` 
+            WHERE notifiable_id = $currentuser->id
+            AND JSON_EXTRACT(data, '$.action_type')='$notification_data->action_type' 
+            AND JSON_EXTRACT(data, '$.resource_type')='$notification_data->resource_type' 
+            AND JSON_EXTRACT(data, '$.action_resource_id')=" . $notification_data->action_resource_id
+        );
 
         // Cleaning up notification disables related to this notification
         $notification_resource_id = $notification_data->action_resource_id;
-        $notification_resource_type = explode('-', $notification_data->action_type)[0];
+        $notification_resource_type = $notification_data->resource_type;
         $notifiable_user = $notification->notifiable_id;
 
-        if($notification_resource_type == 'thread') {
+        if($notification_resource_type == 'thread')
             $notification_resource_type = "App\Models\Thread";
-        } else if($notification_resource_type == 'post') {
+        else if($notification_resource_type == 'post')
             $notification_resource_type = "App\Models\Post";
-        }
 
         NotificationDisable::where('user_id', $notifiable_user)
         ->where('disabled_type', $notification_resource_type)

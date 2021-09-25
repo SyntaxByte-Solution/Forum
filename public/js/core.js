@@ -49,6 +49,52 @@ function enable_page_scroll() {
 //     }, 120000);
 // }
 
+setTimeout(() => {
+    let cookies_accepted = getCookie('cookies_accepted');
+
+    if(cookies_accepted == null) {
+        $('.cookie-notice-box').removeClass('none');
+        $('.cookie-notice-box').animate({
+            opacity: 1
+        }, 400);
+    }
+}, 5000);
+
+$('.close-cookie-notice-and-save').on('click', function() {
+    let container = $(this);
+    while(!container.hasClass('cookie-notice-box')) {
+        container = container.parent();
+    }
+
+    setCookie('cookies_accepted', 1, 365);
+
+    $('.cookie-notice-box').animate({
+        opacity: 0
+    }, 400, function() {
+        $('.cookie-notice-box').addClass('none');
+    });
+});
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/;secure";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
 function update_user_last_activity() {
     $.ajax({
         type: 'get',

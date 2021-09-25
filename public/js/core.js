@@ -58,7 +58,7 @@ setTimeout(() => {
             opacity: 1
         }, 400);
     }
-}, 5000);
+}, 60000);
 
 $('.close-cookie-notice-and-save').on('click', function() {
     let container = $(this);

@@ -467,7 +467,6 @@ class User extends UserAuthenticatable implements Authenticatable
         $result = collect([]);
         $uniques = [];
         $similars = [];
-        $count = -1;
         $hasmore = false;
         /**
          * Loop through notification and get $take number of unique notifications (unique by action_resource_id and action_type)
@@ -495,19 +494,26 @@ class User extends UserAuthenticatable implements Authenticatable
 
             /**
              * We want unique notifications and only $take(=6) number of them
-             * Notice that before pushing notification to unique we have to skip the already taken notifications
+             * Here what we need to do is to push skip+take elements and then take the last $take elements
+             * that way we handle fetch more
+             *   e.g. Let's say we have spik 6 and take 6 = here we have to fetch 12 unique notifs and then take the last 6
              */
-            if(++$count >= $skip)
-                if(!$already_exists) {
-                    if(count($uniques) < $take) $uniques[] = $notification;
-                    else $hasmore = true; 
-                    // Has more will be true only if the unique notifications are pushed to uniques and then after 
-                    // that we find other uniques which means more notifications still there.
+            if(!$already_exists) {
+                if(count($uniques) < $take+$skip)
+                    $uniques[] = $notification;
+                else {
+                    $hasmore = true; 
+                    break; 
+                    /**
+                     * If we found only one more unique notification after fetching $take+$skip, that's mean there's more
+                     * notifications so we set hasmore to true and stop iterating
+                     */
                 }
+            }
         }
+        $uniques = array_slice($uniques, -$take); // After fetching $skip+$take we take last $take notifications
 
-
-        if($count == -1) // count == -1 means user has no notifications => return empty collection
+        if(count($uniques) == 0) // count == -1 means user has no notifications => return empty collection
             return [
                 'notifs'=>$result,
                 'hasmore'=>false

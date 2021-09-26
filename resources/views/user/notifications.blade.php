@@ -35,7 +35,50 @@
                             <p class="my4 fs13 gray text-center">{{ __('Try to start discussions/questions or react to people posts') }}.</p>
                         </div>
                     @elseif($hasmore)
-                        <input type='button' class="see-all-full-style notifications-load-scroll" value="{{__('load more')}}">
+                        <div class="notifications-fetch-more">
+                            <div class="flex" style="padding: 6px">
+                                <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                    <div class="fade-loading"></div>
+                                </div>
+                                <div class="full-width">
+                                    <div class="flex align-center">
+                                        <div class="relative br3 hidden-overflow mr4" style="width: 80px; height: 10px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                    </div>
+                                    <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 24px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                    <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex" style="padding: 6px">
+                                <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                    <div class="fade-loading"></div>
+                                </div>
+                                <div class="full-width">
+                                    <div class="flex align-center">
+                                        <div class="relative br3 hidden-overflow mr4" style="width: 80px; height: 10px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                    </div>
+                                    <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 24px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                    <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                        <div class="fade-loading"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>

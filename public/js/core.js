@@ -95,6 +95,19 @@ function getCookie(name) {
     return null;
 }
 
+function checkRtl( character ) {
+    var RTL = ['ا','ب','پ','ت','س','ج','چ','ح','خ','د','ذ','ر','ز','ژ','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ک','گ','ل','م','ن','و','ه','ی'];
+    return RTL.indexOf( character ) > -1;
+};
+
+function handle_thread_rtl(thread) {
+    thread.find('.thread-title-text, .thread-content').each(function() {
+        if(checkRtl($(this).text()[0]) ) {
+            $(this).addClass('rtl');
+        }
+    });
+}
+
 function update_user_last_activity() {
     $.ajax({
         type: 'get',
@@ -1684,6 +1697,7 @@ $('.thread-container-box').each(function() {
     handle_expend($(this));
     handle_open_thread_delete_viewer($(this));
     handle_open_thread_replies_switch($(this));
+    handle_thread_rtl($(this));
 });
 
 function handle_open_thread_delete_viewer(thread) {
@@ -3517,6 +3531,7 @@ function handle_thread_events(thread) {
     // Handle link copy
     handle_copy_thread_link(thread.find('.copy-thread-link'));
     handle_thread_user_card_fetch(thread);
+    handle_thread_rtl(thread);
 
     // If thread is a poll we have to handlme all poll events
     if(thread.find('.thread-type').val() == 'poll') {

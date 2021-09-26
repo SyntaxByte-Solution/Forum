@@ -91,7 +91,7 @@
                                 <div>
                                     <a href="{{ $post->user->profilelink }}" class="no-margin bold blue no-underline">{{ $post->user->fullname }}</a>
                                     <div class="flex align-center fs11">
-                                        <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="fs12 bblack no-underline">{{ $post->user->username }}</a>
+                                        <a href="{{ route('user.profile', ['user'=>$post->user->username]) }}" class="fs11 bold bblack no-underline">{{ $post->user->username }}</a>
                                         <span class="fs10 gray mx4 unselectable">•</span>
                                         <div class="flex align-center gray">
                                             <span class="relative block">

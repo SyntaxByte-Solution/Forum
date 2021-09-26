@@ -236,7 +236,7 @@
                         </div>
                         @if($type == 'discussion')
                         <div class="mt8 mb4 expand-box" style="margin: 10px 10px 0px 10px">
-                            <span><a href="{{ $thread->link }}" class="expandable-text bold fs18 blue no-underline">{{ $thread->mediumslice }}</a></span>
+                            <span><a href="{{ $thread->link }}" class="thread-title-text expandable-text bold fs18 blue no-underline block full-width">{{ $thread->mediumslice }}</a></span>
                             @if($thread->mediumslice != $thread->subject)
                             <input type="hidden" class="expand-slice-text" value="{{ $thread->mediumslice }}">
                             <input type="hidden" class="expand-whole-text" value="{{ $thread->subject }}">

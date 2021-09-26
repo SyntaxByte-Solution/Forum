@@ -460,6 +460,12 @@ a, input, textarea {
     opacity: 0.5;
 }
 
+.rtl {
+    direction: rtl; 
+    text-align: right;
+    unicode-bidi: bidi-override;
+}
+
 .loading-dots-anim {
     letter-spacing: 1.4px;
     font-size: 12px !important;

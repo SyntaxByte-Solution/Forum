@@ -76,11 +76,12 @@ class UserAction extends Notification implements ShouldBroadcast
     {
         $action_type = $this->action_type;
         $resource_action_icon = (new Helper)->notification_icon($action_type);
+        $user_action = User::find($this->action_user);
 
         return (new BroadcastMessage([
-            "image"=>User::find($this->action_user)->sizedavatar(100),
+            "image"=>$user_action->sizedavatar(100),
             "action_user"=>$this->action_user,
-            "action_taker_name"=>User::find($this->action_user)->minified_name,
+            "action_taker_name"=>$user_action->minified_name,
             "action_statement"=>$this->action_statement,
             'resource_string_slice'=>$this->resource_string_slice,
             'resource_type'=>$this->resource_type,

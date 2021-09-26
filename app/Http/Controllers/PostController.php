@@ -117,6 +117,22 @@ class PostController extends Controller
         } else {
             $post->ticked = true;
             $post->save();
+
+            $notif_data = [
+                'action_user'=>auth()->user()->id,
+                'action_statement'=>"marks your reply as best reply :",
+                'resource_string_slice'=>mb_convert_encoding($post->slice, 'UTF-8', 'UTF-8'),
+                'resource_type'=>'post',
+                'action_type'=>'post-tick',
+                'action_date'=>now(),
+                'action_resource_id'=>$post->id,
+                'action_resource_link'=>$post->thread->link.'?reply='.$post->id,
+            ];
+    
+            // Only notify thread owner if he didn't disable notif on the thread
+            $post->user->notify(
+                new \App\Notifications\UserAction($notif_data)
+            );
             return 1;
         }
     }

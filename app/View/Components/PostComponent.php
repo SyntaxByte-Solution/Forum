@@ -11,10 +11,12 @@ class PostComponent extends Component
 {
 
     public $post;
+    public $thread_owner;
     public $votes;
     public $post_content;
-    public $tickedPost;
+    public $canbeticked;
 
+    public $already_reported;
     public $post_created_at;
     public $post_date;
 
@@ -25,6 +27,9 @@ class PostComponent extends Component
         $this->post_created_at = (new Carbon($post->created_at))->toDayDateTimeString();
         $this->post_date = (new Carbon($post->created_at))->diffForHumans();
         $this->votes = $post->votevalue;
+        $this->thread_owner = \DB::select("SELECT user_id as userid FROM threads where id IN (SELECT thread_id FROM posts WHERE id=$post->id)")[0]->userid;
+        $this->canbeticked = \DB::select("SELECT COUNT(*) as tickexists FROM posts WHERE ticked=1 AND thread_id=$post->thread_id")[0]->tickexists > 0;
+        $this->already_reported = ($post->already_reported) ? 1 : 0;
     }
 
     /**

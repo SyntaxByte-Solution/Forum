@@ -55,10 +55,10 @@
 
             <div class="relative informer-box tick-post-container my4">
                 <input type="hidden" value="{{ $post->id }}" class="post-id">
-                @can('update', $post)
+                @if(auth()->user() && auth()->user()->id == $thread_owner)
                 <input type="hidden" class="remove-best-reply" value="{{ __('Remove best reply') }}">
                 <input type="hidden" class="mark-best-reply" value="{{ __('Mark this reply as the best reply') }}">
-                <div class="pointer post-tick-button @if(!$post->ticked && (!auth()->user() || auth()->user()->id != $post->user->id)) none @endif"
+                <div class="pointer post-tick-button @if(!$post->ticked && $canbeticked) none @endif"
                     style="max-height: 20px" 
                     title="@if($post->ticked){{ __('Best reply. click to remove') }}@else{{ __('Mark this reply as the best reply') }}@endif">
                     <svg class="size20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -140,12 +140,14 @@
                                 </div>
                                 @endcan
                             @endcan
+                            @if(auth()->user() && $post->user_id != auth()->user()->id)
                             <div class="simple-suboption flex align-center @auth @if($post->user->id != auth()->user()->id) open-post-report @endif @endauth @guest login-signin-button @endguest">
                                 <svg class="size17 mr4" style="fill: #242424" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M336.17,80C287,80,242.87,48,174.26,48A221.86,221.86,0,0,0,93.54,63.17,48,48,0,1,0,24,89.56V496a16,16,0,0,0,16,16H56a16,16,0,0,0,16-16V412.56C109.87,395.28,143.26,384,199.83,384c49.13,0,93.3,32,161.91,32,58.48,0,102-22.62,128.55-40A48,48,0,0,0,512,335.86V95.94c0-34.46-35.26-57.77-66.9-44.12C409.19,67.31,371.64,80,336.17,80ZM464,336c-21.78,15.41-60.82,32-102.26,32-59.95,0-102-32-161.91-32-43.36,0-96.38,9.4-127.83,24V128c21.78-15.41,60.82-32,102.26-32,60,0,102,32,161.91,32,43.28,0,96.32-17.37,127.83-32Z"/></svg>
                                 {{ __('Report') }}
                                 <input type="hidden" class="post-id" value="{{ $post->id }}">
-                                <input type="hidden" class="already-reported" value="{{ $post->already_reported }}">
+                                <input type="hidden" class="already-reported" autocomplete="off" value="{{ $already_reported }}">
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -76,7 +76,7 @@ class VoteController extends Controller
         /**
          * we have to check if the user already vote the resources
          */
-        $exists_result = \DB::select("SELECT * FROM votes WHERE user_id=$current_user->id AND votable_id=? AND votable_type=?", [$resource->id, 'App\Models\Thread']);
+        $exists_result = \DB::select("SELECT * FROM votes WHERE user_id=$current_user->id AND votable_id=? AND votable_type=?", [$resource->id, $type]);
         $exists = (bool)count($exists_result);
         $founded_vote;
         if($exists) {

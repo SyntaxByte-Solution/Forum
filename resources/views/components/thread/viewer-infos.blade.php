@@ -158,71 +158,75 @@
         </div>
         <div class="simple-line-separator my4"></div>
         @auth
-        <div id="viewer-reply-container">
-            <div class="flex space-between my4" id="reply-site">
-                <p class="bold fs15 my4 ml8 forum-color" id="viewer-reply-text-label">{{ __('Reply') }}</p>
-                <input type="button" value="{{ __('Share reply') }}" class="share-viewer-reply button-style-1 height-max-content mr4">
-                <input type="hidden" class="button-text-ing" value="{{ __('Sharing your reply') }}..">
-                <input type="hidden" class="button-text-no-ing" value="{{ __('Share reply') }}">
-                <input type="hidden" class="thread-id" value="{{ $thread->id }}">
+            @if($thread->replies_off)
+                <p class="fs13 text-center">{{ __('The owner of this discussion turned off replies') }}</p>
+            @else
+            <div id="viewer-reply-container">
+                <div class="flex space-between my4" id="reply-site">
+                    <p class="bold fs15 my4 ml8 forum-color" id="viewer-reply-text-label">{{ __('Reply') }}</p>
+                    <input type="button" value="{{ __('Share reply') }}" class="share-viewer-reply button-style-1 height-max-content mr4">
+                    <input type="hidden" class="button-text-ing" value="{{ __('Sharing your reply') }}..">
+                    <input type="hidden" class="button-text-no-ing" value="{{ __('Share reply') }}">
+                    <input type="hidden" class="thread-id" value="{{ $thread->id }}">
 
-                <input type="hidden" class="required-error" value="* {{ __('Reply field is required') }}">
-                <input type="hidden" class="reply-size-error" value="* {{ __('Reply must contain at least 2 characters') }}">
+                    <input type="hidden" class="required-error" value="* {{ __('Reply field is required') }}">
+                    <input type="hidden" class="reply-size-error" value="* {{ __('Reply must contain at least 2 characters') }}">
+                </div>
+                <p class="reply-error error ml8 none"></p>
+                <textarea name="content" id="viewer-reply-input" placeholder="{{ __('Your reply here') }}"></textarea>
+                <style>
+                    .thread-media-viewer-infos-content .editor-toolbar {
+                        background-color: #f4f4f4;
+                    }
+                    .thread-media-viewer-infos-content .fa-arrows-alt, .thread-media-viewer-infos-content .fa-columns {
+                        display: none !important;
+                    }
+                    .thread-media-viewer-infos-content .separator:last-of-type {
+                        display: none !important;
+                    }
+                    .thread-media-viewer-infos-content .CodeMirror,
+                    .thread-media-viewer-infos-content .CodeMirror-scroll {
+                        max-height: 100px !important;
+                        min-height: 100px !important;
+                        border-radius: 0;
+                        border-left: none;
+                        border-right: none;
+                        border-color: #dbdbdb;
+                    }
+                    .thread-media-viewer-infos-content .CodeMirror-scroll:focus {
+                        border-color: #64ceff;
+                        box-shadow: 0 0 0px 3px #def2ff;
+                    }
+                    .thread-media-viewer-infos-content .editor-toolbar {
+                        padding: 0 4px;
+                        opacity: 0.8;
+                        height: 38px;
+                        border-radius: 0;
+                        border-left: none;
+                        border-right: none;
+                        border-top-color: #dbdbdb;
+
+                        display: flex;
+                        align-items: center;
+                    }
+                    .thread-media-viewer-infos-content .editor-statusbar {
+                        display: none !important;
+                    }
+                    
+                    .viewer-thread-reply .CodeMirror {
+                        border-left: 1px solid #dbdbdb;
+                        border-right: 1px solid #dbdbdb;
+                        border-color: #dbdbdb;
+                    }
+
+                    .viewer-thread-reply .editor-toolbar {
+                        border-left: 1px solid #dbdbdb;
+                        border-right: 1px solid #dbdbdb;
+                        border-top-color: #dbdbdb;
+                    }
+                </style>
             </div>
-            <p class="reply-error error ml8 none"></p>
-            <textarea name="content" id="viewer-reply-input" placeholder="{{ __('Your reply here') }}"></textarea>
-            <style>
-                .thread-media-viewer-infos-content .editor-toolbar {
-                    background-color: #f4f4f4;
-                }
-                .thread-media-viewer-infos-content .fa-arrows-alt, .thread-media-viewer-infos-content .fa-columns {
-                    display: none !important;
-                }
-                .thread-media-viewer-infos-content .separator:last-of-type {
-                    display: none !important;
-                }
-                .thread-media-viewer-infos-content .CodeMirror,
-                .thread-media-viewer-infos-content .CodeMirror-scroll {
-                    max-height: 100px !important;
-                    min-height: 100px !important;
-                    border-radius: 0;
-                    border-left: none;
-                    border-right: none;
-                    border-color: #dbdbdb;
-                }
-                .thread-media-viewer-infos-content .CodeMirror-scroll:focus {
-                    border-color: #64ceff;
-                    box-shadow: 0 0 0px 3px #def2ff;
-                }
-                .thread-media-viewer-infos-content .editor-toolbar {
-                    padding: 0 4px;
-                    opacity: 0.8;
-                    height: 38px;
-                    border-radius: 0;
-                    border-left: none;
-                    border-right: none;
-                    border-top-color: #dbdbdb;
-
-                    display: flex;
-                    align-items: center;
-                }
-                .thread-media-viewer-infos-content .editor-statusbar {
-                    display: none !important;
-                }
-                
-                .viewer-thread-reply .CodeMirror {
-                    border-left: 1px solid #dbdbdb;
-                    border-right: 1px solid #dbdbdb;
-                    border-color: #dbdbdb;
-                }
-
-                .viewer-thread-reply .editor-toolbar {
-                    border-left: 1px solid #dbdbdb;
-                    border-right: 1px solid #dbdbdb;
-                    border-top-color: #dbdbdb;
-                }
-            </style>
-        </div>
+            @endif
         @endauth
         <div id="viewer-replies-site" class="forum-color bold mt8 ml8 viewer-thread-replies-number-container @if(!$thread->posts->count()) none @endif">Replies (<span class="viewer-thread-replies-number">{{ $thread->posts->count() }}</span>)</div>
         <div class="mx8" style="margin-bottom: 12px">

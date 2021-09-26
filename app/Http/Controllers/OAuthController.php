@@ -74,12 +74,12 @@ class OAuthController extends Controller
                 new \App\Notifications\UserAction([
                     'action_user'=>User::where('username', 'Gladiator Team')->first()->id,
                     'action_statement'=>"",
-                    'resource_string_slice'=>"Welcome to MOROCCAN GLADIATOR forums, wise factory ;)",
+                    'resource_string_slice'=>"Welcome to MOROCCAN GLADIATOR forums, where you can find anything relevant to sports with its miscellaneous types.",
                     'resource_type'=>"user",
                     'action_type'=>'welcome-welcome',
                     'action_date'=>now(),
                     'action_resource_id'=>"",
-                    'action_resource_link'=>"",
+                    'action_resource_link'=>"/",
                 ])
             );
 
@@ -97,7 +97,7 @@ class OAuthController extends Controller
             );
 
             Auth::login($user, true);
-            \Session::flash('message', __('WELCOME TO MOROCCAN FORUMS WEBSITE ! CHECK YOUR NOTIFICATIONS BOX')); 
+            \Session::flash('message', __('WELCOME TO MOROCCAN GLADIATOR FORUMS WEBSITE ! PLEASE CHECK YOUR NOTIFICATIONS BOX'));
             // Then we have to create folders that will hold avatars, covers, threads images ..
             $path = public_path().'/users/' . $user->id;
             File::makeDirectory($path, 0777, true, true);

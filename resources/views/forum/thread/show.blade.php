@@ -39,6 +39,11 @@
         <input type="hidden" class="page" value="thread-show">
         <div class="flex">
             <div class="full-width">
+                <style>
+                    .thread-container-box {
+                        border-bottom: 1px solid #b7c0c6;
+                    }
+                </style>
                 <x-index-resource :thread="request()->thread"/>
 
                 @if($thread->replies_off)

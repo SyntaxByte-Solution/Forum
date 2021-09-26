@@ -10,13 +10,14 @@ class NotificationController extends Controller
 {
     public function notifications() {
         $user = auth()->user();
-
-        foreach ($user->unreadNotifications as $notification) {
-            $notification->markAsRead();
-        }
+        $notifications_manager = $user->unique_notifications(0, 8);
+        $notifications = $notifications_manager['notifs'];
+        $hasmore = $notifications_manager['hasmore'];
 
         return view('user.notifications')
-            ->with(compact('user'));
+            ->with(compact('user'))
+            ->with(compact('notifications'))
+            ->with(compact('hasmore'));
     }
 
     public function mark_as_read() {

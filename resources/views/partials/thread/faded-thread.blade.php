@@ -1,4 +1,4 @@
-<div class="resource-container faded-thread-container thread-container-box relative @isset($classes) {{ $classes }} @endif" style="margin-bottom: 0; border-bottom: unset; border-radius: 4px 4px 0 0; border-color: #dfdfdf">
+<div class="resource-container faded-thread-container thread-container-box relative @isset($classes) {{ $classes }} @endif" style="margin-bottom: 0; border-bottom: unset;">
     <div class="flex thread-component">
         <div class="thread-vote-section" style="border-right: unset; background-color: #e6e6e6bd; border-radius: 4px 0 0 0">
             <div class="vote-box full-center flex-column relative">

@@ -41,7 +41,7 @@
                         @include('partials.user-space.faded-card')
                         <div>
                             <div class="flex align-center" style="height: 18px">
-                                <a href="{{ route('user.profile', ['user'=>$owner->username]) }}" class="blue no-underline bold"><span class="thread-owner-name">{{ $owner->fullname }}</span></a>
+                                <a href="{{ route('user.profile', ['user'=>$owner->username]) }}" class="fs15 blue no-underline bold"><span class="thread-owner-name">{{ $owner->fullname }}</span></a>
                                 @if(auth()->user() && $owner->id != auth()->user()->id)
                                 <div class="follow-box thread-component-follow-box flex align-center">
                                     <!-- buttons labels -->
@@ -79,7 +79,7 @@
                                 @endif
                             </div>
                             <div class="flex align-center">
-                                <span class="thread-owner-username bblack fs13 bold">{{ $owner->username }}</span>
+                                <span class="thread-owner-username bblack fs12 bold">{{ $owner->username }}</span>
                                 <div class="gray height-max-content mx4 fs10">•</div>
                                 <div class="relative height-max-content">
                                     <p class="no-margin fs11 flex align-center tooltip-section gray">{{ $at_hummans }}</p>

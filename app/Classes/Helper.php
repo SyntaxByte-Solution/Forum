@@ -46,6 +46,8 @@ class Helper {
               return 'pollvote24-icon';
           case 'poll-option-add':
               return 'polloptionadd24-icon';
+          case 'post-tick':
+              return 'posttick24-icon';
           default:
               return 'notification24-icon';
       }

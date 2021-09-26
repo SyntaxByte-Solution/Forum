@@ -326,12 +326,7 @@ class User extends UserAuthenticatable implements Authenticatable
     }
 
     public function today_posts_count() {
-        $count = 0;
-        foreach($this->threads as $thread) {
-            $count += $thread->posts()->whereDate('created_at', Carbon::today())->count();
-        }
-
-        return $count;
+        return DB::select("SELECT COUNT(*) as today_posts FROM posts WHERE user_id=$this->id AND created_at >= '" . \Carbon\Carbon::today() . "' AND deleted_at IS NULL")[0]->today_posts;
     }
 
     public function posts_count() {

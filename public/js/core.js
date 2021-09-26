@@ -3071,7 +3071,7 @@ $('.submit-report').on('click', function() {
             close_report_container(report_container);
             // Wait for closing annimation
             setTimeout(function() {
-                report_container.find('.report-section').remove();
+                report_container.find('.report-section').addClass('none');
                 report_container.find('.already-reported-container').removeClass('none');
             }, 400);
             basic_notification_show(button.parent().find('.reported-text').val(), 'basic-notification-round-tick');

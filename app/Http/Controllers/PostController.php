@@ -148,7 +148,7 @@ class PostController extends Controller
     }
 
     public function thread_show_post_generate(Post $post) {
-        $component = (new PostComponent($post->id));
+        $component = (new PostComponent($post));
         $component = $component->render(get_object_vars($component))->render();
         return $component;
     }

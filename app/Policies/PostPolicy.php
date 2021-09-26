@@ -65,11 +65,13 @@ class PostPolicy
      * @return mixed
      */
     public function destroy(User $user, Post $post) {
-        if ($user->isBanned()) {
+        if ($user->isBanned())
             $this->deny(__("You cannot delete replies because you're currently banned"));
-        }
+
         // You can destroy a post only if you own it or you are the owner of thread that this post attached to
-        return $post->user_id == $user->id || $user->id == $post->thread()->setEagerLoads([])->first()->user->id;
+        $threadowner = \DB::select("SELECT user_id as userid FROM threads where id IN (SELECT thread_id FROM posts WHERE id=$post->id)")[0]->userid;
+        
+        return $post->user_id == $user->id || $user->id == $threadowner;
     }
 
     public function fetch(User $user, Post $post) {

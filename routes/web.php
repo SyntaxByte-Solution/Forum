@@ -29,10 +29,7 @@ Route::get('/test', function() {
     $user = auth()->user();
     $thread = Thread::find(8);
 
-    dd($user->disables
-    ->where('disabled_type', 'App\Models\Thread')
-    ->where('disabled_id', 281)
-    ->count());
+    dd($user->today_posts_count());
 });
 
 Route::get('/', [IndexController::class, 'index']);

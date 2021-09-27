@@ -129,6 +129,7 @@ main {
 .global-viewer {
     position: fixed;
     top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     background-color: #22242b9e;
@@ -3319,10 +3320,17 @@ a, input, textarea {
 
 /* viewers styles */
 .viewer-box-style-1 {
-    margin-top: 160px;
     width: 600px;
     height: max-content;
     border-radius: 4px;
     background-color: white;
     box-shadow: 0 3px 10px 0px #3c3c3c;
+}
+
+.vbs-margin-1 {
+    margin-top: 160px;
+}
+
+.vbs-margin-2 {
+    margin-top: 90px;
 }

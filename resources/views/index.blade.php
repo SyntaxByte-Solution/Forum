@@ -22,6 +22,9 @@
 @endsection
 
 @section('content')
+    @auth
+        @include('partials.thread.add-viewer')
+    @endauth
     @include('partials.left-panel', ['page' => 'home'])
     <div>
         <img src="{{ asset('assets/images/img/welcome.jpg') }}" class="block full-width" alt="">
@@ -86,14 +89,6 @@
                 @endauth
             </div>
         </div>
-        @auth
-        <div id="thread-add-component" class="none" style="margin-bottom: 10px">
-            @auth
-                @include('partials.thread.thread-add', ['editor_height'=>170])
-            @endauth
-            <div class="simple-line-separator" style="margin: 12px 0"></div>
-        </div>
-        @endauth
         <div id="threads-global-container">
             @foreach($threads as $thread)
                 <x-index-resource :thread="$thread"/>

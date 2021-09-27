@@ -74,100 +74,98 @@
                                 </div>
                                 <a href="{{ route('user.notifications') }}" class="link-path">{{ __('See all') }}</a>
                             </div>
-                            <div class="suboptions-container-dims notifs-box">
-                                <div class="flex" style="padding: 6px">
-                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
-                                        <div class="fade-loading"></div>
+                            <div id="header-notifs-scrollable-box" class="suboptions-container-dims">
+                                <div class="notifs-box">
+                                    <div class="flex" style="padding: 6px">
+                                        <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="full-width">
+                                            <div class="flex align-center">
+                                                <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                                <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                                <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="full-width">
-                                        <div class="flex align-center">
-                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                    <div class="flex" style="padding: 6px">
+                                        <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
+                                            <div class="fade-loading"></div>
+                                        </div>
+                                        <div class="full-width">
+                                            <div class="flex align-center">
+                                                <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                                <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                                <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
                                                 <div class="fade-loading"></div>
                                             </div>
-                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
                                                 <div class="fade-loading"></div>
                                             </div>
                                         </div>
-                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
+                                    </div>
+                                    <div class="flex" style="padding: 6px">
+                                        <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
                                             <div class="fade-loading"></div>
                                         </div>
-                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
-                                            <div class="fade-loading"></div>
+                                        <div class="full-width">
+                                            <div class="flex align-center">
+                                                <div class="relative br3 hidden-overflow mr4" style="width: 80px; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                                <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 24px">
+                                                <div class="fade-loading"></div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
+                                                <div class="fade-loading"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex" style="padding: 6px">
-                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
-                                        <div class="fade-loading"></div>
-                                    </div>
-                                    <div class="full-width">
-                                        <div class="flex align-center">
-                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                        </div>
-                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
+                                <div class="header-notifications-fetch-more">
+                                    <div class="flex" style="padding: 6px">
+                                        <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
                                             <div class="fade-loading"></div>
                                         </div>
-                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
-                                            <div class="fade-loading"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex" style="padding: 6px">
-                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
-                                        <div class="fade-loading"></div>
-                                    </div>
-                                    <div class="full-width">
-                                        <div class="flex align-center">
-                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
+                                        <div class="full-width">
+                                            <div class="flex align-center">
+                                                <div class="relative br3 hidden-overflow mr4" style="width: 80px; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                                <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
+                                                    <div class="fade-loading"></div>
+                                                </div>
+                                            </div>
+                                            <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 24px">
                                                 <div class="fade-loading"></div>
                                             </div>
-                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
+                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
                                                 <div class="fade-loading"></div>
                                             </div>
-                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                        </div>
-                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
-                                            <div class="fade-loading"></div>
-                                        </div>
-                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
-                                            <div class="fade-loading"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex" style="padding: 6px">
-                                    <div class="size48 rounded hidden-overflow mr8 relative" style="min-width: 48px">
-                                        <div class="fade-loading"></div>
-                                    </div>
-                                    <div class="full-width">
-                                        <div class="flex align-center">
-                                            <div class="relative br3 hidden-overflow" style="width: 80px; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                            <div class="relative br3 hidden-overflow mx4" style="width: 16px; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                            <div class="relative br3 hidden-overflow" style="width: 100%; height: 10px">
-                                                <div class="fade-loading"></div>
-                                            </div>
-                                        </div>
-                                        <div class="relative br3 hidden-overflow my4" style="width: 100%; height: 18px">
-                                            <div class="fade-loading"></div>
-                                        </div>
-                                        <div class="relative br3 hidden-overflow" style="width: 80px; height: 8px">
-                                            <div class="fade-loading"></div>
                                         </div>
                                     </div>
                                 </div>

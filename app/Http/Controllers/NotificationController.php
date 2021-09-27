@@ -103,15 +103,11 @@ class NotificationController extends Controller
                 <p class="my4 fs13 gray text-center">$text_after_empty.</p>
             </div>
             EMPTY;
-        if($notifications['hasmore']) {
-            $load_more = __('load more');
-            $payload .=
-                <<<AE
-                    <input type='button' class="see-all-full-style notifications-load" value="$load_more">
-                AE;
-        }
 
-        return $payload;
+        return [
+            'content'=>$payload,
+            'hasmore'=>$notifications['hasmore']
+        ];
     }
 
     public function disable(Request $request, $notification_id) {

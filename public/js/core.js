@@ -1359,16 +1359,15 @@ $('.set-lang').on('click', function(event) {
 
 let header_notifs_bootstrap_fetched = false;
 $('.notification-button').on('click', function() {
-    if(header_notifs_bootstrap_fetched) {
+    if(header_notifs_bootstrap_fetched)
         return;
-    }
 
     $.ajax({
         type: 'get',
         url: '/notifications/bootstrap',
         success: function(response) {
+            $('.notifs-box').html(response.content);
             header_notifs_bootstrap_fetched = true;
-            $('.notifs-box').html(response);
             
             let unhandled_notification_components = 
                 $('.notifs-box .notification-container');
@@ -1382,12 +1381,67 @@ $('.notification-button').on('click', function() {
                 handle_image_dimensions($(this).find('.action_takers_image'));
             });
 
-            loadNotifications($('.notifs-box .notifications-load'));
-            handle_lazy_loading();
+            force_lazy_load($('.notifs-box'));
             handle_mark_as_read();
         }
     })
 });
+
+
+let header_notifications_fetch_more = $('.header-notifications-fetch-more');
+let header_notifs_scrollable_box = $('#header-notifs-scrollable-box');
+let header_notifications_fetch_more_lock = true;
+if(header_notifs_scrollable_box.length) {
+    header_notifs_scrollable_box.on('DOMContentLoaded scroll', function() {
+        // We only have to start loading and fetching data when user reach the explore more faded thread
+        // + 50 because we don't want the user to scroll to the last bottom point in order to load notification, instead
+        // we want to load notifications just when the user see the faded notification
+        if(header_notifs_scrollable_box.scrollTop() + header_notifs_scrollable_box.innerHeight() + 50 >= header_notifs_scrollable_box[0].scrollHeight) {
+            if(!header_notifications_fetch_more_lock || !header_notifs_bootstrap_fetched) {
+                return;
+            }
+            header_notifications_fetch_more_lock=false;
+            
+            let present_notifs_count = $('header .notification-container').length;
+            
+            $.ajax({
+                url: '/notifications/generate?range='+6+'&skip='+present_notifs_count,
+                type: 'get',
+                success: function(response) {
+                    if(response.content != "")
+                        $('header .notifs-box').append($(`${response.content}`));
+            
+                    if(response.hasNext == false) {
+                        header_notifications_fetch_more.remove();
+                        header_notifs_scrollable_box.off();
+                    }
+
+                    /**
+                     * Notice here when we fetch the notifications we return the number of fetched notifs
+                     * because we need to handle the last count of appended components events
+                     */
+                    let unhandled_event_notification_components = 
+                        $('.notifs-box > .notification-container').slice(response.count*(-1));
+                    console.log(unhandled_event_notification_components);
+
+                    unhandled_event_notification_components.each(function() {
+                        handle_notification_menu_appearence($(this));
+                        handle_notification_menu_buttons($(this).find('.notification-menu-button'));
+                        handle_nested_soc($(this).find('.notification-menu-button'));
+                        handle_delete_notification($(this).find('.delete-notification'));
+                        handle_disable_switch_notification($(this).find('.disable-switch-notification'));
+                        handle_image_dimensions($(this).find('.action_takers_image'));
+                    });
+                    force_lazy_load($('header .notification-container'));
+                },
+                complete: function() {
+                    header_notifications_fetch_more_lock = true;
+                }
+            });
+        }
+
+    });
+}
 
 function handle_mark_as_read() {
     $.ajax({
@@ -1483,65 +1537,6 @@ if(userId != "") { // Disable any websockets function due to dev performence
                 }
             }
         });
-}
-
-$('.notifications-load').on('click', function(event) {
-    event.preventDefault();
-    let button = $(this);
-
-    loadNotifications(button);
-});
-function loadNotifications(button) {
-    button.on('click', function() {
-        button.val('loading..')
-        button.attr("disabled","disabled");
-        button.attr('style', 'background-color: #e9e9e9; color: black; cursor: default');
-        
-        let notifs_box = button;
-        while(!notifs_box.hasClass('notifs-box')) {
-            notifs_box = notifs_box.parent();
-        }
-        
-        let present_notifs_count = notifs_box.find('.notification-container').length;
-        
-        $.ajax({
-            url: '/notifications/generate?range='+6+'&skip='+present_notifs_count,
-            type: 'get',
-            success: function(notifications_components) {
-                if(notifications_components.hasNext == false) {
-                    button.addClass('none');
-                }
-        
-                if(notifications_components.content != "") {
-                    $(`${notifications_components.content}`).insertBefore(button);
-        
-                    /**
-                     * Notice here when we fetch the notifications we return the number of fetched notifs
-                     * because we need to handle the last count of appended components events
-                     * 
-                     */
-                    let unhandled_event_notification_components = 
-                        $('.notifs-box > .notification-container').slice(notifications_components.count*(-1));
-                    
-                    unhandled_event_notification_components.each(function() {
-                        handle_notification_menu_appearence($(this));
-                        handle_notification_menu_buttons($(this).find('.notification-menu-button'));
-                        handle_nested_soc($(this).find('.notification-menu-button'));
-                        handle_delete_notification($(this).find('.delete-notification'));
-                        handle_disable_switch_notification($(this).find('.disable-switch-notification'));
-                        handle_image_dimensions($(this).find('.action_takers_image'));
-                        handle_lazy_loading();
-                    });
-                }
-            },
-            complete: function() {
-                button.val('load more');
-                button.attr('style', '');
-                button.prop("disabled", false);
-                $('.notif-state-couter').val(present_notifs_count+1);
-            }
-        })
-    });
 }
 
 $('.hidden-notification-container').on({

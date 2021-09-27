@@ -29,12 +29,23 @@ $('.display-thread-add-viewer').on('click', function() {
     $('#thread-add-viewer').removeClass('none');
     if(thread_add_viewer_bootstrapped) return;
     
-    $('#thread-add-viewer').animate({
-        opacity: 1
-    }, 400, function() {
-        console.log('send !');
-        thread_add_viewer_bootstrapped = true;
-    });
+    // Step 1
+    start_loading_strip();
+    setTimeout(() => {
+        $.ajax({
+            url: '/thread/add/faded/fetch',
+            type: 'get',
+            success: function(response) {
+                $('#thread-add-viewer .global-viewer-content').html(response);
+                handle_fade_loading($('#thread-add-viewer .global-viewer-content'));
+                
+                // Step 2
+            },
+            complete: function() {
+                stop_loading_strip();
+            }
+        });
+    }, 600);
 });
 
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------

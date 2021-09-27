@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cookie;
 use App\Models\{Forum, User};
 use Illuminate\Validation\Rule;
 use App\View\Components\User\{Quickaccess, Card};
+use App\View\Components\Thread\Add\{FadedComponent};
 
 class GeneralController extends Controller
 {
@@ -48,5 +49,11 @@ class GeneralController extends Controller
         $usercard_component = (new Card($user));
         $usercard_component = $usercard_component->render(get_object_vars($usercard_component))->render();
         return $usercard_component;
+    }
+
+    public function generate_thread_add_faded() {
+        $faded_component = (new FadedComponent());
+        $faded_component = $faded_component->render()->render();
+        return $faded_component;
     }
 }

@@ -18,6 +18,25 @@ if(urlprms.has('type')) {
     }
 }
 
+/**
+ * When user clicks on display thread add button to add a thread (post) we have to perform the following steps
+ *      1. Fetch the faded thread add viewer and place it to the global viewer (show header strip meanwhile)
+ *      2. Once the faded thread add placed and its events get handled we send a request to fetch thread add component
+ *      3. once thread add component get fetched, we have to handle all the events
+ */
+let thread_add_viewer_bootstrapped = false;
+$('.display-thread-add-viewer').on('click', function() {
+    $('#thread-add-viewer').removeClass('none');
+    if(thread_add_viewer_bootstrapped) return;
+    
+    $('#thread-add-viewer').animate({
+        opacity: 1
+    }, 400, function() {
+        console.log('send !');
+        thread_add_viewer_bootstrapped = true;
+    });
+});
+
 // ---------------- THREAD ADD EMBBED MEDIA SHARING ----------------
 $('.thread-add-share').on('click', function(event) {
   let threadtype = $('#thread-add-wrapper .thread-type-value').val(); // discussion or poll
@@ -558,15 +577,6 @@ $('.close-thread-media-upload-edit').on('click', function() {
   edit_deleted_medias.push($(this).parent().find('.uploaded-media-url').val());
 
   $(this).parent().remove();
-});
-
-$('.thread-add-display-toggler').on('click', function() {
-  let thread_add_component = $('#thread-add-component');
-  if(thread_add_component.hasClass('none')) {
-      thread_add_component.removeClass('none');
-  } else {
-      thread_add_component.addClass('none');
-  }
 });
 
 $('.thread-add-container textarea').each(function() {

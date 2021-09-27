@@ -82,7 +82,7 @@
             </div>
             <div class="flex align-center">
                 @auth
-                <div class="flex align-center pointer thread-add-display-toggler">
+                <div class="flex align-center pointer display-thread-add-viewer">
                     <span class="unselectable bold fs13">{{ __('Add a discussion') }}</span>
                     <svg class="size7 ml4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>
                 </div>

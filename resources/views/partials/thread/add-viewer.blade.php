@@ -1,4 +1,4 @@
-<div id="thread-add-viewer" class="global-viewer full-center">
+<div id="thread-add-viewer" class="global-viewer full-center opacity0 none">
     <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
     <div class="global-viewer-content-box viewer-box-style-1 flex flex-column" style="height: calc(100% - 80px)">
         <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -9,9 +9,38 @@
             <div class="pointer fs20 close-global-viewer unselectable">✖</div>
         </div>
         <div class="global-viewer-content full-height scrolly" style="padding: 14px;">
-            <div class="full-dimensions full-center">
-                <div class="spinner size24">
-                    <svg class="size24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 197.21 197.21"><path fill="#2ca0ff" d="M182.21,83.61h-24a15,15,0,0,0,0,30h24a15,15,0,0,0,0-30ZM54,98.61a15,15,0,0,0-15-15H15a15,15,0,0,0,0,30H39A15,15,0,0,0,54,98.61ZM98.27,143.2a15,15,0,0,0-15,15v24a15,15,0,0,0,30,0v-24A15,15,0,0,0,98.27,143.2ZM98.27,0a15,15,0,0,0-15,15V39a15,15,0,1,0,30,0V15A15,15,0,0,0,98.27,0Zm53.08,130.14a15,15,0,0,0-21.21,21.21l17,17a15,15,0,1,0,21.21-21.21ZM50.1,28.88A15,15,0,0,0,28.88,50.09l17,17A15,15,0,0,0,67.07,45.86ZM45.86,130.14l-17,17a15,15,0,1,0,21.21,21.21l17-17a15,15,0,0,0-21.21-21.21Z"/></svg>
+            <div class="full-dimensions align-center">
+                <div class="full-dimensions flex flex-column">
+                    <div class="relative br3 hidden-overflow mb4" style="width: 80px; height: 16px; min-height: 16px">
+                        <div class="fade-loading"></div>
+                    </div>
+                    <div class="relative br3 hidden-overflow" style="width: 100%; height: 30px; margin-bottom: 12px; min-height: 30px">
+                        <div class="fade-loading"></div>
+                    </div>
+                    <div class="relative br3 hidden-overflow mb4" style="width: 80px; height: 16px; min-height: 16px">
+                        <div class="fade-loading"></div>
+                    </div>
+                    <div class="relative br3 hidden-overflow" style="width: 100%; height: 120px; margin-bottom: 12px; min-height: 120px">
+                        <div class="fade-loading"></div>
+                    </div>
+
+                    <div class="flex align-center">
+                        <div class="relative br3 mr8 hidden-overflow" style="width: 50px; height: 50px">
+                            <div class="fade-loading"></div>
+                        </div>
+                        <div class="relative br3 mr8 hidden-overflow" style="width: 50px; height: 50px">
+                            <div class="fade-loading"></div>
+                        </div>
+                        <div class="relative br3 mr8 hidden-overflow" style="width: 50px; height: 50px">
+                            <div class="fade-loading"></div>
+                        </div>
+                        <div class="relative br3 mr8 hidden-overflow" style="width: 50px; height: 50px">
+                            <div class="fade-loading"></div>
+                        </div>
+                    </div>
+                    <div class="relative br3 hidden-overflow" style="width: 100%; height: 100%; margin-top: 12px">
+                        <div class="fade-loading"></div>
+                    </div>
                 </div>
             </div>
         </div>
